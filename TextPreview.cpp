@@ -35,13 +35,14 @@ TextPreview::TextPreview(QWidget *parent)
 		iconImage = QImage(":/images/icons.png");
 
 		QStringList dataNames = Data::names();
-		names << FF8Text::toFF8(dataNames.at(0)) << FF8Text::toFF8(dataNames.at(1))
-				<< FF8Text::toFF8(dataNames.at(2)) << FF8Text::toFF8(dataNames.at(3))
-				<< FF8Text::toFF8(dataNames.at(4)) << FF8Text::toFF8(dataNames.at(5))
-				<< FF8Text::toFF8(dataNames.at(6)) << FF8Text::toFF8(dataNames.at(7))
-				<< FF8Text::toFF8(dataNames.at(8)) << FF8Text::toFF8(dataNames.at(9))
-				<< FF8Text::toFF8(dataNames.at(10)) << FF8Text::toFF8(dataNames.at(15))
-				<< FF8Text::toFF8(dataNames.at(12)) << FF8Text::toFF8(dataNames.at(14));
+		bool jp = tr("false", "Use Japanese Encoding") == "true";
+		names << FF8Text::toFF8(dataNames.at(0), jp) << FF8Text::toFF8(dataNames.at(1), jp)
+				<< FF8Text::toFF8(dataNames.at(2), jp) << FF8Text::toFF8(dataNames.at(3), jp)
+				<< FF8Text::toFF8(dataNames.at(4), jp) << FF8Text::toFF8(dataNames.at(5), jp)
+				<< FF8Text::toFF8(dataNames.at(6), jp) << FF8Text::toFF8(dataNames.at(7), jp)
+				<< FF8Text::toFF8(dataNames.at(8), jp) << FF8Text::toFF8(dataNames.at(9), jp)
+				<< FF8Text::toFF8(dataNames.at(10), jp) << FF8Text::toFF8(dataNames.at(15), jp)
+				<< FF8Text::toFF8(dataNames.at(12), jp) << FF8Text::toFF8(dataNames.at(14), jp);
 
 		namesWidth[0] = calcFF8TextWidth(names.at(0));
 		namesWidth[1] = calcFF8TextWidth(names.at(1));
@@ -58,10 +59,10 @@ TextPreview::TextPreview(QWidget *parent)
 		namesWidth[12] = calcFF8TextWidth(names.at(12));
 		namesWidth[13] = calcFF8TextWidth(names.at(13));
 
-		locations << FF8Text::toFF8(tr("Galbadia")) << FF8Text::toFF8(tr("Esthar"))
-				<< FF8Text::toFF8(tr("Balamb")) << FF8Text::toFF8(tr("Dollet"))
-				<< FF8Text::toFF8(tr("Timber")) << FF8Text::toFF8(tr("Trabia"))
-				<< FF8Text::toFF8(tr("Centra")) << FF8Text::toFF8(tr("Horizon"));
+		locations << FF8Text::toFF8(tr("Galbadia"), jp) << FF8Text::toFF8(tr("Esthar"), jp)
+				<< FF8Text::toFF8(tr("Balamb"), jp) << FF8Text::toFF8(tr("Dollet"), jp)
+				<< FF8Text::toFF8(tr("Timber"), jp) << FF8Text::toFF8(tr("Trabia"), jp)
+				<< FF8Text::toFF8(tr("Centra"), jp) << FF8Text::toFF8(tr("Horizon"), jp);
 
 		locationsWidth[0] = calcFF8TextWidth(locations.at(0));
 		locationsWidth[1] = calcFF8TextWidth(locations.at(1));
@@ -456,9 +457,9 @@ void TextPreview::drawTextArea(QPainter *painter)
 				charId = (quint8)ff8Text.at(i);
 
 				if((charId>=0x20 && charId<=0x27) || (charId>=0x30 && charId<=0x37))
-					word(&x, &y, FF8Text::toFF8("0"), painter);
+					word(&x, &y, FF8Text::toFF8("0", false), painter);
 				else if(charId>=0x40 && charId<=0x47)
-					word(&x, &y, FF8Text::toFF8("00000000"), painter);
+					word(&x, &y, FF8Text::toFF8("00000000", false), painter);
 				break;
 			case 0x05: // Icons
 				charId = (quint8)ff8Text.at(i)-0x20;

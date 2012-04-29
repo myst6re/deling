@@ -32,20 +32,20 @@ FF8Text::FF8Text(const char *str) :
 {
 }
 
-FF8Text::FF8Text(const QByteArray &ba) :
-	QString(fromFF8(ba))
+FF8Text::FF8Text(const QByteArray &ba, bool jp) :
+	QString(fromFF8(ba, jp))
 {
 }
 
-QByteArray FF8Text::toFF8() const
+QByteArray FF8Text::toFF8(bool jp) const
 {
-	return toFF8(*this);
+	return toFF8(*this, jp);
 }
 
-QString FF8Text::fromFF8(const QByteArray &ff8str)
+QString FF8Text::fromFF8(const QByteArray &ff8str, bool jp)
 {
 	QString ret, character;
-	quint8 index, oldIndex, jp = (int)Config::value("jp").toBool();
+	quint8 index, oldIndex/*, jp = (int)Config::value("jp").toBool()*/;
 	int size = ff8str.size();
 
 	for(int i=0 ; i<size ; ++i) {
@@ -167,14 +167,14 @@ QString FF8Text::fromFF8(const QByteArray &ff8str)
 	return ret;
 }
 
-QByteArray FF8Text::toFF8(const QString &string)
+QByteArray FF8Text::toFF8(const QString &string, bool jp)
 {
 	QByteArray ff8str;
 	QChar comp/*, comp2*/;
 	int stringSize = string.size(), i, table;
 	bool ok, ok2;
 	ushort value, value2;
-	quint8 jp = (int)Config::value("jp").toBool();
+//	quint8 jp = (int)Config::value("jp").toBool();
 
 	for(int c=0 ; c<stringSize ; ++c)
 	{

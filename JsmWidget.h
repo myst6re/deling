@@ -31,7 +31,6 @@ class JsmWidget : public PageWidget
 public:
 	explicit JsmWidget(QWidget *parent = 0);
 	void build();
-//	bool filled();
 	void clear();
 	void setReadOnly(bool readOnly);
 	void fillList1(JsmFile *);

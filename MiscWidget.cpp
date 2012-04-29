@@ -145,11 +145,6 @@ void MiscWidget::clear()
 	PageWidget::clear();
 }
 
-//bool MiscWidget::filled()
-//{
-//	return miscFile!=NULL;
-//}
-
 void MiscWidget::setReadOnly(bool readOnly)
 {
 	if(isBuilded()) {

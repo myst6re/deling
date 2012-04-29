@@ -112,11 +112,6 @@ void JsmWidget::compile()
 	}
 }
 
-//bool JsmWidget::filled()
-//{
-//	return list1->topLevelItemCount()!=0;
-//}
-
 void JsmWidget::clear()
 {
 	if(!isBuilded())	return;

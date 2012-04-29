@@ -32,9 +32,9 @@ public:
 	MsdWidget(QWidget *parent=0);
 
 	void build();
-//	bool filled();
 	void clear();
-	void fillTextList(MsdFile *msdFile=0, JsmFile *jsmFile=0);
+	void setFiles(MsdFile *msdFile, JsmFile *jsmFile);
+	void fillTextList();
 	QString selectedText();
 	void setReadOnly(bool);
 	void updateText();

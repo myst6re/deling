@@ -30,7 +30,6 @@ public:
 	MiscWidget(QWidget *parent=0);
 	void build();
 	void clear();
-//	bool filled();
 	void setReadOnly(bool readOnly);
 	void fill(MiscFile *miscFile, WalkmeshFile *walkmeshFile);
 private slots:

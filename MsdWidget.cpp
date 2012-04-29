@@ -326,11 +326,6 @@ void MsdWidget::build()
 	PageWidget::build();
 }
 
-//bool MsdWidget::filled()
-//{
-//	return textList->count()!=0;
-//}
-
 void MsdWidget::clear()
 {
 	if(!isBuilded())	return;
@@ -367,25 +362,20 @@ QString MsdWidget::selectedText()
 	return textEdit->textCursor().selectedText();
 }
 
-void MsdWidget::fillTextList(MsdFile *msdFile, JsmFile *jsmFile)
+void MsdWidget::setFiles(MsdFile *msdFile, JsmFile *jsmFile)
 {
-	PageWidget::fill();
-
-	if(msdFile != NULL) {
+	if(this->msdFile != msdFile || this->jsmFile != jsmFile) {
 		clear();
 		this->msdFile = msdFile;
 		this->jsmFile = jsmFile;
-	} else {
-		textList->blockSignals(true);
-		textPreview->clear();
-		dontUpdateCurrentText = true;
-		textList->clear();
-		textEdit->setPlainText(QString());
-		dontUpdateCurrentText = false;
-		textList->blockSignals(false);
 	}
+}
 
-	if(this->msdFile == NULL)	return;
+void MsdWidget::fillTextList()
+{
+	clear();
+
+	PageWidget::fill();
 
 	int nbTexts = this->msdFile->nbText();
 

@@ -30,7 +30,6 @@ class BackgroundWidget : public PageWidget
 public:
 	BackgroundWidget(QWidget *parent=0);
 	void clear();
-//	bool filled();
 	QPixmap error();
 	QPixmap generate(const QString &, const QByteArray &, const QByteArray &);
 

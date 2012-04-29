@@ -27,10 +27,10 @@ public:
 	FF8Text();
 	FF8Text(const QString &str);
 	FF8Text(const char *str);
-	FF8Text(const QByteArray &ba);
-	QByteArray toFF8() const;
-	static QString fromFF8(const QByteArray &ff8str);
-	static QByteArray toFF8(const QString &string);
+	FF8Text(const QByteArray &ba, bool jp);
+	QByteArray toFF8(bool jp) const;
+	static QString fromFF8(const QByteArray &ff8str, bool jp);
+	static QByteArray toFF8(const QString &string, bool jp);
 	static QString caract(quint8 ord, quint8 table=0);
 
 private:

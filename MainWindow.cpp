@@ -384,9 +384,10 @@ void MainWindow::fillPage()
 
 //	qDebug() << "BG" << t.elapsed();
 
-	if(tabBar->currentIndex()==TEXTPAGE && msdFile!=NULL)
-		textPage->fillTextList(msdFile, jsmFile);
-	else
+	if(tabBar->currentIndex()==TEXTPAGE && msdFile!=NULL) {
+		textPage->setFiles(msdFile, jsmFile);
+		textPage->fillTextList();
+	} else
 		textPage->clear();
 	if(tabBar->currentIndex()==SCRIPTPAGE && jsmFile!=NULL)
 		scriptPage->fillList1(jsmFile);
@@ -663,8 +664,10 @@ void MainWindow::setCurrentPage(int index)
 
 	switch(index) {
 	case TEXTPAGE:
-		if(!textPage->isFilled() && msdFile!=NULL)
-			textPage->fillTextList(msdFile, jsmFile);
+		if(!textPage->isFilled() && msdFile!=NULL) {
+			textPage->setFiles(msdFile, jsmFile);
+			textPage->fillTextList();
+		}
 		break;
 	case SCRIPTPAGE:
 		if(!scriptPage->isFilled() && jsmFile!=NULL)

@@ -81,11 +81,6 @@ void BackgroundWidget::clear()
 	PageWidget::clear();
 }
 
-//bool BackgroundWidget::filled()
-//{
-//	return isEnabled();
-//}
-
 void BackgroundWidget::parameterChanged(int index)
 {
 	int parameter = parametersWidget->itemData(index).toInt();
