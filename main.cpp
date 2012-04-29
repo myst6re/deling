@@ -31,7 +31,7 @@
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
-	app.setWindowIcon(QIcon(":/images/ico.png"));
+	app.setWindowIcon(QIcon(":/images/deling.png"));
 
 	Config::set();
 

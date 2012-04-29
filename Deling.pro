@@ -97,15 +97,38 @@ SOURCES += MainWindow.cpp \
 	PlainTextEdit.cpp
 RESOURCES += Deling.qrc
 QT += opengl
-TRANSLATIONS += deling_en.ts
+TRANSLATIONS += deling_en.ts \
+	deling_ja.ts
+# macx:ICON = images/Deling.icns
 win32 {
 	RC_FILE = Deling.rc
-	OTHER_FILES += Deling.rc
 }
+
+OTHER_FILES += Deling.rc \
+	Deling.desktop
+
 # Only for static compilation
 # QTPLUGIN     += qjpcodecs
 
+#only on linux/unix (for package creation and other deploys)
+unix:!macx:!symbian {
+	system(lrelease Deling.pro)
 
+	target.path = /opt/deling
+	INSTALLS += target
+
+	lang.path = /opt/deling
+	lang.files = *.qm
+	INSTALLS += lang
+
+	icon.path = /usr/share/pixmaps/
+	icon.files = images/deling.png
+	INSTALLS += icon
+
+	desktop.path =/usr/share/applications
+	desktop.files = Deling.desktop
+	INSTALLS += desktop
+}
 
 
 

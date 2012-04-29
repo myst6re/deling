@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Version=0.6b
+Name=Deling
+GenericName=FF8 Field Editor
+GenericName[fr]=Éditeur d'écrans FF8
+Comment=Can edit field from Final Fantasy VIII (PS & PC)
+Comment[fr]=Permet de modifier les écrans de Final Fantasy VIII (PS et PC)
+Icon=deling.png
+Exec=/usr/bin/deling
+Path=
+Terminal=false
+MimeType=application/octet-stream
+Categories=Application;Game;
+Keywords=PlayStation;Final Fantasy;
+StartupNotify=false

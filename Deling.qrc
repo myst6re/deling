@@ -54,7 +54,6 @@
         <file>images/icon-drawpoint.png</file>
         <file>images/icon-unknown.png</file>
         <file>images/ff8.png</file>
-        <file>images/deling.png</file>
         <file>images/icon-char-1.png</file>
         <file>images/icon-char-2.png</file>
         <file>images/icon-char-3.png</file>
@@ -87,8 +86,9 @@
         <file>images/icon-char-30.png</file>
         <file>images/icon-char-31.png</file>
         <file>images/font.png</file>
-        <file>images/ico.png</file>
         <file>images/door.png</file>
         <file>images/background.png</file>
+        <file>images/deling.png</file>
+        <file>images/deling_city.png</file>
     </qresource>
 </RCC>

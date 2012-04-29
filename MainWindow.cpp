@@ -707,7 +707,7 @@ void MainWindow::about()
 	font.setPointSize(12);
 
 	QLabel image(&apropos);
-	image.setPixmap(QPixmap(":/images/deling.png"));
+	image.setPixmap(QPixmap(":/images/deling_city.png"));
 	image.move(-5, apropos.height() - 128);
 
 	QLabel desc1(PROG_FULLNAME, &apropos);
