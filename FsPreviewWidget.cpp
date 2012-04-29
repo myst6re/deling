@@ -31,11 +31,12 @@ void FsPreviewWidget::clearPreview()
 	setCurrentIndex(EmptyPage);
 }
 
-void FsPreviewWidget::imagePreview(const QPixmap &image)
+void FsPreviewWidget::imagePreview(const QPixmap &image, const QString &name)
 {
 	setCurrentIndex(ImagePage);
-	QLabel *lbl = new QLabel();
+	BGPreview2 *lbl = new BGPreview2();
 	lbl->setPixmap(image);
+	lbl->setName(name);
 	((QScrollArea *)currentWidget())->setWidget(lbl);
 }
 

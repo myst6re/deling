@@ -52,12 +52,14 @@ void BackgroundWidget::clear()
 	if(!isBuilded())	return;
 
 	parametersWidget->clear();
+	statesWidget->clear();
 	layersWidget->clear();
 	allparams.clear();
 	params.clear();
 	layers.clear();
 	map.clear();
 	mim.clear();
+	image->clear();
 
 	PageWidget::clear();
 }

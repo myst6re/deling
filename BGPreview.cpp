@@ -52,7 +52,6 @@ void BGPreview::fill(const QPixmap &background)
 void BGPreview::clear()
 {
 	label = new QLabel();
-	label->setPixmap(QPixmap());
 	setWidget(label);
 	setCursor(QCursor(Qt::ArrowCursor));
 }

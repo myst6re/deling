@@ -29,7 +29,7 @@ private slots:
 	void renameOK(QTreeWidgetItem *, int);
 private:
 	void openDir(const QString &);
-	QStringList listFilesInDir(QString dirPath, bool *c);
+	QStringList listFilesInDir(QString dirPath);
 
 	QToolBar *toolBar;
 	QAction *extractAction, *replaceAction, *_addAction, *removeAction, *renameAction;

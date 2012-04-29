@@ -109,25 +109,25 @@ void FsDialog::generatePreview()
 
 	if(fileType == "lzs")
 	{
-		preview->imagePreview(FF8Image::lzs(data));
+		preview->imagePreview(FF8Image::lzs(data), fileName);
 	}
 	else if(fileType == "tex")
 	{
-		preview->imagePreview(FF8Image::tex(data));
+		preview->imagePreview(FF8Image::tex(data), fileName);
 	}
 	else if(fileType == "tim")
 	{
-		preview->imagePreview(FF8Image::tim(data));
+		preview->imagePreview(FF8Image::tim(data), fileName);
 	}
 	else if(fileType == "tdw")
 	{
-		preview->imagePreview(FF8Image::tdw(data));
+		preview->imagePreview(FF8Image::tdw(data), fileName);
 	}
 	else if(fileType == "map" || fileType == "mim")
 	{
 		QString filePathWithoutExt = filePath.left(filePath.size()-3);
 		preview->imagePreview(FF8Image::background(fileType == "map" ? data : fsArchive->fileData(filePathWithoutExt+"map"),
-											  fileType == "mim" ? data : fsArchive->fileData(filePathWithoutExt+"mim")));
+											  fileType == "mim" ? data : fsArchive->fileData(filePathWithoutExt+"mim")), fileName);
 	}
 	else if(fileType == "cnf")
 	{
@@ -149,7 +149,7 @@ void FsDialog::generatePreview()
 		int index;
 		if((index = FF8Image::findFirstTim(data)) != -1)
 		{
-			preview->imagePreview(FF8Image::tim(data.mid(index)));
+			preview->imagePreview(FF8Image::tim(data.mid(index)), fileName);
 		}
 		else
 		{
@@ -240,7 +240,7 @@ void FsDialog::parentDir()
 		openDir(currentPath.left(index));
 }
 
-QStringList FsDialog::listFilesInDir(QString dirPath, bool *c)
+QStringList FsDialog::listFilesInDir(QString dirPath)
 {
 	dirPath = FsArchive::cleanPath(dirPath);
 	QStringList filesInDir;
@@ -252,13 +252,10 @@ QStringList FsDialog::listFilesInDir(QString dirPath, bool *c)
 		FsHeader *header = i.value();
 
 		if(header == NULL) {
-			filesInDir.append(listFilesInDir(dirPath + file, c));
+			filesInDir.append(listFilesInDir(dirPath + file));
 		}
 		else {
 			filesInDir.append(dirPath + file);
-			if(!(*c) && fsArchive->fileIsCompressed(dirPath + file)) {
-				*c = true;
-			}
 		}
 	}
 	return filesInDir;
@@ -267,7 +264,6 @@ QStringList FsDialog::listFilesInDir(QString dirPath, bool *c)
 void FsDialog::extract(QStringList sources)
 {
 	QString destination, source;
-	bool uncompress, c=false;
 
 	if(sources.isEmpty())
 	{
@@ -278,11 +274,8 @@ void FsDialog::extract(QStringList sources)
 			source = currentPath % item->text(0);
 			if(item->data(0, FILE_TYPE_ROLE).toInt() == FILE) {
 				sources.append(source);
-				if(!c && fsArchive->fileIsCompressed(source)) {
-					c = true;
-				}
 			} else {
-				sources.append(listFilesInDir(source, &c));
+				sources.append(listFilesInDir(source));
 			}
 		}
 
@@ -301,11 +294,9 @@ void FsDialog::extract(QStringList sources)
 
 	if(destination.isEmpty())	return;
 
-	uncompress = c && QMessageBox::question(this, tr("Décompression"), sources.size()==1 ? tr("Voulez-vous décompresser le fichier ?") : tr("Voulez-vous décompresser les fichiers ?"), tr("Oui"), tr("Non")) == 0;
-
 	if(sources.size()==1)
 	{
-		if(!fsArchive->extractFile(sources.first(), destination, uncompress))
+		if(!fsArchive->extractFile(sources.first(), destination))
 			QMessageBox::warning(this, tr("Erreur"), tr("Le fichier n'a pas été extrait !"));
 
 		Config::setValue("extractPath", destination.left(destination.lastIndexOf('/')));
@@ -316,7 +307,7 @@ void FsDialog::extract(QStringList sources)
 		progress.setWindowModality(Qt::WindowModal);
 		progress.show();
 
-		if(fsArchive->extractFiles(sources, currentPath, destination, &progress, uncompress) != FsArchive::Ok)
+		if(fsArchive->extractFiles(sources, currentPath, destination, &progress) != FsArchive::Ok)
 			QMessageBox::warning(this, tr("Erreur"), tr("Les fichiers n'ont pas été extraits !"));
 
 		Config::setValue("extractPath", destination);
