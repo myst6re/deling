@@ -5,9 +5,10 @@
     <name>BGPreview2</name>
     <message>
         <location filename="BGPreview2.cpp" line="48"/>
-        <source>Enregistrer le background</source>
+        <source>Enregistrer l&apos;image</source>
+        <oldsource>Enregistrer le background</oldsource>
         <translatorcomment>Save background</translatorcomment>
-        <translation>背景を保存</translation>
+        <translation type="unfinished">背景を保存</translation>
     </message>
     <message>
         <location filename="BGPreview2.cpp" line="48"/>
@@ -19,19 +20,19 @@
 <context>
     <name>BackgroundWidget</name>
     <message>
-        <location filename="BackgroundWidget.cpp" line="80"/>
+        <location filename="BackgroundWidget.cpp" line="82"/>
         <source>État %1</source>
         <translatorcomment>State %1</translatorcomment>
         <translation>ステート %1</translation>
     </message>
     <message>
-        <location filename="BackgroundWidget.cpp" line="190"/>
+        <location filename="BackgroundWidget.cpp" line="192"/>
         <source>Paramètre %1</source>
         <translatorcomment>Parameter %1</translatorcomment>
         <translation>パラメータ %1</translation>
     </message>
     <message>
-        <location filename="BackgroundWidget.cpp" line="198"/>
+        <location filename="BackgroundWidget.cpp" line="200"/>
         <source>Couche %1</source>
         <translatorcomment>Layer %1</translatorcomment>
         <translation>レイヤー %1</translation>
@@ -115,8 +116,8 @@
     <name>FsDialog</name>
     <message>
         <location filename="FsDialog.cpp" line="9"/>
-        <location filename="FsDialog.cpp" line="295"/>
-        <location filename="FsDialog.cpp" line="299"/>
+        <location filename="FsDialog.cpp" line="288"/>
+        <location filename="FsDialog.cpp" line="292"/>
         <source>Extraire</source>
         <translatorcomment>Extract</translatorcomment>
         <translation>解凍</translation>
@@ -130,7 +131,7 @@
     </message>
     <message>
         <location filename="FsDialog.cpp" line="11"/>
-        <location filename="FsDialog.cpp" line="338"/>
+        <location filename="FsDialog.cpp" line="329"/>
         <source>Remplacer</source>
         <translatorcomment>Replace</translatorcomment>
         <translation>上書き</translation>
@@ -144,14 +145,14 @@
     </message>
     <message>
         <location filename="FsDialog.cpp" line="13"/>
-        <location filename="FsDialog.cpp" line="367"/>
+        <location filename="FsDialog.cpp" line="358"/>
         <source>Ajouter</source>
         <translatorcomment>Add</translatorcomment>
         <translation>追加</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="15"/>
-        <location filename="FsDialog.cpp" line="430"/>
+        <location filename="FsDialog.cpp" line="421"/>
         <source>Supprimer</source>
         <translatorcomment>Remove</translatorcomment>
         <translation>削除</translation>
@@ -177,52 +178,48 @@
     </message>
     <message>
         <location filename="FsDialog.cpp" line="195"/>
-        <location filename="FsDialog.cpp" line="304"/>
-        <location filename="FsDialog.cpp" line="378"/>
-        <location filename="FsDialog.cpp" line="392"/>
-        <location filename="FsDialog.cpp" line="430"/>
+        <location filename="FsDialog.cpp" line="369"/>
+        <location filename="FsDialog.cpp" line="383"/>
+        <location filename="FsDialog.cpp" line="421"/>
         <source>Oui</source>
         <oldsource>oui</oldsource>
         <translatorcomment>Yes</translatorcomment>
         <translation>はい</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="304"/>
         <source>Décompression</source>
         <translatorcomment>Decompression</translatorcomment>
-        <translation>解凍</translation>
+        <translation type="obsolete">解凍</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="304"/>
         <source>Voulez-vous décompresser le fichier ?</source>
         <translatorcomment>Would you uncompress the file?</translatorcomment>
-        <translation>ファイルを解凍しますか？</translation>
+        <translation type="obsolete">ファイルを解凍しますか？</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="195"/>
-        <location filename="FsDialog.cpp" line="304"/>
-        <location filename="FsDialog.cpp" line="378"/>
-        <location filename="FsDialog.cpp" line="392"/>
-        <location filename="FsDialog.cpp" line="430"/>
+        <location filename="FsDialog.cpp" line="369"/>
+        <location filename="FsDialog.cpp" line="383"/>
+        <location filename="FsDialog.cpp" line="421"/>
         <source>Non</source>
         <translatorcomment>No</translatorcomment>
         <translation>いいえ</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="309"/>
-        <location filename="FsDialog.cpp" line="320"/>
+        <location filename="FsDialog.cpp" line="300"/>
+        <location filename="FsDialog.cpp" line="311"/>
         <source>Erreur</source>
         <translatorcomment>Error</translatorcomment>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="309"/>
+        <location filename="FsDialog.cpp" line="300"/>
         <source>Le fichier n&apos;a pas été extrait !</source>
         <translatorcomment>The file was not extracted!</translatorcomment>
         <translation>ファイルを解凍できませんでした！</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="320"/>
+        <location filename="FsDialog.cpp" line="311"/>
         <source>Les fichiers n&apos;ont pas été extraits !</source>
         <translatorcomment>The files were not extracted!</translatorcomment>
         <translation>ファイルを解凍できませんでした！</translation>
@@ -232,82 +229,81 @@
         <translation type="obsolete">Save...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="304"/>
         <source>Voulez-vous décompresser les fichiers ?</source>
         <translatorcomment>Do you want to uncompress the files?</translatorcomment>
-        <translation>ファイルを解凍しますか？</translation>
+        <translation type="obsolete">ファイルを解凍しますか？</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="315"/>
-        <location filename="FsDialog.cpp" line="342"/>
-        <location filename="FsDialog.cpp" line="433"/>
+        <location filename="FsDialog.cpp" line="306"/>
+        <location filename="FsDialog.cpp" line="333"/>
+        <location filename="FsDialog.cpp" line="424"/>
         <source>Annuler</source>
         <translatorcomment>Cancel</translatorcomment>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="315"/>
+        <location filename="FsDialog.cpp" line="306"/>
         <source>Extraction...</source>
         <translatorcomment>Extract...</translatorcomment>
         <translation>解凍...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="342"/>
+        <location filename="FsDialog.cpp" line="333"/>
         <source>Remplacement...</source>
         <translatorcomment>Replace...</translatorcomment>
         <translation>上書き...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="351"/>
+        <location filename="FsDialog.cpp" line="342"/>
         <source>Erreur de remplacement</source>
         <translatorcomment>Replacement error</translatorcomment>
         <translation>上書きエラー</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="378"/>
+        <location filename="FsDialog.cpp" line="369"/>
         <source>Compression</source>
         <translatorcomment>Compression</translatorcomment>
         <translation>圧縮</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="378"/>
+        <location filename="FsDialog.cpp" line="369"/>
         <source>Voulez-vous compresser le fichier ?</source>
         <translatorcomment>Would you compress the file?</translatorcomment>
         <translation>ファイルを圧縮しますか？</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="380"/>
+        <location filename="FsDialog.cpp" line="371"/>
         <source>Ajout...</source>
         <translatorcomment>Add...</translatorcomment>
         <translation>追加...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="380"/>
+        <location filename="FsDialog.cpp" line="371"/>
         <source>Arrêter</source>
         <translatorcomment>Stop</translatorcomment>
         <translation>中止</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="387"/>
-        <location filename="FsDialog.cpp" line="401"/>
+        <location filename="FsDialog.cpp" line="378"/>
+        <location filename="FsDialog.cpp" line="392"/>
         <source>Erreur d&apos;ajout</source>
         <translatorcomment>Add error</translatorcomment>
         <translation>追加のエラー</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="392"/>
+        <location filename="FsDialog.cpp" line="383"/>
         <source>Le fichier existe déjà</source>
         <translatorcomment>The file already exists</translatorcomment>
         <translation>同名ファイルが存在します</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="392"/>
+        <location filename="FsDialog.cpp" line="383"/>
         <source>Le fichier existe déjà, voulez-vous le remplacer ?</source>
         <translatorcomment>The file already exists, do you want to replace it?</translatorcomment>
         <translation>同名ファイルが存在します。上書きしますか？</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="401"/>
+        <location filename="FsDialog.cpp" line="392"/>
         <source>Un problème est survenu pour un ou plusieurs des fichiers à ajouter :
  - %1</source>
         <translatorcomment>There was a problem for one or more files to add:
@@ -316,32 +312,32 @@
  - %1</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="430"/>
+        <location filename="FsDialog.cpp" line="421"/>
         <source>Voulez-vous supprimer les éléments sélectionnés ?</source>
         <translatorcomment>Do you want to delete the selected items?</translatorcomment>
         <translation>選択アイテムを削除しますか？</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="433"/>
+        <location filename="FsDialog.cpp" line="424"/>
         <source>Suppression...</source>
         <translatorcomment>Deleting...</translatorcomment>
         <translation>削除中...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="440"/>
+        <location filename="FsDialog.cpp" line="431"/>
         <source>Erreur de suppression</source>
         <translatorcomment>Deleting error</translatorcomment>
         <translation>削除のエラー</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="472"/>
-        <location filename="FsDialog.cpp" line="496"/>
+        <location filename="FsDialog.cpp" line="463"/>
+        <location filename="FsDialog.cpp" line="487"/>
         <source>Erreur de renommage</source>
         <translatorcomment>Rename error</translatorcomment>
         <translation>リネームのエラー</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="472"/>
+        <location filename="FsDialog.cpp" line="463"/>
         <source>Caractères interdits utilisés (par exemple : &apos;\&apos; ou &apos;/&apos;)</source>
         <translatorcomment>Illegal characters used (eg &apos;\&apos; or &apos;/&apos;)</translatorcomment>
         <translation>不正な文字が使用されています (例 : &apos;\&apos; または &apos;/&apos;)</translation>
@@ -402,26 +398,26 @@
         <translation>不明</translation>
     </message>
     <message>
-        <location filename="JsmWidget.cpp" line="52"/>
+        <location filename="JsmWidget.cpp" line="53"/>
         <source>Compiler</source>
         <translatorcomment>Compile</translatorcomment>
         <translation>コンパイル</translation>
     </message>
     <message>
-        <location filename="JsmWidget.cpp" line="53"/>
         <location filename="JsmWidget.cpp" line="54"/>
+        <location filename="JsmWidget.cpp" line="55"/>
         <source>Compiler (Ctrl+B)</source>
         <translatorcomment>Compile (Ctrl+B)</translatorcomment>
         <translation>コンパイル (Ctrl+B)</translation>
     </message>
     <message>
-        <location filename="JsmWidget.cpp" line="87"/>
+        <location filename="JsmWidget.cpp" line="88"/>
         <source>Ligne %1 -&gt; %2</source>
         <translatorcomment>Line %1 -&gt; %2</translatorcomment>
         <translation>行 %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="JsmWidget.cpp" line="92"/>
+        <location filename="JsmWidget.cpp" line="93"/>
         <source>Compilé avec succès</source>
         <translatorcomment>Successfully compiled</translatorcomment>
         <translation>コンパイルを完了しました</translation>
@@ -600,6 +596,11 @@
         <translation>背景</translation>
     </message>
     <message>
+        <location filename="MainWindow.cpp" line="720"/>
+        <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;https://sourceforge.net/projects/deling/&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;br/&gt; - Aali&lt;br/&gt; - Aladore384&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Divers</source>
         <translation type="obsolete">Miscellaneous</translation>
     </message>
@@ -770,13 +771,12 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
 %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="720"/>
         <source>Par myst6re</source>
         <translatorcomment>By myst6re</translatorcomment>
-        <translation>作者 : myst6re</translation>
+        <translation type="obsolete">作者 : myst6re</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="730"/>
+        <location filename="MainWindow.cpp" line="727"/>
         <source>Fermer</source>
         <translatorcomment>Close</translatorcomment>
         <translation>閉じる</translation>
@@ -3345,7 +3345,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation type="obsolete">Untitled</translation>
     </message>
     <message>
-        <location filename="JsmWidget.cpp" line="396"/>
+        <location filename="JsmWidget.cpp" line="397"/>
         <source>Oui</source>
         <translatorcomment>Yes</translatorcomment>
         <translation>はい</translation>
