@@ -33,11 +33,13 @@ public:
 
 	void build();
 	void clear();
-	void setFiles(MsdFile *msdFile, JsmFile *jsmFile);
-	void fillTextList();
-	QString selectedText();
+	void setData(Field *field);
+	void cleanData();
+	void fill();
+	QString selectedText() const;
 	void setReadOnly(bool);
 	void updateText();
+	inline QString tabName() const { return tr("Textes"); }
 public slots:
 	void gotoText(const QString &text, int textID, Qt::CaseSensitivity cs, bool reverse, bool regexp);
 private slots:

@@ -25,13 +25,17 @@ class FieldPC : public Field
 {
 public:
 	FieldPC(const QString &name, const QString &path, FsArchive *archive);
+	FieldPC(const QString &path);
 	~FieldPC();
 
 	bool hasMapFiles() const;
 //	void setArchiveHeader(FsArchive *header);
 	FsArchive *getArchiveHeader() const;
 	const QString &path() const;
+	bool open(const QString &path);
 	bool open(FsArchive *archive);
+	bool open2(QByteArray &tdw_data);
+	bool open2(FsArchive *archive, QByteArray &tdw_data);
 	void save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
 	void optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
 

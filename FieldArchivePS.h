@@ -29,8 +29,8 @@ public:
 	~FieldArchivePS();
 	QString archivePath() const;
 	FF8DiscArchive *getFF8DiscArchive() const;
-	bool open(const QString &, QProgressDialog *progress);
-	bool openBG(Field *field, QByteArray &map_data, QByteArray &mim_data, QByteArray &tdw_data, QByteArray &chara_data) const;
+	int open(const QString &, QProgressDialog *progress);
+	bool openBG(Field *field, QByteArray &tdw_data, QByteArray &chara_data) const;
 private:
 	FF8DiscArchive *iso;
 };

@@ -18,7 +18,7 @@
 #include "MainWindow.h"
 
 MainWindow::MainWindow()
-	: fieldArchive(NULL), msdFile(NULL), jsmFile(NULL), walkmeshFile(NULL), miscFile(NULL), fsDialog(0), _varManager(NULL), firstShow(true)
+	: fieldArchive(NULL), field(NULL), fsDialog(0), _varManager(NULL), firstShow(true)
 {
 	QFont font;
 	font.setPointSize(8);
@@ -88,18 +88,15 @@ MainWindow::MainWindow()
 	bgPreview->setFixedHeight(224);
 	bgPreview->setFixedWidth(320);
 
-	textPage = new MsdWidget();
-	scriptPage = new JsmWidget();
-	walkmeshPage = new WalkmeshWidget();
-	backgroundPage = new BackgroundWidget();
-	miscPage = new MiscWidget();
+	pageWidgets.append(new MsdWidget());
+	pageWidgets.append(new JsmWidget());
+	pageWidgets.append(new WalkmeshWidget());
+	pageWidgets.append(new BackgroundWidget());
+	pageWidgets.append(new MiscWidget());
 
 	tabBar = new QTabBar();
-	tabBar->addTab(tr("Textes"));
-	tabBar->addTab(tr("Scripts"));
-	tabBar->addTab(tr("Walkmesh"));
-	tabBar->addTab(tr("Background"));
-//	tabBar->addTab(tr("Divers"));
+	foreach(PageWidget *pageWidget, pageWidgets)
+		tabBar->addTab(pageWidget->tabName());
 	tabBar->addTab(tr("Import/Export"));
 	tabBar->setDrawBase(false);
 	QWidget *tabBarWidget = new QWidget();
@@ -119,15 +116,8 @@ MainWindow::MainWindow()
 	addToolBar(toolbarArea, toolBar);
 
 	stackedWidget = new QStackedWidget();
-	stackedWidget->addWidget(textPage);
-	stackedWidget->addWidget(scriptPage);
-	stackedWidget->addWidget(walkmeshPage);
-	stackedWidget->addWidget(backgroundPage);
-//	stackedWidget->addWidget(miscPage);
-
-//	QVBoxLayout *pageLayout = new QVBoxLayout();
-//	pageLayout->addWidget(tabBar);
-//	pageLayout->addWidget(stackedWidget, 1);
+	foreach(PageWidget *pageWidget, pageWidgets)
+		stackedWidget->addWidget(pageWidget);
 
 	QWidget *tempW = new QWidget();
 	QGridLayout *mainLayout = new QGridLayout(tempW);
@@ -153,10 +143,10 @@ MainWindow::MainWindow()
 	connect(lineSearch, SIGNAL(returnPressed()), SLOT(filterMap()));
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillPage()));
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(setCurrentPage(int)));
-	connect(textPage, SIGNAL(textIdChanged(int)), searchDialog, SLOT(setTextId(int)));
-	connect(textPage, SIGNAL(modified(bool)), SLOT(setModified(bool)));
-	connect(scriptPage, SIGNAL(modified(bool)), SLOT(setModified(bool)));
-	connect(miscPage, SIGNAL(modified(bool)), SLOT(setModified(bool)));
+	connect(pageWidgets.at(TEXTPAGE), SIGNAL(textIdChanged(int)), searchDialog, SLOT(setTextId(int)));
+	connect(pageWidgets.at(TEXTPAGE), SIGNAL(modified(bool)), SLOT(setModified(bool)));
+	connect(pageWidgets.at(SCRIPTPAGE), SIGNAL(modified(bool)), SLOT(setModified(bool)));
+	connect(pageWidgets.at(MISCPAGE), SIGNAL(modified(bool)), SLOT(setModified(bool)));
 	connect(bgPreview, SIGNAL(triggered()), SLOT(bgPage()));
 }
 
@@ -210,11 +200,12 @@ bool MainWindow::openArchive(const QString &path)
 	progress.show();
 
 	QTime t;t.start();
-	bool ok = fieldArchive->open(path, &progress);
+	int error = fieldArchive->open(path, &progress);
+
 	qDebug() << "openTime" << t.elapsed() << "ms";
 
 	setReadOnly(fieldArchive->isReadOnly());
-	if(ok) {
+	if(error == 0) {
 		QList<QTreeWidgetItem *> items;
 
 		int fieldID=0;
@@ -273,8 +264,15 @@ bool MainWindow::openFsArchive(const QString &path)
 		actionOpti->setEnabled(true);
 		actionSaveAs->setEnabled(true);
 	} else {
-		manageArchive();
-		actionSaveAs->setEnabled(false);
+		field = new FieldPC(path);
+		if(field->hasFiles()) {
+			list1->setEnabled(false);
+			lineSearch->setEnabled(false);
+			fillPage();
+		} else {
+			manageArchive();
+			actionSaveAs->setEnabled(false);
+		}
 	}
 
 	tabBar->setTabEnabled(tabBar->count()-1, true);
@@ -286,50 +284,55 @@ bool MainWindow::openMsdFile(const QString &path)
 {
 //	qDebug() << QString("MainWindow::openMsdFile(%1)").arg(path);
 
-	closeFiles();
+	return false;
 
-	msdFile = new MsdFile();
-	if(!msdFile->open(path)) {
-		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, msdFile->lastError));
-		delete msdFile;
-		msdFile = NULL;
-		return false;
-	}
+//	closeFiles();
 
-	list1->setEnabled(false);
-	lineSearch->setEnabled(false);
-	textPage->setFocus();
-	setCurrentPage(TEXTPAGE);
+//	msdFile = new MsdFile();
+//	if(!msdFile->open(path)) {
+//		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, msdFile->lastError));
+//		delete msdFile;
+//		msdFile = NULL;
+//		return false;
+//	}
 
-	return true;
+//	list1->setEnabled(false);
+//	lineSearch->setEnabled(false);
+////	pageWidgets.at(TEXTPAGE)->setData(msdFile);//TODO
+//	pageWidgets.at(TEXTPAGE)->setFocus();
+//	setCurrentPage(TEXTPAGE);
+
+//	return true;
 }
 
 bool MainWindow::openJsmFile(const QString &path)
 {
 //	qDebug() << QString("MainWindow::openJsmFile(%1)").arg(path);
 
-	closeFiles();
-
-	jsmFile = new JsmFile();
-	if(!jsmFile->open(path)) {
-		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, jsmFile->lastError));
-		delete jsmFile;
-		jsmFile = NULL;
-		return false;
-	}
-	scriptPage->setFocus();
-	list1->setEnabled(false);
-	lineSearch->setEnabled(false);
-	setCurrentPage(SCRIPTPAGE);
-
 	return false;
+
+//	closeFiles();
+
+//	jsmFile = new JsmFile();
+//	if(!jsmFile->open(path)) {
+//		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, jsmFile->lastError));
+//		delete jsmFile;
+//		jsmFile = NULL;
+//		return false;
+//	}
+//	list1->setEnabled(false);
+//	lineSearch->setEnabled(false);
+////	pageWidgets.at(SCRIPTPAGE)->setData(jsmFile);//TODO
+//	pageWidgets.at(SCRIPTPAGE)->setFocus();
+//	setCurrentPage(SCRIPTPAGE);
+
+//	return false;
 }
 
 void MainWindow::setReadOnly(bool readOnly)
 {
-	textPage->setReadOnly(readOnly);
-	scriptPage->setReadOnly(readOnly);
-	miscPage->setReadOnly(readOnly);
+	foreach(PageWidget *pageWidget, pageWidgets)
+		pageWidget->setReadOnly(readOnly);
 }
 
 bool MainWindow::openIsoArchive(const QString &path)
@@ -347,32 +350,35 @@ void MainWindow::fillPage()
 //	qDebug() << "MainWindow::fillPage()";
 	bgPreview->clear();
 
-	QTreeWidgetItem *item = list1->currentItem();
-	if(item==NULL)	return;
-	list1->scrollToItem(item);
-	if(fieldArchive==NULL)	return;
-
-	int fieldID = item->data(0, Qt::UserRole).toInt();
-	searchDialog->setFieldId(fieldID);
-	Field *field = fieldArchive->getField(fieldID);
-	if(field == NULL)	return;
-	msdFile = field->getMsdFile();
-	jsmFile = field->getJsmFile();
-	walkmeshFile = field->getWalkmeshFile();
-	miscFile = field->getMiscFile();
-//	qDebug() << "MainWindow::fillPage()" << field->name();
-	QByteArray mim_data, map_data, tdw_data, chara_data;
-
 	QTime t;t.start();
+	Field *field;
+	QByteArray tdw_data, chara_data;
 
-	fieldArchive->openBG(field, map_data, mim_data, tdw_data, chara_data);
+	if(this->field != NULL) {
+		field = this->field;
 
-	if(!map_data.isEmpty() && !mim_data.isEmpty()) {
-		bgPreview->fill(backgroundPage->generate(field->name(), map_data, mim_data));
+		this->field->open2(tdw_data);
+	} else {
+		QTreeWidgetItem *item = list1->currentItem();
+		if(item==NULL)	return;
+		list1->scrollToItem(item);
+		if(fieldArchive==NULL)	return;
+
+		int fieldID = item->data(0, Qt::UserRole).toInt();
+		searchDialog->setFieldId(fieldID);
+		field = fieldArchive->getField(fieldID);
+		if(field == NULL)	return;
+
+		fieldArchive->openBG(field, tdw_data, chara_data);
 	}
-	else {
-		bgPreview->fill(backgroundPage->error());
-	}
+
+	foreach(PageWidget *pageWidget, pageWidgets)
+		pageWidget->setData(field);
+
+	if(field->hasMapFile())
+		bgPreview->fill(field->getMapFile()->background());
+	else
+		bgPreview->fill(FF8Image::errorPixmap());
 
 	if(!tdw_data.isEmpty()) {
 		TextPreview::setFontImageAdd(tdw_data);
@@ -384,23 +390,7 @@ void MainWindow::fillPage()
 
 //	qDebug() << "BG" << t.elapsed();
 
-	if(tabBar->currentIndex()==TEXTPAGE && msdFile!=NULL) {
-		textPage->setFiles(msdFile, jsmFile);
-		textPage->fillTextList();
-	} else
-		textPage->clear();
-	if(tabBar->currentIndex()==SCRIPTPAGE && jsmFile!=NULL)
-		scriptPage->fillList1(jsmFile);
-	else
-		scriptPage->clear();
-	if(tabBar->currentIndex()==WALKMESHPAGE && walkmeshFile!=NULL)
-		walkmeshPage->fill(walkmeshFile);
-	else
-		walkmeshPage->clear();
-	if(tabBar->currentIndex()==MISCPAGE && miscFile!=NULL)
-		miscPage->fill(miscFile, walkmeshFile);
-	else
-		miscPage->clear();
+	pageWidgets.at(tabBar->currentIndex())->fill();
 }
 
 void MainWindow::setModified(bool modified)
@@ -442,11 +432,10 @@ int MainWindow::closeFiles(bool quit)
 	tabBar->setTabEnabled(tabBar->count()-1, false);
 	actionClose->setEnabled(false);
 	bgPreview->clear();
-	textPage->clear();
-	scriptPage->clear();
-	walkmeshPage->clear();
-	backgroundPage->clear();
-	miscPage->clear();
+	foreach(PageWidget *pageWidget, pageWidgets) {
+		pageWidget->clear();
+		pageWidget->cleanData();
+	}
 	currentPath->setText(QString());
 	setReadOnly(false);
 
@@ -462,26 +451,11 @@ int MainWindow::closeFiles(bool quit)
 	if(fieldArchive!=NULL) {
 		delete fieldArchive;
 		fieldArchive = NULL;
-		msdFile = NULL;
-		jsmFile = NULL;
-		walkmeshFile = NULL;
-		miscFile = NULL;
+		field = NULL;
 	}
-	if(msdFile!=NULL) {
-		delete msdFile;
-		msdFile = NULL;
-	}
-	if(jsmFile!=NULL) {
-		delete jsmFile;
-		jsmFile = NULL;
-	}
-	if(walkmeshFile!=NULL) {
-		delete walkmeshFile;
-		walkmeshFile = NULL;
-	}
-	if(miscFile!=NULL) {
-		delete miscFile;
-		miscFile = NULL;
+	if(field!=NULL) {
+		delete field;
+		field = NULL;
 	}
 
 	setWindowTitle("[*]"%PROG_FULLNAME);
@@ -593,8 +567,8 @@ void MainWindow::manageArchive()
 
 void MainWindow::search()
 {
-	searchDialog->setSearchText(textPage->selectedText());
-	searchDialog->setSearchOpcode(scriptPage->selectedOpcode());
+	searchDialog->setSearchText(((MsdWidget *)pageWidgets.at(TEXTPAGE))->selectedText());
+	searchDialog->setSearchOpcode(((JsmWidget *)pageWidgets.at(SCRIPTPAGE))->selectedOpcode());
 	searchDialog->show();
 	searchDialog->raise();
 	searchDialog->activateWindow();
@@ -662,26 +636,10 @@ void MainWindow::setCurrentPage(int index)
 		mainStackedWidget->setCurrentIndex(0);
 	}
 
-	switch(index) {
-	case TEXTPAGE:
-		if(!textPage->isFilled() && msdFile!=NULL) {
-			textPage->setFiles(msdFile, jsmFile);
-			textPage->fillTextList();
-		}
-		break;
-	case SCRIPTPAGE:
-		if(!scriptPage->isFilled() && jsmFile!=NULL)
-			scriptPage->fillList1(jsmFile);
-		break;
-	case WALKMESHPAGE:
-		if(!walkmeshPage->isFilled() && walkmeshFile!=NULL)
-			walkmeshPage->fill(walkmeshFile);
-		break;
-	case MISCPAGE:
-		if(!miscPage->isFilled() && miscFile!=NULL)
-			miscPage->fill(miscFile, walkmeshFile);
-		break;
-	}
+	PageWidget *currentPage = pageWidgets.at(index);
+
+	if(!currentPage->isFilled())
+		currentPage->fill();
 
 	searchDialog->setCurrentIndex(index);
 	stackedWidget->setCurrentIndex(index);
@@ -706,7 +664,7 @@ void MainWindow::gotoText(const QString &text, int fieldID, int textID, Qt::Case
 		setCurrentPage(TEXTPAGE);
 //	qDebug() << text << fieldID << textID;
 	gotoField(fieldID);
-	textPage->gotoText(text, textID, cs, reverse, regexp);
+	((MsdWidget *)pageWidgets.at(TEXTPAGE))->gotoText(text, textID, cs, reverse, regexp);
 }
 
 void MainWindow::gotoScript(int fieldID, int groupID, int methodID, int opcodeID)
@@ -715,7 +673,7 @@ void MainWindow::gotoScript(int fieldID, int groupID, int methodID, int opcodeID
 		setCurrentPage(SCRIPTPAGE);
 //	qDebug() << "gotoScript" << fieldID << groupID << methodID << opcodeID;
 	gotoField(fieldID);
-	scriptPage->gotoScript(groupID, methodID, opcodeID);
+	((JsmWidget *)pageWidgets.at(SCRIPTPAGE))->gotoScript(groupID, methodID, opcodeID);
 }
 
 void MainWindow::about()

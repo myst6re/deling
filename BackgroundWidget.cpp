@@ -18,7 +18,7 @@
 #include "BackgroundWidget.h"
 
 BackgroundWidget::BackgroundWidget(QWidget *parent)
-	: PageWidget(parent)
+	: PageWidget(parent), mapFile(NULL)
 {
 //	build();
 }
@@ -66,16 +66,11 @@ void BackgroundWidget::build()
 
 void BackgroundWidget::clear()
 {
-	if(!isBuilded())	return;
+	if(!isFilled())	return;
 
 	parametersWidget->clear();
 	statesWidget->clear();
 	layersWidget->clear();
-	allparams.clear();
-	params.clear();
-	layers.clear();
-	map.clear();
-	mim.clear();
 	image->clear();
 
 	PageWidget::clear();
@@ -83,8 +78,10 @@ void BackgroundWidget::clear()
 
 void BackgroundWidget::parameterChanged(int index)
 {
+	if(mapFile == NULL)		return;
+
 	int parameter = parametersWidget->itemData(index).toInt();
-	QList<quint8> states = allparams.values(parameter);
+	QList<quint8> states = mapFile->allparams.values(parameter);
 	qSort(states);
 	QListWidgetItem *item;
 
@@ -94,32 +91,36 @@ void BackgroundWidget::parameterChanged(int index)
 		item = new QListWidgetItem(tr("État %1").arg(state));
 		item->setData(Qt::UserRole, state);
 		item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-		item->setCheckState(params.contains(parameter, state) ? Qt::Checked : Qt::Unchecked);
+		item->setCheckState(mapFile->params.contains(parameter, state) ? Qt::Checked : Qt::Unchecked);
 		statesWidget->addItem(item);
 	}
 }
 
 void BackgroundWidget::enableState(QListWidgetItem *item)
 {
+	if(mapFile == NULL)		return;
+
 	bool enabled = item->data(Qt::CheckStateRole).toBool();
 	int parameter = parametersWidget->itemData(parametersWidget->currentIndex()).toInt(), state = item->data(Qt::UserRole).toInt();
 
 	if(enabled)
-		params.insert(parameter, state);
+		mapFile->params.insert(parameter, state);
 	else
-		params.remove(parameter, state);
+		mapFile->params.remove(parameter, state);
 
-	fill();
+	image->setPixmap(mapFile->background());
 }
 
 void BackgroundWidget::enableLayer(QListWidgetItem *item)
 {
+	if(mapFile == NULL)		return;
+
 	bool enabled = item->data(Qt::CheckStateRole).toBool();
 	int layer = item->data(Qt::UserRole).toInt();
 
-	layers.insert(layer, enabled);
+	mapFile->layers.insert(layer, enabled);
 
-	fill();
+	image->setPixmap(mapFile->background());
 }
 
 /*void BackgroundWidget::switchItem(QListWidgetItem *item)
@@ -127,83 +128,38 @@ void BackgroundWidget::enableLayer(QListWidgetItem *item)
 	item->setCheckState(item->checkState()==Qt::Unchecked ? Qt::Checked : Qt::Unchecked);
 }*/
 
-QPixmap BackgroundWidget::generate(const QString &name, const QByteArray &map, const QByteArray &mim)
+void BackgroundWidget::setData(Field *field)
 {
-	PageWidget::fill();
-
-	this->map = map;
-	this->mim = mim;
-	fillWidgets();
-	fill();
-	image->setName(name);
-	return *(image->pixmap());
-}
-
-QPixmap BackgroundWidget::error()
-{
-	PageWidget::fill();
-
-	image->setPixmap(FF8Image::errorPixmap());
-	setEnabled(false);
-	return *(image->pixmap());
-}
-
-void BackgroundWidget::fillWidgets()
-{
-	int mimSize = mim.size(), mapSize = map.size(), tilePos=0;
-	const char *constMapData = map.constData();
-	allparams.clear();
-	params.clear();
-	layers.clear();
-
-	if(mimSize == 401408) {
-//		Tile1 tile1;
-//		int sizeOfTile = mapSize-map.lastIndexOf("\xff\x7f");
-
-//		if(mapSize%sizeOfTile != 0)	return;
-
-//		while(tilePos+15 < mapSize)
-//		{
-//			memcpy(&tile1, &constMapData[tilePos], sizeOfTile);
-//			if(tile1.X == 0x7fff) break;
-//			tilePos += sizeOfTile;
-
-//			if(tile1.parameter!=255 && !allparams.contains(tile1.parameter, tile1.state))
-//			{
-//				allparams.insert(tile1.parameter, tile1.state);
-//				if(tile1.state==0)
-//					params.insert(tile1.parameter, tile1.state);
-//			}
-//		}
-		statesWidget->setEnabled(false);
-		layersWidget->setEnabled(false);
-	} else if(mimSize == 438272) {
-		Tile2 tile2;
-
-		while(tilePos+15 < mapSize)
-		{
-			memcpy(&tile2, &constMapData[tilePos], 16);
-			if(tile2.X == 0x7fff) break;
-
-			if(tile2.parameter!=255 && !allparams.contains(tile2.parameter, tile2.state))
-			{
-				allparams.insert(tile2.parameter, tile2.state);
-				if(tile2.state==0)
-					params.insert(tile2.parameter, tile2.state);
-			}
-			layers.insert(tile2.layerID, true);
-			tilePos += 16;
-		}
-		statesWidget->setEnabled(true);
-		layersWidget->setEnabled(true);
+	if(this->mapFile != field->getMapFile()) {
+		clear();
+		this->mapFile = field->getMapFile();
 	}
 
+	if(!isBuilded())	build();
+
+	image->setName(field->name());
+}
+
+void BackgroundWidget::cleanData()
+{
+	mapFile = NULL;
+}
+
+void BackgroundWidget::fill()
+{
+	if(!isBuilded())	build();
+	if(isFilled())		clear();
+
+	if(mapFile == NULL)		return;
+
+	image->setPixmap(mapFile->background());
+
 	parametersWidget->clear();
-	QList<quint8> parameters = allparams.uniqueKeys();
+	QList<quint8> parameters = mapFile->allparams.uniqueKeys();
 	foreach(quint8 parameter, parameters)
 		parametersWidget->addItem(tr("Paramètre %1").arg(parameter), parameter);
 
-	QList<quint8> layerIDs = layers.keys();
+	QList<quint8> layerIDs = mapFile->layers.keys();
 	QListWidgetItem *item;
 
 	layersWidget->clear();
@@ -216,19 +172,9 @@ void BackgroundWidget::fillWidgets()
 		layersWidget->addItem(item);
 	}
 
+	layersWidget->setEnabled(layersWidget->count()>0);
 	parametersWidget->setEnabled(parametersWidget->count()>1);
+	statesWidget->setEnabled(parametersWidget->count()>0);
 
-	setEnabled(true);
-}
-
-void BackgroundWidget::fill()
-{
-	int mimSize = mim.size();
-
-	if(mimSize == 401408)
-		image->setPixmap(FF8Image::type1(map, mim/*, params*/));
-	else if(mimSize == 438272)
-		image->setPixmap(FF8Image::type2(map, mim, params, layers));
-	else
-		image->setPixmap(FF8Image::errorPixmap());
+	PageWidget::fill();
 }

@@ -23,6 +23,12 @@ FieldPC::FieldPC(const QString &name, const QString &path, FsArchive *archive)
 	open(archive);
 }
 
+FieldPC::FieldPC(const QString &path)
+	: Field(QString()), _path(QString())
+{
+	open(path);
+}
+
 FieldPC::~FieldPC()
 {
 	if(header!=NULL)		delete header;
@@ -46,6 +52,64 @@ FsArchive *FieldPC::getArchiveHeader() const
 const QString &FieldPC::path() const
 {
 	return _path;
+}
+
+bool FieldPC::open(const QString &path)
+{
+	setOpen(false);
+
+	QString archivePath = path;
+	archivePath.chop(1);
+
+	header = new FsArchive(archivePath);
+	if(!header->isOpen()) {
+		qWarning() << "fieldData pas ouvert" << _name;
+		delete header;
+		header = NULL;
+		return false;
+	}
+
+	/* MSD */
+
+	if(header->fileExists("*.msd"))
+	{
+		openMsdFile(header->fileData("*.msd"));
+	}
+
+	/* JSM & SYM */
+
+	if(header->fileExists("*.jsm"))
+	{
+		if(header->fileExists("*.sym"))
+			openJsmFile(header->fileData("*.jsm"), header->fileData("*.sym"));
+		else
+			openJsmFile(header->fileData("*.jsm"));
+	}
+
+	/* ID & CA */
+
+	if(header->fileExists("*.id"))
+	{
+		if(header->fileExists("*.ca"))
+			openWalkmeshFile(header->fileData("*.id"), header->fileData("*.ca"));
+		else
+			openWalkmeshFile(header->fileData("*.id"));
+	}
+
+	/* INF, MRT & RAT */
+
+	if(header->fileExists("*.inf") || header->fileExists("*.rat") || header->fileExists("*.mrt"))
+	{
+		openMiscFile(header->fileData("*.inf"),
+					 header->fileData("*.rat"),
+					 header->fileData("*.mrt"),
+					 header->fileData("*.pmp"),
+					 header->fileData("*.pmd"),
+					 header->fileData("*.pvp"));
+	}
+
+	setOpen(true);
+	return true;
 }
 
 bool FieldPC::open(FsArchive *archive)
@@ -155,6 +219,56 @@ bool FieldPC::open(FsArchive *archive)
 	}
 
 	setOpen(true);
+	return true;
+}
+
+bool FieldPC::open2(QByteArray &tdw_data)
+{
+	if(header==NULL)
+		return false;
+
+	if(header->fileExists("*"%name()%".map") && header->fileExists("*"%name()%".mim")) {
+		openMapFile(header->fileData("*"%name()%".map"), header->fileData("*"%name()%".mim"));
+	}
+	tdw_data = header->fileData("*"%name()%".tdw");
+//	chara_data = header->fileData("*chara.one");
+
+	return true;
+}
+
+bool FieldPC::open2(FsArchive *archive, QByteArray &tdw_data)
+{
+	if(header==NULL)
+		return false;
+
+	FsHeader *fi_infos_mim = header->getFile("*"%name()%".mim");
+	FsHeader *fi_infos_map = header->getFile("*"%name()%".map");
+	FsHeader *fi_infos_tdw = header->getFile("*"%name()%".tdw");
+//	FsHeader *fi_infos_one = header->getFile("*chara.one");
+
+	if(fi_infos_mim==NULL || fi_infos_map==NULL)
+		return false;
+
+	quint32 maxPos = qMax(fi_infos_mim->position()+fi_infos_mim->uncompressed_size(),
+						  fi_infos_map->position()+fi_infos_map->uncompressed_size());
+	if(fi_infos_tdw!=NULL) {
+		maxPos = qMax(maxPos, fi_infos_tdw->position()+fi_infos_tdw->uncompressed_size());
+	}
+
+	QByteArray fs_data = archive->fileData(path(), true, maxPos);
+
+	if(fs_data.isEmpty())	 return false;
+
+	if(fi_infos_mim!=NULL && fi_infos_map!=NULL) {
+		openMapFile(fi_infos_map->data(fs_data), fi_infos_mim->data(fs_data));
+	}
+	if(fi_infos_tdw!=NULL) {
+		tdw_data = fi_infos_tdw->data(fs_data);
+	}
+//	if(fi_infos_one!=NULL) {
+//		chara_data = fi_infos_one->data(fs_data);
+//	}
+
 	return true;
 }
 

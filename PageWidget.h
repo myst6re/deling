@@ -19,6 +19,7 @@
 #define PAGEWIDGET_H
 
 #include <QtGui>
+#include "Field.h"
 
 class PageWidget : public QWidget
 {
@@ -32,6 +33,9 @@ public:
 	virtual void clear();
 	virtual void setReadOnly(bool ro);
 	bool isReadOnly() const;
+	virtual void setData(Field *field)=0;
+	virtual void cleanData()=0;
+	virtual QString tabName() const=0;
 signals:
 	void modified(bool);
 private:

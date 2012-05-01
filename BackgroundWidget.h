@@ -23,6 +23,7 @@
 #include "BGPreview.h"
 #include "BGPreview2.h"
 #include "FF8Image.h"
+#include "MapFile.h"
 
 class BackgroundWidget : public PageWidget
 {
@@ -30,9 +31,10 @@ class BackgroundWidget : public PageWidget
 public:
 	BackgroundWidget(QWidget *parent=0);
 	void clear();
-	QPixmap error();
-	QPixmap generate(const QString &, const QByteArray &, const QByteArray &);
-
+	void setData(Field *field);
+	void cleanData();
+	void fill();
+	inline QString tabName() const { return tr("Décors"); }
 private slots:
 	void parameterChanged(int index);
 	void enableState(QListWidgetItem *item);
@@ -40,16 +42,11 @@ private slots:
 //	void switchItem(QListWidgetItem *item);
 private:
 	void build();
-	void fillWidgets();
-	void fill();
 
-	QByteArray map, mim;
+	MapFile *mapFile;
 	BGPreview2 *image;
 	QComboBox *parametersWidget;
 	QListWidget *statesWidget, *layersWidget;
-	QMultiMap<quint8, quint8> params;
-	QMultiMap<quint8, quint8> allparams;
-	QMap<quint8, bool> layers;
 };
 
 #endif // BACKGROUNDWIDGET_H

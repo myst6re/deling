@@ -23,6 +23,7 @@
 #include "JsmFile.h"
 #include "WalkmeshFile.h"
 #include "MiscFile.h"
+#include "MapFile.h"
 
 class Field
 {
@@ -32,20 +33,27 @@ public:
 
 	bool isOpen() const;
 	void setOpen(bool open);
+
 	void openMsdFile(const QByteArray &msd);
 	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray());
 	void openWalkmeshFile(const QByteArray &id, const QByteArray &ca=QByteArray());
 	void openMiscFile(const QByteArray &inf, const QByteArray &rat, const QByteArray &mrt, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
+	void openMapFile(const QByteArray &map, const QByteArray &mim);
+
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
 	bool hasWalkmeshFile() const;
 	bool hasMiscFile() const;
+	bool hasMapFile() const;
 	virtual bool hasMapFiles() const=0;
 	bool hasFiles() const;
+
 	MsdFile *getMsdFile() const;
 	JsmFile *getJsmFile() const;
 	WalkmeshFile *getWalkmeshFile() const;
 	MiscFile *getMiscFile() const;
+	MapFile *getMapFile() const;
+
 	bool isModified() const;
 	const QString &name() const;
 
@@ -54,6 +62,7 @@ protected:
 	void deleteJsmFile();
 	void deleteWalkmeshFile();
 	void deleteMiscFile();
+	void deleteMapFile();
 
 	bool _isOpen;
 	QString _name;
@@ -61,6 +70,7 @@ protected:
 	JsmFile *jsmFile;
 	WalkmeshFile *walkmeshFile;
 	MiscFile *miscFile;
+	MapFile *mapFile;
 };
 
 #endif // FIELD_H

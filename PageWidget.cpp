@@ -20,6 +20,7 @@
 PageWidget::PageWidget(QWidget *parent) :
 	QWidget(parent), builded(false), filled(false), readOnly(false)
 {
+	setEnabled(false);
 }
 
 bool PageWidget::isBuilded() const
@@ -29,6 +30,8 @@ bool PageWidget::isBuilded() const
 
 void PageWidget::build()
 {
+	if(isBuilded())		return;
+
 	builded = true;
 	setReadOnly(readOnly);
 }
@@ -40,7 +43,9 @@ bool PageWidget::isFilled() const
 
 void PageWidget::fill()
 {
-	if(!isBuilded())	build();
+	if(isFilled())		return;
+
+	build();
 
 	setEnabled(true);
 	filled = true;
@@ -48,6 +53,8 @@ void PageWidget::fill()
 
 void PageWidget::clear()
 {
+	if(!isFilled())		return;
+
 	setEnabled(false);
 	filled = false;
 }

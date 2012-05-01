@@ -90,6 +90,30 @@ bool FieldPS::open(const QByteArray &dat_data)
 	return true;
 }
 
+bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim, QByteArray &tdw_data)
+{
+	const char *constData = mim.constData();
+	quint32 posSectionTdw, posSectionPmp;
+
+	memcpy(&posSectionTdw, constData, 4);
+	memcpy(&posSectionPmp, &constData[4], 4);
+
+	tdw_data = mim.mid(0x0c + 438272, posSectionPmp-posSectionTdw);
+
+	constData = dat.constData();
+	quint32 posSectionInf, posSectionMap, posSectionMsk, memoryPos;
+
+	memcpy(&posSectionInf, constData, 4);
+	memcpy(&posSectionMap, &constData[12], 4);
+	memcpy(&posSectionMsk, &constData[16], 4);
+
+	memoryPos = posSectionInf - 48;
+
+	openMapFile(dat.mid(posSectionMap - memoryPos, posSectionMsk-posSectionMap), mim.mid(0x0c, 438272));
+
+	return true;
+}
+
 bool FieldPS::save(QByteArray &dat_data)
 {
 	// pvp + mim + tdw + pmp (MIM)

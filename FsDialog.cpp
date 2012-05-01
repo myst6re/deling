@@ -143,8 +143,10 @@ void FsDialog::generatePreview()
 	else if(fileType == "map" || fileType == "mim")
 	{
 		QString filePathWithoutExt = filePath.left(filePath.size()-3);
-		preview->imagePreview(FF8Image::background(fileType == "map" ? data : fsArchive->fileData(filePathWithoutExt+"map"),
-											  fileType == "mim" ? data : fsArchive->fileData(filePathWithoutExt+"mim")), fileName);
+		MapFile mapFile;
+		mapFile.open(fileType == "map" ? data : fsArchive->fileData(filePathWithoutExt+"map"),
+					 fileType == "mim" ? data : fsArchive->fileData(filePathWithoutExt+"mim"));
+		preview->imagePreview(mapFile.background(), fileName);
 	}
 	else if(fileType == "cnf")
 	{

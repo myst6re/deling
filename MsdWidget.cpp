@@ -328,10 +328,8 @@ void MsdWidget::build()
 
 void MsdWidget::clear()
 {
-	if(!isBuilded())	return;
+	if(!isFilled())		return;
 
-	msdFile = NULL;
-	jsmFile = NULL;
 	textPreview->clear();
 	dontUpdateCurrentText = true;
 	textList->clear();
@@ -355,48 +353,54 @@ void MsdWidget::setReadOnly(bool readOnly)
 	PageWidget::setReadOnly(readOnly);
 }
 
-QString MsdWidget::selectedText()
+QString MsdWidget::selectedText() const
 {
 	if(!isBuilded())	return QString();
 
 	return textEdit->textCursor().selectedText();
 }
 
-void MsdWidget::setFiles(MsdFile *msdFile, JsmFile *jsmFile)
+void MsdWidget::setData(Field *field)
 {
-	if(this->msdFile != msdFile || this->jsmFile != jsmFile) {
+	if(this->msdFile != field->getMsdFile() || this->jsmFile != field->getJsmFile()) {
 		clear();
-		this->msdFile = msdFile;
-		this->jsmFile = jsmFile;
+		this->msdFile = field->getMsdFile();
+		this->jsmFile = field->getJsmFile();
 	}
 }
 
-void MsdWidget::fillTextList()
+void MsdWidget::cleanData()
 {
-	clear();
+	msdFile = NULL;
+	jsmFile = NULL;
+}
 
-	PageWidget::fill();
+void MsdWidget::fill()
+{
+	if(!isBuilded())	build();
+	if(isFilled())		clear();
+
+	if(msdFile == NULL)		return;
 
 	int nbTexts = this->msdFile->nbText();
 
-	if(nbTexts!=0) {
-		QIcon icon(":/images/text_icon.png"), iconDisabled(":/images/text_icon_disabled.png");
+	if(nbTexts==0)		return;
 
-		for(int i=0 ; i<nbTexts ; ++i) {
-			QListWidgetItem *item = new QListWidgetItem(tr("Texte %1").arg(i));
-			if(this->jsmFile!=NULL && this->jsmFile->nbWindows(i)>0)
-				item->setIcon(icon);
-			else
-				item->setIcon(iconDisabled);
-			item->setData(Qt::UserRole, i);
-			textList->addItem(item);
-		}
+	QIcon icon(":/images/text_icon.png"), iconDisabled(":/images/text_icon_disabled.png");
 
-		textList->setCurrentRow(0);
-		setEnabled(true);
-	} else {
-		setEnabled(false);
+	for(int i=0 ; i<nbTexts ; ++i) {
+		QListWidgetItem *item = new QListWidgetItem(tr("Texte %1").arg(i));
+		if(this->jsmFile!=NULL && this->jsmFile->nbWindows(i)>0)
+			item->setIcon(icon);
+		else
+			item->setIcon(iconDisabled);
+		item->setData(Qt::UserRole, i);
+		textList->addItem(item);
 	}
+
+	textList->setCurrentRow(0);
+
+	PageWidget::fill();
 }
 
 void MsdWidget::fillTextEdit(QListWidgetItem *item)
@@ -556,7 +560,7 @@ void MsdWidget::insertText()
 {
 	int row = textList->currentRow()+1;
 	msdFile->insertText(row);
-	fillTextList();
+	fill();
 	textList->setCurrentRow(row);
 	emit modified(true);
 }
@@ -565,7 +569,7 @@ void MsdWidget::removeText()
 {
 	int row = textList->currentRow();
 	msdFile->removeText(row);
-	fillTextList();
+	fill();
 	textList->setCurrentRow(qMax(row-1, 0));
 	emit modified(true);
 }

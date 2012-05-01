@@ -82,10 +82,7 @@ private:
 	void setReadOnly(bool);
 
 	FieldArchive *fieldArchive;
-	MsdFile *msdFile;
-	JsmFile *jsmFile;
-	WalkmeshFile *walkmeshFile;
-	MiscFile *miscFile;
+	FieldPC *field;
 
 	MiscSearch *miscSearchD;
 	QLabel *currentPath;
@@ -99,6 +96,7 @@ private:
 	QMenu *menuLang;
 	QAction *actionEncode;
 	QToolBar *toolBar;
+	QList<PageWidget *> pageWidgets;
 	MsdWidget *textPage;
 	JsmWidget *scriptPage;
 	WalkmeshWidget *walkmeshPage;

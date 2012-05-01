@@ -31,7 +31,10 @@ public:
 	void build();
 	void clear();
 	void setReadOnly(bool readOnly);
-	void fill(MiscFile *miscFile, WalkmeshFile *walkmeshFile);
+	void setData(Field *field);
+	void cleanData();
+	void fill();
+	inline QString tabName() const { return tr("Divers"); }
 private slots:
 	void editName(const QString &);
 	void editRat(const QString &);

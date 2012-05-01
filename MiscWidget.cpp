@@ -132,7 +132,7 @@ void MiscWidget::build()
 
 void MiscWidget::clear()
 {
-	if(!isBuilded())	return;
+	if(!isFilled())	return;
 
 	miscFile = NULL;
 	nameEdit->clear();
@@ -142,6 +142,7 @@ void MiscWidget::clear()
 	pmdEdit->clear();
 	pvpEdit->clear();
 	gateList->clear();
+
 	PageWidget::clear();
 }
 
@@ -159,21 +160,39 @@ void MiscWidget::setReadOnly(bool readOnly)
 	PageWidget::setReadOnly(readOnly);
 }
 
-void MiscWidget::fill(MiscFile *miscFile, WalkmeshFile *walkmeshFile)
+void MiscWidget::setData(Field *field)
 {
-	PageWidget::fill();
+	if(this->miscFile != field->getMiscFile() || this->walkmeshFile != field->getWalkmeshFile()) {
+		clear();
+		this->miscFile = field->getMiscFile();
+		this->walkmeshFile = field->getWalkmeshFile();
+	}
+}
 
-	this->miscFile = miscFile;
-	this->walkmeshFile = walkmeshFile;
-	nameEdit->setText(miscFile->getMapName());
-	ratEdit->setText(miscFile->getRatData().toHex());
-	mrtEdit->setText(miscFile->getMrtData().toHex());
-	pmpEdit->setText(miscFile->getPmpData().toHex());
-	pmdEdit->setText(miscFile->getPmdData().toHex());
-	pvpEdit->setText(miscFile->getPvpData().toHex());
-	gateList->clear();
-	foreach(quint16 mapId, miscFile->getGateways()) {
-		gateList->addItem(QString::number(mapId));
+void MiscWidget::cleanData()
+{
+	miscFile = NULL;
+	walkmeshFile = NULL;
+}
+
+void MiscWidget::fill()
+{
+	if(!isBuilded())	build();
+	if(isFilled())		clear();
+
+	if(miscFile == NULL && walkmeshFile == NULL)	return;
+
+	if(miscFile != NULL) {
+		nameEdit->setText(miscFile->getMapName());
+		ratEdit->setText(miscFile->getRatData().toHex());
+		mrtEdit->setText(miscFile->getMrtData().toHex());
+		pmpEdit->setText(miscFile->getPmpData().toHex());
+		pmdEdit->setText(miscFile->getPmdData().toHex());
+		pvpEdit->setText(miscFile->getPvpData().toHex());
+		gateList->clear();
+		foreach(quint16 mapId, miscFile->getGateways()) {
+			gateList->addItem(QString::number(mapId));
+		}
 	}
 
 	if(walkmeshFile != NULL) {
@@ -191,6 +210,8 @@ void MiscWidget::fill(MiscFile *miscFile, WalkmeshFile *walkmeshFile)
 		caSpaceYEdit->setValue(walkmeshFile->camPos(1));
 		caSpaceZEdit->setValue(walkmeshFile->camPos(2));
 	}
+
+	PageWidget::fill();
 }
 
 void MiscWidget::editName(const QString &name)

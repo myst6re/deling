@@ -33,9 +33,12 @@ public:
 	void build();
 	void clear();
 	void setReadOnly(bool readOnly);
-	void fillList1(JsmFile *);
+	void setData(Field *field);
+	void cleanData();
+	void fill();
 	void gotoScript(int, int, int);
 	int selectedOpcode();
+	inline QString tabName() const { return tr("Scripts"); }
 private:
 	void saveSession();
 	QList<QTreeWidgetItem *> nameList() const;

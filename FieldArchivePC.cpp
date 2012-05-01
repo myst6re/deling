@@ -37,7 +37,7 @@ FsArchive *FieldArchivePC::getFsArchive() const
 	return archive;
 }
 
-bool FieldArchivePC::open(const QString &path, QProgressDialog *progress)
+int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 {
 	//qDebug() << QString("open(%1)").arg(path);
 	QString archivePath = path;
@@ -49,7 +49,7 @@ bool FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 	if(archive != NULL)		delete archive;
 	archive = new FsArchive(archivePath);
 	if(!archive->isOpen())
-		return false;
+		return 1;
 	if(!archive->isWritable()) {
 		readOnly = true;
 	}
@@ -87,7 +87,7 @@ bool FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 
 		if(progress->wasCanceled()) {
 			clearFields();
-			return false;
+			return 2;
 		}
 
 		if(currentMap%freq == 0) {
@@ -126,51 +126,17 @@ bool FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 	}
 
 	if(fields.isEmpty()) {
-		return false;
+		return 3;
 	}
 
 	Config::setValue("jp", false);
 
-	return true;
+	return 0;
 }
 
-bool FieldArchivePC::openBG(Field *field, QByteArray &map_data, QByteArray &mim_data, QByteArray &tdw_data, QByteArray &chara_data) const
+bool FieldArchivePC::openBG(Field *field, QByteArray &tdw_data, QByteArray &chara_data) const
 {
-	FsArchive *fieldData = ((FieldPC *)field)->getArchiveHeader();
-
-	if(fieldData==NULL)
-		return false;
-
-	FsHeader *fi_infos_mim = fieldData->getFile("*"%field->name()%".mim");
-	FsHeader *fi_infos_map = fieldData->getFile("*"%field->name()%".map");
-	FsHeader *fi_infos_tdw = fieldData->getFile("*"%field->name()%".tdw");
-//	FsHeader *fi_infos_one = fieldData->getFile("*chara.one");
-
-	if(fi_infos_mim==NULL || fi_infos_map==NULL)
-		return false;
-
-	quint32 maxPos = qMax(fi_infos_mim->position()+fi_infos_mim->uncompressed_size(),
-						  fi_infos_map->position()+fi_infos_map->uncompressed_size());
-	if(fi_infos_tdw!=NULL) {
-		maxPos = qMax(maxPos, fi_infos_tdw->position()+fi_infos_tdw->uncompressed_size());
-	}
-
-	QByteArray fs_data = archive->fileData(((FieldPC *)field)->path(), true, maxPos);
-
-	if(fs_data.isEmpty())	 return false;
-
-	if(fi_infos_mim!=NULL && fi_infos_map!=NULL) {
-		mim_data = fi_infos_mim->data(fs_data);
-		map_data = fi_infos_map->data(fs_data);
-	}
-	if(fi_infos_tdw!=NULL) {
-		tdw_data = fi_infos_tdw->data(fs_data);
-	}
-//	if(fi_infos_one!=NULL) {
-//		chara_data = fi_infos_one->data(fs_data);
-//	}
-
-	return true;
+	return ((FieldPC *)field)->open2(archive, tdw_data);
 }
 
 void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHeader> > &oldFields) const

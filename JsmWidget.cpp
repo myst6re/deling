@@ -114,7 +114,7 @@ void JsmWidget::compile()
 
 void JsmWidget::clear()
 {
-	if(!isBuilded())	return;
+	if(!isFilled())		return;
 
 	list1->blockSignals(true);
 	list2->blockSignals(true);
@@ -134,6 +134,8 @@ void JsmWidget::clear()
 
 void JsmWidget::saveSession()
 {
+	if(this->jsmFile == NULL || !isBuilded())	return;
+
 	jsmFile->setCurrentOpcodeScroll(this->groupID, this->methodID, textEdit->verticalScrollBar()->value(), textEdit->textCursor());
 	if(textEdit->document()->isModified())
 		jsmFile->setDecompiledScript(this->groupID, this->methodID, textEdit->toPlainText());
@@ -149,22 +151,37 @@ void JsmWidget::setReadOnly(bool readOnly)
 	PageWidget::setReadOnly(readOnly);
 }
 
-void JsmWidget::fillList1(JsmFile *jsmFile)
+void JsmWidget::setData(Field *field)
 {
-	PageWidget::fill();
-
-//	qDebug() << "JsmWidget::fillList1(jsmFile)";
-//	qDebug() << jsmFile->printCount();
-
 	if(this->jsmFile != NULL) {
 		saveSession();
 		this->methodID = this->groupID = -1;
 	}
 
-	this->jsmFile = jsmFile;
+	if(this->jsmFile != field->getJsmFile()) {
+		clear();
+		this->jsmFile = field->getJsmFile();
+	}
+}
+
+void JsmWidget::cleanData()
+{
+	jsmFile = NULL;
+}
+
+void JsmWidget::fill()
+{
+	if(!isBuilded())	build();
+
+	if(isFilled())		clear();
+
+//	qDebug() << "JsmWidget::fill()";
+//	qDebug() << jsmFile->printCount();
+
+	if(jsmFile == NULL)		return;
+
 	int groupID = jsmFile->currentGroupItem();
 
-	list1->clear();
 	list1->addTopLevelItems(nameList());
 	list1->scrollToTop();
 	list1->resizeColumnToContents(0);
@@ -173,6 +190,8 @@ void JsmWidget::fillList1(JsmFile *jsmFile)
 
 	QTreeWidgetItem *item = list1->topLevelItem(groupID);
 	if(item) 	list1->setCurrentItem(item);
+
+	PageWidget::fill();
 }
 
 void JsmWidget::fillList2()

@@ -37,7 +37,7 @@ FF8DiscArchive *FieldArchivePS::getFF8DiscArchive() const
 	return iso;
 }
 
-bool FieldArchivePS::open(const QString &path, QProgressDialog *progress)
+int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 {
 	Field *field;
 	QString desc;
@@ -47,18 +47,18 @@ bool FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 
 	iso = new FF8DiscArchive(path);
 	if(!iso->open(QIODevice::ReadOnly))
-		return false;
+		return 1;
 
 	if(!iso->findIMG()) {
 		qWarning() << "IMG not found";
-		return false;
+		return 4;
 	}
 
 	const QList<FF8DiscFile> &fieldFiles = iso->fieldDirectory();
 	int tocSize = fieldFiles.size();
 
 	if(tocSize == 0)
-		return false;
+		return 4;
 
 	clearFields();
 	setMapList(QStringList());
@@ -71,7 +71,7 @@ bool FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 		QCoreApplication::processEvents();
 		if(progress->wasCanceled()) {
 			clearFields();
-			return false;
+			return 2;
 		}
 		if(currentMap%freq == 0) {
 			progress->setValue(currentMap);
@@ -103,48 +103,30 @@ bool FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 	}
 
 	if(fields.isEmpty()) {
-		return false;
+		return 4;
 	}
 
 	Config::setValue("jp", iso->isJp());
 
-	return true;
+	return 0;
 }
 
-bool FieldArchivePS::openBG(Field *field, QByteArray &map_data, QByteArray &mim_data, QByteArray &tdw_data, QByteArray &chara_data) const
+bool FieldArchivePS::openBG(Field *field, QByteArray &tdw_data, QByteArray &chara_data) const
 {
-	quint32 isoFieldID = ((FieldPS *)field)->isoFieldID();
+	FieldPS *fieldPS = (FieldPS *)field;
+
+	quint32 isoFieldID = fieldPS->isoFieldID();
 
 	if(isoFieldID < 1 || (int)isoFieldID >= iso->fieldCount())
 		return false;
 
-	QByteArray data = iso->fileLZS(iso->fieldFile(isoFieldID-1));
-	if(data.isEmpty())
+	QByteArray mim = iso->fileLZS(iso->fieldFile(isoFieldID-1));
+	if(mim.isEmpty())
 		return false;
 
-	const char *constData = data.constData();
-	quint32 posSectionTdw, posSectionPmp;
-
-	memcpy(&posSectionTdw, constData, 4);
-	memcpy(&posSectionPmp, &constData[4], 4);
-
-	mim_data = data.mid(0x0c, 438272);
-	tdw_data = data.mid(0x0c + 438272, posSectionPmp-posSectionTdw);
-
-	data = iso->fileLZS(iso->fieldFile(isoFieldID));
-	if(data.isEmpty())
+	QByteArray dat = iso->fileLZS(iso->fieldFile(isoFieldID));
+	if(dat.isEmpty())
 		return false;
 
-	constData = data.constData();
-	quint32 posSectionInf, posSectionMap, posSectionMsk, memoryPos;
-
-	memcpy(&posSectionInf, constData, 4);
-	memcpy(&posSectionMap, &constData[12], 4);
-	memcpy(&posSectionMsk, &constData[16], 4);
-
-	memoryPos = posSectionInf - 48;
-
-	map_data = data.mid(posSectionMap - memoryPos, posSectionMsk-posSectionMap);
-
-	return true;
+	return fieldPS->open2(dat, mim, tdw_data);
 }

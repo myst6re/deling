@@ -50,7 +50,8 @@ HEADERS += MainWindow.h \
     FieldArchivePC.h \
     JsmOpcode.h \
     PageWidget.h \
-	PlainTextEdit.h
+	PlainTextEdit.h \
+    MapFile.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -94,7 +95,8 @@ SOURCES += MainWindow.cpp \
     FieldArchivePC.cpp \
     JsmOpcode.cpp \
     PageWidget.cpp \
-	PlainTextEdit.cpp
+	PlainTextEdit.cpp \
+    MapFile.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \
