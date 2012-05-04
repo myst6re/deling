@@ -37,7 +37,7 @@ public:
 //	void setIsoFieldID(quint32 isoFieldID);
 	quint32 isoFieldID() const;
 	bool open(const QByteArray &dat_data);
-	bool open2(const QByteArray &dat, const QByteArray &mim, QByteArray &tdw_data);
+	bool open2(const QByteArray &dat, const QByteArray &mim);
 	bool save(QByteArray &dat_data);
 
 private:

@@ -31,7 +31,7 @@ public:
 	FsArchive *getFsArchive() const;
 	int open(const QString &, QProgressDialog *progress);
 	bool save(QProgressDialog *progress, QString save_path=QString());
-	bool openBG(Field *field, QByteArray &tdw_data, QByteArray &chara_data) const;
+	bool openBG(Field *field, QByteArray &chara_data) const;
 	void restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHeader> > &oldFields) const;
 	bool optimiseArchive(QProgressDialog *progress);
 private:

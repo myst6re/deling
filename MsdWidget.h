@@ -75,6 +75,7 @@ private:
 	bool dontUpdateCurrentText;
 	MsdFile *msdFile;
 	JsmFile *jsmFile;
+	TdwFile *tdwFile;
 //	FF8Windows *windows;
 };
 

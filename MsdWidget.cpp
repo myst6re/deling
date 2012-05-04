@@ -18,7 +18,7 @@
 #include "MsdWidget.h"
 
 MsdWidget::MsdWidget(QWidget *parent)
-	: PageWidget(parent), msdFile(NULL), jsmFile(NULL)
+	: PageWidget(parent), msdFile(NULL), jsmFile(NULL), tdwFile(NULL)
 {	
 //	build();
 }
@@ -323,6 +323,9 @@ void MsdWidget::build()
 	connect(menu3, SIGNAL(triggered(QAction*)), SLOT(insertTag(QAction*)));
 	connect(toolBar2, SIGNAL(actionTriggered(QAction*)), SLOT(insertTag(QAction*)));
 
+	if(tdwFile != NULL)
+		textPreview->setFontImageAdd(tdwFile);
+
 	PageWidget::build();
 }
 
@@ -362,10 +365,14 @@ QString MsdWidget::selectedText() const
 
 void MsdWidget::setData(Field *field)
 {
-	if(this->msdFile != field->getMsdFile() || this->jsmFile != field->getJsmFile()) {
+	if(this->msdFile != field->getMsdFile() || this->jsmFile != field->getJsmFile() || this->tdwFile != field->getTdwFile()) {
 		clear();
 		this->msdFile = field->getMsdFile();
 		this->jsmFile = field->getJsmFile();
+		this->tdwFile = field->getTdwFile();
+		if(isBuilded()) {
+			textPreview->setFontImageAdd(this->tdwFile);
+		}
 	}
 }
 

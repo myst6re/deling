@@ -18,7 +18,7 @@
 #include "Field.h"
 
 Field::Field(const QString &name)
-	: _isOpen(false), _name(name), msdFile(NULL), jsmFile(NULL), walkmeshFile(NULL), miscFile(NULL), mapFile(NULL)
+	: _isOpen(false), _name(name), msdFile(NULL), jsmFile(NULL), walkmeshFile(NULL), miscFile(NULL), mapFile(NULL), tdwFile(NULL)
 {
 }
 
@@ -29,6 +29,7 @@ Field::~Field()
 	if(walkmeshFile!=NULL)	delete walkmeshFile;
 	if(miscFile!=NULL)		delete miscFile;
 	if(mapFile!=NULL)		delete mapFile;
+	if(tdwFile!=NULL)		delete tdwFile;
 }
 
 bool Field::isOpen() const
@@ -96,6 +97,17 @@ void Field::openMapFile(const QByteArray &map, const QByteArray &mim)
 	}
 }
 
+void Field::openTdwFile(const QByteArray &tdw)
+{
+	if(tdwFile!=NULL)	deleteTdwFile();
+	tdwFile = new TdwFile();
+
+	if(!tdwFile->open(tdw)) {
+		qWarning() << "Field::openMapFile error" << _name;
+		deleteTdwFile();
+	}
+}
+
 void Field::deleteMsdFile()
 {
 	if(msdFile!=NULL) {
@@ -136,6 +148,14 @@ void Field::deleteMapFile()
 	}
 }
 
+void Field::deleteTdwFile()
+{
+	if(tdwFile!=NULL) {
+		delete tdwFile;
+		tdwFile = NULL;
+	}
+}
+
 bool Field::hasMsdFile() const
 {
 	return msdFile != NULL;
@@ -159,6 +179,11 @@ bool Field::hasMiscFile() const
 bool Field::hasMapFile() const
 {
 	return mapFile != NULL;
+}
+
+bool Field::hasTdwFile() const
+{
+	return tdwFile != NULL;
 }
 
 bool Field::hasFiles() const
@@ -191,13 +216,19 @@ MapFile *Field::getMapFile() const
 	return mapFile;
 }
 
+TdwFile *Field::getTdwFile() const
+{
+	return tdwFile;
+}
+
 bool Field::isModified() const
 {
 	return (msdFile != NULL && msdFile->isModified())
 			|| (jsmFile != NULL && jsmFile->isModified())
 			|| (miscFile != NULL && miscFile->isModified())
 			|| (walkmeshFile != NULL && walkmeshFile->isModified())
-			|| (mapFile != NULL && mapFile->isModified());
+			|| (mapFile != NULL && mapFile->isModified())
+			|| (tdwFile != NULL && tdwFile->isModified());
 }
 
 const QString &Field::name() const

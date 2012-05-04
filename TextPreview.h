@@ -21,6 +21,7 @@
 #include <QtGui>
 #include "FF8Text.h"
 #include "JsmFile.h"
+#include "TdwFile.h"
 #include "FF8Image.h"
 #define NOWIN	65535
 #define DARKGREY	0
@@ -53,7 +54,7 @@ public:
 	int getNbPages();
 	void nextPage();
 	void prevPage();
-	static void setFontImageAdd(const QByteArray &tdw_data);
+	static void setFontImageAdd(TdwFile *tdwFile);
 	static QImage getIconImage(int charId);
 	void calcSize();
 signals:
@@ -71,11 +72,10 @@ private:
 	bool useTimer, acceptMove, readOnly;
 	QPoint moveStartPosition;
 
+	static TdwFile *tdwFile;
 	static int fontColor;
 	static QImage fontImage;
-	static QByteArray fontImageAdd;
 	static QImage iconImage;
-	static QImage fontImageAddLetter(int charId);
 	static void letter(int *x, int *y, int charId, QPainter *painter, quint8 tableId=0);
 	static void word(int *x, int *y, const QByteArray &charIds, QPainter *painter, quint8 tableId=0);
 	static void setFontColor(int id);

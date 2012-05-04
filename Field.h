@@ -24,6 +24,7 @@
 #include "WalkmeshFile.h"
 #include "MiscFile.h"
 #include "MapFile.h"
+#include "TdwFile.h"
 
 class Field
 {
@@ -39,12 +40,15 @@ public:
 	void openWalkmeshFile(const QByteArray &id, const QByteArray &ca=QByteArray());
 	void openMiscFile(const QByteArray &inf, const QByteArray &rat, const QByteArray &mrt, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
 	void openMapFile(const QByteArray &map, const QByteArray &mim);
+	void openTdwFile(const QByteArray &tdw);
 
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
 	bool hasWalkmeshFile() const;
 	bool hasMiscFile() const;
 	bool hasMapFile() const;
+	bool hasTdwFile() const;
+
 	virtual bool hasMapFiles() const=0;
 	bool hasFiles() const;
 
@@ -53,6 +57,7 @@ public:
 	WalkmeshFile *getWalkmeshFile() const;
 	MiscFile *getMiscFile() const;
 	MapFile *getMapFile() const;
+	TdwFile *getTdwFile() const;
 
 	bool isModified() const;
 	const QString &name() const;
@@ -63,6 +68,7 @@ protected:
 	void deleteWalkmeshFile();
 	void deleteMiscFile();
 	void deleteMapFile();
+	void deleteTdwFile();
 
 	bool _isOpen;
 	QString _name;
@@ -71,6 +77,7 @@ protected:
 	WalkmeshFile *walkmeshFile;
 	MiscFile *miscFile;
 	MapFile *mapFile;
+	TdwFile *tdwFile;
 };
 
 #endif // FIELD_H

@@ -51,7 +51,8 @@ HEADERS += MainWindow.h \
     JsmOpcode.h \
     PageWidget.h \
 	PlainTextEdit.h \
-    MapFile.h
+    MapFile.h \
+    TdwFile.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -96,7 +97,8 @@ SOURCES += MainWindow.cpp \
     JsmOpcode.cpp \
     PageWidget.cpp \
 	PlainTextEdit.cpp \
-    MapFile.cpp
+    MapFile.cpp \
+    TdwFile.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

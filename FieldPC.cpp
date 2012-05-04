@@ -222,7 +222,7 @@ bool FieldPC::open(FsArchive *archive)
 	return true;
 }
 
-bool FieldPC::open2(QByteArray &tdw_data)
+bool FieldPC::open2()
 {
 	if(header==NULL)
 		return false;
@@ -230,13 +230,13 @@ bool FieldPC::open2(QByteArray &tdw_data)
 	if(header->fileExists("*"%name()%".map") && header->fileExists("*"%name()%".mim")) {
 		openMapFile(header->fileData("*"%name()%".map"), header->fileData("*"%name()%".mim"));
 	}
-	tdw_data = header->fileData("*"%name()%".tdw");
+	openTdwFile(header->fileData("*"%name()%".tdw"));
 //	chara_data = header->fileData("*chara.one");
 
 	return true;
 }
 
-bool FieldPC::open2(FsArchive *archive, QByteArray &tdw_data)
+bool FieldPC::open2(FsArchive *archive)
 {
 	if(header==NULL)
 		return false;
@@ -263,7 +263,7 @@ bool FieldPC::open2(FsArchive *archive, QByteArray &tdw_data)
 		openMapFile(fi_infos_map->data(fs_data), fi_infos_mim->data(fs_data));
 	}
 	if(fi_infos_tdw!=NULL) {
-		tdw_data = fi_infos_tdw->data(fs_data);
+		openTdwFile(fi_infos_tdw->data(fs_data));
 	}
 //	if(fi_infos_one!=NULL) {
 //		chara_data = fi_infos_one->data(fs_data);

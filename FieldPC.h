@@ -34,8 +34,8 @@ public:
 	const QString &path() const;
 	bool open(const QString &path);
 	bool open(FsArchive *archive);
-	bool open2(QByteArray &tdw_data);
-	bool open2(FsArchive *archive, QByteArray &tdw_data);
+	bool open2();
+	bool open2(FsArchive *archive);
 	void save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
 	void optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
 

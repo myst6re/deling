@@ -352,12 +352,12 @@ void MainWindow::fillPage()
 
 	QTime t;t.start();
 	Field *field;
-	QByteArray tdw_data, chara_data;
+	QByteArray chara_data;
 
 	if(this->field != NULL) {
 		field = this->field;
 
-		this->field->open2(tdw_data);
+		this->field->open2();
 	} else {
 		QTreeWidgetItem *item = list1->currentItem();
 		if(item==NULL)	return;
@@ -369,7 +369,7 @@ void MainWindow::fillPage()
 		field = fieldArchive->getField(fieldID);
 		if(field == NULL)	return;
 
-		fieldArchive->openBG(field, tdw_data, chara_data);
+		fieldArchive->openBG(field, chara_data);
 	}
 
 	foreach(PageWidget *pageWidget, pageWidgets)
@@ -379,10 +379,6 @@ void MainWindow::fillPage()
 		bgPreview->fill(field->getMapFile()->background());
 	else
 		bgPreview->fill(FF8Image::errorPixmap());
-
-	if(!tdw_data.isEmpty()) {
-		TextPreview::setFontImageAdd(tdw_data);
-	}
 
 	/*if(!chara_data.isEmpty()) {
 		FF8Image::findTims(chara_data);

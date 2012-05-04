@@ -30,7 +30,7 @@ public:
 	QString archivePath() const;
 	FF8DiscArchive *getFF8DiscArchive() const;
 	int open(const QString &, QProgressDialog *progress);
-	bool openBG(Field *field, QByteArray &tdw_data, QByteArray &chara_data) const;
+	bool openBG(Field *field, QByteArray &chara_data) const;
 private:
 	FF8DiscArchive *iso;
 };

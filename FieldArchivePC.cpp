@@ -134,9 +134,9 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 	return 0;
 }
 
-bool FieldArchivePC::openBG(Field *field, QByteArray &tdw_data, QByteArray &chara_data) const
+bool FieldArchivePC::openBG(Field *field, QByteArray &chara_data) const
 {
-	return ((FieldPC *)field)->open2(archive, tdw_data);
+	return ((FieldPC *)field)->open2(archive);
 }
 
 void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHeader> > &oldFields) const
