@@ -18,7 +18,7 @@
 #include "widgets/PageWidget.h"
 
 PageWidget::PageWidget(QWidget *parent) :
-	QWidget(parent), builded(false), filled(false), readOnly(false)
+	QWidget(parent), builded(false), filled(false), readOnly(false), _field(NULL)
 {
 	setEnabled(false);
 }
@@ -67,4 +67,27 @@ void PageWidget::setReadOnly(bool ro)
 bool PageWidget::isReadOnly() const
 {
 	return readOnly;
+}
+
+void PageWidget::setData(Field *field)
+{
+	if(_field != field) {
+		clear();
+		_field = field;
+	}
+}
+
+void PageWidget::cleanData()
+{
+	_field = NULL;
+}
+
+bool PageWidget::hasData() const
+{
+	return _field != NULL;
+}
+
+Field *PageWidget::data() const
+{
+	return _field;
 }

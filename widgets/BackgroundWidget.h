@@ -31,8 +31,6 @@ class BackgroundWidget : public PageWidget
 public:
 	BackgroundWidget(QWidget *parent=0);
 	void clear();
-	void setData(Field *field);
-	void cleanData();
 	void fill();
 	inline QString tabName() const { return tr("Décors"); }
 private slots:
@@ -43,7 +41,6 @@ private slots:
 private:
 	void build();
 
-	BackgroundFile *backgroundFile;
 	BGPreview2 *image;
 	QComboBox *parametersWidget;
 	QListWidget *statesWidget, *layersWidget;

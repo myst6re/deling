@@ -31,8 +31,6 @@ public:
 	void build();
 	void clear();
 	void setReadOnly(bool readOnly);
-	void setData(Field *field);
-	void cleanData();
 	void fill();
 	inline QString tabName() const { return tr("Divers"); }
 private slots:
@@ -46,8 +44,6 @@ private:
 	void editCaVector(int id, int id2, int value);
 	void editCaPos(int id, int value);
 
-	MiscFile *miscFile;
-	WalkmeshFile *walkmeshFile;
 	QLineEdit *nameEdit, *pmpEdit, *pmdEdit, *pvpEdit;
 	QListWidget *gateList;
 	QSpinBox *caVectorX1Edit, *caVectorX2Edit, *caVectorX3Edit, *caVectorY1Edit, *caVectorY2Edit, *caVectorY3Edit, *caVectorZ1Edit, *caVectorZ2Edit, *caVectorZ3Edit;

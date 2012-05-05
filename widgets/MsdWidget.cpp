@@ -18,9 +18,8 @@
 #include "widgets/MsdWidget.h"
 
 MsdWidget::MsdWidget(QWidget *parent)
-	: PageWidget(parent), msdFile(NULL), jsmFile(NULL), tdwFile(NULL)
-{	
-//	build();
+	: PageWidget(parent)
+{
 }
 
 void MsdWidget::build()
@@ -323,9 +322,6 @@ void MsdWidget::build()
 	connect(menu3, SIGNAL(triggered(QAction*)), SLOT(insertTag(QAction*)));
 	connect(toolBar2, SIGNAL(actionTriggered(QAction*)), SLOT(insertTag(QAction*)));
 
-	if(tdwFile != NULL)
-		textPreview->setFontImageAdd(tdwFile);
-
 	PageWidget::build();
 }
 
@@ -363,35 +359,19 @@ QString MsdWidget::selectedText() const
 	return textEdit->textCursor().selectedText();
 }
 
-void MsdWidget::setData(Field *field)
-{
-	if(this->msdFile != field->getMsdFile() || this->jsmFile != field->getJsmFile() || this->tdwFile != field->getTdwFile()) {
-		clear();
-		this->msdFile = field->getMsdFile();
-		this->jsmFile = field->getJsmFile();
-		if(field->hasTdwFile()) {
-			this->tdwFile = field->getTdwFile();
-			if(isBuilded()) {
-				textPreview->setFontImageAdd(this->tdwFile);
-			}
-		}
-	}
-}
-
-void MsdWidget::cleanData()
-{
-	msdFile = NULL;
-	jsmFile = NULL;
-}
-
 void MsdWidget::fill()
 {
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(msdFile == NULL)		return;
+	if(!hasData())		return;
 
-	int nbTexts = this->msdFile->nbText();
+	if(data()->hasTdwFile())
+		textPreview->setFontImageAdd(data()->getTdwFile());
+
+	if(!data()->hasMsdFile())		return;
+
+	int nbTexts = data()->getMsdFile()->nbText();
 
 	if(nbTexts==0)		return;
 
@@ -399,7 +379,7 @@ void MsdWidget::fill()
 
 	for(int i=0 ; i<nbTexts ; ++i) {
 		QListWidgetItem *item = new QListWidgetItem(tr("Texte %1").arg(i));
-		if(this->jsmFile!=NULL && this->jsmFile->nbWindows(i)>0)
+		if(data()->hasJsmFile() && data()->getJsmFile()->nbWindows(i)>0)
 			item->setIcon(icon);
 		else
 			item->setIcon(iconDisabled);
@@ -417,23 +397,23 @@ void MsdWidget::fillTextEdit(QListWidgetItem *item)
 	if(item==NULL)	return;
 
 	textList->scrollToItem(item);
-	if(msdFile==NULL)	return;
+	if(!hasData() || !data()->hasMsdFile())	return;
 
 	int textID = item->data(Qt::UserRole).toInt();
 
-	QString text = msdFile->text(textID);
+	QString text = data()->getMsdFile()->text(textID);
 	dontUpdateCurrentText = true;
 	textEdit->setPlainText(text);
 	dontUpdateCurrentText = false;
 
-	if(jsmFile!=NULL) {
+	if(hasData() && data()->hasJsmFile()) {
 		textPreview->resetCurrentWin();
-		textPreview->setWins(jsmFile->windows(textID), false);
+		textPreview->setWins(data()->getJsmFile()->windows(textID), false);
 	}
 	else {
 		textPreview->clearWin();
 	}
-	textPreview->setText(msdFile->data(textID));
+	textPreview->setText(data()->getMsdFile()->data(textID));
 
 	changeTextPreviewPage();
 	changeTextPreviewWin();
@@ -507,8 +487,8 @@ void MsdWidget::changeXCoord(int x)
 
 //		qDebug() << "changeXCoord()" << x << textID << winID;
 
-		jsmFile->setWindow(textID, winID, ff8Window);
-		textPreview->setWins(jsmFile->windows(textID));
+		data()->getJsmFile()->setWindow(textID, winID, ff8Window);
+		textPreview->setWins(data()->getJsmFile()->windows(textID));
 		emit modified(true);
 	}
 }
@@ -525,8 +505,8 @@ void MsdWidget::changeYCoord(int y)
 
 //		qDebug() << "changeYCoord()" << y << textID << winID;
 
-		jsmFile->setWindow(textID, winID, ff8Window);
-		textPreview->setWins(jsmFile->windows(textID));
+		data()->getJsmFile()->setWindow(textID, winID, ff8Window);
+		textPreview->setWins(data()->getJsmFile()->windows(textID));
 		emit modified(true);
 	}
 }
@@ -540,12 +520,12 @@ void MsdWidget::insertTag(QAction *action)
 
 void MsdWidget::updateCurrentText()
 {
-	if(dontUpdateCurrentText || msdFile==NULL)	return;
+	if(dontUpdateCurrentText || !hasData() || !data()->hasMsdFile())	return;
 //	qDebug() << "textEdited";
 
 	emit modified(true);
-	msdFile->setText(textList->currentRow(), textEdit->toPlainText());
-	textPreview->setText(msdFile->data(textList->currentRow()), false);
+	data()->getMsdFile()->setText(textList->currentRow(), textEdit->toPlainText());
+	textPreview->setText(data()->getMsdFile()->data(textList->currentRow()), false);
 	changeTextPreviewPage();
 	changeTextPreviewWin();
 }
@@ -568,7 +548,7 @@ void MsdWidget::updateText()
 void MsdWidget::insertText()
 {
 	int row = textList->currentRow()+1;
-	msdFile->insertText(row);
+	data()->getMsdFile()->insertText(row);
 	fill();
 	textList->setCurrentRow(row);
 	emit modified(true);
@@ -577,7 +557,7 @@ void MsdWidget::insertText()
 void MsdWidget::removeText()
 {
 	int row = textList->currentRow();
-	msdFile->removeText(row);
+	data()->getMsdFile()->removeText(row);
 	fill();
 	textList->setCurrentRow(qMax(row-1, 0));
 	emit modified(true);

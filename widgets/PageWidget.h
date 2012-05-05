@@ -33,13 +33,16 @@ public:
 	virtual void clear();
 	virtual void setReadOnly(bool ro);
 	bool isReadOnly() const;
-	virtual void setData(Field *field)=0;
-	virtual void cleanData()=0;
+	virtual void setData(Field *field);
+	void cleanData();
+	bool hasData() const;
+	Field *data() const;
 	virtual QString tabName() const=0;
 signals:
 	void modified(bool);
 private:
 	bool builded, filled, readOnly;
+	Field *_field;
 };
 
 #endif // PAGEWIDGET_H

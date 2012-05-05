@@ -34,7 +34,6 @@ public:
 	void clear();
 	void setReadOnly(bool readOnly);
 	void setData(Field *field);
-	void cleanData();
 	void fill();
 	void gotoScript(int, int, int);
 	int selectedOpcode();
@@ -48,7 +47,6 @@ private:
 	QPlainTextEdit *textEdit;
 	QToolBar *toolBar;
 	QLabel *errorLabel;
-	JsmFile *jsmFile;
 	static int currentItem(QTreeWidget *);
 //	void gotoScriptLabel(int groupID, int labelID);
 	int groupID, methodID;

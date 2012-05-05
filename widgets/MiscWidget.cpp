@@ -20,7 +20,6 @@
 MiscWidget::MiscWidget(QWidget *parent)
 	: PageWidget(parent)
 {
-//	build();
 }
 
 void MiscWidget::build()
@@ -124,7 +123,6 @@ void MiscWidget::clear()
 {
 	if(!isFilled())	return;
 
-	miscFile = NULL;
 	nameEdit->clear();
 	pmpEdit->clear();
 	pmdEdit->clear();
@@ -146,53 +144,38 @@ void MiscWidget::setReadOnly(bool readOnly)
 	PageWidget::setReadOnly(readOnly);
 }
 
-void MiscWidget::setData(Field *field)
-{
-	if(this->miscFile != field->getMiscFile() || this->walkmeshFile != field->getWalkmeshFile()) {
-		clear();
-		this->miscFile = field->getMiscFile();
-		this->walkmeshFile = field->getWalkmeshFile();
-	}
-}
-
-void MiscWidget::cleanData()
-{
-	miscFile = NULL;
-	walkmeshFile = NULL;
-}
-
 void MiscWidget::fill()
 {
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(miscFile == NULL && walkmeshFile == NULL)	return;
+	if(!hasData() || (!data()->hasMiscFile() && !data()->hasWalkmeshFile()))	return;
 
-	if(miscFile != NULL) {
-		nameEdit->setText(miscFile->getMapName());
-		pmpEdit->setText(miscFile->getPmpData().toHex());
-		pmdEdit->setText(miscFile->getPmdData().toHex());
-		pvpEdit->setText(miscFile->getPvpData().toHex());
+	if(data()->hasMiscFile()) {
+		nameEdit->setText(data()->getMiscFile()->getMapName());
+		pmpEdit->setText(data()->getMiscFile()->getPmpData().toHex());
+		pmdEdit->setText(data()->getMiscFile()->getPmdData().toHex());
+		pvpEdit->setText(data()->getMiscFile()->getPvpData().toHex());
 		gateList->clear();
-		foreach(quint16 mapId, miscFile->getGateways()) {
+		foreach(quint16 mapId, data()->getMiscFile()->getGateways()) {
 			gateList->addItem(QString::number(mapId));
 		}
 	}
 
-	if(walkmeshFile != NULL) {
-		caVectorX1Edit->setValue(walkmeshFile->camAxis(0).x);
-		caVectorX2Edit->setValue(walkmeshFile->camAxis(0).y);
-		caVectorX3Edit->setValue(walkmeshFile->camAxis(0).z);
-		caVectorY1Edit->setValue(walkmeshFile->camAxis(1).x);
-		caVectorY2Edit->setValue(walkmeshFile->camAxis(1).y);
-		caVectorY3Edit->setValue(walkmeshFile->camAxis(1).z);
-		caVectorZ1Edit->setValue(walkmeshFile->camAxis(2).x);
-		caVectorZ2Edit->setValue(walkmeshFile->camAxis(2).y);
-		caVectorZ3Edit->setValue(walkmeshFile->camAxis(2).z);
+	if(data()->hasWalkmeshFile()) {
+		caVectorX1Edit->setValue(data()->getWalkmeshFile()->camAxis(0).x);
+		caVectorX2Edit->setValue(data()->getWalkmeshFile()->camAxis(0).y);
+		caVectorX3Edit->setValue(data()->getWalkmeshFile()->camAxis(0).z);
+		caVectorY1Edit->setValue(data()->getWalkmeshFile()->camAxis(1).x);
+		caVectorY2Edit->setValue(data()->getWalkmeshFile()->camAxis(1).y);
+		caVectorY3Edit->setValue(data()->getWalkmeshFile()->camAxis(1).z);
+		caVectorZ1Edit->setValue(data()->getWalkmeshFile()->camAxis(2).x);
+		caVectorZ2Edit->setValue(data()->getWalkmeshFile()->camAxis(2).y);
+		caVectorZ3Edit->setValue(data()->getWalkmeshFile()->camAxis(2).z);
 
-		caSpaceXEdit->setValue(walkmeshFile->camPos(0));
-		caSpaceYEdit->setValue(walkmeshFile->camPos(1));
-		caSpaceZEdit->setValue(walkmeshFile->camPos(2));
+		caSpaceXEdit->setValue(data()->getWalkmeshFile()->camPos(0));
+		caSpaceYEdit->setValue(data()->getWalkmeshFile()->camPos(1));
+		caSpaceZEdit->setValue(data()->getWalkmeshFile()->camPos(2));
 	}
 
 	PageWidget::fill();
@@ -200,29 +183,35 @@ void MiscWidget::fill()
 
 void MiscWidget::editName(const QString &name)
 {
-	miscFile->setMapName(name);
+	data()->getMiscFile()->setMapName(name);
 	emit modified(true);
 }
 
 void MiscWidget::editPmp(const QString &pmp)
 {
-	miscFile->setPmpData(QByteArray::fromHex(pmp.toLatin1()).leftJustified(miscFile->getPmpData().size(), '\x00', true));
+	data()->getMiscFile()->setPmpData(
+				QByteArray::fromHex(pmp.toLatin1())
+				.leftJustified(data()->getMiscFile()->getPmpData().size(), '\x00', true));
 	emit modified(true);
-	pmpEdit->setText(miscFile->getPmpData().toHex());
+	pmpEdit->setText(data()->getMiscFile()->getPmpData().toHex());
 }
 
 void MiscWidget::editPmd(const QString &pmd)
 {
-	miscFile->setPmdData(QByteArray::fromHex(pmd.toLatin1()).leftJustified(miscFile->getPmdData().size(), '\x00', true));
+	data()->getMiscFile()->setPmdData(
+				QByteArray::fromHex(pmd.toLatin1())
+				.leftJustified(data()->getMiscFile()->getPmdData().size(), '\x00', true));
 	emit modified(true);
-	pmdEdit->setText(miscFile->getPmdData().toHex());
+	pmdEdit->setText(data()->getMiscFile()->getPmdData().toHex());
 }
 
 void MiscWidget::editPvp(const QString &pvp)
 {
-	miscFile->setPvpData(QByteArray::fromHex(pvp.toLatin1()).leftJustified(miscFile->getPvpData().size(), '\x00', true));
+	data()->getMiscFile()->setPvpData(
+				QByteArray::fromHex(pvp.toLatin1())
+				.leftJustified(data()->getMiscFile()->getPvpData().size(), '\x00', true));
 	emit modified(true);
-	pvpEdit->setText(miscFile->getPvpData().toHex());
+	pvpEdit->setText(data()->getMiscFile()->getPvpData().toHex());
 }
 
 void MiscWidget::editCaVector(int value)
@@ -242,8 +231,8 @@ void MiscWidget::editCaVector(int value)
 
 void MiscWidget::editCaVector(int id, int id2, int value)
 {
-	if(walkmeshFile != NULL) {
-		Vertex_s v = walkmeshFile->camAxis(id), oldV;
+	if(data()->hasWalkmeshFile()) {
+		Vertex_s v = data()->getWalkmeshFile()->camAxis(id), oldV;
 		oldV = v;
 		switch(id2) {
 		case 0:
@@ -257,7 +246,7 @@ void MiscWidget::editCaVector(int id, int id2, int value)
 			break;
 		}
 		if(oldV.x != v.x || oldV.y != v.y || oldV.z != v.z) {
-			walkmeshFile->setCamAxis(id, v);
+			data()->getWalkmeshFile()->setCamAxis(id, v);
 			emit modified(true);
 		}
 	}
@@ -274,9 +263,9 @@ void MiscWidget::editCaPos(double value)
 
 void MiscWidget::editCaPos(int id, int value)
 {
-	if(walkmeshFile != NULL) {
-		if(walkmeshFile->camPos(id) != value) {
-			walkmeshFile->setCamPos(id, value);
+	if(data()->hasWalkmeshFile()) {
+		if(data()->getWalkmeshFile()->camPos(id) != value) {
+			data()->getWalkmeshFile()->setCamPos(id, value);
 			emit modified(true);
 		}
 	}

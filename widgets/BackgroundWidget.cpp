@@ -18,9 +18,8 @@
 #include "widgets/BackgroundWidget.h"
 
 BackgroundWidget::BackgroundWidget(QWidget *parent)
-	: PageWidget(parent), backgroundFile(NULL)
+	: PageWidget(parent)
 {
-//	build();
 }
 
 void BackgroundWidget::build()
@@ -78,10 +77,10 @@ void BackgroundWidget::clear()
 
 void BackgroundWidget::parameterChanged(int index)
 {
-	if(backgroundFile == NULL)		return;
+	if(!hasData() || !data()->hasBackgroundFile())		return;
 
 	int parameter = parametersWidget->itemData(index).toInt();
-	QList<quint8> states = backgroundFile->allparams.values(parameter);
+	QList<quint8> states = data()->getBackgroundFile()->allparams.values(parameter);
 	qSort(states);
 	QListWidgetItem *item;
 
@@ -91,36 +90,36 @@ void BackgroundWidget::parameterChanged(int index)
 		item = new QListWidgetItem(tr("État %1").arg(state));
 		item->setData(Qt::UserRole, state);
 		item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-		item->setCheckState(backgroundFile->params.contains(parameter, state) ? Qt::Checked : Qt::Unchecked);
+		item->setCheckState(data()->getBackgroundFile()->params.contains(parameter, state) ? Qt::Checked : Qt::Unchecked);
 		statesWidget->addItem(item);
 	}
 }
 
 void BackgroundWidget::enableState(QListWidgetItem *item)
 {
-	if(backgroundFile == NULL)		return;
+	if(!hasData() || !data()->hasBackgroundFile())		return;
 
 	bool enabled = item->data(Qt::CheckStateRole).toBool();
 	int parameter = parametersWidget->itemData(parametersWidget->currentIndex()).toInt(), state = item->data(Qt::UserRole).toInt();
 
 	if(enabled)
-		backgroundFile->params.insert(parameter, state);
+		data()->getBackgroundFile()->params.insert(parameter, state);
 	else
-		backgroundFile->params.remove(parameter, state);
+		data()->getBackgroundFile()->params.remove(parameter, state);
 
-	image->setPixmap(backgroundFile->background());
+	image->setPixmap(data()->getBackgroundFile()->background());
 }
 
 void BackgroundWidget::enableLayer(QListWidgetItem *item)
 {
-	if(backgroundFile == NULL)		return;
+	if(!hasData() || !data()->hasBackgroundFile())		return;
 
 	bool enabled = item->data(Qt::CheckStateRole).toBool();
 	int layer = item->data(Qt::UserRole).toInt();
 
-	backgroundFile->layers.insert(layer, enabled);
+	data()->getBackgroundFile()->layers.insert(layer, enabled);
 
-	image->setPixmap(backgroundFile->background());
+	image->setPixmap(data()->getBackgroundFile()->background());
 }
 
 /*void BackgroundWidget::switchItem(QListWidgetItem *item)
@@ -128,38 +127,22 @@ void BackgroundWidget::enableLayer(QListWidgetItem *item)
 	item->setCheckState(item->checkState()==Qt::Unchecked ? Qt::Checked : Qt::Unchecked);
 }*/
 
-void BackgroundWidget::setData(Field *field)
-{
-	if(this->backgroundFile != field->getBackgroundFile()) {
-		clear();
-		this->backgroundFile = field->getBackgroundFile();
-	}
-
-	if(!isBuilded())	build();
-
-	image->setName(field->name());
-}
-
-void BackgroundWidget::cleanData()
-{
-	backgroundFile = NULL;
-}
-
 void BackgroundWidget::fill()
 {
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(backgroundFile == NULL)		return;
+	if(!hasData() || !data()->hasBackgroundFile())		return;
 
-	image->setPixmap(backgroundFile->background());
+	image->setName(data()->name());
+	image->setPixmap(data()->getBackgroundFile()->background());
 
 	parametersWidget->clear();
-	QList<quint8> parameters = backgroundFile->allparams.uniqueKeys();
+	QList<quint8> parameters = data()->getBackgroundFile()->allparams.uniqueKeys();
 	foreach(quint8 parameter, parameters)
 		parametersWidget->addItem(tr("Paramètre %1").arg(parameter), parameter);
 
-	QList<quint8> layerIDs = backgroundFile->layers.keys();
+	QList<quint8> layerIDs = data()->getBackgroundFile()->layers.keys();
 	QListWidgetItem *item;
 
 	layersWidget->clear();

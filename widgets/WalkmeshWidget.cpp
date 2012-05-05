@@ -18,7 +18,7 @@
 #include "widgets/WalkmeshWidget.h"
 
 WalkmeshWidget::WalkmeshWidget(QWidget *parent) :
-	PageWidget(parent), walkmeshFile(NULL), walkmeshGL(NULL)
+	PageWidget(parent), walkmeshGL(NULL)
 {
 }
 
@@ -69,32 +69,19 @@ void WalkmeshWidget::clear()
 	PageWidget::clear();
 }
 
-void WalkmeshWidget::setData(Field *field)
-{
-	if(this->walkmeshFile != field->getWalkmeshFile()) {
-		clear();
-		this->walkmeshFile = field->getWalkmeshFile();
-	}
-}
-
-void WalkmeshWidget::cleanData()
-{
-	walkmeshFile = NULL;
-}
-
 void WalkmeshWidget::fill()
 {
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(walkmeshFile == NULL) return;
+	if(!hasData() || !data()->hasWalkmeshFile()) return;
 
 //	qDebug() << walkmeshFile->camAxis(0).x << walkmeshFile->camAxis(0).y << walkmeshFile->camAxis(0).z;
 //	qDebug() << walkmeshFile->camAxis(1).x << walkmeshFile->camAxis(1).y << walkmeshFile->camAxis(1).z;
 //	qDebug() << walkmeshFile->camAxis(2).x << walkmeshFile->camAxis(2).y << walkmeshFile->camAxis(2).z;
 //	qDebug() << walkmeshFile->camPos(0) << walkmeshFile->camPos(1) << walkmeshFile->camPos(2);
 
-	walkmeshGL->fill(walkmeshFile);
+	walkmeshGL->fill(data()->getWalkmeshFile());
 
 	PageWidget::fill();
 }

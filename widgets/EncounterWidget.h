@@ -31,8 +31,6 @@ public:
 	void build();
 	void clear();
 	void setReadOnly(bool readOnly);
-	void setData(Field *field);
-	void cleanData();
 	void fill();
 	inline QString tabName() const { return tr("Rencontres aléatoires"); }
 private slots:

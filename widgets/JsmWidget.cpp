@@ -18,9 +18,8 @@
 #include "widgets/JsmWidget.h"
 
 JsmWidget::JsmWidget(QWidget *parent)
-	: PageWidget(parent), jsmFile(NULL), groupID(-1), methodID(-1)
+	: PageWidget(parent), groupID(-1), methodID(-1)
 {
-//	build();
 }
 
 void JsmWidget::build()
@@ -97,7 +96,7 @@ void JsmWidget::compile()
 
 	QString errorStr;
 	QPalette pal = errorLabel->palette();
-	int l = jsmFile->fromString(groupID, methodID, textEdit->toPlainText(), errorStr);
+	int l = data()->getJsmFile()->fromString(groupID, methodID, textEdit->toPlainText(), errorStr);
 	if(l != 0) {
 		pal.setColor(QPalette::Active, QPalette::ButtonText, Qt::darkRed);
 		pal.setColor(QPalette::Inactive, QPalette::ButtonText, Qt::darkRed);
@@ -119,7 +118,7 @@ void JsmWidget::clear()
 	list1->blockSignals(true);
 	list2->blockSignals(true);
 
-	if(jsmFile != NULL)	saveSession();
+	if(hasData() && data()->hasJsmFile())	saveSession();
 
 	list1->clear();
 	list2->clear();
@@ -134,11 +133,11 @@ void JsmWidget::clear()
 
 void JsmWidget::saveSession()
 {
-	if(this->jsmFile == NULL || !isBuilded())	return;
+	if(!hasData() || !data()->hasJsmFile() || !isBuilded())	return;
 
-	jsmFile->setCurrentOpcodeScroll(this->groupID, this->methodID, textEdit->verticalScrollBar()->value(), textEdit->textCursor());
+	data()->getJsmFile()->setCurrentOpcodeScroll(this->groupID, this->methodID, textEdit->verticalScrollBar()->value(), textEdit->textCursor());
 	if(textEdit->document()->isModified())
-		jsmFile->setDecompiledScript(this->groupID, this->methodID, textEdit->toPlainText());
+		data()->getJsmFile()->setDecompiledScript(this->groupID, this->methodID, textEdit->toPlainText());
 }
 
 void JsmWidget::setReadOnly(bool readOnly)
@@ -153,20 +152,12 @@ void JsmWidget::setReadOnly(bool readOnly)
 
 void JsmWidget::setData(Field *field)
 {
-	if(this->jsmFile != NULL) {
+	if(hasData() && data()->hasJsmFile()) {
 		saveSession();
 		this->methodID = this->groupID = -1;
 	}
 
-	if(this->jsmFile != field->getJsmFile()) {
-		clear();
-		this->jsmFile = field->getJsmFile();
-	}
-}
-
-void JsmWidget::cleanData()
-{
-	jsmFile = NULL;
+	PageWidget::setData(field);
 }
 
 void JsmWidget::fill()
@@ -176,11 +167,11 @@ void JsmWidget::fill()
 	if(isFilled())		clear();
 
 //	qDebug() << "JsmWidget::fill()";
-//	qDebug() << jsmFile->printCount();
+//	qDebug() << data()->getJsmFile()->printCount();
 
-	if(jsmFile == NULL)		return;
+	if(!hasData() || !data()->hasJsmFile())		return;
 
-	int groupID = jsmFile->currentGroupItem();
+	int groupID = data()->getJsmFile()->currentGroupItem();
 
 	list1->addTopLevelItems(nameList());
 	list1->scrollToTop();
@@ -201,7 +192,7 @@ void JsmWidget::fillList2()
 	list2->clear();
 	int groupID = currentItem(list1);
 	if(groupID==-1)	return;
-	int methodID = jsmFile->currentMethodItem(groupID);
+	int methodID = data()->getJsmFile()->currentMethodItem(groupID);
 
 	list2->addTopLevelItems(methodList(groupID));
 	list2->scrollToTop();
@@ -226,11 +217,11 @@ void JsmWidget::fillTextEdit()
 		return;
 	}
 
-	int scroll = jsmFile->currentOpcodeScroll(groupID, methodID);
+	int scroll = data()->getJsmFile()->currentOpcodeScroll(groupID, methodID);
 	int anchor;
-	int position = jsmFile->currentTextCursor(groupID, methodID, anchor);
+	int position = data()->getJsmFile()->currentTextCursor(groupID, methodID, anchor);
 
-	textEdit->setPlainText(jsmFile->toString(groupID, methodID));
+	textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID));
 	if(!isReadOnly())	toolBar->setEnabled(true);
 
 	if(position >= 0) {
@@ -246,13 +237,13 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 {
 	QList<QTreeWidgetItem *> items;
 	QTreeWidgetItem *item;
-	int nbGroup = jsmFile->getScripts().nbGroup();
+	int nbGroup = data()->getJsmFile()->getScripts().nbGroup();
 	int directorCount=0, squallCount=0, zellCount=0, irvineCount=0, quistisCount=0;
 	int rinoaCount=0, selphieCount=0, seiferCount=0, edeaCount=0, lagunaCount=0, kirosCount=0;
 	int wardCount=0, drawPointCount=0, eventLineCount=0, doorCount=0;
 
 	for(int groupID=0 ; groupID<nbGroup ; ++groupID) {
-		const JsmGroup &grp = jsmFile->getScripts().group(groupID);
+		const JsmGroup &grp = data()->getJsmFile()->getScripts().group(groupID);
 		QString name = grp.name();
 		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(groupID, 3) << QString());
 		item->setData(0, Qt::UserRole, groupID);
@@ -366,24 +357,24 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 	int begin, count;
 	QString name;
 
-	if(jsmFile->getScripts().nbGroup()<=groupID) {
-		qWarning() << "JsmFile::methodList error 1" << groupID << jsmFile->getScripts().nbGroup();
+	if(data()->getJsmFile()->getScripts().nbGroup()<=groupID) {
+		qWarning() << "JsmFile::methodList error 1" << groupID << data()->getJsmFile()->getScripts().nbGroup();
 		return items;
 	}
 
-	JsmGroup::Type groupType = jsmFile->getScripts().group(groupID).type();
+	JsmGroup::Type groupType = data()->getJsmFile()->getScripts().group(groupID).type();
 
-	begin = jsmFile->getScripts().firstMethodID(groupID);
-	count = jsmFile->getScripts().nbScript(groupID);
+	begin = data()->getJsmFile()->getScripts().firstMethodID(groupID);
+	count = data()->getJsmFile()->getScripts().nbScript(groupID);
 
-	if(jsmFile->getScripts().nbScript()<begin+count) {
-		qWarning() << "JsmFile::methodList error 2" << jsmFile->getScripts().nbScript() << (begin+count);
+	if(data()->getJsmFile()->getScripts().nbScript()<begin+count) {
+		qWarning() << "JsmFile::methodList error 2" << data()->getJsmFile()->getScripts().nbScript() << (begin+count);
 		return items;
 	}
 
 	for(int methodID=0 ; methodID<count ; ++methodID)
 	{
-		const JsmScript &script = jsmFile->getScripts().script(groupID, methodID);
+		const JsmScript &script = data()->getJsmFile()->getScripts().script(groupID, methodID);
 		if(methodID==0) {
 			name = QString();
 		}
@@ -500,7 +491,7 @@ void JsmWidget::gotoScript(int groupID, int methodID, int opcodeID)
 	list2->scrollToItem(item);
 
 	QTextCursor cursor = textEdit->textCursor();
-	cursor.setPosition(textEdit->document()->findBlockByLineNumber(jsmFile->opcodePositionInText(groupID, methodID, opcodeID)).position());
+	cursor.setPosition(textEdit->document()->findBlockByLineNumber(data()->getJsmFile()->opcodePositionInText(groupID, methodID, opcodeID)).position());
 	cursor.movePosition(QTextCursor::StartOfLine);
 	cursor.movePosition(QTextCursor::EndOfLine, QTextCursor::KeepAnchor);
 	textEdit->setTextCursor(cursor);

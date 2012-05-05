@@ -28,13 +28,10 @@ class WalkmeshWidget : public PageWidget
 public:
 	WalkmeshWidget(QWidget *parent=0);
 	void clear();
-	void setData(Field *field);
-	void cleanData();
 	void fill();
 	inline QString tabName() const { return tr("Walkmesh"); }
 private:
 	void build();
-	WalkmeshFile *walkmeshFile;
 	WalkmeshGLWidget *walkmeshGL;
 };
 

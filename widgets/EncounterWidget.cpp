@@ -70,29 +70,16 @@ void EncounterWidget::setReadOnly(bool readOnly)
 	PageWidget::setReadOnly(readOnly);
 }
 
-void EncounterWidget::setData(Field *field)
-{
-	if(this->encounterFile != field->getEncounterFile()) {
-		clear();
-		this->encounterFile = field->getEncounterFile();
-	}
-}
-
-void EncounterWidget::cleanData()
-{
-	encounterFile = NULL;
-}
-
 void EncounterWidget::fill()
 {
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(encounterFile == NULL)	return;
+	if(!hasData() || !data()->hasEncounterFile())	return;
 
 	for(int i=0 ; i<4 ; ++i) {
-		formationEdit[i]->setValue(encounterFile->formation(i));
-		rateEdit[i]->setValue(encounterFile->rate(i));
+		formationEdit[i]->setValue(data()->getEncounterFile()->formation(i));
+		rateEdit[i]->setValue(data()->getEncounterFile()->rate(i));
 	}
 
 	PageWidget::fill();
@@ -116,7 +103,7 @@ void EncounterWidget::editFormation(int value)
 		return;
 	}
 
-	encounterFile->setFormation(index, value);
+	data()->getEncounterFile()->setFormation(index, value);
 }
 
 void EncounterWidget::editRate(int value)
@@ -137,5 +124,5 @@ void EncounterWidget::editRate(int value)
 		return;
 	}
 
-	encounterFile->setRate(index, value);
+	data()->getEncounterFile()->setRate(index, value);
 }

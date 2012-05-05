@@ -33,8 +33,6 @@ public:
 
 	void build();
 	void clear();
-	void setData(Field *field);
-	void cleanData();
 	void fill();
 	QString selectedText() const;
 	void setReadOnly(bool);
@@ -73,9 +71,6 @@ private:
 	QSpinBox *xCoord, *yCoord;
 
 	bool dontUpdateCurrentText;
-	MsdFile *msdFile;
-	JsmFile *jsmFile;
-	TdwFile *tdwFile;
 //	FF8Windows *windows;
 };
 
