@@ -18,7 +18,7 @@
 #include "BackgroundWidget.h"
 
 BackgroundWidget::BackgroundWidget(QWidget *parent)
-	: PageWidget(parent), mapFile(NULL)
+	: PageWidget(parent), backgroundFile(NULL)
 {
 //	build();
 }
@@ -78,10 +78,10 @@ void BackgroundWidget::clear()
 
 void BackgroundWidget::parameterChanged(int index)
 {
-	if(mapFile == NULL)		return;
+	if(backgroundFile == NULL)		return;
 
 	int parameter = parametersWidget->itemData(index).toInt();
-	QList<quint8> states = mapFile->allparams.values(parameter);
+	QList<quint8> states = backgroundFile->allparams.values(parameter);
 	qSort(states);
 	QListWidgetItem *item;
 
@@ -91,36 +91,36 @@ void BackgroundWidget::parameterChanged(int index)
 		item = new QListWidgetItem(tr("État %1").arg(state));
 		item->setData(Qt::UserRole, state);
 		item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-		item->setCheckState(mapFile->params.contains(parameter, state) ? Qt::Checked : Qt::Unchecked);
+		item->setCheckState(backgroundFile->params.contains(parameter, state) ? Qt::Checked : Qt::Unchecked);
 		statesWidget->addItem(item);
 	}
 }
 
 void BackgroundWidget::enableState(QListWidgetItem *item)
 {
-	if(mapFile == NULL)		return;
+	if(backgroundFile == NULL)		return;
 
 	bool enabled = item->data(Qt::CheckStateRole).toBool();
 	int parameter = parametersWidget->itemData(parametersWidget->currentIndex()).toInt(), state = item->data(Qt::UserRole).toInt();
 
 	if(enabled)
-		mapFile->params.insert(parameter, state);
+		backgroundFile->params.insert(parameter, state);
 	else
-		mapFile->params.remove(parameter, state);
+		backgroundFile->params.remove(parameter, state);
 
-	image->setPixmap(mapFile->background());
+	image->setPixmap(backgroundFile->background());
 }
 
 void BackgroundWidget::enableLayer(QListWidgetItem *item)
 {
-	if(mapFile == NULL)		return;
+	if(backgroundFile == NULL)		return;
 
 	bool enabled = item->data(Qt::CheckStateRole).toBool();
 	int layer = item->data(Qt::UserRole).toInt();
 
-	mapFile->layers.insert(layer, enabled);
+	backgroundFile->layers.insert(layer, enabled);
 
-	image->setPixmap(mapFile->background());
+	image->setPixmap(backgroundFile->background());
 }
 
 /*void BackgroundWidget::switchItem(QListWidgetItem *item)
@@ -130,9 +130,9 @@ void BackgroundWidget::enableLayer(QListWidgetItem *item)
 
 void BackgroundWidget::setData(Field *field)
 {
-	if(this->mapFile != field->getMapFile()) {
+	if(this->backgroundFile != field->getBackgroundFile()) {
 		clear();
-		this->mapFile = field->getMapFile();
+		this->backgroundFile = field->getBackgroundFile();
 	}
 
 	if(!isBuilded())	build();
@@ -142,7 +142,7 @@ void BackgroundWidget::setData(Field *field)
 
 void BackgroundWidget::cleanData()
 {
-	mapFile = NULL;
+	backgroundFile = NULL;
 }
 
 void BackgroundWidget::fill()
@@ -150,16 +150,16 @@ void BackgroundWidget::fill()
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(mapFile == NULL)		return;
+	if(backgroundFile == NULL)		return;
 
-	image->setPixmap(mapFile->background());
+	image->setPixmap(backgroundFile->background());
 
 	parametersWidget->clear();
-	QList<quint8> parameters = mapFile->allparams.uniqueKeys();
+	QList<quint8> parameters = backgroundFile->allparams.uniqueKeys();
 	foreach(quint8 parameter, parameters)
 		parametersWidget->addItem(tr("Paramètre %1").arg(parameter), parameter);
 
-	QList<quint8> layerIDs = mapFile->layers.keys();
+	QList<quint8> layerIDs = backgroundFile->layers.keys();
 	QListWidgetItem *item;
 
 	layersWidget->clear();

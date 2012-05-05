@@ -22,7 +22,7 @@
 #include "PageWidget.h"
 #include "BGPreview.h"
 #include "TextPreview.h"
-#include "MsdFile.h"
+#include "files/MsdFile.h"
 #include "MsdHighlighter.h"
 
 class MsdWidget : public PageWidget

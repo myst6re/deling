@@ -15,7 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "JsmFile.h"
+#include "files/JsmFile.h"
 
 QStringList JsmFile::opcodeNameCalc;
 QStringList JsmFile::opcodeName;

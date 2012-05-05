@@ -23,7 +23,7 @@
 #include "BGPreview.h"
 #include "BGPreview2.h"
 #include "FF8Image.h"
-#include "MapFile.h"
+#include "files/BackgroundFile.h"
 
 class BackgroundWidget : public PageWidget
 {
@@ -43,7 +43,7 @@ private slots:
 private:
 	void build();
 
-	MapFile *mapFile;
+	BackgroundFile *backgroundFile;
 	BGPreview2 *image;
 	QComboBox *parametersWidget;
 	QListWidget *statesWidget, *layersWidget;

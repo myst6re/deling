@@ -372,15 +372,11 @@ void MainWindow::fillPage()
 		fieldArchive->openBG(field, chara_data);
 	}
 
-	qDebug() << "setData:" << field->name();
-
 	foreach(PageWidget *pageWidget, pageWidgets)
 		pageWidget->setData(field);
 
-	qDebug() << "fill:" << field->name();
-
-	if(field->hasMapFile())
-		bgPreview->fill(field->getMapFile()->background());
+	if(field->hasBackgroundFile())
+		bgPreview->fill(field->getBackgroundFile()->background());
 	else
 		bgPreview->fill(FF8Image::errorPixmap());
 

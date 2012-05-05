@@ -27,7 +27,7 @@ FieldPS::~FieldPS()
 {
 }
 
-bool FieldPS::hasMapFiles() const
+bool FieldPS::hasMapMimFiles() const
 {
 	return true;
 }
@@ -109,7 +109,7 @@ bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim)
 
 	memoryPos = posSectionInf - 48;
 
-	openMapFile(dat.mid(posSectionMap - memoryPos, posSectionMsk-posSectionMap), mim.mid(0x0c, 438272));
+	openBackgroundFile(dat.mid(posSectionMap - memoryPos, posSectionMsk-posSectionMap), mim.mid(0x0c, 438272));
 
 	return true;
 }

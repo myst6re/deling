@@ -28,7 +28,7 @@ public:
 	FieldPC(const QString &path);
 	~FieldPC();
 
-	bool hasMapFiles() const;
+	bool hasMapMimFiles() const;
 //	void setArchiveHeader(FsArchive *header);
 	FsArchive *getArchiveHeader() const;
 	const QString &path() const;

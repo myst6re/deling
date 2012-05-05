@@ -34,7 +34,7 @@ FieldPC::~FieldPC()
 	if(header!=NULL)		delete header;
 }
 
-bool FieldPC::hasMapFiles() const
+bool FieldPC::hasMapMimFiles() const
 {
 	return header != NULL && header->fileExists("*"%_name+".mim") && header->fileExists("*"%_name+".map");
 }
@@ -228,7 +228,7 @@ bool FieldPC::open2()
 		return false;
 
 	if(header->fileExists("*"%name()%".map") && header->fileExists("*"%name()%".mim")) {
-		openMapFile(header->fileData("*"%name()%".map"), header->fileData("*"%name()%".mim"));
+		openBackgroundFile(header->fileData("*"%name()%".map"), header->fileData("*"%name()%".mim"));
 	}
 	openTdwFile(header->fileData("*"%name()%".tdw"));
 //	chara_data = header->fileData("*chara.one");
@@ -260,7 +260,7 @@ bool FieldPC::open2(FsArchive *archive)
 	if(fs_data.isEmpty())	 return false;
 
 	if(fi_infos_mim!=NULL && fi_infos_map!=NULL) {
-		openMapFile(fi_infos_map->data(fs_data), fi_infos_mim->data(fs_data));
+		openBackgroundFile(fi_infos_map->data(fs_data), fi_infos_mim->data(fs_data));
 	}
 	if(fi_infos_tdw!=NULL) {
 		openTdwFile(fi_infos_tdw->data(fs_data));

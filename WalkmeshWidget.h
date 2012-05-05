@@ -20,7 +20,7 @@
 
 #include <QtGui>
 #include "PageWidget.h"
-#include "WalkmeshFile.h"
+#include "files/WalkmeshFile.h"
 #include "WalkmeshGLWidget.h"
 
 class WalkmeshWidget : public PageWidget

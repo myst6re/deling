@@ -33,7 +33,7 @@ public:
 	FieldPS(const QByteArray &data, quint32 isoFieldID);
 	~FieldPS();
 
-	bool hasMapFiles() const;
+	bool hasMapMimFiles() const;
 //	void setIsoFieldID(quint32 isoFieldID);
 	quint32 isoFieldID() const;
 	bool open(const QByteArray &dat_data);

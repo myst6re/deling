@@ -22,7 +22,7 @@
 #include <QtGui/QProgressDialog>
 #include "parameters.h"
 #include "LZS.h"
-#include "MsdFile.h"
+#include "files/MsdFile.h"
 #include "Data.h"
 #include "Field.h"
 

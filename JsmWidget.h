@@ -20,7 +20,7 @@
 
 #include <QtGui>
 #include "PageWidget.h"
-#include "JsmFile.h"
+#include "files/JsmFile.h"
 #include "BGPreview.h"
 #include "JsmHighlighter.h"
 #include "PlainTextEdit.h"

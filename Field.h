@@ -19,12 +19,12 @@
 #define FIELD_H
 
 #include <QtCore>
-#include "MsdFile.h"
-#include "JsmFile.h"
-#include "WalkmeshFile.h"
-#include "MiscFile.h"
-#include "MapFile.h"
-#include "TdwFile.h"
+#include "files/MsdFile.h"
+#include "files/JsmFile.h"
+#include "files/WalkmeshFile.h"
+#include "files/MiscFile.h"
+#include "files/BackgroundFile.h"
+#include "files/TdwFile.h"
 
 class Field
 {
@@ -39,24 +39,24 @@ public:
 	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray());
 	void openWalkmeshFile(const QByteArray &id, const QByteArray &ca=QByteArray());
 	void openMiscFile(const QByteArray &inf, const QByteArray &rat, const QByteArray &mrt, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
-	void openMapFile(const QByteArray &map, const QByteArray &mim);
+	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
 	void openTdwFile(const QByteArray &tdw);
 
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
 	bool hasWalkmeshFile() const;
 	bool hasMiscFile() const;
-	bool hasMapFile() const;
+	bool hasBackgroundFile() const;
 	bool hasTdwFile() const;
 
-	virtual bool hasMapFiles() const=0;
+	virtual bool hasMapMimFiles() const=0;
 	bool hasFiles() const;
 
 	MsdFile *getMsdFile() const;
 	JsmFile *getJsmFile() const;
 	WalkmeshFile *getWalkmeshFile() const;
 	MiscFile *getMiscFile() const;
-	MapFile *getMapFile() const;
+	BackgroundFile *getBackgroundFile() const;
 	TdwFile *getTdwFile() const;
 
 	bool isModified() const;
@@ -67,7 +67,7 @@ protected:
 	void deleteJsmFile();
 	void deleteWalkmeshFile();
 	void deleteMiscFile();
-	void deleteMapFile();
+	void deleteBackgroundFile();
 	void deleteTdwFile();
 
 	bool _isOpen;
@@ -76,7 +76,7 @@ protected:
 	JsmFile *jsmFile;
 	WalkmeshFile *walkmeshFile;
 	MiscFile *miscFile;
-	MapFile *mapFile;
+	BackgroundFile *backgroundFile;
 	TdwFile *tdwFile;
 };
 

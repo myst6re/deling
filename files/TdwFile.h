@@ -15,22 +15,26 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef JSMHIGHLIGHTER_H
-#define JSMHIGHLIGHTER_H
+#ifndef TDWFILE_H
+#define TDWFILE_H
 
-#include <QtGui>
-#include "files/JsmFile.h"
+#include <QtCore>
+#include "FF8Image.h"
 
-class JsmHighlighter : public QSyntaxHighlighter
+class TdwFile
 {
-	Q_OBJECT
 public:
-	JsmHighlighter(QTextDocument *parent = 0);
-
-protected:
-	void highlightBlock(const QString &text);
-
+	TdwFile();
+	bool open(const QByteArray &tdw);
+	bool isModified();
+	QPixmap image(int palID=0) const;
+	static QPixmap image(const QByteArray &data, int palID=0);
+	QImage letter(int charId, int fontColor, bool curFrame) const;
+	quint8 *charWidth();
 private:
+	static QByteArray tim;
+	bool modified;
+	quint8 _charWidth[224];
 };
 
-#endif // JSMHIGHLIGHTER_H
+#endif // TDWFILE_H

@@ -20,8 +20,8 @@
 
 #include <QtGui>
 #include "FF8Text.h"
-#include "JsmFile.h"
-#include "TdwFile.h"
+#include "files/JsmFile.h"
+#include "files/TdwFile.h"
 #include "FF8Image.h"
 #define NOWIN	65535
 #define DARKGREY	0

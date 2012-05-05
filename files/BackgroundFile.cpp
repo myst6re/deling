@@ -1,14 +1,31 @@
-#include "MapFile.h"
+/****************************************************************************
+ ** Deling Final Fantasy VIII Field Editor
+ ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ **
+ ** This program is free software: you can redistribute it and/or modify
+ ** it under the terms of the GNU General Public License as published by
+ ** the Free Software Foundation, either version 3 of the License, or
+ ** (at your option) any later version.
+ **
+ ** This program is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ** GNU General Public License for more details.
+ **
+ ** You should have received a copy of the GNU General Public License
+ ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
+#include "files/BackgroundFile.h"
 
-QByteArray MapFile::mim = QByteArray();
-QByteArray MapFile::map = QByteArray();
+QByteArray BackgroundFile::mim = QByteArray();
+QByteArray BackgroundFile::map = QByteArray();
 
-MapFile::MapFile() :
+BackgroundFile::BackgroundFile() :
 	modified(false)
 {
 }
 
-bool MapFile::open(const QByteArray &map, const QByteArray &mim)
+bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim)
 {
 	int mimSize = mim.size(), mapSize = map.size(), tilePos=0;
 	const char *constMapData = map.constData();
@@ -61,12 +78,12 @@ bool MapFile::open(const QByteArray &map, const QByteArray &mim)
 	return true;
 }
 
-bool MapFile::isModified()
+bool BackgroundFile::isModified()
 {
 	return modified;
 }
 
-QPixmap MapFile::background()
+QPixmap BackgroundFile::background()
 {
 	int mimSize = mim.size();
 
@@ -78,7 +95,7 @@ QPixmap MapFile::background()
 		return FF8Image::errorPixmap();
 }
 
-QPixmap MapFile::type1()
+QPixmap BackgroundFile::type1()
 {
 	int mapSize = map.size(), tilePos=0;
 	Tile1 tile;
@@ -149,7 +166,7 @@ QPixmap MapFile::type1()
 	return QPixmap::fromImage(image);
 }
 
-QPixmap MapFile::type2()
+QPixmap BackgroundFile::type2()
 {
 	int mapSize = map.size(), tilePos=0, baseX, pos, x, y, palStart, largeurMin=0, largeurMax=0, hauteurMin=0, hauteurMax=0;
 	Tile1 tileType1;
@@ -337,7 +354,7 @@ QPixmap MapFile::type2()
 	return QPixmap::fromImage(image);
 }
 
-QRgb MapFile::BGcolor(int value, quint8 blendType, QRgb color0)
+QRgb BackgroundFile::BGcolor(int value, quint8 blendType, QRgb color0)
 {
 	int r = (value & 31)*COEFF_COLOR, g = (value>>5 & 31)*COEFF_COLOR, b = (value>>10 & 31)*COEFF_COLOR;
 

@@ -11,21 +11,18 @@ INCLUDEPATH += .
 HEADERS += MainWindow.h \
     parameters.h \
     Data.h \
-    Config.h \
-    MsdFile.h \
+	Config.h \
     FF8Text.h \
 	FieldArchive.h \
     LZS.h \
     Search.h \
     BGPreview.h \
     TextPreview.h \
-    Field.h \
-    JsmFile.h \
+	Field.h \
     JsmWidget.h \
     MsdWidget.h \
 	WalkmeshWidget.h \
 	WalkmeshGLWidget.h \
-    WalkmeshFile.h \
 	FsArchive.h \
 	IsoArchive.h \
     VarManager.h \
@@ -36,8 +33,7 @@ HEADERS += MainWindow.h \
     BackgroundWidget.h \
     FsPreviewWidget.h \
 	FF8Image.h \
-    MiscWidget.h \
-    MiscFile.h \
+	MiscWidget.h \
 	MsdHighlighter.h \
     ConfigDialog.h \
     FF8DiscArchive.h \
@@ -51,13 +47,16 @@ HEADERS += MainWindow.h \
     JsmOpcode.h \
     PageWidget.h \
 	PlainTextEdit.h \
-    MapFile.h \
-    TdwFile.h
+	files/MsdFile.h \
+	files/JsmFile.h \
+	files/WalkmeshFile.h \
+	files/MiscFile.h \
+	files/BackgroundFile.h \
+	files/TdwFile.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
-    Config.cpp \
-    MsdFile.cpp \
+	Config.cpp \
     FF8Text.cpp \
     text.cpp \
 	FieldArchive.cpp \
@@ -65,13 +64,11 @@ SOURCES += MainWindow.cpp \
     Search.cpp \
     BGPreview.cpp \
     TextPreview.cpp \
-    Field.cpp \
-    JsmFile.cpp \
+	Field.cpp \
     JsmWidget.cpp \
     MsdWidget.cpp \
 	WalkmeshWidget.cpp \
 	WalkmeshGLWidget.cpp \
-    WalkmeshFile.cpp \
 	FsArchive.cpp \
 	IsoArchive.cpp \
     VarManager.cpp \
@@ -82,8 +79,7 @@ SOURCES += MainWindow.cpp \
     BackgroundWidget.cpp \
     FsPreviewWidget.cpp \
     FF8Image.cpp \
-    MiscWidget.cpp \
-    MiscFile.cpp \
+	MiscWidget.cpp \
 	MsdHighlighter.cpp \
     ConfigDialog.cpp \
     FF8DiscArchive.cpp \
@@ -97,8 +93,12 @@ SOURCES += MainWindow.cpp \
     JsmOpcode.cpp \
     PageWidget.cpp \
 	PlainTextEdit.cpp \
-    MapFile.cpp \
-    TdwFile.cpp
+	files/MsdFile.cpp \
+	files/JsmFile.cpp \
+	files/WalkmeshFile.cpp \
+	files/MiscFile.cpp \
+	files/BackgroundFile.cpp \
+	files/TdwFile.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

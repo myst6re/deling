@@ -21,7 +21,7 @@
 #include <QtGui>
 #include <QGLWidget>
 #include <GL/glu.h>
-#include "WalkmeshFile.h"
+#include "files/WalkmeshFile.h"
 
 class WalkmeshGLWidget : public QGLWidget
 {
