@@ -10,7 +10,8 @@ public:
 	TdwFile();
 	bool open(const QByteArray &tdw);
 	bool isModified();
-	QPixmap image() const;
+	QPixmap image(int palID=0) const;
+	static QPixmap image(const QByteArray &data, int palID=0);
 	QImage letter(int charId, int fontColor, bool curFrame) const;
 	quint8 *charWidth();
 private:

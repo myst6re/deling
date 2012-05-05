@@ -138,7 +138,7 @@ void FsDialog::generatePreview()
 	}
 	else if(fileType == "tdw")
 	{
-		preview->imagePreview(FF8Image::tdw(data), fileName);
+		preview->imagePreview(TdwFile::image(data), fileName);
 	}
 	else if(fileType == "map" || fileType == "mim")
 	{

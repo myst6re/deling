@@ -41,9 +41,22 @@ bool TdwFile::open(const QByteArray &tdw)
 	return true;
 }
 
-QPixmap TdwFile::image() const
+QPixmap TdwFile::image(int palID) const
 {
 	return FF8Image::tim(tim);
+}
+
+QPixmap TdwFile::image(const QByteArray &data, int palID)
+{
+	quint32 pos;
+	const char *constData = data.constData();
+
+	if(data.size() <= 8) {
+		return QPixmap();
+	}
+	memcpy(&pos, &constData[4], 4);
+
+	return FF8Image::tim(data.mid(pos), palID);
 }
 
 QImage TdwFile::letter(int charId, int fontColor, bool curFrame) const

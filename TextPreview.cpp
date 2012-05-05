@@ -79,6 +79,8 @@ TextPreview::TextPreview(QWidget *parent)
 
 void TextPreview::setFontImageAdd(TdwFile *tdwFile)
 {
+	if(tdwFile == NULL)	return;
+
 	memcpy(charWidth[5], tdwFile->charWidth(), sizeof(quint8) * 224);
 	TextPreview::tdwFile = tdwFile;
 }

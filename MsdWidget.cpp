@@ -369,9 +369,11 @@ void MsdWidget::setData(Field *field)
 		clear();
 		this->msdFile = field->getMsdFile();
 		this->jsmFile = field->getJsmFile();
-		this->tdwFile = field->getTdwFile();
-		if(isBuilded()) {
-			textPreview->setFontImageAdd(this->tdwFile);
+		if(field->hasTdwFile()) {
+			this->tdwFile = field->getTdwFile();
+			if(isBuilded()) {
+				textPreview->setFontImageAdd(this->tdwFile);
+			}
 		}
 	}
 }

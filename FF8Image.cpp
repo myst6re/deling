@@ -301,19 +301,6 @@ QPixmap FF8Image::tim(const QByteArray &data, int palID)
 	return QPixmap::fromImage(image);
 }
 
-QPixmap FF8Image::tdw(const QByteArray &data, int palID)
-{
-	quint32 pos;
-	const char *constData = data.constData();
-
-	if(data.size() <= 8) {
-		return QPixmap();
-	}
-	memcpy(&pos, &constData[4], 4);
-
-	return tim(data.mid(pos), palID);
-}
-
 int FF8Image::findFirstTim(const QByteArray &data)
 {
 	int index = -1, dataSize = data.size();

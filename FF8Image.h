@@ -29,7 +29,6 @@ public:
 	static QPixmap lzs(const QByteArray &data);
 	static QPixmap tex(const QByteArray &data, int palID=0);
 	static QPixmap tim(const QByteArray &data, int palID=0);
-	static QPixmap tdw(const QByteArray &data, int palID=0);
 
 	static int findFirstTim(const QByteArray &data);
 	static int findTims(const QByteArray &data);

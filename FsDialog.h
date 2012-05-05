@@ -25,6 +25,7 @@
 #include "FsPreviewWidget.h"
 #include "FF8Image.h"
 #include "MapFile.h"
+#include "TdwFile.h"
 
 class FsDialog : public QWidget
 {
