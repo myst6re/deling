@@ -19,7 +19,7 @@
 #define JSMWIDGET_H
 
 #include <QtGui>
-#include "PageWidget.h"
+#include "widgets/PageWidget.h"
 #include "files/JsmFile.h"
 #include "BGPreview.h"
 #include "JsmHighlighter.h"

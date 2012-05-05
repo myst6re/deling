@@ -86,7 +86,7 @@ void Field::openEncounterFile(const QByteArray &rat, const QByteArray &mrt)
 
 	if(!encounterFile->open(rat, mrt)) {
 		qWarning() << "Field::openEncounterFile error" << _name;
-		deleteMiscFile();
+		deleteEncounterFile();
 	}
 }
 

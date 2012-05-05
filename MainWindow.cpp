@@ -92,6 +92,7 @@ MainWindow::MainWindow()
 	pageWidgets.append(new JsmWidget());
 	pageWidgets.append(new WalkmeshWidget());
 	pageWidgets.append(new BackgroundWidget());
+	pageWidgets.append(new EncounterWidget());
 	pageWidgets.append(new MiscWidget());
 
 	tabBar = new QTabBar();

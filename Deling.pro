@@ -19,9 +19,6 @@ HEADERS += MainWindow.h \
     BGPreview.h \
     TextPreview.h \
 	Field.h \
-    JsmWidget.h \
-    MsdWidget.h \
-	WalkmeshWidget.h \
 	WalkmeshGLWidget.h \
 	FsArchive.h \
 	IsoArchive.h \
@@ -29,11 +26,9 @@ HEADERS += MainWindow.h \
     MiscSearch.h \
 	FsDialog.h \
 	FsWidget.h \
-    BGPreview2.h \
-    BackgroundWidget.h \
+	BGPreview2.h \
     FsPreviewWidget.h \
 	FF8Image.h \
-	MiscWidget.h \
 	MsdHighlighter.h \
     ConfigDialog.h \
     FF8DiscArchive.h \
@@ -44,16 +39,22 @@ HEADERS += MainWindow.h \
     FieldPC.h \
     FieldArchivePS.h \
     FieldArchivePC.h \
-    JsmOpcode.h \
-    PageWidget.h \
+	JsmOpcode.h \
 	PlainTextEdit.h \
+	widgets/PageWidget.h \
+	widgets/BackgroundWidget.h \
+	widgets/JsmWidget.h \
+	widgets/MsdWidget.h \
+	widgets/WalkmeshWidget.h \
+	widgets/MiscWidget.h \
 	files/MsdFile.h \
 	files/JsmFile.h \
 	files/WalkmeshFile.h \
 	files/MiscFile.h \
 	files/BackgroundFile.h \
 	files/TdwFile.h \
-    files/EncounterFile.h
+    files/EncounterFile.h \
+    widgets/EncounterWidget.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -66,9 +67,6 @@ SOURCES += MainWindow.cpp \
     BGPreview.cpp \
     TextPreview.cpp \
 	Field.cpp \
-    JsmWidget.cpp \
-    MsdWidget.cpp \
-	WalkmeshWidget.cpp \
 	WalkmeshGLWidget.cpp \
 	FsArchive.cpp \
 	IsoArchive.cpp \
@@ -76,11 +74,9 @@ SOURCES += MainWindow.cpp \
     MiscSearch.cpp \
 	FsDialog.cpp \
 	FsWidget.cpp \
-    BGPreview2.cpp \
-    BackgroundWidget.cpp \
+	BGPreview2.cpp \
     FsPreviewWidget.cpp \
-    FF8Image.cpp \
-	MiscWidget.cpp \
+	FF8Image.cpp \
 	MsdHighlighter.cpp \
     ConfigDialog.cpp \
     FF8DiscArchive.cpp \
@@ -91,16 +87,22 @@ SOURCES += MainWindow.cpp \
     FieldPC.cpp \
     FieldArchivePS.cpp \
     FieldArchivePC.cpp \
-    JsmOpcode.cpp \
-    PageWidget.cpp \
+	JsmOpcode.cpp \
 	PlainTextEdit.cpp \
+	widgets/PageWidget.cpp \
+	widgets/BackgroundWidget.cpp \
+	widgets/JsmWidget.cpp \
+	widgets/MsdWidget.cpp \
+	widgets/WalkmeshWidget.cpp \
+	widgets/MiscWidget.cpp \
 	files/MsdFile.cpp \
 	files/JsmFile.cpp \
 	files/WalkmeshFile.cpp \
 	files/MiscFile.cpp \
 	files/BackgroundFile.cpp \
 	files/TdwFile.cpp \
-    files/EncounterFile.cpp
+    files/EncounterFile.cpp \
+    widgets/EncounterWidget.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

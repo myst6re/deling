@@ -15,27 +15,32 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef ENCOUNTERFILE_H
-#define ENCOUNTERFILE_H
+#ifndef ENCOUNTERWIDGET_H
+#define ENCOUNTERWIDGET_H
 
-#include <QtCore>
+#include <QtGui>
+#include "widgets/PageWidget.h"
+#include "files/MiscFile.h"
+#include "files/WalkmeshFile.h"
 
-class EncounterFile
+class EncounterWidget : public PageWidget
 {
+	Q_OBJECT
 public:
-	EncounterFile();
-	bool open(const QByteArray &rat, const QByteArray &mrt);
-	bool save(QByteArray &rat, QByteArray &mrt);
-	bool isModified();
-	quint16 formation(int index) const;
-	quint8 rate(int index) const;
-	void setFormation(int index, quint16 formation);
-	void setRate(int index, quint8 rate);
-	QList<int> searchAllBattles();
+	EncounterWidget(QWidget *parent=0);
+	void build();
+	void clear();
+	void setReadOnly(bool readOnly);
+	void setData(Field *field);
+	void cleanData();
+	void fill();
+	inline QString tabName() const { return tr("Rencontres aléatoires"); }
+private slots:
+	void editFormation(int value);
+	void editRate(int value);
 private:
-	quint16 formations[4];
-	quint8 rates[4];
-	bool modified;
+	EncounterFile *encounterFile;
+	QSpinBox *formationEdit[4], *rateEdit[4];
 };
 
-#endif // ENCOUNTERFILE_H
+#endif // ENCOUNTERWIDGET_H

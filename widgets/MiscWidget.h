@@ -15,27 +15,43 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef WALKMESHWIDGET_H
-#define WALKMESHWIDGET_H
+#ifndef MISCWIDGET_H
+#define MISCWIDGET_H
 
 #include <QtGui>
-#include "PageWidget.h"
+#include "widgets/PageWidget.h"
+#include "files/MiscFile.h"
 #include "files/WalkmeshFile.h"
-#include "WalkmeshGLWidget.h"
 
-class WalkmeshWidget : public PageWidget
+class MiscWidget : public PageWidget
 {
+	Q_OBJECT
 public:
-	WalkmeshWidget(QWidget *parent=0);
+	MiscWidget(QWidget *parent=0);
+	void build();
 	void clear();
+	void setReadOnly(bool readOnly);
 	void setData(Field *field);
 	void cleanData();
 	void fill();
-	inline QString tabName() const { return tr("Walkmesh"); }
+	inline QString tabName() const { return tr("Divers"); }
+private slots:
+	void editName(const QString &);
+	void editPmp(const QString &);
+	void editPmd(const QString &);
+	void editPvp(const QString &);
+	void editCaVector(int value);
+	void editCaPos(double value);
 private:
-	void build();
+	void editCaVector(int id, int id2, int value);
+	void editCaPos(int id, int value);
+
+	MiscFile *miscFile;
 	WalkmeshFile *walkmeshFile;
-	WalkmeshGLWidget *walkmeshGL;
+	QLineEdit *nameEdit, *pmpEdit, *pmdEdit, *pvpEdit;
+	QListWidget *gateList;
+	QSpinBox *caVectorX1Edit, *caVectorX2Edit, *caVectorX3Edit, *caVectorY1Edit, *caVectorY2Edit, *caVectorY3Edit, *caVectorZ1Edit, *caVectorZ2Edit, *caVectorZ3Edit;
+	QDoubleSpinBox *caSpaceXEdit, *caSpaceYEdit, *caSpaceZEdit;
 };
 
-#endif // WALKMESHWIDGET_H
+#endif // MISCWIDGET_H

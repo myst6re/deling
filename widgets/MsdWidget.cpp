@@ -15,7 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "MsdWidget.h"
+#include "widgets/MsdWidget.h"
 
 MsdWidget::MsdWidget(QWidget *parent)
 	: PageWidget(parent), msdFile(NULL), jsmFile(NULL), tdwFile(NULL)

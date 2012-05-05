@@ -24,16 +24,21 @@ EncounterFile::EncounterFile()
 
 bool EncounterFile::open(const QByteArray &rat, const QByteArray &mrt)
 {
-	this->rat = rat;
-	this->mrt = mrt;
+	if(rat.size() != 4 || mrt.size() != 8) {
+		qWarning() << "EncounterFile::open Bad sizes" << rat.size() << mrt.size();
+		return false;
+	}
+
+	memcpy(rates, rat.constData(), 4);
+	memcpy(formations, mrt.constData(), 2*4);
 
 	return true;
 }
 
 bool EncounterFile::save(QByteArray &rat, QByteArray &mrt)
 {
-	rat = this->rat;
-	mrt = this->mrt;
+	rat = QByteArray((char *)rates, 4);
+	mrt = QByteArray((char *)formations, 2*4);
 	modified = false;
 
 	return true;
@@ -44,45 +49,35 @@ bool EncounterFile::isModified()
 	return modified;
 }
 
-const QByteArray &EncounterFile::getRatData()
+quint16 EncounterFile::formation(int index) const
 {
-	return rat;
+	return formations[index];
 }
 
-void EncounterFile::setRatData(const QByteArray &rat)
+quint8 EncounterFile::rate(int index) const
 {
-	this->rat = rat;
+	return rates[index];
+}
+
+void EncounterFile::setFormation(int index, quint16 formation)
+{
+	formations[index] = formation;
 	modified = true;
 }
 
-const QByteArray &EncounterFile::getMrtData()
+void EncounterFile::setRate(int index, quint8 rate)
 {
-	return mrt;
-}
-
-void EncounterFile::setMrtData(const QByteArray &mrt)
-{
-	this->mrt = mrt;
+	rates[index] = rate;
 	modified = true;
 }
 
 QList<int> EncounterFile::searchAllBattles()
 {
 	QList<int> battles;
-	int id;
 
-	if(mrt.size() == 8) {
-		if(mrt != QByteArray("\x00\x00\x00\x00\x00\x00\x00\x00", 8)) {
-			const char *constData = mrt.constData();
-			for(int i=0 ; i<4 ; ++i) {
-				id = 0;
-				memcpy(&id, constData, 2);
-				battles.append(id);
-				constData += 2;
-			}
-		}
-	} else {
-		qDebug() << mrt.size();
+	for(int i=0 ; i<4 ; ++i) {
+		if(formations[i] != 0)
+			battles.append(formations[i]);
 	}
 
 	return battles;

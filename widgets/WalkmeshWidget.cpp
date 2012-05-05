@@ -15,7 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "WalkmeshWidget.h"
+#include "widgets/WalkmeshWidget.h"
 
 WalkmeshWidget::WalkmeshWidget(QWidget *parent) :
 	PageWidget(parent), walkmeshFile(NULL), walkmeshGL(NULL)

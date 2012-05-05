@@ -19,7 +19,7 @@
 #define BACKGROUNDWIDGET_H
 
 #include <QtGui>
-#include "PageWidget.h"
+#include "widgets/PageWidget.h"
 #include "BGPreview.h"
 #include "BGPreview2.h"
 #include "FF8Image.h"

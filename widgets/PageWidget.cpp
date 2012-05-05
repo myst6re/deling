@@ -15,7 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "PageWidget.h"
+#include "widgets/PageWidget.h"
 
 PageWidget::PageWidget(QWidget *parent) :
 	QWidget(parent), builded(false), filled(false), readOnly(false)

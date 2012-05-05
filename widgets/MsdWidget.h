@@ -19,7 +19,7 @@
 #define MSDWIDGET_H
 
 #include <QtGui>
-#include "PageWidget.h"
+#include "widgets/PageWidget.h"
 #include "BGPreview.h"
 #include "TextPreview.h"
 #include "files/MsdFile.h"
