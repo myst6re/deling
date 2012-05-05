@@ -18,7 +18,10 @@
 #include "Field.h"
 
 Field::Field(const QString &name)
-	: _isOpen(false), _name(name), msdFile(NULL), jsmFile(NULL), walkmeshFile(NULL), miscFile(NULL), backgroundFile(NULL), tdwFile(NULL)
+	: _isOpen(false), _name(name),
+	  msdFile(NULL), jsmFile(NULL), walkmeshFile(NULL),
+	  encounterFile(NULL), miscFile(NULL), backgroundFile(NULL),
+	  tdwFile(NULL)
 {
 }
 
@@ -27,6 +30,7 @@ Field::~Field()
 	if(msdFile!=NULL)			delete msdFile;
 	if(jsmFile!=NULL)			delete jsmFile;
 	if(walkmeshFile!=NULL)		delete walkmeshFile;
+	if(encounterFile!=NULL)		delete encounterFile;
 	if(miscFile!=NULL)			delete miscFile;
 	if(backgroundFile!=NULL)	delete backgroundFile;
 	if(tdwFile!=NULL)			delete tdwFile;
@@ -75,12 +79,24 @@ void Field::openWalkmeshFile(const QByteArray &id, const QByteArray &ca)
 	}
 }
 
-void Field::openMiscFile(const QByteArray &inf, const QByteArray &rat, const QByteArray &mrt, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp)
+void Field::openEncounterFile(const QByteArray &rat, const QByteArray &mrt)
+{
+	if(encounterFile!=NULL) 	deleteEncounterFile();
+	encounterFile = new EncounterFile();
+
+	if(!encounterFile->open(rat, mrt)) {
+		qWarning() << "Field::openEncounterFile error" << _name;
+		deleteMiscFile();
+	}
+}
+
+void Field::openMiscFile(const QByteArray &inf, const QByteArray &pmp,
+						 const QByteArray &pmd, const QByteArray &pvp)
 {
 	if(miscFile!=NULL) 	deleteMiscFile();
 	miscFile = new MiscFile();
 
-	if(!miscFile->open(inf, rat, mrt, pmp, pmd, pvp)) {
+	if(!miscFile->open(inf, pmp, pmd, pvp)) {
 		qWarning() << "Field::openMiscFile error" << _name;
 		deleteMiscFile();
 	}
@@ -103,7 +119,7 @@ void Field::openTdwFile(const QByteArray &tdw)
 	tdwFile = new TdwFile();
 
 	if(!tdwFile->open(tdw)) {
-		qWarning() << "Field::openBackgroundFile error" << _name;
+		qWarning() << "Field::openTdwFile error" << _name;
 		deleteTdwFile();
 	}
 }
@@ -129,6 +145,14 @@ void Field::deleteWalkmeshFile()
 	if(walkmeshFile!=NULL) {
 		delete walkmeshFile;
 		walkmeshFile = NULL;
+	}
+}
+
+void Field::deleteEncounterFile()
+{
+	if(encounterFile!=NULL) {
+		delete encounterFile;
+		encounterFile = NULL;
 	}
 }
 
@@ -171,6 +195,11 @@ bool Field::hasWalkmeshFile() const
 	return walkmeshFile != NULL;
 }
 
+bool Field::hasEncounterFile() const
+{
+	return encounterFile != NULL;
+}
+
 bool Field::hasMiscFile() const
 {
 	return miscFile != NULL;
@@ -188,7 +217,8 @@ bool Field::hasTdwFile() const
 
 bool Field::hasFiles() const
 {
-	return hasMsdFile() || hasJsmFile() || hasMapMimFiles() || hasWalkmeshFile() || hasMiscFile();
+	return hasMsdFile() || hasJsmFile() || hasMapMimFiles()
+			|| hasWalkmeshFile() || hasMiscFile();
 }
 
 MsdFile *Field::getMsdFile() const
@@ -204,6 +234,11 @@ JsmFile *Field::getJsmFile() const
 WalkmeshFile *Field::getWalkmeshFile() const
 {
 	return walkmeshFile;
+}
+
+EncounterFile *Field::getEncounterFile() const
+{
+	return encounterFile;
 }
 
 MiscFile *Field::getMiscFile() const
@@ -225,6 +260,7 @@ bool Field::isModified() const
 {
 	return (msdFile != NULL && msdFile->isModified())
 			|| (jsmFile != NULL && jsmFile->isModified())
+			|| (encounterFile != NULL && encounterFile->isModified())
 			|| (miscFile != NULL && miscFile->isModified())
 			|| (walkmeshFile != NULL && walkmeshFile->isModified())
 			|| (backgroundFile != NULL && backgroundFile->isModified())

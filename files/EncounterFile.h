@@ -15,34 +15,26 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef MISCFILE_H
-#define MISCFILE_H
+#ifndef ENCOUNTERFILE_H
+#define ENCOUNTERFILE_H
 
 #include <QtCore>
 
-class MiscFile
+class EncounterFile
 {
 public:
-	MiscFile();
-	bool open(const QByteArray &inf, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
-	bool save(QByteArray &inf, QByteArray &pmp, QByteArray &pmd, QByteArray &pvp);
+	EncounterFile();
+	bool open(const QByteArray &rat, const QByteArray &mrt);
+	bool save(QByteArray &rat, QByteArray &mrt);
 	bool isModified();
-	const QString &getMapName();
-	void setMapName(const QString &mapName);
-	const QList<quint16> &getGateways();
-	void setGateways(const QList<quint16> &gateways);
-	const QByteArray &getPvpData();
-	void setPvpData(const QByteArray &pvp);
-	const QByteArray &getPmpData();
-	void setPmpData(const QByteArray &pmp);
-	const QByteArray &getPmdData();
-	void setPmdData(const QByteArray &pmd);
+	const QByteArray &getRatData();
+	void setRatData(const QByteArray &rat);
+	const QByteArray &getMrtData();
+	void setMrtData(const QByteArray &mrt);
+	QList<int> searchAllBattles();
 private:
-	QString mapName;
-	QByteArray inf;
-	QByteArray pvp, pmp, pmd;
-	QList<quint16> gateways;
+	QByteArray rat, mrt;
 	bool modified;
 };
 
-#endif // MISCFILE_H
+#endif // ENCOUNTERFILE_H

@@ -29,10 +29,6 @@ void MiscWidget::build()
 
 	QLabel *nameLbl = new QLabel(tr("Nom :"), this);
 	nameEdit = new QLineEdit(this);
-	QLabel *ratLbl = new QLabel(tr("RAT :"), this);
-	ratEdit = new QLineEdit(this);
-	QLabel *mrtLbl = new QLabel(tr("MRT :"), this);
-	mrtEdit = new QLineEdit(this);
 	QLabel *pmpLbl = new QLabel(tr("PMP :"), this);
 	pmpEdit = new QLineEdit(this);
 	QLabel *pmdLbl = new QLabel(tr("PMD :"), this);
@@ -102,8 +98,6 @@ void MiscWidget::build()
 	caLayout->addWidget(caSpaceZEdit, 3, 2);
 
 	connect(nameEdit, SIGNAL(textEdited(QString)), SLOT(editName(QString)));
-	connect(ratEdit, SIGNAL(textEdited(QString)), SLOT(editRat(QString)));
-	connect(mrtEdit, SIGNAL(textEdited(QString)), SLOT(editMrt(QString)));
 	connect(pmpEdit, SIGNAL(textEdited(QString)), SLOT(editPmp(QString)));
 	connect(pmdEdit, SIGNAL(textEdited(QString)), SLOT(editPmd(QString)));
 	connect(pvpEdit, SIGNAL(textEdited(QString)), SLOT(editPvp(QString)));
@@ -111,19 +105,15 @@ void MiscWidget::build()
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(nameLbl, 0, 0);
 	layout->addWidget(nameEdit, 0, 1);
-	layout->addWidget(ratLbl, 1, 0);
-	layout->addWidget(ratEdit, 1, 1);
-	layout->addWidget(mrtLbl, 2, 0);
-	layout->addWidget(mrtEdit, 2, 1);
-	layout->addWidget(pmpLbl, 3, 0);
-	layout->addWidget(pmpEdit, 3, 1);
-	layout->addWidget(pmdLbl, 4, 0);
-	layout->addWidget(pmdEdit, 4, 1);
-	layout->addWidget(pvpLbl, 5, 0);
-	layout->addWidget(pvpEdit, 5, 1);
-	layout->addWidget(gateList, 6, 0, 1, 2, Qt::AlignLeft);
-	layout->addLayout(caLayout, 7, 0, 1, 2);
-	layout->setRowStretch(8, 1);
+	layout->addWidget(pmpLbl, 1, 0);
+	layout->addWidget(pmpEdit, 1, 1);
+	layout->addWidget(pmdLbl, 2, 0);
+	layout->addWidget(pmdEdit, 2, 1);
+	layout->addWidget(pvpLbl, 3, 0);
+	layout->addWidget(pvpEdit, 3, 1);
+	layout->addWidget(gateList, 4, 0, 1, 2, Qt::AlignLeft);
+	layout->addLayout(caLayout, 5, 0, 1, 2);
+	layout->setRowStretch(6, 1);
 	layout->setColumnStretch(1, 1);
 	layout->setContentsMargins(QMargins());
 
@@ -136,8 +126,6 @@ void MiscWidget::clear()
 
 	miscFile = NULL;
 	nameEdit->clear();
-	ratEdit->clear();
-	mrtEdit->clear();
 	pmpEdit->clear();
 	pmdEdit->clear();
 	pvpEdit->clear();
@@ -150,8 +138,6 @@ void MiscWidget::setReadOnly(bool readOnly)
 {
 	if(isBuilded()) {
 		nameEdit->setReadOnly(readOnly);
-		ratEdit->setReadOnly(readOnly);
-		mrtEdit->setReadOnly(readOnly);
 		pmpEdit->setReadOnly(readOnly);
 		pmdEdit->setReadOnly(readOnly);
 		pvpEdit->setReadOnly(readOnly);
@@ -184,8 +170,6 @@ void MiscWidget::fill()
 
 	if(miscFile != NULL) {
 		nameEdit->setText(miscFile->getMapName());
-		ratEdit->setText(miscFile->getRatData().toHex());
-		mrtEdit->setText(miscFile->getMrtData().toHex());
 		pmpEdit->setText(miscFile->getPmpData().toHex());
 		pmdEdit->setText(miscFile->getPmdData().toHex());
 		pvpEdit->setText(miscFile->getPvpData().toHex());
@@ -218,20 +202,6 @@ void MiscWidget::editName(const QString &name)
 {
 	miscFile->setMapName(name);
 	emit modified(true);
-}
-
-void MiscWidget::editRat(const QString &rat)
-{
-	miscFile->setRatData(QByteArray::fromHex(rat.toLatin1()).leftJustified(miscFile->getRatData().size(), '\x00', true));
-	emit modified(true);
-	ratEdit->setText(miscFile->getRatData().toHex());
-}
-
-void MiscWidget::editMrt(const QString &mrt)
-{
-	miscFile->setMrtData(QByteArray::fromHex(mrt.toLatin1()).leftJustified(miscFile->getMrtData().size(), '\x00', true));
-	emit modified(true);
-	mrtEdit->setText(miscFile->getMrtData().toHex());
 }
 
 void MiscWidget::editPmp(const QString &pmp)

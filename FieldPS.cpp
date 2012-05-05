@@ -77,11 +77,14 @@ bool FieldPS::open(const QByteArray &dat_data)
 				dat_data.mid(posSections[Id], posSections[Id+1]-posSections[Id]),
 				dat_data.mid(posSections[Ca], posSections[Ca+1]-posSections[Ca]));
 
-	/* INF, MRT, RAT & PMD */
+	/* RAT & MRT */
+	openEncounterFile(
+				dat_data.mid(posSections[Rat], posSections[Rat+1]-posSections[Rat]),
+				dat_data.mid(posSections[Mrt], posSections[Mrt+1]-posSections[Mrt]));
+
+	/* INF & PMD */
 	openMiscFile(
 				dat_data.mid(posSections[Inf], posSections[Inf+1]-posSections[Inf]),
-				dat_data.mid(posSections[Rat], posSections[Rat+1]-posSections[Rat]),
-				dat_data.mid(posSections[Mrt], posSections[Mrt+1]-posSections[Mrt]),
 				QByteArray(),
 				dat_data.mid(posSections[Pmd], posSections[Pmd+1]-posSections[Pmd]),
 				QByteArray());
@@ -146,18 +149,22 @@ bool FieldPS::save(QByteArray &dat_data)
 		diff = jsm.size() - (posSections[Jsm+1] - posSections[Jsm]);
 		for(int i=Jsm+1 ; i<12 ; ++i)	posSections[i] += diff;
 	}
-	if(miscFile!=NULL && miscFile->isModified()) {
-		QByteArray inf, rat, mrt, pmp, pmd, pvp;
-		miscFile->save(inf, rat, mrt, pmp, pmd, pvp);
-		dat_data.replace(posSections[Inf], posSections[Inf+1] - posSections[Inf], inf);
-		diff = inf.size() - (posSections[Inf+1] - posSections[Inf]);
-		for(int i=Inf+1 ; i<12 ; ++i)	posSections[i] += diff;
+	if(encounterFile!=NULL && encounterFile->isModified()) {
+		QByteArray rat, mrt;
+		encounterFile->save(rat, mrt);
 		dat_data.replace(posSections[Rat], posSections[Rat+1] - posSections[Rat], rat);
 		diff = rat.size() - (posSections[Rat+1] - posSections[Rat]);
 		for(int i=Rat+1 ; i<12 ; ++i)	posSections[i] += diff;
 		dat_data.replace(posSections[Mrt], posSections[Mrt+1] - posSections[Mrt], mrt);
 		diff = mrt.size() - (posSections[Mrt+1] - posSections[Mrt]);
 		for(int i=Mrt+1 ; i<12 ; ++i)	posSections[i] += diff;
+	}
+	if(miscFile!=NULL && miscFile->isModified()) {
+		QByteArray inf, pmp, pmd, pvp;
+		miscFile->save(inf, pmp, pmd, pvp);
+		dat_data.replace(posSections[Inf], posSections[Inf+1] - posSections[Inf], inf);
+		diff = inf.size() - (posSections[Inf+1] - posSections[Inf]);
+		for(int i=Inf+1 ; i<12 ; ++i)	posSections[i] += diff;
 		// TODO pmp
 		dat_data.replace(posSections[Pmd], posSections[Pmd+1] - posSections[Pmd], pmd);
 		diff = pmd.size() - (posSections[Pmd+1] - posSections[Pmd]);

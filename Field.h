@@ -23,6 +23,7 @@
 #include "files/JsmFile.h"
 #include "files/WalkmeshFile.h"
 #include "files/MiscFile.h"
+#include "files/EncounterFile.h"
 #include "files/BackgroundFile.h"
 #include "files/TdwFile.h"
 
@@ -38,13 +39,15 @@ public:
 	void openMsdFile(const QByteArray &msd);
 	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray());
 	void openWalkmeshFile(const QByteArray &id, const QByteArray &ca=QByteArray());
-	void openMiscFile(const QByteArray &inf, const QByteArray &rat, const QByteArray &mrt, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
+	void openEncounterFile(const QByteArray &rat, const QByteArray &mrt);
+	void openMiscFile(const QByteArray &inf, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
 	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
 	void openTdwFile(const QByteArray &tdw);
 
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
 	bool hasWalkmeshFile() const;
+	bool hasEncounterFile() const;
 	bool hasMiscFile() const;
 	bool hasBackgroundFile() const;
 	bool hasTdwFile() const;
@@ -55,6 +58,7 @@ public:
 	MsdFile *getMsdFile() const;
 	JsmFile *getJsmFile() const;
 	WalkmeshFile *getWalkmeshFile() const;
+	EncounterFile *getEncounterFile() const;
 	MiscFile *getMiscFile() const;
 	BackgroundFile *getBackgroundFile() const;
 	TdwFile *getTdwFile() const;
@@ -66,6 +70,7 @@ protected:
 	void deleteMsdFile();
 	void deleteJsmFile();
 	void deleteWalkmeshFile();
+	void deleteEncounterFile();
 	void deleteMiscFile();
 	void deleteBackgroundFile();
 	void deleteTdwFile();
@@ -75,6 +80,7 @@ protected:
 	MsdFile *msdFile;
 	JsmFile *jsmFile;
 	WalkmeshFile *walkmeshFile;
+	EncounterFile *encounterFile;
 	MiscFile *miscFile;
 	BackgroundFile *backgroundFile;
 	TdwFile *tdwFile;

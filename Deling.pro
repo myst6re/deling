@@ -52,7 +52,8 @@ HEADERS += MainWindow.h \
 	files/WalkmeshFile.h \
 	files/MiscFile.h \
 	files/BackgroundFile.h \
-	files/TdwFile.h
+	files/TdwFile.h \
+    files/EncounterFile.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -98,7 +99,8 @@ SOURCES += MainWindow.cpp \
 	files/WalkmeshFile.cpp \
 	files/MiscFile.cpp \
 	files/BackgroundFile.cpp \
-	files/TdwFile.cpp
+	files/TdwFile.cpp \
+    files/EncounterFile.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

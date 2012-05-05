@@ -22,7 +22,7 @@ MiscFile::MiscFile()
 {
 }
 
-bool MiscFile::open(const QByteArray &inf, const QByteArray &rat, const QByteArray &mrt, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp)
+bool MiscFile::open(const QByteArray &inf, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp)
 {
 	quint16 mapId;
 	const char *constInf = inf.constData();
@@ -36,8 +36,6 @@ bool MiscFile::open(const QByteArray &inf, const QByteArray &rat, const QByteArr
 	}
 
 	this->inf = inf;
-	this->rat = rat;
-	this->mrt = mrt;
 	this->pmp = pmp;
 	this->pmd = pmd;
 	this->pvp = pvp;
@@ -45,7 +43,7 @@ bool MiscFile::open(const QByteArray &inf, const QByteArray &rat, const QByteArr
 	return true;
 }
 
-bool MiscFile::save(QByteArray &inf, QByteArray &rat, QByteArray &mrt, QByteArray &pmp, QByteArray &pmd, QByteArray &pvp)
+bool MiscFile::save(QByteArray &inf, QByteArray &pmp, QByteArray &pmd, QByteArray &pvp)
 {
 	quint16 mapId;
 
@@ -56,8 +54,6 @@ bool MiscFile::save(QByteArray &inf, QByteArray &rat, QByteArray &mrt, QByteArra
 	}
 
 	inf = this->inf;
-	rat = this->rat;
-	mrt = this->mrt;
 	pmp = this->pmp;
 	pmd = this->pmd;
 	pvp = this->pvp;
@@ -94,28 +90,6 @@ void MiscFile::setGateways(const QList<quint16> &gateways)
 	modified = true;
 }
 
-const QByteArray &MiscFile::getRatData()
-{
-	return rat;
-}
-
-void MiscFile::setRatData(const QByteArray &rat)
-{
-	this->rat = rat;
-	modified = true;
-}
-
-const QByteArray &MiscFile::getMrtData()
-{
-	return mrt;
-}
-
-void MiscFile::setMrtData(const QByteArray &mrt)
-{
-	this->mrt = mrt;
-	modified = true;
-}
-
 const QByteArray &MiscFile::getPvpData()
 {
 	return pvp;
@@ -147,26 +121,4 @@ void MiscFile::setPmdData(const QByteArray &pmd)
 {
 	this->pmd = pmd;
 	modified = true;
-}
-
-QList<int> MiscFile::searchAllBattles()
-{
-	QList<int> battles;
-	int id;
-
-	if(mrt.size() == 8) {
-		if(mrt != QByteArray("\x00\x00\x00\x00\x00\x00\x00\x00", 8)) {
-			const char *constData = mrt.constData();
-			for(int i=0 ; i<4 ; ++i) {
-				id = 0;
-				memcpy(&id, constData, 2);
-				battles.append(id);
-				constData += 2;
-			}
-		}
-	} else {
-		qDebug() << mrt.size();
-	}
-
-	return battles;
 }

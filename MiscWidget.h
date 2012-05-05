@@ -37,8 +37,6 @@ public:
 	inline QString tabName() const { return tr("Divers"); }
 private slots:
 	void editName(const QString &);
-	void editRat(const QString &);
-	void editMrt(const QString &);
 	void editPmp(const QString &);
 	void editPmd(const QString &);
 	void editPvp(const QString &);
@@ -50,7 +48,7 @@ private:
 
 	MiscFile *miscFile;
 	WalkmeshFile *walkmeshFile;
-	QLineEdit *nameEdit, *ratEdit, *mrtEdit, *pmpEdit, *pmdEdit, *pvpEdit;
+	QLineEdit *nameEdit, *pmpEdit, *pmdEdit, *pvpEdit;
 	QListWidget *gateList;
 	QSpinBox *caVectorX1Edit, *caVectorX2Edit, *caVectorX3Edit, *caVectorY1Edit, *caVectorY2Edit, *caVectorY3Edit, *caVectorZ1Edit, *caVectorZ2Edit, *caVectorZ3Edit;
 	QDoubleSpinBox *caSpaceXEdit, *caSpaceYEdit, *caSpaceZEdit;
