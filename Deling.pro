@@ -54,7 +54,8 @@ HEADERS += MainWindow.h \
 	files/BackgroundFile.h \
 	files/TdwFile.h \
     files/EncounterFile.h \
-    widgets/EncounterWidget.h
+    widgets/EncounterWidget.h \
+    FieldThread.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -102,7 +103,8 @@ SOURCES += MainWindow.cpp \
 	files/BackgroundFile.cpp \
 	files/TdwFile.cpp \
     files/EncounterFile.cpp \
-    widgets/EncounterWidget.cpp
+    widgets/EncounterWidget.cpp \
+    FieldThread.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \
