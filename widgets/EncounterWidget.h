@@ -34,8 +34,8 @@ public:
 	void fill();
 	inline QString tabName() const { return tr("Rencontres aléatoires"); }
 private slots:
-	void editFormation(int value);
-	void editRate(int value);
+	void editFormation();
+	void editRate();
 private:
 	EncounterFile *encounterFile;
 	QSpinBox *formationEdit[4], *rateEdit[4];

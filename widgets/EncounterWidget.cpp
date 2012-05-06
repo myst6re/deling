@@ -28,7 +28,7 @@ void EncounterWidget::build()
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(new QLabel(tr("Formation")), 0, 0);
-	layout->addWidget(new QLabel(tr("Fréquence")), 0, 1);
+	layout->addWidget(new QLabel(tr("Mode ?")), 0, 1);
 
 	for(int i=0 ; i<4 ; ++i) {
 		formationEdit[i] = new QSpinBox();
@@ -38,6 +38,9 @@ void EncounterWidget::build()
 
 		layout->addWidget(formationEdit[i], 1+i, 0);
 		layout->addWidget(rateEdit[i], 1+i, 1);
+
+		connect(formationEdit[i], SIGNAL(valueChanged(int)), SLOT(editFormation()));
+		connect(rateEdit[i], SIGNAL(valueChanged(int)), SLOT(editRate()));
 	}
 
 	layout->setRowStretch(5, 1);
@@ -51,8 +54,12 @@ void EncounterWidget::clear()
 	if(!isFilled())	return;
 
 	for(int i=0 ; i<4 ; ++i) {
+		formationEdit[i]->blockSignals(true);
 		formationEdit[i]->setValue(0);
+		formationEdit[i]->blockSignals(false);
+		rateEdit[i]->blockSignals(true);
 		rateEdit[i]->setValue(0);
+		rateEdit[i]->blockSignals(false);
 	}
 
 	PageWidget::clear();
@@ -78,17 +85,21 @@ void EncounterWidget::fill()
 	if(!hasData() || !data()->hasEncounterFile())	return;
 
 	for(int i=0 ; i<4 ; ++i) {
+		formationEdit[i]->blockSignals(true);
 		formationEdit[i]->setValue(data()->getEncounterFile()->formation(i));
+		formationEdit[i]->blockSignals(false);
+		rateEdit[i]->blockSignals(true);
 		rateEdit[i]->setValue(data()->getEncounterFile()->rate(i));
+		rateEdit[i]->blockSignals(false);
 	}
 
 	PageWidget::fill();
 }
 
-void EncounterWidget::editFormation(int value)
+void EncounterWidget::editFormation()
 {
 	QObject *s = sender();
-	int index;
+	int index, value = ((QSpinBox *)s)->value();
 
 	if(s == formationEdit[0]) {
 		index = 0;
@@ -104,12 +115,14 @@ void EncounterWidget::editFormation(int value)
 	}
 
 	data()->getEncounterFile()->setFormation(index, value);
+
+	emit modified(true);
 }
 
-void EncounterWidget::editRate(int value)
+void EncounterWidget::editRate()
 {
 	QObject *s = sender();
-	int index;
+	int index, value = ((QSpinBox *)s)->value();
 
 	if(s == rateEdit[0]) {
 		index = 0;
@@ -125,4 +138,6 @@ void EncounterWidget::editRate(int value)
 	}
 
 	data()->getEncounterFile()->setRate(index, value);
+
+	emit modified(true);
 }
