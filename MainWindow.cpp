@@ -398,11 +398,11 @@ void MainWindow::setModified(bool modified)
 
 	if(modified) {
 		if(list1->selectedItems().size()>0)
-			list1->selectedItems().first()->setForeground(0, QBrush(QColor(0xd1,0x1d,0x1d)));
+			list1->selectedItems().first()->setForeground(0, QColor(0xd1,0x1d,0x1d));
 	} else {
 		for(int i=0 ; i<list1->topLevelItemCount() ; ++i)
 			if(list1->topLevelItem(i)->foreground(0).color()==qRgb(0xd1,0x1d,0x1d))
-				list1->topLevelItem(i)->setForeground(0, QBrush(QColor(0x1d,0xd1,0x1d)));
+				list1->topLevelItem(i)->setForeground(0, QColor(0x1d,0xd1,0x1d));
 	}
 }
 
@@ -693,7 +693,7 @@ void MainWindow::about()
 
 	font.setPointSize(8);
 
-	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">https://sourceforge.net/projects/deling/</a><br/><br/>Merci à :<br/> - Aali<br/> - Aladore384<br/>"), &apropos);
+	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci à :<br/> - Aali<br/> - Aladore384<br/>"), &apropos);
 	desc2.setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
 	desc2.setTextFormat(Qt::RichText);
 	desc2.setOpenExternalLinks(true);

@@ -27,7 +27,6 @@
 #include "FieldArchivePS.h"
 #include "Search.h"
 #include "BGPreview.h"
-#include "BGThread.h"
 #include "TextPreview.h"
 #include "widgets/MsdWidget.h"
 #include "widgets/JsmWidget.h"

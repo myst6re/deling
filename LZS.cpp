@@ -24,7 +24,7 @@
 		CompuServe	74050,1022
 **************************************************************/
 #include "LZS.h"
-#include "zlib.h"
+#include "zlib-1.2.7/zlib.h"
 
 QByteArray GZIP::decompress(const QByteArray &data)
 {
