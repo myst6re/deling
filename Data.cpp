@@ -19,6 +19,11 @@
 
 QString Data::AppPath_cache;
 
+bool Data::ff8Found()
+{
+    return QFile::exists(AppPath() % "/FF8.exe");
+}
+
 QString Data::AppPath()
 {
 	if(Config::value("dontUseRegAppPath").toBool()) {

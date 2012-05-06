@@ -24,6 +24,7 @@
 class Data
 {
 public:
+    static bool ff8Found();
 	static QString AppPath();
 	static QString magic(int id);
 	static QStringList locations();

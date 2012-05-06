@@ -94,7 +94,7 @@ int TextPreview::calcFF8TextWidth(const QByteArray &ff8Text)
 {
 	int width = 0;
 
-	foreach(char c, ff8Text) {
+    foreach(quint8 c, ff8Text) {
 		if(c>=32 && c<227)
 			width += charWidth[0][c-32];
 	}
@@ -268,7 +268,7 @@ void TextPreview::calcSize()
 			break;
 		case 0x5: // Icons
 			caract = (quint8)ff8Text.at(++i)-0x20;
-			if(caract>=0 && caract<96)
+            if(caract<96)
 				width += iconWidth[caract]+iconPadding[caract];
 			break;
 		case 0xe: // Locations

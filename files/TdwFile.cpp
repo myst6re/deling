@@ -60,7 +60,7 @@ bool TdwFile::open(const QByteArray &tdw)
 
 QPixmap TdwFile::image(int palID) const
 {
-	return FF8Image::tim(tim);
+    return FF8Image::tim(tim, palID);
 }
 
 QPixmap TdwFile::image(const QByteArray &data, int palID)

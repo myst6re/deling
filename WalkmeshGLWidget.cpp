@@ -105,7 +105,7 @@ void WalkmeshGLWidget::paintGL()
 
 //	glScalef(-1.0, 1.0, 1.0);
 //	gluLookAt(posCamX, posCamY, posCamZ, posCamX + camAxisZx, posCamY + camAxisZy, posCamZ + camAxisZz, camAxisYx, camAxisYy, camAxisYz);
-	gluLookAt(posCamX, posCamY, posCamZ, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+    //gluLookAt(posCamX, posCamY, posCamZ, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
 //	qDebug() << "xRot" << (walkmeshFile->camAxis(2).y*45)/4096.0 << "yRot" << (walkmeshFile->camAxis(2).x*45)/4096.0 << "zRot" << (walkmeshFile->camAxis(0).y*45)/4096.0;
 

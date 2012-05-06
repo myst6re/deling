@@ -52,6 +52,7 @@ MainWindow::MainWindow()
 //	menu->addAction(tr("&Rechercher tout..."), this, SLOT(miscSearch()));
 	actionRun = menu->addAction(QIcon(":/images/ff8.png"), tr("&Lancer FF8..."), this, SLOT(runFF8()), Qt::Key_F8);
 	actionRun->setShortcutContext(Qt::ApplicationShortcut);
+    actionRun->setEnabled(Data::ff8Found());
 	addAction(actionRun);
 	menuBar->addAction(tr("Op&tions"), this, SLOT(configDialog()));
 
