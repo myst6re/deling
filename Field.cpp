@@ -21,7 +21,7 @@ Field::Field(const QString &name)
 	: _isOpen(false), _name(name),
 	  msdFile(NULL), jsmFile(NULL), walkmeshFile(NULL),
 	  encounterFile(NULL), miscFile(NULL), backgroundFile(NULL),
-	  tdwFile(NULL)
+	  tdwFile(NULL), charaFile(NULL)
 {
 }
 
@@ -34,6 +34,7 @@ Field::~Field()
 	if(miscFile!=NULL)			delete miscFile;
 	if(backgroundFile!=NULL)	delete backgroundFile;
 	if(tdwFile!=NULL)			delete tdwFile;
+	if(charaFile!=NULL)			delete charaFile;
 }
 
 bool Field::isOpen() const
@@ -124,6 +125,17 @@ void Field::openTdwFile(const QByteArray &tdw)
 	}
 }
 
+void Field::openCharaFile(const QByteArray &one)
+{
+	if(charaFile!=NULL)	deleteCharaFile();
+	charaFile = new CharaFile();
+
+	if(!charaFile->open(one)) {
+		qWarning() << "Field::openCharaFile error" << _name;
+		deleteCharaFile();
+	}
+}
+
 void Field::deleteMsdFile()
 {
 	if(msdFile!=NULL) {
@@ -180,6 +192,14 @@ void Field::deleteTdwFile()
 	}
 }
 
+void Field::deleteCharaFile()
+{
+	if(charaFile!=NULL) {
+		delete charaFile;
+		charaFile = NULL;
+	}
+}
+
 bool Field::hasMsdFile() const
 {
 	return msdFile != NULL;
@@ -215,10 +235,15 @@ bool Field::hasTdwFile() const
 	return tdwFile != NULL;
 }
 
+bool Field::hasCharaFile() const
+{
+	return charaFile != NULL;
+}
+
 bool Field::hasFiles() const
 {
 	return hasMsdFile() || hasJsmFile() || hasMapMimFiles()
-			|| hasWalkmeshFile() || hasMiscFile();
+			|| hasWalkmeshFile() || hasEncounterFile() || hasMiscFile();
 }
 
 MsdFile *Field::getMsdFile() const
@@ -256,6 +281,11 @@ TdwFile *Field::getTdwFile() const
 	return tdwFile;
 }
 
+CharaFile *Field::getCharaFile() const
+{
+	return charaFile;
+}
+
 bool Field::isModified() const
 {
 	return (msdFile != NULL && msdFile->isModified())
@@ -264,7 +294,8 @@ bool Field::isModified() const
 			|| (miscFile != NULL && miscFile->isModified())
 			|| (walkmeshFile != NULL && walkmeshFile->isModified())
 			|| (backgroundFile != NULL && backgroundFile->isModified())
-			|| (tdwFile != NULL && tdwFile->isModified());
+			|| (tdwFile != NULL && tdwFile->isModified())
+			|| (charaFile != NULL && charaFile->isModified());
 }
 
 const QString &Field::name() const

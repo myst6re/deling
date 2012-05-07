@@ -22,7 +22,7 @@ WalkmeshFile::WalkmeshFile()
 {
 }
 
-bool WalkmeshFile::isModified()
+bool WalkmeshFile::isModified() const
 {
 	return modified;
 }
@@ -96,17 +96,17 @@ bool WalkmeshFile::save(QByteArray &ca)
 	return true;
 }
 
-QList<Triangle> WalkmeshFile::getTriangles()
+const QList<Triangle> &WalkmeshFile::getTriangles() const
 {
 	return triangles;
 }
 
-Vertex_s WalkmeshFile::camAxis(quint8 id)
+const Vertex_s &WalkmeshFile::camAxis(quint8 id) const
 {
 	return camera_axis[id];
 }
 
-qint32 WalkmeshFile::camPos(quint8 id)
+qint32 WalkmeshFile::camPos(quint8 id) const
 {
 	return camera_position[id];
 }

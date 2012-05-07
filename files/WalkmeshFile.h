@@ -42,12 +42,12 @@ public:
 	WalkmeshFile();
 	bool open(const QByteArray &id, const QByteArray &ca=QByteArray());
 	bool save(QByteArray &ca);
-	QList<Triangle> getTriangles();
-	Vertex_s camAxis(quint8);
-	qint32 camPos(quint8);
+	const QList<Triangle> &getTriangles() const;
+	const Vertex_s &camAxis(quint8) const;
+	qint32 camPos(quint8) const;
 	void setCamAxis(quint8 id, const Vertex_s &cam_axis);
 	void setCamPos(quint8 id, qint32 camPos);
-	bool isModified();
+	bool isModified() const;
 private:
 	quint16 camera_unknown1;
 	quint32 camera_unknown2;

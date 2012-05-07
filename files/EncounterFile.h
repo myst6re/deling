@@ -26,12 +26,12 @@ public:
 	EncounterFile();
 	bool open(const QByteArray &rat, const QByteArray &mrt);
 	bool save(QByteArray &rat, QByteArray &mrt);
-	bool isModified();
+	bool isModified() const;
 	quint16 formation(int index) const;
 	quint8 rate(int index) const;
 	void setFormation(int index, quint16 formation);
 	void setRate(int index, quint8 rate);
-	QList<int> searchAllBattles();
+	QList<int> searchAllBattles() const;
 private:
 	quint16 formations[4];
 	quint8 rates[4];

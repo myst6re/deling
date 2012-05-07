@@ -256,7 +256,7 @@ bool FieldPC::open2(FsArchive *archive)
 	FsHeader *fi_infos_mim = header->getFile("*"%name()%".mim");
 	FsHeader *fi_infos_map = header->getFile("*"%name()%".map");
 	FsHeader *fi_infos_tdw = header->getFile("*"%name()%".tdw");
-//	FsHeader *fi_infos_one = header->getFile("*chara.one");
+	FsHeader *fi_infos_one = header->getFile("*chara.one");
 
 	if(fi_infos_mim==NULL || fi_infos_map==NULL)
 		return false;
@@ -265,6 +265,9 @@ bool FieldPC::open2(FsArchive *archive)
 						  fi_infos_map->position()+fi_infos_map->uncompressed_size());
 	if(fi_infos_tdw!=NULL) {
 		maxPos = qMax(maxPos, fi_infos_tdw->position()+fi_infos_tdw->uncompressed_size());
+	}
+	if(fi_infos_one!=NULL) {
+		maxPos = qMax(maxPos, fi_infos_one->position()+fi_infos_one->uncompressed_size());
 	}
 
 	QByteArray fs_data = archive->fileData(path(), true, maxPos);
@@ -277,9 +280,9 @@ bool FieldPC::open2(FsArchive *archive)
 	if(fi_infos_tdw!=NULL) {
 		openTdwFile(fi_infos_tdw->data(fs_data));
 	}
-//	if(fi_infos_one!=NULL) {
-//		chara_data = fi_infos_one->data(fs_data);
-//	}
+	if(fi_infos_one!=NULL) {
+		openCharaFile(fi_infos_one->data(fs_data));
+	}
 
 	return true;
 }

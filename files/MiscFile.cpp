@@ -62,12 +62,12 @@ bool MiscFile::save(QByteArray &inf, QByteArray &pmp, QByteArray &pmd, QByteArra
 	return true;
 }
 
-bool MiscFile::isModified()
+bool MiscFile::isModified() const
 {
 	return modified;
 }
 
-const QString &MiscFile::getMapName()
+const QString &MiscFile::getMapName() const
 {
 	return mapName;
 }
@@ -79,7 +79,7 @@ void MiscFile::setMapName(const QString &mapName)
 	modified = true;
 }
 
-const QList<quint16> &MiscFile::getGateways()
+const QList<quint16> &MiscFile::getGateways() const
 {
 	return gateways;
 }
@@ -90,7 +90,7 @@ void MiscFile::setGateways(const QList<quint16> &gateways)
 	modified = true;
 }
 
-const QByteArray &MiscFile::getPvpData()
+const QByteArray &MiscFile::getPvpData() const
 {
 	return pvp;
 }
@@ -101,7 +101,7 @@ void MiscFile::setPvpData(const QByteArray &pvp)
 	modified = true;
 }
 
-const QByteArray &MiscFile::getPmpData()
+const QByteArray &MiscFile::getPmpData() const
 {
 	return pmp;
 }
@@ -112,7 +112,7 @@ void MiscFile::setPmpData(const QByteArray &pmp)
 	modified = true;
 }
 
-const QByteArray &MiscFile::getPmdData()
+const QByteArray &MiscFile::getPmdData() const
 {
 	return pmd;
 }

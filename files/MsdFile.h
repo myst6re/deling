@@ -31,16 +31,16 @@ public:
 	bool save(const QString &path);
 	QByteArray save();
 	static QString lastError;
-	QByteArray data(int id);
-	FF8Text text(int);
+	QByteArray data(int id) const;
+	FF8Text text(int) const;
 	void setText(int, const FF8Text &);
 	void insertText(int);
 	void removeText(int);
-	int nbText();
-	int searchText(const QString &text, int &textID, int from=0, Qt::CaseSensitivity cs=Qt::CaseInsensitive, bool regExp=false);
-	int searchTextReverse(const QString &text, int &textID, int from=0, Qt::CaseSensitivity cs=Qt::CaseInsensitive, bool regExp=false);
-	bool isModified();
-	bool isJp();
+	int nbText() const;
+	int searchText(const QString &text, int &textID, int from=0, Qt::CaseSensitivity cs=Qt::CaseInsensitive, bool regExp=false) const;
+	int searchTextReverse(const QString &text, int &textID, int from=0, Qt::CaseSensitivity cs=Qt::CaseInsensitive, bool regExp=false) const;
+	bool isModified() const;
+	bool isJp() const;
 private:
 //	QString path;
 	QList<QByteArray> texts;

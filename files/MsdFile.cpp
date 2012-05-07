@@ -102,12 +102,12 @@ QByteArray MsdFile::save()
 	return msd_header.append(msd_data);
 }
 
-QByteArray MsdFile::data(int id)
+QByteArray MsdFile::data(int id) const
 {
 	return texts.value(id, QByteArray());
 }
 
-FF8Text MsdFile::text(int id)
+FF8Text MsdFile::text(int id) const
 {
 	return FF8Text(data(id), Config::value("jp").toBool());
 }
@@ -139,12 +139,12 @@ void MsdFile::removeText(int id)
 	}
 }
 
-int MsdFile::nbText()
+int MsdFile::nbText() const
 {
 	return texts.size();
 }
 
-int MsdFile::searchText(const QString &txt, int &textID, int from, Qt::CaseSensitivity cs, bool regExp)
+int MsdFile::searchText(const QString &txt, int &textID, int from, Qt::CaseSensitivity cs, bool regExp) const
 {
 	int nbTexts = nbText(), index;
 	if(textID < 0 || textID >= nbTexts)	textID = 0;
@@ -170,7 +170,7 @@ int MsdFile::searchText(const QString &txt, int &textID, int from, Qt::CaseSensi
 	return -1;
 }
 
-int MsdFile::searchTextReverse(const QString &txt, int &textID, int from, Qt::CaseSensitivity cs, bool regExp)
+int MsdFile::searchTextReverse(const QString &txt, int &textID, int from, Qt::CaseSensitivity cs, bool regExp) const
 {
 	int index;
 	if(textID < 0 || textID >= nbText())	textID = nbText()-1;
@@ -196,12 +196,12 @@ int MsdFile::searchTextReverse(const QString &txt, int &textID, int from, Qt::Ca
 	return -1;
 }
 
-bool MsdFile::isModified()
+bool MsdFile::isModified() const
 {
 	return modified;
 }
 
-bool MsdFile::isJp()
+bool MsdFile::isJp() const
 {
 	foreach(const QByteArray &text, texts) {
 		if(text.contains('\x19') || text.contains('\x1a') || text.contains('\x1b') || text.contains('\x1c')) return true;

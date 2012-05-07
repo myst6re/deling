@@ -349,12 +349,13 @@ bool MainWindow::openIsoArchive(const QString &path)
 
 void MainWindow::fillPage()
 {
-//	qDebug() << "MainWindow::fillPage()";
+	if(tabBar->currentIndex() >= tabBar->count()-1)
+		return;
+
 	bgPreview->clear();
 
 	QTime t;t.start();
 	Field *field;
-	QByteArray chara_data;
 
 	if(this->field != NULL) {
 		field = this->field;
@@ -371,7 +372,7 @@ void MainWindow::fillPage()
 		field = fieldArchive->getField(fieldID);
 		if(field == NULL)	return;
 
-		fieldArchive->openBG(field, chara_data);
+		fieldArchive->openBG(field);
 	}
 
 	foreach(PageWidget *pageWidget, pageWidgets)
@@ -382,9 +383,14 @@ void MainWindow::fillPage()
 	else
 		bgPreview->fill(FF8Image::errorPixmap());
 
-	/*if(!chara_data.isEmpty()) {
-		FF8Image::findTims(chara_data);
-	}*/
+	if(field->hasCharaFile()) {
+		for(int i=0 ; i<field->getCharaFile()->modelCount() ; ++i) {
+			if(!field->getCharaFile()->model(i).texture.isNull()) {
+				bgPreview->fill(field->getCharaFile()->model(i).texture);
+				break;
+			}
+		}
+	}
 
 //	qDebug() << "BG" << t.elapsed();
 

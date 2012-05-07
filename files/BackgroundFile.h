@@ -60,16 +60,16 @@ class BackgroundFile
 public:
 	BackgroundFile();
 	bool open(const QByteArray &map, const QByteArray &mim);
-	bool isModified();
+	bool isModified() const;
 
-	QPixmap background();
+	QPixmap background() const;
 
 	QMultiMap<quint8, quint8> params;
 	QMultiMap<quint8, quint8> allparams;
 	QMap<quint8, bool> layers;
 private:
-	QPixmap type1();
-	QPixmap type2();
+	QPixmap type1() const;
+	QPixmap type2() const;
 	static QRgb BGcolor(int value, quint8 blendType=4, QRgb color0=0);
 	static QByteArray map, mim;
 	bool modified, opened;

@@ -111,7 +111,7 @@ int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 	return 0;
 }
 
-bool FieldArchivePS::openBG(Field *field, QByteArray &chara_data) const
+bool FieldArchivePS::openBG(Field *field) const
 {
 	FieldPS *fieldPS = (FieldPS *)field;
 

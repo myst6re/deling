@@ -26,11 +26,11 @@ class TdwFile
 public:
 	TdwFile();
 	bool open(const QByteArray &tdw);
-	bool isModified();
+	bool isModified() const;
 	QPixmap image(int palID=0) const;
 	static QPixmap image(const QByteArray &data, int palID=0);
 	QImage letter(int charId, int fontColor, bool curFrame) const;
-	quint8 *charWidth();
+	const quint8 *charWidth() const;
 private:
 	static QByteArray tim;
 	bool modified;

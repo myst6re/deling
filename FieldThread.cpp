@@ -2,8 +2,7 @@
 
 void FieldThread::run()
 {
-    QByteArray chara_data;
-    if(fieldArchive->openBG(field, chara_data)
+	if(fieldArchive->openBG(field)
             && field->hasBackgroundFile()) {
         QPixmap bg = field->getBackgroundFile()->background();
 

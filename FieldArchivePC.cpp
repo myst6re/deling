@@ -134,7 +134,7 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 	return 0;
 }
 
-bool FieldArchivePC::openBG(Field *field, QByteArray &chara_data) const
+bool FieldArchivePC::openBG(Field *field) const
 {
 	return ((FieldPC *)field)->open2(archive);
 }

@@ -26,6 +26,7 @@
 #include "files/EncounterFile.h"
 #include "files/BackgroundFile.h"
 #include "files/TdwFile.h"
+#include "files/CharaFile.h"
 
 class Field
 {
@@ -43,6 +44,7 @@ public:
 	void openMiscFile(const QByteArray &inf, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
 	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
 	void openTdwFile(const QByteArray &tdw);
+	void openCharaFile(const QByteArray &one);
 
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
@@ -51,6 +53,7 @@ public:
 	bool hasMiscFile() const;
 	bool hasBackgroundFile() const;
 	bool hasTdwFile() const;
+	bool hasCharaFile() const;
 
 	virtual bool hasMapMimFiles() const=0;
 	bool hasFiles() const;
@@ -62,6 +65,7 @@ public:
 	MiscFile *getMiscFile() const;
 	BackgroundFile *getBackgroundFile() const;
 	TdwFile *getTdwFile() const;
+	CharaFile *getCharaFile() const;
 
 	bool isModified() const;
 	const QString &name() const;
@@ -74,6 +78,7 @@ protected:
 	void deleteMiscFile();
 	void deleteBackgroundFile();
 	void deleteTdwFile();
+	void deleteCharaFile();
 
 	bool _isOpen;
 	QString _name;
@@ -84,6 +89,7 @@ protected:
 	MiscFile *miscFile;
 	BackgroundFile *backgroundFile;
 	TdwFile *tdwFile;
+	CharaFile *charaFile;
 };
 
 #endif // FIELD_H

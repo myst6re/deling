@@ -44,7 +44,7 @@ bool EncounterFile::save(QByteArray &rat, QByteArray &mrt)
 	return true;
 }
 
-bool EncounterFile::isModified()
+bool EncounterFile::isModified() const
 {
 	return modified;
 }
@@ -71,7 +71,7 @@ void EncounterFile::setRate(int index, quint8 rate)
 	modified = true;
 }
 
-QList<int> EncounterFile::searchAllBattles()
+QList<int> EncounterFile::searchAllBattles() const
 {
 	QList<int> battles;
 

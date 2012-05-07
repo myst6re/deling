@@ -24,7 +24,7 @@ TdwFile::TdwFile() :
 {
 }
 
-bool TdwFile::isModified()
+bool TdwFile::isModified() const
 {
 	return modified;
 }
@@ -129,7 +129,7 @@ QImage TdwFile::letter(int charId, int fontColor, bool curFrame) const
 	return image;
 }
 
-quint8 *TdwFile::charWidth()
+const quint8 *TdwFile::charWidth() const
 {
 	return _charWidth;
 }

@@ -26,16 +26,16 @@ public:
 	MiscFile();
 	bool open(const QByteArray &inf, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
 	bool save(QByteArray &inf, QByteArray &pmp, QByteArray &pmd, QByteArray &pvp);
-	bool isModified();
-	const QString &getMapName();
+	bool isModified() const;
+	const QString &getMapName() const;
 	void setMapName(const QString &mapName);
-	const QList<quint16> &getGateways();
+	const QList<quint16> &getGateways() const;
 	void setGateways(const QList<quint16> &gateways);
-	const QByteArray &getPvpData();
+	const QByteArray &getPvpData() const;
 	void setPvpData(const QByteArray &pvp);
-	const QByteArray &getPmpData();
+	const QByteArray &getPmpData() const;
 	void setPmpData(const QByteArray &pmp);
-	const QByteArray &getPmdData();
+	const QByteArray &getPmdData() const;
 	void setPmdData(const QByteArray &pmd);
 private:
 	QString mapName;

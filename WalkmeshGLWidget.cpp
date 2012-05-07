@@ -149,7 +149,7 @@ void WalkmeshGLWidget::paintGL()
 		glVertex3f(0.0, 0.0, 1.0);
 	glEnd();
 
-	QList<Triangle> triangles = walkmeshFile->getTriangles();
+	const QList<Triangle> &triangles = walkmeshFile->getTriangles();
 	Vertex_sr vertex;
 
 	glColor3ub(0xFF, 0xFF, 0xFF);

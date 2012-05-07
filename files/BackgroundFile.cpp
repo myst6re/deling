@@ -82,12 +82,12 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim)
 	return true;
 }
 
-bool BackgroundFile::isModified()
+bool BackgroundFile::isModified() const
 {
 	return modified;
 }
 
-QPixmap BackgroundFile::background()
+QPixmap BackgroundFile::background() const
 {
 	int mimSize = mim.size();
 
@@ -99,7 +99,7 @@ QPixmap BackgroundFile::background()
 		return FF8Image::errorPixmap();
 }
 
-QPixmap BackgroundFile::type1()
+QPixmap BackgroundFile::type1() const
 {
 	int mapSize = map.size(), tilePos=0;
 	Tile1 tile;
@@ -170,7 +170,7 @@ QPixmap BackgroundFile::type1()
 	return QPixmap::fromImage(image);
 }
 
-QPixmap BackgroundFile::type2()
+QPixmap BackgroundFile::type2() const
 {
 	int mapSize = map.size(), tilePos=0, baseX, pos, x, y, palStart, largeurMin=0, largeurMax=0, hauteurMin=0, hauteurMax=0;
 	Tile1 tileType1;
