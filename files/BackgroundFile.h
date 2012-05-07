@@ -72,7 +72,7 @@ private:
 	QPixmap type2();
 	static QRgb BGcolor(int value, quint8 blendType=4, QRgb color0=0);
 	static QByteArray map, mim;
-	bool modified;
+	bool modified, opened;
 };
 
 #endif // BACKGROUNDFILE_H

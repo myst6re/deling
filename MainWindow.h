@@ -97,11 +97,6 @@ private:
 	QAction *actionEncode;
 	QToolBar *toolBar;
 	QList<PageWidget *> pageWidgets;
-	MsdWidget *textPage;
-	JsmWidget *scriptPage;
-	WalkmeshWidget *walkmeshPage;
-	BackgroundWidget *backgroundPage;
-	MiscWidget *miscPage;
 	QTreeWidget *list1;
 	QLineEdit *lineSearch;
 	BGPreview *bgPreview;

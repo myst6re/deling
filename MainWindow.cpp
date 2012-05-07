@@ -587,7 +587,7 @@ void MainWindow::configDialog()
 	ConfigDialog dialog(this);
 	dialog.addAction(actionRun);
 	if(dialog.exec() == QDialog::Accepted) {
-		textPage->updateText();
+		((MsdWidget *)pageWidgets.at(TEXTPAGE))->updateText();
 	}
 }
 

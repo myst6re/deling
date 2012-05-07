@@ -104,8 +104,8 @@ void Field::openMiscFile(const QByteArray &inf, const QByteArray &pmp,
 
 void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 {
-	if(backgroundFile!=NULL)	deleteBackgroundFile();
-	backgroundFile = new BackgroundFile();
+	if(backgroundFile==NULL)
+		backgroundFile = new BackgroundFile();
 
 	if(!backgroundFile->open(map, mim)) {
 		qWarning() << "Field::openBackgroundFile error" << _name;

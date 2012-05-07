@@ -21,7 +21,7 @@ QByteArray BackgroundFile::mim = QByteArray();
 QByteArray BackgroundFile::map = QByteArray();
 
 BackgroundFile::BackgroundFile() :
-	modified(false)
+	modified(false), opened(false)
 {
 }
 
@@ -30,50 +30,54 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim)
 	int mimSize = mim.size(), mapSize = map.size(), tilePos=0;
 	const char *constMapData = map.constData();
 
-	allparams.clear();
-	params.clear();
-	layers.clear();
+	if(!opened) {
+		allparams.clear();
+		params.clear();
+		layers.clear();
 
-	if(mimSize == 401408) {
-//		Tile1 tile1;
-//		int sizeOfTile = mapSize-map.lastIndexOf("\xff\x7f");
+		if(mimSize == 401408) {
+//			Tile1 tile1;
+//			int sizeOfTile = mapSize-map.lastIndexOf("\xff\x7f");
 
-//		if(mapSize%sizeOfTile != 0)	return;
+//			if(mapSize%sizeOfTile != 0)	return;
 
-//		while(tilePos+15 < mapSize)
-//		{
-//			memcpy(&tile1, &constMapData[tilePos], sizeOfTile);
-//			if(tile1.X == 0x7fff) break;
-//			tilePos += sizeOfTile;
-
-//			if(tile1.parameter!=255 && !allparams.contains(tile1.parameter, tile1.state))
+//			while(tilePos+15 < mapSize)
 //			{
-//				allparams.insert(tile1.parameter, tile1.state);
-//				if(tile1.state==0)
-//					params.insert(tile1.parameter, tile1.state);
+//				memcpy(&tile1, &constMapData[tilePos], sizeOfTile);
+//				if(tile1.X == 0x7fff) break;
+//				tilePos += sizeOfTile;
+
+//				if(tile1.parameter!=255 && !allparams.contains(tile1.parameter, tile1.state))
+//				{
+//					allparams.insert(tile1.parameter, tile1.state);
+//					if(tile1.state==0)
+//						params.insert(tile1.parameter, tile1.state);
+//				}
 //			}
-//		}
-	} else if(mimSize == 438272) {
-		Tile2 tile2;
+		} else if(mimSize == 438272) {
+			Tile2 tile2;
 
-		while(tilePos+15 < mapSize)
-		{
-			memcpy(&tile2, &constMapData[tilePos], 16);
-			if(tile2.X == 0x7fff) break;
-
-			if(tile2.parameter!=255 && !allparams.contains(tile2.parameter, tile2.state))
+			while(tilePos+15 < mapSize)
 			{
-				allparams.insert(tile2.parameter, tile2.state);
-				if(tile2.state==0)
-					params.insert(tile2.parameter, tile2.state);
+				memcpy(&tile2, &constMapData[tilePos], 16);
+				if(tile2.X == 0x7fff) break;
+
+				if(tile2.parameter!=255 && !allparams.contains(tile2.parameter, tile2.state))
+				{
+					allparams.insert(tile2.parameter, tile2.state);
+					if(tile2.state==0)
+						params.insert(tile2.parameter, tile2.state);
+				}
+				layers.insert(tile2.layerID, true);
+				tilePos += 16;
 			}
-			layers.insert(tile2.layerID, true);
-			tilePos += 16;
 		}
 	}
 
 	this->map = map;
 	this->mim = mim;
+
+	opened = true;
 
 	return true;
 }
