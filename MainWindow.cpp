@@ -478,7 +478,7 @@ void MainWindow::openFile(QString path)
 				path.append("/Data");
 		}
 
-		path = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), path, tr("Fichiers compatibles (*.fs;*.msd;*.jsm;*.iso;*.bin);;Archives FS (*.fs);;Fichiers MSD (*.msd);;Fichiers JSM (*.jsm);;Fichiers Image Disque (*.iso;*.bin)"));
+        path = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), path, tr("Fichiers compatibles (*.fs *.msd *.jsm *.iso *.bin);;Archives FS (*.fs);;Fichiers MSD (*.msd);;Fichiers JSM (*.jsm);;Fichiers Image Disque (*.iso *.bin)"));
 	}
 
 	if(!path.isEmpty())
