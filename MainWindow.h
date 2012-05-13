@@ -30,6 +30,7 @@
 #include "TextPreview.h"
 #include "widgets/MsdWidget.h"
 #include "widgets/JsmWidget.h"
+#include "widgets/CharaWidget.h"
 #include "widgets/WalkmeshWidget.h"
 #include "widgets/BackgroundWidget.h"
 #include "widgets/EncounterWidget.h"
@@ -40,16 +41,14 @@
 #include "FsDialog.h"
 #include "ConfigDialog.h"
 
-#define TEXTPAGE		0
-#define SCRIPTPAGE		1
-#define WALKMESHPAGE	2
-#define BACKGROUNDPAGE	3
-#define MISCPAGE		4
-
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 public:
+	enum Pages {
+		TextPage, ScriptPage, ModelPage, WalkmeshPage, BackgroundPage, EncounterPage, FontPage, MiscPage
+	};
+
 	MainWindow();
 public slots:
 	void openFile(QString path=QString());

@@ -144,14 +144,14 @@ QPixmap FF8Image::tim(const QByteArray &data, int palID)
 
 	if(!data.startsWith(QByteArray("\x10\x00\x00\x00", 4)) || dataSize < 8)		return QPixmap();
 
-//	quint8 tag = (quint8)data.at(0);
-//	quint8 version = (quint8)data.at(1);
+	quint8 tag = (quint8)data.at(0);
+	quint8 version = (quint8)data.at(1);
 	bpp = (quint8)data.at(4) & 3;
 	hasPal = ((quint8)data.at(4) >> 3) & 1;
 
-//	qDebug() << QString("=== Apercu TIM ===");
-//	qDebug() << QString("Tag = %1, version = %2, reste = %3").arg(tag).arg(version).arg(QString(data.mid(2,2).toHex()));
-//	qDebug() << QString("bpp = %1, hasPal = %2, flag = %3, reste = %4").arg(bpp).arg(hasPal).arg((quint8)data.at(4),0,2).arg(QString(data.mid(5,3).toHex()));
+	qDebug() << QString("=== Apercu TIM ===");
+	qDebug() << QString("Tag = %1, version = %2, reste = %3").arg(tag).arg(version).arg(QString(data.mid(2,2).toHex()));
+	qDebug() << QString("bpp = %1, hasPal = %2, flag = %3, reste = %4").arg(bpp).arg(hasPal).arg((quint8)data.at(4),0,2).arg(QString(data.mid(5,3).toHex()));
 
 	if(hasPal && bpp > 1)		return QPixmap();
 
@@ -178,9 +178,9 @@ QPixmap FF8Image::tim(const QByteArray &data, int palID)
 			}
 		}
 		palID %= nbPal;
-//		qDebug() << QString("-Palette-");
-//		qDebug() << QString("Size = %1, w = %2, h = %3").arg(palSize).arg(palW).arg(palH);
-//		qDebug() << QString("NbPal = %1 (valid : %2)").arg(nbPal).arg((palSize-12)%(onePalSize*2));
+		qDebug() << QString("-Palette-");
+		qDebug() << QString("Size = %1, w = %2, h = %3").arg(palSize).arg(palW).arg(palH);
+		qDebug() << QString("NbPal = %1 (valid : %2)").arg(nbPal).arg((palSize-12)%(onePalSize*2));
 //		QString str="";
 //		foreach(int posp, posPal)
 //			str += QString("%1 | ").arg(posp);
@@ -195,9 +195,9 @@ QPixmap FF8Image::tim(const QByteArray &data, int palID)
 	if(bpp==0)		w*=4;
 	else if(bpp==1)	w*=2;
 
-//	qDebug() << QString("-Image-");
-//	qDebug() << QString("Size = %1, w = %2, h = %3").arg(imgSize).arg(w).arg(h);
-//	qDebug() << QString("TIM Size = %1").arg(8+palSize+imgSize);
+	qDebug() << QString("-Image-");
+	qDebug() << QString("Size = %1, w = %2, h = %3").arg(imgSize).arg(w).arg(h);
+	qDebug() << QString("TIM Size = %1").arg(8+palSize+imgSize);
 
 	QImage image(w, h, QImage::Format_RGB32);
 	QRgb *pixels = (QRgb *)image.bits();

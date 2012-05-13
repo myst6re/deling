@@ -134,7 +134,7 @@ void FsDialog::generatePreview()
 	}
 	else if(fileType == "tim")
 	{
-		preview->imagePreview(FF8Image::tim(data), fileName);
+		preview->imagePreview(QPixmap::fromImage(TimFile(data).image()), fileName);
 	}
 	else if(fileType == "tdw")
 	{
@@ -168,7 +168,7 @@ void FsDialog::generatePreview()
 		int index;
 		if((index = FF8Image::findFirstTim(data)) != -1)
 		{
-			preview->imagePreview(FF8Image::tim(data.mid(index)), fileName);
+			preview->imagePreview(QPixmap::fromImage(TimFile(data.mid(index)).image()), fileName);
 		}
 		else
 		{

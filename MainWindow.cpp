@@ -91,6 +91,7 @@ MainWindow::MainWindow()
 
 	pageWidgets.append(new MsdWidget());
 	pageWidgets.append(new JsmWidget());
+	pageWidgets.append(new CharaWidget());
 	pageWidgets.append(new WalkmeshWidget());
 	pageWidgets.append(new BackgroundWidget());
 	pageWidgets.append(new EncounterWidget());
@@ -138,7 +139,7 @@ MainWindow::MainWindow()
 	searchDialog = new Search(list1, this);
 
 	closeFiles();
-	setCurrentPage(Config::value("currentPage", TEXTPAGE).toInt());
+	setCurrentPage(Config::value("currentPage", TextPage).toInt());
 
 	connect(searchDialog, SIGNAL(foundText(QString,int,int,Qt::CaseSensitivity,bool,bool)), SLOT(gotoText(QString,int,int,Qt::CaseSensitivity,bool,bool)));
 	connect(searchDialog, SIGNAL(foundOpcode(int,int,int,int)), SLOT(gotoScript(int,int,int,int)));
@@ -146,10 +147,11 @@ MainWindow::MainWindow()
 	connect(lineSearch, SIGNAL(returnPressed()), SLOT(filterMap()));
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillPage()));
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(setCurrentPage(int)));
-	connect(pageWidgets.at(TEXTPAGE), SIGNAL(textIdChanged(int)), searchDialog, SLOT(setTextId(int)));
-	connect(pageWidgets.at(TEXTPAGE), SIGNAL(modified(bool)), SLOT(setModified(bool)));
-	connect(pageWidgets.at(SCRIPTPAGE), SIGNAL(modified(bool)), SLOT(setModified(bool)));
-	connect(pageWidgets.at(MISCPAGE), SIGNAL(modified(bool)), SLOT(setModified(bool)));
+	connect(pageWidgets.at(TextPage), SIGNAL(textIdChanged(int)), searchDialog, SLOT(setTextId(int)));
+	connect(pageWidgets.at(TextPage), SIGNAL(modified(bool)), SLOT(setModified(bool)));
+	connect(pageWidgets.at(ScriptPage), SIGNAL(modified(bool)), SLOT(setModified(bool)));
+	connect(pageWidgets.at(EncounterPage), SIGNAL(modified(bool)), SLOT(setModified(bool)));
+	connect(pageWidgets.at(MiscPage), SIGNAL(modified(bool)), SLOT(setModified(bool)));
 	connect(bgPreview, SIGNAL(triggered()), SLOT(bgPage()));
 }
 
@@ -303,9 +305,9 @@ bool MainWindow::openMsdFile(const QString &path)
 
 //	list1->setEnabled(false);
 //	lineSearch->setEnabled(false);
-////	pageWidgets.at(TEXTPAGE)->setData(msdFile);//TODO
-//	pageWidgets.at(TEXTPAGE)->setFocus();
-//	setCurrentPage(TEXTPAGE);
+////	pageWidgets.at(TextPage)->setData(msdFile);//TODO
+//	pageWidgets.at(TextPage)->setFocus();
+//	setCurrentPage(TextPage);
 
 //	return true;
 }
@@ -327,9 +329,9 @@ bool MainWindow::openJsmFile(const QString &path)
 //	}
 //	list1->setEnabled(false);
 //	lineSearch->setEnabled(false);
-////	pageWidgets.at(SCRIPTPAGE)->setData(jsmFile);//TODO
-//	pageWidgets.at(SCRIPTPAGE)->setFocus();
-//	setCurrentPage(SCRIPTPAGE);
+////	pageWidgets.at(ScriptPage)->setData(jsmFile);//TODO
+//	pageWidgets.at(ScriptPage)->setFocus();
+//	setCurrentPage(ScriptPage);
 
 //	return false;
 }
@@ -385,16 +387,6 @@ void MainWindow::fillPage()
 		bgPreview->fill(field->getBackgroundFile()->background());
 	else
 		bgPreview->fill(FF8Image::errorPixmap());
-
-	if(field->hasCharaFile()) {
-		qDebug() << "A un chara";
-		for(int i=0 ; i<field->getCharaFile()->modelCount() ; ++i) {
-			if(!field->getCharaFile()->model(i).texture.isNull()) {
-				bgPreview->fill(field->getCharaFile()->model(i).texture);
-				break;
-			}
-		}
-	}
 
 //	qDebug() << "BG" << t.elapsed();
 
@@ -575,8 +567,8 @@ void MainWindow::manageArchive()
 
 void MainWindow::search()
 {
-	searchDialog->setSearchText(((MsdWidget *)pageWidgets.at(TEXTPAGE))->selectedText());
-	searchDialog->setSearchOpcode(((JsmWidget *)pageWidgets.at(SCRIPTPAGE))->selectedOpcode());
+	searchDialog->setSearchText(((MsdWidget *)pageWidgets.at(TextPage))->selectedText());
+	searchDialog->setSearchOpcode(((JsmWidget *)pageWidgets.at(ScriptPage))->selectedOpcode());
 	searchDialog->show();
 	searchDialog->raise();
 	searchDialog->activateWindow();
@@ -597,7 +589,7 @@ void MainWindow::configDialog()
 	ConfigDialog dialog(this);
 	dialog.addAction(actionRun);
 	if(dialog.exec() == QDialog::Accepted) {
-		((MsdWidget *)pageWidgets.at(TEXTPAGE))->updateText();
+		((MsdWidget *)pageWidgets.at(TextPage))->updateText();
 	}
 }
 
@@ -616,7 +608,7 @@ void MainWindow::miscSearch()
 
 void MainWindow::bgPage()
 {
-	setCurrentPage(BACKGROUNDPAGE);
+	setCurrentPage(BackgroundPage);
 }
 
 void MainWindow::setCurrentPage(int index)
@@ -668,20 +660,20 @@ void MainWindow::gotoField(int fieldID)
 
 void MainWindow::gotoText(const QString &text, int fieldID, int textID, Qt::CaseSensitivity cs, bool reverse, bool regexp)
 {
-	if(tabBar->currentIndex()!=TEXTPAGE)
-		setCurrentPage(TEXTPAGE);
+	if(tabBar->currentIndex()!=TextPage)
+		setCurrentPage(TextPage);
 //	qDebug() << text << fieldID << textID;
 	gotoField(fieldID);
-	((MsdWidget *)pageWidgets.at(TEXTPAGE))->gotoText(text, textID, cs, reverse, regexp);
+	((MsdWidget *)pageWidgets.at(TextPage))->gotoText(text, textID, cs, reverse, regexp);
 }
 
 void MainWindow::gotoScript(int fieldID, int groupID, int methodID, int opcodeID)
 {
-	if(tabBar->currentIndex()!=SCRIPTPAGE)
-		setCurrentPage(SCRIPTPAGE);
+	if(tabBar->currentIndex()!=ScriptPage)
+		setCurrentPage(ScriptPage);
 //	qDebug() << "gotoScript" << fieldID << groupID << methodID << opcodeID;
 	gotoField(fieldID);
-	((JsmWidget *)pageWidgets.at(SCRIPTPAGE))->gotoScript(groupID, methodID, opcodeID);
+	((JsmWidget *)pageWidgets.at(ScriptPage))->gotoScript(groupID, methodID, opcodeID);
 }
 
 void MainWindow::about()

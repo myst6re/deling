@@ -15,14 +15,31 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "CharaModel.h"
+#ifndef TIMFILE_H
+#define TIMFILE_H
 
-CharaModel::CharaModel(const QString &name, const TimFile &texture) :
-	name(name), texture(texture)
-{
-}
+#include <QtCore>
+#include <QImage>
+#include "FF8Image.h"
 
-CharaModel::CharaModel(const QString &name) :
-	name(name)
+class TimFile
 {
-}
+public:
+	TimFile();
+	TimFile(const QByteArray &data);
+	bool open(const QByteArray &data);
+	bool save(QByteArray &data);
+	const QImage &image() const;
+	int currentColorTable() const;
+	QVector<QRgb> colorTable(int id) const;
+	void setCurrentColorTable(int id);
+	void setColorTable(int id, const QVector<QRgb> &colorTable);
+private:
+	QImage _image;
+	QList< QVector<QRgb> > _colorTables;
+	quint16 palW, palH;
+	quint8 bpp;
+	int _currentColorTable;
+};
+
+#endif // TIMFILE_H

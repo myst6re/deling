@@ -17,7 +17,7 @@
  ****************************************************************************/
 #include "files/TdwFile.h"
 
-QByteArray TdwFile::tim;
+TimFile TdwFile::tim;
 
 TdwFile::TdwFile() :
 	modified(false)
@@ -77,9 +77,8 @@ bool TdwFile::open(const QByteArray &tdw)
 		}
 	}
 
-	tim = tdw.mid(posData);
-	if(FF8Image::tim(tim).isNull()) {
-		tim = QByteArray();
+	if(!tim.open(tdw.mid(posData))) {
+		return false;
 	}
 
 	return true;
@@ -108,7 +107,12 @@ bool TdwFile::save(QByteArray &tdw)
 	posData = tdw.size();
 	tdw.replace(4, 4, (char *)&posData, 4);
 
-	tdw.append(tim);
+	QByteArray data;
+	if(tim.save(data)) {
+		tdw.append(data);
+	} else {
+		return false;
+	}
 
 	modified = false;
 
@@ -117,25 +121,27 @@ bool TdwFile::save(QByteArray &tdw)
 
 QPixmap TdwFile::image(int palID) const
 {
-    return FF8Image::tim(tim, palID);
+	tim.setCurrentColorTable(palID);
+	return QPixmap::fromImage(tim.image());
 }
 
 QPixmap TdwFile::image(const QByteArray &data, int palID)
 {
-	quint32 pos;
-	const char *constData = data.constData();
-
-	if(data.size() <= 8) {
-		return QPixmap();
+	TdwFile tdw;
+	if(tdw.open(data)) {
+		return tdw.image(palID);
 	}
-	memcpy(&pos, &constData[4], 4);
 
-	return FF8Image::tim(data.mid(pos), palID);
+	return QPixmap();
 }
 
 QImage TdwFile::letter(int charId, int fontColor, bool curFrame) const
 {
-	quint32 palSize=0, color=0, x=0, y=0;
+	tim.setCurrentColorTable(fontColor);
+	const QImage &img = tim.image();
+	return img.copy((charId*12) % img.width(), (charId*12) / img.width(), 12, 12);
+
+	/*quint32 palSize=0, color=0, x=0, y=0;
 	quint16 w, h;
 	const char *constData = tim.constData();
 	int i, posPal;
@@ -184,7 +190,7 @@ QImage TdwFile::letter(int charId, int fontColor, bool curFrame) const
 			++i;
 		}
 	}
-	return image;
+	return image;*/
 }
 
 const quint8 *TdwFile::charWidth(quint8 tableID) const

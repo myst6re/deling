@@ -107,8 +107,7 @@ bool CharaFile::open(const QByteArray &one)
 					qWarning() << "Unknown format (6)!" << QString::number(modelID, 16);
 //					return false;
 				}
-
-				models.append(CharaModel(name, FF8Image::tim(one.mid(offset+4, size))));
+				models.append(CharaModel(name, TimFile(one.mid(offset+4, size))));
 				qDebug() << "Tim ajouté" << name;
 			} else {
 				qWarning() << "Unknown format (5)!" << QString::number(modelID, 16);

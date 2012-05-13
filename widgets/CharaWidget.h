@@ -15,14 +15,27 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "CharaModel.h"
+#ifndef CHARAWIDGET_H
+#define CHARAWIDGET_H
 
-CharaModel::CharaModel(const QString &name, const TimFile &texture) :
-	name(name), texture(texture)
-{
-}
+#include <QtGui>
+#include "widgets/PageWidget.h"
+#include "BGPreview2.h"
 
-CharaModel::CharaModel(const QString &name) :
-	name(name)
+class CharaWidget : public PageWidget
 {
-}
+	Q_OBJECT
+public:
+	CharaWidget(QWidget *parent=0);
+	void clear();
+	void fill();
+	inline QString tabName() const { return tr("Modèles 3D"); }
+public slots:
+	void setModel(int modelID);
+private:
+	void build();
+	BGPreview2 *texLabel;
+	QListWidget *modelList;
+};
+
+#endif // CHARAWIDGET_H

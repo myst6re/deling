@@ -20,14 +20,15 @@
 
 #include <QtCore>
 #include <QPixmap>
+#include "files/TimFile.h"
 
 class CharaModel
 {
 public:
-	CharaModel(const QString &name, const QPixmap &texture);
+	CharaModel(const QString &name, const TimFile &texture);
 	CharaModel(const QString &name);
 	QString name;
-	QPixmap texture;
+	TimFile texture;
 };
 
 #endif // CHARAMODEL_H

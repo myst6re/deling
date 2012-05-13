@@ -19,7 +19,7 @@
 #define TDWFILE_H
 
 #include <QtCore>
-#include "FF8Image.h"
+#include "TimFile.h"
 
 class TdwFile
 {
@@ -36,7 +36,7 @@ public:
 	int tableCount() const;
 	int charCount(quint8 tableID=0) const;
 private:
-	static QByteArray tim;
+	static TimFile tim;
 	bool modified;
 	QList<int> _charCount;
 	QList<quint8 *> _charWidth;

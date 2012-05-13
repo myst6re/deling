@@ -23,7 +23,7 @@
 
 #define COEFF_COLOR	8.2258064516129032258064516129032 // 255/31
 
-class FF8Image
+class FF8Image : public QImageIOPlugin
 {
 public:
 	static QPixmap lzs(const QByteArray &data);
