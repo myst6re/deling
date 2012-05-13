@@ -24,6 +24,13 @@ TdwFile::TdwFile() :
 {
 }
 
+TdwFile::~TdwFile()
+{
+	foreach(quint8 *table, _charWidth) {
+		delete table;
+	}
+}
+
 bool TdwFile::isModified() const
 {
 	return modified;
@@ -31,29 +38,79 @@ bool TdwFile::isModified() const
 
 bool TdwFile::open(const QByteArray &tdw)
 {
-	quint32 pos, i;
+	quint32 posHeader, sizeHeader, posData, i;
 	const char *constData = tdw.constData();
-	quint8 space;
+	quint8 space, tableID, tableCount, *charWidth;
 
 	if(tdw.size() <= 8) {
 		return false;
 	}
-	memcpy(&pos, &constData[4], 4);
+	memcpy(&posHeader, constData, 4);
+	memcpy(&posData, &constData[4], 4);
 
-	for(i=0 ; i<pos-8 && i<112 ; ++i) {
-		space = tdw.at(8+i);
-		_charWidth[i*2] = space & 0xF;
-		_charWidth[i*2 + 1] = space >> 4;
-	}
-	for( ; i<112 ; ++i) {
-		_charWidth[i*2] = 0;
-		_charWidth[i*2 + 1] = 0;
+	if(posHeader != 8 || posData > (quint32)tdw.size()) {
+		qWarning() << "format tdw incorrect ou inconnu : posHeader" << posHeader;
+		return false;
 	}
 
-	tim = tdw.mid(pos);
+	sizeHeader = posData - posHeader;
+
+	if(sizeHeader != 0) {
+		tableCount = sizeHeader > 112 ? sizeHeader / 112 : 1;
+
+		for(tableID=0 ; tableID<tableCount ; ++tableID) {
+
+			charWidth = new quint8[224];
+
+			for(i=tableID*112 ; i<sizeHeader && i<quint32(tableID*112+112) ; ++i) {
+				space = tdw.at(posHeader+i);
+				charWidth[i*2] = space & 0xF;
+				charWidth[i*2 + 1] = space >> 4;
+			}
+			for( ; i<quint32(tableID*112+112) ; ++i) {
+				charWidth[i*2] = 0;
+				charWidth[i*2 + 1] = 0;
+			}
+
+			_charWidth.append(charWidth);
+			_charCount.append(qMin((sizeHeader - tableID*112) * 2, quint32(224)));
+		}
+	}
+
+	tim = tdw.mid(posData);
 	if(FF8Image::tim(tim).isNull()) {
 		tim = QByteArray();
 	}
+
+	return true;
+}
+
+bool TdwFile::save(QByteArray &tdw)
+{
+	quint32 posHeader=8, posData=0;
+	quint8 space, i;
+
+	tdw.append((char *)&posHeader, 4);
+	tdw.append((char *)&posData, 4);
+
+	foreach(quint8 *table, _charWidth) {
+		for(i=0 ; i<112 ; ++i) {
+			space = ((table[i*2 + 1] & 0xF) << 4) | (table[i*2] & 0xF);
+			if(space == 0)	break;
+			tdw.append((char)space);
+		}
+		if(i % 4 != 0) {
+			tdw.append(QByteArray(i % 4, '\0'));
+		}
+
+	}
+
+	posData = tdw.size();
+	tdw.replace(4, 4, (char *)&posData, 4);
+
+	tdw.append(tim);
+
+	modified = false;
 
 	return true;
 }
@@ -96,6 +153,7 @@ QImage TdwFile::letter(int charId, int fontColor, bool curFrame) const
 	w*=2;
 
 	QImage image(12, 12, QImage::Format_Indexed8);
+	uchar *pixels = image.bits();
 
 	for(i=0 ; i<16 ; ++i) {
 		memcpy(&color, &constData[posPal + i*2], 2);
@@ -110,12 +168,12 @@ QImage TdwFile::letter(int charId, int fontColor, bool curFrame) const
 	}
 
 	i = charId/2 * 6;
-	while(y < 12)
+	while(y < 12 && 20+palSize+i < (quint32)tim.size())
 	{
-		image.setPixel(x, y, (quint8)tim.at(20+palSize+i) & 0xF);
+		pixels[x + y*12] = (quint8)tim.at(20+palSize+i) & 0xF;
 		++x;
 
-		image.setPixel(x, y, (quint8)tim.at(20+palSize+i) >> 4);
+		pixels[x + y*12] = (quint8)tim.at(20+palSize+i) >> 4;
 		++x;
 
 		if(x==12) {
@@ -129,7 +187,27 @@ QImage TdwFile::letter(int charId, int fontColor, bool curFrame) const
 	return image;
 }
 
-const quint8 *TdwFile::charWidth() const
+const quint8 *TdwFile::charWidth(quint8 tableID) const
 {
-	return _charWidth;
+	return _charWidth.at(tableID);
+}
+
+int TdwFile::tableCount() const
+{
+	return _charWidth.size();
+}
+
+int TdwFile::charCount(quint8 tableID) const
+{
+	return _charCount.value(tableID, 0);
+
+	if(tableID >= tableCount())		return 0;
+
+	quint8 *charWidth = _charWidth.at(tableID);
+
+	for(int i=0 ; i<224 ; ++i) {
+		if(charWidth[i]==0)		return i;
+	}
+
+	return 224;
 }

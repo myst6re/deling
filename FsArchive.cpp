@@ -830,10 +830,17 @@ int FsArchive::replaceArchive(QFile *newFile)
 
 	_isOpen = false;
 
+	fs.close();
+
 	if(!fs.remove()) {
-		fs.open(QIODevice::ReadWrite);
+		qWarning() << "Impossible de supprimer le fs" << fs.errorString();
+		fs.open(QIODevice::ReadWrite);		
 		return 1;
 	}
+
+	fl.close();
+	fi.close();
+
 	if(!fl.remove() || !fi.remove())	return 2;
 
 	QString fileName = newFile->fileName();

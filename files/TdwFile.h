@@ -24,17 +24,22 @@
 class TdwFile
 {
 public:
-	TdwFile();
+	explicit TdwFile();
+	virtual ~TdwFile();
 	bool open(const QByteArray &tdw);
+	bool save(QByteArray &tdw);
 	bool isModified() const;
 	QPixmap image(int palID=0) const;
 	static QPixmap image(const QByteArray &data, int palID=0);
 	QImage letter(int charId, int fontColor, bool curFrame) const;
-	const quint8 *charWidth() const;
+	const quint8 *charWidth(quint8 tableID=0) const;
+	int tableCount() const;
+	int charCount(quint8 tableID=0) const;
 private:
 	static QByteArray tim;
 	bool modified;
-	quint8 _charWidth[224];
+	QList<int> _charCount;
+	QList<quint8 *> _charWidth;
 };
 
 #endif // TDWFILE_H

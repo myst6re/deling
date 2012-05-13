@@ -142,7 +142,7 @@ QPixmap FF8Image::tim(const QByteArray &data, int palID)
 	int dataSize = data.size();
 	QList<int> posPal;
 
-	if(dataSize < 8)		return QPixmap();
+	if(!data.startsWith(QByteArray("\x10\x00\x00\x00", 4)) || dataSize < 8)		return QPixmap();
 
 //	quint8 tag = (quint8)data.at(0);
 //	quint8 version = (quint8)data.at(1);
@@ -152,6 +152,8 @@ QPixmap FF8Image::tim(const QByteArray &data, int palID)
 //	qDebug() << QString("=== Apercu TIM ===");
 //	qDebug() << QString("Tag = %1, version = %2, reste = %3").arg(tag).arg(version).arg(QString(data.mid(2,2).toHex()));
 //	qDebug() << QString("bpp = %1, hasPal = %2, flag = %3, reste = %4").arg(bpp).arg(hasPal).arg((quint8)data.at(4),0,2).arg(QString(data.mid(5,3).toHex()));
+
+	if(hasPal && bpp > 1)		return QPixmap();
 
 	if(hasPal)
 	{
@@ -165,13 +167,13 @@ QPixmap FF8Image::tim(const QByteArray &data, int palID)
 		quint16 onePalSize = (bpp==0 ? 16 : 256);
 		int nbPal = (palSize-12)/(onePalSize*2);
 		nbPal += ((palSize-12)%(onePalSize*2)) !=0 ? nbPal : 0;
-		if(nbPal==1)	posPal << 0;
+		if(nbPal==1)	posPal.append(0);
 		else if(nbPal>1)
 		{
 			int pos=0;
 			for(int i=1 ; i<=nbPal ; ++i)
 			{
-				posPal << pos;
+				posPal.append(pos);
 				pos += pos % palW == 0 ? onePalSize : palW - onePalSize;
 			}
 		}
@@ -181,9 +183,7 @@ QPixmap FF8Image::tim(const QByteArray &data, int palID)
 //		qDebug() << QString("NbPal = %1 (valid : %2)").arg(nbPal).arg((palSize-12)%(onePalSize*2));
 //		QString str="";
 //		foreach(int posp, posPal)
-//		{
 //			str += QString("%1 | ").arg(posp);
-//		}
 //		qDebug() << QString("PosPal = %1").arg(str);
 	}
 

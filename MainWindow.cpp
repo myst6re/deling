@@ -94,6 +94,7 @@ MainWindow::MainWindow()
 	pageWidgets.append(new WalkmeshWidget());
 	pageWidgets.append(new BackgroundWidget());
 	pageWidgets.append(new EncounterWidget());
+	pageWidgets.append(new TdwWidget());
 	pageWidgets.append(new MiscWidget());
 
 	tabBar = new QTabBar();
@@ -272,6 +273,8 @@ bool MainWindow::openFsArchive(const QString &path)
 			lineSearch->setEnabled(false);
 			fillPage();
 		} else {
+			delete field;
+			field = NULL;
 			manageArchive();
 			actionSaveAs->setEnabled(false);
 		}
@@ -384,6 +387,7 @@ void MainWindow::fillPage()
 		bgPreview->fill(FF8Image::errorPixmap());
 
 	if(field->hasCharaFile()) {
+		qDebug() << "A un chara";
 		for(int i=0 ; i<field->getCharaFile()->modelCount() ; ++i) {
 			if(!field->getCharaFile()->model(i).texture.isNull()) {
 				bgPreview->fill(field->getCharaFile()->model(i).texture);
