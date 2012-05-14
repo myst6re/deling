@@ -25,6 +25,7 @@
 #include "files/MsdFile.h"
 #include "FieldArchivePC.h"
 #include "FieldArchivePS.h"
+#include "FieldThread.h"
 #include "Search.h"
 #include "BGPreview.h"
 #include "TextPreview.h"
@@ -55,6 +56,7 @@ public slots:
 private slots:
 	void filterMap();
 	void fillPage();
+	void fillBackground(const QImage &image);
 	void about();
 	int closeFiles(bool quit=false);
 	void setModified(bool modified);
@@ -83,6 +85,7 @@ private:
 
 	FieldArchive *fieldArchive;
 	FieldPC *field;
+	FieldThread *fieldThread;
 
 	MiscSearch *miscSearchD;
 	QLabel *currentPath;

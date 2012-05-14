@@ -23,17 +23,19 @@
 
 #define COEFF_COLOR	8.2258064516129032258064516129032 // 255/31
 
-class FF8Image : public QImageIOPlugin
+class FF8Image
 {
 public:
 	static QPixmap lzs(const QByteArray &data);
 	static QPixmap tex(const QByteArray &data, int palID=0);
-	static QPixmap tim(const QByteArray &data, int palID=0);
 
 	static int findFirstTim(const QByteArray &data);
 	static int findTims(const QByteArray &data);
 
+	static QImage errorImage();
 	static QPixmap errorPixmap();
+private:
+	static void error(QPaintDevice *pd);
 };
 
 #endif // FF8IMAGE_H

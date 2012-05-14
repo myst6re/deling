@@ -18,13 +18,13 @@
 #include "FieldArchivePC.h"
 
 FieldArchivePC::FieldArchivePC()
-	: FieldArchive(), archive(NULL)
+	: FieldArchive(), archive(0)
 {
 }
 
 FieldArchivePC::~FieldArchivePC()
 {
-	if(archive != NULL)				delete archive;
+	if(archive)			delete archive;
 }
 
 QString FieldArchivePC::archivePath() const
@@ -129,9 +129,42 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 		return 3;
 	}
 
+	openModels();
+
 	Config::setValue("jp", false);
 
 	return 0;
+}
+
+bool FieldArchivePC::openModels()
+{
+	FsArchive mainModels(archive->fileData("*field\\model\\main_chr.fl"), archive->fileData("*field\\model\\main_chr.fi"));
+	if(!mainModels.isOpen()) {
+		return false;
+	}
+
+	QByteArray fs;
+	QRegExp fileName("d(\\d\\d\\d)\\.mch$", Qt::CaseInsensitive);
+	QStringList toc = mainModels.toc();
+	if(!toc.isEmpty()) {
+		fs = archive->fileData("*field\\model\\main_chr.fs");
+	}
+
+	foreach(const QString &entry, toc) {
+		if(fileName.indexIn(entry, -8) != -1) {
+			bool ok;
+			QStringList capturedTexts = fileName.capturedTexts();
+			int id = capturedTexts.at(1).toInt(&ok);
+			if(ok) {
+				MchFile mch;
+				if(mch.open(mainModels.fileData(entry, fs), capturedTexts.first().left(4)) && mch.hasModel()) {
+					models.insert(id, new CharaModel(*mch.model()));
+				}
+			}
+		}
+	}
+
+	return true;
 }
 
 bool FieldArchivePC::openBG(Field *field) const

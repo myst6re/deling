@@ -25,12 +25,15 @@ FieldArchive::FieldArchive()
 FieldArchive::~FieldArchive()
 {
 	foreach(Field *field, fields) 	delete field;
+	foreach(CharaModel *model, models)	delete model;
 }
 
 void FieldArchive::clearFields()
 {
 	foreach(Field *field, fields)	delete field;
 	fields.clear();
+	foreach(CharaModel *model, models)	delete model;
+	models.clear();
 	fieldsSortByName.clear();
 	fieldsSortByDesc.clear();
 	fieldsSortByMapId.clear();
@@ -56,6 +59,16 @@ const QList<Field *> &FieldArchive::getFields() const
 int FieldArchive::nbFields() const
 {
 	return fields.size();
+}
+
+CharaModel *FieldArchive::getModel(int id) const
+{
+	return models.value(id, NULL);
+}
+
+QHash<int, CharaModel *> *FieldArchive::getModels()
+{
+	return &models;
 }
 
 bool FieldArchive::isReadOnly() const

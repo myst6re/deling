@@ -21,6 +21,7 @@
 #include <QtGui>
 #include "widgets/PageWidget.h"
 #include "BGPreview2.h"
+#include "files/MchFile.h"
 
 class CharaWidget : public PageWidget
 {
@@ -30,12 +31,14 @@ public:
 	void clear();
 	void fill();
 	inline QString tabName() const { return tr("Modèles 3D"); }
+	void setMainModels(QHash<int, CharaModel *> *mainModels);
 public slots:
 	void setModel(int modelID);
 private:
 	void build();
 	BGPreview2 *texLabel;
 	QListWidget *modelList;
+	QHash<int, CharaModel *> *mainModels;
 };
 
 #endif // CHARAWIDGET_H

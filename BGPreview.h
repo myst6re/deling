@@ -28,6 +28,7 @@ public:
 	BGPreview(QWidget *parent=0);
 
 	void clear();
+public slots:
 	void fill(const QPixmap &background);
 signals:
 	void triggered();

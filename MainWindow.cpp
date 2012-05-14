@@ -18,7 +18,7 @@
 #include "MainWindow.h"
 
 MainWindow::MainWindow()
-	: fieldArchive(NULL), field(NULL), fsDialog(0), _varManager(NULL), firstShow(true)
+	: fieldArchive(NULL), field(NULL), fieldThread(new FieldThread), fsDialog(0), _varManager(NULL), firstShow(true)
 {
 	QFont font;
 	font.setPointSize(8);
@@ -153,6 +153,7 @@ MainWindow::MainWindow()
 	connect(pageWidgets.at(EncounterPage), SIGNAL(modified(bool)), SLOT(setModified(bool)));
 	connect(pageWidgets.at(MiscPage), SIGNAL(modified(bool)), SLOT(setModified(bool)));
 	connect(bgPreview, SIGNAL(triggered()), SLOT(bgPage()));
+	connect(fieldThread, SIGNAL(background(QImage)), SLOT(fillBackground(QImage)));
 }
 
 void MainWindow::showEvent(QShowEvent *)
@@ -266,6 +267,7 @@ bool MainWindow::openFsArchive(const QString &path)
 	openArchive(path);
 
 	if(fieldArchive->nbFields() > 0) {
+		((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(fieldArchive->getModels());
 		actionOpti->setEnabled(true);
 		actionSaveAs->setEnabled(true);
 	} else {
@@ -378,19 +380,32 @@ void MainWindow::fillPage()
 		if(field == NULL)	return;
 
 		fieldArchive->openBG(field);
+		/*if(fieldThread->isRunning()) {
+			qDebug() << "exit thread";
+			fieldThread->exit(0);
+		}
+		qDebug() << "setData thread";
+		fieldThread->setData(fieldArchive, field);
+		qDebug() << "start thread";
+		fieldThread->start();*/
 	}
 
 	foreach(PageWidget *pageWidget, pageWidgets)
 		pageWidget->setData(field);
 
 	if(field->hasBackgroundFile())
-		bgPreview->fill(field->getBackgroundFile()->background());
+		bgPreview->fill(QPixmap::fromImage(field->getBackgroundFile()->background()));
 	else
 		bgPreview->fill(FF8Image::errorPixmap());
 
 //	qDebug() << "BG" << t.elapsed();
 
 	pageWidgets.at(tabBar->currentIndex())->fill();
+}
+
+void MainWindow::fillBackground(const QImage &image)
+{
+	bgPreview->fill(QPixmap::fromImage(image));
 }
 
 void MainWindow::setModified(bool modified)

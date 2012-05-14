@@ -146,7 +146,7 @@ void FsDialog::generatePreview()
 		BackgroundFile backgroundFile;
 		backgroundFile.open(fileType == "map" ? data : fsArchive->fileData(filePathWithoutExt+"map"),
 					 fileType == "mim" ? data : fsArchive->fileData(filePathWithoutExt+"mim"));
-		preview->imagePreview(backgroundFile.background(), fileName);
+		preview->imagePreview(QPixmap::fromImage(backgroundFile.background()), fileName);
 	}
 	else if(fileType == "cnf")
 	{

@@ -27,8 +27,15 @@ class CharaModel
 public:
 	CharaModel(const QString &name, const TimFile &texture);
 	CharaModel(const QString &name);
-	QString name;
-	TimFile texture;
+	CharaModel(const TimFile &texture);
+	CharaModel();
+	bool isEmpty() const;
+	QString name() const;
+	int id() const;
+	const TimFile &texture() const;
+private:
+	QString _name;
+	TimFile _texture;
 };
 
 #endif // CHARAMODEL_H

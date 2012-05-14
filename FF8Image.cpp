@@ -130,177 +130,6 @@ QPixmap FF8Image::tex(const QByteArray &data, int palID)
 	return QPixmap::fromImage(image);
 }
 
-QPixmap FF8Image::tim(const QByteArray &data, int palID)
-{
-	//QTime t;t.start();
-
-	quint32 palSize=0, imgSize=0;
-	quint16 palW, palH, w, h;
-	quint8 bpp;
-	const char *constData = data.constData();
-	bool hasPal;
-	int dataSize = data.size();
-	QList<int> posPal;
-
-	if(!data.startsWith(QByteArray("\x10\x00\x00\x00", 4)) || dataSize < 8)		return QPixmap();
-
-	quint8 tag = (quint8)data.at(0);
-	quint8 version = (quint8)data.at(1);
-	bpp = (quint8)data.at(4) & 3;
-	hasPal = ((quint8)data.at(4) >> 3) & 1;
-
-	qDebug() << QString("=== Apercu TIM ===");
-	qDebug() << QString("Tag = %1, version = %2, reste = %3").arg(tag).arg(version).arg(QString(data.mid(2,2).toHex()));
-	qDebug() << QString("bpp = %1, hasPal = %2, flag = %3, reste = %4").arg(bpp).arg(hasPal).arg((quint8)data.at(4),0,2).arg(QString(data.mid(5,3).toHex()));
-
-	if(hasPal && bpp > 1)		return QPixmap();
-
-	if(hasPal)
-	{
-		if(dataSize < 20)		return QPixmap();
-
-		memcpy(&palSize, &constData[8], 4);
-		memcpy(&palW, &constData[16], 2);
-		memcpy(&palH, &constData[18], 2);
-		if((quint32)dataSize < 8+palSize/* || palSize != (quint32)palW*palH*2+12*/)	return QPixmap();
-
-		quint16 onePalSize = (bpp==0 ? 16 : 256);
-		int nbPal = (palSize-12)/(onePalSize*2);
-		nbPal += ((palSize-12)%(onePalSize*2)) !=0 ? nbPal : 0;
-		if(nbPal==1)	posPal.append(0);
-		else if(nbPal>1)
-		{
-			int pos=0;
-			for(int i=1 ; i<=nbPal ; ++i)
-			{
-				posPal.append(pos);
-				pos += pos % palW == 0 ? onePalSize : palW - onePalSize;
-			}
-		}
-		palID %= nbPal;
-		qDebug() << QString("-Palette-");
-		qDebug() << QString("Size = %1, w = %2, h = %3").arg(palSize).arg(palW).arg(palH);
-		qDebug() << QString("NbPal = %1 (valid : %2)").arg(nbPal).arg((palSize-12)%(onePalSize*2));
-//		QString str="";
-//		foreach(int posp, posPal)
-//			str += QString("%1 | ").arg(posp);
-//		qDebug() << QString("PosPal = %1").arg(str);
-	}
-
-	if((quint32)dataSize < 20+palSize)		return QPixmap();
-
-	memcpy(&imgSize, &constData[8+palSize], 4);
-	memcpy(&w, &constData[16+palSize], 2);
-	memcpy(&h, &constData[18+palSize], 2);
-	if(bpp==0)		w*=4;
-	else if(bpp==1)	w*=2;
-
-	qDebug() << QString("-Image-");
-	qDebug() << QString("Size = %1, w = %2, h = %3").arg(imgSize).arg(w).arg(h);
-	qDebug() << QString("TIM Size = %1").arg(8+palSize+imgSize);
-
-	QImage image(w, h, QImage::Format_RGB32);
-	QRgb *pixels = (QRgb *)image.bits();
-
-	int size, i=0;
-	quint32 x=0, y=0;
-	quint32 color=0;
-
-	if(bpp!=0) {
-		size = qMin((quint32)w*h*bpp, dataSize - 8 - palSize);
-	} else {
-		size = qMin((quint32)w/2*h, dataSize - 8 - palSize);
-	}
-
-	if(8 + palSize + size > (quint32)dataSize)
-		return QPixmap();
-
-	if(bpp==0)//mag176, icon
-	{
-		while(i<size)
-		{
-			if(!image.valid(x, y))	break;
-
-			memcpy(&color, &constData[20+posPal.at(palID)*2+((quint8)data.at(20+palSize+i)&15)*2], 2);
-			pixels[x + y*w] = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
-			++x;
-			if(x==w)
-			{
-				x = 0;
-				++y;
-			}
-			if(!image.valid(x, y))	break;
-
-			memcpy(&color, &constData[20+posPal.at(palID)*2+((quint8)data.at(20+palSize+i)>>4)*2], 2);
-			pixels[x + y*w] = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
-			++x;
-			if(x==w)
-			{
-				x = 0;
-				++y;
-			}
-			++i;
-		}
-	}
-	else if(bpp==1)
-	{
-		while(i<size)
-		{
-			if(!image.valid(x, y))	break;
-
-			memcpy(&color, &constData[20+posPal.at(palID)*2+(quint8)data.at(20+palSize+i)*2], 2);
-			pixels[x + y*w] = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
-
-			++x;
-			if(x==w)
-			{
-				x = 0;
-				++y;
-			}
-			++i;
-		}
-	}
-	else if(bpp==2)
-	{
-		while(i<size)
-		{
-			if(!image.valid(x, y))	break;
-
-			memcpy(&color, &constData[20+palSize+i], 2);
-			pixels[x + y*w] = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
-
-			++x;
-			if(x==w)
-			{
-				x = 0;
-				++y;
-			}
-			i+=2;
-		}
-	}
-	else if(bpp==3)
-	{
-		while(i<size)
-		{
-			if(!image.valid(x, y))	break;
-
-			memcpy(&color, &constData[20+palSize+i], 3);
-			pixels[x + y*w] = qRgb(color >> 16, (color >> 8) & 0xFF, color & 0xFF);
-
-			++x;
-			if(x==w)
-			{
-				x = 0;
-				++y;
-			}
-			i+=3;
-		}
-	}
-
-	//qDebug() << t.elapsed();
-	return QPixmap::fromImage(image);
-}
-
 int FF8Image::findFirstTim(const QByteArray &data)
 {
 	int index = -1, dataSize = data.size();
@@ -387,21 +216,37 @@ int FF8Image::findTims(const QByteArray &data)
 	return i+1;
 }
 
-QPixmap FF8Image::errorPixmap()
+void FF8Image::error(QPaintDevice *pd)
 {
-	QPixmap errorPix(320, 224);
-	errorPix.fill(Qt::black);
 	QFont font;
 	font.setPixelSize(44);
 	QString text = QObject::tr("Erreur");
 	int textWidth = QFontMetrics(font).width(text);
 	int textHeight = QFontMetrics(font).height();
 
-	QPainter p(&errorPix);
+	QPainter p(pd);
+	p.setBrush(Qt::black);
+	p.drawRect(0, 0, pd->width(), pd->height());
 	p.setPen(Qt::white);
 	p.setFont(font);
 	p.drawStaticText((320-textWidth)/2, (224-textHeight)/2, QStaticText(text));
 	p.end();
+}
+
+QImage FF8Image::errorImage()
+{
+	QImage errorPix(320, 224, QImage::Format_RGB32);
+
+	error(&errorPix);
+
+	return errorPix;
+}
+
+QPixmap FF8Image::errorPixmap()
+{
+	QPixmap errorPix(320, 224);
+
+	error(&errorPix);
 
 	return errorPix;
 }

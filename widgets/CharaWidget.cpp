@@ -18,7 +18,7 @@
 #include "CharaWidget.h"
 
 CharaWidget::CharaWidget(QWidget *parent)
-	: PageWidget(parent)
+	: PageWidget(parent), mainModels(0)
 {
 }
 
@@ -44,8 +44,10 @@ void CharaWidget::clear()
 {
 	if(!isFilled())	return;
 
+	modelList->blockSignals(true);
 	modelList->clear();
 	texLabel->clear();
+	modelList->blockSignals(false);
 
 	PageWidget::clear();
 }
@@ -57,11 +59,18 @@ void CharaWidget::fill()
 
 	if(!hasData() || !data()->hasCharaFile())		return;
 
+	modelList->blockSignals(true);
 	for(int i=0 ; i<data()->getCharaFile()->modelCount() ; ++i) {
-		modelList->addItem(data()->getCharaFile()->model(i).name);
+		modelList->addItem(data()->getCharaFile()->model(i)->name());
 	}
+	modelList->blockSignals(false);
 
 	PageWidget::fill();
+}
+
+void CharaWidget::setMainModels(QHash<int, CharaModel *> *mainModels)
+{
+	this->mainModels = mainModels;
 }
 
 void CharaWidget::setModel(int modelID)
@@ -72,10 +81,14 @@ void CharaWidget::setModel(int modelID)
 		return;
 	}
 
-	const CharaModel &model = data()->getCharaFile()->model(modelID);
-	if(!model.texture.image().isNull()) {
+	CharaModel *model = data()->getCharaFile()->model(modelID);
+	if(model->isEmpty() && mainModels && mainModels->contains(model->id())) {
+		model = mainModels->value(model->id());
+	}
+
+	if(!model->isEmpty()) {
 		texLabel->setName(QString("tex%1").arg(modelID));
-		texLabel->setPixmap(QPixmap::fromImage(model.texture.image()));
+		texLabel->setPixmap(QPixmap::fromImage(model->texture().image()));
 	} else {
 		texLabel->clear();
 	}

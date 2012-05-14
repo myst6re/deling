@@ -243,7 +243,7 @@ bool FieldPC::open2()
 		openBackgroundFile(header->fileData("*"%name()%".map"), header->fileData("*"%name()%".mim"));
 	}
 	openTdwFile(header->fileData("*"%name()%".tdw"));
-//	chara_data = header->fileData("*chara.one");
+	openCharaFile(header->fileData("*chara.one"));
 
 	return true;
 }

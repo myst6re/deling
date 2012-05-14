@@ -26,15 +26,15 @@ class FieldThread : public QThread
 {
 	Q_OBJECT
 public:
-    explicit FieldThread(FieldArchive *fieldArchive, Field *field, QObject *parent = 0)
-        : QThread(parent), fieldArchive(fieldArchive), field(field) { }
-    void run();
+	explicit FieldThread(QObject *parent = 0)
+		: QThread(parent), fieldArchive(0), field(0) { }
+	void run();
+	void setData(FieldArchive *fieldArchive, Field *field);
 signals:
-    void background(QPixmap);
+	void background(QImage);
 private:
-    explicit FieldThread(QObject *parent = 0) : QThread(parent) { }
-    FieldArchive *fieldArchive;
-    Field *field;
+	FieldArchive *fieldArchive;
+	Field *field;
 };
 
 #endif // FIELDTHREAD_H

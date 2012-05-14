@@ -22,9 +22,9 @@
 #include <QtGui/QProgressDialog>
 #include "parameters.h"
 #include "LZS.h"
-#include "files/MsdFile.h"
 #include "Data.h"
 #include "Field.h"
+#include "files/MchFile.h"
 
 class FieldArchive
 {
@@ -40,6 +40,8 @@ public:
 	Field *getField(int id) const;
 	const QList<Field *> &getFields() const;
 	int nbFields() const;
+	CharaModel *getModel(int id) const;
+	QHash<int, CharaModel *> *getModels();
 	bool isReadOnly() const;
 	virtual int open(const QString &, QProgressDialog *progress)=0;
 	virtual bool openBG(Field *field) const=0;
@@ -60,6 +62,7 @@ public:
 	void setMapList(QStringList mapList);
 protected:
 	QList<Field *> fields;
+	QHash<int, CharaModel *> models;
 	QStringList _mapList;
 	QMultiMap<QString, int> fieldsSortByName;
 	QMultiMap<QString, int> fieldsSortByDesc;

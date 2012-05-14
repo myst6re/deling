@@ -19,12 +19,21 @@
 
 void FieldThread::run()
 {
-	if(fieldArchive->openBG(field)
-            && field->hasBackgroundFile()) {
-        QPixmap bg = field->getBackgroundFile()->background();
+	qDebug() << "thread started";
 
+	if(fieldArchive && field && fieldArchive->openBG(field)
+            && field->hasBackgroundFile()) {
+		qDebug() << "field opened";
+		QImage bg = field->getBackgroundFile()->background();
+		qDebug() << "background generated";
         emit background(bg);
     } else {
-        emit background(FF8Image::errorPixmap());
+		emit background(FF8Image::errorImage());
     }
+}
+
+void FieldThread::setData(FieldArchive *fieldArchive, Field *field)
+{
+	this->fieldArchive = fieldArchive;
+	this->field = field;
 }

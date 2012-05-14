@@ -22,6 +22,11 @@ CharaFile::CharaFile() :
 {
 }
 
+CharaFile::~CharaFile()
+{
+	foreach(CharaModel *model, models)		delete model;
+}
+
 bool CharaFile::isModified() const
 {
 	return modified;
@@ -29,6 +34,7 @@ bool CharaFile::isModified() const
 
 bool CharaFile::open(const QByteArray &one)
 {
+	foreach(CharaModel *model, models)		delete model;
 	models.clear();
 
 	if(one.size() < 0x800) {
@@ -77,7 +83,7 @@ bool CharaFile::open(const QByteArray &one)
 					return false;
 				}
 
-				models.append(CharaModel(name));
+				models.append(new CharaModel(name));
 			} else {
 				qWarning() << "Unknown format (2)!" << QString::number(modelID, 16);
 				return false;
@@ -107,7 +113,7 @@ bool CharaFile::open(const QByteArray &one)
 					qWarning() << "Unknown format (6)!" << QString::number(modelID, 16);
 //					return false;
 				}
-				models.append(CharaModel(name, TimFile(one.mid(offset+4, size))));
+				models.append(new CharaModel(name, TimFile(one.mid(offset+4, size))));
 				qDebug() << "Tim ajouté" << name;
 			} else {
 				qWarning() << "Unknown format (5)!" << QString::number(modelID, 16);
@@ -119,12 +125,12 @@ bool CharaFile::open(const QByteArray &one)
 	return true;
 }
 
-const CharaModel &CharaFile::model(int id) const
+CharaModel *CharaFile::model(int id) const
 {
 	return models.at(id);
 }
 
-void CharaFile::setModel(int id, const CharaModel &model)
+void CharaFile::setModel(int id, CharaModel *model)
 {
 	models.replace(id, model);
 	modified = true;

@@ -87,7 +87,7 @@ bool BackgroundFile::isModified() const
 	return modified;
 }
 
-QPixmap BackgroundFile::background() const
+QImage BackgroundFile::background() const
 {
 	int mimSize = mim.size();
 
@@ -96,10 +96,10 @@ QPixmap BackgroundFile::background() const
 	else if(mimSize == 438272)
 		return type2();
 	else
-		return FF8Image::errorPixmap();
+		return FF8Image::errorImage();
 }
 
-QPixmap BackgroundFile::type1() const
+QImage BackgroundFile::type1() const
 {
 	int mapSize = map.size(), tilePos=0;
 	Tile1 tile;
@@ -107,7 +107,7 @@ QPixmap BackgroundFile::type1() const
 	const char *constMimData = mim.constData(), *constMapData = map.constData();
 
 	int largeurMin=0, largeurMax=0, hauteurMin=0, hauteurMax=0, sizeOfTile = mapSize-map.lastIndexOf("\xff\x7f");
-	if(mapSize%sizeOfTile != 0)	return QPixmap();
+	if(mapSize%sizeOfTile != 0)	return QImage();
 
 //	qDebug() << "Type 1";
 
@@ -167,10 +167,10 @@ QPixmap BackgroundFile::type1() const
 		}
 	}
 
-	return QPixmap::fromImage(image);
+	return image;
 }
 
-QPixmap BackgroundFile::type2() const
+QImage BackgroundFile::type2() const
 {
 	int mapSize = map.size(), tilePos=0, baseX, pos, x, y, palStart, largeurMin=0, largeurMax=0, hauteurMin=0, hauteurMax=0;
 	Tile1 tileType1;
@@ -256,7 +256,7 @@ QPixmap BackgroundFile::type2() const
 			else if(tile.Y < 0 && -tile.Y > hauteurMin)
 				hauteurMin = -tile.Y;
 
-			if((tile.parameter==255 || params.isEmpty() || params.contains(tile.parameter, tile.state)) && (layers.value(tile.layerID) || layers.isEmpty()))
+			if((tile.parameter==255 || params.contains(tile.parameter, tile.state)) && layers.value(tile.layerID))
 			{
 				// HACK
 				if(tile.blendType>=60)
@@ -355,7 +355,7 @@ QPixmap BackgroundFile::type2() const
 		}
 	}
 
-	return QPixmap::fromImage(image);
+	return image;
 }
 
 QRgb BackgroundFile::BGcolor(int value, quint8 blendType, QRgb color0)

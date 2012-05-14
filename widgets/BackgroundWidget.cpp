@@ -107,7 +107,7 @@ void BackgroundWidget::enableState(QListWidgetItem *item)
 	else
 		data()->getBackgroundFile()->params.remove(parameter, state);
 
-	image->setPixmap(data()->getBackgroundFile()->background());
+	image->setPixmap(QPixmap::fromImage(data()->getBackgroundFile()->background()));
 }
 
 void BackgroundWidget::enableLayer(QListWidgetItem *item)
@@ -119,7 +119,7 @@ void BackgroundWidget::enableLayer(QListWidgetItem *item)
 
 	data()->getBackgroundFile()->layers.insert(layer, enabled);
 
-	image->setPixmap(data()->getBackgroundFile()->background());
+	image->setPixmap(QPixmap::fromImage(data()->getBackgroundFile()->background()));
 }
 
 /*void BackgroundWidget::switchItem(QListWidgetItem *item)
@@ -135,7 +135,7 @@ void BackgroundWidget::fill()
 	if(!hasData() || !data()->hasBackgroundFile())		return;
 
 	image->setName(data()->name());
-	image->setPixmap(data()->getBackgroundFile()->background());
+	image->setPixmap(QPixmap::fromImage(data()->getBackgroundFile()->background()));
 
 	parametersWidget->clear();
 	QList<quint8> parameters = data()->getBackgroundFile()->allparams.uniqueKeys();

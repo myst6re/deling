@@ -18,11 +18,42 @@
 #include "CharaModel.h"
 
 CharaModel::CharaModel(const QString &name, const TimFile &texture) :
-	name(name), texture(texture)
+	_name(name), _texture(texture)
 {
 }
 
 CharaModel::CharaModel(const QString &name) :
-	name(name)
+	_name(name)
 {
+}
+
+CharaModel::CharaModel(const TimFile &texture) :
+	_texture(texture)
+{
+}
+
+CharaModel::CharaModel()
+{
+}
+
+bool CharaModel::isEmpty() const
+{
+	return _texture.image().isNull();
+}
+
+QString CharaModel::name() const
+{
+	return _name.left(4);
+}
+
+int CharaModel::id() const
+{
+	bool ok;
+	int id = _name.mid(1, 3).toInt(&ok);
+	return ok ? id : -1;
+}
+
+const TimFile &CharaModel::texture() const
+{
+	return _texture;
 }
