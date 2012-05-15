@@ -18,8 +18,14 @@
 #include "CharaPreview.h"
 
 CharaPreview::CharaPreview(QWidget *parent) :
-	BGPreview2(parent), mainModels(0)
+	BGPreview(parent), mainModels(0)
 {
+	createContents();
+}
+
+void CharaPreview::createContents()
+{
+	label = new BGPreview2();
 }
 
 void CharaPreview::setMainModels(QHash<int, CharaModel *> *mainModels)
@@ -36,8 +42,10 @@ void CharaPreview::setModel(CharaModel *model)
 	}
 
 	if(!model->isEmpty()) {
-		setName(QString("tex%1").arg(model->id()));
-		setPixmap(QPixmap::fromImage(model->texture(0).image()));
+		createContents();
+		((BGPreview2 *)label)->setName(QString("tex%1").arg(model->id()));
+		label->setPixmap(QPixmap::fromImage(model->texture(0).image()));
+		setWidget(label);
 	} else {
 		clear();
 	}

@@ -44,6 +44,7 @@ public:
 	QHash<int, CharaModel *> *getModels();
 	bool isReadOnly() const;
 	virtual int open(const QString &, QProgressDialog *progress)=0;
+	virtual bool openModels()=0;
 	virtual bool openBG(Field *field) const=0;
 	bool compileScripts(int &errorFieldID, int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
 	int searchText(const QString &text, int &fieldID, int &textID, int from=0, Sorting=SortByMapId, Qt::CaseSensitivity cs=Qt::CaseSensitive, bool regExp=false) const;

@@ -30,6 +30,7 @@ public:
 	QString archivePath() const;
 	FF8DiscArchive *getFF8DiscArchive() const;
 	int open(const QString &, QProgressDialog *progress);
+	bool openModels();
 	bool openBG(Field *field) const;
 private:
 	FF8DiscArchive *iso;

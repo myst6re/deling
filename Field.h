@@ -44,7 +44,7 @@ public:
 	void openMiscFile(const QByteArray &inf, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
 	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
 	void openTdwFile(const QByteArray &tdw);
-	void openCharaFile(const QByteArray &one);
+	void openCharaFile(const QByteArray &one, bool ps);
 
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
@@ -89,7 +89,7 @@ protected:
 	MiscFile *miscFile;
 	BackgroundFile *backgroundFile;
 	TdwFile *tdwFile;
-	CharaFile *charaFile;
+	static CharaFile *charaFile;
 };
 
 #endif // FIELD_H

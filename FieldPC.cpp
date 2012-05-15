@@ -243,7 +243,7 @@ bool FieldPC::open2()
 		openBackgroundFile(header->fileData("*"%name()%".map"), header->fileData("*"%name()%".mim"));
 	}
 	openTdwFile(header->fileData("*"%name()%".tdw"));
-	openCharaFile(header->fileData("*chara.one"));
+	openCharaFile(header->fileData("*chara.one"), false);
 
 	return true;
 }
@@ -281,7 +281,7 @@ bool FieldPC::open2(FsArchive *archive)
 		openTdwFile(fi_infos_tdw->data(fs_data));
 	}
 	if(fi_infos_one!=NULL) {
-		openCharaFile(fi_infos_one->data(fs_data));
+		openCharaFile(fi_infos_one->data(fs_data), false);
 	}
 
 	return true;

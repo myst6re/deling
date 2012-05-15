@@ -32,9 +32,9 @@ public slots:
 	void fill(const QPixmap &background);
 signals:
 	void triggered();
-private:
-	QLabel *label;
 protected:
+	virtual void createContents();
+	QLabel *label;
 	void mouseReleaseEvent(QMouseEvent *);
 };
 

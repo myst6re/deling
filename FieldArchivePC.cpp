@@ -164,7 +164,7 @@ bool FieldArchivePC::openModels()
 		}
 	}
 
-	return true;
+	return !models.isEmpty();
 }
 
 bool FieldArchivePC::openBG(Field *field) const

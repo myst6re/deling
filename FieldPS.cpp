@@ -93,7 +93,7 @@ bool FieldPS::open(const QByteArray &dat_data)
 	return true;
 }
 
-bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim)
+bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk)
 {
 	const char *constData = mim.constData();
 	quint32 posSectionTdw, posSectionPmp;
@@ -113,6 +113,8 @@ bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim)
 	memoryPos = posSectionInf - 48;
 
 	openBackgroundFile(dat.mid(posSectionMap - memoryPos, posSectionMsk-posSectionMap), mim.mid(0x0c, 438272));
+
+	openCharaFile(lzk, true);
 
 	return true;
 }

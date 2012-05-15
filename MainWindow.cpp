@@ -238,10 +238,14 @@ bool MainWindow::openArchive(const QString &path)
 
 		list1->setEnabled(true);
 		lineSearch->setEnabled(true);
+		bgPreview->setEnabled(true);
 		list1->addTopLevelItems(items);
 		list1->resizeColumnToContents(0);
 		list1->resizeColumnToContents(1);
 		list1->resizeColumnToContents(2);
+
+		((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(fieldArchive->getModels());
+		((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(fieldArchive->getModels());
 
 		QString previousSessionField = Config::value("currentField").toString();
 		if(!previousSessionField.isEmpty()) {
@@ -267,8 +271,6 @@ bool MainWindow::openFsArchive(const QString &path)
 	openArchive(path);
 
 	if(fieldArchive->nbFields() > 0) {
-		((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(fieldArchive->getModels());
-		((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(fieldArchive->getModels());
 		actionOpti->setEnabled(true);
 		actionSaveAs->setEnabled(true);
 	} else {
@@ -448,6 +450,7 @@ int MainWindow::closeFiles(bool quit)
 	tabBar->setTabEnabled(tabBar->count()-1, false);
 	actionClose->setEnabled(false);
 	bgPreview->clear();
+	bgPreview->setEnabled(false);
 	foreach(PageWidget *pageWidget, pageWidgets) {
 		pageWidget->clear();
 		pageWidget->cleanData();

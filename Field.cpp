@@ -21,7 +21,7 @@ Field::Field(const QString &name)
 	: _isOpen(false), _name(name),
 	  msdFile(NULL), jsmFile(NULL), walkmeshFile(NULL),
 	  encounterFile(NULL), miscFile(NULL), backgroundFile(NULL),
-	  tdwFile(NULL), charaFile(NULL)
+	  tdwFile(NULL)
 {
 }
 
@@ -125,12 +125,14 @@ void Field::openTdwFile(const QByteArray &tdw)
 	}
 }
 
-void Field::openCharaFile(const QByteArray &one)
+CharaFile *Field::charaFile = NULL;
+
+void Field::openCharaFile(const QByteArray &one, bool ps)
 {
 	if(charaFile!=NULL)	deleteCharaFile();
 	charaFile = new CharaFile();
 
-	if(!charaFile->open(one)) {
+	if(!charaFile->open(one, ps)) {
 		qWarning() << "Field::openCharaFile error" << _name;
 		deleteCharaFile();
 	}

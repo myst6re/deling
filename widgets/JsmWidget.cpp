@@ -130,6 +130,7 @@ void JsmWidget::clear()
 	if(hasData() && data()->hasJsmFile())	saveSession();
 
 	list1->clear();
+	modelPreview->clear();
 	list2->clear();
 	textEdit->clear();
 	errorLabel->clear();
@@ -210,6 +211,8 @@ void JsmWidget::fillList2()
 	if(groupID==-1)	return;
 	int methodID = data()->getJsmFile()->currentMethodItem(groupID);
 
+	list1->scrollToItem(list1->currentItem());
+
 	list2->addTopLevelItems(methodList(groupID));
 	list2->scrollToTop();
 	list2->resizeColumnToContents(0);
@@ -220,8 +223,10 @@ void JsmWidget::fillList2()
 
 	if(modelID != -1 && data()->hasCharaFile()
 			&& modelID < data()->getCharaFile()->modelCount()) {
+		modelPreview->setEnabled(true);
 		modelPreview->setModel(data()->getCharaFile()->model(modelID));
 	} else {
+		modelPreview->setEnabled(false);
 		modelPreview->clear();
 	}
 
@@ -241,6 +246,8 @@ void JsmWidget::fillTextEdit()
 		toolBar->setEnabled(false);
 		return;
 	}
+
+	list2->scrollToItem(list2->currentItem());
 
 	int scroll = data()->getJsmFile()->currentOpcodeScroll(groupID, methodID);
 	int anchor;

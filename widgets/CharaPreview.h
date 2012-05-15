@@ -20,9 +20,9 @@
 
 #include <QtGui>
 #include "CharaModel.h"
-#include "BGPreview2.h"
+#include "BGPreview.h"
 
-class CharaPreview : public BGPreview2
+class CharaPreview : public BGPreview
 {
 	Q_OBJECT
 public:
@@ -32,6 +32,8 @@ public:
 signals:
 	
 public slots:
+protected:
+	virtual void createContents();
 private:
 	QHash<int, CharaModel *> *mainModels;
 };

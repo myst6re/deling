@@ -18,7 +18,7 @@
 #include "BGPreview.h"
 
 BGPreview::BGPreview(QWidget *parent)
-	: QScrollArea(parent)
+	: QScrollArea(parent), label(0)
 {
 	setAlignment(Qt::AlignCenter);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -29,13 +29,21 @@ BGPreview::BGPreview(QWidget *parent)
 	pal.setColor(QPalette::Disabled, QPalette::Window, pal.color(QPalette::Disabled, QPalette::Text));
 	setPalette(pal);
 	setFrameShape(QFrame::NoFrame);
+
+	createContents();
+}
+
+void BGPreview::createContents()
+{
+	if(label)	label->deleteLater();
+	label = new QLabel();
 }
 
 void BGPreview::fill(const QPixmap &background)
 {
-	setCursor(QCursor(Qt::PointingHandCursor));
+	createContents();
 
-	label = new QLabel();
+	setCursor(QCursor(Qt::PointingHandCursor));
 
 	if(background.width()>width() || background.height()>height()) {
 		if(background.height()==height())
@@ -51,7 +59,7 @@ void BGPreview::fill(const QPixmap &background)
 
 void BGPreview::clear()
 {
-	label = new QLabel();
+	createContents();
 	setWidget(label);
 	setCursor(QCursor(Qt::ArrowCursor));
 }

@@ -26,7 +26,7 @@ class CharaFile
 public:
 	CharaFile();
 	~CharaFile();
-	bool open(const QByteArray &one);
+	bool open(const QByteArray &one, bool ps);
 	bool isModified() const;
 	CharaModel *model(int id) const;
 	void setModel(int id, CharaModel *model);

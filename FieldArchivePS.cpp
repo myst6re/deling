@@ -106,9 +106,30 @@ int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 		return 4;
 	}
 
+	openModels();
+
 	Config::setValue("jp", iso->isJp());
 
 	return 0;
+}
+
+bool FieldArchivePS::openModels()
+{
+	const QList<FF8DiscFile> &fieldFiles = iso->fieldDirectory();
+
+	for(int i=0 ; i<77 && i<fieldFiles.size() ; ++i) {
+		QByteArray fieldData = iso->file(fieldFiles.at(i));
+
+		if(!fieldData.isEmpty()) {
+			MchFile mch;
+			if(mch.open(fieldData, QString("d%1").arg(i, 3, 10, QChar('0')))
+					&& mch.hasModel()) {
+				models.insert(i, new CharaModel(*mch.model()));
+			}
+		}
+	}
+
+	return !models.isEmpty();
 }
 
 bool FieldArchivePS::openBG(Field *field) const
@@ -117,7 +138,7 @@ bool FieldArchivePS::openBG(Field *field) const
 
 	quint32 isoFieldID = fieldPS->isoFieldID();
 
-	if(isoFieldID < 1 || (int)isoFieldID >= iso->fieldCount())
+	if(isoFieldID < 1 || (int)isoFieldID+1 >= iso->fieldCount())
 		return false;
 
 	QByteArray mim = iso->fileLZS(iso->fieldFile(isoFieldID-1));
@@ -128,5 +149,9 @@ bool FieldArchivePS::openBG(Field *field) const
 	if(dat.isEmpty())
 		return false;
 
-	return fieldPS->open2(dat, mim);
+	QByteArray lzk = iso->file(iso->fieldFile(isoFieldID+1));
+	if(lzk.isEmpty())
+		return false;
+
+	return fieldPS->open2(dat, mim, lzk);
 }

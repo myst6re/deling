@@ -323,13 +323,13 @@ qint64 IsoArchive::filePos(qint64 pos)
 
 qint64 IsoArchive::readIso(char *data, qint64 maxSize)
 {
-	qint64 pos = this->pos(), read, readTotal = 0, seqLen;
+	qint64 read, readTotal = 0, seqLen;
 
-	seqLen = qMin(2072 - (pos % SECTOR_SIZE), maxSize);
+//	qDebug() << this->pos() << "seek >> " << seqLen;
+	if(!seekIso(isoPos(this->pos())))	return 0;
+
+	seqLen = qMin(2072 - (this->pos() % SECTOR_SIZE), maxSize);
 	if(seqLen < 0)	return 0;
-
-//	qDebug() << pos << "seek >> " << seqLen;
-	if(!seekIso(isoPos(pos)))	return 0;
 
 	while((read = this->read(data, seqLen)) > 0) {
 //		qDebug() << "read" << seqLen << read;
@@ -361,12 +361,12 @@ QByteArray IsoArchive::readIso(qint64 maxSize)
 
 qint64 IsoArchive::writeIso(const char *data, qint64 maxSize)
 {
-	qint64 pos = this->pos(), write, writeTotal = 0, seqLen;
+	qint64 write, writeTotal = 0, seqLen;
 
-	seqLen = qMin(2072 - (pos % SECTOR_SIZE), maxSize);
+//	qDebug() << this->pos() << "seek >> " << seqLen;
+	if(!seekIso(isoPos(this->pos())))	return 0;
 
-//	qDebug() << pos << "seek >> " << seqLen;
-	if(!seekIso(isoPos(pos)))	return 0;
+	seqLen = qMin(2072 - (this->pos() % SECTOR_SIZE), maxSize);
 
 	while((write = this->write(data, seqLen)) > 0) {
 //		qDebug() << "write" << seqLen << write;
