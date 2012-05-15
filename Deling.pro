@@ -62,7 +62,10 @@ HEADERS += MainWindow.h \
     widgets/TdwGrid.h \
     files/TimFile.h \
     widgets/CharaWidget.h \
-    files/MchFile.h
+    files/MchFile.h \
+    files/TexFile.h \
+    files/TextureFile.h \
+    widgets/CharaPreview.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -118,7 +121,10 @@ SOURCES += MainWindow.cpp \
     widgets/TdwGrid.cpp \
     files/TimFile.cpp \
     widgets/CharaWidget.cpp \
-    files/MchFile.cpp
+    files/MchFile.cpp \
+    files/TexFile.cpp \
+    files/TextureFile.cpp \
+    widgets/CharaPreview.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

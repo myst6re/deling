@@ -15,26 +15,38 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef FF8IMAGE_H
-#define FF8IMAGE_H
+#include "TextureFile.h"
 
-#include <QtGui>
-#include "LZS.h"
-
-#define COEFF_COLOR	8.2258064516129032258064516129032 // 255/31
-
-class FF8Image
+TextureFile::TextureFile() :
+	_currentColorTable(0)
 {
-public:
-	static QPixmap lzs(const QByteArray &data);
+}
 
-	static int findFirstTim(const QByteArray &data);
-	static int findTims(const QByteArray &data);
+const QImage &TextureFile::image() const
+{
+	return _image;
+}
 
-	static QImage errorImage();
-	static QPixmap errorPixmap();
-private:
-	static void error(QPaintDevice *pd);
-};
+int TextureFile::currentColorTable() const
+{
+	return _currentColorTable;
+}
 
-#endif // FF8IMAGE_H
+QVector<QRgb> TextureFile::colorTable(int id) const
+{
+	return _colorTables.value(id);
+}
+
+void TextureFile::setCurrentColorTable(int id)
+{
+	if(id < _colorTables.size() && _currentColorTable != id) {
+		_image.setColorTable(_colorTables.at(_currentColorTable = id));
+	}
+}
+
+void TextureFile::setColorTable(int id, const QVector<QRgb> &colorTable)
+{
+	if(id < _colorTables.size()) {
+		_colorTables.replace(id, colorTable);
+	}
+}

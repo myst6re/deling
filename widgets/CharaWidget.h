@@ -20,7 +20,7 @@
 
 #include <QtGui>
 #include "widgets/PageWidget.h"
-#include "BGPreview2.h"
+#include "CharaPreview.h"
 #include "files/MchFile.h"
 
 class CharaWidget : public PageWidget
@@ -36,9 +36,9 @@ public slots:
 	void setModel(int modelID);
 private:
 	void build();
-	BGPreview2 *texLabel;
-	QListWidget *modelList;
 	QHash<int, CharaModel *> *mainModels;
+	CharaPreview *modelPreview;
+	QListWidget *modelList;
 };
 
 #endif // CHARAWIDGET_H

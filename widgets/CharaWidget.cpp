@@ -28,11 +28,12 @@ void CharaWidget::build()
 
 	modelList = new QListWidget(this);
 	modelList->setFixedWidth(200);
-	texLabel = new BGPreview2(this);
+	modelPreview = new CharaPreview(this);
+	modelPreview->setMainModels(mainModels);
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(modelList, 0, 0, Qt::AlignLeft);
-	layout->addWidget(texLabel, 0, 1);
+	layout->addWidget(modelPreview, 0, 1);
 	layout->setContentsMargins(QMargins());
 
 	connect(modelList, SIGNAL(currentRowChanged(int)), SLOT(setModel(int)));
@@ -46,7 +47,7 @@ void CharaWidget::clear()
 
 	modelList->blockSignals(true);
 	modelList->clear();
-	texLabel->clear();
+	modelPreview->clear();
 	modelList->blockSignals(false);
 
 	PageWidget::clear();
@@ -71,25 +72,17 @@ void CharaWidget::fill()
 void CharaWidget::setMainModels(QHash<int, CharaModel *> *mainModels)
 {
 	this->mainModels = mainModels;
+	if(isBuilded())
+		modelPreview->setMainModels(mainModels);
 }
 
 void CharaWidget::setModel(int modelID)
 {
 	if(!hasData() || !data()->hasCharaFile()
 			|| modelID >= data()->getCharaFile()->modelCount()) {
-		texLabel->clear();
+		modelPreview->clear();
 		return;
 	}
 
-	CharaModel *model = data()->getCharaFile()->model(modelID);
-	if(model->isEmpty() && mainModels && mainModels->contains(model->id())) {
-		model = mainModels->value(model->id());
-	}
-
-	if(!model->isEmpty()) {
-		texLabel->setName(QString("tex%1").arg(modelID));
-		texLabel->setPixmap(QPixmap::fromImage(model->texture(0).image()));
-	} else {
-		texLabel->clear();
-	}
+	modelPreview->setModel(data()->getCharaFile()->model(modelID));
 }

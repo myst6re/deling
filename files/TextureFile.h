@@ -15,26 +15,29 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef FF8IMAGE_H
-#define FF8IMAGE_H
+#ifndef TEXTUREFILE_H
+#define TEXTUREFILE_H
 
-#include <QtGui>
-#include "LZS.h"
+#include <QtCore>
+#include <QImage>
+#include "FF8Image.h"
 
-#define COEFF_COLOR	8.2258064516129032258064516129032 // 255/31
-
-class FF8Image
+class TextureFile
 {
 public:
-	static QPixmap lzs(const QByteArray &data);
-
-	static int findFirstTim(const QByteArray &data);
-	static int findTims(const QByteArray &data);
-
-	static QImage errorImage();
-	static QPixmap errorPixmap();
-private:
-	static void error(QPaintDevice *pd);
+	TextureFile();
+	explicit TextureFile(const QByteArray &data);
+	virtual bool open(const QByteArray &data)=0;
+	virtual bool save(QByteArray &data)=0;
+	const QImage &image() const;
+	int currentColorTable() const;
+	QVector<QRgb> colorTable(int id) const;
+	void setCurrentColorTable(int id);
+	void setColorTable(int id, const QVector<QRgb> &colorTable);
+protected:
+	QImage _image;
+	QList< QVector<QRgb> > _colorTables;
+	int _currentColorTable;
 };
 
-#endif // FF8IMAGE_H
+#endif // TEXTUREFILE_H

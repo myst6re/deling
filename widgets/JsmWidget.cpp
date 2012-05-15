@@ -18,7 +18,7 @@
 #include "widgets/JsmWidget.h"
 
 JsmWidget::JsmWidget(QWidget *parent)
-	: PageWidget(parent), groupID(-1), methodID(-1)
+	: PageWidget(parent), mainModels(0), groupID(-1), methodID(-1)
 {
 }
 
@@ -36,6 +36,15 @@ void JsmWidget::build()
 	list1->setIndentation(0);
 	list1->setFont(font);
 	list1->setUniformRowHeights(true);
+
+	modelPreview = new CharaPreview(this);
+	modelPreview->setFixedSize(list1->width(), list1->width());
+	modelPreview->setMainModels(mainModels);
+
+	QVBoxLayout *list1Layout = new QVBoxLayout();
+	list1Layout->addWidget(list1, 1);
+	list1Layout->addWidget(modelPreview, 0, Qt::AlignBottom);
+	list1Layout->setContentsMargins(QMargins());
 
 	list2 = new QTreeWidget(this);
 	list2->setHeaderLabels(QStringList() << tr("Id") << tr("Script") << tr("Script label") << tr("Spécial"));
@@ -75,7 +84,7 @@ void JsmWidget::build()
 	toolBar->setEnabled(false);
 
 	QGridLayout *mainLayout = new QGridLayout(this);
-	mainLayout->addWidget(list1, 0, 0, 2, 1);
+	mainLayout->addLayout(list1Layout, 0, 0, 2, 1);
 	mainLayout->addWidget(list2, 0, 1, 2, 1);
 	mainLayout->addWidget(te, 0, 2);
 	mainLayout->addWidget(textEdit, 0, 3);
@@ -160,6 +169,13 @@ void JsmWidget::setData(Field *field)
 	PageWidget::setData(field);
 }
 
+void JsmWidget::setMainModels(QHash<int, CharaModel *> *mainModels)
+{
+	this->mainModels = mainModels;
+	if(isBuilded())
+		modelPreview->setMainModels(mainModels);
+}
+
 void JsmWidget::fill()
 {
 	if(!isBuilded())	build();
@@ -199,6 +215,15 @@ void JsmWidget::fillList2()
 	list2->resizeColumnToContents(0);
 	list2->resizeColumnToContents(1);
 	list2->resizeColumnToContents(2);
+
+	int modelID = data()->getJsmFile()->getScripts().group(groupID).modelId();
+
+	if(modelID != -1 && data()->hasCharaFile()
+			&& modelID < data()->getCharaFile()->modelCount()) {
+		modelPreview->setModel(data()->getCharaFile()->model(modelID));
+	} else {
+		modelPreview->clear();
+	}
 
 	QTreeWidgetItem *item = list2->topLevelItem(methodID);
 	if(item) 	list2->setCurrentItem(item);

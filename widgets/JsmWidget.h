@@ -21,9 +21,10 @@
 #include <QtGui>
 #include "widgets/PageWidget.h"
 #include "files/JsmFile.h"
-#include "BGPreview.h"
+#include "widgets/CharaPreview.h"
 #include "JsmHighlighter.h"
 #include "PlainTextEdit.h"
+#include "CharaModel.h"
 
 class JsmWidget : public PageWidget
 {
@@ -34,6 +35,7 @@ public:
 	void clear();
 	void setReadOnly(bool readOnly);
 	void setData(Field *field);
+	void setMainModels(QHash<int, CharaModel *> *mainModels);
 	void fill();
 	void gotoScript(int, int, int);
 	int selectedOpcode();
@@ -42,7 +44,9 @@ private:
 	void saveSession();
 	QList<QTreeWidgetItem *> nameList() const;
 	QList<QTreeWidgetItem *> methodList(int groupID) const;
+	QHash<int, CharaModel *> *mainModels;
 	QTreeWidget *list1;
+	CharaPreview *modelPreview;
 	QTreeWidget *list2;
 	QPlainTextEdit *textEdit;
 	QToolBar *toolBar;

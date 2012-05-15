@@ -21,25 +21,18 @@
 #include <QtCore>
 #include <QImage>
 #include "FF8Image.h"
+#include "files/TextureFile.h"
 
-class TimFile
+class TimFile : public TextureFile
 {
 public:
-	TimFile();
-	TimFile(const QByteArray &data);
+	TimFile() : TextureFile() {}
+	explicit TimFile(const QByteArray &data);
 	bool open(const QByteArray &data);
 	bool save(QByteArray &data);
-	const QImage &image() const;
-	int currentColorTable() const;
-	QVector<QRgb> colorTable(int id) const;
-	void setCurrentColorTable(int id);
-	void setColorTable(int id, const QVector<QRgb> &colorTable);
 private:
-	QImage _image;
-	QList< QVector<QRgb> > _colorTables;
 	quint16 palW, palH;
 	quint8 bpp;
-	int _currentColorTable;
 };
 
 #endif // TIMFILE_H

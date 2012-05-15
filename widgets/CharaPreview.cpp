@@ -15,26 +15,30 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef FF8IMAGE_H
-#define FF8IMAGE_H
+#include "CharaPreview.h"
 
-#include <QtGui>
-#include "LZS.h"
-
-#define COEFF_COLOR	8.2258064516129032258064516129032 // 255/31
-
-class FF8Image
+CharaPreview::CharaPreview(QWidget *parent) :
+	BGPreview2(parent), mainModels(0)
 {
-public:
-	static QPixmap lzs(const QByteArray &data);
+}
 
-	static int findFirstTim(const QByteArray &data);
-	static int findTims(const QByteArray &data);
+void CharaPreview::setMainModels(QHash<int, CharaModel *> *mainModels)
+{
+	this->mainModels = mainModels;
+}
 
-	static QImage errorImage();
-	static QPixmap errorPixmap();
-private:
-	static void error(QPaintDevice *pd);
-};
+void CharaPreview::setModel(CharaModel *model)
+{
+	if(!model)		return;
 
-#endif // FF8IMAGE_H
+	if(model->isEmpty() && mainModels && mainModels->contains(model->id())) {
+		model = mainModels->value(model->id());
+	}
+
+	if(!model->isEmpty()) {
+		setName(QString("tex%1").arg(model->id()));
+		setPixmap(QPixmap::fromImage(model->texture(0).image()));
+	} else {
+		clear();
+	}
+}

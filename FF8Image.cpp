@@ -41,10 +41,8 @@ QPixmap FF8Image::lzs(const QByteArray &data)
 	QImage image(l, h, QImage::Format_RGB32);
 	QRgb *pixels = (QRgb *)image.bits();
 
-	while(i<size)
+	while(i<size && image.valid(x, y))
 	{
-		if(!image.valid(x, y))	break;
-
 		memcpy(&color, &constData[i], 2);
 		// $a = (color>>15)*127;
 		// if(color>>15)
@@ -62,71 +60,6 @@ QPixmap FF8Image::lzs(const QByteArray &data)
 	}
 
 	//qDebug() << t.elapsed();
-	return QPixmap::fromImage(image);
-}
-
-QPixmap FF8Image::tex(const QByteArray &data, int palID)
-{
-	const char *constData = data.constData();
-
-	quint32 l, h, nbPal, entreesPal, bitPerPx;
-
-	// qDebug() << QString("%1 | %2 | %3 | %4 | %5 | %6").arg(QString(data.mid(0,4).toHex())).arg(QString(data.mid(4,4).toHex())).arg(QString(data.mid(20,4).toHex())).arg(QString(data.mid(24,4).toHex())).arg(QString(data.mid(32,4).toHex())).arg(QString(data.mid(36,4).toHex()));
-	// qDebug() << QString("%1 | %2 | %3 | %4 | %5").arg(QString(data.mid(40,4).toHex())).arg(QString(data.mid(44,4).toHex())).arg(QString(data.mid(68,4).toHex())).arg(QString(data.mid(72,4).toHex())).arg(QString(data.mid(84,4).toHex()));
-	memcpy(&nbPal, &constData[48], 4);
-	memcpy(&l, &constData[60], 4);
-	memcpy(&h, &constData[64], 4);
-	memcpy(&bitPerPx, &constData[104], 4);
-	// qDebug() << "Tex.cpp >> var 'l' = " << l << " | var 'h' = " << h;
-
-	QImage image(l, h, QImage::Format_ARGB32);
-	QRgb *pixels = (QRgb *)image.bits();
-
-	int size = l*h*bitPerPx, i=0;
-	quint32 x=0, y=0;
-
-	if(nbPal > 0)
-	{
-		memcpy(&entreesPal, &constData[92], 4);
-		quint32 index, imageStart = 240+entreesPal*4*nbPal, paletteStart = 240+entreesPal*4*palID;
-
-		while(i<size)
-		{
-			if(!image.valid(x, y))	break;
-
-			index = paletteStart+((quint8)data.at(imageStart+i))*4;
-			pixels[x + y*l] = qRgba(data.at(index+2), data.at(index+1), data.at(index), data.at(index+3));
-
-			++x;
-			if(x==l)
-			{
-				x = 0;
-				++y;
-			}
-			++i;
-		}
-	}
-	else
-	{
-		quint16 color;
-
-		while(i<size)
-		{
-			if(!image.valid(x, y))	break;
-
-			memcpy(&color, &constData[240+i], 2);
-			pixels[x + y*l] = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
-
-			++x;
-			if(x==l)
-			{
-				x = 0;
-				++y;
-			}
-			i+=2;
-		}
-	}
-
 	return QPixmap::fromImage(image);
 }
 

@@ -17,14 +17,9 @@
  ****************************************************************************/
 #include "TimFile.h"
 
-TimFile::TimFile() :
-	_currentColorTable(0)
+TimFile::TimFile(const QByteArray &data) :
+	TextureFile()
 {
-}
-
-TimFile::TimFile(const QByteArray &data)
-{
-	TimFile::TimFile();
 	open(data);
 }
 
@@ -132,10 +127,8 @@ bool TimFile::open(const QByteArray &data)
 
 	if(bpp==0)//mag176, icon
 	{
-		while(i<size)
+		while(i<size && _image.valid(x, y))
 		{
-			if(!_image.valid(x, y))	break;
-
 			pixels[x + y*w] = currentPal.at((quint8)data.at(20+palSize+i) & 0xF);
 			++x;
 			if(x==w)
@@ -157,10 +150,8 @@ bool TimFile::open(const QByteArray &data)
 	}
 	else if(bpp==1)
 	{
-		while(i<size)
+		while(i<size && _image.valid(x, y))
 		{
-			if(!_image.valid(x, y))	break;
-
 			pixels[x + y*w] = currentPal.at((quint8)data.at(20+palSize+i));
 
 			++x;
@@ -174,10 +165,8 @@ bool TimFile::open(const QByteArray &data)
 	}
 	else if(bpp==2)
 	{
-		while(i<size)
+		while(i<size && _image.valid(x, y))
 		{
-			if(!_image.valid(x, y))	break;
-
 			memcpy(&color, &constData[20+palSize+i], 2);
 			pixels[x + y*w] = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
 
@@ -192,10 +181,8 @@ bool TimFile::open(const QByteArray &data)
 	}
 	else if(bpp==3)
 	{
-		while(i<size)
+		while(i<size && _image.valid(x, y))
 		{
-			if(!_image.valid(x, y))	break;
-
 			memcpy(&color, &constData[20+palSize+i], 3);
 			pixels[x + y*w] = qRgb(color >> 16, (color >> 8) & 0xFF, color & 0xFF);
 
@@ -227,33 +214,4 @@ bool TimFile::save(QByteArray &data)
 	}
 
 	return false;
-}
-
-const QImage &TimFile::image() const
-{
-	return _image;
-}
-
-int TimFile::currentColorTable() const
-{
-	return _currentColorTable;
-}
-
-QVector<QRgb> TimFile::colorTable(int id) const
-{
-	return _colorTables.value(id);
-}
-
-void TimFile::setCurrentColorTable(int id)
-{
-	if(id < _colorTables.size() && _currentColorTable != id) {
-		_image.setColorTable(_colorTables.at(_currentColorTable = id));
-	}
-}
-
-void TimFile::setColorTable(int id, const QVector<QRgb> &colorTable)
-{
-	if(id < _colorTables.size()) {
-		_colorTables.replace(id, colorTable);
-	}
 }

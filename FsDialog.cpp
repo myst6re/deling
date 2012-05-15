@@ -130,7 +130,7 @@ void FsDialog::generatePreview()
 	}
 	else if(fileType == "tex")
 	{
-		preview->imagePreview(FF8Image::tex(data), fileName);
+		preview->imagePreview(QPixmap::fromImage(TexFile(data).image()), fileName);
 	}
 	else if(fileType == "tim")
 	{

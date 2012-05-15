@@ -15,26 +15,25 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef FF8IMAGE_H
-#define FF8IMAGE_H
+#ifndef CHARAPREVIEW_H
+#define CHARAPREVIEW_H
 
 #include <QtGui>
-#include "LZS.h"
+#include "CharaModel.h"
+#include "BGPreview2.h"
 
-#define COEFF_COLOR	8.2258064516129032258064516129032 // 255/31
-
-class FF8Image
+class CharaPreview : public BGPreview2
 {
+	Q_OBJECT
 public:
-	static QPixmap lzs(const QByteArray &data);
-
-	static int findFirstTim(const QByteArray &data);
-	static int findTims(const QByteArray &data);
-
-	static QImage errorImage();
-	static QPixmap errorPixmap();
+	explicit CharaPreview(QWidget *parent = 0);
+	void setMainModels(QHash<int, CharaModel *> *mainModels);
+	void setModel(CharaModel *model);
+signals:
+	
+public slots:
 private:
-	static void error(QPaintDevice *pd);
+	QHash<int, CharaModel *> *mainModels;
 };
 
-#endif // FF8IMAGE_H
+#endif // CHARAPREVIEW_H

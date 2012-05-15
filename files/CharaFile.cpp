@@ -68,7 +68,7 @@ bool CharaFile::open(const QByteArray &one)
 			constData += 4;
 		}
 
-		if(modelID >> 16 == 0xd010) {
+		if(modelID >> 24 == 0xd0) {
 			qDebug() << "modelID" << (modelID & 0xFFFF);
 			memcpy(&modelID, constData, 4);
 			constData += 4;

@@ -268,6 +268,7 @@ bool MainWindow::openFsArchive(const QString &path)
 
 	if(fieldArchive->nbFields() > 0) {
 		((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(fieldArchive->getModels());
+		((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(fieldArchive->getModels());
 		actionOpti->setEnabled(true);
 		actionSaveAs->setEnabled(true);
 	} else {

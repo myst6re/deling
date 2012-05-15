@@ -72,7 +72,7 @@ JsmGroup::JsmGroup() {
 }
 
 JsmGroup::JsmGroup(quint16 exec_order, quint16 label, quint8 script_count)
-	: _type(No), _character(-1), _exec_order(exec_order), _label(label), _script_count(script_count)
+	: _type(No), _character(-1), _modelID(-1), _exec_order(exec_order), _label(label), _script_count(script_count)
 {
 }
 
@@ -82,6 +82,10 @@ void JsmGroup::setType(Type type) {
 
 void JsmGroup::setCharacter(int character) {
 	_character = character;
+}
+
+void JsmGroup::setModelId(int modelID) {
+	_modelID = modelID;
 }
 
 void JsmGroup::setName(const QString &name) {
@@ -106,6 +110,10 @@ JsmGroup::Type JsmGroup::type() const {
 
 int JsmGroup::character() const {
 	return _character;
+}
+
+int JsmGroup::modelId() const {
+	return _modelID;
 }
 
 const QString &JsmGroup::name() const {
@@ -182,6 +190,11 @@ void JsmScripts::setGroupName(int groupID, const QString &name)
 void JsmScripts::setGroupCharacter(int groupID, int character)
 {
 	groupList[groupID].setCharacter(character);
+}
+
+void JsmScripts::setGroupModelId(int groupID, int modelID)
+{
+	groupList[groupID].setModelId(modelID);
 }
 
 void JsmScripts::setGroupType(int groupID, JsmGroup::Type type)

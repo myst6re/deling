@@ -26,6 +26,7 @@
 #include "FF8Image.h"
 #include "files/BackgroundFile.h"
 #include "files/TdwFile.h"
+#include "files/TexFile.h"
 
 class FsDialog : public QWidget
 {

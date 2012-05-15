@@ -472,14 +472,14 @@ void JsmFile::searchGroupTypes()
 //	qDebug() << "JsmFile::searchGroupTypes";
 	unsigned int key;
 	int param;
-	int nbGroup=scripts.nbGroup(), nbOpcode, methodCount, pos, character;
-	bool model_type, main_type, location_type, door_type, bg_type;
+	int nbGroup=scripts.nbGroup(), nbOpcode, methodCount, pos, character, model_id;
+	bool main_type, location_type, door_type, bg_type;
 
 	for(int groupID=0; groupID < nbGroup ; ++groupID) {
 		const JsmGroup &jsmGroup = scripts.group(groupID);
 		methodCount = (int)jsmGroup.scriptCount();
-		model_type = main_type = location_type = door_type = bg_type = false;
-		character = -1;
+		main_type = location_type = door_type = bg_type = false;
+		character = model_id = -1;
 
 		for(int methodID=0 ; methodID < methodCount && !location_type && !door_type && !bg_type ; ++methodID) {
 			pos = scripts.posScript(groupID, methodID, &nbOpcode);
@@ -491,7 +491,7 @@ void JsmFile::searchGroupTypes()
 
 				switch(key) {
 				case JsmOpcode::SETMODEL:
-					model_type = true;
+					model_id = param;
 					break;
 				case JsmOpcode::SETPC:
 					if(opcodeID>0 && scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L) {
@@ -534,9 +534,12 @@ void JsmFile::searchGroupTypes()
 			}
 		}
 
-		if(model_type) {
-			scripts.setGroupType(groupID, JsmGroup::Model);
+		if(character != -1) {
 			scripts.setGroupCharacter(groupID, character);
+		}
+		if(model_id != -1) {
+			scripts.setGroupType(groupID, JsmGroup::Model);
+			scripts.setGroupModelId(groupID, model_id);
 		}
 		else if(location_type) {
 			scripts.setGroupType(groupID, JsmGroup::Location);
