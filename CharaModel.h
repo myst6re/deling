@@ -25,17 +25,18 @@
 class CharaModel
 {
 public:
-	CharaModel(const QString &name, const TimFile &texture);
+	CharaModel(const QString &name, const QList<quint32> &toc, const QByteArray &data);
 	CharaModel(const QString &name);
-	CharaModel(const TimFile &texture);
 	CharaModel();
+	bool open(const QList<quint32> &toc, const QByteArray &data);
 	bool isEmpty() const;
 	QString name() const;
 	int id() const;
-	const TimFile &texture() const;
+	const TimFile &texture(int id) const;
+	int textureCount() const;
 private:
 	QString _name;
-	TimFile _texture;
+	QList<TimFile> _textures;
 };
 
 #endif // CHARAMODEL_H

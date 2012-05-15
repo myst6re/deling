@@ -88,7 +88,7 @@ void CharaWidget::setModel(int modelID)
 
 	if(!model->isEmpty()) {
 		texLabel->setName(QString("tex%1").arg(modelID));
-		texLabel->setPixmap(QPixmap::fromImage(model->texture().image()));
+		texLabel->setPixmap(QPixmap::fromImage(model->texture(0).image()));
 	} else {
 		texLabel->clear();
 	}

@@ -15,7 +15,7 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 	}
 
 	quint32 timOffset, modelOffset;
-	QList<quint32> timOffsets;
+	QList<quint32> toc;
 	const char *constData = mch.constData();
 	const char * const startData = constData;
 
@@ -23,7 +23,9 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 		memcpy(&timOffset, constData, 4);
 		constData += 4;
 
-		timOffsets.append(timOffset);
+		if(timOffset != 0xFFFFFFFF) {
+			toc.append(timOffset);
+		}
 
 		qDebug() << "tim offset" << QString::number(timOffset & 0xFFFFFF, 16) << QString::number((timOffset >> 24) & 0xFF, 16);
 	} while(timOffset != 0xFFFFFFFF && constData - startData < 0x100);
@@ -34,10 +36,11 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 
 		qDebug() << "model data offset" << QString::number(modelOffset, 16);
 
-		if(!timOffsets.isEmpty()) {
-			timOffsets.append(modelOffset);
-			timOffset = timOffsets.first() & 0xFFFFFF;
-			_model = new CharaModel(name, TimFile(mch.mid(timOffset, timOffsets.at(1) - timOffset)));
+		if(!toc.isEmpty()) {
+			toc.append(modelOffset);
+			toc.append(mch.size());
+
+			_model = new CharaModel(name, toc, mch);
 		} else {
 			qDebug() << "No tim";
 		}
@@ -45,6 +48,8 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 		qWarning() << "Unknown format (5)!" << QString::number(timOffset, 16);
 		return false;
 	}
+
+	qDebug() << "MchFile ouvert" << name;
 
 	return true;
 }

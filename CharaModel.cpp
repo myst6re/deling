@@ -17,9 +17,10 @@
  ****************************************************************************/
 #include "CharaModel.h"
 
-CharaModel::CharaModel(const QString &name, const TimFile &texture) :
-	_name(name), _texture(texture)
+CharaModel::CharaModel(const QString &name, const QList<quint32> &toc, const QByteArray &data) :
+	_name(name)
 {
+	open(toc, data);
 }
 
 CharaModel::CharaModel(const QString &name) :
@@ -27,18 +28,30 @@ CharaModel::CharaModel(const QString &name) :
 {
 }
 
-CharaModel::CharaModel(const TimFile &texture) :
-	_texture(texture)
-{
-}
-
 CharaModel::CharaModel()
 {
 }
 
+bool CharaModel::open(const QList<quint32> &toc, const QByteArray &data)
+{
+	_textures.clear();
+
+	// Toc = tim offsets + data offset + data size
+
+	for(int i=0 ; i<toc.size()-2 ; ++i) {
+		quint32 pos = toc.at(i) & 0xFFFFFF;
+		qDebug() << "ouverture tim" << pos << ((toc.at(i+1) & 0xFFFFFF) - pos);
+		_textures.append(TimFile(data.mid(pos, (toc.at(i+1) & 0xFFFFFF) - pos)));
+	}
+
+	qDebug() << "charaModel ouvert" << _name;
+
+	return true;
+}
+
 bool CharaModel::isEmpty() const
 {
-	return _texture.image().isNull();
+	return _textures.isEmpty();
 }
 
 QString CharaModel::name() const
@@ -53,7 +66,12 @@ int CharaModel::id() const
 	return ok ? id : -1;
 }
 
-const TimFile &CharaModel::texture() const
+const TimFile &CharaModel::texture(int id) const
 {
-	return _texture;
+	return _textures.at(id);
+}
+
+int CharaModel::textureCount() const
+{
+	return _textures.size();
 }

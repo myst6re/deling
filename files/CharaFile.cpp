@@ -42,7 +42,7 @@ bool CharaFile::open(const QByteArray &one)
 		return false;
 	}
 
-	quint32 count, offset, size, modelID;
+	quint32 count, offset, size, modelID, timOffset, modelOffset;
 	const char *constData = one.constData();
 	const char * const startData = constData;
 
@@ -89,20 +89,28 @@ bool CharaFile::open(const QByteArray &one)
 				return false;
 			}
 		} else {
-			qDebug() << "no modelID";
+			QList<quint32> toc;
+
+			toc.append(modelID);
 			qDebug() << "tim offset" << QString::number(modelID & 0xFFFFFF, 16) << QString::number((modelID >> 24) & 0xFF, 16);
 			do {
-				memcpy(&modelID, constData, 4);
+				memcpy(&timOffset, constData, 4);
 				constData += 4;
 
-				qDebug() << "tim offset" << QString::number(modelID & 0xFFFFFF, 16) << QString::number((modelID >> 24) & 0xFF, 16);
-			} while(modelID != 0xFFFFFFFF && constData - startData < 0x800);
+				if(timOffset != 0xFFFFFFFF) {
+					toc.append(timOffset);
+				}
+				qDebug() << "tim offset" << QString::number(timOffset & 0xFFFFFF, 16) << QString::number((timOffset >> 24) & 0xFF, 16);
+			} while(timOffset != 0xFFFFFFFF && constData - startData < 0x800);
 
-			if(modelID == 0xFFFFFFFF) {
-				memcpy(&modelID, constData, 4);
+			if(timOffset == 0xFFFFFFFF) {
+				memcpy(&modelOffset, constData, 4);
 				constData += 4;
 
-				qDebug() << "model data offset" << QString::number(modelID, 16);
+				toc.append(modelOffset);
+				qDebug() << "model data offset" << QString::number(modelOffset, 16);
+
+				toc.append(size);
 
 				QString name(one.mid(constData - startData, 8));
 				qDebug() << name;
@@ -113,10 +121,10 @@ bool CharaFile::open(const QByteArray &one)
 					qWarning() << "Unknown format (6)!" << QString::number(modelID, 16);
 //					return false;
 				}
-				models.append(new CharaModel(name, TimFile(one.mid(offset+4, size))));
+				models.append(new CharaModel(name, toc, one.mid(offset+4, size)));
 				qDebug() << "Tim ajouté" << name;
 			} else {
-				qWarning() << "Unknown format (5)!" << QString::number(modelID, 16);
+				qWarning() << "Unknown format (5)!" << QString::number(timOffset, 16);
 				return false;
 			}
 		}
