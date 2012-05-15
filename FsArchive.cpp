@@ -202,6 +202,11 @@ FsArchive::FsArchive(const QString &path)
 
 FsArchive::~FsArchive()
 {
+	if(fromFile) {
+		fs.close();
+		fl.close();
+		fi.close();
+	}
 	foreach(FsHeader *header, infos) 	delete header;
 }
 
