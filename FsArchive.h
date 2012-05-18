@@ -33,7 +33,7 @@ class FsHeader
 public:
 	FsHeader();
 	FsHeader(const QString &path, quint32 uncompressed_size, quint32 position, bool isCompressed);
-	const QString &path() const;
+    const QString &path() const;
 	void setPath(const QString &);
 	QString dirName() const;
 	QString fileName() const;
@@ -94,6 +94,9 @@ public:
 	void save(QByteArray &fl_data, QByteArray &fi_data) const;
 	bool saveAs(const QString &path) const;
 	int replaceArchive(QFile *newFile);
+    static QString fsPath(const QString &path);
+    static QString flPath(const QString &path);
+    static QString fiPath(const QString &path);
 	QString path() const;
 	bool setPath(const QString &path);
 	int size() const;

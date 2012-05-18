@@ -518,7 +518,7 @@ FsArchive::Error FsArchive::replace(const QString &source, const QString &destin
 	sourceData = sourceFile.readAll();
 	sourceFile.close();
 
-	QFile temp(temp_path%"s");
+    QFile temp(FsArchive::fsPath(temp_path));
 	if(!temp.open(QIODevice::WriteOnly | QIODevice::Truncate))
 		return TempCantBeOpened;
 
@@ -546,16 +546,16 @@ FsArchive::Error FsArchive::replace(const QString &source, const QString &destin
 	}
 
 	if(!saveAs(temp_path)) {
-		QFile::remove(temp_path%"i");
-		QFile::remove(temp_path%"l");
+        QFile::remove(FsArchive::fiPath(temp_path));
+        QFile::remove(FsArchive::flPath(temp_path));
 		temp.remove();
 		return SaveHeaderError;
 	}
 
 	int replaceError = replaceArchive(&temp);
 	if(replaceError==1) {
-		QFile::remove(temp_path%"i");
-		QFile::remove(temp_path%"l");
+        QFile::remove(FsArchive::fiPath(temp_path));
+        QFile::remove(FsArchive::flPath(temp_path));
 		temp.remove();
 		return ReplaceArchiveError;
 	} else if(replaceError!=0) {
@@ -652,7 +652,7 @@ FsArchive::Error FsArchive::remove(QStringList destinations, QProgressDialog *pr
 	save_path.chop(1);// remove s, i or l in extension
 	temp_path = save_path.left(save_path.lastIndexOf("/")+1) + "delingtemp.f";
 
-	QFile temp(temp_path%"s");
+    QFile temp(FsArchive::fsPath(temp_path));
 	if(!temp.open(QIODevice::WriteOnly | QIODevice::Truncate))
 		return TempCantBeOpened;
 
@@ -682,16 +682,16 @@ FsArchive::Error FsArchive::remove(QStringList destinations, QProgressDialog *pr
 	rebuildInfos();
 
 	if(!saveAs(temp_path)) {
-		QFile::remove(temp_path%"i");
-		QFile::remove(temp_path%"l");
+        QFile::remove(FsArchive::fiPath(temp_path));
+        QFile::remove(FsArchive::flPath(temp_path));
 		temp.remove();
 		return SaveHeaderError;
 	}
 
 	int replaceError = replaceArchive(&temp);
 	if(replaceError==1) {
-		QFile::remove(temp_path%"i");
-		QFile::remove(temp_path%"l");
+        QFile::remove(FsArchive::fiPath(temp_path));
+        QFile::remove(FsArchive::flPath(temp_path));
 		temp.remove();
 		return ReplaceArchiveError;
 	} else if(replaceError!=0) {
@@ -772,9 +772,9 @@ bool FsArchive::load(const QString &path)
 {
 	if(_isOpen)	return false;
 
-	fl.setFileName(path%'l');
-	fi.setFileName(path%'i');
-	fs.setFileName(path%'s');
+    fl.setFileName(FsArchive::flPath(path));
+    fi.setFileName(FsArchive::fiPath(path));
+    fs.setFileName(FsArchive::fsPath(path));
 	if(!fl.open(QIODevice::ReadWrite)) {
 		if(!fl.open(QIODevice::ReadOnly))
 			return false;
@@ -811,7 +811,7 @@ void FsArchive::save(QByteArray &fl_data, QByteArray &fi_data) const
 
 bool FsArchive::saveAs(const QString &path) const
 {
-	QFile fl(path%'l'), fi(path%'i');
+    QFile fl(FsArchive::flPath(path)), fi(FsArchive::fiPath(path));
 	if(!fl.open(QIODevice::WriteOnly | QIODevice::Truncate)
 			|| !fi.open(QIODevice::WriteOnly | QIODevice::Truncate))
 		return false;
@@ -851,7 +851,7 @@ int FsArchive::replaceArchive(QFile *newFile)
 	QString fileName = newFile->fileName();
 	fileName.chop(1);
 
-	if(!newFile->rename(fs.fileName()) || !QFile::rename(fileName%"l", fl.fileName()) || !QFile::rename(fileName%"i", fi.fileName()))
+    if(!newFile->rename(fs.fileName()) || !QFile::rename(FsArchive::flPath(fileName), fl.fileName()) || !QFile::rename(FsArchive::fiPath(fileName), fi.fileName()))
 		return 2;
 
 	if(!fs.open(QIODevice::ReadWrite) || !fl.open(QIODevice::ReadWrite) || !fi.open(QIODevice::ReadWrite))
@@ -860,6 +860,33 @@ int FsArchive::replaceArchive(QFile *newFile)
 	_isOpen = true;
 
 	return 0;
+}
+
+QString FsArchive::fsPath(const QString &path)
+{
+    if(path.endsWith('F')) {
+        return path % 'S';
+    } else {
+        return path % 's';
+    }
+}
+
+QString FsArchive::flPath(const QString &path)
+{
+    if(path.endsWith('F')) {
+        return path % 'L';
+    } else {
+        return path % 'l';
+    }
+}
+
+QString FsArchive::fiPath(const QString &path)
+{
+    if(path.endsWith('F')) {
+        return path % 'I';
+    } else {
+        return path % 'i';
+    }
 }
 
 QString FsArchive::path() const
@@ -872,9 +899,9 @@ bool FsArchive::setPath(const QString &path)
 	fl.close();
 	fi.close();
 	fs.close();
-	fl.setFileName(path%'l');
-	fi.setFileName(path%'i');
-	fs.setFileName(path%'s');
+    fl.setFileName(FsArchive::flPath(path));
+    fi.setFileName(FsArchive::fiPath(path));
+    fs.setFileName(FsArchive::fsPath(path));
 	return fl.open(QIODevice::ReadWrite)
 			&& fi.open(QIODevice::ReadWrite)
 			&& fs.open(QIODevice::ReadWrite);

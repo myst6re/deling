@@ -203,7 +203,7 @@ bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
 		temp_path = save_path;
 	}
 
-	QFile temp(temp_path%'s');
+    QFile temp(FsArchive::fsPath(temp_path));
 	if(!temp.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
 		temp.remove();
 		return false;
@@ -262,8 +262,8 @@ bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
 			toc.removeOne(file);
 
 			/* FL */
-			file.chop(1);
-			file.append('l');
+            file.chop(1);
+            file = FsArchive::flPath(file);
 			pos = temp.pos();
 			archive->setFileData(file, fl_data);
 //			qDebug() << "save" << pos << file;
@@ -273,7 +273,7 @@ bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
 
 			/* FI */
 			file.chop(1);
-			file.append('i');
+            file = FsArchive::fiPath(file);
 			pos = temp.pos();
 			archive->setFileData(file, fi_data);
 //			qDebug() << "save" << pos << file;
@@ -335,8 +335,8 @@ bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
 
 	if(!archive->saveAs(temp_path)) {
 		qWarning() << "Error save header!!!";
-		QFile::remove(temp_path%"i");
-		QFile::remove(temp_path%"l");
+        QFile::remove(FsArchive::fiPath(temp_path));
+        QFile::remove(FsArchive::flPath(temp_path));
 		temp.remove();
 		restoreFieldHeaders(oldFields);
 		archive->setHeader(oldValues);
@@ -346,8 +346,8 @@ bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
 	if(save_path.compare(path, Qt::CaseInsensitive)==0) {
 		int replaceError = archive->replaceArchive(&temp);
 		if(replaceError==1) {
-			QFile::remove(temp_path%"i");
-			QFile::remove(temp_path%"l");
+            QFile::remove(FsArchive::fiPath(temp_path));
+            QFile::remove(FsArchive::flPath(temp_path));
 			temp.remove();
 			restoreFieldHeaders(oldFields);
 			archive->setHeader(oldValues);
@@ -380,7 +380,7 @@ bool FieldArchivePC::optimiseArchive(QProgressDialog *progress)
 	save_path.chop(1);// remove s, i or l in extension
 	temp_path = save_path.left(save_path.lastIndexOf("/")+1) + "delingtemp.f";
 
-	QFile temp(temp_path%"s");
+    QFile temp(FsArchive::fsPath(temp_path));
 	if(!temp.open(QIODevice::WriteOnly | QIODevice::Truncate))
 		return false;
 
@@ -423,7 +423,7 @@ bool FieldArchivePC::optimiseArchive(QProgressDialog *progress)
 
 		/* FL */
 		file.chop(1);
-		file.append('l');
+        file = FsArchive::flPath(file);
 		pos = temp.pos();
 		archive->setFileData(file, fl_data);
 //		qDebug() << "save" << pos << file;
@@ -433,7 +433,7 @@ bool FieldArchivePC::optimiseArchive(QProgressDialog *progress)
 
 		/* FI */
 		file.chop(1);
-		file.append('i');
+        file = FsArchive::fiPath(file);
 		pos = temp.pos();
 		archive->setFileData(file, fi_data);
 //		qDebug() << "save" << pos << file;
@@ -471,8 +471,8 @@ bool FieldArchivePC::optimiseArchive(QProgressDialog *progress)
 
 	if(!archive->saveAs(temp_path)) {
 		qWarning() << "Error save header!!!";
-		QFile::remove(temp_path%"i");
-		QFile::remove(temp_path%"l");
+        QFile::remove(FsArchive::fiPath(temp_path));
+        QFile::remove(FsArchive::flPath(temp_path));
 		temp.remove();
 		restoreFieldHeaders(oldFields);
 		archive->setHeader(oldValues);
@@ -481,8 +481,8 @@ bool FieldArchivePC::optimiseArchive(QProgressDialog *progress)
 
 	int replaceError = archive->replaceArchive(&temp);
 	if(replaceError==1) {
-		QFile::remove(temp_path%"i");
-		QFile::remove(temp_path%"l");
+        QFile::remove(FsArchive::fiPath(temp_path));
+        QFile::remove(FsArchive::flPath(temp_path));
 		temp.remove();
 		restoreFieldHeaders(oldFields);
 		archive->setHeader(oldValues);
