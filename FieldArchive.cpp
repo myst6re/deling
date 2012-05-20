@@ -39,6 +39,11 @@ void FieldArchive::clearFields()
 	fieldsSortByMapId.clear();
 }
 
+const QString &FieldArchive::errorMessage() const
+{
+	return errorMsg;
+}
+
 Field *FieldArchive::getField(int id) const
 {
 //	Field *field = fields.value(id, NULL);

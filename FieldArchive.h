@@ -36,6 +36,7 @@ public:
 	FieldArchive();
 	~FieldArchive();
 	void clearFields();
+	const QString &errorMessage() const;
 	virtual QString archivePath() const=0;
 	Field *getField(int id) const;
 	const QList<Field *> &getFields() const;
@@ -62,6 +63,7 @@ public:
 	const QStringList &mapList() const;
 	void setMapList(QStringList mapList);
 protected:
+	QString errorMsg;
 	QList<Field *> fields;
 	QHash<int, CharaModel *> models;
 	QStringList _mapList;

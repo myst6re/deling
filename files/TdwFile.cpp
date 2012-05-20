@@ -137,9 +137,19 @@ QPixmap TdwFile::image(const QByteArray &data, int palID)
 
 QImage TdwFile::letter(int charId, int fontColor, bool curFrame) const
 {
-	tim.setCurrentColorTable(fontColor);
+	int palID = (fontColor % 8) + (charId % 2 != 0);
+	qDebug() << "letter" << palID << charId << fontColor << curFrame;
+	tim.setCurrentColorTable(palID);
 	const QImage &img = tim.image();
-	return img.copy((charId*12) % img.width(), (charId*12) / img.width(), 12, 12);
+	QImage ret = img.copy((charId*12) % img.width(), (charId*12) / img.width(), 12, 12);
+	if(fontColor > 7 && !curFrame) {
+		QVector<QRgb> colorTable;
+		foreach(QRgb color, ret.colorTable()) {
+			colorTable.append(qRgb(qRed(color) * 0.75, qGreen(color) * 0.75, qBlue(color) * 0.75));
+		}
+		ret.setColorTable(colorTable);
+	}
+	return ret;
 
 	/*quint32 palSize=0, color=0, x=0, y=0;
 	quint16 w, h;

@@ -29,7 +29,7 @@ FieldArchivePC::~FieldArchivePC()
 
 QString FieldArchivePC::archivePath() const
 {
-	return archive->path();
+	return archive ? archive->path() : QString();
 }
 
 FsArchive *FieldArchivePC::getFsArchive() const
@@ -46,10 +46,12 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 	QString map, desc;
 	int index, fieldID=0;
 
-	if(archive != NULL)		delete archive;
+	if(archive)		delete archive;
 	archive = new FsArchive(archivePath);
-	if(!archive->isOpen())
+	if(!archive->isOpen()) {
+		errorMsg = QObject::tr("Impossible d'ouvrir l'archive.");
 		return 1;
+	}
 	if(!archive->isWritable()) {
 		readOnly = true;
 	}
@@ -87,6 +89,7 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 
 		if(progress->wasCanceled()) {
 			clearFields();
+			errorMsg = QObject::tr("Ouverture annulée.");
 			return 2;
 		}
 
@@ -126,6 +129,7 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 	}
 
 	if(fields.isEmpty()) {
+		errorMsg = QObject::tr("Aucun écran trouvé.");
 		return 3;
 	}
 
@@ -138,6 +142,8 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 
 bool FieldArchivePC::openModels()
 {
+	if(!archive)	return false;
+
 	FsArchive mainModels(archive->fileData("*field\\model\\main_chr.fl"), archive->fileData("*field\\model\\main_chr.fi"));
 	if(!mainModels.isOpen()) {
 		return false;
@@ -169,6 +175,8 @@ bool FieldArchivePC::openModels()
 
 bool FieldArchivePC::openBG(Field *field) const
 {
+	if(!archive)	return false;
+
 	return ((FieldPC *)field)->open2(archive);
 }
 
@@ -183,6 +191,8 @@ void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHea
 
 bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
 {
+	if(!archive)	return false;
+
 	QTime t;t.start();
 	QStringList toc = archive->toc();
 //	QByteArray fs_data;
@@ -369,6 +379,8 @@ bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
 
 bool FieldArchivePC::optimiseArchive(QProgressDialog *progress)
 {
+	if(!archive)	return false;
+
 	QTime t;t.start();
 	QStringList toc = archive->toc();
 	QByteArray fs_data;

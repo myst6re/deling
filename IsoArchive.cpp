@@ -257,8 +257,8 @@ bool IsoArchive::open(QIODevice::OpenMode mode)
 
 	openVolumeDescriptor();
 //	qDebug() << volumeDescriptorToString(volume);
-	qint64 size = QFile::size();
-	if(size%SECTOR_SIZE != 0 || volume.vd1.volume_space_size != size/SECTOR_SIZE || volume.vd1.id[0] != 'C' || volume.vd1.id[1] != 'D' || volume.vd1.id[2] != '0' || volume.vd1.id[3] != '0' || volume.vd1.id[4] != '1') {
+	// qint64 size = QFile::size();
+	if(/*size%SECTOR_SIZE != 0 || volume.vd1.volume_space_size != size/SECTOR_SIZE ||*/ volume.vd1.id[0] != 'C' || volume.vd1.id[1] != 'D' || volume.vd1.id[2] != '0' || volume.vd1.id[3] != '0' || volume.vd1.id[4] != '1') {
 //		qDebug() << (size%SECTOR_SIZE) << volume.vd1.volume_space_size << (size/SECTOR_SIZE);
 		close();
 		return false;
@@ -325,10 +325,10 @@ qint64 IsoArchive::readIso(char *data, qint64 maxSize)
 {
 	qint64 read, readTotal = 0, seqLen;
 
-//	qDebug() << this->pos() << "seek >> " << seqLen;
-	if(!seekIso(isoPos(this->pos())))	return 0;
+//	qDebug() << pos() << "seek >> " << seqLen;
+	if(!seekIso(isoPos(pos())))	return 0;
 
-	seqLen = qMin(2072 - (this->pos() % SECTOR_SIZE), maxSize);
+	seqLen = qMin(2072 - (pos() % SECTOR_SIZE), maxSize);
 	if(seqLen < 0)	return 0;
 
 	while((read = this->read(data, seqLen)) > 0) {
@@ -337,11 +337,11 @@ qint64 IsoArchive::readIso(char *data, qint64 maxSize)
 		maxSize -= read;
 		readTotal += read;
 		seqLen = qMin((qint64)SECTOR_SIZE_DATA, maxSize);
-//		qDebug() << "seqLen" << seqLen << maxSize << this->pos();
+//		qDebug() << "seqLen" << seqLen << maxSize << pos();
 		// Si on est à la fin du secteur
-		if(this->pos() % SECTOR_SIZE >= 2072) {
-			if(!seek(this->pos() + 304))	break;
-//			qDebug() << "seek >> 304" << this->pos();
+		if(pos() % SECTOR_SIZE >= 2072) {
+			if(!seek(pos() + 304))	break;
+//			qDebug() << "seek >> 304" << pos();
 		}
 	}
 
@@ -363,10 +363,10 @@ qint64 IsoArchive::writeIso(const char *data, qint64 maxSize)
 {
 	qint64 write, writeTotal = 0, seqLen;
 
-//	qDebug() << this->pos() << "seek >> " << seqLen;
-	if(!seekIso(isoPos(this->pos())))	return 0;
+//	qDebug() << pos() << "seek >> " << seqLen;
+	if(!seekIso(isoPos(pos())))	return 0;
 
-	seqLen = qMin(2072 - (this->pos() % SECTOR_SIZE), maxSize);
+	seqLen = qMin(2072 - (pos() % SECTOR_SIZE), maxSize);
 
 	while((write = this->write(data, seqLen)) > 0) {
 //		qDebug() << "write" << seqLen << write;
@@ -374,11 +374,11 @@ qint64 IsoArchive::writeIso(const char *data, qint64 maxSize)
 		maxSize -= write;
 		writeTotal += write;
 		seqLen = qMin((qint64)2048, maxSize);
-//		qDebug() << "seqLen" << seqLen << maxSize << this->pos();
+//		qDebug() << "seqLen" << seqLen << maxSize << pos();
 		// Si on est à la fin du secteur
-		if(this->pos() % SECTOR_SIZE >= 2072) {
-			if(!seek(this->pos() + 304))	break;
-//			qDebug() << "seek >> 304" << this->pos();
+		if(pos() % SECTOR_SIZE >= 2072) {
+			if(!seek(pos() + 304))	break;
+//			qDebug() << "seek >> 304" << pos();
 		}
 	}
 

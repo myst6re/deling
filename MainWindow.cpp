@@ -199,7 +199,8 @@ void MainWindow::filterMap()
 bool MainWindow::openArchive(const QString &path)
 {
 	searchDialog->setFieldArchive(fieldArchive);
-	if(_varManager != NULL)		_varManager->setFieldArchive(fieldArchive);
+	if(_varManager != NULL)
+		_varManager->setFieldArchive(fieldArchive);
 
 	QProgressDialog progress(tr("Ouverture..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
 	progress.setWindowModality(Qt::WindowModal);
@@ -256,6 +257,8 @@ bool MainWindow::openArchive(const QString &path)
 
 		list1->setFocus();
 		return true;
+	} else if(error != 2) {
+		QMessageBox::warning(this, tr("Erreur d'ouverture"), fieldArchive->errorMessage());
 	}
 
 	return false;
@@ -264,8 +267,6 @@ bool MainWindow::openArchive(const QString &path)
 bool MainWindow::openFsArchive(const QString &path)
 {
 //	qDebug() << QString("MainWindow::openFsArchive(%1)").arg(path);
-
-	closeFiles();
 
 	fieldArchive = new FieldArchivePC();
 	openArchive(path);
@@ -298,8 +299,6 @@ bool MainWindow::openMsdFile(const QString &path)
 
 	return false;
 
-//	closeFiles();
-
 //	msdFile = new MsdFile();
 //	if(!msdFile->open(path)) {
 //		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, msdFile->lastError));
@@ -322,8 +321,6 @@ bool MainWindow::openJsmFile(const QString &path)
 //	qDebug() << QString("MainWindow::openJsmFile(%1)").arg(path);
 
 	return false;
-
-//	closeFiles();
 
 //	jsmFile = new JsmFile();
 //	if(!jsmFile->open(path)) {
@@ -350,9 +347,6 @@ void MainWindow::setReadOnly(bool readOnly)
 bool MainWindow::openIsoArchive(const QString &path)
 {
 //	qDebug() << QString("MainWindow::openIsoArchive(%1)").arg(path);
-
-	closeFiles();
-
 	fieldArchive = new FieldArchivePS();
 	return openArchive(path);
 }
@@ -413,6 +407,8 @@ void MainWindow::fillBackground(const QImage &image)
 
 void MainWindow::setModified(bool modified)
 {
+	if(modified && fieldArchive->isReadOnly())	return;
+
 	actionSave->setEnabled(modified);
 	setWindowModified(modified);
 
@@ -502,6 +498,8 @@ void MainWindow::openFile(QString path)
 		if((index = path.lastIndexOf('/')) == -1)
 			index = path.size();
 		Config::setValue("open_path", path.left(index));
+
+		closeFiles();
 
 		QString ext = path.mid(path.lastIndexOf('.')+1).toLower();
 		bool ok = false;

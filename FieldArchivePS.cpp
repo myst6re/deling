@@ -18,18 +18,19 @@
 #include "FieldArchivePS.h"
 
 FieldArchivePS::FieldArchivePS()
-	: FieldArchive(), iso(NULL)
+	: FieldArchive(), iso(0)
 {
+	readOnly = true;
 }
 
 FieldArchivePS::~FieldArchivePS()
 {
-	if(iso != NULL)					delete iso;
+	if(iso)		delete iso;
 }
 
 QString FieldArchivePS::archivePath() const
 {
-	return iso->fileName();
+	return iso ? iso->fileName() : QString();
 }
 
 FF8DiscArchive *FieldArchivePS::getFF8DiscArchive() const
@@ -43,22 +44,25 @@ int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 	QString desc;
 	int i, currentMap=0, fieldID=0;
 
-	readOnly = true;
-
+	if(iso)		delete iso;
 	iso = new FF8DiscArchive(path);
-	if(!iso->open(QIODevice::ReadOnly))
+	if(!iso->open(QIODevice::ReadOnly)) {
+		errorMsg = QObject::tr("Impossible d'ouvrir le fichier image disque. (%1)").arg(iso->errorString());
 		return 1;
+	}
 
 	if(!iso->findIMG()) {
-		qWarning() << "IMG not found";
+		errorMsg = QObject::tr("Fichier FF8DISC?.IMG introuvable.");
 		return 4;
 	}
 
 	const QList<FF8DiscFile> &fieldFiles = iso->fieldDirectory();
 	int tocSize = fieldFiles.size();
 
-	if(tocSize == 0)
+	if(tocSize == 0) {
+		errorMsg = QObject::tr("Impossible d'ouvrir le dossier field.");
 		return 4;
+	}
 
 	clearFields();
 	setMapList(QStringList());
@@ -71,6 +75,7 @@ int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 		QCoreApplication::processEvents();
 		if(progress->wasCanceled()) {
 			clearFields();
+			errorMsg = QObject::tr("Ouverture annulée.");
 			return 2;
 		}
 		if(currentMap%freq == 0) {
@@ -103,6 +108,7 @@ int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 	}
 
 	if(fields.isEmpty()) {
+		errorMsg = QObject::tr("Aucun écran trouvé.");
 		return 4;
 	}
 
@@ -115,6 +121,8 @@ int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 
 bool FieldArchivePS::openModels()
 {
+	if(!iso)	return false;
+
 	const QList<FF8DiscFile> &fieldFiles = iso->fieldDirectory();
 
 	for(int i=0 ; i<77 && i<fieldFiles.size() ; ++i) {
@@ -134,6 +142,8 @@ bool FieldArchivePS::openModels()
 
 bool FieldArchivePS::openBG(Field *field) const
 {
+	if(!iso)	return false;
+
 	FieldPS *fieldPS = (FieldPS *)field;
 
 	quint32 isoFieldID = fieldPS->isoFieldID();

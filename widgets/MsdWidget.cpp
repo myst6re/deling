@@ -345,6 +345,7 @@ void MsdWidget::setReadOnly(bool readOnly)
 		xCoord->setReadOnly(readOnly);
 		yCoord->setReadOnly(readOnly);
 		textPreview->setReadOnly(readOnly);
+		toolBar0->setDisabled(readOnly);
 		toolBar->setDisabled(readOnly);
 		toolBar2->setDisabled(readOnly);
 	}
