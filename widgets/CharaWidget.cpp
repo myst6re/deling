@@ -62,9 +62,11 @@ void CharaWidget::fill()
 
 	modelList->blockSignals(true);
 	for(int i=0 ; i<data()->getCharaFile()->modelCount() ; ++i) {
-		modelList->addItem(data()->getCharaFile()->model(i)->name());
+		modelList->addItem(data()->getCharaFile()->model(i).name());
 	}
 	modelList->blockSignals(false);
+
+	modelList->setCurrentRow(0);
 
 	PageWidget::fill();
 }

@@ -33,18 +33,20 @@ void CharaPreview::setMainModels(QHash<int, CharaModel *> *mainModels)
 	this->mainModels = mainModels;
 }
 
-void CharaPreview::setModel(CharaModel *model)
+void CharaPreview::setModel(const CharaModel &model)
 {
-	if(!model)		return;
+	const CharaModel *m;
 
-	if(model->isEmpty() && mainModels && mainModels->contains(model->id())) {
-		model = mainModels->value(model->id());
+	if(model.isEmpty() && mainModels && mainModels->contains(model.id())) {
+		m = mainModels->value(model.id());
+	} else {
+		m = &model;
 	}
 
-	if(!model->isEmpty()) {
+	if(!m->isEmpty()) {
 		createContents();
-		((BGPreview2 *)label)->setName(QString("tex%1").arg(model->id()));
-		label->setPixmap(QPixmap::fromImage(model->texture(0).image()));
+		((BGPreview2 *)label)->setName(QString("tex%1").arg(m->id()));
+		label->setPixmap(QPixmap::fromImage(m->texture(0).image()));
 		setWidget(label);
 	} else {
 		clear();

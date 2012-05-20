@@ -28,7 +28,7 @@ class CharaPreview : public BGPreview
 public:
 	explicit CharaPreview(QWidget *parent = 0);
 	void setMainModels(QHash<int, CharaModel *> *mainModels);
-	void setModel(CharaModel *model);
+	void setModel(const CharaModel &model);
 signals:
 	
 public slots:

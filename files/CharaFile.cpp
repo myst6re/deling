@@ -24,7 +24,6 @@ CharaFile::CharaFile() :
 
 CharaFile::~CharaFile()
 {
-	foreach(CharaModel *model, models)		delete model;
 }
 
 bool CharaFile::isModified() const
@@ -34,7 +33,6 @@ bool CharaFile::isModified() const
 
 bool CharaFile::open(const QByteArray &one, bool ps)
 {
-	foreach(CharaModel *model, models)		delete model;
 	models.clear();
 
 	if(one.size() < 0x800) {
@@ -42,7 +40,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 		return false;
 	}
 
-	quint32 count, offset, size, modelID, timOffset, modelOffset;
+	quint32 count=0, offset, size, modelID, timOffset, modelOffset;
 	const char *constData = one.constData();
 	const char * const startData = constData;
 
@@ -87,7 +85,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 					return false;
 				}
 
-				models.append(new CharaModel(name));
+				models.append(CharaModel(name));
 			} else {
 				qWarning() << "Unknown format (2)!" << QString::number(modelID, 16);
 				return false;
@@ -138,7 +136,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 					}
 					data = LZS::decompress(data.constData() + 4, lzsSize);
 				}
-				models.append(new CharaModel(name, toc, data));
+				models.append(CharaModel(name, toc, data));
 				qDebug() << "Tim ajouté" << name;
 			} else {
 				qWarning() << "Unknown format (5)!" << QString::number(timOffset, 16);
@@ -150,12 +148,12 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 	return true;
 }
 
-CharaModel *CharaFile::model(int id) const
+const CharaModel &CharaFile::model(int id) const
 {
 	return models.at(id);
 }
 
-void CharaFile::setModel(int id, CharaModel *model)
+void CharaFile::setModel(int id, const CharaModel &model)
 {
 	models.replace(id, model);
 	modified = true;

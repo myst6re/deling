@@ -28,11 +28,11 @@ public:
 	~CharaFile();
 	bool open(const QByteArray &one, bool ps);
 	bool isModified() const;
-	CharaModel *model(int id) const;
-	void setModel(int id, CharaModel *model);
+	const CharaModel &model(int id) const;
+	void setModel(int id, const CharaModel &model);
 	int modelCount() const;
 private:
-	QList<CharaModel *> models;
+	QList<CharaModel> models;
 	bool modified;
 };
 
