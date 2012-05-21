@@ -87,14 +87,14 @@ bool BackgroundFile::isModified() const
 	return modified;
 }
 
-QImage BackgroundFile::background() const
+QImage BackgroundFile::background(bool hideBG) const
 {
 	int mimSize = mim.size();
 
 	if(mimSize == 401408)
 		return type1();
 	else if(mimSize == 438272)
-		return type2();
+		return type2(hideBG);
 	else
 		return FF8Image::errorImage();
 }
@@ -170,7 +170,7 @@ QImage BackgroundFile::type1() const
 	return image;
 }
 
-QImage BackgroundFile::type2() const
+QImage BackgroundFile::type2(bool hideBG) const
 {
 	int mapSize = map.size(), tilePos=0, baseX, pos, x, y, palStart, largeurMin=0, largeurMax=0, hauteurMin=0, hauteurMax=0;
 	Tile1 tileType1;
@@ -256,7 +256,7 @@ QImage BackgroundFile::type2() const
 			else if(tile.Y < 0 && -tile.Y > hauteurMin)
 				hauteurMin = -tile.Y;
 
-			if((tile.parameter==255 || params.contains(tile.parameter, tile.state)) && layers.value(tile.layerID))
+			if(((!hideBG && tile.parameter==255) || params.contains(tile.parameter, tile.state)) && layers.value(tile.layerID))
 			{
 				// HACK
 				if(tile.blendType>=60)

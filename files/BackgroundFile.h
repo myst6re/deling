@@ -62,14 +62,14 @@ public:
 	bool open(const QByteArray &map, const QByteArray &mim);
 	bool isModified() const;
 
-	QImage background() const;
+	QImage background(bool hideBG=false) const;
 
 	QMultiMap<quint8, quint8> params;
 	QMultiMap<quint8, quint8> allparams;
 	QMap<quint8, bool> layers;
 private:
 	QImage type1() const;
-	QImage type2() const;
+	QImage type2(bool hideBG=false) const;
 	static QRgb BGcolor(int value, quint8 blendType=4, QRgb color0=0);
 	static QByteArray map, mim;
 	bool modified, opened;

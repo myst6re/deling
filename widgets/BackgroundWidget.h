@@ -38,12 +38,15 @@ private slots:
 	void enableState(QListWidgetItem *item);
 	void enableLayer(QListWidgetItem *item);
 //	void switchItem(QListWidgetItem *item);
+	void setHideBack(bool);
 private:
+	void updateBackground();
 	void build();
 
 	BGPreview2 *image;
 	QComboBox *parametersWidget;
 	QListWidget *statesWidget, *layersWidget;
+	QCheckBox *hideBack;
 };
 
 #endif // BACKGROUNDWIDGET_H

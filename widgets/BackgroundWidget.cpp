@@ -47,11 +47,15 @@ void BackgroundWidget::build()
 	layersWidget = new QListWidget(this);
 	layersWidget->setFixedWidth(150);
 
+	hideBack = new QCheckBox(tr("Cacher background"), this);
+	hideBack->setChecked(false);
+
 	QGridLayout *layout = new QGridLayout(this);
-	layout->addWidget(scrollArea, 0, 0, 3, 1);
+	layout->addWidget(scrollArea, 0, 0, 4, 1);
 	layout->addWidget(parametersWidget, 0, 1);
 	layout->addWidget(statesWidget, 1, 1);
 	layout->addWidget(layersWidget, 2, 1);
+	layout->addWidget(hideBack, 3, 1);
 	layout->setContentsMargins(QMargins());
 
 	connect(parametersWidget, SIGNAL(currentIndexChanged(int)), SLOT(parameterChanged(int)));
@@ -59,6 +63,7 @@ void BackgroundWidget::build()
 	connect(layersWidget, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(enableLayer(QListWidgetItem*)));
 //	connect(statesWidget, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(switchItem(QListWidgetItem*)));
 //	connect(layersWidget, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(switchItem(QListWidgetItem*)));
+	connect(hideBack, SIGNAL(toggled(bool)), SLOT(setHideBack(bool)));
 
 	PageWidget::build();
 }
@@ -107,7 +112,7 @@ void BackgroundWidget::enableState(QListWidgetItem *item)
 	else
 		data()->getBackgroundFile()->params.remove(parameter, state);
 
-	image->setPixmap(QPixmap::fromImage(data()->getBackgroundFile()->background()));
+	updateBackground();
 }
 
 void BackgroundWidget::enableLayer(QListWidgetItem *item)
@@ -119,13 +124,25 @@ void BackgroundWidget::enableLayer(QListWidgetItem *item)
 
 	data()->getBackgroundFile()->layers.insert(layer, enabled);
 
-	image->setPixmap(QPixmap::fromImage(data()->getBackgroundFile()->background()));
+	updateBackground();
 }
 
 /*void BackgroundWidget::switchItem(QListWidgetItem *item)
 {
 	item->setCheckState(item->checkState()==Qt::Unchecked ? Qt::Checked : Qt::Unchecked);
 }*/
+
+void BackgroundWidget::setHideBack(bool)
+{
+	if(!hasData() || !data()->hasBackgroundFile())		return;
+
+	updateBackground();
+}
+
+void BackgroundWidget::updateBackground()
+{
+	image->setPixmap(QPixmap::fromImage(data()->getBackgroundFile()->background(hideBack->isChecked())));
+}
 
 void BackgroundWidget::fill()
 {
@@ -135,7 +152,7 @@ void BackgroundWidget::fill()
 	if(!hasData() || !data()->hasBackgroundFile())		return;
 
 	image->setName(data()->name());
-	image->setPixmap(QPixmap::fromImage(data()->getBackgroundFile()->background()));
+	updateBackground();
 
 	parametersWidget->clear();
 	QList<quint8> parameters = data()->getBackgroundFile()->allparams.uniqueKeys();
@@ -158,6 +175,8 @@ void BackgroundWidget::fill()
 	layersWidget->setEnabled(layersWidget->count()>0);
 	parametersWidget->setEnabled(parametersWidget->count()>1);
 	statesWidget->setEnabled(parametersWidget->count()>0);
+	hideBack->setEnabled(parametersWidget->count()>0);
+	hideBack->setChecked(false);
 
 	PageWidget::fill();
 }
