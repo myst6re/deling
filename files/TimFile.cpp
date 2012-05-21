@@ -32,7 +32,6 @@ bool TimFile::open(const QByteArray &data)
 	const char *constData = data.constData();
 	bool hasPal;
 	int dataSize = data.size();
-	QVector<QRgb> currentPal;
 
 	if(!data.startsWith(QByteArray("\x10\x00\x00\x00", 4)) || dataSize < 8)		return false;
 
@@ -76,7 +75,7 @@ bool TimFile::open(const QByteArray &data)
 
 				for(quint16 j=0 ; j<onePalSize ; ++j) {
 					memcpy(&color, &constData[20+pos*2+j*2], 2);
-					pal.append(qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR));
+					pal.append(qRgba((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR, color >> 15 ? 255 : 0));
 				}
 
 				_colorTables.append(pal);
@@ -89,7 +88,6 @@ bool TimFile::open(const QByteArray &data)
 			return false;
 		}
 
-		currentPal = _colorTables.first();
 		_currentColorTable = 0;
 
 //		qDebug() << QString("-Palette-");
@@ -110,7 +108,11 @@ bool TimFile::open(const QByteArray &data)
 //	qDebug() << QString("Size = %1, w = %2, h = %3").arg(imgSize).arg(w).arg(h);
 //	qDebug() << QString("TIM Size = %1").arg(8+palSize+imgSize);
 
-	_image = QImage(w, h, QImage::Format_RGB32);
+	_image = QImage(w, h, hasPal ? QImage::Format_Indexed8 : QImage::Format_ARGB32);
+	if(hasPal) {
+		_image.setColorTable(_colorTables.first());
+	}
+	//_image.fill(QColor(0, 0, 0, 0));
 	QRgb *pixels = (QRgb *)_image.bits();
 
 	int size, i=0;
@@ -129,7 +131,8 @@ bool TimFile::open(const QByteArray &data)
 	{
 		while(i<size && _image.valid(x, y))
 		{
-			pixels[x + y*w] = currentPal.at((quint8)data.at(20+palSize+i) & 0xF);
+			_image.setPixel(x, y, (quint8)data.at(20+palSize+i) & 0xF);
+			//pixels[x + y*w] = (quint8)data.at(20+palSize+i) & 0xF;
 			++x;
 			if(x==w)
 			{
@@ -138,7 +141,8 @@ bool TimFile::open(const QByteArray &data)
 			}
 			if(!_image.valid(x, y))	break;
 
-			pixels[x + y*w] = currentPal.at((quint8)data.at(20+palSize+i) >> 4);
+			_image.setPixel(x, y, (quint8)data.at(20+palSize+i) >> 4);
+			//pixels[x + y*w] = (quint8)data.at(20+palSize+i) >> 4;
 			++x;
 			if(x==w)
 			{
@@ -152,7 +156,8 @@ bool TimFile::open(const QByteArray &data)
 	{
 		while(i<size && _image.valid(x, y))
 		{
-			pixels[x + y*w] = currentPal.at((quint8)data.at(20+palSize+i));
+			_image.setPixel(x, y, (quint8)data.at(20+palSize+i));
+			//pixels[x + y*w] = (quint8)data.at(20+palSize+i);
 
 			++x;
 			if(x==w)
@@ -168,7 +173,7 @@ bool TimFile::open(const QByteArray &data)
 		while(i<size && _image.valid(x, y))
 		{
 			memcpy(&color, &constData[20+palSize+i], 2);
-			pixels[x + y*w] = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
+			pixels[x + y*w] = qRgba((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR, color >> 15 ? 255 : 0);
 
 			++x;
 			if(x==w)

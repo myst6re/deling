@@ -75,11 +75,22 @@ void TdwGrid::paintEvent(QPaintEvent *)
 	p.drawLines(linesH, lineCountH);
 
 	if(tdwFile) {
-		int x2=0, y2=0, charCount=tdwFile->charCount();
+		int charCount=tdwFile->charCount();
 
-		for(int i=0 ; i<charCount ; ++i) {
-			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(i, 0, true));
-			x2++;
+		// Draw odd characters (optimization to reduce the number of palette change)
+		for(int i=0, x2=0, y2=0 ; i<charCount ; i+=2) {
+			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(i, 7, true));
+			x2+=2;
+			if(x2 == 16) {
+				++y2;
+				x2 = 0;
+			}
+		}
+
+		// Draw even characters
+		for(int i=1, x2=1, y2=0 ; i<charCount ; i+=2) {
+			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(i, 7, true));
+			x2+=2;
 			if(x2 == 16) {
 				++y2;
 				x2 = 0;
