@@ -18,25 +18,25 @@
 #include "FieldPC.h"
 
 FieldPC::FieldPC(const QString &name, const QString &path, FsArchive *archive)
-	: Field(name), _path(path), header(NULL)
+	: Field(name), _path(path), header(0)
 {
 	open(archive);
 }
 
 FieldPC::FieldPC(const QString &path)
-	: Field(QString()), _path(QString()), header(NULL)
+	: Field(QString()), _path(QString()), header(0)
 {
 	open(path);
 }
 
 FieldPC::~FieldPC()
 {
-	if(header!=NULL)		delete header;
+	if(header)		delete header;
 }
 
 bool FieldPC::hasMapMimFiles() const
 {
-	return header != NULL && header->fileExists("*"%_name+".mim") && header->fileExists("*"%_name+".map");
+	return header && header->fileExists("*"%_name+".mim") && header->fileExists("*"%_name+".map");
 }
 
 //void FieldPC::setArchiveHeader(FsArchive *header)
@@ -61,11 +61,12 @@ bool FieldPC::open(const QString &path)
 	QString archivePath = path;
 	archivePath.chop(1);
 
+	if(header)	delete header;
 	header = new FsArchive(archivePath);
 	if(!header->isOpen()) {
 		qWarning() << "fieldData pas ouvert" << _name;
 		delete header;
-		header = NULL;
+		header = 0;
 		return false;
 	}
 
@@ -122,11 +123,12 @@ bool FieldPC::open(FsArchive *archive)
 {
 	setOpen(false);
 
+	if(header)	delete header;
 	header = new FsArchive(archive->fileData("*"%_name%".fl"), archive->fileData("*"%_name%".fi"));
 	if(!header->isOpen()) {
 		qWarning() << "fieldData pas ouvert" << _name;
 		delete header;
-		header = NULL;
+		header = 0;
 		return false;
 	}
 
@@ -171,7 +173,7 @@ bool FieldPC::open(FsArchive *archive)
 	if(maxSize==0) {
 		qWarning() << "No files !" << _name;
 		delete header;
-		header = NULL;
+		header = 0;
 		return false;
 	}
 
@@ -180,7 +182,7 @@ bool FieldPC::open(FsArchive *archive)
 	if(fs_data.isEmpty()) {
 		qWarning() << "No data !" << _name << maxSize;
 		delete header;
-		header = NULL;
+		header = 0;
 		return false;
 	}
 
@@ -236,7 +238,7 @@ bool FieldPC::open(FsArchive *archive)
 
 bool FieldPC::open2()
 {
-	if(header==NULL)
+	if(!header)
 		return false;
 
 	if(header->fileExists("*"%name()%".map") && header->fileExists("*"%name()%".mim")) {
@@ -250,7 +252,7 @@ bool FieldPC::open2()
 
 bool FieldPC::open2(FsArchive *archive)
 {
-	if(header==NULL)
+	if(!header)
 		return false;
 
 	FsHeader *fi_infos_mim = header->getFile("*"%name()%".mim");
@@ -289,7 +291,7 @@ bool FieldPC::open2(FsArchive *archive)
 
 void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data)
 {
-	if(header == NULL)	return;
+	if(!header)	return;
 
 	if(msdFile!=NULL && msdFile->isModified())
 		header->setFileData("*"%_name%".msd", fs_data, msdFile->save());
@@ -324,7 +326,7 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 
 void FieldPC::optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data)
 {
-	if(header == NULL)	return;
+	if(!header)	return;
 
 	header->fileToTheEnd("*"%_name%".tdw", fs_data);
 	header->fileToTheEnd("*"%_name%".map", fs_data);

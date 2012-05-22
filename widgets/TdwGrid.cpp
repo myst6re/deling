@@ -91,9 +91,9 @@ void TdwGrid::paintEvent(QPaintEvent *)
 		for(int i=1, x2=1, y2=0 ; i<charCount ; i+=2) {
 			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(i, 7, true));
 			x2+=2;
-			if(x2 == 16) {
+			if(x2 == 17) {
 				++y2;
-				x2 = 0;
+				x2 = 1;
 			}
 		}
 	}

@@ -138,9 +138,9 @@ QPixmap TdwFile::image(const QByteArray &data, int palID)
 QImage TdwFile::letter(int charId, int fontColor, bool curFrame) const
 {
 	int palID = (fontColor % 8)*2 + (charId % 2 != 0);
-	qDebug() << "letter" << palID << charId << fontColor << curFrame;
 	tim.setCurrentColorTable(palID);
 	const QImage &img = tim.image();
+	charId /= 2;
 	QImage ret = img.copy((charId%21)*12, (charId/21)*12, 12, 12);
 	if(fontColor > 7 && !curFrame) {
 		QVector<QRgb> colorTable;

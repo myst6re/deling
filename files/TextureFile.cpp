@@ -40,7 +40,6 @@ QVector<QRgb> TextureFile::colorTable(int id) const
 void TextureFile::setCurrentColorTable(int id)
 {
 	if(id < _colorTables.size() && _currentColorTable != id) {
-		qDebug() << "setCurrentColorTable" << id << _colorTables.size();
 		_image.setColorTable(_colorTables.at(_currentColorTable = id));
 	}
 }
