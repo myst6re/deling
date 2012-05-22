@@ -61,7 +61,7 @@ public:
 //	FsArchive();
 	FsArchive(const QByteArray &fl_data, const QByteArray &fi_data);
 	FsArchive(const QString &);
-	~FsArchive();
+	virtual ~FsArchive();
 
 	FsHeader *getFile(const QString &path) const;
 	void fileToTheEnd(const QString &path, QByteArray &fs_data);

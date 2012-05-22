@@ -24,7 +24,7 @@ FieldArchive::FieldArchive()
 
 FieldArchive::~FieldArchive()
 {
-	foreach(Field *field, fields) 	delete field;
+	foreach(Field *field, fields)		delete field;
 	foreach(CharaModel *model, models)	delete model;
 }
 

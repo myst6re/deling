@@ -25,7 +25,7 @@ class Search : public QDialog
 {
     Q_OBJECT
 public:
-	Search(QTreeWidget *fieldList, QWidget *parent=0);
+	explicit Search(QTreeWidget *fieldList, QWidget *parent=0);
 	void setFieldArchive(FieldArchive *);
 	void setSearchText(const QString &text);
 	void setSearchOpcode(int opcode);

@@ -26,7 +26,7 @@ class FieldArchivePS : public FieldArchive
 {
 public:
 	FieldArchivePS();
-	~FieldArchivePS();
+	virtual ~FieldArchivePS();
 	QString archivePath() const;
 	FF8DiscArchive *getFF8DiscArchive() const;
 	int open(const QString &, QProgressDialog *progress);

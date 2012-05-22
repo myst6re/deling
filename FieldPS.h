@@ -31,7 +31,7 @@ public:
 	};
 
 	FieldPS(const QByteArray &data, quint32 isoFieldID);
-	~FieldPS();
+	virtual ~FieldPS();
 
 	bool hasMapMimFiles() const;
 //	void setIsoFieldID(quint32 isoFieldID);

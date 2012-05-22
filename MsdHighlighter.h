@@ -25,7 +25,7 @@ class MsdHighlighter : public QSyntaxHighlighter
 {
 	Q_OBJECT
 public:
-	MsdHighlighter(QTextDocument *parent = 0);
+	explicit MsdHighlighter(QTextDocument *parent = 0);
 
 protected:
 	void highlightBlock(const QString &text);

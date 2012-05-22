@@ -32,7 +32,7 @@ class Field
 {
 public:
 	Field(const QString &name);
-	~Field();
+	virtual ~Field();
 
 	bool isOpen() const;
 	void setOpen(bool open);

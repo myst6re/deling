@@ -27,14 +27,14 @@ Field::Field(const QString &name)
 
 Field::~Field()
 {
-	if(msdFile!=NULL)			delete msdFile;
-	if(jsmFile!=NULL)			delete jsmFile;
-	if(walkmeshFile!=NULL)		delete walkmeshFile;
-	if(encounterFile!=NULL)		delete encounterFile;
-	if(miscFile!=NULL)			delete miscFile;
-	if(backgroundFile!=NULL)	delete backgroundFile;
-	if(tdwFile!=NULL)			delete tdwFile;
-	if(charaFile!=NULL)			delete charaFile;
+	deleteMsdFile();
+	deleteJsmFile();
+	deleteWalkmeshFile();
+	deleteEncounterFile();
+	deleteMiscFile();
+	deleteBackgroundFile();
+	deleteTdwFile();
+	deleteCharaFile();
 }
 
 bool Field::isOpen() const
@@ -49,7 +49,7 @@ void Field::setOpen(bool open)
 
 void Field::openMsdFile(const QByteArray &msd)
 {
-	if(msdFile!=NULL) 	deleteMsdFile();
+	deleteMsdFile();
 	msdFile = new MsdFile();
 
 	if(!msdFile->open(msd)) {
@@ -60,7 +60,7 @@ void Field::openMsdFile(const QByteArray &msd)
 
 void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym)
 {
-	if(jsmFile!=NULL) 	deleteJsmFile();
+	deleteJsmFile();
 	jsmFile = new JsmFile();
 
 	if(!jsmFile->open(jsm, sym)) {
@@ -71,7 +71,7 @@ void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym)
 
 void Field::openWalkmeshFile(const QByteArray &id, const QByteArray &ca)
 {
-	if(walkmeshFile!=NULL) 	deleteWalkmeshFile();
+	deleteWalkmeshFile();
 	walkmeshFile = new WalkmeshFile();
 
 	if(!walkmeshFile->open(id, ca)) {
@@ -82,7 +82,7 @@ void Field::openWalkmeshFile(const QByteArray &id, const QByteArray &ca)
 
 void Field::openEncounterFile(const QByteArray &rat, const QByteArray &mrt)
 {
-	if(encounterFile!=NULL) 	deleteEncounterFile();
+	deleteEncounterFile();
 	encounterFile = new EncounterFile();
 
 	if(!encounterFile->open(rat, mrt)) {
@@ -94,7 +94,7 @@ void Field::openEncounterFile(const QByteArray &rat, const QByteArray &mrt)
 void Field::openMiscFile(const QByteArray &inf, const QByteArray &pmp,
 						 const QByteArray &pmd, const QByteArray &pvp)
 {
-	if(miscFile!=NULL) 	deleteMiscFile();
+	deleteMiscFile();
 	miscFile = new MiscFile();
 
 	if(!miscFile->open(inf, pmp, pmd, pvp)) {
@@ -116,7 +116,7 @@ void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 
 void Field::openTdwFile(const QByteArray &tdw)
 {
-	if(tdwFile!=NULL)	deleteTdwFile();
+	deleteTdwFile();
 	tdwFile = new TdwFile();
 
 	if(!tdwFile->open(tdw)) {
@@ -129,7 +129,7 @@ CharaFile *Field::charaFile = NULL;
 
 void Field::openCharaFile(const QByteArray &one, bool ps)
 {
-	if(charaFile!=NULL)	deleteCharaFile();
+	deleteCharaFile();
 	charaFile = new CharaFile();
 
 	if(!charaFile->open(one, ps)) {

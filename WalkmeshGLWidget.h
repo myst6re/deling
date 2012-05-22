@@ -27,7 +27,7 @@ class WalkmeshGLWidget : public QGLWidget
 {
 	Q_OBJECT
 public:
-	WalkmeshGLWidget(QWidget *parent=0);
+	explicit WalkmeshGLWidget(QWidget *parent=0);
 	void clear();
 	void fill(WalkmeshFile *walkmeshFile);
 public slots:

@@ -49,7 +49,7 @@ class FsWidget : public QTreeWidget
     Q_OBJECT
 public:
 	explicit FsWidget(QWidget *parent=0);
-	~FsWidget();
+	virtual ~FsWidget();
 
 	static QIcon getFileIcon();
 	static QIcon getDirIcon();

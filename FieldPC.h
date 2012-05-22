@@ -26,7 +26,7 @@ class FieldPC : public Field
 public:
 	FieldPC(const QString &name, const QString &path, FsArchive *archive);
 	FieldPC(const QString &path);
-	~FieldPC();
+	virtual ~FieldPC();
 
 	bool hasMapMimFiles() const;
 //	void setArchiveHeader(FsArchive *header);

@@ -34,7 +34,7 @@ public:
 	};
 
 	FieldArchive();
-	~FieldArchive();
+	virtual ~FieldArchive();
 	void clearFields();
 	const QString &errorMessage() const;
 	virtual QString archivePath() const=0;

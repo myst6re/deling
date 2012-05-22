@@ -49,7 +49,7 @@ class JsmFile
 {
 public:
     JsmFile();
-	~JsmFile();
+	virtual ~JsmFile();
 
 	QString printCount();
 

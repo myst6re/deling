@@ -18,13 +18,13 @@
 #include "FieldPC.h"
 
 FieldPC::FieldPC(const QString &name, const QString &path, FsArchive *archive)
-	: Field(name), _path(path)
+	: Field(name), _path(path), header(NULL)
 {
 	open(archive);
 }
 
 FieldPC::FieldPC(const QString &path)
-	: Field(QString()), _path(QString())
+	: Field(QString()), _path(QString()), header(NULL)
 {
 	open(path);
 }

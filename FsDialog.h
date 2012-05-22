@@ -33,7 +33,7 @@ class FsDialog : public QWidget
     Q_OBJECT
 public:
 	explicit FsDialog(FsArchive *fsArchive, QWidget *parent=0);
-	~FsDialog();
+	virtual ~FsDialog();
 signals:
 private slots:
 	void setButtonsEnabled();

@@ -176,7 +176,7 @@ class IsoDirectory : public IsoFileOrDirectory
 {
 public:
 	IsoDirectory(const QString &name, quint32 location, quint32 size, qint64 structPosition);
-	~IsoDirectory();
+	virtual ~IsoDirectory();
 	bool isDirectory() const;
 	const QMap<QString, IsoFileOrDirectory *> &filesAndDirectories() const;
 	QList<IsoFile *> files() const;
@@ -203,7 +203,7 @@ class IsoArchive : public QFile
 {
 public:
 	IsoArchive(const QString &name);
-	~IsoArchive();
+	virtual ~IsoArchive();
 
 	bool open(QIODevice::OpenMode mode);
 	qint64 posIso() const;
