@@ -26,10 +26,12 @@ class TextureFile
 {
 public:
 	TextureFile();
-	explicit TextureFile(const QByteArray &data);
+	TextureFile(const QImage &image);
 	virtual bool open(const QByteArray &data)=0;
 	virtual bool save(QByteArray &data)=0;
+	bool isValid() const;
 	const QImage &image() const;
+	bool isPaletted() const;
 	int currentColorTable() const;
 	QVector<QRgb> colorTable(int id) const;
 	void setCurrentColorTable(int id);

@@ -73,6 +73,16 @@ FsDialog::~FsDialog()
 {
 }
 
+const QString &FsDialog::getCurrentPath() const
+{
+	return currentPath;
+}
+
+void FsDialog::setCurrentPath(const QString &path)
+{
+	openDir(path);
+}
+
 void FsDialog::setButtonsEnabled()
 {
 	QList<QTreeWidgetItem *> selectedItems = list->selectedItems();

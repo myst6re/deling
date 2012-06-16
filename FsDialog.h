@@ -34,6 +34,8 @@ class FsDialog : public QWidget
 public:
 	explicit FsDialog(FsArchive *fsArchive, QWidget *parent=0);
 	virtual ~FsDialog();
+	const QString &getCurrentPath() const;
+	void setCurrentPath(const QString &path);
 signals:
 private slots:
 	void setButtonsEnabled();

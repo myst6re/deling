@@ -26,6 +26,8 @@
 class FF8Image
 {
 public:
+	static quint16 toPsColor(const QRgb &color);
+	static QRgb fromPsColor(quint16 color, bool useAlpha=false);
 	static QPixmap lzs(const QByteArray &data);
 
 	static int findFirstTim(const QByteArray &data);

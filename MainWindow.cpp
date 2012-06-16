@@ -257,7 +257,7 @@ bool MainWindow::openArchive(const QString &path)
 
 		list1->setFocus();
 		return true;
-	} else if(error != 2) {
+	} else if(error != 2 && error != 3) {
 		QMessageBox::warning(this, tr("Erreur d'ouverture"), fieldArchive->errorMessage());
 	}
 
@@ -639,11 +639,17 @@ void MainWindow::setCurrentPage(int index)
 
 	if(index >= stackedWidget->count()) {
 		if(!fieldArchive)	return;
+		QString path;
+
 		if(fsDialog) {
+			path = fsDialog->getCurrentPath();
 			mainStackedWidget->removeWidget(fsDialog);
 			fsDialog->deleteLater();
 		}
 		mainStackedWidget->addWidget(fsDialog = new FsDialog(((FieldArchivePC *)fieldArchive)->getFsArchive(), this));
+		if(!path.isEmpty()) {
+			fsDialog->setCurrentPath(path);
+		}
 		mainStackedWidget->setCurrentWidget(fsDialog);
 	//	FsDialog dialog(fieldArchive->getFsArchive(), this);
 	//	dialog.addAction(actionRun);

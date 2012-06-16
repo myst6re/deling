@@ -69,7 +69,7 @@ bool TexFile::open(const QByteArray &data)
 		while(i<size && _image.valid(x, y))
 		{
 			memcpy(&color, &constData[240+i], 2);
-			pixels[x + y*l] = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
+			pixels[x + y*l] = FF8Image::fromPsColor(color);
 
 			++x;
 			if(x==l)
@@ -86,5 +86,7 @@ bool TexFile::open(const QByteArray &data)
 
 bool TexFile::save(QByteArray &data)
 {
+
+
 	return false;
 }

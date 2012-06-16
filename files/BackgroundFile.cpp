@@ -155,7 +155,7 @@ QImage BackgroundFile::type1() const
 		for(int i=0 ; i<24576 ; ++i) {
 			memcpy(&color, &constMimData[palStart+((quint8)mim.at(pos+i))*2], 2);
 			if(color!=0)
-				pixels[baseX+x + y] = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
+				pixels[baseX+x + y] = FF8Image::fromPsColor(color);
 
 			if(x==15) {
 				x=0;
@@ -360,7 +360,8 @@ QImage BackgroundFile::type2(bool hideBG) const
 
 QRgb BackgroundFile::BGcolor(int value, quint8 blendType, QRgb color0)
 {
-	int r = (value & 31)*COEFF_COLOR, g = (value>>5 & 31)*COEFF_COLOR, b = (value>>10 & 31)*COEFF_COLOR;
+	QRgb color = FF8Image::fromPsColor(value);
+	int r = qRed(color), g = qGreen(color), b = qBlue(color);
 
 	switch(blendType) {
 	case 0:

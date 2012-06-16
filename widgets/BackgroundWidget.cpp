@@ -168,7 +168,7 @@ void BackgroundWidget::fill()
 		item = new QListWidgetItem(tr("Couche %1").arg(layerID));
 		item->setData(Qt::UserRole, layerID);
 		item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-		item->setCheckState(Qt::Checked);
+		item->setCheckState(data()->getBackgroundFile()->layers.value(layerID, false) ? Qt::Checked : Qt::Unchecked);
 		layersWidget->addItem(item);
 	}
 

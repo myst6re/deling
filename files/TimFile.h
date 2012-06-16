@@ -28,11 +28,14 @@ class TimFile : public TextureFile
 public:
 	TimFile() : TextureFile() {}
 	explicit TimFile(const QByteArray &data);
+	TimFile(const TextureFile &texture, quint8 bpp, quint16 palX, quint16 palY, quint16 palW, quint16 palH, quint16 imgX, quint16 imgY);
 	bool open(const QByteArray &data);
 	bool save(QByteArray &data);
 private:
-	quint16 palW, palH;
 	quint8 bpp;
+	quint16 palX, palY;
+	quint16 palW, palH;
+	quint16 imgX, imgY;
 };
 
 #endif // TIMFILE_H
