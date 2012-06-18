@@ -116,7 +116,8 @@ void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 
 void Field::openTdwFile(const QByteArray &tdw)
 {
-	deleteTdwFile();
+	if(tdwFile != NULL)
+		return;
 	tdwFile = new TdwFile();
 
 	if(!tdwFile->open(tdw)) {

@@ -15,39 +15,30 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef TDWFILE_H
-#define TDWFILE_H
+#ifndef TDWLETTER_H
+#define TDWLETTER_H
 
-#include <QtCore>
-#include "TimFile.h"
+#include <QtGui>
+#include "widgets/TdwDisplay.h"
+#include "widgets/TdwGrid.h"
 
-class TdwFile
+class TdwLetter : public TdwDisplay
 {
+	Q_OBJECT
 public:
-	explicit TdwFile();
-	virtual ~TdwFile();
-	bool open(const QByteArray &tdw);
-	void close();
-	bool save(QByteArray &tdw);
-	bool isModified() const;
-	QPixmap image(int palID=0);
-	TimFile *tim();
-	static QPixmap image(const QByteArray &data, int palID=0);
-	QImage letter(int charId, int fontColor, bool curFrame);
-	void setLetter(int charId, const QImage &image);
-	uint letterPixelIndex(int charId, const QPoint &pos) const;
-	bool setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex);
-	const quint8 *charWidth(quint8 tableID=0) const;
-	int tableCount() const;
-	int charCount(quint8 tableID=0) const;
+	explicit TdwLetter(QWidget *parent=0);
+	virtual ~TdwLetter();
+public slots:
+	void setLetter(int letter);
+	void reset();
+signals:
+	void imageChanged(const QRect &rect);
+protected:
+	virtual void paintEvent(QPaintEvent *e);
+	virtual void mousePressEvent(QMouseEvent *e);
 private:
-	static QPoint letterPos(int charId);
-	static QSize letterSize();
-	static QRect letterRect(int charId);
-	TimFile _tim;
-	bool modified;
-	QList<int> _charCount;
-	QList<quint8 *> _charWidth;
+	QPoint getPixel(const QPoint &pos);
+	QImage copyLetter;
 };
 
-#endif // TDWFILE_H
+#endif // TDWLETTER_H

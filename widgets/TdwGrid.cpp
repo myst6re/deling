@@ -18,35 +18,13 @@
 #include "TdwGrid.h"
 
 TdwGrid::TdwGrid(QWidget *parent) :
-	QWidget(parent), tdwFile(0), _currentTable(0)
+	TdwDisplay(parent)
 {
 	setFixedSize(16 * (12 + 1 + 1*2) + 1, 14 * (12 + 1 + 1*2) + 1);
 }
 
 TdwGrid::~TdwGrid()
 {
-}
-
-void TdwGrid::setTdwFile(TdwFile *tdwFile)
-{
-	this->tdwFile = tdwFile;
-	update();
-}
-
-void TdwGrid::clear()
-{
-	this->tdwFile = 0;
-	update();
-}
-
-int TdwGrid::currentTable() const
-{
-	return _currentTable;
-}
-
-void TdwGrid::setCurrentTable(int currentTable)
-{
-	_currentTable = currentTable;
 }
 
 void TdwGrid::paintEvent(QPaintEvent *)
@@ -79,7 +57,7 @@ void TdwGrid::paintEvent(QPaintEvent *)
 
 		// Draw odd characters (optimization to reduce the number of palette change)
 		for(int i=0, x2=0, y2=0 ; i<charCount ; i+=2) {
-			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(i, 7, true));
+			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(i, _color, true));
 			x2+=2;
 			if(x2 == 16) {
 				++y2;
@@ -89,7 +67,7 @@ void TdwGrid::paintEvent(QPaintEvent *)
 
 		// Draw even characters
 		for(int i=1, x2=1, y2=0 ; i<charCount ; i+=2) {
-			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(i, 7, true));
+			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(i, _color, true));
 			x2+=2;
 			if(x2 == 17) {
 				++y2;
@@ -97,4 +75,39 @@ void TdwGrid::paintEvent(QPaintEvent *)
 			}
 		}
 	}
+
+	if(isEnabled()) {
+		// Draw selection frame
+		p.setPen(Qt::red);
+
+		QPoint selection = getPos(_letter);
+		p.drawLine(QLine(selection, selection + QPoint(0, cellSize)));
+		p.drawLine(QLine(selection, selection + QPoint(cellSize, 0)));
+		p.drawLine(QLine(selection + QPoint(cellSize, 0), selection + QPoint(cellSize, cellSize)));
+		p.drawLine(QLine(selection + QPoint(0, cellSize), selection + QPoint(cellSize, cellSize)));
+	}
+}
+
+int TdwGrid::getLetter(const QPoint &pos)
+{
+	return getCell(pos, QSize(15, 15), 16, 14);
+}
+
+QPoint TdwGrid::getPos(int letter)
+{
+	const int cellSize = 15;
+	if(letter > 16*14)		return QPoint();
+	return QPoint((letter % 16) * cellSize, (letter / 16) * cellSize);
+}
+
+void TdwGrid::updateLetter(const QRect &rect)
+{
+	update(QRect(QPoint(2, 2) + getPos(_letter) + rect.topLeft(), rect.size()));
+}
+
+void TdwGrid::mousePressEvent(QMouseEvent *e)
+{
+	int letter = getLetter(e->pos());
+	setLetter(letter);
+	emit letterClicked(letter);
 }

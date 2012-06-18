@@ -65,7 +65,9 @@ HEADERS += MainWindow.h \
     files/MchFile.h \
     files/TexFile.h \
     files/TextureFile.h \
-    widgets/CharaPreview.h
+    widgets/CharaPreview.h \
+    widgets/TdwLetter.h \
+    widgets/TdwDisplay.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -124,7 +126,9 @@ SOURCES += MainWindow.cpp \
     files/MchFile.cpp \
     files/TexFile.cpp \
     files/TextureFile.cpp \
-    widgets/CharaPreview.cpp
+    widgets/CharaPreview.cpp \
+    widgets/TdwLetter.cpp \
+    widgets/TdwDisplay.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

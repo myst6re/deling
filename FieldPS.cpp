@@ -96,12 +96,15 @@ bool FieldPS::open(const QByteArray &dat_data)
 bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk)
 {
 	const char *constData = mim.constData();
-	quint32 posSectionTdw, posSectionPmp;
 
-	memcpy(&posSectionTdw, constData, 4);
-	memcpy(&posSectionPmp, &constData[4], 4);
+	if(!hasTdwFile()) {
+		quint32 posSectionTdw, posSectionPmp;
 
-	openTdwFile(mim.mid(0x0c + 438272, posSectionPmp-posSectionTdw));
+		memcpy(&posSectionTdw, constData, 4);
+		memcpy(&posSectionPmp, &constData[4], 4);
+
+		openTdwFile(mim.mid(0x0c + 438272, posSectionPmp-posSectionTdw));
+	}
 
 	constData = dat.constData();
 	quint32 posSectionInf, posSectionMap, posSectionMsk, memoryPos;

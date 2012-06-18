@@ -651,9 +651,7 @@ void MainWindow::setCurrentPage(int index)
 			fsDialog->setCurrentPath(path);
 		}
 		mainStackedWidget->setCurrentWidget(fsDialog);
-	//	FsDialog dialog(fieldArchive->getFsArchive(), this);
-	//	dialog.addAction(actionRun);
-	//	dialog.exec();
+
 		return;
 	} else {
 		mainStackedWidget->setCurrentIndex(0);

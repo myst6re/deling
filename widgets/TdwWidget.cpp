@@ -27,10 +27,29 @@ void TdwWidget::build()
 	if(isBuilded())		return;
 
 	tdwGrid = new TdwGrid(this);
+	tdwLetter = new TdwLetter(this);
+	selectPal = new QComboBox(this);
 
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->addWidget(tdwGrid);
+	for(int i=1 ; i<=8 ; ++i) {
+		selectPal->addItem(tr("Couleur %1").arg(i));
+	}
+
+	selectPal->setCurrentIndex(7);
+
+	QPushButton *resetButton = new QPushButton(tr("Annuler les modifications"));
+
+	QGridLayout *layout = new QGridLayout(this);
+	layout->addWidget(tdwGrid, 0, 0, Qt::AlignRight);
+	layout->addWidget(tdwLetter, 0, 1, Qt::AlignLeft);
+	layout->addWidget(resetButton, 1, 1, Qt::AlignLeft);
+	layout->addWidget(selectPal, 2, 0, 1, 2, Qt::AlignCenter);
+	layout->setRowStretch(2, 1);
 	layout->setContentsMargins(QMargins());
+
+	connect(selectPal, SIGNAL(currentIndexChanged(int)), SLOT(setColor(int)));
+	connect(tdwGrid, SIGNAL(letterClicked(int)), tdwLetter, SLOT(setLetter(int)));
+	connect(tdwLetter, SIGNAL(imageChanged(QRect)), tdwGrid, SLOT(updateLetter(QRect)));
+	connect(resetButton, SIGNAL(clicked()), SLOT(reset()));
 
 	PageWidget::build();
 }
@@ -40,6 +59,7 @@ void TdwWidget::clear()
 	if(!isFilled())		return;
 
 	tdwGrid->clear();
+	tdwLetter->clear();
 
 	PageWidget::clear();
 }
@@ -51,7 +71,27 @@ void TdwWidget::fill()
 
 	if(!hasData() || !data()->hasTdwFile()) return;
 
-	tdwGrid->setTdwFile(data()->getTdwFile());
+	TdwFile *tdw = data()->getTdwFile();
+	tdwGrid->setTdwFile(tdw);
+	tdwGrid->setLetter(0);
+	tdwLetter->setTdwFile(tdw);
+	tdwLetter->setLetter(0);
 
 	PageWidget::fill();
+}
+
+void TdwWidget::setColor(int i)
+{
+	if(!hasData() || !data()->hasTdwFile()) return;
+
+	tdwGrid->setColor(i);
+	tdwLetter->setColor(i);
+}
+
+void TdwWidget::reset()
+{
+	if(!hasData() || !data()->hasTdwFile()) return;
+
+	tdwLetter->reset();
+	tdwGrid->update();
 }

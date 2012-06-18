@@ -30,12 +30,15 @@ public:
 	virtual bool open(const QByteArray &data)=0;
 	virtual bool save(QByteArray &data)=0;
 	bool isValid() const;
+	void clear();
 	const QImage &image() const;
+	QImage *imagePtr();
 	bool isPaletted() const;
 	int currentColorTable() const;
 	QVector<QRgb> colorTable(int id) const;
 	void setCurrentColorTable(int id);
 	void setColorTable(int id, const QVector<QRgb> &colorTable);
+	int colorTableCount() const;
 protected:
 	QImage _image;
 	QList< QVector<QRgb> > _colorTables;

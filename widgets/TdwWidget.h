@@ -21,17 +21,25 @@
 #include <QtGui>
 #include "widgets/PageWidget.h"
 #include "widgets/TdwGrid.h"
+#include "widgets/TdwLetter.h"
 
 class TdwWidget : public PageWidget
 {
+	Q_OBJECT
 public:
 	TdwWidget(QWidget *parent=0);
 	void clear();
 	void fill();
 	inline QString tabName() const { return tr("Caractères additionnels"); }
+public slots:
+	void setColor(int i);
+	void reset();
 private:
 	void build();
 	TdwGrid *tdwGrid;
+	TdwLetter *tdwLetter;
+	QComboBox *selectPal;
+
 };
 
 #endif // TDWWIDGET_H

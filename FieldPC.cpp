@@ -244,7 +244,9 @@ bool FieldPC::open2()
 	if(header->fileExists("*"%name()%".map") && header->fileExists("*"%name()%".mim")) {
 		openBackgroundFile(header->fileData("*"%name()%".map"), header->fileData("*"%name()%".mim"));
 	}
-	openTdwFile(header->fileData("*"%name()%".tdw"));
+	if(!hasTdwFile()) {
+		openTdwFile(header->fileData("*"%name()%".tdw"));
+	}
 	openCharaFile(header->fileData("*chara.one"), false);
 
 	return true;
@@ -257,7 +259,7 @@ bool FieldPC::open2(FsArchive *archive)
 
 	FsHeader *fi_infos_mim = header->getFile("*"%name()%".mim");
 	FsHeader *fi_infos_map = header->getFile("*"%name()%".map");
-	FsHeader *fi_infos_tdw = header->getFile("*"%name()%".tdw");
+	FsHeader *fi_infos_tdw = !hasTdwFile() ? header->getFile("*"%name()%".tdw") : NULL;
 	FsHeader *fi_infos_one = header->getFile("*chara.one");
 
 	if(fi_infos_mim==NULL || fi_infos_map==NULL)

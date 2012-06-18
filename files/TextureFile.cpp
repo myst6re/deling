@@ -36,9 +36,21 @@ bool TextureFile::isValid() const
 	return _image.isNull();
 }
 
+void TextureFile::clear()
+{
+	_image = QImage();
+	_colorTables.clear();
+	_currentColorTable = 0;
+}
+
 const QImage &TextureFile::image() const
 {
 	return _image;
+}
+
+QImage *TextureFile::imagePtr()
+{
+	return &_image;
 }
 
 bool TextureFile::isPaletted() const
@@ -68,4 +80,9 @@ void TextureFile::setColorTable(int id, const QVector<QRgb> &colorTable)
 	if(id < _colorTables.size()) {
 		_colorTables.replace(id, colorTable);
 	}
+}
+
+int TextureFile::colorTableCount() const
+{
+	return _colorTables.size();
 }

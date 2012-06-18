@@ -19,22 +19,24 @@
 #define TDWGRID_H
 
 #include <QtGui>
-#include "files/TdwFile.h"
+#include "widgets/TdwDisplay.h"
 
-class TdwGrid : public QWidget
+class TdwGrid : public TdwDisplay
 {
+	Q_OBJECT
 public:
 	explicit TdwGrid(QWidget *parent=0);
 	virtual ~TdwGrid();
-	void setTdwFile(TdwFile *tdwFile);
-	void clear();
-	int currentTable() const;
-	void setCurrentTable(int currentTable);
+	static QPoint getPos(int letter);
+signals:
+	void letterClicked(int letter);
+public slots:
+	void updateLetter(const QRect &rect);
 protected:
+	virtual void mousePressEvent(QMouseEvent * e);
 	virtual void paintEvent(QPaintEvent *e);
 private:
-	TdwFile *tdwFile;
-	int _currentTable;
+	static int getLetter(const QPoint &pos);
 };
 
 #endif // TDWGRID_H

@@ -15,39 +15,33 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef TDWFILE_H
-#define TDWFILE_H
+#ifndef TDWDISPLAY_H
+#define TDWDISPLAY_H
 
-#include <QtCore>
-#include "TimFile.h"
+#include <QtGui>
+#include "files/TdwFile.h"
 
-class TdwFile
+class TdwDisplay : public QWidget
 {
+	Q_OBJECT
 public:
-	explicit TdwFile();
-	virtual ~TdwFile();
-	bool open(const QByteArray &tdw);
-	void close();
-	bool save(QByteArray &tdw);
-	bool isModified() const;
-	QPixmap image(int palID=0);
-	TimFile *tim();
-	static QPixmap image(const QByteArray &data, int palID=0);
-	QImage letter(int charId, int fontColor, bool curFrame);
-	void setLetter(int charId, const QImage &image);
-	uint letterPixelIndex(int charId, const QPoint &pos) const;
-	bool setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex);
-	const quint8 *charWidth(quint8 tableID=0) const;
-	int tableCount() const;
-	int charCount(quint8 tableID=0) const;
+	explicit TdwDisplay(QWidget *parent=0);
+	virtual ~TdwDisplay();
+	void setTdwFile(TdwFile *tdwFile);
+	void clear();
+	int currentTable() const;
+	void setCurrentTable(int currentTable);
+public slots:
+	void setColor(int color);
+	virtual void setLetter(int letter);
+protected:
+	static QPoint getCellPos(const QPoint &pos, const QSize &cellSize, int colCount, int rowCount);
+	static int getCell(const QPoint &pos, const QSize &cellSize, int colCount, int rowCount);
+	TdwFile *tdwFile;
+	int _currentTable, _color, _letter;
 private:
-	static QPoint letterPos(int charId);
-	static QSize letterSize();
-	static QRect letterRect(int charId);
-	TimFile _tim;
-	bool modified;
-	QList<int> _charCount;
-	QList<quint8 *> _charWidth;
+	static int getLetter(QPoint pos);
+	static QPoint getPos(int letter);
 };
 
-#endif // TDWFILE_H
+#endif // TDWDISPLAY_H
