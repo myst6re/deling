@@ -323,6 +323,12 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 		walkmeshFile->save(ca);
 		header->setFileData("*"%_name%".ca", fs_data, ca);
 	}
+	if(tdwFile!=NULL && tdwFile->isModified()) {
+		QByteArray tdw;
+		if(tdwFile->save(tdw)) {
+			header->setFileData("*"%_name%".tdw", fs_data, tdw);
+		}
+	}
 	header->save(fl_data, fi_data);
 }
 

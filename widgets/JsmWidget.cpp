@@ -116,7 +116,7 @@ void JsmWidget::compile()
 		pal.setColor(QPalette::Inactive, QPalette::ButtonText, Qt::darkGreen);
 		errorLabel->setPalette(pal);
 		errorLabel->setText(tr("Compilé avec succès"));
-		emit modified(true);
+		emit modified();
 	}
 }
 

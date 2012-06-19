@@ -59,7 +59,7 @@ private slots:
 	void fillBackground(const QImage &image);
 	void about();
 	int closeFiles(bool quit=false);
-	void setModified(bool modified);
+	void setModified(bool modified=true);
 	void save();
 	void saveAs(QString path=QString());
 	void optimizeArchive();

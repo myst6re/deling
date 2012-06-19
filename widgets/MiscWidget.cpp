@@ -184,7 +184,7 @@ void MiscWidget::fill()
 void MiscWidget::editName(const QString &name)
 {
 	data()->getMiscFile()->setMapName(name);
-	emit modified(true);
+	emit modified();
 }
 
 void MiscWidget::editPmp(const QString &pmp)
@@ -192,7 +192,7 @@ void MiscWidget::editPmp(const QString &pmp)
 	data()->getMiscFile()->setPmpData(
 				QByteArray::fromHex(pmp.toLatin1())
 				.leftJustified(data()->getMiscFile()->getPmpData().size(), '\x00', true));
-	emit modified(true);
+	emit modified();
 	pmpEdit->setText(data()->getMiscFile()->getPmpData().toHex());
 }
 
@@ -201,7 +201,7 @@ void MiscWidget::editPmd(const QString &pmd)
 	data()->getMiscFile()->setPmdData(
 				QByteArray::fromHex(pmd.toLatin1())
 				.leftJustified(data()->getMiscFile()->getPmdData().size(), '\x00', true));
-	emit modified(true);
+	emit modified();
 	pmdEdit->setText(data()->getMiscFile()->getPmdData().toHex());
 }
 
@@ -210,7 +210,7 @@ void MiscWidget::editPvp(const QString &pvp)
 	data()->getMiscFile()->setPvpData(
 				QByteArray::fromHex(pvp.toLatin1())
 				.leftJustified(data()->getMiscFile()->getPvpData().size(), '\x00', true));
-	emit modified(true);
+	emit modified();
 	pvpEdit->setText(data()->getMiscFile()->getPvpData().toHex());
 }
 
@@ -247,7 +247,7 @@ void MiscWidget::editCaVector(int id, int id2, int value)
 		}
 		if(oldV.x != v.x || oldV.y != v.y || oldV.z != v.z) {
 			data()->getWalkmeshFile()->setCamAxis(id, v);
-			emit modified(true);
+			emit modified();
 		}
 	}
 }
@@ -266,7 +266,7 @@ void MiscWidget::editCaPos(int id, int value)
 	if(data()->hasWalkmeshFile()) {
 		if(data()->getWalkmeshFile()->camPos(id) != value) {
 			data()->getWalkmeshFile()->setCamPos(id, value);
-			emit modified(true);
+			emit modified();
 		}
 	}
 }

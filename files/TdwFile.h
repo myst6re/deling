@@ -31,7 +31,6 @@ public:
 	bool save(QByteArray &tdw);
 	bool isModified() const;
 	QPixmap image(int palID=0);
-	TimFile *tim();
 	static QPixmap image(const QByteArray &data, int palID=0);
 	QImage letter(int charId, int fontColor, bool curFrame);
 	void setLetter(int charId, const QImage &image);

@@ -490,7 +490,7 @@ void MsdWidget::changeXCoord(int x)
 
 		data()->getJsmFile()->setWindow(textID, winID, ff8Window);
 		textPreview->setWins(data()->getJsmFile()->windows(textID));
-		emit modified(true);
+		emit modified();
 	}
 }
 
@@ -508,7 +508,7 @@ void MsdWidget::changeYCoord(int y)
 
 		data()->getJsmFile()->setWindow(textID, winID, ff8Window);
 		textPreview->setWins(data()->getJsmFile()->windows(textID));
-		emit modified(true);
+		emit modified();
 	}
 }
 
@@ -524,7 +524,7 @@ void MsdWidget::updateCurrentText()
 	if(dontUpdateCurrentText || !hasData() || !data()->hasMsdFile())	return;
 //	qDebug() << "textEdited";
 
-	emit modified(true);
+	emit modified();
 	data()->getMsdFile()->setText(textList->currentRow(), textEdit->toPlainText());
 	textPreview->setText(data()->getMsdFile()->data(textList->currentRow()), false);
 	changeTextPreviewPage();
@@ -552,7 +552,7 @@ void MsdWidget::insertText()
 	data()->getMsdFile()->insertText(row);
 	fill();
 	textList->setCurrentRow(row);
-	emit modified(true);
+	emit modified();
 }
 
 void MsdWidget::removeText()
@@ -561,7 +561,7 @@ void MsdWidget::removeText()
 	data()->getMsdFile()->removeText(row);
 	fill();
 	textList->setCurrentRow(qMax(row-1, 0));
-	emit modified(true);
+	emit modified();
 }
 
 void MsdWidget::gotoText(const QString &text, int textID, Qt::CaseSensitivity cs, bool reverse, bool regexp)

@@ -148,10 +148,8 @@ MainWindow::MainWindow()
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillPage()));
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(setCurrentPage(int)));
 	connect(pageWidgets.at(TextPage), SIGNAL(textIdChanged(int)), searchDialog, SLOT(setTextId(int)));
-	connect(pageWidgets.at(TextPage), SIGNAL(modified(bool)), SLOT(setModified(bool)));
-	connect(pageWidgets.at(ScriptPage), SIGNAL(modified(bool)), SLOT(setModified(bool)));
-	connect(pageWidgets.at(EncounterPage), SIGNAL(modified(bool)), SLOT(setModified(bool)));
-	connect(pageWidgets.at(MiscPage), SIGNAL(modified(bool)), SLOT(setModified(bool)));
+	foreach(PageWidget *pageWidget, pageWidgets)
+		connect(pageWidget, SIGNAL(modified()), SLOT(setModified()));
 	connect(bgPreview, SIGNAL(triggered()), SLOT(bgPage()));
 	connect(fieldThread, SIGNAL(background(QImage)), SLOT(fillBackground(QImage)));
 }

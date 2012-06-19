@@ -270,7 +270,7 @@ bool TimFile::save(QByteArray &data)
 		for(int y=0 ; y<height ; ++y) {
 			for(int x=0 ; x<width ; ++x) {
 				if(bpp == 0) {
-					quint8 index = (_image.pixelIndex(x, y) & 0xF) | ((_image.pixelIndex(x+1, y) & 0xF) << 4);
+					quint8 index = (_image.pixelIndex(x*2, y) & 0xF) | ((_image.pixelIndex(x*2+1, y) & 0xF) << 4);
 					data.append((char)index);
 				} else {
 					data.append((char)_image.pixelIndex(x, y));

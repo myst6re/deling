@@ -145,11 +145,6 @@ QPixmap TdwFile::image(const QByteArray &data, int palID)
 	return QPixmap();
 }
 
-TimFile *TdwFile::tim()
-{
-	return &_tim;
-}
-
 QPoint TdwFile::letterPos(int charId)
 {
 	QSize size = letterSize();
@@ -201,6 +196,8 @@ void TdwFile::setLetter(int charId, const QImage &image)
 
 		++y2;
 	}
+
+	modified = true;
 }
 
 uint TdwFile::letterPixelIndex(int charId, const QPoint &pos) const
@@ -228,6 +225,7 @@ bool TdwFile::setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex
 	while((index = modifColorTable.indexOf(newColor, index + 1)) != -1) {
 		if(notModifColorTable.at(index) == notModifColor) {
 			_tim.imagePtr()->setPixel(letterPos(charId) + pos, index);
+			modified = true;
 			return true;
 		}
 	}

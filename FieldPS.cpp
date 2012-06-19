@@ -183,6 +183,13 @@ bool FieldPS::save(QByteArray &dat_data)
 		diff = ca.size() - (posSections[Ca+1] - posSections[Ca]);
 		for(int i=Ca+1 ; i<12 ; ++i)	posSections[i] += diff;
 	}
+	if(tdwFile!=NULL && tdwFile->isModified()) {
+		QByteArray tdw;
+		tdwFile->save(tdw);
+		dat_data.replace(posSections[Tdw], posSections[Tdw+1] - posSections[Tdw], tdw);
+		diff = tdw.size() - (posSections[Tdw+1] - posSections[Tdw]);
+		for(int i=Tdw+1 ; i<12 ; ++i)	posSections[i] += diff;
+	}
 
 	for(int i=0 ; i<12 ; ++i)
 		posSections[i] += memoryPos;

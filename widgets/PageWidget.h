@@ -39,7 +39,7 @@ public:
 	Field *data() const;
 	virtual QString tabName() const=0;
 signals:
-	void modified(bool);
+	void modified();
 private:
 	bool builded, filled, readOnly;
 	Field *_field;

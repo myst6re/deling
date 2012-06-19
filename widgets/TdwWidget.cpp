@@ -29,10 +29,9 @@ void TdwWidget::build()
 	tdwGrid = new TdwGrid(this);
 	tdwLetter = new TdwLetter(this);
 	selectPal = new QComboBox(this);
-
-	for(int i=1 ; i<=8 ; ++i) {
-		selectPal->addItem(tr("Couleur %1").arg(i));
-	}
+	QStringList colors;
+	colors << tr("Gris foncé") << tr("Gris") << tr("Jaune") << tr("Rouge") << tr("Vert") << tr("Bleu") << tr("Violet") << tr("Blanc");
+	selectPal->addItems(colors);
 
 	selectPal->setCurrentIndex(7);
 
@@ -43,12 +42,13 @@ void TdwWidget::build()
 	layout->addWidget(tdwLetter, 0, 1, Qt::AlignLeft);
 	layout->addWidget(resetButton, 1, 1, Qt::AlignLeft);
 	layout->addWidget(selectPal, 2, 0, 1, 2, Qt::AlignCenter);
-	layout->setRowStretch(2, 1);
+	layout->setRowStretch(3, 1);
 	layout->setContentsMargins(QMargins());
 
 	connect(selectPal, SIGNAL(currentIndexChanged(int)), SLOT(setColor(int)));
 	connect(tdwGrid, SIGNAL(letterClicked(int)), tdwLetter, SLOT(setLetter(int)));
 	connect(tdwLetter, SIGNAL(imageChanged(QRect)), tdwGrid, SLOT(updateLetter(QRect)));
+	connect(tdwLetter, SIGNAL(imageChanged(QRect)), SIGNAL(modified()));
 	connect(resetButton, SIGNAL(clicked()), SLOT(reset()));
 
 	PageWidget::build();

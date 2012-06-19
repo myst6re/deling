@@ -116,7 +116,7 @@ void EncounterWidget::editFormation()
 
 	data()->getEncounterFile()->setFormation(index, value);
 
-	emit modified(true);
+	emit modified();
 }
 
 void EncounterWidget::editRate()
@@ -139,5 +139,5 @@ void EncounterWidget::editRate()
 
 	data()->getEncounterFile()->setRate(index, value);
 
-	emit modified(true);
+	emit modified();
 }
