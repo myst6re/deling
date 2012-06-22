@@ -33,12 +33,17 @@ public:
 	inline QString tabName() const { return tr("Caractères additionnels"); }
 public slots:
 	void setColor(int i);
+	void setLetter(int i);
 	void reset();
+	void resetLetter();
+private slots:
+	void setModified();
 private:
 	void build();
 	TdwGrid *tdwGrid;
 	TdwLetter *tdwLetter;
 	QComboBox *selectPal;
+	QPushButton *resetButton2;
 
 };
 

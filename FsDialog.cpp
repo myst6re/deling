@@ -148,7 +148,7 @@ void FsDialog::generatePreview()
 	}
 	else if(fileType == "tdw")
 	{
-		preview->imagePreview(TdwFile::image(data), fileName);
+		preview->imagePreview(QPixmap::fromImage(TdwFile::image(data)), fileName);
 	}
 	else if(fileType == "map" || fileType == "mim")
 	{

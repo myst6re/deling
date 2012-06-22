@@ -27,6 +27,7 @@ class TdwGrid : public TdwDisplay
 public:
 	explicit TdwGrid(QWidget *parent=0);
 	virtual ~TdwGrid();
+	//virtual void setTdwFile(TdwFile *tdwFile);
 	static QPoint getPos(int letter);
 signals:
 	void letterClicked(int letter);
@@ -37,6 +38,7 @@ protected:
 	virtual void paintEvent(QPaintEvent *e);
 private:
 	static int getLetter(const QPoint &pos);
+	//QPixmap copyGrid;
 };
 
 #endif // TDWGRID_H

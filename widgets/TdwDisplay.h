@@ -27,18 +27,19 @@ class TdwDisplay : public QWidget
 public:
 	explicit TdwDisplay(QWidget *parent=0);
 	virtual ~TdwDisplay();
-	void setTdwFile(TdwFile *tdwFile);
+	virtual void setTdwFile(TdwFile *tdwFile);
 	void clear();
 	int currentTable() const;
 	void setCurrentTable(int currentTable);
 public slots:
-	void setColor(int color);
+	void setColor(TdwFile::Color color);
 	virtual void setLetter(int letter);
 protected:
 	static QPoint getCellPos(const QPoint &pos, const QSize &cellSize, int colCount, int rowCount);
 	static int getCell(const QPoint &pos, const QSize &cellSize, int colCount, int rowCount);
 	TdwFile *tdwFile;
-	int _currentTable, _color, _letter;
+	TdwFile::Color _color;
+	int _currentTable, _letter;
 private:
 	static int getLetter(QPoint pos);
 	static QPoint getPos(int letter);

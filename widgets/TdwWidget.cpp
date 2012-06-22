@@ -35,21 +35,30 @@ void TdwWidget::build()
 
 	selectPal->setCurrentIndex(7);
 
-	QPushButton *resetButton = new QPushButton(tr("Annuler les modifications"));
+	QPushButton *fromImage1 = new QPushButton(tr("À partir d'une image..."));
+	QPushButton *fromImage2 = new QPushButton(tr("À partir d'une image..."));
+//	QPushButton *resetButton1 = new QPushButton(tr("Annuler les modifications"));//TODO
+	resetButton2 = new QPushButton(tr("Annuler les modifications"));
+	resetButton2->setEnabled(false);
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(tdwGrid, 0, 0, Qt::AlignRight);
 	layout->addWidget(tdwLetter, 0, 1, Qt::AlignLeft);
-	layout->addWidget(resetButton, 1, 1, Qt::AlignLeft);
-	layout->addWidget(selectPal, 2, 0, 1, 2, Qt::AlignCenter);
-	layout->setRowStretch(3, 1);
+	layout->addWidget(fromImage1, 1, 0, Qt::AlignLeft);
+	layout->addWidget(fromImage2, 1, 1, Qt::AlignRight);
+//	layout->addWidget(resetButton1, 2, 0, Qt::AlignLeft);
+	layout->addWidget(resetButton2, 2, 1, Qt::AlignRight);
+	layout->addWidget(selectPal, 3, 0, 1, 2, Qt::AlignCenter);
+	layout->setRowStretch(4, 1);
+	layout->setColumnStretch(2, 1);
 	layout->setContentsMargins(QMargins());
 
 	connect(selectPal, SIGNAL(currentIndexChanged(int)), SLOT(setColor(int)));
-	connect(tdwGrid, SIGNAL(letterClicked(int)), tdwLetter, SLOT(setLetter(int)));
+	connect(tdwGrid, SIGNAL(letterClicked(int)), SLOT(setLetter(int)));
 	connect(tdwLetter, SIGNAL(imageChanged(QRect)), tdwGrid, SLOT(updateLetter(QRect)));
-	connect(tdwLetter, SIGNAL(imageChanged(QRect)), SIGNAL(modified()));
-	connect(resetButton, SIGNAL(clicked()), SLOT(reset()));
+	connect(tdwLetter, SIGNAL(imageChanged(QRect)), SLOT(setModified()));
+//	connect(resetButton1, SIGNAL(clicked()), SLOT(reset()));
+	connect(resetButton2, SIGNAL(clicked()), SLOT(resetLetter()));
 
 	PageWidget::build();
 }
@@ -84,14 +93,37 @@ void TdwWidget::setColor(int i)
 {
 	if(!hasData() || !data()->hasTdwFile()) return;
 
-	tdwGrid->setColor(i);
-	tdwLetter->setColor(i);
+	tdwGrid->setColor((TdwFile::Color)i);
+	tdwLetter->setColor((TdwFile::Color)i);
+}
+
+void TdwWidget::setLetter(int i)
+{
+	if(!hasData() || !data()->hasTdwFile()) return;
+
+	tdwLetter->setLetter(i);
+	resetButton2->setEnabled(false);
 }
 
 void TdwWidget::reset()
 {
 	if(!hasData() || !data()->hasTdwFile()) return;
 
+//	tdwGrid->reset();//TODO
+	tdwLetter->update();
+}
+
+void TdwWidget::resetLetter()
+{
+	if(!hasData() || !data()->hasTdwFile()) return;
+
 	tdwLetter->reset();
 	tdwGrid->update();
+	resetButton2->setEnabled(false);
+}
+
+void TdwWidget::setModified()
+{
+	emit modified();
+	resetButton2->setEnabled(true);
 }

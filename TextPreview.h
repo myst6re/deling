@@ -24,14 +24,6 @@
 #include "files/TdwFile.h"
 #include "FF8Image.h"
 #define NOWIN	65535
-#define DARKGREY	0
-#define GREY		1
-#define YELLOW		2
-#define RED			3
-#define GREEN		4
-#define BLUE		5
-#define PURPLE		6
-#define WHITE		7
 #include "Data.h"
 
 class TextPreview : public QWidget
@@ -73,12 +65,12 @@ private:
 	QPoint moveStartPosition;
 
 	static TdwFile *tdwFile;
-	static int fontColor;
+	static TdwFile::Color fontColor;
 	static QImage fontImage;
 	static QImage iconImage;
 	static void letter(int *x, int *y, int charId, QPainter *painter, quint8 tableId=0);
 	static void word(int *x, int *y, const QByteArray &charIds, QPainter *painter, quint8 tableId=0);
-	static void setFontColor(int id);
+	static void setFontColor(TdwFile::Color color);
 	static QVector<QRgb> fontPalettes[8];
 	static int calcFF8TextWidth(const QByteArray &ff8Text);
 	static quint8 charWidth[6][224];

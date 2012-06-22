@@ -93,6 +93,12 @@ int TdwGrid::getLetter(const QPoint &pos)
 	return getCell(pos, QSize(15, 15), 16, 14);
 }
 
+//void TdwGrid::setTdwFile(TdwFile *tdwFile)
+//{
+//	//copyGrid = tdwFile->image(_color);
+//	TdwDisplay::setTdwFile(tdwFile);
+//}
+
 QPoint TdwGrid::getPos(int letter)
 {
 	const int cellSize = 15;
@@ -104,6 +110,11 @@ void TdwGrid::updateLetter(const QRect &rect)
 {
 	update(QRect(QPoint(2, 2) + getPos(_letter) + rect.topLeft(), rect.size()));
 }
+
+//void TdwGrid::reset()
+//{
+
+//}
 
 void TdwGrid::mousePressEvent(QMouseEvent *e)
 {

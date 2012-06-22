@@ -24,16 +24,21 @@
 class TdwFile
 {
 public:
+	enum Color {
+		DarkGrey, Grey, Yellow, Red, Green, Blue, Purple, White
+	};
+
 	explicit TdwFile();
 	virtual ~TdwFile();
 	bool open(const QByteArray &tdw);
 	void close();
 	bool save(QByteArray &tdw);
 	bool isModified() const;
-	QPixmap image(int palID=0);
-	static QPixmap image(const QByteArray &data, int palID=0);
-	QImage letter(int charId, int fontColor, bool curFrame);
+	QImage image(Color color=White);
+	static QImage image(const QByteArray &data, Color color=White);
+	QImage letter(int charId, Color color, bool curFrame);
 	void setLetter(int charId, const QImage &image);
+	void setImage(const QImage &image, int hCount, int vCount);
 	uint letterPixelIndex(int charId, const QPoint &pos) const;
 	bool setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex);
 	const quint8 *charWidth(quint8 tableID=0) const;

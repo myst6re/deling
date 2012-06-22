@@ -18,7 +18,7 @@
 #include "TextPreview.h"
 
 bool TextPreview::curFrame = true;
-int TextPreview::fontColor = WHITE;
+TdwFile::Color TextPreview::fontColor = TdwFile::White;
 QImage TextPreview::fontImage;
 QImage TextPreview::iconImage;
 TdwFile *TextPreview::tdwFile = NULL;
@@ -387,7 +387,7 @@ void TextPreview::drawTextArea(QPainter *painter)
 
 	/* Text */
 
-	setFontColor(WHITE);
+	setFontColor(TdwFile::White);
 
 	int charId, line=0, x = (ask_first==0 && ask_last>=0 ? 40 : 8), y = 8;
 	int start = pagesPos.value(currentPage, 0), size = ff8Text.size();
@@ -455,7 +455,7 @@ void TextPreview::drawTextArea(QPainter *painter)
 				charId = (quint8)ff8Text.at(i);
 
 				if(charId>=0x20 && charId<=0x27)// Colors
-					setFontColor(charId-0x20);
+					setFontColor((TdwFile::Color)(charId-0x20));
 				else if(charId>=0x28 && charId<=0x2f)// BlinkColors
 				{
 					useTimer = true;
@@ -470,7 +470,7 @@ void TextPreview::drawTextArea(QPainter *painter)
 						}
 					}
 					fontImage.setColorTable(normalColors);
-					fontColor = charId-0x20;
+					fontColor = (TdwFile::Color)(charId-0x20);
 				}
 				break;
 			case 0x0e: // Locations
@@ -606,10 +606,10 @@ void TextPreview::word(int *x, int *y, const QByteArray &charIds, QPainter *pain
 	}
 }
 
-void TextPreview::setFontColor(int id)
+void TextPreview::setFontColor(TdwFile::Color color)
 {
-	fontImage.setColorTable(fontPalettes[id]);
-	fontColor = id;
+	fontImage.setColorTable(fontPalettes[(int)color]);
+	fontColor = color;
 }
 
 QVector<QRgb> TextPreview::fontPalettes[8] = {
