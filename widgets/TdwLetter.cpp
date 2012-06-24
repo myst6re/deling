@@ -29,14 +29,14 @@ TdwLetter::~TdwLetter()
 
 void TdwLetter::setLetter(int letter)
 {
-	copyLetter = tdwFile->letter(letter, _color, true);
+	copyLetter = tdwFile->letter(_currentTable, letter, _color, true);
 	TdwDisplay::setLetter(letter);
 }
 
 void TdwLetter::reset()
 {
 	if(copyLetter.isNull())		return;
-	tdwFile->setLetter(_letter, copyLetter);
+	tdwFile->setLetter(_currentTable, _letter, copyLetter);
 	update();
 }
 
@@ -50,7 +50,7 @@ void TdwLetter::paintEvent(QPaintEvent *)
 	}
 
 	if(tdwFile) {
-		p.drawImage(QPoint(0, 0), tdwFile->letter(_letter, _color, true).scaled(QSize(12*21, 12*21), Qt::KeepAspectRatio));
+		p.drawImage(QPoint(0, 0), tdwFile->letter(_currentTable, _letter, _color, true).scaled(QSize(12*21, 12*21), Qt::KeepAspectRatio));
 	}
 }
 
@@ -62,7 +62,7 @@ QPoint TdwLetter::getPixel(const QPoint &pos)
 void TdwLetter::mousePressEvent(QMouseEvent *e)
 {
 	QPoint pixel = getPixel(e->pos());
-	if(tdwFile->setLetterPixelIndex(_letter, pixel, (tdwFile->letterPixelIndex(_letter, pixel) + 1) % 4)) {
+	if(tdwFile->setLetterPixelIndex(_currentTable, _letter, pixel, (tdwFile->letterPixelIndex(_currentTable, _letter, pixel) + 1) % 4)) {
 		update(QRect(pixel * 21, QSize(21, 21)));
 		emit imageChanged(QRect(pixel, QSize(1, 1)));
 	}

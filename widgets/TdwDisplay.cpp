@@ -46,6 +46,7 @@ int TdwDisplay::currentTable() const
 void TdwDisplay::setCurrentTable(int currentTable)
 {
 	_currentTable = currentTable;
+	update();
 }
 
 void TdwDisplay::setColor(TdwFile::Color color)

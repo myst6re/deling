@@ -32,8 +32,9 @@ void TdwWidget::build()
 	QStringList colors;
 	colors << tr("Gris foncé") << tr("Gris") << tr("Jaune") << tr("Rouge") << tr("Vert") << tr("Bleu") << tr("Violet") << tr("Blanc");
 	selectPal->addItems(colors);
-
 	selectPal->setCurrentIndex(7);
+
+	selectTable = new QComboBox(this);
 
 	QPushButton *fromImage1 = new QPushButton(tr("À partir d'une image..."));
 	QPushButton *fromImage2 = new QPushButton(tr("À partir d'une image..."));
@@ -48,12 +49,14 @@ void TdwWidget::build()
 	layout->addWidget(fromImage2, 1, 1, Qt::AlignRight);
 //	layout->addWidget(resetButton1, 2, 0, Qt::AlignLeft);
 	layout->addWidget(resetButton2, 2, 1, Qt::AlignRight);
-	layout->addWidget(selectPal, 3, 0, 1, 2, Qt::AlignCenter);
+	layout->addWidget(selectPal, 3, 0, Qt::AlignRight);
+	layout->addWidget(selectTable, 3, 1, Qt::AlignLeft);
 	layout->setRowStretch(4, 1);
 	layout->setColumnStretch(2, 1);
 	layout->setContentsMargins(QMargins());
 
 	connect(selectPal, SIGNAL(currentIndexChanged(int)), SLOT(setColor(int)));
+	connect(selectTable, SIGNAL(currentIndexChanged(int)), SLOT(setTable(int)));
 	connect(tdwGrid, SIGNAL(letterClicked(int)), SLOT(setLetter(int)));
 	connect(tdwLetter, SIGNAL(imageChanged(QRect)), tdwGrid, SLOT(updateLetter(QRect)));
 	connect(tdwLetter, SIGNAL(imageChanged(QRect)), SLOT(setModified()));
@@ -85,6 +88,13 @@ void TdwWidget::fill()
 	tdwGrid->setLetter(0);
 	tdwLetter->setTdwFile(tdw);
 	tdwLetter->setLetter(0);
+	if(selectTable->count() != tdw->tableCount()) {
+		selectTable->clear();
+		for(int i=1 ; i<=tdw->tableCount() ; ++i) {
+			selectTable->addItem(tr("Table %1").arg(i));
+		}
+		selectTable->setEnabled(selectTable->count() > 1);
+	}
 
 	PageWidget::fill();
 }
@@ -95,6 +105,14 @@ void TdwWidget::setColor(int i)
 
 	tdwGrid->setColor((TdwFile::Color)i);
 	tdwLetter->setColor((TdwFile::Color)i);
+}
+
+void TdwWidget::setTable(int i)
+{
+	if(!hasData() || !data()->hasTdwFile()) return;
+
+	tdwGrid->setCurrentTable(i);
+	tdwLetter->setCurrentTable(i);
 }
 
 void TdwWidget::setLetter(int i)

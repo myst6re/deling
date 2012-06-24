@@ -57,7 +57,7 @@ void TdwGrid::paintEvent(QPaintEvent *)
 
 		// Draw odd characters (optimization to reduce the number of palette change)
 		for(int i=0, x2=0, y2=0 ; i<charCount ; i+=2) {
-			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(i, _color, true));
+			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(_currentTable, i, _color, true));
 			x2+=2;
 			if(x2 == 16) {
 				++y2;
@@ -67,7 +67,7 @@ void TdwGrid::paintEvent(QPaintEvent *)
 
 		// Draw even characters
 		for(int i=1, x2=1, y2=0 ; i<charCount ; i+=2) {
-			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(i, _color, true));
+			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), tdwFile->letter(_currentTable, i, _color, true));
 			x2+=2;
 			if(x2 == 17) {
 				++y2;

@@ -206,6 +206,7 @@ FsArchive::~FsArchive()
 		fs.close();
 		fl.close();
 		fi.close();
+		qDebug() << "close fs" << fs.fileName();
 	}
 	foreach(FsHeader *header, infos) 	delete header;
 }
@@ -788,6 +789,8 @@ bool FsArchive::load(const QString &path)
 			return false;
 	}
 
+	qDebug() << "open fs" << path;
+
 	fromFile = true;
 
 	return (_isOpen = load(QString(fl.readAll()), fi.readAll()));
@@ -846,6 +849,8 @@ int FsArchive::replaceArchive(QFile *newFile)
 	fl.close();
 	fi.close();
 
+	qDebug() << "reclose fs" << fs.fileName();
+
 	if(!fl.remove() || !fi.remove())	return 2;
 
 	QString fileName = newFile->fileName();
@@ -856,6 +861,8 @@ int FsArchive::replaceArchive(QFile *newFile)
 
 	if(!fs.open(QIODevice::ReadWrite) || !fl.open(QIODevice::ReadWrite) || !fi.open(QIODevice::ReadWrite))
 		return 2;
+
+	qDebug() << "reopen fs" << fs.fileName();
 
 	_isOpen = true;
 
@@ -899,9 +906,11 @@ bool FsArchive::setPath(const QString &path)
 	fl.close();
 	fi.close();
 	fs.close();
+	qDebug() << "reclose fs" << fs.fileName();
     fl.setFileName(FsArchive::flPath(path));
     fi.setFileName(FsArchive::fiPath(path));
     fs.setFileName(FsArchive::fsPath(path));
+	qDebug() << "reopen fs in new path" << path;
 	return fl.open(QIODevice::ReadWrite)
 			&& fi.open(QIODevice::ReadWrite)
 			&& fs.open(QIODevice::ReadWrite);

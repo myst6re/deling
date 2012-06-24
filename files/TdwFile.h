@@ -36,14 +36,20 @@ public:
 	bool isModified() const;
 	QImage image(Color color=White);
 	static QImage image(const QByteArray &data, Color color=White);
+	// tableId + charId
+	QImage letter(quint8 tableId, int charId, Color color, bool curFrame);
+	// Absolute charId
 	QImage letter(int charId, Color color, bool curFrame);
+	void setLetter(quint8 tableId, int charId, const QImage &image);
 	void setLetter(int charId, const QImage &image);
 	void setImage(const QImage &image, int hCount, int vCount);
+	uint letterPixelIndex(quint8 tableId, int charId, const QPoint &pos) const;
 	uint letterPixelIndex(int charId, const QPoint &pos) const;
+	bool setLetterPixelIndex(quint8 tableId, int charId, const QPoint &pos, uint pixelIndex);
 	bool setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex);
-	const quint8 *charWidth(quint8 tableID=0) const;
+	const quint8 *charWidth(quint8 tableId=0) const;
 	int tableCount() const;
-	int charCount(quint8 tableID=0) const;
+	int charCount(quint8 tableId=0) const;
 private:
 	static QPoint letterPos(int charId);
 	static QSize letterSize();

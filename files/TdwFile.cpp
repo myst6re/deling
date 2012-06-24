@@ -54,7 +54,7 @@ bool TdwFile::open(const QByteArray &tdw)
 	sizeHeader = posData - posHeader;
 
 	if(sizeHeader != 0) {
-		tableCount = sizeHeader > 112 ? sizeHeader / 112 : 1;
+		tableCount = sizeHeader / 112 + int(sizeHeader % 112 != 0);
 
 		for(tableID=0 ; tableID<tableCount ; ++tableID) {
 
@@ -162,6 +162,11 @@ QRect TdwFile::letterRect(int charId)
 	return QRect(letterPos(charId), letterSize());
 }
 
+QImage TdwFile::letter(quint8 tableId, int charId, Color color, bool curFrame)
+{
+	return letter(tableId * 224 + charId, color, curFrame);
+}
+
 QImage TdwFile::letter(int charId, Color color, bool curFrame)
 {
 	int palID = (color % 8)*2 + (charId % 2);
@@ -176,6 +181,11 @@ QImage TdwFile::letter(int charId, Color color, bool curFrame)
 		ret.setColorTable(colorTable);
 	}
 	return ret;
+}
+
+void TdwFile::setLetter(quint8 tableId, int charId, const QImage &image)
+{
+	setLetter(tableId * 224 + charId, image);
 }
 
 void TdwFile::setLetter(int charId, const QImage &image)
@@ -216,6 +226,11 @@ void TdwFile::setImage(const QImage &image, int hCount, int vCount)
 	}
 }
 
+uint TdwFile::letterPixelIndex(quint8 tableId, int charId, const QPoint &pos) const
+{
+	return letterPixelIndex(tableId * 224 + charId, pos);
+}
+
 uint TdwFile::letterPixelIndex(int charId, const QPoint &pos) const
 {
 	// returns a number between 0 and 3
@@ -223,6 +238,11 @@ uint TdwFile::letterPixelIndex(int charId, const QPoint &pos) const
 	const QRgb &color = _tim.colorTable(charId % 2).at(index);
 
 	return _tim.colorTable(0).indexOf(color);
+}
+
+bool TdwFile::setLetterPixelIndex(quint8 tableId, int charId, const QPoint &pos, uint pixelIndex)
+{
+	return setLetterPixelIndex(tableId * 224 + charId, pos, pixelIndex);
 }
 
 bool TdwFile::setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex)
@@ -249,9 +269,9 @@ bool TdwFile::setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex
 	return false;
 }
 
-const quint8 *TdwFile::charWidth(quint8 tableID) const
+const quint8 *TdwFile::charWidth(quint8 tableId) const
 {
-	return _charWidth.at(tableID);
+	return _charWidth.at(tableId);
 }
 
 int TdwFile::tableCount() const
@@ -259,13 +279,13 @@ int TdwFile::tableCount() const
 	return _charWidth.size();
 }
 
-int TdwFile::charCount(quint8 tableID) const
+int TdwFile::charCount(quint8 tableId) const
 {
-	return _charCount.value(tableID, 0);
+	return _charCount.value(tableId, 0);
 
-	if(tableID >= tableCount())		return 0;
+	if(tableId >= tableCount())		return 0;
 
-	quint8 *charWidth = _charWidth.at(tableID);
+	quint8 *charWidth = _charWidth.at(tableId);
 
 	for(int i=0 ; i<224 ; ++i) {
 		if(charWidth[i]==0)		return i;

@@ -275,6 +275,8 @@ bool MainWindow::openFsArchive(const QString &path)
 	} else {
 		field = new FieldPC(path);
 		if(field->hasFiles()) {
+			delete fieldArchive;
+			fieldArchive = NULL;
 			list1->setEnabled(false);
 			lineSearch->setEnabled(false);
 			fillPage();
@@ -405,7 +407,7 @@ void MainWindow::fillBackground(const QImage &image)
 
 void MainWindow::setModified(bool modified)
 {
-	if(modified && fieldArchive->isReadOnly())	return;
+	if(modified && (!fieldArchive || fieldArchive->isReadOnly()))		return;
 
 	actionSave->setEnabled(modified);
 	setWindowModified(modified);
@@ -636,7 +638,14 @@ void MainWindow::setCurrentPage(int index)
 	tabBar->blockSignals(false);
 
 	if(index >= stackedWidget->count()) {
-		if(!fieldArchive)	return;
+		FsArchive *fsArchive;
+		if(fieldArchive) {
+			fsArchive = ((FieldArchivePC *)fieldArchive)->getFsArchive();
+		} else if(field) {
+			fsArchive = ((FieldPC *)field)->getArchiveHeader();
+		} else {
+			return;
+		}
 		QString path;
 
 		if(fsDialog) {
@@ -644,7 +653,7 @@ void MainWindow::setCurrentPage(int index)
 			mainStackedWidget->removeWidget(fsDialog);
 			fsDialog->deleteLater();
 		}
-		mainStackedWidget->addWidget(fsDialog = new FsDialog(((FieldArchivePC *)fieldArchive)->getFsArchive(), this));
+		mainStackedWidget->addWidget(fsDialog = new FsDialog(fsArchive, this));
 		if(!path.isEmpty()) {
 			fsDialog->setCurrentPath(path);
 		}
