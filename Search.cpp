@@ -59,7 +59,7 @@ Search::Search(QTreeWidget *fieldList, QWidget *parent)
 
 	connect(buttonNext, SIGNAL(released()), SLOT(findNext()));
 	connect(buttonPrev, SIGNAL(released()), SLOT(findPrev()));
-	connect(tabWidget, SIGNAL(currentChanged(int)), SLOT(setFocus2()));
+	connect(tabWidget, SIGNAL(currentChanged(int)), SLOT(setFocus()));
 	connect(searchTextField, SIGNAL(textEdited(QString)), searchScriptTextField, SLOT(setText(QString)));
 	connect(searchScriptTextField, SIGNAL(textEdited(QString)), searchTextField, SLOT(setText(QString)));
 }
@@ -125,7 +125,7 @@ QWidget *Search::scriptPageWidget()
 	layout->setContentsMargins(QMargins());
 
 	connect(typeScriptChoice, SIGNAL(currentIndexChanged(int)), scriptStacked, SLOT(setCurrentIndex(int)));
-	connect(typeScriptChoice, SIGNAL(currentIndexChanged(int)), SLOT(setFocus2()));
+	connect(typeScriptChoice, SIGNAL(currentIndexChanged(int)), SLOT(setFocus()));
 
 	return ret;
 }
@@ -210,7 +210,7 @@ void Search::setCurrentIndex(int index)
 	}
 }
 
-void Search::setFocus2()
+void Search::focusInEvent(QFocusEvent *)
 {
 	if(tabWidget->currentIndex() == 0) {
 		searchTextField->setFocus();

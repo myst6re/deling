@@ -591,7 +591,7 @@ void MainWindow::search()
 	searchDialog->show();
 	searchDialog->raise();
 	searchDialog->activateWindow();
-	searchDialog->setFocus2();
+	searchDialog->setFocus();
 }
 
 void MainWindow::varManager()

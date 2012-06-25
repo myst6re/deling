@@ -33,13 +33,14 @@ public:
 public slots:
 	void setFieldId(int);
 	void setTextId(int);
-	void setFocus2();
 signals:
 	void foundText(QString text, int fieldID, int textID, Qt::CaseSensitivity cs, bool reverse, bool regexp);
 	void foundOpcode(int, int, int, int);
 private slots:
 	void findNext();
 	void findPrev();
+protected:
+	void focusInEvent(QFocusEvent *);
 private:
 	Qt::CaseSensitivity sensitivity();
 	FieldArchive::Sorting sorting();
