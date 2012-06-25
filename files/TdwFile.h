@@ -52,9 +52,11 @@ public:
 	int tableCount() const;
 	int charCount(quint8 tableId=0) const;
 private:
-	static QPoint letterPos(int charId);
+	bool isOptimizedVersion() const;
+	int palette(Color color, int charId) const;
+	QPoint letterPos(int charId) const;
 	static QSize letterSize();
-	static QRect letterRect(int charId);
+	QRect letterRect(int charId) const;
 	TimFile _tim;
 	bool modified;
 	QList<int> _charCount;

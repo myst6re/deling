@@ -75,7 +75,8 @@ bool TdwFile::open(const QByteArray &tdw)
 		}
 	}
 
-	if(!_tim.open(tdw.mid(posData))) {
+	if(!_tim.open(tdw.mid(posData))
+			|| (_tim.colorTableCount() != 8 && _tim.colorTableCount() != 16)) {
 		return false;
 	}
 
@@ -131,8 +132,7 @@ bool TdwFile::save(QByteArray &tdw)
 
 QImage TdwFile::image(Color color)
 {
-	int palID = (color % 8)*2;
-	_tim.setCurrentColorTable(palID);
+	_tim.setCurrentColorTable(palette(color, 0));
 	return _tim.image();
 }
 
@@ -146,10 +146,26 @@ QImage TdwFile::image(const QByteArray &data, Color color)
 	return QImage();
 }
 
-QPoint TdwFile::letterPos(int charId)
+bool TdwFile::isOptimizedVersion() const
+{
+	return _tim.colorTableCount() == 16;
+}
+
+int TdwFile::palette(Color color, int charId) const
+{
+	if(isOptimizedVersion()) {
+		return (color % 8)*2 + (charId % 2);
+	} else {
+		return color % 8;
+	}
+}
+
+QPoint TdwFile::letterPos(int charId) const
 {
 	QSize size = letterSize();
-	charId /= 2;
+	if(isOptimizedVersion()) {
+		charId /= 2;
+	}
 	return QPoint((charId%21)*size.width(), (charId/21)*size.height());
 }
 
@@ -158,7 +174,7 @@ QSize TdwFile::letterSize()
 	return QSize(12, 12);
 }
 
-QRect TdwFile::letterRect(int charId)
+QRect TdwFile::letterRect(int charId) const
 {
 	return QRect(letterPos(charId), letterSize());
 }
@@ -170,8 +186,7 @@ QImage TdwFile::letter(quint8 tableId, int charId, Color color, bool curFrame)
 
 QImage TdwFile::letter(int charId, Color color, bool curFrame)
 {
-	int palID = (color % 8)*2 + (charId % 2);
-	_tim.setCurrentColorTable(palID);
+	_tim.setCurrentColorTable(palette(color, charId));
 	const QImage &img = _tim.image();
 	QImage ret = img.copy(letterRect(charId));
 	if(color > 7 && !curFrame) {
@@ -236,9 +251,14 @@ uint TdwFile::letterPixelIndex(int charId, const QPoint &pos) const
 {
 	// returns a number between 0 and 3
 	uint index = _tim.image().pixelIndex(letterPos(charId) + pos);
-	const QRgb &color = _tim.colorTable(charId % 2).at(index);
 
-	return _tim.colorTable(0).indexOf(color);
+	if(isOptimizedVersion()) {
+		const QRgb &color = _tim.colorTable(charId % 2).at(index);
+
+		return _tim.colorTable(0).indexOf(color);
+	} else {
+		return index;
+	}
 }
 
 bool TdwFile::setLetterPixelIndex(quint8 tableId, int charId, const QPoint &pos, uint pixelIndex)
@@ -249,25 +269,30 @@ bool TdwFile::setLetterPixelIndex(quint8 tableId, int charId, const QPoint &pos,
 bool TdwFile::setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex)
 {
 	// pixelIndex must be a number between 0 and 3
+	if(isOptimizedVersion()) {
+		QVector<QRgb> modifColorTable, notModifColorTable;
+		modifColorTable = _tim.colorTable(charId % 2);
+		notModifColorTable = _tim.colorTable((charId + 1) % 2);
+		uint realPixelIndex = _tim.imagePtr()->pixelIndex(letterPos(charId) + pos);
 
-	QVector<QRgb> modifColorTable, notModifColorTable;
-	modifColorTable = _tim.colorTable(charId % 2);
-	notModifColorTable = _tim.colorTable((charId + 1) % 2);
-	uint realPixelIndex = _tim.imagePtr()->pixelIndex(letterPos(charId) + pos);
+		const QRgb &newColor = _tim.colorTable(0).at(pixelIndex);
+		const QRgb &notModifColor = notModifColorTable.at(realPixelIndex);
+		int index = -1;
 
-	const QRgb &newColor = _tim.colorTable(0).at(pixelIndex);
-	const QRgb &notModifColor = notModifColorTable.at(realPixelIndex);
-	int index = -1;
-
-	while((index = modifColorTable.indexOf(newColor, index + 1)) != -1) {
-		if(notModifColorTable.at(index) == notModifColor) {
-			_tim.imagePtr()->setPixel(letterPos(charId) + pos, index);
-			modified = true;
-			return true;
+		while((index = modifColorTable.indexOf(newColor, index + 1)) != -1) {
+			if(notModifColorTable.at(index) == notModifColor) {
+				_tim.imagePtr()->setPixel(letterPos(charId) + pos, index);
+				modified = true;
+				return true;
+			}
 		}
-	}
 
-	return false;
+		return false;
+	} else {
+		_tim.imagePtr()->setPixel(letterPos(charId) + pos, pixelIndex);
+		modified = true;
+		return true;
+	}
 }
 
 const quint8 *TdwFile::charWidth(quint8 tableId) const

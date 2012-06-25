@@ -98,9 +98,9 @@ void TdwLetter::mousePressEvent(QMouseEvent *e)
 	QPoint pixel = getPixel(e->pos());
 
 	const quint8 *charWidth = tdwFile->charWidth(_currentTable);
-	int linePos = charWidth[_letter];
+	int linePos = charWidth[_letter] * PIXEL_SIZE;
 
-	if(pixel.x() >= linePos - 1 && pixel.x() <= linePos + 1) {
+	if(e->pos().x() >= linePos - 1 && e->pos().x() <= linePos + 1) {
 		startDrag = true;
 	} else if(pixel.x() < 12 && pixel.y() < 12 && tdwFile->setLetterPixelIndex(_currentTable, _letter, pixel, (tdwFile->letterPixelIndex(_currentTable, _letter, pixel) + 1) % 4)) {
 		update(QRect(pixel * PIXEL_SIZE, QSize(PIXEL_SIZE, PIXEL_SIZE)));
