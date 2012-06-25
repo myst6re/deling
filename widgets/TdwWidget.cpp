@@ -86,6 +86,7 @@ void TdwWidget::fill()
 	TdwFile *tdw = data()->getTdwFile();
 	tdwGrid->setTdwFile(tdw);
 	tdwGrid->setLetter(0);
+	tdwGrid->setFocus();
 	tdwLetter->setTdwFile(tdw);
 	tdwLetter->setLetter(0);
 	if(selectTable->count() != tdw->tableCount()) {
@@ -144,4 +145,9 @@ void TdwWidget::setModified()
 {
 	emit modified();
 	resetButton2->setEnabled(true);
+}
+
+void TdwWidget::focusInEvent(QFocusEvent *)
+{
+	tdwGrid->setFocus();
 }

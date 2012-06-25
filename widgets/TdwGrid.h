@@ -35,6 +35,7 @@ public slots:
 	void updateLetter(const QRect &rect);
 protected:
 	virtual void mousePressEvent(QMouseEvent * e);
+	virtual void keyPressEvent(QKeyEvent *e);
 	virtual void paintEvent(QPaintEvent *e);
 private:
 	static int getLetter(const QPoint &pos);

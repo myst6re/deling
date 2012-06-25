@@ -399,6 +399,7 @@ void MainWindow::fillPage()
 //	qDebug() << "BG" << t.elapsed();
 
 	pageWidgets.at(tabBar->currentIndex())->fill();
+	pageWidgets.at(tabBar->currentIndex())->setFocus();
 }
 
 void MainWindow::fillBackground(const QImage &image)

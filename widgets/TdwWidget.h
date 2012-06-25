@@ -45,6 +45,8 @@ private:
 	TdwLetter *tdwLetter;
 	QComboBox *selectPal, *selectTable;
 	QPushButton *resetButton2;
+protected:
+	void focusInEvent(QFocusEvent *);
 
 };
 

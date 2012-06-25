@@ -123,4 +123,43 @@ void TdwGrid::mousePressEvent(QMouseEvent *e)
 		setLetter(letter);
 		emit letterClicked(letter);
 	}
+	setFocus();
+}
+
+void TdwGrid::keyPressEvent(QKeyEvent *e)
+{
+	int letter;
+
+	switch(e->key()) {
+	case Qt::Key_Left:
+		letter = _letter - 1;
+		if(letter >= 0) {
+			setLetter(letter);
+			emit letterClicked(letter);
+		}
+		break;
+	case Qt::Key_Right:
+		letter = _letter + 1;
+		if(letter < 16*14) {
+			setLetter(letter);
+			emit letterClicked(letter);
+		}
+		break;
+	case Qt::Key_Up:
+		letter = _letter - 16;
+		if(letter >= 0) {
+			setLetter(letter);
+			emit letterClicked(letter);
+		}
+		break;
+	case Qt::Key_Down:
+		letter = _letter + 16;
+		if(letter < 16*14) {
+			setLetter(letter);
+			emit letterClicked(letter);
+		}
+		break;
+	}
+
+	QWidget::keyPressEvent(e);
 }
