@@ -85,7 +85,7 @@ private:
 
 	FieldArchive *fieldArchive;
 	FieldPC *field;
-	FieldThread *fieldThread;
+	FieldThread *fieldThread;//TODO
 
 	MiscSearch *miscSearchD;
 	QLabel *currentPath;

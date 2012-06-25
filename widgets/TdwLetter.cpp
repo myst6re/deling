@@ -18,9 +18,10 @@
 #include "TdwLetter.h"
 
 TdwLetter::TdwLetter(QWidget *parent) :
-	TdwDisplay(parent)
+	TdwDisplay(parent), startDrag(false)
 {
-	setFixedSize(12*21, 12*21);
+	setFixedSize(16*PIXEL_SIZE, 12*PIXEL_SIZE);
+	setMouseTracking(true);
 }
 
 TdwLetter::~TdwLetter()
@@ -50,20 +51,64 @@ void TdwLetter::paintEvent(QPaintEvent *)
 	}
 
 	if(tdwFile) {
-		p.drawImage(QPoint(0, 0), tdwFile->letter(_currentTable, _letter, _color, true).scaled(QSize(12*21, 12*21), Qt::KeepAspectRatio));
+		p.drawImage(QPoint(0, 0), tdwFile->letter(_currentTable, _letter, _color, true).scaled(QSize(12*PIXEL_SIZE, 12*PIXEL_SIZE), Qt::KeepAspectRatio));
+		const quint8 *charWidth = tdwFile->charWidth(_currentTable);
+		int linePos = charWidth[_letter] * PIXEL_SIZE;
+		p.setPen(Qt::red);
+		p.drawLine(QPoint(linePos, 0), QPoint(linePos, height()));
 	}
 }
 
 QPoint TdwLetter::getPixel(const QPoint &pos)
 {
-	return getCellPos(pos, QSize(21, 21), 12, 12);
+	return getCellPos(pos, QSize(PIXEL_SIZE, PIXEL_SIZE));
+}
+
+void TdwLetter::mouseMoveEvent(QMouseEvent *e)
+{
+	const QPoint &mousePos = e->pos();
+	const quint8 *charWidth = tdwFile->charWidth(_currentTable);
+	int linePos = charWidth[_letter] * PIXEL_SIZE;
+
+	if(startDrag) {
+		int newLinePos = mousePos.x() / PIXEL_SIZE;
+		if(linePos / PIXEL_SIZE != newLinePos && newLinePos < 16) {
+			tdwFile->setCharWidth(_currentTable, _letter, newLinePos);
+			update();
+		}
+	} else {
+		if(mousePos.x() >= linePos - 1 && mousePos.x() <= linePos + 1) {
+			if(cursor().shape() != Qt::SplitHCursor) {
+				setCursor(Qt::SplitHCursor);
+			}
+		} else {
+			if(mousePos.x() < 12 * PIXEL_SIZE && mousePos.y() < 12 * PIXEL_SIZE) {
+				if(cursor().shape() != Qt::PointingHandCursor) {
+					setCursor(Qt::PointingHandCursor);
+				}
+			} else if(cursor().shape() != Qt::ArrowCursor) {
+				setCursor(Qt::ArrowCursor);
+			}
+		}
+	}
 }
 
 void TdwLetter::mousePressEvent(QMouseEvent *e)
 {
 	QPoint pixel = getPixel(e->pos());
-	if(tdwFile->setLetterPixelIndex(_currentTable, _letter, pixel, (tdwFile->letterPixelIndex(_currentTable, _letter, pixel) + 1) % 4)) {
-		update(QRect(pixel * 21, QSize(21, 21)));
+
+	const quint8 *charWidth = tdwFile->charWidth(_currentTable);
+	int linePos = charWidth[_letter];
+
+	if(pixel.x() >= linePos - 1 && pixel.x() <= linePos + 1) {
+		startDrag = true;
+	} else if(pixel.x() < 12 && pixel.y() < 12 && tdwFile->setLetterPixelIndex(_currentTable, _letter, pixel, (tdwFile->letterPixelIndex(_currentTable, _letter, pixel) + 1) % 4)) {
+		update(QRect(pixel * PIXEL_SIZE, QSize(PIXEL_SIZE, PIXEL_SIZE)));
 		emit imageChanged(QRect(pixel, QSize(1, 1)));
 	}
+}
+
+void TdwLetter::mouseReleaseEvent(QMouseEvent *)
+{
+	startDrag = false;
 }

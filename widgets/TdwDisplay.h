@@ -35,8 +35,8 @@ public slots:
 	void setColor(TdwFile::Color color);
 	virtual void setLetter(int letter);
 protected:
-	static QPoint getCellPos(const QPoint &pos, const QSize &cellSize, int colCount, int rowCount);
-	static int getCell(const QPoint &pos, const QSize &cellSize, int colCount, int rowCount);
+	static QPoint getCellPos(const QPoint &pos, const QSize &cellSize);
+	static int getCell(const QPoint &pos, const QSize &cellSize, int colCount);
 	TdwFile *tdwFile;
 	TdwFile::Color _color;
 	int _currentTable, _letter;

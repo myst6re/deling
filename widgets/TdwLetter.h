@@ -22,6 +22,8 @@
 #include "widgets/TdwDisplay.h"
 #include "widgets/TdwGrid.h"
 
+#define PIXEL_SIZE	21
+
 class TdwLetter : public TdwDisplay
 {
 	Q_OBJECT
@@ -35,10 +37,13 @@ signals:
 	void imageChanged(const QRect &rect);
 protected:
 	virtual void paintEvent(QPaintEvent *e);
+	virtual void mouseMoveEvent(QMouseEvent *e);
 	virtual void mousePressEvent(QMouseEvent *e);
+	virtual void mouseReleaseEvent(QMouseEvent *);
 private:
 	QPoint getPixel(const QPoint &pos);
 	QImage copyLetter;
+	bool startDrag;
 };
 
 #endif // TDWLETTER_H

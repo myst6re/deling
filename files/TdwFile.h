@@ -48,6 +48,7 @@ public:
 	bool setLetterPixelIndex(quint8 tableId, int charId, const QPoint &pos, uint pixelIndex);
 	bool setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex);
 	const quint8 *charWidth(quint8 tableId=0) const;
+	void setCharWidth(quint8 tableId, int charId, quint8 width);
 	int tableCount() const;
 	int charCount(quint8 tableId=0) const;
 private:

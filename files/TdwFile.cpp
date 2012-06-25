@@ -131,7 +131,8 @@ bool TdwFile::save(QByteArray &tdw)
 
 QImage TdwFile::image(Color color)
 {
-	_tim.setCurrentColorTable(color);
+	int palID = (color % 8)*2;
+	_tim.setCurrentColorTable(palID);
 	return _tim.image();
 }
 
@@ -272,6 +273,11 @@ bool TdwFile::setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex
 const quint8 *TdwFile::charWidth(quint8 tableId) const
 {
 	return _charWidth.at(tableId);
+}
+
+void TdwFile::setCharWidth(quint8 tableId, int charId, quint8 width)
+{
+	_charWidth[tableId][charId] = width;
 }
 
 int TdwFile::tableCount() const

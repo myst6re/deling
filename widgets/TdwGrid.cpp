@@ -90,7 +90,7 @@ void TdwGrid::paintEvent(QPaintEvent *)
 
 int TdwGrid::getLetter(const QPoint &pos)
 {
-	return getCell(pos, QSize(15, 15), 16, 14);
+	return getCell(pos, QSize(15, 15), 16);
 }
 
 //void TdwGrid::setTdwFile(TdwFile *tdwFile)
@@ -119,6 +119,8 @@ void TdwGrid::updateLetter(const QRect &rect)
 void TdwGrid::mousePressEvent(QMouseEvent *e)
 {
 	int letter = getLetter(e->pos());
-	setLetter(letter);
-	emit letterClicked(letter);
+	if(letter < 16*14) {
+		setLetter(letter);
+		emit letterClicked(letter);
+	}
 }

@@ -279,6 +279,7 @@ bool MainWindow::openFsArchive(const QString &path)
 			fieldArchive = NULL;
 			list1->setEnabled(false);
 			lineSearch->setEnabled(false);
+			bgPreview->setEnabled(true);
 			fillPage();
 		} else {
 			delete field;
@@ -642,7 +643,7 @@ void MainWindow::setCurrentPage(int index)
 		if(fieldArchive) {
 			fsArchive = ((FieldArchivePC *)fieldArchive)->getFsArchive();
 		} else if(field) {
-			fsArchive = ((FieldPC *)field)->getArchiveHeader();
+			fsArchive = field->getArchiveHeader();
 		} else {
 			return;
 		}

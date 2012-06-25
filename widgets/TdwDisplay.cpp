@@ -61,16 +61,14 @@ void TdwDisplay::setLetter(int letter)
 	update();
 }
 
-QPoint TdwDisplay::getCellPos(const QPoint &pos, const QSize &cellSize, int colCount, int rowCount)
+QPoint TdwDisplay::getCellPos(const QPoint &pos, const QSize &cellSize)
 {
-	int col = qMin(pos.x() / cellSize.width(), colCount-1), row = qMin(pos.y() / cellSize.height(), rowCount-1);
-
-	return QPoint(col, row);
+	return QPoint(pos.x() / cellSize.width(), pos.y() / cellSize.height());
 }
 
-int TdwDisplay::getCell(const QPoint &pos, const QSize &cellSize, int colCount, int rowCount)
+int TdwDisplay::getCell(const QPoint &pos, const QSize &cellSize, int colCount)
 {
-	QPoint cellPos = getCellPos(pos, cellSize, colCount, rowCount);
+	QPoint cellPos = getCellPos(pos, cellSize);
 
 	return cellPos.y() * colCount + cellPos.x();
 }
