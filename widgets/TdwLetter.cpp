@@ -52,8 +52,7 @@ void TdwLetter::paintEvent(QPaintEvent *)
 
 	if(tdwFile) {
 		p.drawImage(QPoint(0, 0), tdwFile->letter(_currentTable, _letter, _color, true).scaled(QSize(12*PIXEL_SIZE, 12*PIXEL_SIZE), Qt::KeepAspectRatio));
-		const quint8 *charWidth = tdwFile->charWidth(_currentTable);
-		int linePos = charWidth[_letter] * PIXEL_SIZE;
+		int linePos = tdwFile->charWidth(_currentTable, _letter) * PIXEL_SIZE;
 		p.setPen(Qt::red);
 		p.drawLine(QPoint(linePos, 0), QPoint(linePos, height()));
 	}
@@ -67,8 +66,7 @@ QPoint TdwLetter::getPixel(const QPoint &pos)
 void TdwLetter::mouseMoveEvent(QMouseEvent *e)
 {
 	const QPoint &mousePos = e->pos();
-	const quint8 *charWidth = tdwFile->charWidth(_currentTable);
-	int linePos = charWidth[_letter] * PIXEL_SIZE;
+	int linePos = tdwFile->charWidth(_currentTable, _letter) * PIXEL_SIZE;
 
 	if(startDrag) {
 		int newLinePos = mousePos.x() / PIXEL_SIZE;
@@ -97,8 +95,7 @@ void TdwLetter::mousePressEvent(QMouseEvent *e)
 {
 	QPoint pixel = getPixel(e->pos());
 
-	const quint8 *charWidth = tdwFile->charWidth(_currentTable);
-	int linePos = charWidth[_letter] * PIXEL_SIZE;
+	int linePos = tdwFile->charWidth(_currentTable, _letter) * PIXEL_SIZE;
 
 	if(e->pos().x() >= linePos - 1 && e->pos().x() <= linePos + 1) {
 		startDrag = true;

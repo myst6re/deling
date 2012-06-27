@@ -426,7 +426,7 @@ void MainWindow::setModified(bool modified)
 
 int MainWindow::closeFiles(bool quit)
 {
-//	qDebug() << "MainWindow::closeFiles()";
+	//qDebug() << "MainWindow::closeFiles()";
 
 	if(list1->currentItem() != NULL)
 		Config::setValue("currentField", list1->currentItem()->text(0));
@@ -437,6 +437,7 @@ int MainWindow::closeFiles(bool quit)
 		if(reponse == 0)				save();
 		if(quit || reponse == 2)	return reponse;
 	}
+
 	if(quit)	return 0;
 
 	list1->setEnabled(false);
@@ -632,7 +633,7 @@ void MainWindow::bgPage()
 
 void MainWindow::setCurrentPage(int index)
 {
-//	qDebug() << QString("MainWindow::setCurrentPage(%1)").arg(index);
+	//qDebug() << QString("MainWindow::setCurrentPage(%1)").arg(index);
 
 	tabBar->blockSignals(true);
 	if(tabBar->currentIndex() != index)

@@ -37,18 +37,18 @@ public:
 	QImage image(Color color=White);
 	static QImage image(const QByteArray &data, Color color=White);
 	// tableId + charId
-	QImage letter(quint8 tableId, int charId, Color color, bool curFrame);
+	QImage letter(quint8 tableId, quint8 charId, Color color, bool curFrame);
 	// Absolute charId
 	QImage letter(int charId, Color color, bool curFrame);
-	void setLetter(quint8 tableId, int charId, const QImage &image);
+	void setLetter(quint8 tableId, quint8 charId, const QImage &image);
 	void setLetter(int charId, const QImage &image);
 	void setImage(const QImage &image, int hCount, int vCount);
-	uint letterPixelIndex(quint8 tableId, int charId, const QPoint &pos) const;
+	uint letterPixelIndex(quint8 tableId, quint8 charId, const QPoint &pos) const;
 	uint letterPixelIndex(int charId, const QPoint &pos) const;
-	bool setLetterPixelIndex(quint8 tableId, int charId, const QPoint &pos, uint pixelIndex);
+	bool setLetterPixelIndex(quint8 tableId, quint8 charId, const QPoint &pos, uint pixelIndex);
 	bool setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex);
-	const quint8 *charWidth(quint8 tableId=0) const;
-	void setCharWidth(quint8 tableId, int charId, quint8 width);
+	quint8 charWidth(quint8 tableId, quint8 charId) const;
+	void setCharWidth(quint8 tableId, quint8 charId, quint8 width);
 	int tableCount() const;
 	int charCount(quint8 tableId=0) const;
 private:

@@ -50,10 +50,13 @@ public:
 	static QImage getIconImage(int charId);
 	void calcSize();
 signals:
-	void positionChanged(QPoint);
+	void positionChanged(const QPoint &);
 private:
 	void drawTextArea(QPainter *painter);
 	QPoint realPos(const FF8Window &ff8Window);
+	void letter(int *x, int *y, int charId, QPainter *painter, quint8 tableId=0);
+	void word(int *x, int *y, const QByteArray &charIds, QPainter *painter, quint8 tableId=0);
+
 	QList<FF8Window> ff8Windows;
 	QByteArray ff8Text;
 	int currentPage;
@@ -63,17 +66,13 @@ private:
 	static bool curFrame;
 	bool useTimer, acceptMove, readOnly;
 	QPoint moveStartPosition;
+	TdwFile::Color fontColor;
 
+	static TdwFile font, jpFont;
 	static TdwFile *tdwFile;
-	static TdwFile::Color fontColor;
-	static QImage fontImage;
 	static QImage iconImage;
-	static void letter(int *x, int *y, int charId, QPainter *painter, quint8 tableId=0);
-	static void word(int *x, int *y, const QByteArray &charIds, QPainter *painter, quint8 tableId=0);
-	static void setFontColor(TdwFile::Color color);
-	static QVector<QRgb> fontPalettes[8];
+
 	static int calcFF8TextWidth(const QByteArray &ff8Text);
-	static quint8 charWidth[6][224];
 	static const quint8 iconWidth[96];
 	static const quint8 iconPadding[96];
 	static const char *optimisedDuo[24];

@@ -18,21 +18,34 @@
 #include "TextPreview.h"
 
 bool TextPreview::curFrame = true;
-TdwFile::Color TextPreview::fontColor = TdwFile::White;
-QImage TextPreview::fontImage;
 QImage TextPreview::iconImage;
+TdwFile TextPreview::font;
+TdwFile TextPreview::jpFont;
 TdwFile *TextPreview::tdwFile = NULL;
 
 TextPreview::TextPreview(QWidget *parent)
-	: QWidget(parent), currentPage(0), currentWin(0), useTimer(false), acceptMove(false)
+	: QWidget(parent), currentPage(0), currentWin(0), useTimer(false), acceptMove(false), fontColor(TdwFile::White)
 {
 	pagesPos.append(0);
 
 	setFixedSize(320, 224);
 
 	if(names.isEmpty()) {
-		fontImage = QImage(":/images/font.png");
 		iconImage = QImage(":/images/icons.png");
+
+		QFile f(":/fonts/sysfnt.tdw");
+		f.open(QIODevice::ReadOnly);
+		if(!font.open(f.readAll())) {
+			qWarning() << "Cannot open tdw file!" << f.fileName();
+		}
+		f.close();
+
+		QFile f2(":/fonts/sysfnt_jp.tdw");
+		f2.open(QIODevice::ReadOnly);
+		if(!jpFont.open(f2.readAll())) {
+			qWarning() << "Cannot open tdw file!" << f2.fileName();
+		}
+		f2.close();
 
 		QStringList dataNames = Data::names();
 		bool jp = tr("false", "Use Japanese Encoding") == "true";
@@ -81,7 +94,6 @@ void TextPreview::setFontImageAdd(TdwFile *tdwFile)
 {
 	if(tdwFile == NULL || tdwFile->tableCount() < 1)	return;
 
-	memcpy(charWidth[5], tdwFile->charWidth(), sizeof(quint8) * 224);
 	TextPreview::tdwFile = tdwFile;
 }
 
@@ -96,7 +108,7 @@ int TextPreview::calcFF8TextWidth(const QByteArray &ff8Text)
 
     foreach(quint8 c, ff8Text) {
 		if(c>=32 && c<227)
-			width += charWidth[0][c-32];
+			width += font.charWidth(0, c-32);
 	}
 
 	return width;
@@ -111,7 +123,6 @@ void TextPreview::clear()
 
 void TextPreview::setWins(const QList<FF8Window> &windows, bool update)
 {
-//	qDebug() << "TextPreview::setWins()";
 	ff8Windows = windows;
 	if(update)
 		calcSize();
@@ -175,7 +186,6 @@ void TextPreview::clearWin()
 
 void TextPreview::setText(const QByteArray &textData, bool reset)
 {
-//	qDebug() << "TextPreview::setText()";
 	ff8Text = textData;
 	if(reset)
 		currentPage = 0;
@@ -195,7 +205,6 @@ int TextPreview::getNbPages()
 void TextPreview::nextPage()
 {
 	if(currentPage+1 < pagesPos.size()) {
-//		qDebug() << "TextPreview::nextPage()";
 		++currentPage;
 		update();
 	}
@@ -204,7 +213,6 @@ void TextPreview::nextPage()
 void TextPreview::prevPage()
 {
 	if(currentPage > 0) {
-//		qDebug() << "TextPreview::prevPage()";
 		--currentPage;
 		update();
 	}
@@ -212,8 +220,6 @@ void TextPreview::prevPage()
 
 void TextPreview::calcSize()
 {
-//	qDebug() << "TextPreview::calcSize()";
-
 	int line=0, ask_first=-1, ask_last=-1, width, height=28, size=this->ff8Text.size();
 	maxW=maxH=0;
 	pagesPos.clear();
@@ -262,9 +268,9 @@ void TextPreview::calcSize()
 		case 0x4: // Vars
 			caract = (quint8)ff8Text.at(++i);
 			if((caract>=0x20 && caract<=0x27) || (caract>=0x30 && caract<=0x37))
-				width += charWidth[0][1];// 0
+				width += font.charWidth(0, 1);// 0
 			else if(caract>=0x40 && caract<=0x47)
-				width += charWidth[0][1]*8;// 00000000
+				width += font.charWidth(0, 1)*8;// 00000000
 			break;
 		case 0x5: // Icons
 			caract = (quint8)ff8Text.at(++i)-0x20;
@@ -279,33 +285,35 @@ void TextPreview::calcSize()
 		case 0x19: // Jap 1
 			caract = (quint8)ff8Text.at(++i);
 			if(caract>=0x20)
-				width += charWidth[2][caract-0x20];
+				width += jpFont.charWidth(1, caract-0x20);
 			break;
 		case 0x1a: // Jap 2
 			caract = (quint8)ff8Text.at(++i);
 			if(caract>=0x20)
-				width += charWidth[3][caract-0x20];
+				width += jpFont.charWidth(2, caract-0x20);
 			break;
 		case 0x1b: // Jap 3
 			caract = (quint8)ff8Text.at(++i);
 			if(caract>=0x20)
-				width += charWidth[4][caract-0x20];
+				width += jpFont.charWidth(3, caract-0x20);
 			break;
 		case 0x1c: // Jap 4
-			caract = (quint8)ff8Text.at(++i);
-			if(caract>=0x20)
-				width += charWidth[5][caract-0x20];
+			if(tdwFile) {
+				caract = (quint8)ff8Text.at(++i);
+				if(caract>=0x20)
+					width += tdwFile->charWidth(0, caract-0x20);
+			}
 			break;
 		default:
 			if(caract<0x20)
 				++i;
 			else if(jp) {
-				width += charWidth[1][caract-0x20];
+				width += jpFont.charWidth(0, caract-0x20);
 			} else {
 				if(caract<232)
-					width += charWidth[0][caract-0x20];
+					width += font.charWidth(0, caract-0x20);
 				else if(caract>=232)
-					width += charWidth[0][(quint8)optimisedDuo[caract-232][0]] + charWidth[0][(quint8)optimisedDuo[caract-232][1]];
+					width += font.charWidth(0, (quint8)optimisedDuo[caract-232][0]) + font.charWidth(0, (quint8)optimisedDuo[caract-232][1]);
 			}
 			break;
 		}
@@ -321,8 +329,6 @@ void TextPreview::calcSize()
 
 QPoint TextPreview::realPos(const FF8Window &ff8Window)
 {
-//	qDebug() << "TextPreview::realPos()";
-
 	int windowX=ff8Window.x, windowY=ff8Window.y;
 	if(windowX+maxW>312) {
 		windowX = 312-maxW;
@@ -387,7 +393,7 @@ void TextPreview::drawTextArea(QPainter *painter)
 
 	/* Text */
 
-	setFontColor(TdwFile::White);
+	fontColor = TdwFile::White;
 
 	int charId, line=0, x = (ask_first==0 && ask_last>=0 ? 40 : 8), y = 8;
 	int start = pagesPos.value(currentPage, 0), size = ff8Text.size();
@@ -455,21 +461,10 @@ void TextPreview::drawTextArea(QPainter *painter)
 				charId = (quint8)ff8Text.at(i);
 
 				if(charId>=0x20 && charId<=0x27)// Colors
-					setFontColor((TdwFile::Color)(charId-0x20));
+					fontColor = (TdwFile::Color)(charId-0x20);
 				else if(charId>=0x28 && charId<=0x2f)// BlinkColors
 				{
 					useTimer = true;
-					QVector<QRgb> normalColors = fontPalettes[charId-0x28];
-					if(!curFrame)
-					{
-						QRgb *data = normalColors.data(), color;
-						for(int c=0 ; c<3 ; ++c)
-						{
-							color = data[c];
-							data[c] = qRgb(qRed(color)*0.75, qGreen(color)*0.75, qBlue(color)*0.75);
-						}
-					}
-					fontImage.setColorTable(normalColors);
 					fontColor = (TdwFile::Color)(charId-0x20);
 				}
 				break;
@@ -497,8 +492,6 @@ void TextPreview::drawTextArea(QPainter *painter)
 
 void TextPreview::paintEvent(QPaintEvent */* event */)
 {
-//	qDebug() << "TextPreview::paintEvent()";
-
 	QPixmap pix(320, 224);
 	QPainter painter(&pix);
 
@@ -592,10 +585,31 @@ void TextPreview::mouseReleaseEvent(QMouseEvent *)
 
 void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 tableId)
 {
-	int charIdImage = charId + 231*tableId;
+	QImage image;
 
-	painter->drawImage(*x, *y, tableId==5 ? (tdwFile==NULL ? QImage() : tdwFile->letter(charId, fontColor, curFrame)) : fontImage.copy((charIdImage%21)*12, (charIdImage/21)*12, 12, 12));
-	*x += charWidth[tableId][charId];
+	if(tableId == 5) {
+		if(tdwFile) {
+			image = tdwFile->letter(0, charId, fontColor, curFrame);
+		}
+	} else if(tableId == 0) {
+		image = font.letter(0, charId, fontColor, curFrame);
+	} else {
+		image = jpFont.letter(tableId - 1, charId, fontColor, curFrame);
+	}
+
+	if(!image.isNull()) {
+		painter->drawImage(*x, *y, image);
+	}
+
+	if(tableId == 5) {
+		if(tdwFile) {
+			*x += tdwFile->charWidth(0, charId);
+		}
+	} else if(tableId == 0) {
+		*x += font.charWidth(0, charId);
+	} else {
+		*x += jpFont.charWidth(tableId - 1, charId);
+	}
 }
 
 void TextPreview::word(int *x, int *y, const QByteArray &charIds, QPainter *painter, quint8 tableId)
@@ -605,126 +619,6 @@ void TextPreview::word(int *x, int *y, const QByteArray &charIds, QPainter *pain
 		letter(x, y, charId-0x20, painter, tableId);
 	}
 }
-
-void TextPreview::setFontColor(TdwFile::Color color)
-{
-	fontImage.setColorTable(fontPalettes[(int)color]);
-	fontColor = color;
-}
-
-QVector<QRgb> TextPreview::fontPalettes[8] = {
-	// darkgrey
-	(QVector<QRgb>() << qRgb(0xa4,0xa4,0xa4) << qRgb(0x52,0x5a,0x52) << qRgb(0x62,0x62,0x62) << qRgba(0,0,0,0)),
-	// grey
-	(QVector<QRgb>() << qRgb(0x31,0x31,0x31) << qRgb(0x94,0x94,0xa4) << qRgb(0x62,0x62,0x6a) << qRgba(0,0,0,0)),
-	// yellow
-	(QVector<QRgb>() << qRgb(0x29,0x29,0x29) << qRgb(0xde,0xde,0x08) << qRgb(0x83,0x83,0x18) << qRgba(0,0,0,0)),
-	// red
-	(QVector<QRgb>() << qRgb(0x20,0x20,0x20) << qRgb(0xff,0x18,0x18) << qRgb(0x8b,0x18,0x18) << qRgba(0,0,0,0)),
-	// green
-	(QVector<QRgb>() << qRgb(0x39,0x39,0x31) << qRgb(0x00,0xff,0x00) << qRgb(0x00,0xbd,0x00) << qRgba(0,0,0,0)),
-	// blue
-	(QVector<QRgb>() << qRgb(0x29,0x29,0x29) << qRgb(0x6a,0xb4,0xee) << qRgb(0x52,0x73,0x94) << qRgba(0,0,0,0)),
-	// purple
-	(QVector<QRgb>() << qRgb(0x29,0x29,0x29) << qRgb(0xff,0x00,0xff) << qRgb(0x94,0x10,0x94) << qRgba(0,0,0,0)),
-	// white
-	(QVector<QRgb>() << qRgb(0x41,0x41,0x31) << qRgb(0xee,0xee,0xee) << qRgb(0xa4,0xa4,0xa4) << qRgba(0,0,0,0))
-};
-
-quint8 TextPreview::charWidth[6][224] =
-{
-	{ // International
-		5, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 11, 7, 4, 5, 7,
-		10, 7, 7, 7, 9, 9, 6, 6, 5, 5, 4, 4, 4, 9, 7, 7,
-		4, 9, 7, 4, 9, 8, 8, 8, 8, 8, 8, 8, 8, 5, 7, 8,
-		7, 9, 8, 8, 8, 9, 8, 8, 9, 8, 9, 9, 9, 9, 9, 8,
-		7, 7, 7, 7, 5, 7, 7, 3, 5, 7, 3, 9, 7, 7, 7, 7,
-		6, 7, 6, 7, 7, 7, 7, 8, 7, 8, 8, 8, 8, 8, 8, 8,
-		8, 8, 5, 5, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9,
-		7, 8, 8, 8, 8, 7, 7, 7, 7, 7, 5, 5, 7, 7, 7, 7,
-		7, 7, 7, 7, 7, 7, 7, 9, 13, 5, 5, 9, 9, 9, 6, 6,
-		9, 11, 7, 7, 9, 4, 9, 9, 7, 11, 4, 7, 5, 5, 7, 13,
-		10, 10, 7, 9, 4, 7, 8, 7, 5, 9, 10, 10, 8, 8, 14, 8,
-		12, 8, 10, 8, 8, 8, 8, 8, 10, 8, 15, 8, 8, 8, 12, 8,
-		8, 12, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-	},{ // Jap - 0
-		11, 12, 11, 11, 11, 11, 12, 12, 12, 12, 11, 12, 11, 11, 11, 11,
-		11, 11, 11, 11, 12, 11, 11, 10, 11, 12, 11, 12, 11, 11, 11, 11,
-		12, 10, 11, 11, 11, 11, 11, 11, 11, 11, 12, 11, 11, 11, 11, 12,
-		12, 12, 12, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 7, 6, 8,
-		11, 11, 10, 11, 10, 11, 12, 12, 11, 11, 10, 11, 11, 11, 10, 10,
-		12, 11, 10, 10, 11, 10, 11, 10, 10, 11, 11, 11, 10, 11, 10, 11,
-		12, 11, 11, 11, 11, 11, 11, 11, 10, 10, 11, 11, 10, 11, 11, 11,
-		11, 11, 12, 11, 11, 11, 10, 11, 11, 11, 10, 11, 11, 10, 10, 12,
-		11, 11, 11, 11, 11, 10, 11, 10, 9, 9, 11, 10, 9, 11, 11, 10,
-		11, 10, 11, 11, 10, 10, 10, 10, 10, 10, 11, 10, 9, 9, 9, 10,
-		9, 9, 9, 8, 9, 9, 8, 9, 9, 7, 9, 9, 9, 9, 9, 9,
-		10, 9, 9, 9, 10, 10, 7, 8, 10, 9, 11, 9, 11, 9, 11, 9,
-		9, 10, 9, 9, 11, 9, 9, 9, 7, 10, 9, 9, 9, 9, 9, 11,
-		12, 10, 6, 6, 6, 6, 13, 13, 13, 13, 6, 4, 5, 4, 11, 10
-	},{ // Jap - 1
-		7, 13, 12, 13, 13, 13, 13, 13, 13, 12, 12, 13, 13, 13, 13, 13,
-		13, 13, 13, 13, 13, 13, 12, 12, 13, 12, 13, 13, 12, 13, 12, 13,
-		13, 13, 13, 13, 13, 12, 13, 13, 13, 13, 13, 13, 12, 13, 12, 12,
-		13, 13, 13, 12, 13, 12, 13, 13, 13, 13, 13, 12, 12, 13, 13, 13,
-		11, 12, 11, 13, 13, 12, 13, 13, 12, 13, 13, 13, 11, 13, 13, 13,
-		11, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 13, 13,
-		13, 13, 13, 12, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 11, 13,
-		13, 13, 13, 13, 13, 13, 13, 12, 12, 13, 13, 13, 13, 13, 13, 13,
-		13, 12, 13, 13, 13, 13, 13, 12, 13, 13, 13, 13, 13, 13, 13, 12,
-		12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 11, 12,
-		12, 12, 13, 13, 13, 13, 12, 13, 13, 13, 13, 13, 13, 13, 13, 12,
-		13, 13, 13, 12, 13, 13, 13, 13, 13, 13, 12, 13, 13, 13, 13, 13,
-		12, 12, 13, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
-		13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 12, 13, 13, 13
-	},{ // Jap - 2
-		13, 13, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 13, 12,
-		13, 13, 13, 12, 13, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12,
-		13, 13, 12, 13, 12, 13, 13, 13, 13, 13, 13, 13, 13, 12, 12, 13,
-		13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 12, 13, 13, 13, 11,
-		13, 13, 13, 12, 13, 13, 13, 13, 12, 13, 13, 13, 13, 13, 13, 13,
-		12, 13, 13, 13, 13, 12, 13, 13, 13, 9, 13, 13, 13, 13, 12, 13,
-		13, 13, 13, 12, 13, 13, 13, 13, 13, 13, 13, 12, 13, 13, 12, 13,
-		13, 13, 12, 13, 13, 13, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13,
-		13, 13, 12, 12, 13, 13, 13, 13, 13, 13, 13, 12, 13, 12, 12, 13,
-		13, 13, 13, 13, 12, 12, 13, 13, 13, 13, 13, 13, 12, 13, 13, 13,
-		12, 13, 13, 13, 13, 13, 12, 13, 12, 13, 13, 13, 13, 13, 13, 13,
-		12, 13, 13, 13, 12, 12, 13, 13, 12, 13, 13, 13, 13, 13, 13, 13,
-		13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 13, 13, 13,
-		14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13
-	},{ // Jap - 3
-		13, 13, 13, 11, 13, 13, 13, 13, 13, 13, 12, 13, 13, 13, 13, 13,
-		13, 13, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 13, 13, 13,
-		13, 11, 12, 13, 12, 13, 13, 13, 13, 12, 12, 13, 12, 13, 13, 13,
-		13, 12, 13, 13, 13, 13, 13, 13, 12, 12, 13, 13, 13, 13, 12, 13,
-		13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
-		13, 13, 13, 13, 13, 13, 11, 13, 13, 13, 13, 13, 13, 12, 12, 13,
-		13, 13, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 12,
-		13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 13, 13, 13, 13, 13, 13,
-		13, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12,
-		13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 13, 13, 13,
-		12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 13, 12, 13, 13,
-		13, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 13,
-		13, 12, 13, 13, 13, 13, 13, 13, 13, 13, 12, 13, 12, 13, 13, 13,
-		9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-	},{ // Jap - Additionnal
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-	}
-};
 
 const quint8 TextPreview::iconWidth[96] =
 {

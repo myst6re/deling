@@ -85,10 +85,11 @@
         <file>images/icon-char-29.png</file>
         <file>images/icon-char-30.png</file>
         <file>images/icon-char-31.png</file>
-        <file>images/font.png</file>
         <file>images/door.png</file>
         <file>images/background.png</file>
         <file>images/deling.png</file>
         <file>images/deling_city.png</file>
+        <file>fonts/sysfnt_jp.tdw</file>
+        <file>fonts/sysfnt.tdw</file>
     </qresource>
 </RCC>
