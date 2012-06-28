@@ -22,6 +22,9 @@
 #include "Config.h"
 #include "FF8Font.h"
 
+#define LOC_COUNT	256
+#define NAM_COUNT	16
+#define MAG_COUNT	57
 #define MAP_COUNT	982
 
 class Data
@@ -32,11 +35,14 @@ public:
 	static bool listFonts();
 	static QStringList fontList();
 	static FF8Font *font(const QString &name);
-	static const char *locations[];
-	static const char *names[];
-	static const char *magic[];
+	static const char *location(int i);
+	static const char *name(int i);
+	static const char *magic(int i);
 	static QStringList maplist();
 private:
+	static const char *locations[LOC_COUNT];
+	static const char *names[NAM_COUNT];
+	static const char *_magic[];
 	static const char *_maplist[MAP_COUNT];
 	static QString AppPath_cache;
 	static QMap<QString, FF8Font *> fonts;

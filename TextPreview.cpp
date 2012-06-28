@@ -42,13 +42,13 @@ TextPreview::TextPreview(QWidget *parent)
 		}
 
 		bool jp = tr("false", "Use Japanese Encoding") == "true";
-		names << FF8Text::toFF8(Data::names[0], jp) << FF8Text::toFF8(Data::names[1], jp)
-				<< FF8Text::toFF8(Data::names[2], jp) << FF8Text::toFF8(Data::names[3], jp)
-				<< FF8Text::toFF8(Data::names[4], jp) << FF8Text::toFF8(Data::names[5], jp)
-				<< FF8Text::toFF8(Data::names[6], jp) << FF8Text::toFF8(Data::names[7], jp)
-				<< FF8Text::toFF8(Data::names[8], jp) << FF8Text::toFF8(Data::names[9], jp)
-				<< FF8Text::toFF8(Data::names[10], jp) << FF8Text::toFF8(Data::names[15], jp)
-				<< FF8Text::toFF8(Data::names[12], jp) << FF8Text::toFF8(Data::names[14], jp);
+		names << FF8Text::toFF8(Data::name(0), jp) << FF8Text::toFF8(Data::name(1), jp)
+				<< FF8Text::toFF8(Data::name(2), jp) << FF8Text::toFF8(Data::name(3), jp)
+				<< FF8Text::toFF8(Data::name(4), jp) << FF8Text::toFF8(Data::name(5), jp)
+				<< FF8Text::toFF8(Data::name(6), jp) << FF8Text::toFF8(Data::name(7), jp)
+				<< FF8Text::toFF8(Data::name(8), jp) << FF8Text::toFF8(Data::name(9), jp)
+				<< FF8Text::toFF8(Data::name(10), jp) << FF8Text::toFF8(Data::name(15), jp)
+				<< FF8Text::toFF8(Data::name(12), jp) << FF8Text::toFF8(Data::name(14), jp);
 
 		namesWidth[0] = calcFF8TextWidth(names.at(0));
 		namesWidth[1] = calcFF8TextWidth(names.at(1));

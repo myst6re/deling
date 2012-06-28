@@ -108,7 +108,7 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 			Field *field = new FieldPC(map, entry, archive);
 			if(field->isOpen() && field->hasFiles()) {
 				if(field->hasJsmFile())
-					desc = Data::locations[field->getJsmFile()->mapID()];
+					desc = Data::location(field->getJsmFile()->mapID());
 				else
 					desc = QString();
 

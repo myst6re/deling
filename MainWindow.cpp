@@ -217,7 +217,7 @@ bool MainWindow::openArchive(const QString &path)
 		foreach(Field *field, fieldArchive->getFields()) {
 			QString desc;
 			if(field->hasJsmFile())
-				desc = Data::locations[field->getJsmFile()->mapID()];
+				desc = Data::location(field->getJsmFile()->mapID());
 			else
 				desc = QString();
 

@@ -93,7 +93,12 @@ FF8Font *Data::font(const QString &name)
 	return NULL;
 }
 
-const char *Data::locations[] = {
+const char *Data::location(int i)
+{
+	return i<LOC_COUNT && i>=0 ? locations[i] : "";
+}
+
+const char *Data::locations[LOC_COUNT] = {
 	"???", QT_TRANSLATE_NOOP("1","Plaines d'Arkland - Balamb"), QT_TRANSLATE_NOOP("2","Monts Gaulg - Balamb"), QT_TRANSLATE_NOOP("3","Baie de Rinaul - Balamb"), QT_TRANSLATE_NOOP("4","Cap Raha - Balamb"), QT_TRANSLATE_NOOP("5","Forêt de Rosfall - Timber"), QT_TRANSLATE_NOOP("6","Mandy Beach - Timber"), QT_TRANSLATE_NOOP("7","Lac Obel - Timber"), QT_TRANSLATE_NOOP("8","Vallée de Lanker - Timber"), QT_TRANSLATE_NOOP("9","Ile Nantakhet - Timber"), QT_TRANSLATE_NOOP("10","Yaulny Canyon - Timber"), QT_TRANSLATE_NOOP("11","Val Hasberry - Dollet"), QT_TRANSLATE_NOOP("12","Cap Holy Glory - Dollet"), QT_TRANSLATE_NOOP("13","Longhorn Island - Dollet"), QT_TRANSLATE_NOOP("14","Péninsule Malgo - Dollet"), QT_TRANSLATE_NOOP("15","Plateau Monterosa -Galbadia"),
 	QT_TRANSLATE_NOOP("16","Lallapalooza Canyon - Galbadia"), QT_TRANSLATE_NOOP("17","Shenand Hill - Timber"), QT_TRANSLATE_NOOP("18","Péninsule Gotland - Galbadia"), QT_TRANSLATE_NOOP("19","Ile de l'Enfer - Galbadia"), QT_TRANSLATE_NOOP("20","Plaine Galbadienne"), QT_TRANSLATE_NOOP("21","Wilburn Hill - Galbadia"), QT_TRANSLATE_NOOP("22","Archipel Rem - Galbadia"), QT_TRANSLATE_NOOP("23","Dingo Désert - Galbadia"), QT_TRANSLATE_NOOP("24","Cap Winhill"), QT_TRANSLATE_NOOP("25","Archipel Humphrey - Winhill"), QT_TRANSLATE_NOOP("26","Ile Winter - Trabia"), QT_TRANSLATE_NOOP("27","Val de Solvard - Trabia"), QT_TRANSLATE_NOOP("28","Crête d'Eldbeak - Trabia"), "", QT_TRANSLATE_NOOP("30","Plaine d'Hawkind - Trabia"), QT_TRANSLATE_NOOP("31","Atoll Albatross -Trabia"),
 	QT_TRANSLATE_NOOP("32","Vallon de Bika - Trabia"), QT_TRANSLATE_NOOP("33","Péninsule Thor - Trabia"), "", QT_TRANSLATE_NOOP("35","Crête d'Heath - Trabia"), QT_TRANSLATE_NOOP("36","Trabia Crater - Trabia"), QT_TRANSLATE_NOOP("37","Mont Vienne - Trabia"), QT_TRANSLATE_NOOP("38","Plaine de Mordor - Esthar"), QT_TRANSLATE_NOOP("39","Mont Nortes - Esthar"), QT_TRANSLATE_NOOP("40","Atoll Fulcura - Esthar"), QT_TRANSLATE_NOOP("41","Forêt Grandidi - Esthar"), QT_TRANSLATE_NOOP("42","Iles Millefeuilles - Esthar"), QT_TRANSLATE_NOOP("43","Grandes plaines d'Esthar"), QT_TRANSLATE_NOOP("44","Esthar City"), QT_TRANSLATE_NOOP("45","Salt Lake - Esthar"), QT_TRANSLATE_NOOP("46","Côte Ouest - Esthar"), QT_TRANSLATE_NOOP("47","Mont Sollet -Esthar"),
@@ -112,21 +117,31 @@ const char *Data::locations[] = {
 	QT_TRANSLATE_NOOP("240","Citadelle - Armurerie"), QT_TRANSLATE_NOOP("241","Citadelle d'Ultimecia - Prison"), QT_TRANSLATE_NOOP("242","Citadelle d'Ultimecia - Fossé"), QT_TRANSLATE_NOOP("243","Citadelle d'Ultimecia - Jardin"), QT_TRANSLATE_NOOP("244","Citadelle d'Ultimecia - Chapelle"), QT_TRANSLATE_NOOP("245","Clocher - Citadelle d'Ultimecia"), QT_TRANSLATE_NOOP("246","Chambre d'Ultimecia - Citadelle"), "???", QT_TRANSLATE_NOOP("248","Citadelle d'Ultimecia"), QT_TRANSLATE_NOOP("249","Salle d'initiation"), QT_TRANSLATE_NOOP("250","Reine des cartes"), "???", "???", "???", "???", "???"
 };
 
-const char *Data::names[] = {
+const char *Data::name(int i)
+{
+	return i<NAM_COUNT && i>=0 ? names[i] : "";
+}
+
+const char *Data::names[NAM_COUNT] = {
 	QT_TR_NOOP("Squall"), QT_TR_NOOP("Zell"), QT_TR_NOOP("Irvine"), QT_TR_NOOP("Quistis"), QT_TR_NOOP("Linoa"),
 	QT_TR_NOOP("Selphie"), QT_TR_NOOP("Seifer"), QT_TR_NOOP("Edea"), QT_TR_NOOP("Laguna"), QT_TR_NOOP("Kiros"),
 	QT_TR_NOOP("Ward"), "", QT_TR_NOOP("Cronos"), QT_TR_NOOP("MiniMog"), QT_TR_NOOP("Boko"), QT_TR_NOOP("Angel")
 };
 
-const char *Data::magic[] = {
+const char *Data::magic(int i)
+{
+	return i<MAG_COUNT && i>=0 ? _magic[i] : "";
+}
+
+const char *Data::_magic[MAG_COUNT] = {
 	"-", QT_TR_NOOP("Brasier"), QT_TR_NOOP("Brasier+"), QT_TR_NOOP("BrasierX"), QT_TR_NOOP("Glacier"), QT_TR_NOOP("Glacier+"),
 	QT_TR_NOOP("GlacierX"), QT_TR_NOOP("Foudre"), QT_TR_NOOP("Foudre+"), QT_TR_NOOP("FoudreX"), QT_TR_NOOP("H2O"), QT_TR_NOOP("Rafale"), QT_TR_NOOP("Cyanure"),
-	QT_TR_NOOP("Quart"), QT_TR_NOOP("Sidéral"), QT_TR_NOOP("Fournaise"), QT_TR_NOOP("Météore"), QT_TR_NOOP("Quake"), QT_TR_NOOP("Tornade"), QT_TR_NOOP("Ultima")
-	, QT_TR_NOOP("Apocalypse"), QT_TR_NOOP("Soin"), QT_TR_NOOP("Soin+"), QT_TR_NOOP("Soin Max"), QT_TR_NOOP("Vie"), QT_TR_NOOP("Vie Max"), QT_TR_NOOP("Récup"), QT_TR_NOOP("Esuna")
-	, QT_TR_NOOP("Anti-sort"), QT_TR_NOOP("Carapace"), QT_TR_NOOP("Blindage"), QT_TR_NOOP("Boormg"), QT_TR_NOOP("Aura"), QT_TR_NOOP("Double"), QT_TR_NOOP("Triple"), QT_TR_NOOP("Booster")
-	, QT_TR_NOOP("Somni"), QT_TR_NOOP("Stop"), QT_TR_NOOP("Cécité"), QT_TR_NOOP("Folie"), QT_TR_NOOP("Morphée"), QT_TR_NOOP("Aphasie"), QT_TR_NOOP("Mégalith"), QT_TR_NOOP("Ankou")
-	, QT_TR_NOOP("Saignée"), QT_TR_NOOP("Supplice"), QT_TR_NOOP("Furie"), QT_TR_NOOP("Décubitus"), QT_TR_NOOP("Zombie"), QT_TR_NOOP("Meltdown"), QT_TR_NOOP("Scan"), QT_TR_NOOP("Joobu")
-	, QT_TR_NOOP("Wall"), QT_TR_NOOP("Arkange"), QT_TR_NOOP("Percent"), QT_TR_NOOP("Catastrophe"), QT_TR_NOOP("TheEnd")
+	QT_TR_NOOP("Quart"), QT_TR_NOOP("Sidéral"), QT_TR_NOOP("Fournaise"), QT_TR_NOOP("Météore"), QT_TR_NOOP("Quake"), QT_TR_NOOP("Tornade"), QT_TR_NOOP("Ultima"),
+	QT_TR_NOOP("Apocalypse"), QT_TR_NOOP("Soin"), QT_TR_NOOP("Soin+"), QT_TR_NOOP("Soin Max"), QT_TR_NOOP("Vie"), QT_TR_NOOP("Vie Max"), QT_TR_NOOP("Récup"), QT_TR_NOOP("Esuna"),
+	QT_TR_NOOP("Anti-sort"), QT_TR_NOOP("Carapace"), QT_TR_NOOP("Blindage"), QT_TR_NOOP("Boormg"), QT_TR_NOOP("Aura"), QT_TR_NOOP("Double"), QT_TR_NOOP("Triple"), QT_TR_NOOP("Booster"),
+	QT_TR_NOOP("Somni"), QT_TR_NOOP("Stop"), QT_TR_NOOP("Cécité"), QT_TR_NOOP("Folie"), QT_TR_NOOP("Morphée"), QT_TR_NOOP("Aphasie"), QT_TR_NOOP("Mégalith"), QT_TR_NOOP("Ankou"),
+	QT_TR_NOOP("Saignée"), QT_TR_NOOP("Supplice"), QT_TR_NOOP("Furie"), QT_TR_NOOP("Décubitus"), QT_TR_NOOP("Zombie"), QT_TR_NOOP("Meltdown"), QT_TR_NOOP("Scan"), QT_TR_NOOP("Joobu"),
+	QT_TR_NOOP("Wall"), QT_TR_NOOP("Arkange"), QT_TR_NOOP("Percent"), QT_TR_NOOP("Catastrophe"), QT_TR_NOOP("TheEnd")
 };
 
 QStringList Data::maplist()
