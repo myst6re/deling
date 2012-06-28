@@ -19,8 +19,8 @@
 
 bool TextPreview::curFrame = true;
 QImage TextPreview::iconImage;
-TdwFile TextPreview::font;
-TdwFile TextPreview::jpFont;
+TdwFile *TextPreview::font;
+TdwFile *TextPreview::jpFont;
 TdwFile *TextPreview::tdwFile = NULL;
 
 TextPreview::TextPreview(QWidget *parent)
@@ -32,30 +32,23 @@ TextPreview::TextPreview(QWidget *parent)
 
 	if(names.isEmpty()) {
 		iconImage = QImage(":/images/icons.png");
-
-		QFile f(":/fonts/sysfnt.tdw");
-		f.open(QIODevice::ReadOnly);
-		if(!font.open(f.readAll())) {
-			qWarning() << "Cannot open tdw file!" << f.fileName();
+		font = Data::font("sysfnt")->tdw;
+		if(font == NULL) {
+			qWarning() << "aie1";
 		}
-		f.close();
-
-		QFile f2(":/fonts/sysfnt_jp.tdw");
-		f2.open(QIODevice::ReadOnly);
-		if(!jpFont.open(f2.readAll())) {
-			qWarning() << "Cannot open tdw file!" << f2.fileName();
+		jpFont = Data::font("sysfnt_jp")->tdw;
+		if(jpFont == NULL) {
+			qWarning() << "aie2";
 		}
-		f2.close();
 
-		QStringList dataNames = Data::names();
 		bool jp = tr("false", "Use Japanese Encoding") == "true";
-		names << FF8Text::toFF8(dataNames.at(0), jp) << FF8Text::toFF8(dataNames.at(1), jp)
-				<< FF8Text::toFF8(dataNames.at(2), jp) << FF8Text::toFF8(dataNames.at(3), jp)
-				<< FF8Text::toFF8(dataNames.at(4), jp) << FF8Text::toFF8(dataNames.at(5), jp)
-				<< FF8Text::toFF8(dataNames.at(6), jp) << FF8Text::toFF8(dataNames.at(7), jp)
-				<< FF8Text::toFF8(dataNames.at(8), jp) << FF8Text::toFF8(dataNames.at(9), jp)
-				<< FF8Text::toFF8(dataNames.at(10), jp) << FF8Text::toFF8(dataNames.at(15), jp)
-				<< FF8Text::toFF8(dataNames.at(12), jp) << FF8Text::toFF8(dataNames.at(14), jp);
+		names << FF8Text::toFF8(Data::names[0], jp) << FF8Text::toFF8(Data::names[1], jp)
+				<< FF8Text::toFF8(Data::names[2], jp) << FF8Text::toFF8(Data::names[3], jp)
+				<< FF8Text::toFF8(Data::names[4], jp) << FF8Text::toFF8(Data::names[5], jp)
+				<< FF8Text::toFF8(Data::names[6], jp) << FF8Text::toFF8(Data::names[7], jp)
+				<< FF8Text::toFF8(Data::names[8], jp) << FF8Text::toFF8(Data::names[9], jp)
+				<< FF8Text::toFF8(Data::names[10], jp) << FF8Text::toFF8(Data::names[15], jp)
+				<< FF8Text::toFF8(Data::names[12], jp) << FF8Text::toFF8(Data::names[14], jp);
 
 		namesWidth[0] = calcFF8TextWidth(names.at(0));
 		namesWidth[1] = calcFF8TextWidth(names.at(1));
@@ -108,7 +101,7 @@ int TextPreview::calcFF8TextWidth(const QByteArray &ff8Text)
 
     foreach(quint8 c, ff8Text) {
 		if(c>=32 && c<227)
-			width += font.charWidth(0, c-32);
+			width += font->charWidth(0, c-32);
 	}
 
 	return width;
@@ -268,9 +261,9 @@ void TextPreview::calcSize()
 		case 0x4: // Vars
 			caract = (quint8)ff8Text.at(++i);
 			if((caract>=0x20 && caract<=0x27) || (caract>=0x30 && caract<=0x37))
-				width += font.charWidth(0, 1);// 0
+				width += font->charWidth(0, 1);// 0
 			else if(caract>=0x40 && caract<=0x47)
-				width += font.charWidth(0, 1)*8;// 00000000
+				width += font->charWidth(0, 1)*8;// 00000000
 			break;
 		case 0x5: // Icons
 			caract = (quint8)ff8Text.at(++i)-0x20;
@@ -285,17 +278,17 @@ void TextPreview::calcSize()
 		case 0x19: // Jap 1
 			caract = (quint8)ff8Text.at(++i);
 			if(caract>=0x20)
-				width += jpFont.charWidth(1, caract-0x20);
+				width += jpFont->charWidth(1, caract-0x20);
 			break;
 		case 0x1a: // Jap 2
 			caract = (quint8)ff8Text.at(++i);
 			if(caract>=0x20)
-				width += jpFont.charWidth(2, caract-0x20);
+				width += jpFont->charWidth(2, caract-0x20);
 			break;
 		case 0x1b: // Jap 3
 			caract = (quint8)ff8Text.at(++i);
 			if(caract>=0x20)
-				width += jpFont.charWidth(3, caract-0x20);
+				width += jpFont->charWidth(3, caract-0x20);
 			break;
 		case 0x1c: // Jap 4
 			if(tdwFile) {
@@ -308,12 +301,12 @@ void TextPreview::calcSize()
 			if(caract<0x20)
 				++i;
 			else if(jp) {
-				width += jpFont.charWidth(0, caract-0x20);
+				width += jpFont->charWidth(0, caract-0x20);
 			} else {
 				if(caract<232)
-					width += font.charWidth(0, caract-0x20);
+					width += font->charWidth(0, caract-0x20);
 				else if(caract>=232)
-					width += font.charWidth(0, (quint8)optimisedDuo[caract-232][0]) + font.charWidth(0, (quint8)optimisedDuo[caract-232][1]);
+					width += font->charWidth(0, (quint8)optimisedDuo[caract-232][0]) + font->charWidth(0, (quint8)optimisedDuo[caract-232][1]);
 			}
 			break;
 		}
@@ -592,9 +585,9 @@ void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 t
 			image = tdwFile->letter(0, charId, fontColor, curFrame);
 		}
 	} else if(tableId == 0) {
-		image = font.letter(0, charId, fontColor, curFrame);
+		image = font->letter(0, charId, fontColor, curFrame);
 	} else {
-		image = jpFont.letter(tableId - 1, charId, fontColor, curFrame);
+		image = jpFont->letter(tableId - 1, charId, fontColor, curFrame);
 	}
 
 	if(!image.isNull()) {
@@ -606,9 +599,9 @@ void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 t
 			*x += tdwFile->charWidth(0, charId);
 		}
 	} else if(tableId == 0) {
-		*x += font.charWidth(0, charId);
+		*x += font->charWidth(0, charId);
 	} else {
-		*x += jpFont.charWidth(tableId - 1, charId);
+		*x += jpFont->charWidth(tableId - 1, charId);
 	}
 }
 

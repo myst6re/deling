@@ -68,7 +68,7 @@ private:
 	QPoint moveStartPosition;
 	TdwFile::Color fontColor;
 
-	static TdwFile font, jpFont;
+	static TdwFile *font, *jpFont;
 	static TdwFile *tdwFile;
 	static QImage iconImage;
 

@@ -21,7 +21,7 @@ QString Data::AppPath_cache;
 
 bool Data::ff8Found()
 {
-    return QFile::exists(AppPath() % "/FF8.exe");
+	return QFile::exists(AppPath() % "/FF8.exe");
 }
 
 QString Data::AppPath()
@@ -37,1042 +37,1088 @@ QString Data::AppPath()
 	return AppPath_cache;
 }
 
-QStringList Data::_locations;
+QMap<QString, FF8Font *> Data::fonts;
 
-QStringList Data::locations()
+bool Data::listFonts()
 {
-	if(_locations.isEmpty()) {
-		_locations << "???" << QObject::tr("Plaines d'Arkland - Balamb","1") << QObject::tr("Monts Gaulg - Balamb","2") << QObject::tr("Baie de Rinaul - Balamb","3") << QObject::tr("Cap Raha - Balamb","4") << QObject::tr("Forêt de Rosfall - Timber","5") << QObject::tr("Mandy Beach - Timber","6") << QObject::tr("Lac Obel - Timber","7") << QObject::tr("Vallée de Lanker - Timber","8") << QObject::tr("Ile Nantakhet - Timber","9") << QObject::tr("Yaulny Canyon - Timber","10") << QObject::tr("Val Hasberry - Dollet","11") << QObject::tr("Cap Holy Glory - Dollet","12") << QObject::tr("Longhorn Island - Dollet","13") << QObject::tr("Péninsule Malgo - Dollet","14") << QObject::tr("Plateau Monterosa - Galbadia","15")
-				<< QObject::tr("Lallapalooza Canyon - Galbadia","16") << QObject::tr("Shenand Hill - Timber","17") << QObject::tr("Péninsule Gotland - Galbadia","18") << QObject::tr("Ile de l'Enfer - Galbadia","19") << QObject::tr("Plaine Galbadienne","20") << QObject::tr("Wilburn Hill - Galbadia","21") << QObject::tr("Archipel Rem - Galbadia","22") << QObject::tr("Dingo Désert - Galbadia","23") << QObject::tr("Cap Winhill","24") << QObject::tr("Archipel Humphrey - Winhill","25") << QObject::tr("Ile Winter - Trabia","26") << QObject::tr("Val de Solvard - Trabia","27") << QObject::tr("Crête d'Eldbeak - Trabia","28") << "" << QObject::tr("Plaine d'Hawkind - Trabia","30") << QObject::tr("Atoll Albatross - Trabia","31")
-				<< QObject::tr("Vallon de Bika - Trabia","32") << QObject::tr("Péninsule Thor - Trabia","33") << "" << QObject::tr("Crête d'Heath - Trabia","35") << QObject::tr("Trabia Crater - Trabia","36") << QObject::tr("Mont Vienne - Trabia","37") << QObject::tr("Plaine de Mordor - Esthar","38") << QObject::tr("Mont Nortes - Esthar","39") << QObject::tr("Atoll Fulcura - Esthar","40") << QObject::tr("Forêt Grandidi - Esthar","41") << QObject::tr("Iles Millefeuilles - Esthar","42") << QObject::tr("Grandes plaines d'Esthar","43") << QObject::tr("Esthar City","44") << QObject::tr("Salt Lake - Esthar","45") << QObject::tr("Côte Ouest - Esthar","46") << QObject::tr("Mont Sollet - Esthar","47")
-				<< QObject::tr("Vallée d'Abadan - Esthar","48") << QObject::tr("Ile Minde - Esthar","49") << QObject::tr("Désert Kashkabald - Esthar","50") << QObject::tr("Ile Paradisiaque - Esthar","51") << QObject::tr("Pic de Talle - Esthar","52") << QObject::tr("Atoll Shalmal - Esthar","53") << QObject::tr("Vallée de Lolestern - Centra","54") << QObject::tr("Aiguille d'Almage - Centra","55") << QObject::tr("Vallon Lenown - Centra","56") << QObject::tr("Cap de l'espoir - Centra","57") << QObject::tr("Mont Yorn - Centra","58") << QObject::tr("Ile Pampa - Esthar","59") << QObject::tr("Val Serengetti - Centra","60") << QObject::tr("Péninsule Nectalle - Centra","61") << QObject::tr("Centra Crater - Centra","62") << QObject::tr("Ile Poccarahi - Centra","63")
-				<< QObject::tr("Bibliothèque - BGU","64") << QObject::tr("Entrée - BGU","65") << QObject::tr("Salle de cours - BGU","66") << QObject::tr("Cafétéria - BGU","67") << QObject::tr("Niveau MD - BGU","68") << QObject::tr("Hall 1er étage - BGU","69") << QObject::tr("Hall - BGU","70") << QObject::tr("Infirmerie - BGU","71") << QObject::tr("Dortoirs doubles - BGU","72") << QObject::tr("Dortoirs simples - BGU","73") << QObject::tr("Bureau proviseur - BGU","74") << QObject::tr("Parking - BGU","75") << QObject::tr("Salle de bal - BGU","76") << QObject::tr("Campus - BGU","77") << QObject::tr("Serre de combat - BGU","78") << QObject::tr("Zone secrète - BGU","79")
-				<< QObject::tr("Corridor - BGU","80") << QObject::tr("Temple - BGU","81") << QObject::tr("Pont - BGU","82") << QObject::tr("Villa Dincht - Balamb","83") << QObject::tr("Hôtel - Balamb","84") << QObject::tr("Place centrale - Balamb","85") << QObject::tr("Place de la gare - Balamb","86") << QObject::tr("Port - Balamb","87") << QObject::tr("Résidence - Balamb","88") << QObject::tr("Train","89") << QObject::tr("Voiture","90") << QObject::tr("Vaisseau","91") << QObject::tr("Mine de souffre","92") << QObject::tr("Place du village - Dollet","93") << QObject::tr("Zuma Beach","94") << QObject::tr("Port - Dollet","95")
-				<< QObject::tr("Pub - Dollet","96") << QObject::tr("Hôtel - Dollet","97") << QObject::tr("Résidence - Dollet","98") << QObject::tr("Tour satellite - Dollet","99") << QObject::tr("Refuge montagneux - Dollet","100") << QObject::tr("Centre ville - Timber","101") << QObject::tr("Chaîne de TV - Timber","102") << QObject::tr("Base des Hiboux - Timber","103") << QObject::tr("Pub - Timber","104") << QObject::tr("Hôtel - Timber","105") << QObject::tr("Train - Timber","106") << QObject::tr("Résidence - Timber","107") << QObject::tr("Ecran géant - Timber","108") << QObject::tr("Centre de presse - Timber","109") << QObject::tr("Forêt de Timber","110") << QObject::tr("Entrée - Fac de Galbadia","111")
-				<< QObject::tr("Station Fac de Galbadia","112") << QObject::tr("Hall - Fac de Galbadia","113") << QObject::tr("Corridor - Fac de Galbadia","114") << QObject::tr("Salle d'attente - Fac Galbadia","115") << QObject::tr("Salle de cours - Fac Galbadia","116") << QObject::tr("Salle de réunion - Fac Galbadia","117") << QObject::tr("Dortoirs - Fac de Galbadia","118") << QObject::tr("Ascenseur - Fac de Galbadia","119") << QObject::tr("Salle recteur - Fac Galbadia","120") << QObject::tr("Auditorium - Fac de Galbadia","121") << QObject::tr("Stade - Fac de Galbadia","122") << QObject::tr("Stand - Fac de Galbadia","123") << QObject::tr("2nde entrée - Fac Galbadia","124") << QObject::tr("Gymnase - Fac de Galbadia","125") << QObject::tr("Palais président - Deling City","126") << QObject::tr("Manoir Caraway - Deling City","127")
-				<< QObject::tr("Gare - Deling City","128") << QObject::tr("Place centrale - Deling City","129") << QObject::tr("Hôtel - Deling City","130") << QObject::tr("Bar - Deling City","131") << QObject::tr("Sortie - Deling City","132") << QObject::tr("Parade - Deling City","133") << QObject::tr("Egout - Deling City","134") << QObject::tr("Prison du désert - Galbadia","135") << QObject::tr("Désert","136") << QObject::tr("Base des missiles","137") << QObject::tr("Village de Winhill","138") << QObject::tr("Pub - Winhill","139") << QObject::tr("Maison vide - Winhill","140") << QObject::tr("Manoir - Winhill","141") << QObject::tr("Résidence - Winhill","142") << QObject::tr("Hôtel - Winhill","143")
-				<< QObject::tr("Voiture - Winhill","144") << QObject::tr("Tombe du roi inconnu","145") << QObject::tr("Horizon","146") << QObject::tr("Habitations - Horizon","147") << QObject::tr("Ecrans solaires - Horizon","148") << QObject::tr("Villa du maire - Horizon","149") << QObject::tr("Usine - Horizon","150") << QObject::tr("Salle des fêtes - Horizon","151") << QObject::tr("Hôtel - Horizon","152") << QObject::tr("Résidence - Horizon","153") << QObject::tr("Gare - Horizon","154") << QObject::tr("Aqueduc d'Horizon","155") << QObject::tr("Station balnéaire","156") << QObject::tr("Salt Lake","157") << QObject::tr("Bâtiment mystérieux","158") << QObject::tr("Esthar City","159")
-				<< QObject::tr("Laboratoire Geyser - Esthar","160") << QObject::tr("Aérodrome - Esthar","161") << QObject::tr("Lunatic Pandora approche","162") << QObject::tr("Résidence président - Esthar","163") << QObject::tr("Hall - Résidence président","164") << QObject::tr("Couloir - Résidence président","165") << QObject::tr("Bureau - Résidence président","166") << QObject::tr("Accueil - Labo Geyser","167") << QObject::tr("Laboratoire Geyser","168") << QObject::tr("Deleted","169") << QObject::tr("Lunar Gate","170") << QObject::tr("Parvis - Lunar Gate","171") << QObject::tr("Glacière - Lunar gate","172") << QObject::tr("Mausolée - Esthar","173") << QObject::tr("Entrée - Mausolée","174") << QObject::tr("Pod de confinement - Mausolée","175")
-				<< QObject::tr("Salle de contrôle - Mausolée","176") << QObject::tr("Tears Point","177") << QObject::tr("Labo Lunatic Pandora","178") << QObject::tr("Zone d'atterrissage de secours","179") << QObject::tr("Zone d'atterrissage officielle","180") << QObject::tr("Lunatic Pandora","181") << QObject::tr("Site des fouilles - Centra","182") << QObject::tr("Orphelinat","183") << QObject::tr("Salle de jeux - Orphelinat","184") << QObject::tr("Dortoir - Orphelinat","185") << QObject::tr("Jardin - Orphelinat","186") << QObject::tr("Front de mer - Orphelinat","187") << QObject::tr("Champ - Orphelinat","188") << QObject::tr("Ruines de Centra","189") << QObject::tr("Entrée - Fac de Trabia","190") << QObject::tr("Cimetière - Fac de Trabia","191")
-				<< QObject::tr("Garage - Fac de Trabia","192") << QObject::tr("Campus - Fac Trabia","193") << QObject::tr("Amphithéatre - Fac de Trabia","194") << QObject::tr("Stade - Fac de Trabia","195") << QObject::tr("Dôme mystérieux","196") << QObject::tr("Ville du désert - Shumi Village","197") << QObject::tr("Ascenseur - Shumi Village","198") << QObject::tr("Shumi Village","199") << QObject::tr("Habitation - Shumi Village","200") << QObject::tr("Résidence - Shumi Village","201") << QObject::tr("Habitat - Shumi Village","202") << QObject::tr("Hôtel - Shumi Village","203") << QObject::tr("Trabia canyon","204") << QObject::tr("Vaisseau des Seeds blancs","205") << QObject::tr("Navire des Seeds Blancs","206") << QObject::tr("Cabine - Navire Seeds blancs","207")
-				<< QObject::tr("Cockpit - Hydre","208") << QObject::tr("Siège passager - Hydre","209") << QObject::tr("Couloir - Hydre","210") << QObject::tr("Hangar - Hydre","211") << QObject::tr("Accès - Hydre","212") << QObject::tr("Air Room - Hydre","213") << QObject::tr("Salle de pression - Hydre","214") << QObject::tr("Centre de recherches Deep Sea","215") << QObject::tr("Laboratoire - Deep Sea","216") << QObject::tr("Salle de travail - Deep Sea","217") << QObject::tr("Fouilles - Deep Sea","218") << QObject::tr("Salle de contrôle - Base lunaire","219") << QObject::tr("Centre médical - Base lunaire","220") << QObject::tr("Pod - Base lunaire","221") << QObject::tr("Dock - Base lunaire","222") << QObject::tr("Passage - Base lunaire","223")
-				<< QObject::tr("Vestiaire - Base lunaire","224") << QObject::tr("Habitats - Base lunaire","225") << QObject::tr("Hyper Espace","226") << QObject::tr("Forêt Chocobo","227") << QObject::tr("Jungle","228") << QObject::tr("Citadelle d'Ultimecia - Vestibule","229") << QObject::tr("Citadelle d'Ultimecia - Hall","230") << QObject::tr("Citadelle d'Ultimecia - Terrasse","231") << QObject::tr("Citadelle d'Ultimecia - Cave","232") << QObject::tr("Citadelle d'Ultimecia - Couloir","233") << QObject::tr("Elévateur - Citadelle","234") << QObject::tr("Escalier - Citadelle d'Ultimecia","235") << QObject::tr("Salle du trésor - Citadelle","236") << QObject::tr("Salle de rangement - Citadelle","237") << QObject::tr("Citadelle d'Ultimecia - Galerie","238") << QObject::tr("Citadelle d'Ultimecia - Ecluse","239")
-				<< QObject::tr("Citadelle - Armurerie","240") << QObject::tr("Citadelle d'Ultimecia - Prison","241") << QObject::tr("Citadelle d'Ultimecia - Fossé","242") << QObject::tr("Citadelle d'Ultimecia - Jardin","243") << QObject::tr("Citadelle d'Ultimecia - Chapelle","244") << QObject::tr("Clocher - Citadelle d'Ultimecia","245") << QObject::tr("Chambre d'Ultimecia - Citadelle","246") << "???" << QObject::tr("Citadelle d'Ultimecia","248") << QObject::tr("Salle d'initiation","249") << QObject::tr("Reine des cartes","250") << "???" << "???" << "???" << "???" << "???";
+	fonts.clear();
+
+	QDir dir(qApp->applicationDirPath());
+	QStringList stringList = dir.entryList(QStringList("*.tdw"), QDir::Files, QDir::Name);
+
+	foreach(const QString &str, stringList) {
+		int index = str.lastIndexOf('.');
+		fonts.insert(str.left(index), NULL);
 	}
-	return _locations;
+
+	return fonts.contains("sysfnt") && fonts.contains("sysfnt_jp");
 }
 
-QStringList Data::_names;
-
-QStringList Data::names()
+QStringList Data::fontList()
 {
-	if(_names.isEmpty()) {
-		_names << QObject::tr("Squall") << QObject::tr("Zell") << QObject::tr("Irvine") << QObject::tr("Quistis") << QObject::tr("Linoa")
-			   << QObject::tr("Selphie") << QObject::tr("Seifer") << QObject::tr("Edea") << QObject::tr("Laguna") << QObject::tr("Kiros")
-			   << QObject::tr("Ward") << "" << QObject::tr("Cronos") << QObject::tr("MiniMog") << QObject::tr("Boko") << QObject::tr("Angel");
-	}
-	return _names;
+	return fonts.keys();
 }
 
-QStringList Data::_magic;
-
-QString Data::magic(int id)
+FF8Font *Data::font(const QString &name)
 {
-	if(_magic.isEmpty()) {
-		_magic << "-" << QObject::tr("Brasier") << QObject::tr("Brasier+") << QObject::tr("BrasierX") << QObject::tr("Glacier") << QObject::tr("Glacier+")
-				<< QObject::tr("GlacierX") << QObject::tr("Foudre") << QObject::tr("Foudre+") << QObject::tr("FoudreX") << QObject::tr("H2O") << QObject::tr("Rafale") << QObject::tr("Cyanure")
-				<< QObject::tr("Quart") << QObject::tr("Sidéral") << QObject::tr("Fournaise") << QObject::tr("Météore") << QObject::tr("Quake") << QObject::tr("Tornade") << QObject::tr("Ultima")
-				<< QObject::tr("Apocalypse") << QObject::tr("Soin") << QObject::tr("Soin+") << QObject::tr("Soin Max") << QObject::tr("Vie") << QObject::tr("Vie Max") << QObject::tr("Récup") << QObject::tr("Esuna")
-				<< QObject::tr("Anti-sort") << QObject::tr("Carapace") << QObject::tr("Blindage") << QObject::tr("Boormg") << QObject::tr("Aura") << QObject::tr("Double") << QObject::tr("Triple") << QObject::tr("Booster")
-				<< QObject::tr("Somni") << QObject::tr("Stop") << QObject::tr("Cécité") << QObject::tr("Folie") << QObject::tr("Morphée") << QObject::tr("Aphasie") << QObject::tr("Mégalith") << QObject::tr("Ankou")
-				<< QObject::tr("Saignée") << QObject::tr("Supplice") << QObject::tr("Furie") << QObject::tr("Décubitus") << QObject::tr("Zombie") << QObject::tr("Meltdown") << QObject::tr("Scan") << QObject::tr("Joobu")
-				<< QObject::tr("Wall") << QObject::tr("Arkange") << QObject::tr("Percent") << QObject::tr("Catastrophe") << QObject::tr("The End");
+	if(fonts.contains(name)) {
+		FF8Font *ff8Font = fonts.value(name);
+		if(!ff8Font) {
+			TdwFile *tdw = NULL;
+			QFile f(qApp->applicationDirPath() + "/" + name + ".tdw");
+			if(f.open(QIODevice::ReadOnly)) {
+				tdw = new TdwFile();
+				if(!tdw->open(f.readAll())) {
+					qWarning() << "Cannot open tdw file!" << f.fileName();
+					delete tdw;
+					tdw = NULL;
+				}
+				f.close();
+			}
+			if(!tdw) {
+				fonts.remove(name);// Bad font, we can remove it
+			} else {
+				QFile f2(qApp->applicationDirPath() + "/" + name + ".txt");
+				if(f2.open(QIODevice::ReadOnly)) {
+					ff8Font = new FF8Font(tdw, f2.readAll());
+					f2.close();
+				} else {
+					ff8Font = new FF8Font(tdw, QByteArray());
+				}
+			}
+		}
+		return ff8Font;
 	}
-	return _magic.value(id);
+
+	return NULL;
 }
+
+const char *Data::locations[] = {
+	"???", QT_TRANSLATE_NOOP("Plaines d'Arkland - Balamb","1"), QT_TRANSLATE_NOOP("Monts Gaulg - Balamb","2"), QT_TRANSLATE_NOOP("Baie de Rinaul - Balamb","3"), QT_TRANSLATE_NOOP("Cap Raha - Balamb","4"), QT_TRANSLATE_NOOP("Forêt de Rosfall - Timber","5"), QT_TRANSLATE_NOOP("Mandy Beach - Timber","6"), QT_TRANSLATE_NOOP("Lac Obel - Timber","7"), QT_TRANSLATE_NOOP("Vallée de Lanker - Timber","8"), QT_TRANSLATE_NOOP("Ile Nantakhet - Timber","9"), QT_TRANSLATE_NOOP("Yaulny Canyon - Timber","10"), QT_TRANSLATE_NOOP("Val Hasberry - Dollet","11"), QT_TRANSLATE_NOOP("Cap Holy Glory - Dollet","12"), QT_TRANSLATE_NOOP("Longhorn Island - Dollet","13"), QT_TRANSLATE_NOOP("Péninsule Malgo - Dollet","14"), QT_TRANSLATE_NOOP("Plateau Monterosa -Galbadia","15")
+	, QT_TRANSLATE_NOOP("Lallapalooza Canyon - Galbadia","16"), QT_TRANSLATE_NOOP("Shenand Hill - Timber","17"), QT_TRANSLATE_NOOP("Péninsule Gotland - Galbadia","18"), QT_TRANSLATE_NOOP("Ile de l'Enfer - Galbadia","19"), QT_TRANSLATE_NOOP("Plaine Galbadienne","20"), QT_TRANSLATE_NOOP("Wilburn Hill - Galbadia","21"), QT_TRANSLATE_NOOP("Archipel Rem - Galbadia","22"), QT_TRANSLATE_NOOP("Dingo Désert - Galbadia","23"), QT_TRANSLATE_NOOP("Cap Winhill","24"), QT_TRANSLATE_NOOP("Archipel Humphrey - Winhill","25"), QT_TRANSLATE_NOOP("Ile Winter - Trabia","26"), QT_TRANSLATE_NOOP("Val de Solvard - Trabia","27"), QT_TRANSLATE_NOOP("Crête d'Eldbeak - Trabia","28"), "", QT_TRANSLATE_NOOP("Plaine d'Hawkind - Trabia","30"), QT_TRANSLATE_NOOP("Atoll Albatross -Trabia","31")
+	, QT_TRANSLATE_NOOP("Vallon de Bika - Trabia","32"), QT_TRANSLATE_NOOP("Péninsule Thor - Trabia","33"), "", QT_TRANSLATE_NOOP("Crête d'Heath - Trabia","35"), QT_TRANSLATE_NOOP("Trabia Crater - Trabia","36"), QT_TRANSLATE_NOOP("Mont Vienne - Trabia","37"), QT_TRANSLATE_NOOP("Plaine de Mordor - Esthar","38"), QT_TRANSLATE_NOOP("Mont Nortes - Esthar","39"), QT_TRANSLATE_NOOP("Atoll Fulcura - Esthar","40"), QT_TRANSLATE_NOOP("Forêt Grandidi - Esthar","41"), QT_TRANSLATE_NOOP("Iles Millefeuilles - Esthar","42"), QT_TRANSLATE_NOOP("Grandes plaines d'Esthar","43"), QT_TRANSLATE_NOOP("Esthar City","44"), QT_TRANSLATE_NOOP("Salt Lake - Esthar","45"), QT_TRANSLATE_NOOP("Côte Ouest - Esthar","46"), QT_TRANSLATE_NOOP("Mont Sollet -Esthar","47")
+	, QT_TRANSLATE_NOOP("Vallée d'Abadan - Esthar","48"), QT_TRANSLATE_NOOP("Ile Minde - Esthar","49"), QT_TRANSLATE_NOOP("Désert Kashkabald - Esthar","50"), QT_TRANSLATE_NOOP("Ile Paradisiaque - Esthar","51"), QT_TRANSLATE_NOOP("Pic de Talle - Esthar","52"), QT_TRANSLATE_NOOP("Atoll Shalmal - Esthar","53"), QT_TRANSLATE_NOOP("Vallée de Lolestern - Centra","54"), QT_TRANSLATE_NOOP("Aiguille d'Almage - Centra","55"), QT_TRANSLATE_NOOP("Vallon Lenown - Centra","56"), QT_TRANSLATE_NOOP("Cap de l'espoir - Centra","57"), QT_TRANSLATE_NOOP("Mont Yorn - Centra","58"), QT_TRANSLATE_NOOP("Ile Pampa - Esthar","59"), QT_TRANSLATE_NOOP("Val Serengetti - Centra","60"), QT_TRANSLATE_NOOP("Péninsule Nectalle - Centra","61"), QT_TRANSLATE_NOOP("Centra Crater - Centra","62"), QT_TRANSLATE_NOOP("Ile Poccarahi -Centra","63")
+	, QT_TRANSLATE_NOOP("Bibliothèque - BGU","64"), QT_TRANSLATE_NOOP("Entrée - BGU","65"), QT_TRANSLATE_NOOP("Salle de cours - BGU","66"), QT_TRANSLATE_NOOP("Cafétéria - BGU","67"), QT_TRANSLATE_NOOP("Niveau MD - BGU","68"), QT_TRANSLATE_NOOP("Hall 1er étage - BGU","69"), QT_TRANSLATE_NOOP("Hall - BGU","70"), QT_TRANSLATE_NOOP("Infirmerie - BGU","71"), QT_TRANSLATE_NOOP("Dortoirs doubles - BGU","72"), QT_TRANSLATE_NOOP("Dortoirs simples - BGU","73"), QT_TRANSLATE_NOOP("Bureau proviseur - BGU","74"), QT_TRANSLATE_NOOP("Parking - BGU","75"), QT_TRANSLATE_NOOP("Salle de bal - BGU","76"), QT_TRANSLATE_NOOP("Campus - BGU","77"), QT_TRANSLATE_NOOP("Serre de combat - BGU","78"), QT_TRANSLATE_NOOP("Zone secrète -BGU","79")
+	, QT_TRANSLATE_NOOP("Corridor - BGU","80"), QT_TRANSLATE_NOOP("Temple - BGU","81"), QT_TRANSLATE_NOOP("Pont - BGU","82"), QT_TRANSLATE_NOOP("Villa Dincht - Balamb","83"), QT_TRANSLATE_NOOP("Hôtel - Balamb","84"), QT_TRANSLATE_NOOP("Place centrale - Balamb","85"), QT_TRANSLATE_NOOP("Place de la gare - Balamb","86"), QT_TRANSLATE_NOOP("Port - Balamb","87"), QT_TRANSLATE_NOOP("Résidence - Balamb","88"), QT_TRANSLATE_NOOP("Train","89"), QT_TRANSLATE_NOOP("Voiture","90"), QT_TRANSLATE_NOOP("Vaisseau","91"), QT_TRANSLATE_NOOP("Mine de souffre","92"), QT_TRANSLATE_NOOP("Place du village - Dollet","93"), QT_TRANSLATE_NOOP("Zuma Beach","94"), QT_TRANSLATE_NOOP("Port -Dollet","95")
+	, QT_TRANSLATE_NOOP("Pub - Dollet","96"), QT_TRANSLATE_NOOP("Hôtel - Dollet","97"), QT_TRANSLATE_NOOP("Résidence - Dollet","98"), QT_TRANSLATE_NOOP("Tour satellite - Dollet","99"), QT_TRANSLATE_NOOP("Refuge montagneux - Dollet","100"), QT_TRANSLATE_NOOP("Centre ville - Timber","101"), QT_TRANSLATE_NOOP("Chaîne de TV - Timber","102"), QT_TRANSLATE_NOOP("Base des Hiboux - Timber","103"), QT_TRANSLATE_NOOP("Pub - Timber","104"), QT_TRANSLATE_NOOP("Hôtel - Timber","105"), QT_TRANSLATE_NOOP("Train - Timber","106"), QT_TRANSLATE_NOOP("Résidence - Timber","107"), QT_TRANSLATE_NOOP("Ecran géant - Timber","108"), QT_TRANSLATE_NOOP("Centre de presse - Timber","109"), QT_TRANSLATE_NOOP("Forêt de Timber","110"), QT_TRANSLATE_NOOP("Entrée - Fac deGalbadia","111")
+	, QT_TRANSLATE_NOOP("Station Fac de Galbadia","112"), QT_TRANSLATE_NOOP("Hall - Fac de Galbadia","113"), QT_TRANSLATE_NOOP("Corridor - Fac de Galbadia","114"), QT_TRANSLATE_NOOP("Salle d'attente - Fac Galbadia","115"), QT_TRANSLATE_NOOP("Salle de cours - Fac Galbadia","116"), QT_TRANSLATE_NOOP("Salle de réunion - Fac Galbadia","117"), QT_TRANSLATE_NOOP("Dortoirs - Fac de Galbadia","118"), QT_TRANSLATE_NOOP("Ascenseur - Fac de Galbadia","119"), QT_TRANSLATE_NOOP("Salle recteur - Fac Galbadia","120"), QT_TRANSLATE_NOOP("Auditorium - Fac de Galbadia","121"), QT_TRANSLATE_NOOP("Stade - Fac de Galbadia","122"), QT_TRANSLATE_NOOP("Stand - Fac de Galbadia","123"), QT_TRANSLATE_NOOP("2nde entrée - Fac Galbadia","124"), QT_TRANSLATE_NOOP("Gymnase - Fac de Galbadia","125"), QT_TRANSLATE_NOOP("Palais président - Deling City","126"), QT_TRANSLATE_NOOP("Manoir Caraway - DelingCity","127")
+	, QT_TRANSLATE_NOOP("Gare - Deling City","128"), QT_TRANSLATE_NOOP("Place centrale - Deling City","129"), QT_TRANSLATE_NOOP("Hôtel - Deling City","130"), QT_TRANSLATE_NOOP("Bar - Deling City","131"), QT_TRANSLATE_NOOP("Sortie - Deling City","132"), QT_TRANSLATE_NOOP("Parade - Deling City","133"), QT_TRANSLATE_NOOP("Egout - Deling City","134"), QT_TRANSLATE_NOOP("Prison du désert - Galbadia","135"), QT_TRANSLATE_NOOP("Désert","136"), QT_TRANSLATE_NOOP("Base des missiles","137"), QT_TRANSLATE_NOOP("Village de Winhill","138"), QT_TRANSLATE_NOOP("Pub - Winhill","139"), QT_TRANSLATE_NOOP("Maison vide - Winhill","140"), QT_TRANSLATE_NOOP("Manoir - Winhill","141"), QT_TRANSLATE_NOOP("Résidence - Winhill","142"), QT_TRANSLATE_NOOP("Hôtel -Winhill","143")
+	, QT_TRANSLATE_NOOP("Voiture - Winhill","144"), QT_TRANSLATE_NOOP("Tombe du roi inconnu","145"), QT_TRANSLATE_NOOP("Horizon","146"), QT_TRANSLATE_NOOP("Habitations - Horizon","147"), QT_TRANSLATE_NOOP("Ecrans solaires - Horizon","148"), QT_TRANSLATE_NOOP("Villa du maire - Horizon","149"), QT_TRANSLATE_NOOP("Usine - Horizon","150"), QT_TRANSLATE_NOOP("Salle des fêtes - Horizon","151"), QT_TRANSLATE_NOOP("Hôtel - Horizon","152"), QT_TRANSLATE_NOOP("Résidence - Horizon","153"), QT_TRANSLATE_NOOP("Gare - Horizon","154"), QT_TRANSLATE_NOOP("Aqueduc d'Horizon","155"), QT_TRANSLATE_NOOP("Station balnéaire","156"), QT_TRANSLATE_NOOP("Salt Lake","157"), QT_TRANSLATE_NOOP("Bâtiment mystérieux","158"), QT_TRANSLATE_NOOP("EstharCity","159")
+	, QT_TRANSLATE_NOOP("Laboratoire Geyser - Esthar","160"), QT_TRANSLATE_NOOP("Aérodrome - Esthar","161"), QT_TRANSLATE_NOOP("Lunatic Pandora approche","162"), QT_TRANSLATE_NOOP("Résidence président - Esthar","163"), QT_TRANSLATE_NOOP("Hall - Résidence président","164"), QT_TRANSLATE_NOOP("Couloir - Résidence président","165"), QT_TRANSLATE_NOOP("Bureau - Résidence président","166"), QT_TRANSLATE_NOOP("Accueil - Labo Geyser","167"), QT_TRANSLATE_NOOP("Laboratoire Geyser","168"), QT_TRANSLATE_NOOP("Deleted","169"), QT_TRANSLATE_NOOP("Lunar Gate","170"), QT_TRANSLATE_NOOP("Parvis - Lunar Gate","171"), QT_TRANSLATE_NOOP("Glacière - Lunar gate","172"), QT_TRANSLATE_NOOP("Mausolée - Esthar","173"), QT_TRANSLATE_NOOP("Entrée - Mausolée","174"), QT_TRANSLATE_NOOP("Pod de confinement -Mausolée","175")
+	, QT_TRANSLATE_NOOP("Salle de contrôle - Mausolée","176"), QT_TRANSLATE_NOOP("Tears Point","177"), QT_TRANSLATE_NOOP("Labo Lunatic Pandora","178"), QT_TRANSLATE_NOOP("Zone d'atterrissage de secours","179"), QT_TRANSLATE_NOOP("Zone d'atterrissage officielle","180"), QT_TRANSLATE_NOOP("Lunatic Pandora","181"), QT_TRANSLATE_NOOP("Site des fouilles - Centra","182"), QT_TRANSLATE_NOOP("Orphelinat","183"), QT_TRANSLATE_NOOP("Salle de jeux - Orphelinat","184"), QT_TRANSLATE_NOOP("Dortoir - Orphelinat","185"), QT_TRANSLATE_NOOP("Jardin - Orphelinat","186"), QT_TRANSLATE_NOOP("Front de mer - Orphelinat","187"), QT_TRANSLATE_NOOP("Champ - Orphelinat","188"), QT_TRANSLATE_NOOP("Ruines de Centra","189"), QT_TRANSLATE_NOOP("Entrée - Fac de Trabia","190"), QT_TRANSLATE_NOOP("Cimetière - Fac deTrabia","191")
+	, QT_TRANSLATE_NOOP("Garage - Fac de Trabia","192"), QT_TRANSLATE_NOOP("Campus - Fac Trabia","193"), QT_TRANSLATE_NOOP("Amphithéatre - Fac de Trabia","194"), QT_TRANSLATE_NOOP("Stade - Fac de Trabia","195"), QT_TRANSLATE_NOOP("Dôme mystérieux","196"), QT_TRANSLATE_NOOP("Ville du désert - Shumi Village","197"), QT_TRANSLATE_NOOP("Ascenseur - Shumi Village","198"), QT_TRANSLATE_NOOP("Shumi Village","199"), QT_TRANSLATE_NOOP("Habitation - Shumi Village","200"), QT_TRANSLATE_NOOP("Résidence - Shumi Village","201"), QT_TRANSLATE_NOOP("Habitat - Shumi Village","202"), QT_TRANSLATE_NOOP("Hôtel - Shumi Village","203"), QT_TRANSLATE_NOOP("Trabia canyon","204"), QT_TRANSLATE_NOOP("Vaisseau des Seeds blancs","205"), QT_TRANSLATE_NOOP("Navire des Seeds Blancs","206"), QT_TRANSLATE_NOOP("Cabine - Navire Seedsblancs","207")
+	, QT_TRANSLATE_NOOP("Cockpit - Hydre","208"), QT_TRANSLATE_NOOP("Siège passager - Hydre","209"), QT_TRANSLATE_NOOP("Couloir - Hydre","210"), QT_TRANSLATE_NOOP("Hangar - Hydre","211"), QT_TRANSLATE_NOOP("Accès - Hydre","212"), QT_TRANSLATE_NOOP("Air Room - Hydre","213"), QT_TRANSLATE_NOOP("Salle de pression - Hydre","214"), QT_TRANSLATE_NOOP("Centre de recherches Deep Sea","215"), QT_TRANSLATE_NOOP("Laboratoire - Deep Sea","216"), QT_TRANSLATE_NOOP("Salle de travail - Deep Sea","217"), QT_TRANSLATE_NOOP("Fouilles - Deep Sea","218"), QT_TRANSLATE_NOOP("Salle de contrôle - Base lunaire","219"), QT_TRANSLATE_NOOP("Centre médical - Base lunaire","220"), QT_TRANSLATE_NOOP("Pod - Base lunaire","221"), QT_TRANSLATE_NOOP("Dock - Base lunaire","222"), QT_TRANSLATE_NOOP("Passage - Baselunaire","223")
+	, QT_TRANSLATE_NOOP("Vestiaire - Base lunaire","224"), QT_TRANSLATE_NOOP("Habitats - Base lunaire","225"), QT_TRANSLATE_NOOP("Hyper Espace","226"), QT_TRANSLATE_NOOP("Forêt Chocobo","227"), QT_TRANSLATE_NOOP("Jungle","228"), QT_TRANSLATE_NOOP("Citadelle d'Ultimecia - Vestibule","229"), QT_TRANSLATE_NOOP("Citadelle d'Ultimecia - Hall","230"), QT_TRANSLATE_NOOP("Citadelle d'Ultimecia - Terrasse","231"), QT_TRANSLATE_NOOP("Citadelle d'Ultimecia - Cave","232"), QT_TRANSLATE_NOOP("Citadelle d'Ultimecia - Couloir","233"), QT_TRANSLATE_NOOP("Elévateur - Citadelle","234"), QT_TRANSLATE_NOOP("Escalier - Citadelle d'Ultimecia","235"), QT_TRANSLATE_NOOP("Salle du trésor - Citadelle","236"), QT_TRANSLATE_NOOP("Salle de rangement - Citadelle","237"), QT_TRANSLATE_NOOP("Citadelle d'Ultimecia - Galerie","238"), QT_TRANSLATE_NOOP("Citadelle d'Ultimecia -Ecluse","239")
+	, QT_TRANSLATE_NOOP("Citadelle - Armurerie","240"), QT_TRANSLATE_NOOP("Citadelle d'Ultimecia - Prison","241"), QT_TRANSLATE_NOOP("Citadelle d'Ultimecia - Fossé","242"), QT_TRANSLATE_NOOP("Citadelle d'Ultimecia - Jardin","243"), QT_TRANSLATE_NOOP("Citadelle d'Ultimecia - Chapelle","244"), QT_TRANSLATE_NOOP("Clocher - Citadelle d'Ultimecia","245"), QT_TRANSLATE_NOOP("Chambre d'Ultimecia - Citadelle","246"), "???", QT_TRANSLATE_NOOP("Citadelle d'Ultimecia","248"), QT_TRANSLATE_NOOP("Salle d'initiation","249"), QT_TRANSLATE_NOOP("Reine des cartes","250"), "???", "???", "???", "???", "???"
+};
+
+const char *Data::names[] = {
+	QT_TR_NOOP("Squall"), QT_TR_NOOP("Zell"), QT_TR_NOOP("Irvine"), QT_TR_NOOP("Quistis"), QT_TR_NOOP("Linoa"),
+	QT_TR_NOOP("Selphie"), QT_TR_NOOP("Seifer"), QT_TR_NOOP("Edea"), QT_TR_NOOP("Laguna"), QT_TR_NOOP("Kiros"),
+	QT_TR_NOOP("Ward"), "", QT_TR_NOOP("Cronos"), QT_TR_NOOP("MiniMog"), QT_TR_NOOP("Boko"), QT_TR_NOOP("Angel")
+};
+
+const char *Data::magic[] = {
+	"-", QT_TR_NOOP("Brasier"), QT_TR_NOOP("Brasier+"), QT_TR_NOOP("BrasierX"), QT_TR_NOOP("Glacier"), QT_TR_NOOP("Glacier+"),
+	QT_TR_NOOP("GlacierX"), QT_TR_NOOP("Foudre"), QT_TR_NOOP("Foudre+"), QT_TR_NOOP("FoudreX"), QT_TR_NOOP("H2O"), QT_TR_NOOP("Rafale"), QT_TR_NOOP("Cyanure"),
+	QT_TR_NOOP("Quart"), QT_TR_NOOP("Sidéral"), QT_TR_NOOP("Fournaise"), QT_TR_NOOP("Météore"), QT_TR_NOOP("Quake"), QT_TR_NOOP("Tornade"), QT_TR_NOOP("Ultima")
+	, QT_TR_NOOP("Apocalypse"), QT_TR_NOOP("Soin"), QT_TR_NOOP("Soin+"), QT_TR_NOOP("Soin Max"), QT_TR_NOOP("Vie"), QT_TR_NOOP("Vie Max"), QT_TR_NOOP("Récup"), QT_TR_NOOP("Esuna")
+	, QT_TR_NOOP("Anti-sort"), QT_TR_NOOP("Carapace"), QT_TR_NOOP("Blindage"), QT_TR_NOOP("Boormg"), QT_TR_NOOP("Aura"), QT_TR_NOOP("Double"), QT_TR_NOOP("Triple"), QT_TR_NOOP("Booster")
+	, QT_TR_NOOP("Somni"), QT_TR_NOOP("Stop"), QT_TR_NOOP("Cécité"), QT_TR_NOOP("Folie"), QT_TR_NOOP("Morphée"), QT_TR_NOOP("Aphasie"), QT_TR_NOOP("Mégalith"), QT_TR_NOOP("Ankou")
+	, QT_TR_NOOP("Saignée"), QT_TR_NOOP("Supplice"), QT_TR_NOOP("Furie"), QT_TR_NOOP("Décubitus"), QT_TR_NOOP("Zombie"), QT_TR_NOOP("Meltdown"), QT_TR_NOOP("Scan"), QT_TR_NOOP("Joobu")
+	, QT_TR_NOOP("Wall"), QT_TR_NOOP("Arkange"), QT_TR_NOOP("Percent"), QT_TR_NOOP("Catastrophe"), QT_TR_NOOP("TheEnd")
+};
 
 QStringList Data::maplist()
 {
-	return QStringList() << "wm00" <<
-							"wm01" <<
-							"wm02" <<
-							"wm03" <<
-							"wm04" <<
-							"wm05" <<
-							"wm06" <<
-							"wm07" <<
-							"wm08" <<
-							"wm09" <<
-							"wm10" <<
-							"wm11" <<
-							"wm12" <<
-							"wm13" <<
-							"wm14" <<
-							"wm15" <<
-							"wm16" <<
-							"wm17" <<
-							"wm18" <<
-							"wm19" <<
-							"wm20" <<
-							"wm21" <<
-							"wm22" <<
-							"wm23" <<
-							"wm24" <<
-							"wm25" <<
-							"wm26" <<
-							"wm27" <<
-							"wm28" <<
-							"wm29" <<
-							"wm30" <<
-							"wm31" <<
-							"wm32" <<
-							"wm33" <<
-							"wm34" <<
-							"wm35" <<
-							"wm36" <<
-							"wm37" <<
-							"wm38" <<
-							"wm39" <<
-							"wm40" <<
-							"wm41" <<
-							"wm42" <<
-							"wm43" <<
-							"wm44" <<
-							"wm45" <<
-							"wm46" <<
-							"wm47" <<
-							"wm48" <<
-							"wm49" <<
-							"wm50" <<
-							"wm51" <<
-							"wm52" <<
-							"wm53" <<
-							"wm54" <<
-							"wm55" <<
-							"wm56" <<
-							"wm57" <<
-							"wm58" <<
-							"wm59" <<
-							"wm60" <<
-							"wm61" <<
-							"wm62" <<
-							"wm63" <<
-							"wm64" <<
-							"wm65" <<
-							"wm66" <<
-							"wm67" <<
-							"wm68" <<
-							"wm69" <<
-							"wm70" <<
-							"wm71" <<
-							"testno" <<
-							"start" <<
-							"start0" <<
-							"gover" <<
-							"ending" <<
-							"test" <<
-							"test1" <<
-							"test2" <<
-							"test3" <<
-							"test4" <<
-							"test5" <<
-							"test6" <<
-							"test7" <<
-							"test8" <<
-							"test9" <<
-							"test13" <<
-							"test14" <<
-							"testbl0" <<
-							"testbl1" <<
-							"testbl2" <<
-							"testbl3" <<
-							"testbl4" <<
-							"testbl5" <<
-							"testbl6" <<
-							"testbl7" <<
-							"testbl8" <<
-							"testbl9" <<
-							"testbl13" <<
-							"testbl14" <<
-							"testmv" <<
-							"bccent_1" <<
-							"bccent1a" <<
-							"bcform_1" <<
-							"bcform1a" <<
-							"bcgate_1" <<
-							"bcgate1a" <<
-							"bchtl_1" <<
-							"bchtl1a" <<
-							"bchtr_1" <<
-							"bchtr1a" <<
-							"bcmin1_1" <<
-							"bcmin11a" <<
-							"bcmin2_1" <<
-							"bcmin21a" <<
-							"bcmin2_2" <<
-							"bcmin22a" <<
-							"bcmin2_3" <<
-							"bcmin23a" <<
-							"bcport_1" <<
-							"bcport1a" <<
-							"bcport1b" <<
-							"bcport_2" <<
-							"bcport2a" <<
-							"bcsaka_1" <<
-							"bcsaka1a" <<
-							"bcsta_1" <<
-							"bcsta1a" <<
-							"bdenter1" <<
-							"bdifrit1" <<
-							"bdin1" <<
-							"bdin2" <<
-							"bdin3" <<
-							"bdin4" <<
-							"bdin5" <<
-							"bdview1" <<
-							"bg2f_1" <<
-							"bg2f_11" <<
-							"bg2f_2" <<
-							"bg2f_21" <<
-							"bg2f_4" <<
-							"bg2f_22" <<
-							"bg2f_3" <<
-							"bg2f_31" <<
-							"bgbook_1" <<
-							"bgbook1a" <<
-							"bgbook1b" <<
-							"bgbook_2" <<
-							"bgbook2a" <<
-							"bgbook_3" <<
-							"bgbook3a" <<
-							"bgbtl_1" <<
-							"bgcrash1" <<
-							"bgeat_1" <<
-							"bgeat1a" <<
-							"bgeat_2" <<
-							"bgeat2a" <<
-							"bgeat_3" <<
-							"bggate_1" <<
-							"bggate_2" <<
-							"bggate_4" <<
-							"bggate_5" <<
-							"bggate_6" <<
-							"bggate6a" <<
-							"bghall_1" <<
-							"bghall1a" <<
-							"bghall1b" <<
-							"bghall_2" <<
-							"bghall2a" <<
-							"bghall_3" <<
-							"bghall3a" <<
-							"bghall_4" <<
-							"bghall4a" <<
-							"bghall_5" <<
-							"bghall_6" <<
-							"bghall6b" <<
-							"bghall_7" <<
-							"bghall_8" <<
-							"bghoke_1" <<
-							"bghoke_2" <<
-							"bghoke_3" <<
-							"bgkote_1" <<
-							"bgkote1a" <<
-							"bgkote_2" <<
-							"bgkote_3" <<
-							"bgkote3a" <<
-							"bgkote_4" <<
-							"bgkote_5" <<
-							"bgmast_1" <<
-							"bgmast_2" <<
-							"bgmast_3" <<
-							"bgmast_4" <<
-							"bgmast_5" <<
-							"bgmd1_1" <<
-							"bgmd1_2" <<
-							"bgmd1_3" <<
-							"bgmd1_4" <<
-							"bgmd2_1" <<
-							"bgmd2_3" <<
-							"bgmd2_4" <<
-							"bgmd2_5" <<
-							"bgmd2_6" <<
-							"bgmd2_7" <<
-							"bgmd2_8" <<
-							"bgmd3_1" <<
-							"bgmd3_2" <<
-							"bgmd4_1" <<
-							"bgmd4_2" <<
-							"bgmd4_3" <<
-							"bgmdele1" <<
-							"bgmdele2" <<
-							"bgmdele3" <<
-							"bgmdele4" <<
-							"bgmon_1" <<
-							"bgmon_2" <<
-							"bgmon_3" <<
-							"bgmon_4" <<
-							"bgmon_5" <<
-							"bgmon_6" <<
-							"bgpark_1" <<
-							"bgpaty_1" <<
-							"bgpaty_2" <<
-							"bgrank1" <<
-							"bgroad_1" <<
-							"bgroad_2" <<
-							"bgroad_3" <<
-							"bgroad_4" <<
-							"bgroad_5" <<
-							"bgroad_6" <<
-							"bgroad_7" <<
-							"bgroad_9" <<
-							"bgroom_1" <<
-							"bgroom_3" <<
-							"bgroom_4" <<
-							"bgroom_5" <<
-							"bgroom_6" <<
-							"bgryo1_1" <<
-							"bgryo1_2" <<
-							"bgryo1_3" <<
-							"bgryo1_4" <<
-							"bgryo1_5" <<
-							"bgryo1_6" <<
-							"bgryo1_7" <<
-							"bgryo1_8" <<
-							"bgryo2_1" <<
-							"bgryo2_2" <<
-							"bgsecr_1" <<
-							"bgsecr_2" <<
-							"bgsido_1" <<
-							"bgsido1a" <<
-							"bgsido_2" <<
-							"bgsido_3" <<
-							"bgsido_4" <<
-							"bgsido_5" <<
-							"bgsido5a" <<
-							"bgsido_6" <<
-							"bgsido_7" <<
-							"bgsido_8" <<
-							"bgsido_9" <<
-							"bvboat_1" <<
-							"bvboat_2" <<
-							"bvcar_1" <<
-							"bvtr_1" <<
-							"bvtr_2" <<
-							"bvtr_3" <<
-							"bvtr_4" <<
-							"bvtr_5" <<
-							"cdfield1" <<
-							"cdfield2" <<
-							"cdfield3" <<
-							"cdfield4" <<
-							"cdfield5" <<
-							"cdfield6" <<
-							"cdfield7" <<
-							"cdfield8" <<
-							"crenter1" <<
-							"crodin1" <<
-							"cropen1" <<
-							"crpower1" <<
-							"crroof1" <<
-							"crsanc1" <<
-							"crsphi1" <<
-							"crtower1" <<
-							"crtower2" <<
-							"crtower3" <<
-							"crview1" <<
-							"cwwood1" <<
-							"cwwood2" <<
-							"cwwood3" <<
-							"cwwood4" <<
-							"cwwood5" <<
-							"cwwood6" <<
-							"cwwood7" <<
-							"ddruins1" <<
-							"ddruins2" <<
-							"ddruins3" <<
-							"ddruins4" <<
-							"ddruins5" <<
-							"ddruins6" <<
-							"ddsteam1" <<
-							"ddtower1" <<
-							"ddtower2" <<
-							"ddtower3" <<
-							"ddtower4" <<
-							"ddtower5" <<
-							"ddtower6" <<
-							"doan1_1" <<
-							"doan1_2" <<
-							"doani1_1" <<
-							"doani1_2" <<
-							"doani3_1" <<
-							"doani3_2" <<
-							"doani4_1" <<
-							"doani4_2" <<
-							"dogate_1" <<
-							"dogate1a" <<
-							"dogate_2" <<
-							"dohtl_1" <<
-							"dohtr_1" <<
-							"domin2_1" <<
-							"domt1_1" <<
-							"domt2_1" <<
-							"domt3_1" <<
-							"domt3_2" <<
-							"domt3_3" <<
-							"domt3_4" <<
-							"domt4_1" <<
-							"domt5_1" <<
-							"domt6_1" <<
-							"doopen_1" <<
-							"doopen1a" <<
-							"doopen_2" <<
-							"doopen2a" <<
-							"doport_1" <<
-							"dopub_1" <<
-							"dopub_2" <<
-							"dopub_3" <<
-							"dosea_1" <<
-							"dosea_2" <<
-							"dotown_1" <<
-							"dotown1a" <<
-							"dotown_2" <<
-							"dotown2a" <<
-							"dotown_3" <<
-							"dotown3a" <<
-							"eaplane1" <<
-							"eapod1" <<
-							"ebadele1" <<
-							"ebadele2" <<
-							"ebadele3" <<
-							"ebadele5" <<
-							"ebcont1" <<
-							"ebcont2" <<
-							"ebexit1" <<
-							"ebexit2" <<
-							"ebexit3" <<
-							"ebexit4" <<
-							"ebexit5" <<
-							"ebexit6" <<
-							"ebgate1" <<
-							"ebgate1a" <<
-							"ebgate2" <<
-							"ebgate2a" <<
-							"ebgate3" <<
-							"ebgate3a" <<
-							"ebgate4" <<
-							"ebgate4a" <<
-							"ebinhi1" <<
-							"ebinhi1a" <<
-							"ebinlow1" <<
-							"ebinlow2" <<
-							"ebinmid1" <<
-							"ebinmid4" <<
-							"ebinmid2" <<
-							"ebinmid5" <<
-							"ebinmid3" <<
-							"ebinmid6" <<
-							"ebinto1" <<
-							"ebinto2" <<
-							"ebinto3" <<
-							"ebroad11" <<
-							"ebroad12" <<
-							"ebroad13" <<
-							"ebroad21" <<
-							"ebroad22" <<
-							"ebroad23" <<
-							"ebroad31" <<
-							"ebroad32" <<
-							"ebroad33" <<
-							"ebroad41" <<
-							"ebroad42" <<
-							"ebroad43" <<
-							"ebroad5" <<
-							"ebroad6" <<
-							"ebroad6a" <<
-							"ebroad7" <<
-							"ebroad7a" <<
-							"ebroad8" <<
-							"ebroad8a" <<
-							"ebroad9" <<
-							"ebroad9a" <<
-							"eccway11" <<
-							"eccway15" <<
-							"eccway12" <<
-							"eccway16" <<
-							"eccway13" <<
-							"eccway14" <<
-							"eccway21" <<
-							"eccway22" <<
-							"eccway23" <<
-							"eccway31" <<
-							"eccway32" <<
-							"eccway33" <<
-							"eccway41" <<
-							"eccway42" <<
-							"eccway43" <<
-							"ecenc1" <<
-							"ecenc2" <<
-							"ecenc3" <<
-							"ecenter1" <<
-							"ecenter4" <<
-							"ecenter2" <<
-							"ecenter5" <<
-							"ecenter3" <<
-							"eciway11" <<
-							"eciway15" <<
-							"eciway12" <<
-							"eciway16" <<
-							"eciway13" <<
-							"eciway14" <<
-							"ecmall1" <<
-							"ecmall1a" <<
-							"ecmall1b" <<
-							"ecmview1" <<
-							"ecmview2" <<
-							"ecmview3" <<
-							"ecmway1" <<
-							"ecmway1a" <<
-							"ecmway1b" <<
-							"ecopen1" <<
-							"ecopen1a" <<
-							"ecopen1b" <<
-							"ecopen2" <<
-							"ecopen2a" <<
-							"ecopen2b" <<
-							"ecopen3" <<
-							"ecopen3a" <<
-							"ecopen3b" <<
-							"ecopen4" <<
-							"ecopen4a" <<
-							"ecopen4b" <<
-							"ecoway1" <<
-							"ecoway1a" <<
-							"ecoway1b" <<
-							"ecoway2" <<
-							"ecoway2a" <<
-							"ecoway2b" <<
-							"ecoway3" <<
-							"ecoway3a" <<
-							"ecoway3b" <<
-							"ecpview1" <<
-							"ecpview2" <<
-							"ecpview3" <<
-							"ecpway1" <<
-							"ecpway1a" <<
-							"ecpway1b" <<
-							"ectake1" <<
-							"ectake2" <<
-							"ectake3" <<
-							"edlabo1" <<
-							"edlabo1a" <<
-							"edlabo1b" <<
-							"edmoor1" <<
-							"edview1" <<
-							"edview1a" <<
-							"edview1b" <<
-							"edview2" <<
-							"eein1" <<
-							"eein11" <<
-							"eein12" <<
-							"eein3" <<
-							"eein31" <<
-							"eein32" <<
-							"eeview1" <<
-							"eeview2" <<
-							"eeview3" <<
-							"efbig1" <<
-							"efenter1" <<
-							"efenter2" <<
-							"efenter3" <<
-							"efpod1" <<
-							"efpod1a" <<
-							"efpod1b" <<
-							"efview1" <<
-							"efview1a" <<
-							"efview1b" <<
-							"efview2" <<
-							"ehback1" <<
-							"ehback2" <<
-							"ehblan1" <<
-							"ehblan2" <<
-							"ehblan3" <<
-							"ehdrug1" <<
-							"ehenter1" <<
-							"ehenter2" <<
-							"ehhana1" <<
-							"ehnoki1" <<
-							"ehroom1" <<
-							"ehsea1" <<
-							"ehsea2" <<
-							"elroad1" <<
-							"elroad2" <<
-							"elroad3" <<
-							"elstop1" <<
-							"elview1" <<
-							"elview2" <<
-							"elwall1" <<
-							"elwall2" <<
-							"elwall3" <<
-							"elwall4" <<
-							"embind1" <<
-							"embind1a" <<
-							"embind2" <<
-							"emlabo1" <<
-							"emlabo1a" <<
-							"emlabo1b" <<
-							"emlabo2" <<
-							"emlobby1" <<
-							"emlobby3" <<
-							"emlobby2" <<
-							"emlobby4" <<
-							"ephall1" <<
-							"ephall2" <<
-							"epmeet1" <<
-							"eproad1" <<
-							"eproad2" <<
-							"epwork1" <<
-							"epwork2" <<
-							"epwork3" <<
-							"escont1" <<
-							"escouse1" <<
-							"escouse2" <<
-							"esform1" <<
-							"esfreez1" <<
-							"esview1" <<
-							"esview2" <<
-							"etsta1" <<
-							"etsta2" <<
-							"ewbrdg1" <<
-							"ewdoor1" <<
-							"ewele1" <<
-							"ewele2" <<
-							"ewele3" <<
-							"ewpanel1" <<
-							"ewpanel2" <<
-							"fe2f1" <<
-							"feart1f1" <<
-							"feart1f2" <<
-							"feart2f1" <<
-							"febarac1" <<
-							"febrdg1" <<
-							"feclock1" <<
-							"feclock2" <<
-							"feclock3" <<
-							"feclock4" <<
-							"feclock5" <<
-							"feclock6" <<
-							"fegate1" <<
-							"fehall1" <<
-							"fehall2" <<
-							"fein1" <<
-							"fejail1" <<
-							"felast1" <<
-							"felfst1" <<
-							"felrele1" <<
-							"feopen1" <<
-							"feopen2" <<
-							"feout1" <<
-							"fepic1" <<
-							"fepic2" <<
-							"fepic3" <<
-							"ferfst1" <<
-							"feroad1" <<
-							"feroad2" <<
-							"ferrst1" <<
-							"feteras1" <<
-							"fetre1" <<
-							"feware1" <<
-							"fewater1" <<
-							"fewater2" <<
-							"fewater3" <<
-							"fewine1" <<
-							"fewor1" <<
-							"fewor2" <<
-							"feyard1" <<
-							"ffbrdg1" <<
-							"ffhill1" <<
-							"ffhole1" <<
-							"ffseed1" <<
-							"fhbrdg1" <<
-							"fhdeck1" <<
-							"fhdeck2" <<
-							"fhdeck3" <<
-							"fhdeck4" <<
-							"fhdeck4a" <<
-							"fhdeck5" <<
-							"fhdeck6" <<
-							"fhdeck7" <<
-							"fhdeck7a" <<
-							"fhedge1" <<
-							"fhedge11" <<
-							"fhedge2" <<
-							"fhfish1" <<
-							"fhform1" <<
-							"fhhtl1" <<
-							"fhhtr1" <<
-							"fhmin1" <<
-							"fhpanel1" <<
-							"fhpara11" <<
-							"fhpara12" <<
-							"fhparar1" <<
-							"fhparar2" <<
-							"fhrail2" <<
-							"fhrail3" <<
-							"fhroof1" <<
-							"fhtown1" <<
-							"fhtown21" <<
-							"fhtown22" <<
-							"fhtown23" <<
-							"fhview1" <<
-							"fhwater1" <<
-							"fhwise11" <<
-							"fhwise12" <<
-							"fhwise13" <<
-							"fhwise15" <<
-							"fhwisef1" <<
-							"fhwisef2" <<
-							"gdsand1" <<
-							"gdsand2" <<
-							"gdsand3" <<
-							"gdsta1" <<
-							"gdtrain1" <<
-							"gfcar1" <<
-							"gfcross1" <<
-							"gfcross2" <<
-							"gfelone1" <<
-							"gfelone3" <<
-							"gfelone2" <<
-							"gfelone4" <<
-							"gfhtl1" <<
-							"gfhtl1a" <<
-							"gfhtr1" <<
-							"gfhtr1a" <<
-							"gflain1" <<
-							"gflain1a" <<
-							"gflain11" <<
-							"gflain2" <<
-							"gflain2a" <<
-							"gfmin1" <<
-							"gfmin1a" <<
-							"gfmin2" <<
-							"gfmin2a" <<
-							"gfrich1" <<
-							"gfrich1a" <<
-							"gfview1" <<
-							"gfview1a" <<
-							"gfvill1" <<
-							"gfvill1a" <<
-							"gfvill21" <<
-							"gfvill24" <<
-							"gfvill22" <<
-							"gfvill23" <<
-							"gfvill31" <<
-							"gfvill32" <<
-							"ggback1" <<
-							"ggele1" <<
-							"gggate1" <<
-							"gggate2" <<
-							"gggate3" <<
-							"gggro1" <<
-							"gggroen1" <<
-							"gggroen2" <<
-							"gggym1" <<
-							"gggym2" <<
-							"gghall1" <<
-							"gghall2" <<
-							"ggkodo1" <<
-							"ggkodo2" <<
-							"ggkodo4" <<
-							"ggroad1" <<
-							"ggroad2" <<
-							"ggroad3" <<
-							"ggroad5" <<
-							"ggroad6" <<
-							"ggroad7" <<
-							"ggroad8" <<
-							"ggroad8a" <<
-							"ggroad8b" <<
-							"ggroad9" <<
-							"ggroad9a" <<
-							"ggroad9b" <<
-							"ggroom1" <<
-							"ggroom2" <<
-							"ggroom3" <<
-							"ggroom4" <<
-							"ggroom6" <<
-							"ggroom7" <<
-							"ggsta1" <<
-							"ggstaen1" <<
-							"ggstaen3" <<
-							"ggstand1" <<
-							"ggview1" <<
-							"ggview2" <<
-							"ggwitch1" <<
-							"ggwitch2" <<
-							"glclock1" <<
-							"glclub1" <<
-							"glclub3" <<
-							"glclub4" <<
-							"glform1" <<
-							"glfurin1" <<
-							"glfurin4" <<
-							"glfurin5" <<
-							"glfurin2" <<
-							"glfurin3" <<
-							"glfury1" <<
-							"glfuryb1" <<
-							"glgate1" <<
-							"glgate2" <<
-							"glgate2a" <<
-							"glgate3" <<
-							"glgate3a" <<
-							"glgateb1" <<
-							"glgatei1" <<
-							"glgatei2" <<
-							"glhtl1" <<
-							"glhtr1" <<
-							"glhtr1a" <<
-							"glkara1" <<
-							"glkara2" <<
-							"glmall1" <<
-							"glmall2" <<
-							"glprefr1" <<
-							"glprefr2" <<
-							"glprefr3" <<
-							"glprein1" <<
-							"glpreo1" <<
-							"glpreo2" <<
-							"glpreo3" <<
-							"glrent1" <<
-							"glroad1" <<
-							"glsta1" <<
-							"glsta2" <<
-							"glstage1" <<
-							"glstage3" <<
-							"glstaup1" <<
-							"glstaup4" <<
-							"glstaup2" <<
-							"glstaup5" <<
-							"glstaup3" <<
-							"gltown1" <<
-							"glwater1" <<
-							"glwater2" <<
-							"glwater3" <<
-							"glwater4" <<
-							"glwater5" <<
-							"glwitch1" <<
-							"glyagu1" <<
-							"gmcont1" <<
-							"gmcont2" <<
-							"gmden1" <<
-							"gmhouse1" <<
-							"gmmoni1" <<
-							"gmout1" <<
-							"gmpark1" <<
-							"gmpark2" <<
-							"gmshoot1" <<
-							"gmtika1" <<
-							"gmtika2" <<
-							"gmtika3" <<
-							"gmtika4" <<
-							"gmtika5" <<
-							"gnroad1" <<
-							"gnroad2" <<
-							"gnroad3" <<
-							"gnroad4" <<
-							"gnroad5" <<
-							"gnroom1" <<
-							"gnroom2" <<
-							"gnroom3" <<
-							"gnroom4" <<
-							"gnview1" <<
-							"gparm1" <<
-							"gpbig1" <<
-							"gpbig1a" <<
-							"gpbig2" <<
-							"gpbig2a" <<
-							"gpbig3" <<
-							"gpbigin1" <<
-							"gpbigin3" <<
-							"gpbigin2" <<
-							"gpbigin4" <<
-							"gpbigin5" <<
-							"gpcell1" <<
-							"gpcont1" <<
-							"gpcont2" <<
-							"gpescap1" <<
-							"gpexit1" <<
-							"gpexit2" <<
-							"gpgmn1" <<
-							"gpgmn1a" <<
-							"gpgmn2" <<
-							"gpgmn3" <<
-							"gppark1" <<
-							"gproof1" <<
-							"gproof2" <<
-							"gwbrook1" <<
-							"gwenter1" <<
-							"gwgrass1" <<
-							"gwpool1" <<
-							"gwpool2" <<
-							"gwroad1" <<
-							"rgair1" <<
-							"rgair2" <<
-							"rgair3" <<
-							"rgcock1" <<
-							"rgcock2" <<
-							"rgcock3" <<
-							"rgexit1" <<
-							"rgexit2" <<
-							"rgguest1" <<
-							"rgguest2" <<
-							"rgguest3" <<
-							"rgguest4" <<
-							"rgguest5" <<
-							"rghang1" <<
-							"rghang11" <<
-							"rghang2" <<
-							"rghatch1" <<
-							"rgroad1" <<
-							"rgroad11" <<
-							"rgroad2" <<
-							"rgroad21" <<
-							"rgroad3" <<
-							"rgroad31" <<
-							"sdcore1" <<
-							"sdcore2" <<
-							"sdisle1" <<
-							"seback1" <<
-							"seback2" <<
-							"secont1" <<
-							"secont2" <<
-							"sefront1" <<
-							"sefront2" <<
-							"sefront3" <<
-							"sefront4" <<
-							"seroom1" <<
-							"seroom2" <<
-							"ssadel1" <<
-							"ssadel2" <<
-							"ssblock1" <<
-							"sscont1" <<
-							"sscont2" <<
-							"ssdock1" <<
-							"sselone1" <<
-							"sslock1" <<
-							"ssmedi1" <<
-							"ssmedi2" <<
-							"sspack1" <<
-							"sspod1" <<
-							"sspod2" <<
-							"sspod3" <<
-							"ssroad1" <<
-							"ssroad2" <<
-							"ssroad3" <<
-							"ssspace1" <<
-							"ssspace2" <<
-							"ssspace3" <<
-							"tgcourt1" <<
-							"tgcourt5" <<
-							"tgcourt2" <<
-							"tgcourt3" <<
-							"tgcourt4" <<
-							"tgfront1" <<
-							"tggara1" <<
-							"tggate1" <<
-							"tggrave1" <<
-							"tgroom1" <<
-							"tgroom2" <<
-							"tgstage1" <<
-							"tgview1" <<
-							"tiagit1" <<
-							"tiagit2" <<
-							"tiagit3" <<
-							"tiagit4" <<
-							"tiagit5" <<
-							"tiback1" <<
-							"tiback2" <<
-							"tigate1" <<
-							"tihtl1" <<
-							"tihtr1" <<
-							"tilink1" <<
-							"tilink2" <<
-							"timania1" <<
-							"timania2" <<
-							"timania3" <<
-							"timania4" <<
-							"timania5" <<
-							"timin1" <<
-							"timin21" <<
-							"timin22" <<
-							"tipub1" <<
-							"tistud1" <<
-							"tistud21" <<
-							"tistud22" <<
-							"titown1" <<
-							"titown2" <<
-							"titown3" <<
-							"titown4" <<
-							"titown51" <<
-							"titown52" <<
-							"titown6" <<
-							"titown7" <<
-							"titown8" <<
-							"titrain1" <<
-							"titv1" <<
-							"titvout1" <<
-							"tivisi1" <<
-							"tivisi2" <<
-							"tiyane1" <<
-							"tiyane2" <<
-							"tiyane3" <<
-							"tmdome1" <<
-							"tmdome2" <<
-							"tmelder1" <<
-							"tmele1" <<
-							"tmgate1" <<
-							"tmhtl1" <<
-							"tmhtr1" <<
-							"tmkobo1" <<
-							"tmkobo2" <<
-							"tmmin1" <<
-							"tmmura1" <<
-							"tmmura2" <<
-							"tmsand1" <<
-							"tvglen1" <<
-							"tvglen2" <<
-							"tvglen3" <<
-							"tvglen4" <<
-							"tvglen5" <<
-							"laguna01" <<
-							"laguna02" <<
-							"laguna03" <<
-							"laguna04" <<
-							"laguna05" <<
-							"laguna06" <<
-							"laguna07" <<
-							"laguna08" <<
-							"laguna09" <<
-							"laguna10" <<
-							"laguna11" <<
-							"laguna12" <<
-							"laguna13" <<
-							"laguna14" <<
-							"gpbigin6" <<
-							"fhtown24" <<
-							"rgcock4" <<
-							"rgcock5" <<
-							"ffhole1a" <<
-							"ehblan1a" <<
-							"ehenter3" <<
-							"ehroom1a" <<
-							"eproad1a" <<
-							"fewhite1" <<
-							"feblack1" <<
-							"glwitch3" <<
-							"ehback1a" <<
-							"ehblan1b" <<
-							"ehenter4" <<
-							"ehroom1b" <<
-							"ehsea1a";
+	QStringList maps;
+	for(int i=0 ; i<MAP_COUNT ; ++i) {
+		maps.append(_maplist[i]);
+	}
+	return maps;
 }
+
+const char *Data::_maplist[MAP_COUNT] = {
+	"wm00",
+	"wm01",
+	"wm02",
+	"wm03",
+	"wm04",
+	"wm05",
+	"wm06",
+	"wm07",
+	"wm08",
+	"wm09",
+	"wm10",
+	"wm11",
+	"wm12",
+	"wm13",
+	"wm14",
+	"wm15",
+	"wm16",
+	"wm17",
+	"wm18",
+	"wm19",
+	"wm20",
+	"wm21",
+	"wm22",
+	"wm23",
+	"wm24",
+	"wm25",
+	"wm26",
+	"wm27",
+	"wm28",
+	"wm29",
+	"wm30",
+	"wm31",
+	"wm32",
+	"wm33",
+	"wm34",
+	"wm35",
+	"wm36",
+	"wm37",
+	"wm38",
+	"wm39",
+	"wm40",
+	"wm41",
+	"wm42",
+	"wm43",
+	"wm44",
+	"wm45",
+	"wm46",
+	"wm47",
+	"wm48",
+	"wm49",
+	"wm50",
+	"wm51",
+	"wm52",
+	"wm53",
+	"wm54",
+	"wm55",
+	"wm56",
+	"wm57",
+	"wm58",
+	"wm59",
+	"wm60",
+	"wm61",
+	"wm62",
+	"wm63",
+	"wm64",
+	"wm65",
+	"wm66",
+	"wm67",
+	"wm68",
+	"wm69",
+	"wm70",
+	"wm71",
+	"testno",
+	"start",
+	"start0",
+	"gover",
+	"ending",
+	"test",
+	"test1",
+	"test2",
+	"test3",
+	"test4",
+	"test5",
+	"test6",
+	"test7",
+	"test8",
+	"test9",
+	"test13",
+	"test14",
+	"testbl0",
+	"testbl1",
+	"testbl2",
+	"testbl3",
+	"testbl4",
+	"testbl5",
+	"testbl6",
+	"testbl7",
+	"testbl8",
+	"testbl9",
+	"testbl13",
+	"testbl14",
+	"testmv",
+	"bccent_1",
+	"bccent1a",
+	"bcform_1",
+	"bcform1a",
+	"bcgate_1",
+	"bcgate1a",
+	"bchtl_1",
+	"bchtl1a",
+	"bchtr_1",
+	"bchtr1a",
+	"bcmin1_1",
+	"bcmin11a",
+	"bcmin2_1",
+	"bcmin21a",
+	"bcmin2_2",
+	"bcmin22a",
+	"bcmin2_3",
+	"bcmin23a",
+	"bcport_1",
+	"bcport1a",
+	"bcport1b",
+	"bcport_2",
+	"bcport2a",
+	"bcsaka_1",
+	"bcsaka1a",
+	"bcsta_1",
+	"bcsta1a",
+	"bdenter1",
+	"bdifrit1",
+	"bdin1",
+	"bdin2",
+	"bdin3",
+	"bdin4",
+	"bdin5",
+	"bdview1",
+	"bg2f_1",
+	"bg2f_11",
+	"bg2f_2",
+	"bg2f_21",
+	"bg2f_4",
+	"bg2f_22",
+	"bg2f_3",
+	"bg2f_31",
+	"bgbook_1",
+	"bgbook1a",
+	"bgbook1b",
+	"bgbook_2",
+	"bgbook2a",
+	"bgbook_3",
+	"bgbook3a",
+	"bgbtl_1",
+	"bgcrash1",
+	"bgeat_1",
+	"bgeat1a",
+	"bgeat_2",
+	"bgeat2a",
+	"bgeat_3",
+	"bggate_1",
+	"bggate_2",
+	"bggate_4",
+	"bggate_5",
+	"bggate_6",
+	"bggate6a",
+	"bghall_1",
+	"bghall1a",
+	"bghall1b",
+	"bghall_2",
+	"bghall2a",
+	"bghall_3",
+	"bghall3a",
+	"bghall_4",
+	"bghall4a",
+	"bghall_5",
+	"bghall_6",
+	"bghall6b",
+	"bghall_7",
+	"bghall_8",
+	"bghoke_1",
+	"bghoke_2",
+	"bghoke_3",
+	"bgkote_1",
+	"bgkote1a",
+	"bgkote_2",
+	"bgkote_3",
+	"bgkote3a",
+	"bgkote_4",
+	"bgkote_5",
+	"bgmast_1",
+	"bgmast_2",
+	"bgmast_3",
+	"bgmast_4",
+	"bgmast_5",
+	"bgmd1_1",
+	"bgmd1_2",
+	"bgmd1_3",
+	"bgmd1_4",
+	"bgmd2_1",
+	"bgmd2_3",
+	"bgmd2_4",
+	"bgmd2_5",
+	"bgmd2_6",
+	"bgmd2_7",
+	"bgmd2_8",
+	"bgmd3_1",
+	"bgmd3_2",
+	"bgmd4_1",
+	"bgmd4_2",
+	"bgmd4_3",
+	"bgmdele1",
+	"bgmdele2",
+	"bgmdele3",
+	"bgmdele4",
+	"bgmon_1",
+	"bgmon_2",
+	"bgmon_3",
+	"bgmon_4",
+	"bgmon_5",
+	"bgmon_6",
+	"bgpark_1",
+	"bgpaty_1",
+	"bgpaty_2",
+	"bgrank1",
+	"bgroad_1",
+	"bgroad_2",
+	"bgroad_3",
+	"bgroad_4",
+	"bgroad_5",
+	"bgroad_6",
+	"bgroad_7",
+	"bgroad_9",
+	"bgroom_1",
+	"bgroom_3",
+	"bgroom_4",
+	"bgroom_5",
+	"bgroom_6",
+	"bgryo1_1",
+	"bgryo1_2",
+	"bgryo1_3",
+	"bgryo1_4",
+	"bgryo1_5",
+	"bgryo1_6",
+	"bgryo1_7",
+	"bgryo1_8",
+	"bgryo2_1",
+	"bgryo2_2",
+	"bgsecr_1",
+	"bgsecr_2",
+	"bgsido_1",
+	"bgsido1a",
+	"bgsido_2",
+	"bgsido_3",
+	"bgsido_4",
+	"bgsido_5",
+	"bgsido5a",
+	"bgsido_6",
+	"bgsido_7",
+	"bgsido_8",
+	"bgsido_9",
+	"bvboat_1",
+	"bvboat_2",
+	"bvcar_1",
+	"bvtr_1",
+	"bvtr_2",
+	"bvtr_3",
+	"bvtr_4",
+	"bvtr_5",
+	"cdfield1",
+	"cdfield2",
+	"cdfield3",
+	"cdfield4",
+	"cdfield5",
+	"cdfield6",
+	"cdfield7",
+	"cdfield8",
+	"crenter1",
+	"crodin1",
+	"cropen1",
+	"crpower1",
+	"crroof1",
+	"crsanc1",
+	"crsphi1",
+	"crtower1",
+	"crtower2",
+	"crtower3",
+	"crview1",
+	"cwwood1",
+	"cwwood2",
+	"cwwood3",
+	"cwwood4",
+	"cwwood5",
+	"cwwood6",
+	"cwwood7",
+	"ddruins1",
+	"ddruins2",
+	"ddruins3",
+	"ddruins4",
+	"ddruins5",
+	"ddruins6",
+	"ddsteam1",
+	"ddtower1",
+	"ddtower2",
+	"ddtower3",
+	"ddtower4",
+	"ddtower5",
+	"ddtower6",
+	"doan1_1",
+	"doan1_2",
+	"doani1_1",
+	"doani1_2",
+	"doani3_1",
+	"doani3_2",
+	"doani4_1",
+	"doani4_2",
+	"dogate_1",
+	"dogate1a",
+	"dogate_2",
+	"dohtl_1",
+	"dohtr_1",
+	"domin2_1",
+	"domt1_1",
+	"domt2_1",
+	"domt3_1",
+	"domt3_2",
+	"domt3_3",
+	"domt3_4",
+	"domt4_1",
+	"domt5_1",
+	"domt6_1",
+	"doopen_1",
+	"doopen1a",
+	"doopen_2",
+	"doopen2a",
+	"doport_1",
+	"dopub_1",
+	"dopub_2",
+	"dopub_3",
+	"dosea_1",
+	"dosea_2",
+	"dotown_1",
+	"dotown1a",
+	"dotown_2",
+	"dotown2a",
+	"dotown_3",
+	"dotown3a",
+	"eaplane1",
+	"eapod1",
+	"ebadele1",
+	"ebadele2",
+	"ebadele3",
+	"ebadele5",
+	"ebcont1",
+	"ebcont2",
+	"ebexit1",
+	"ebexit2",
+	"ebexit3",
+	"ebexit4",
+	"ebexit5",
+	"ebexit6",
+	"ebgate1",
+	"ebgate1a",
+	"ebgate2",
+	"ebgate2a",
+	"ebgate3",
+	"ebgate3a",
+	"ebgate4",
+	"ebgate4a",
+	"ebinhi1",
+	"ebinhi1a",
+	"ebinlow1",
+	"ebinlow2",
+	"ebinmid1",
+	"ebinmid4",
+	"ebinmid2",
+	"ebinmid5",
+	"ebinmid3",
+	"ebinmid6",
+	"ebinto1",
+	"ebinto2",
+	"ebinto3",
+	"ebroad11",
+	"ebroad12",
+	"ebroad13",
+	"ebroad21",
+	"ebroad22",
+	"ebroad23",
+	"ebroad31",
+	"ebroad32",
+	"ebroad33",
+	"ebroad41",
+	"ebroad42",
+	"ebroad43",
+	"ebroad5",
+	"ebroad6",
+	"ebroad6a",
+	"ebroad7",
+	"ebroad7a",
+	"ebroad8",
+	"ebroad8a",
+	"ebroad9",
+	"ebroad9a",
+	"eccway11",
+	"eccway15",
+	"eccway12",
+	"eccway16",
+	"eccway13",
+	"eccway14",
+	"eccway21",
+	"eccway22",
+	"eccway23",
+	"eccway31",
+	"eccway32",
+	"eccway33",
+	"eccway41",
+	"eccway42",
+	"eccway43",
+	"ecenc1",
+	"ecenc2",
+	"ecenc3",
+	"ecenter1",
+	"ecenter4",
+	"ecenter2",
+	"ecenter5",
+	"ecenter3",
+	"eciway11",
+	"eciway15",
+	"eciway12",
+	"eciway16",
+	"eciway13",
+	"eciway14",
+	"ecmall1",
+	"ecmall1a",
+	"ecmall1b",
+	"ecmview1",
+	"ecmview2",
+	"ecmview3",
+	"ecmway1",
+	"ecmway1a",
+	"ecmway1b",
+	"ecopen1",
+	"ecopen1a",
+	"ecopen1b",
+	"ecopen2",
+	"ecopen2a",
+	"ecopen2b",
+	"ecopen3",
+	"ecopen3a",
+	"ecopen3b",
+	"ecopen4",
+	"ecopen4a",
+	"ecopen4b",
+	"ecoway1",
+	"ecoway1a",
+	"ecoway1b",
+	"ecoway2",
+	"ecoway2a",
+	"ecoway2b",
+	"ecoway3",
+	"ecoway3a",
+	"ecoway3b",
+	"ecpview1",
+	"ecpview2",
+	"ecpview3",
+	"ecpway1",
+	"ecpway1a",
+	"ecpway1b",
+	"ectake1",
+	"ectake2",
+	"ectake3",
+	"edlabo1",
+	"edlabo1a",
+	"edlabo1b",
+	"edmoor1",
+	"edview1",
+	"edview1a",
+	"edview1b",
+	"edview2",
+	"eein1",
+	"eein11",
+	"eein12",
+	"eein3",
+	"eein31",
+	"eein32",
+	"eeview1",
+	"eeview2",
+	"eeview3",
+	"efbig1",
+	"efenter1",
+	"efenter2",
+	"efenter3",
+	"efpod1",
+	"efpod1a",
+	"efpod1b",
+	"efview1",
+	"efview1a",
+	"efview1b",
+	"efview2",
+	"ehback1",
+	"ehback2",
+	"ehblan1",
+	"ehblan2",
+	"ehblan3",
+	"ehdrug1",
+	"ehenter1",
+	"ehenter2",
+	"ehhana1",
+	"ehnoki1",
+	"ehroom1",
+	"ehsea1",
+	"ehsea2",
+	"elroad1",
+	"elroad2",
+	"elroad3",
+	"elstop1",
+	"elview1",
+	"elview2",
+	"elwall1",
+	"elwall2",
+	"elwall3",
+	"elwall4",
+	"embind1",
+	"embind1a",
+	"embind2",
+	"emlabo1",
+	"emlabo1a",
+	"emlabo1b",
+	"emlabo2",
+	"emlobby1",
+	"emlobby3",
+	"emlobby2",
+	"emlobby4",
+	"ephall1",
+	"ephall2",
+	"epmeet1",
+	"eproad1",
+	"eproad2",
+	"epwork1",
+	"epwork2",
+	"epwork3",
+	"escont1",
+	"escouse1",
+	"escouse2",
+	"esform1",
+	"esfreez1",
+	"esview1",
+	"esview2",
+	"etsta1",
+	"etsta2",
+	"ewbrdg1",
+	"ewdoor1",
+	"ewele1",
+	"ewele2",
+	"ewele3",
+	"ewpanel1",
+	"ewpanel2",
+	"fe2f1",
+	"feart1f1",
+	"feart1f2",
+	"feart2f1",
+	"febarac1",
+	"febrdg1",
+	"feclock1",
+	"feclock2",
+	"feclock3",
+	"feclock4",
+	"feclock5",
+	"feclock6",
+	"fegate1",
+	"fehall1",
+	"fehall2",
+	"fein1",
+	"fejail1",
+	"felast1",
+	"felfst1",
+	"felrele1",
+	"feopen1",
+	"feopen2",
+	"feout1",
+	"fepic1",
+	"fepic2",
+	"fepic3",
+	"ferfst1",
+	"feroad1",
+	"feroad2",
+	"ferrst1",
+	"feteras1",
+	"fetre1",
+	"feware1",
+	"fewater1",
+	"fewater2",
+	"fewater3",
+	"fewine1",
+	"fewor1",
+	"fewor2",
+	"feyard1",
+	"ffbrdg1",
+	"ffhill1",
+	"ffhole1",
+	"ffseed1",
+	"fhbrdg1",
+	"fhdeck1",
+	"fhdeck2",
+	"fhdeck3",
+	"fhdeck4",
+	"fhdeck4a",
+	"fhdeck5",
+	"fhdeck6",
+	"fhdeck7",
+	"fhdeck7a",
+	"fhedge1",
+	"fhedge11",
+	"fhedge2",
+	"fhfish1",
+	"fhform1",
+	"fhhtl1",
+	"fhhtr1",
+	"fhmin1",
+	"fhpanel1",
+	"fhpara11",
+	"fhpara12",
+	"fhparar1",
+	"fhparar2",
+	"fhrail2",
+	"fhrail3",
+	"fhroof1",
+	"fhtown1",
+	"fhtown21",
+	"fhtown22",
+	"fhtown23",
+	"fhview1",
+	"fhwater1",
+	"fhwise11",
+	"fhwise12",
+	"fhwise13",
+	"fhwise15",
+	"fhwisef1",
+	"fhwisef2",
+	"gdsand1",
+	"gdsand2",
+	"gdsand3",
+	"gdsta1",
+	"gdtrain1",
+	"gfcar1",
+	"gfcross1",
+	"gfcross2",
+	"gfelone1",
+	"gfelone3",
+	"gfelone2",
+	"gfelone4",
+	"gfhtl1",
+	"gfhtl1a",
+	"gfhtr1",
+	"gfhtr1a",
+	"gflain1",
+	"gflain1a",
+	"gflain11",
+	"gflain2",
+	"gflain2a",
+	"gfmin1",
+	"gfmin1a",
+	"gfmin2",
+	"gfmin2a",
+	"gfrich1",
+	"gfrich1a",
+	"gfview1",
+	"gfview1a",
+	"gfvill1",
+	"gfvill1a",
+	"gfvill21",
+	"gfvill24",
+	"gfvill22",
+	"gfvill23",
+	"gfvill31",
+	"gfvill32",
+	"ggback1",
+	"ggele1",
+	"gggate1",
+	"gggate2",
+	"gggate3",
+	"gggro1",
+	"gggroen1",
+	"gggroen2",
+	"gggym1",
+	"gggym2",
+	"gghall1",
+	"gghall2",
+	"ggkodo1",
+	"ggkodo2",
+	"ggkodo4",
+	"ggroad1",
+	"ggroad2",
+	"ggroad3",
+	"ggroad5",
+	"ggroad6",
+	"ggroad7",
+	"ggroad8",
+	"ggroad8a",
+	"ggroad8b",
+	"ggroad9",
+	"ggroad9a",
+	"ggroad9b",
+	"ggroom1",
+	"ggroom2",
+	"ggroom3",
+	"ggroom4",
+	"ggroom6",
+	"ggroom7",
+	"ggsta1",
+	"ggstaen1",
+	"ggstaen3",
+	"ggstand1",
+	"ggview1",
+	"ggview2",
+	"ggwitch1",
+	"ggwitch2",
+	"glclock1",
+	"glclub1",
+	"glclub3",
+	"glclub4",
+	"glform1",
+	"glfurin1",
+	"glfurin4",
+	"glfurin5",
+	"glfurin2",
+	"glfurin3",
+	"glfury1",
+	"glfuryb1",
+	"glgate1",
+	"glgate2",
+	"glgate2a",
+	"glgate3",
+	"glgate3a",
+	"glgateb1",
+	"glgatei1",
+	"glgatei2",
+	"glhtl1",
+	"glhtr1",
+	"glhtr1a",
+	"glkara1",
+	"glkara2",
+	"glmall1",
+	"glmall2",
+	"glprefr1",
+	"glprefr2",
+	"glprefr3",
+	"glprein1",
+	"glpreo1",
+	"glpreo2",
+	"glpreo3",
+	"glrent1",
+	"glroad1",
+	"glsta1",
+	"glsta2",
+	"glstage1",
+	"glstage3",
+	"glstaup1",
+	"glstaup4",
+	"glstaup2",
+	"glstaup5",
+	"glstaup3",
+	"gltown1",
+	"glwater1",
+	"glwater2",
+	"glwater3",
+	"glwater4",
+	"glwater5",
+	"glwitch1",
+	"glyagu1",
+	"gmcont1",
+	"gmcont2",
+	"gmden1",
+	"gmhouse1",
+	"gmmoni1",
+	"gmout1",
+	"gmpark1",
+	"gmpark2",
+	"gmshoot1",
+	"gmtika1",
+	"gmtika2",
+	"gmtika3",
+	"gmtika4",
+	"gmtika5",
+	"gnroad1",
+	"gnroad2",
+	"gnroad3",
+	"gnroad4",
+	"gnroad5",
+	"gnroom1",
+	"gnroom2",
+	"gnroom3",
+	"gnroom4",
+	"gnview1",
+	"gparm1",
+	"gpbig1",
+	"gpbig1a",
+	"gpbig2",
+	"gpbig2a",
+	"gpbig3",
+	"gpbigin1",
+	"gpbigin3",
+	"gpbigin2",
+	"gpbigin4",
+	"gpbigin5",
+	"gpcell1",
+	"gpcont1",
+	"gpcont2",
+	"gpescap1",
+	"gpexit1",
+	"gpexit2",
+	"gpgmn1",
+	"gpgmn1a",
+	"gpgmn2",
+	"gpgmn3",
+	"gppark1",
+	"gproof1",
+	"gproof2",
+	"gwbrook1",
+	"gwenter1",
+	"gwgrass1",
+	"gwpool1",
+	"gwpool2",
+	"gwroad1",
+	"rgair1",
+	"rgair2",
+	"rgair3",
+	"rgcock1",
+	"rgcock2",
+	"rgcock3",
+	"rgexit1",
+	"rgexit2",
+	"rgguest1",
+	"rgguest2",
+	"rgguest3",
+	"rgguest4",
+	"rgguest5",
+	"rghang1",
+	"rghang11",
+	"rghang2",
+	"rghatch1",
+	"rgroad1",
+	"rgroad11",
+	"rgroad2",
+	"rgroad21",
+	"rgroad3",
+	"rgroad31",
+	"sdcore1",
+	"sdcore2",
+	"sdisle1",
+	"seback1",
+	"seback2",
+	"secont1",
+	"secont2",
+	"sefront1",
+	"sefront2",
+	"sefront3",
+	"sefront4",
+	"seroom1",
+	"seroom2",
+	"ssadel1",
+	"ssadel2",
+	"ssblock1",
+	"sscont1",
+	"sscont2",
+	"ssdock1",
+	"sselone1",
+	"sslock1",
+	"ssmedi1",
+	"ssmedi2",
+	"sspack1",
+	"sspod1",
+	"sspod2",
+	"sspod3",
+	"ssroad1",
+	"ssroad2",
+	"ssroad3",
+	"ssspace1",
+	"ssspace2",
+	"ssspace3",
+	"tgcourt1",
+	"tgcourt5",
+	"tgcourt2",
+	"tgcourt3",
+	"tgcourt4",
+	"tgfront1",
+	"tggara1",
+	"tggate1",
+	"tggrave1",
+	"tgroom1",
+	"tgroom2",
+	"tgstage1",
+	"tgview1",
+	"tiagit1",
+	"tiagit2",
+	"tiagit3",
+	"tiagit4",
+	"tiagit5",
+	"tiback1",
+	"tiback2",
+	"tigate1",
+	"tihtl1",
+	"tihtr1",
+	"tilink1",
+	"tilink2",
+	"timania1",
+	"timania2",
+	"timania3",
+	"timania4",
+	"timania5",
+	"timin1",
+	"timin21",
+	"timin22",
+	"tipub1",
+	"tistud1",
+	"tistud21",
+	"tistud22",
+	"titown1",
+	"titown2",
+	"titown3",
+	"titown4",
+	"titown51",
+	"titown52",
+	"titown6",
+	"titown7",
+	"titown8",
+	"titrain1",
+	"titv1",
+	"titvout1",
+	"tivisi1",
+	"tivisi2",
+	"tiyane1",
+	"tiyane2",
+	"tiyane3",
+	"tmdome1",
+	"tmdome2",
+	"tmelder1",
+	"tmele1",
+	"tmgate1",
+	"tmhtl1",
+	"tmhtr1",
+	"tmkobo1",
+	"tmkobo2",
+	"tmmin1",
+	"tmmura1",
+	"tmmura2",
+	"tmsand1",
+	"tvglen1",
+	"tvglen2",
+	"tvglen3",
+	"tvglen4",
+	"tvglen5",
+	"laguna01",
+	"laguna02",
+	"laguna03",
+	"laguna04",
+	"laguna05",
+	"laguna06",
+	"laguna07",
+	"laguna08",
+	"laguna09",
+	"laguna10",
+	"laguna11",
+	"laguna12",
+	"laguna13",
+	"laguna14",
+	"gpbigin6",
+	"fhtown24",
+	"rgcock4",
+	"rgcock5",
+	"ffhole1a",
+	"ehblan1a",
+	"ehenter3",
+	"ehroom1a",
+	"eproad1a",
+	"fewhite1",
+	"feblack1",
+	"glwitch3",
+	"ehback1a",
+	"ehblan1b",
+	"ehenter4",
+	"ehroom1b",
+	"ehsea1a"
+};

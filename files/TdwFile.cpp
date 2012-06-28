@@ -29,6 +29,11 @@ TdwFile::~TdwFile()
 	}
 }
 
+bool TdwFile::isNull() const
+{
+	return !_tim.isValid();
+}
+
 bool TdwFile::isModified() const
 {
 	return modified;

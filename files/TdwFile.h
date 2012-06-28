@@ -33,6 +33,7 @@ public:
 	bool open(const QByteArray &tdw);
 	void close();
 	bool save(QByteArray &tdw);
+	bool isNull() const;
 	bool isModified() const;
 	QImage image(Color color=White);
 	static QImage image(const QByteArray &data, Color color=White);

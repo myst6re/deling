@@ -131,7 +131,7 @@ void MiscSearch::fillList()
 			text.append(QString("gameMoments[%1] = tr(\"").arg(moment = i.key()));
 		}
 
-		text.append(QString("%1, ").arg(i.value()->getJsmFile()->mapID() != -1 ? Data::locations().value(i.value()->getJsmFile()->mapID()) : i.value()->name()));
+		text.append(QString("%1, ").arg(i.value()->getJsmFile()->mapID() != -1 ? Data::locations[i.value()->getJsmFile()->mapID()] : i.value()->name()));
 		*/
 //	}
 

@@ -20,21 +20,26 @@
 
 #include <QtCore>
 #include "Config.h"
+#include "FF8Font.h"
+
+#define MAP_COUNT	982
 
 class Data
 {
 public:
     static bool ff8Found();
 	static QString AppPath();
-	static QString magic(int id);
-	static QStringList locations();
-	static QStringList names();
+	static bool listFonts();
+	static QStringList fontList();
+	static FF8Font *font(const QString &name);
+	static const char *locations[];
+	static const char *names[];
+	static const char *magic[];
 	static QStringList maplist();
 private:
-	static QStringList _locations;
-	static QStringList _names;
-	static QStringList _magic;
+	static const char *_maplist[MAP_COUNT];
 	static QString AppPath_cache;
+	static QMap<QString, FF8Font *> fonts;
 };
 
 #endif // DATA_H

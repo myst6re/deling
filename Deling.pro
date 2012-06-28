@@ -67,7 +67,8 @@ HEADERS += MainWindow.h \
     files/TextureFile.h \
     widgets/CharaPreview.h \
     widgets/TdwLetter.h \
-    widgets/TdwDisplay.h
+    widgets/TdwDisplay.h \
+    FF8Font.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -128,7 +129,8 @@ SOURCES += MainWindow.cpp \
     files/TextureFile.cpp \
     widgets/CharaPreview.cpp \
     widgets/TdwLetter.cpp \
-    widgets/TdwDisplay.cpp
+    widgets/TdwDisplay.cpp \
+    FF8Font.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \
