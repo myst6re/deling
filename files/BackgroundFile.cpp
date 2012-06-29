@@ -36,24 +36,24 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim)
 		layers.clear();
 
 		if(mimSize == 401408) {
-//			Tile1 tile1;
-//			int sizeOfTile = mapSize-map.lastIndexOf("\xff\x7f");
+			//			Tile1 tile1;
+			//			int sizeOfTile = mapSize-map.lastIndexOf("\xff\x7f");
 
-//			if(mapSize%sizeOfTile != 0)	return;
+			//			if(mapSize%sizeOfTile != 0)	return;
 
-//			while(tilePos+15 < mapSize)
-//			{
-//				memcpy(&tile1, &constMapData[tilePos], sizeOfTile);
-//				if(tile1.X == 0x7fff) break;
-//				tilePos += sizeOfTile;
+			//			while(tilePos+15 < mapSize)
+			//			{
+			//				memcpy(&tile1, &constMapData[tilePos], sizeOfTile);
+			//				if(tile1.X == 0x7fff) break;
+			//				tilePos += sizeOfTile;
 
-//				if(tile1.parameter!=255 && !allparams.contains(tile1.parameter, tile1.state))
-//				{
-//					allparams.insert(tile1.parameter, tile1.state);
-//					if(tile1.state==0)
-//						params.insert(tile1.parameter, tile1.state);
-//				}
-//			}
+			//				if(tile1.parameter!=255 && !allparams.contains(tile1.parameter, tile1.state))
+			//				{
+			//					allparams.insert(tile1.parameter, tile1.state);
+			//					if(tile1.state==0)
+			//						params.insert(tile1.parameter, tile1.state);
+			//				}
+			//			}
 		} else if(mimSize == 438272) {
 			Tile2 tile2;
 
@@ -65,6 +65,7 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim)
 				if(tile2.parameter!=255 && !allparams.contains(tile2.parameter, tile2.state))
 				{
 					allparams.insert(tile2.parameter, tile2.state);
+					// enable parameter only when state = 0
 					if(tile2.state==0)
 						params.insert(tile2.parameter, tile2.state);
 				}
@@ -99,6 +100,37 @@ QImage BackgroundFile::background(bool hideBG) const
 		return FF8Image::errorImage();
 }
 
+QImage BackgroundFile::background(const QList<quint8> &activeParams, bool hideBG)
+{
+	QMultiMap<quint8, quint8> savParams = params;
+	QMap<quint8, bool> savLayers = layers;
+
+	// Enable activeParams only
+	params.clear();
+
+	QMapIterator<quint8, quint8> itParams(allparams);
+	while(itParams.hasNext()){
+		itParams.next();
+		if(activeParams.contains(itParams.key())) {
+			params.insert(itParams.key(), itParams.value());
+		}
+	}
+
+	// Enable all layers
+	QMapIterator<quint8, bool> itLayers(layers);
+	while(itLayers.hasNext()){
+		itLayers.next();
+		layers.insert(itLayers.key(), true);
+	}
+
+	QImage image = background(hideBG);
+
+	params = savParams;
+	layers = savLayers;
+
+	return image;
+}
+
 QImage BackgroundFile::type1() const
 {
 	int mapSize = map.size(), tilePos=0;
@@ -109,13 +141,13 @@ QImage BackgroundFile::type1() const
 	int largeurMin=0, largeurMax=0, hauteurMin=0, hauteurMax=0, sizeOfTile = mapSize-map.lastIndexOf("\xff\x7f");
 	if(mapSize%sizeOfTile != 0)	return QImage();
 
-//	qDebug() << "Type 1";
+	//	qDebug() << "Type 1";
 
 	while(tilePos+15 < mapSize)
 	{
 		memcpy(&tile, &constMapData[tilePos], sizeOfTile);
 		if(tile.X == 0x7fff) {
-//			qDebug() << "Fin des tiles" << tilePos << mapSize;
+			//			qDebug() << "Fin des tiles" << tilePos << mapSize;
 			break;
 		}
 		tilePos += sizeOfTile;
@@ -129,10 +161,10 @@ QImage BackgroundFile::type1() const
 			else if(tile.Y < 0 && -tile.Y > hauteurMin)
 				hauteurMin = -tile.Y;
 
-//			if(tile.parameter==255 || params.isEmpty() || params.contains(tile.parameter, tile.state))
-//			{
-				tiles.insert(4096-tile.Z, tile);
-//			}
+			//			if(tile.parameter==255 || params.isEmpty() || params.contains(tile.parameter, tile.state))
+			//			{
+			tiles.insert(4096-tile.Z, tile);
+			//			}
 		}
 	}
 
@@ -179,70 +211,70 @@ QImage BackgroundFile::type2(bool hideBG) const
 	qint16 color;
 	quint8 index, blendType;
 	const char *constMimData = mim.constData(), *constMapData = map.constData();
-//	QFile debug("C:/Users/vista/Documents/Deling/data/debug.txt");
-//	debug.open(QIODevice::WriteOnly);
+	//	QFile debug("C:/Users/vista/Documents/Deling/data/debug.txt");
+	//	debug.open(QIODevice::WriteOnly);
 
-//	QImage imageDebugPal(QSize(64, 1024), QImage::Format_RGB32);
-//	QRgb couleur;
-//	x=y=0;
-//	for(int i=2048 ; i<6144 ; ++i) {
-//		memcpy(&color, &constMimData[i*2], 2);
-//		couleur = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
+	//	QImage imageDebugPal(QSize(64, 1024), QImage::Format_RGB32);
+	//	QRgb couleur;
+	//	x=y=0;
+	//	for(int i=2048 ; i<6144 ; ++i) {
+	//		memcpy(&color, &constMimData[i*2], 2);
+	//		couleur = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
 
-//		imageDebugPal.setPixel(QPoint(x*4,y*4), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4,y*4+1), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4,y*4+2), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4,y*4+3), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4,y*4), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4,y*4+1), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4,y*4+2), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4,y*4+3), couleur);
 
-//		imageDebugPal.setPixel(QPoint(x*4+1,y*4), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4+1,y*4+1), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4+1,y*4+2), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4+1,y*4+3), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+1,y*4), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+1,y*4+1), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+1,y*4+2), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+1,y*4+3), couleur);
 
-//		imageDebugPal.setPixel(QPoint(x*4+2,y*4), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4+2,y*4+1), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4+2,y*4+2), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4+2,y*4+3), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+2,y*4), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+2,y*4+1), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+2,y*4+2), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+2,y*4+3), couleur);
 
-//		imageDebugPal.setPixel(QPoint(x*4+3,y*4), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4+3,y*4+1), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4+3,y*4+2), couleur);
-//		imageDebugPal.setPixel(QPoint(x*4+3,y*4+3), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+3,y*4), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+3,y*4+1), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+3,y*4+2), couleur);
+	//		imageDebugPal.setPixel(QPoint(x*4+3,y*4+3), couleur);
 
-//		++x;
-//		if(x==16){
-//			x=0;
-//			++y;
-//		}
-//	}
-//	imageDebugPal.save("C:/Users/vista/Documents/Deling/data/palette.png");
+	//		++x;
+	//		if(x==16){
+	//			x=0;
+	//			++y;
+	//		}
+	//	}
+	//	imageDebugPal.save("C:/Users/vista/Documents/Deling/data/palette.png");
 
-//	QImage imageDebugTex(QSize(1664/**2*/, 256), QImage::Format_RGB32);
-//	for(int pal=0 ; pal<16 ; ++pal) {
-//		int palStart2 = 4096+pal*512;
-//		x=y=0;
-//		for(int i=12288 ; i<438272 ; ++i) {
-//			memcpy(&color, &constMimData[palStart2+((quint8)mim.at(i)/*&0xF*/)*2], 2);
-//			imageDebugTex.setPixel(QPoint(x,y), qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR));
-//			++x;
-////			memcpy(&color, &constMimData[palStart2+((quint8)mim.at(i)>>4)*2], 2);
-////			imageDebugTex.setPixel(QPoint(x,y), qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR));
-////			++x;
-//			if(x==1664/**2*/){
-//				x=0;
-//				++y;
-//			}
-//		}
-//		imageDebugTex.save(QString("C:/Users/vista/Documents/Deling/data/texture%1.png").arg(pal));
-//	}
+	//	QImage imageDebugTex(QSize(1664/**2*/, 256), QImage::Format_RGB32);
+	//	for(int pal=0 ; pal<16 ; ++pal) {
+	//		int palStart2 = 4096+pal*512;
+	//		x=y=0;
+	//		for(int i=12288 ; i<438272 ; ++i) {
+	//			memcpy(&color, &constMimData[palStart2+((quint8)mim.at(i)/*&0xF*/)*2], 2);
+	//			imageDebugTex.setPixel(QPoint(x,y), qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR));
+	//			++x;
+	////			memcpy(&color, &constMimData[palStart2+((quint8)mim.at(i)>>4)*2], 2);
+	////			imageDebugTex.setPixel(QPoint(x,y), qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR));
+	////			++x;
+	//			if(x==1664/**2*/){
+	//				x=0;
+	//				++y;
+	//			}
+	//		}
+	//		imageDebugTex.save(QString("C:/Users/vista/Documents/Deling/data/texture%1.png").arg(pal));
+	//	}
 
-//	qDebug() << "Type 2" << mapSize;
+	//	qDebug() << "Type 2" << mapSize;
 
 	while(tilePos+15 < mapSize)
 	{
 		memcpy(&tile, &constMapData[tilePos], 16);
 		if(tile.X == 0x7fff) {
-//			qDebug() << "Fin des tiles" << tilePos << mapSize;
+			//			qDebug() << "Fin des tiles" << tilePos << mapSize;
 			break;
 		}
 
@@ -277,13 +309,13 @@ QImage BackgroundFile::type2(bool hideBG) const
 					tile.state = tileType1.state;
 				}
 
-	//			debug.write(
-	//				QString(QString("========== TILE %1 ==========\n").arg(tiles.size(),3)
-	//				+QString("X=%1 | Y=%2 | Z=%3\n").arg(tile.X,4).arg(tile.Y,4).arg(tile.Z,4)
-	//				+QString("texID=%1 | zz2=%2 | palID=%3\n").arg(tile.texID,2).arg(tile.blend2,2).arg(tile.palID,2)
-	//				+QString("srcX=%1 | srcY=%2 | layerID=%3\n").arg(tile.srcX,3).arg(tile.srcY,3).arg(tile.layerID,3)
-	//				+QString("blendType=%1 | parameter=%2 | state=%3\n").arg(tile.blendType,3).arg(tile.parameter,3).arg(tile.state,3)
-	//				).toLatin1());
+				//			debug.write(
+				//				QString(QString("========== TILE %1 ==========\n").arg(tiles.size(),3)
+				//				+QString("X=%1 | Y=%2 | Z=%3\n").arg(tile.X,4).arg(tile.Y,4).arg(tile.Z,4)
+				//				+QString("texID=%1 | zz2=%2 | palID=%3\n").arg(tile.texID,2).arg(tile.blend2,2).arg(tile.palID,2)
+				//				+QString("srcX=%1 | srcY=%2 | layerID=%3\n").arg(tile.srcX,3).arg(tile.srcY,3).arg(tile.layerID,3)
+				//				+QString("blendType=%1 | parameter=%2 | state=%3\n").arg(tile.blendType,3).arg(tile.parameter,3).arg(tile.state,3)
+				//				).toLatin1());
 				tiles.insert(4096-tile.Z, tile);
 			}
 		}

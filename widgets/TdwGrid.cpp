@@ -78,7 +78,7 @@ void TdwGrid::paintEvent(QPaintEvent *)
 
 	if(isEnabled()) {
 		// Draw selection frame
-		p.setPen(Qt::red);
+		p.setPen(hasFocus() ? Qt::red : QColor(0xff,0x7f,0x7f));
 
 		QPoint selection = getPos(_letter);
 		p.drawLine(QLine(selection, selection + QPoint(0, cellSize)));
@@ -162,4 +162,16 @@ void TdwGrid::keyPressEvent(QKeyEvent *e)
 	}
 
 	QWidget::keyPressEvent(e);
+}
+
+void TdwGrid::focusInEvent(QFocusEvent *)
+{
+	const int cellSize = 15;
+	update(QRect(getPos(_letter), QSize(cellSize, cellSize)));
+}
+
+void TdwGrid::focusOutEvent(QFocusEvent *)
+{
+	const int cellSize = 15;
+	update(QRect(getPos(_letter), QSize(cellSize, cellSize)));
 }

@@ -37,6 +37,8 @@ protected:
 	virtual void mousePressEvent(QMouseEvent * e);
 	virtual void keyPressEvent(QKeyEvent *e);
 	virtual void paintEvent(QPaintEvent *e);
+	virtual void focusInEvent(QFocusEvent *);
+	virtual void focusOutEvent(QFocusEvent *);
 private:
 	static int getLetter(const QPoint &pos);
 	//QPixmap copyGrid;

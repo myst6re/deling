@@ -54,12 +54,14 @@ public:
 	void setType(Type);
 	void setCharacter(int);
 	void setModelId(int);
+	void setBackgroundParamId(int);
 	void setName(const QString &);
 	void incLabel(int=1);
 	void incScriptCount(int=1);
 	Type type() const;
 	int character() const;
 	int modelId() const;
+	int backgroundParamId() const;
 	const QString &name() const;
 	quint16 execOrder() const;
 	quint16 label() const;
@@ -67,7 +69,7 @@ public:
 private:
 	Type _type;
 	int _character;
-	int _modelID;
+	int _modelID, _backgroundParamID;
 	QString _name;
 	quint16 _exec_order, _label;
 	quint8 _script_count;
@@ -93,6 +95,7 @@ public:
 	void setGroupName(int groupID, const QString &name);
 	void setGroupCharacter(int groupID, int character);
 	void setGroupModelId(int groupID, int modelID);
+	void setGroupBackgroundParamId(int groupID, int backgroundParamID);
 	void setGroupType(int groupID, JsmGroup::Type type);
 	int firstMethodID(int groupID) const;
 	// Scripts

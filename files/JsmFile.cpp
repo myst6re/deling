@@ -472,8 +472,10 @@ void JsmFile::searchGroupTypes()
 //	qDebug() << "JsmFile::searchGroupTypes";
 	unsigned int key;
 	int param;
-	int nbGroup=scripts.nbGroup(), nbOpcode, methodCount, pos, character, model_id;
+	int nbGroup=scripts.nbGroup(), nbOpcode, methodCount, pos, character, model_id, bg_id;
 	bool main_type, location_type, door_type, bg_type;
+
+	bg_id = 0;
 
 	for(int groupID=0; groupID < nbGroup ; ++groupID) {
 		const JsmGroup &jsmGroup = scripts.group(groupID);
@@ -551,6 +553,7 @@ void JsmFile::searchGroupTypes()
 			scripts.setGroupType(groupID, JsmGroup::Door);
 		}
 		else if(bg_type) {
+			scripts.setGroupBackgroundParamId(groupID, bg_id++);
 			scripts.setGroupType(groupID, JsmGroup::Background);
 		}
 	}

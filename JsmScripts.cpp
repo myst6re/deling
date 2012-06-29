@@ -72,7 +72,8 @@ JsmGroup::JsmGroup() {
 }
 
 JsmGroup::JsmGroup(quint16 exec_order, quint16 label, quint8 script_count)
-	: _type(No), _character(-1), _modelID(-1), _exec_order(exec_order), _label(label), _script_count(script_count)
+	: _type(No), _character(-1), _modelID(-1), _backgroundParamID(-1),
+	  _exec_order(exec_order), _label(label), _script_count(script_count)
 {
 }
 
@@ -86,6 +87,10 @@ void JsmGroup::setCharacter(int character) {
 
 void JsmGroup::setModelId(int modelID) {
 	_modelID = modelID;
+}
+
+void JsmGroup::setBackgroundParamId(int backgroundParamID) {
+	_backgroundParamID = backgroundParamID;
 }
 
 void JsmGroup::setName(const QString &name) {
@@ -116,6 +121,10 @@ int JsmGroup::modelId() const {
 	return _modelID;
 }
 
+int JsmGroup::backgroundParamId() const {
+	return _backgroundParamID;
+}
+
 const QString &JsmGroup::name() const {
 	return _name;
 }
@@ -138,7 +147,8 @@ JsmScripts::JsmScripts()
 
 JsmScripts::JsmScripts(const QList<JsmGroup> &groupList, const QList<JsmScript> &scriptList, const JsmData &scriptData,
 					   quint8 countDoors, quint8 countLines, quint8 countBackgrounds, quint8 countOthers) :
-	groupList(groupList), scriptList(scriptList), scriptData(scriptData), _countDoors(countDoors), _countLines(countLines), _countBackgrounds(countBackgrounds), _countOthers(countOthers)
+	groupList(groupList), scriptList(scriptList), scriptData(scriptData), _countDoors(countDoors),
+	_countLines(countLines), _countBackgrounds(countBackgrounds), _countOthers(countOthers)
 {
 }
 
@@ -195,6 +205,11 @@ void JsmScripts::setGroupCharacter(int groupID, int character)
 void JsmScripts::setGroupModelId(int groupID, int modelID)
 {
 	groupList[groupID].setModelId(modelID);
+}
+
+void JsmScripts::setGroupBackgroundParamId(int groupID, int backgroundParamID)
+{
+	groupList[groupID].setBackgroundParamId(backgroundParamID);
 }
 
 void JsmScripts::setGroupType(int groupID, JsmGroup::Type type)

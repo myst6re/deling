@@ -51,10 +51,13 @@ void TdwLetter::paintEvent(QPaintEvent *)
 	}
 
 	if(tdwFile) {
-		p.drawImage(QPoint(0, 0), tdwFile->letter(_currentTable, _letter, _color, true).scaled(QSize(12*PIXEL_SIZE, 12*PIXEL_SIZE), Qt::KeepAspectRatio));
-		int linePos = tdwFile->charWidth(_currentTable, _letter) * PIXEL_SIZE;
-		p.setPen(Qt::red);
-		p.drawLine(QPoint(linePos, 0), QPoint(linePos, height()));
+		QImage letter = tdwFile->letter(_currentTable, _letter, _color, true);
+		if(!letter.isNull()) {
+			p.drawImage(QPoint(0, 0), letter.scaled(QSize(12*PIXEL_SIZE, 12*PIXEL_SIZE), Qt::KeepAspectRatio));
+			int linePos = tdwFile->charWidth(_currentTable, _letter) * PIXEL_SIZE;
+			p.setPen(Qt::red);
+			p.drawLine(QPoint(linePos, 0), QPoint(linePos, height()));
+		}
 	}
 }
 

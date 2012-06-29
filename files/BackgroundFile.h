@@ -63,6 +63,7 @@ public:
 	bool isModified() const;
 
 	QImage background(bool hideBG=false) const;
+	QImage background(const QList<quint8> &activeParams, bool hideBG=false);
 
 	QMultiMap<quint8, quint8> params;
 	QMultiMap<quint8, quint8> allparams;

@@ -219,12 +219,17 @@ void JsmWidget::fillList2()
 	list2->resizeColumnToContents(1);
 	list2->resizeColumnToContents(2);
 
-	int modelID = data()->getJsmFile()->getScripts().group(groupID).modelId();
+	const JsmGroup &group = data()->getJsmFile()->getScripts().group(groupID);
+	int modelID = group.modelId(), bgParamID = group.backgroundParamId();
 
 	if(modelID != -1 && data()->hasCharaFile()
 			&& modelID < data()->getCharaFile()->modelCount()) {
 		modelPreview->setEnabled(true);
 		modelPreview->setModel(data()->getCharaFile()->model(modelID));
+	} else if(bgParamID != -1 && data()->hasBackgroundFile()
+			  && data()->getBackgroundFile()->allparams.contains(bgParamID)) {
+		modelPreview->setEnabled(true);
+		modelPreview->fill(QPixmap::fromImage(data()->getBackgroundFile()->background(QList<quint8>() << bgParamID, true)));
 	} else {
 		modelPreview->setEnabled(false);
 		modelPreview->clear();
