@@ -135,7 +135,7 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 
 	openModels();
 
-	Config::setValue("jp", false);
+	Config::setValue("encoding", "00");
 
 	return 0;
 }

@@ -29,6 +29,7 @@ public:
 	ConfigDialog(QWidget *parent=0);
 private slots:
 	void setAppPath();
+	void manageEncoding();
 	void saveConfig();
 private:
 	void fillMenuLang();
@@ -37,7 +38,7 @@ private:
 	QComboBox *langComboBox;
 	QCheckBox *useRegAppPath;
 	QLineEdit *appPathLine;
-	QRadioButton *encodingRadio2;
+	QComboBox *encodingComboBox;
 	QCheckBox *hideUnusedTexts;
 };
 

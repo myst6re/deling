@@ -73,8 +73,7 @@ SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
 	Config.cpp \
-    FF8Text.cpp \
-    text.cpp \
+	FF8Text.cpp \
 	FieldArchive.cpp \
     LZS.cpp \
     Search.cpp \

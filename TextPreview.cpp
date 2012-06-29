@@ -20,7 +20,6 @@
 bool TextPreview::curFrame = true;
 QImage TextPreview::iconImage;
 TdwFile *TextPreview::font;
-TdwFile *TextPreview::jpFont;
 TdwFile *TextPreview::tdwFile = NULL;
 
 TextPreview::TextPreview(QWidget *parent)
@@ -32,14 +31,7 @@ TextPreview::TextPreview(QWidget *parent)
 
 	if(names.isEmpty()) {
 		iconImage = QImage(":/images/icons.png");
-		font = Data::font("sysfnt")->tdw;
-		if(font == NULL) {
-			qWarning() << "aie1";
-		}
-		jpFont = Data::font("sysfnt_jp")->tdw;
-		if(jpFont == NULL) {
-			qWarning() << "aie2";
-		}
+		reloadFont();
 
 		bool jp = tr("false", "Use Japanese Encoding") == "true";
 		names << FF8Text::toFF8(Data::name(0), jp) << FF8Text::toFF8(Data::name(1), jp)
@@ -112,6 +104,16 @@ void TextPreview::clear()
 	ff8Text.clear();
 	ff8Windows.clear();
 	maxW=maxH=0;
+}
+
+void TextPreview::reloadFont()
+{
+	FF8Font *ff8Font = Data::font(Config::value("encoding", "00").toString());
+	if(!ff8Font) {
+		font = Data::font("00")->tdw;
+	} else {
+		font = ff8Font->tdw;
+	}
 }
 
 void TextPreview::setWins(const QList<FF8Window> &windows, bool update)
@@ -218,7 +220,7 @@ void TextPreview::calcSize()
 	pagesPos.clear();
 	pagesPos.append(0);
 	quint8 caract;
-	bool jp = Config::value("jp").toBool();
+	bool jp = font->tableCount() == 4;
 	if(!ff8Windows.isEmpty()) {
 		FF8Window ff8Window = ff8Windows.at(currentWin);
 
@@ -276,19 +278,25 @@ void TextPreview::calcSize()
 				width += locationsWidth[caract-0x20];
 			break;
 		case 0x19: // Jap 1
-			caract = (quint8)ff8Text.at(++i);
-			if(caract>=0x20)
-				width += jpFont->charWidth(1, caract-0x20);
+			if(jp) {
+				caract = (quint8)ff8Text.at(++i);
+				if(caract>=0x20)
+					width += font->charWidth(1, caract-0x20);
+			}
 			break;
 		case 0x1a: // Jap 2
-			caract = (quint8)ff8Text.at(++i);
-			if(caract>=0x20)
-				width += jpFont->charWidth(2, caract-0x20);
+			if(jp) {
+				caract = (quint8)ff8Text.at(++i);
+				if(caract>=0x20)
+					width += font->charWidth(2, caract-0x20);
+			}
 			break;
 		case 0x1b: // Jap 3
-			caract = (quint8)ff8Text.at(++i);
-			if(caract>=0x20)
-				width += jpFont->charWidth(3, caract-0x20);
+			if(jp) {
+				caract = (quint8)ff8Text.at(++i);
+				if(caract>=0x20)
+					width += font->charWidth(3, caract-0x20);
+			}
 			break;
 		case 0x1c: // Jap 4
 			if(tdwFile) {
@@ -301,7 +309,7 @@ void TextPreview::calcSize()
 			if(caract<0x20)
 				++i;
 			else if(jp) {
-				width += jpFont->charWidth(0, caract-0x20);
+				width += font->charWidth(0, caract-0x20);
 			} else {
 				if(caract<232)
 					width += font->charWidth(0, caract-0x20);
@@ -342,7 +350,7 @@ void TextPreview::drawTextArea(QPainter *painter)
 
 	if(ff8Text.isEmpty())	return;
 
-	bool jp = Config::value("jp").toBool();
+	bool jp = font->tableCount() == 4;
 	FF8Window ff8Window = getWindow();
 
 	/* Window Background */
@@ -398,7 +406,7 @@ void TextPreview::drawTextArea(QPainter *painter)
 		if(charId>=32)
 		{
 			if(jp) {
-				letter(&x, &y, charId-32, painter, 1);// 210-32
+				letter(&x, &y, charId-32, painter);// 210-32
 			} else {
 				if(charId<227) {
 					letter(&x, &y, charId-32, painter);
@@ -467,16 +475,24 @@ void TextPreview::drawTextArea(QPainter *painter)
 					word(&x, &y, locations.at(charId-0x20), painter);
 				break;
 			case 0x19: // Jap 1
-				letter(&x, &y, (quint8)ff8Text.at(i)-0x20, painter, 2);
+				if(jp) {
+					letter(&x, &y, (quint8)ff8Text.at(i)-0x20, painter, 1);
+				}
 				break;
 			case 0x1a: // Jap 2
-				letter(&x, &y, (quint8)ff8Text.at(i)-0x20, painter, 3);
+				if(jp) {
+					letter(&x, &y, (quint8)ff8Text.at(i)-0x20, painter, 2);
+				}
 				break;
 			case 0x1b: // Jap 3
-				letter(&x, &y, (quint8)ff8Text.at(i)-0x20, painter, 4);
+				if(jp) {
+					letter(&x, &y, (quint8)ff8Text.at(i)-0x20, painter, 3);
+				}
 				break;
 			case 0x1c: // Jap 4
-				letter(&x, &y, (quint8)ff8Text.at(i)-0x20, painter, 5);
+				if(jp) {
+					letter(&x, &y, (quint8)ff8Text.at(i)-0x20, painter, 4);
+				}
 				break;
 			}
 		}
@@ -584,10 +600,8 @@ void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 t
 		if(tdwFile) {
 			image = tdwFile->letter(0, charId, fontColor, curFrame);
 		}
-	} else if(tableId == 0) {
-		image = font->letter(0, charId, fontColor, curFrame);
 	} else {
-		image = jpFont->letter(tableId - 1, charId, fontColor, curFrame);
+		image = font->letter(tableId, charId, fontColor, curFrame);
 	}
 
 	if(!image.isNull()) {
@@ -598,10 +612,8 @@ void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 t
 		if(tdwFile) {
 			*x += tdwFile->charWidth(0, charId);
 		}
-	} else if(tableId == 0) {
-		*x += font->charWidth(0, charId);
 	} else {
-		*x += jpFont->charWidth(tableId - 1, charId);
+		*x += font->charWidth(tableId, charId);
 	}
 }
 

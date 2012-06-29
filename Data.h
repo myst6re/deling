@@ -34,12 +34,13 @@ public:
 	static QString AppPath();
 	static bool listFonts();
 	static QStringList fontList();
-	static FF8Font *font(const QString &name);
+	static FF8Font *font(QString name);
 	static const char *location(int i);
 	static const char *name(int i);
 	static const char *magic(int i);
 	static QStringList maplist();
 private:
+	static FF8Font *openFont(const QString &tdwPath, const QString &txtPath);
 	static const char *locations[LOC_COUNT];
 	static const char *names[NAM_COUNT];
 	static const char *_magic[];

@@ -114,7 +114,7 @@ int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 
 	openModels();
 
-	Config::setValue("jp", iso->isJp());
+	Config::setValue("encoding", iso->isJp() ? "01" : "00");
 
 	return 0;
 }

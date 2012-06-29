@@ -35,13 +35,13 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 	appPathLayout->addWidget(appPathButton);
 
 	QLabel *encodingLabel = new QLabel(tr("Encodage des textes"), this);
-	QWidget *encodingGroup = new QWidget(this);
-	QRadioButton *encodingRadio1 = new QRadioButton(tr("Latin"), encodingGroup);
-	encodingRadio2 = new QRadioButton(tr("Japonais"), encodingGroup);
-	QHBoxLayout *encodingLayout = new QHBoxLayout(encodingGroup);
-	encodingLayout->addWidget(encodingRadio1);
-	encodingLayout->addWidget(encodingRadio2);
-	encodingLayout->addStretch();
+	encodingComboBox = new QComboBox(this);
+	encodingComboBox->addItem(tr("Latin"), "00");
+	encodingComboBox->addItem(tr("Japonais"), "01");
+	QPushButton *encodingManage = new QPushButton(tr("Gérer"), this);
+	QHBoxLayout *encodingLayout = new QHBoxLayout();
+	encodingLayout->addWidget(encodingComboBox, 1);
+	encodingLayout->addWidget(encodingManage);
 	encodingLayout->setContentsMargins(QMargins());
 
 //	hideUnusedTexts = new QCheckBox(tr("Cacher les textes inutilisés"), this);
@@ -60,7 +60,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 	layout->addWidget(appPathLabel, 1, 0);
 	layout->addLayout(appPathLayout, 1, 1);
 	layout->addWidget(encodingLabel, 2, 0);
-	layout->addWidget(encodingGroup, 2, 1);
+	layout->addLayout(encodingLayout, 2, 1);
 //	layout->addWidget(hideUnusedTexts, 3, 0, 1, 2);
 	layout->addLayout(buttonsLayout, 4, 0, 1, 2, Qt::AlignRight);
 
@@ -74,12 +74,21 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 		appPath = Data::AppPath();
 	}
 	appPathLine->setText(appPath);
-	if(Config::value("jp").toBool())
-		encodingRadio2->setChecked(true);
-	else
-		encodingRadio1->setChecked(true);
+
+	foreach(const QString &fontName, Data::fontList()) {
+		if(fontName == "00" || fontName == "01")	continue;
+		FF8Font *font = Data::font(fontName);
+		if(font) {
+			encodingComboBox->addItem(font->name(), fontName);
+		}
+	}
+
+	int indexOfData;
+	indexOfData = encodingComboBox->findData(Config::value("encoding", "00"));
+	encodingComboBox->setCurrentIndex(indexOfData != -1 ? indexOfData : 0);
 //	hideUnusedTexts->setChecked(Config::value("hideUnusedTexts").toBool());
 
+	connect(encodingManage, SIGNAL(clicked()), SLOT(manageEncoding()));
 	connect(appPathButton, SIGNAL(clicked()), SLOT(setAppPath()));
 	connect(okButton, SIGNAL(clicked()), SLOT(saveConfig()));
 	connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
@@ -116,6 +125,11 @@ void ConfigDialog::setAppPath()
 	}
 }
 
+void ConfigDialog::manageEncoding()
+{
+
+}
+
 void ConfigDialog::restartNow()
 {
 	QString str_title, str_text;
@@ -138,7 +152,7 @@ void ConfigDialog::saveConfig()
 	Config::setValue("lang", langComboBox->itemData(langComboBox->currentIndex()));
 	Config::setValue("dontUseRegAppPath", !useRegAppPath->isChecked());
 	Config::setValue("appPath", appPathLine->text());
-	Config::setValue("jp", encodingRadio2->isChecked());
+	Config::setValue("encoding", encodingComboBox->itemData(encodingComboBox->currentIndex()));
 //	Config::setValue("hideUnusedTexts", hideUnusedTexts->isChecked());
 
 	if(oldLang != Config::value("lang").toString()) {

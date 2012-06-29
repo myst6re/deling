@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 		Config::setValue("lang", "fr");
 	
 	if(!Data::listFonts()) {
-		QMessageBox::critical(0, QObject::tr("Chargement des données"), QObject::tr("Les polices de caractères n'ont pas pu être chargées !\nVérifiez bien que vous avez des fichiers *.tdw à côté de l'exécutable."));
+		QMessageBox::critical(0, QObject::tr("Chargement des données"), QObject::tr("Les polices de caractères n'ont pas pu être chargées !"));
 		return -1;
 	}
 

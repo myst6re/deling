@@ -20,6 +20,7 @@
 
 #include <QtCore>
 #include "Config.h"
+#include "Data.h"
 
 class FF8Text : public QString
 {
@@ -27,18 +28,17 @@ public:
 	FF8Text();
 	FF8Text(const QString &str);
 	FF8Text(const char *str);
-	FF8Text(const QByteArray &ba, bool jp);
-	QByteArray toFF8(bool jp) const;
-	static QString fromFF8(const QByteArray &ff8str, bool jp);
+	FF8Text(const QByteArray &ba);
+	FF8Text(const QByteArray &ba, const QList<QStringList> &tables);
 	static QByteArray toFF8(const QString &string, bool jp);
-	static QString caract(quint8 ord, quint8 table=0);
-
+	QByteArray toFF8() const;
+	QString caract(quint8 ord, quint8 table=0) const;
+	static QString getCaract(quint8 ord, quint8 table=0, bool jp=false);
+	void setTables(const QList<QStringList> &tables);
 private:
-	static const char *_caract[240];
-	static const char *_caractJp[240];
-	static const char *_caractJp19[240];
-	static const char *_caractJp1a[240];
-	static const char *_caractJp1b[240];
+	QString fromFF8(const QByteArray &ff8str);
+	static const QList<QStringList> &getCurrentConfigTable();
+	QList<QStringList> tables;
 	static const char *names[14];
 	static const char *colors[16];
 	static const char *locations[8];

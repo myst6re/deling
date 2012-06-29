@@ -32,6 +32,7 @@ class TextPreview : public QWidget
 public:
 	explicit TextPreview(QWidget *parent=0);
 	void clear();
+	static void reloadFont();
 	void setWins(const QList<FF8Window> &windows, bool update=true);
 	void resetCurrentWin();
 	int getCurrentWin();
@@ -68,7 +69,7 @@ private:
 	QPoint moveStartPosition;
 	TdwFile::Color fontColor;
 
-	static TdwFile *font, *jpFont;
+	static TdwFile *font;
 	static TdwFile *tdwFile;
 	static QImage iconImage;
 

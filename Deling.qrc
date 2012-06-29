@@ -91,5 +91,7 @@
         <file>images/deling_city.png</file>
         <file>fonts/sysfnt_jp.tdw</file>
         <file>fonts/sysfnt.tdw</file>
+        <file>fonts/sysfnt.txt</file>
+        <file>fonts/sysfnt_jp.txt</file>
     </qresource>
 </RCC>

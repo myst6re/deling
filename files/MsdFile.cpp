@@ -109,14 +109,13 @@ QByteArray MsdFile::data(int id) const
 
 FF8Text MsdFile::text(int id) const
 {
-	return FF8Text(data(id), Config::value("jp").toBool());
+	return FF8Text(data(id));
 }
 
 void MsdFile::setText(int id, const FF8Text &text)
 {
 	if(id>=0 && id<nbText()) {
-		bool jp = Config::value("jp").toBool();
-		texts.replace(id, text.toFF8(jp));
+		texts.replace(id, text.toFF8());
 		modified = true;
 	}
 }
