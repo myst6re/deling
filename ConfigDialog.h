@@ -21,6 +21,7 @@
 #include <QtGui>
 #include "Config.h"
 #include "Data.h"
+#include "TdwManagerDialog.h"
 
 class ConfigDialog : public QDialog
 {

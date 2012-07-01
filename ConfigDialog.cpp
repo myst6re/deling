@@ -21,6 +21,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 	: QDialog(parent, Qt::Dialog | Qt::WindowCloseButtonHint)
 {
 	setWindowTitle(tr("Configuration"));
+	setSizeGripEnabled(true);
 
 	QLabel *langLabel = new QLabel(tr("Langue"), this);
 	langComboBox = new QComboBox(this);
@@ -127,7 +128,8 @@ void ConfigDialog::setAppPath()
 
 void ConfigDialog::manageEncoding()
 {
-
+	TdwManagerDialog tdwManager(this);
+	tdwManager.exec();
 }
 
 void ConfigDialog::restartNow()

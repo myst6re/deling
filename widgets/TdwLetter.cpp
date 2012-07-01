@@ -18,7 +18,7 @@
 #include "TdwLetter.h"
 
 TdwLetter::TdwLetter(QWidget *parent) :
-	TdwDisplay(parent), startDrag(false)
+	TdwDisplay(parent), readOnly(false), startDrag(false)
 {
 	setFixedSize(16*PIXEL_SIZE, 12*PIXEL_SIZE);
 	setMouseTracking(true);
@@ -28,15 +28,23 @@ TdwLetter::~TdwLetter()
 {
 }
 
+void TdwLetter::setReadOnly(bool ro)
+{
+	readOnly = ro;
+	setMouseTracking(!readOnly);
+}
+
 void TdwLetter::setLetter(int letter)
 {
-	copyLetter = tdwFile->letter(_currentTable, letter, _color, true);
+	if(tdwFile) {
+		copyLetter = tdwFile->letter(_currentTable, letter, _color, true);
+	}
 	TdwDisplay::setLetter(letter);
 }
 
 void TdwLetter::reset()
 {
-	if(copyLetter.isNull())		return;
+	if(copyLetter.isNull() || !tdwFile)		return;
 	tdwFile->setLetter(_currentTable, _letter, copyLetter);
 	update();
 }
@@ -68,6 +76,8 @@ QPoint TdwLetter::getPixel(const QPoint &pos)
 
 void TdwLetter::mouseMoveEvent(QMouseEvent *e)
 {
+	if(readOnly || !tdwFile)	return;
+
 	const QPoint &mousePos = e->pos();
 	int linePos = tdwFile->charWidth(_currentTable, _letter) * PIXEL_SIZE;
 
@@ -96,6 +106,8 @@ void TdwLetter::mouseMoveEvent(QMouseEvent *e)
 
 void TdwLetter::mousePressEvent(QMouseEvent *e)
 {
+	if(readOnly || !tdwFile)	return;
+
 	QPoint pixel = getPixel(e->pos());
 
 	int linePos = tdwFile->charWidth(_currentTable, _letter) * PIXEL_SIZE;
@@ -110,5 +122,7 @@ void TdwLetter::mousePressEvent(QMouseEvent *e)
 
 void TdwLetter::mouseReleaseEvent(QMouseEvent *)
 {
+	if(readOnly)	return;
+
 	startDrag = false;
 }

@@ -30,6 +30,7 @@ class TdwLetter : public TdwDisplay
 public:
 	explicit TdwLetter(QWidget *parent=0);
 	virtual ~TdwLetter();
+	void setReadOnly(bool ro);
 public slots:
 	void setLetter(int letter);
 	void reset();
@@ -43,7 +44,7 @@ protected:
 private:
 	QPoint getPixel(const QPoint &pos);
 	QImage copyLetter;
-	bool startDrag;
+	bool readOnly, startDrag;
 };
 
 #endif // TDWLETTER_H

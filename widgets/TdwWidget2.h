@@ -15,28 +15,43 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef TDWWIDGET_H
-#define TDWWIDGET_H
+#ifndef TDWWIDGET2_H
+#define TDWWIDGET2_H
 
 #include <QtGui>
-#include "widgets/PageWidget.h"
-#include "widgets/TdwWidget2.h"
+#include "widgets/TdwGrid.h"
+#include "widgets/TdwLetter.h"
+#include "FF8Text.h"
 
-class TdwWidget : public PageWidget
+class TdwWidget2 : public QWidget
 {
 	Q_OBJECT
 public:
-	TdwWidget(QWidget *parent=0);
+	TdwWidget2(bool isAdditionnalTable, QWidget *parent=0);
 	void clear();
+	void setTdwFile(TdwFile *tdw);
+	void setIsAdditionnalTable(bool isAdditionnalTable);
 	void setReadOnly(bool ro);
-	void fill();
-	inline QString tabName() const { return tr("Caractères additionnels"); }
+signals:
+	void letterEdited();
+public slots:
+	void setColor(int i);
+	void setTable(int i);
+	void setLetter(int i);
+	void reset();
+	void resetLetter();
+private slots:
+	void setModified();
 private:
-	void build();
-	TdwWidget2 *tdwWidget;
+	bool isAdditionnalTable;
+	TdwGrid *tdwGrid;
+	TdwLetter *tdwLetter;
+	QComboBox *selectPal, *selectTable;
+	QLineEdit *textLetter;
+	QPushButton *resetButton2;
 protected:
 	void focusInEvent(QFocusEvent *);
 
 };
 
-#endif // TDWWIDGET_H
+#endif // TDWWIDGET2_H

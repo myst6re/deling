@@ -32,7 +32,6 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 
 	if(timOffset == 0xFFFFFFFF) {
 		memcpy(&modelOffset, constData, 4);
-		constData += 4;
 
 		qDebug() << "model data offset" << QString::number(modelOffset, 16);
 

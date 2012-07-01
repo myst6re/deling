@@ -22,6 +22,7 @@ MiscSearch::MiscSearch(FieldArchive *fieldArchive, QWidget *parent)
 {
 	setWindowTitle(tr("Rechercher tout"));
 	setWindowModality(Qt::NonModal);
+	setSizeGripEnabled(true);
 	QFont font;
 	font.setPointSize(8);
 

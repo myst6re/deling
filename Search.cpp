@@ -24,7 +24,7 @@ Search::Search(QTreeWidget *fieldList, QWidget *parent)
 	textID = from = groupID = methodID = opcodeID = 0;
 	setWindowTitle(tr("Rechercher"));
 	setWindowModality(Qt::NonModal);
-//	activateWindow();
+	setSizeGripEnabled(true);
 
 	tabWidget = new QTabWidget(this);
 	tabWidget->addTab(textPageWidget(), tr("Textes"));
