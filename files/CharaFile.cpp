@@ -76,7 +76,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 			constData += 4;
 			if(modelID == 0) {
 				QString name(one.mid(constData - startData, 8));
-				qDebug() << name;
+//				qDebug() << name;
 				constData += 8;
 				memcpy(&modelID, constData, 4);
 				constData += 4;

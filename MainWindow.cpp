@@ -209,6 +209,8 @@ bool MainWindow::openArchive(const QString &path)
 
 	qDebug() << "openTime" << t.elapsed() << "ms";
 
+	TextPreview::reloadFont();
+
 	setReadOnly(fieldArchive->isReadOnly());
 	if(error == 0) {
 		QList<QTreeWidgetItem *> items;

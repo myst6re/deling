@@ -415,11 +415,11 @@ void FF8Text::setTables(const QList<QStringList> &tables)
 
 const QList<QStringList> &FF8Text::getCurrentConfigTable()
 {
-	int font = (int)Config::value("jp", false).toBool();
+	QString font = Config::value("encoding", "00").toString();
 
 	QStringList fontL = ::Data::fontList();
-	if(font < fontL.size()) {
-		return ::Data::font(fontL.at(font))->tables;
+	if(fontL.contains(font)) {
+		return ::Data::font(font)->tables;
 	}
 	return ::Data::font(fontL.first())->tables;
 }

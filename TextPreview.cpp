@@ -596,7 +596,7 @@ void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 t
 {
 	QImage image;
 
-	if(tableId == 5) {
+	if(tableId >= 4) {
 		if(tdwFile) {
 			image = tdwFile->letter(0, charId, fontColor, curFrame);
 		}
@@ -608,7 +608,7 @@ void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 t
 		painter->drawImage(*x, *y, image);
 	}
 
-	if(tableId == 5) {
+	if(tableId >= 4) {
 		if(tdwFile) {
 			*x += tdwFile->charWidth(0, charId);
 		}

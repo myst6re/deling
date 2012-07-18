@@ -400,7 +400,6 @@ void MsdWidget::fillTextEdit(QListWidgetItem *item)
 	if(!hasData() || !data()->hasMsdFile())	return;
 
 	int textID = item->data(Qt::UserRole).toInt();
-
 	QString text = data()->getMsdFile()->text(textID);
 	dontUpdateCurrentText = true;
 	textEdit->setPlainText(text);
@@ -520,8 +519,8 @@ void MsdWidget::insertTag(QAction *action)
 
 void MsdWidget::updateCurrentText()
 {
+//	qDebug() << "MsdWidget::updateCurrentText";
 	if(dontUpdateCurrentText || !hasData() || !data()->hasMsdFile())	return;
-//	qDebug() << "textEdited";
 
 	emit modified();
 	data()->getMsdFile()->setText(textList->currentRow(), textEdit->toPlainText());
