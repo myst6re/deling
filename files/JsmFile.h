@@ -72,6 +72,7 @@ public:
 	QList<int> searchAllSpells(const QString &fieldName) const;
 	QList<int> searchAllMoments() const;
 	void searchAllOpcodeTypes(QMap<int, int> &ret) const;
+	void searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const;
 
 	bool hasSym() const;
 	bool isModified() const;
@@ -98,7 +99,6 @@ private:
 
 	void searchWindows();
 	QList<qint32> searchJumps(int groupID, int methodID) const;
-	void searchMapID();
 	void searchGroupTypes();
 
 	JsmScripts scripts;

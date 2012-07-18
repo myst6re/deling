@@ -140,7 +140,6 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data)
 						 jsm_header.count0, jsm_header.count1, jsm_header.count2, jsm_header.count3);
 
 	searchWindows();
-	searchMapID();
 	searchGroupTypes();
 
 	_hasSym = openSym(sym_data);
@@ -450,21 +449,36 @@ QList<qint32> JsmFile::searchJumps(int position, int nbOpcode) const
 	return labels;
 }
 
-void JsmFile::searchMapID()
+void JsmFile::searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const
 {
-//	qDebug() << "JsmFile::searchMapID";
-	int nbOpcode = scripts.data().nbOpcode();
+//	qDebug() << "JsmFile::searchDefaultBGStates";
+	int nbGroup = scripts.nbGroup(), nbOpcode;
 
-	for(int i=1 ; i<nbOpcode ; ++i) {
-		switch(scripts.key(i)) {
-		case JsmOpcode::SETPLACE:
-			if(scripts.key(i-1) == JsmOpcode::PSHN_L)
-				_mapID = scripts.param(i-1);
-			return;
+	for(int groupID=0 ; groupID < nbGroup ; ++groupID) {
+		const JsmGroup &jsmGroup = scripts.group(groupID);
+		int methodCount = (int)jsmGroup.scriptCount();
+
+		if(jsmGroup.type() == JsmGroup::Background) {
+			for(int methodID=0 ; methodID < methodCount && methodID < 2 ; ++methodID) {
+				int pos = scripts.posScript(groupID, methodID, &nbOpcode);
+
+				for(int opcodeID=0 ; opcodeID < nbOpcode ; ++opcodeID) {
+					switch(scripts.key(pos + opcodeID)) {
+					case JsmOpcode::BGDRAW:
+						if(scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L)
+							params.insert(jsmGroup.backgroundParamId(), scripts.param(pos + opcodeID - 1));
+						break;
+					case JsmOpcode::RBGANIMELOOP:
+						params.insert(jsmGroup.backgroundParamId(), 0);
+						break;
+					case JsmOpcode::RBGSHADELOOP:
+						params.insert(jsmGroup.backgroundParamId(), 0);
+						break;
+					}
+				}
+			}
 		}
 	}
-
-	_mapID = -1;
 }
 
 void JsmFile::searchGroupTypes()
@@ -474,64 +488,66 @@ void JsmFile::searchGroupTypes()
 	int param;
 	int nbGroup=scripts.nbGroup(), nbOpcode, methodCount, pos, character, model_id, bg_id;
 	bool main_type, location_type, door_type, bg_type;
+	QMap<quint16, int> bgExecOrder;
 
-	bg_id = 0;
+	_mapID = -1;
 
-	for(int groupID=0; groupID < nbGroup ; ++groupID) {
+	for(int groupID=0 ; groupID < nbGroup ; ++groupID) {
 		const JsmGroup &jsmGroup = scripts.group(groupID);
 		methodCount = (int)jsmGroup.scriptCount();
 		main_type = location_type = door_type = bg_type = false;
 		character = model_id = -1;
 
-		for(int methodID=0 ; methodID < methodCount && !location_type && !door_type && !bg_type ; ++methodID) {
+		for(int methodID=0 ; methodID < methodCount && !location_type && !door_type ; ++methodID) {
 			pos = scripts.posScript(groupID, methodID, &nbOpcode);
 
-			for(int opcodeID=0 ; opcodeID < nbOpcode && !location_type && !door_type && !bg_type ; ++opcodeID) {
+			for(int opcodeID=0 ; opcodeID < nbOpcode && !location_type && !door_type ; ++opcodeID) {
 				JsmOpcode op = scripts.opcode(pos + opcodeID);
 				key = op.key();
 				param = op.param();
 
-				switch(key) {
-				case JsmOpcode::SETMODEL:
-					model_id = param;
-					break;
-				case JsmOpcode::SETPC:
-					if(opcodeID>0 && scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L) {
-						param = scripts.param(pos + opcodeID - 1);
-						// if setpc has multiple definition
-						if(character!=-1 && param!=character) {
-							character = UNKNOWN_CHARACTER;
+				if(!scripts.script(groupID, methodID).flag()) {
+					switch(key) {
+					case JsmOpcode::SETMODEL:
+						model_id = param;
+						break;
+					case JsmOpcode::SETPC:
+						if(opcodeID>0 && scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L) {
+							param = scripts.param(pos + opcodeID - 1);
+							// if setpc has multiple definition
+							if(character!=-1 && param!=character) {
+								character = UNKNOWN_CHARACTER;
+							}
+							else {
+								character = param;
+							}
 						}
-						else {
-							character = param;
-						}
+						break;
+					case JsmOpcode::SETDRAWPOINT:
+						character = DRAWPOINT_CHARACTER;
+						break;
+					case JsmOpcode::FADEIN:
+						main_type = true;
+						break;
+					case JsmOpcode::SETPLACE:
+						main_type = true;
+						if(scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L)
+							_mapID = scripts.param(pos + opcodeID - 1);
+						break;
 					}
-					break;
-				case JsmOpcode::SETDRAWPOINT:
-					character = DRAWPOINT_CHARACTER;
-					break;
-				case JsmOpcode::FADEIN:
-				case JsmOpcode::SETPLACE:
-					main_type = true;
-					break;
-				case JsmOpcode::SETLINE:
-					location_type = true;
-					break;
-				case JsmOpcode::DOORLINEON:
-				case JsmOpcode::DOORLINEOFF:
-					door_type = true;
-					break;
-				case JsmOpcode::BGDRAW:
-				case JsmOpcode::BGANIMESPEED:
-				case JsmOpcode::BGANIME:
-				case JsmOpcode::BGANIMESYNC:
-				case JsmOpcode::BGCLEAR:
-				case JsmOpcode::BGOFF:
-				case JsmOpcode::RBGANIME:
-				case JsmOpcode::RBGANIMELOOP:
-				case JsmOpcode::RBGSHADELOOP:
-					bg_type = true;
-					break;
+				} else {
+					switch(key) {
+					case JsmOpcode::SETLINE:
+						location_type = true;
+						break;
+					case JsmOpcode::DOORLINEON:
+					case JsmOpcode::DOORLINEOFF:
+						door_type = true;
+						break;
+					default:
+						bg_type = true;
+						break;
+					}
 				}
 			}
 		}
@@ -553,9 +569,16 @@ void JsmFile::searchGroupTypes()
 			scripts.setGroupType(groupID, JsmGroup::Door);
 		}
 		else if(bg_type) {
-			scripts.setGroupBackgroundParamId(groupID, bg_id++);
+			bgExecOrder.insert(jsmGroup.execOrder(), groupID);
 			scripts.setGroupType(groupID, JsmGroup::Background);
 		}
+	}
+
+	QMap<quint16, int>::const_iterator it = bgExecOrder.constBegin();
+	bg_id = 0;
+	while(it != bgExecOrder.constEnd()) {
+		scripts.setGroupBackgroundParamId(it.value(), bg_id++);
+		++it;
 	}
 }
 

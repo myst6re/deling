@@ -40,11 +40,11 @@ bool CharaModel::open(const QList<quint32> &toc, const QByteArray &data)
 
 	for(int i=0 ; i<toc.size()-2 ; ++i) {
 		quint32 pos = toc.at(i) & 0xFFFFFF;
-		qDebug() << "ouverture tim" << pos << ((toc.at(i+1) & 0xFFFFFF) - pos);
+//		qDebug() << "ouverture tim" << pos << ((toc.at(i+1) & 0xFFFFFF) - pos);
 		_textures.append(TimFile(data.mid(pos, (toc.at(i+1) & 0xFFFFFF) - pos)));
 	}
 
-	qDebug() << "charaModel ouvert" << _name;
+//	qDebug() << "charaModel ouvert" << _name;
 
 	return true;
 }

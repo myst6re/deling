@@ -47,7 +47,7 @@ void JsmWidget::build()
 	list1Layout->setContentsMargins(QMargins());
 
 	list2 = new QTreeWidget(this);
-	list2->setHeaderLabels(QStringList() << tr("Id") << tr("Script") << tr("Script label") << tr("Spécial"));
+	list2->setHeaderLabels(QStringList() << tr("Id") << tr("Script") << tr("Script label"));
 	list2->setFixedWidth(180);
 	list2->setAutoScroll(false);
 	list2->setIndentation(0);
@@ -217,7 +217,6 @@ void JsmWidget::fillList2()
 	list2->scrollToTop();
 	list2->resizeColumnToContents(0);
 	list2->resizeColumnToContents(1);
-	list2->resizeColumnToContents(2);
 
 	const JsmGroup &group = data()->getJsmFile()->getScripts().group(groupID);
 	int modelID = group.modelId(), bgParamID = group.backgroundParamId();
@@ -453,7 +452,7 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 				}
 			}
 		}
-		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(methodID, 3) << name << QString("%1").arg(begin+methodID, 3) << QString("%1").arg(script.flag() ? QObject::tr("Oui") : QString()));
+		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(methodID, 3) << name << QString("%1").arg(begin+methodID, 3));
 		item->setData(0, Qt::UserRole, methodID);
 		items.append(item);
 	}

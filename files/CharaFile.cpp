@@ -47,31 +47,31 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 	if(!ps) {
 		memcpy(&count, constData, 4);
 		constData += 4;
-		qDebug() << "count" << count;
+//		qDebug() << "count" << count;
 	}
 
 	for(quint32 i=0 ; (ps || i<count) && constData - startData < 0x800 ; ++i) {
 		memcpy(&offset, constData, 4);
 		constData += 4;
-		qDebug() << i << "offset" << QString::number(offset, 16);
+//		qDebug() << i << "offset" << QString::number(offset, 16);
 		if(offset == 0) {
 			break;
 		}
 		memcpy(&size, constData, 4);
 		constData += 4;
-		qDebug() << "size" << size;
+//		qDebug() << "size" << size;
 
 		memcpy(&modelID, constData, 4);
 		constData += 4;
 
 		if(modelID == size || ps) {
-			qDebug() << "size twice!";
+//			qDebug() << "size twice!";
 			memcpy(&modelID, constData, 4);
 			constData += 4;
 		}
 
 		if(modelID >> 24 == 0xd0) {
-			qDebug() << "modelID" << (modelID & 0xFFFF);
+//			qDebug() << "modelID" << (modelID & 0xFFFF);
 			memcpy(&modelID, constData, 4);
 			constData += 4;
 			if(modelID == 0) {
@@ -94,7 +94,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 			QList<quint32> toc;
 
 			toc.append(modelID);
-			qDebug() << "tim offset" << QString::number(modelID & 0xFFFFFF, 16) << QString::number((modelID >> 24) & 0xFF, 16);
+//			qDebug() << "tim offset" << QString::number(modelID & 0xFFFFFF, 16) << QString::number((modelID >> 24) & 0xFF, 16);
 			do {
 				memcpy(&timOffset, constData, 4);
 				constData += 4;
@@ -102,7 +102,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 				if(timOffset != 0xFFFFFFFF) {
 					toc.append(timOffset);
 				}
-				qDebug() << "tim offset" << QString::number(timOffset & 0xFFFFFF, 16) << QString::number((timOffset >> 24) & 0xFF, 16);
+//				qDebug() << "tim offset" << QString::number(timOffset & 0xFFFFFF, 16) << QString::number((timOffset >> 24) & 0xFF, 16);
 			} while(timOffset != 0xFFFFFFFF && constData - startData < 0x800);
 
 			if(timOffset == 0xFFFFFFFF) {
@@ -110,12 +110,12 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 				constData += 4;
 
 				toc.append(modelOffset);
-				qDebug() << "model data offset" << QString::number(modelOffset, 16);
+//				qDebug() << "model data offset" << QString::number(modelOffset, 16);
 
 				toc.append(size);
 
 				QString name(one.mid(constData - startData, 8));
-				qDebug() << name;
+//				qDebug() << name;
 				constData += 8;
 				memcpy(&modelID, constData, 4);
 				constData += 4;
@@ -137,7 +137,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 					data = LZS::decompress(data.constData() + 4, lzsSize);
 				}
 				models.append(CharaModel(name, toc, data));
-				qDebug() << "Tim ajouté" << name;
+//				qDebug() << "Tim ajouté" << name;
 			} else {
 				qWarning() << "Unknown format (5)!" << QString::number(timOffset, 16);
 				return false;

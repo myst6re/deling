@@ -59,7 +59,7 @@ class BackgroundFile
 {
 public:
 	BackgroundFile();
-	bool open(const QByteArray &map, const QByteArray &mim);
+	bool open(const QByteArray &map, const QByteArray &mim, QMultiMap<quint8, quint8> *defaultParams=0);
 	bool isModified() const;
 
 	QImage background(bool hideBG=false) const;

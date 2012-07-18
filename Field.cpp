@@ -108,6 +108,11 @@ void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 	if(backgroundFile==NULL)
 		backgroundFile = new BackgroundFile();
 
+//	QMultiMap<quint8, quint8> params;
+//	if(hasJsmFile()) {
+//		getJsmFile()->searchDefaultBGStates(params);
+//	}
+
 	if(!backgroundFile->open(map, mim)) {
 		qWarning() << "Field::openBackgroundFile error" << _name;
 		deleteBackgroundFile();
