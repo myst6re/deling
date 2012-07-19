@@ -86,3 +86,72 @@ int TextureFile::colorTableCount() const
 {
 	return _colorTables.size();
 }
+
+void TextureFile::debug() const
+{
+	QImage img(4*16, 4*16*colorTableCount(), QImage::Format_RGB32);
+	int x, y;
+
+	y = 0;
+	foreach(const QVector<QRgb> &colorTable, _colorTables) {
+		x = 0;
+		foreach(const QRgb &color, colorTable) {
+			img.setPixel(x*4+0, y*4+0, color);
+			img.setPixel(x*4+0, y*4+1, color);
+			img.setPixel(x*4+0, y*4+2, color);
+			img.setPixel(x*4+0, y*4+3, color);
+
+			img.setPixel(x*4+1, y*4+0, color);
+			img.setPixel(x*4+1, y*4+1, color);
+			img.setPixel(x*4+1, y*4+2, color);
+			img.setPixel(x*4+1, y*4+3, color);
+
+			img.setPixel(x*4+2, y*4+0, color);
+			img.setPixel(x*4+2, y*4+1, color);
+			img.setPixel(x*4+2, y*4+2, color);
+			img.setPixel(x*4+2, y*4+3, color);
+
+			img.setPixel(x*4+3, y*4+0, color);
+			img.setPixel(x*4+3, y*4+1, color);
+			img.setPixel(x*4+3, y*4+2, color);
+			img.setPixel(x*4+3, y*4+3, color);
+
+			if(x==15) {
+				x = 0;
+				++y;
+			} else {
+				++x;
+			}
+		}
+		while(y % 16 != 0) {
+			img.setPixel(x*4+0, y*4+0, Qt::black);
+			img.setPixel(x*4+0, y*4+1, Qt::black);
+			img.setPixel(x*4+0, y*4+2, Qt::black);
+			img.setPixel(x*4+0, y*4+3, Qt::black);
+
+			img.setPixel(x*4+1, y*4+0, Qt::black);
+			img.setPixel(x*4+1, y*4+1, Qt::black);
+			img.setPixel(x*4+1, y*4+2, Qt::black);
+			img.setPixel(x*4+1, y*4+3, Qt::black);
+
+			img.setPixel(x*4+2, y*4+0, Qt::black);
+			img.setPixel(x*4+2, y*4+1, Qt::black);
+			img.setPixel(x*4+2, y*4+2, Qt::black);
+			img.setPixel(x*4+2, y*4+3, Qt::black);
+
+			img.setPixel(x*4+3, y*4+0, Qt::black);
+			img.setPixel(x*4+3, y*4+1, Qt::black);
+			img.setPixel(x*4+3, y*4+2, Qt::black);
+			img.setPixel(x*4+3, y*4+3, Qt::black);
+
+			if(x==15) {
+				x = 0;
+				++y;
+			} else {
+				++x;
+			}
+		}
+	}
+
+	img.save("palettes.png");
+}

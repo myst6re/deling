@@ -39,6 +39,7 @@ public:
 	void setCurrentColorTable(int id);
 	void setColorTable(int id, const QVector<QRgb> &colorTable);
 	int colorTableCount() const;
+	void debug() const;
 protected:
 	QImage _image;
 	QList< QVector<QRgb> > _colorTables;

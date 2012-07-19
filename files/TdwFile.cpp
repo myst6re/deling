@@ -258,15 +258,16 @@ uint TdwFile::letterPixelIndex(quint8 tableId, quint8 charId, const QPoint &pos)
 
 uint TdwFile::letterPixelIndex(int charId, const QPoint &pos) const
 {
-	// returns a number between 0 and 3
 	uint index = _tim.image().pixelIndex(letterPos(charId) + pos);
 
 	if(isOptimizedVersion()) {
+		// returns a number between 0 and 3
 		const QRgb &color = _tim.colorTable(charId % 2).at(index);
 
 		return _tim.colorTable(0).indexOf(color);
 	} else {
-		return index;
+		// returns a number between 0 and 15
+		return index % 16;
 	}
 }
 
@@ -277,14 +278,14 @@ bool TdwFile::setLetterPixelIndex(quint8 tableId, quint8 charId, const QPoint &p
 
 bool TdwFile::setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex)
 {
-	// pixelIndex must be a number between 0 and 3
 	if(isOptimizedVersion()) {
+		// pixelIndex must be a number between 0 and 3
 		QVector<QRgb> modifColorTable, notModifColorTable;
 		modifColorTable = _tim.colorTable(charId % 2);
 		notModifColorTable = _tim.colorTable((charId + 1) % 2);
 		uint realPixelIndex = _tim.imagePtr()->pixelIndex(letterPos(charId) + pos);
 
-		const QRgb &newColor = _tim.colorTable(0).at(pixelIndex);
+		const QRgb &newColor = _tim.colorTable(0).at(pixelIndex % 4);
 		const QRgb &notModifColor = notModifColorTable.at(realPixelIndex);
 		int index = -1;
 
@@ -298,7 +299,8 @@ bool TdwFile::setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex
 
 		return false;
 	} else {
-		_tim.imagePtr()->setPixel(letterPos(charId) + pos, pixelIndex);
+		// pixelIndex must be a number between 0 and 15
+		_tim.imagePtr()->setPixel(letterPos(charId) + pos, pixelIndex % 16);
 		modified = true;
 		return true;
 	}

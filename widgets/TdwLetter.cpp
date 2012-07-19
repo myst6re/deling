@@ -18,7 +18,7 @@
 #include "TdwLetter.h"
 
 TdwLetter::TdwLetter(QWidget *parent) :
-	TdwDisplay(parent), readOnly(false), startDrag(false)
+	TdwDisplay(parent), _pixelIndex(0), readOnly(false), startDrag(false), startDrag2(false)
 {
 	setFixedSize(16*PIXEL_SIZE, 12*PIXEL_SIZE);
 	setMouseTracking(true);
@@ -32,6 +32,11 @@ void TdwLetter::setReadOnly(bool ro)
 {
 	readOnly = ro;
 	setMouseTracking(!readOnly);
+}
+
+void TdwLetter::setPixelIndex(int index)
+{
+	_pixelIndex = index;
 }
 
 void TdwLetter::setLetter(int letter)
@@ -74,6 +79,17 @@ QPoint TdwLetter::getPixel(const QPoint &pos)
 	return getCellPos(pos, QSize(PIXEL_SIZE, PIXEL_SIZE));
 }
 
+bool TdwLetter::setPixel(const QPoint &pixel)
+{
+	if(pixel.x() >= 0 && pixel.y() >= 0 && pixel.x() < 12 && pixel.y() < 12
+			&& tdwFile->setLetterPixelIndex(_currentTable, _letter, pixel, _pixelIndex)) {
+		update(QRect(pixel * PIXEL_SIZE, QSize(PIXEL_SIZE, PIXEL_SIZE)));
+		emit imageChanged(QRect(pixel, QSize(1, 1)));
+		return true;
+	}
+	return false;
+}
+
 void TdwLetter::mouseMoveEvent(QMouseEvent *e)
 {
 	if(readOnly || !tdwFile)	return;
@@ -87,6 +103,8 @@ void TdwLetter::mouseMoveEvent(QMouseEvent *e)
 			tdwFile->setCharWidth(_currentTable, _letter, newLinePos);
 			update();
 		}
+	} else if(startDrag2) {
+		setPixel(getPixel(mousePos));
 	} else {
 		if(mousePos.x() >= linePos - 1 && mousePos.x() <= linePos + 1) {
 			if(cursor().shape() != Qt::SplitHCursor) {
@@ -114,9 +132,8 @@ void TdwLetter::mousePressEvent(QMouseEvent *e)
 
 	if(e->pos().x() >= linePos - 1 && e->pos().x() <= linePos + 1) {
 		startDrag = true;
-	} else if(pixel.x() < 12 && pixel.y() < 12 && tdwFile->setLetterPixelIndex(_currentTable, _letter, pixel, (tdwFile->letterPixelIndex(_currentTable, _letter, pixel) + 1) % 4)) {
-		update(QRect(pixel * PIXEL_SIZE, QSize(PIXEL_SIZE, PIXEL_SIZE)));
-		emit imageChanged(QRect(pixel, QSize(1, 1)));
+	} else if(setPixel(pixel)) {
+		startDrag2 = true;
 	}
 }
 
@@ -124,5 +141,5 @@ void TdwLetter::mouseReleaseEvent(QMouseEvent *)
 {
 	if(readOnly)	return;
 
-	startDrag = false;
+	startDrag = startDrag2 = false;
 }

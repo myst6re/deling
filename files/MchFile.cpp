@@ -10,7 +10,7 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 	_model = 0;
 
 	if(mch.size() < 0x100) {
-		qWarning() << "fichier trop petit" << mch.size();
+		qWarning() << "file too short" << mch.size();
 		return false;
 	}
 

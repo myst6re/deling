@@ -15,39 +15,44 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef TDWLETTER_H
-#define TDWLETTER_H
+#ifndef TDWPALETTE_H
+#define TDWPALETTE_H
 
 #include <QtGui>
-#include "widgets/TdwDisplay.h"
-#include "widgets/TdwGrid.h"
+#include "files/TdwFile.h"
 
-#define PIXEL_SIZE	21
+#define CELL_SIZE		16
+#define BORDER_SIZE		1
 
-class TdwLetter : public TdwDisplay
+class TdwPalette : public QWidget
 {
 	Q_OBJECT
 public:
-	explicit TdwLetter(QWidget *parent=0);
-	virtual ~TdwLetter();
+	explicit TdwPalette(QWidget *parent=0);
+	virtual ~TdwPalette();
 	void setReadOnly(bool ro);
+	void setTdwFile(TdwFile *tdw);
+	void setCurrentPalette(TdwFile::Color palette);
+	QRgb currentColor() const;
 public slots:
-	void setLetter(int letter);
-	void setPixelIndex(int index);
+	void setColor(int id, QRgb color);
+	void clear();
 	void reset();
 signals:
-	void imageChanged(const QRect &rect);
+	void colorChanged(int id);
 protected:
 	virtual void paintEvent(QPaintEvent *e);
-	virtual void mouseMoveEvent(QMouseEvent *e);
 	virtual void mousePressEvent(QMouseEvent *e);
-	virtual void mouseReleaseEvent(QMouseEvent *);
 private:
-	QPoint getPixel(const QPoint &pos);
-	bool setPixel(const QPoint &pixel);
-	QImage copyLetter;
-	int _pixelIndex;
-	bool readOnly, startDrag, startDrag2;
+	void setColorCount(quint8 colorCount);
+	void setCurrentColor(int id);
+	int getColorId(const QPoint &pos);
+	quint8 colorCount;
+	int _currentColor;
+	TdwFile::Color _currentPalette;
+	QVector<QRgb> palette, copyPalette;
+	bool readOnly;
+	TdwFile *tdw;
 };
 
-#endif // TDWLETTER_H
+#endif // TDWPALETTE_H

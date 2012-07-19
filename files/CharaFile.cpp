@@ -36,7 +36,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 	models.clear();
 
 	if(one.size() < 0x800) {
-		qWarning() << "fichier trop petit";
+		qWarning() << "file too short";
 		return false;
 	}
 

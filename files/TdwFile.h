@@ -52,8 +52,8 @@ public:
 	void setCharWidth(quint8 tableId, quint8 charId, quint8 width);
 	int tableCount() const;
 	int charCount(quint8 tableId=0) const;
-private:
 	bool isOptimizedVersion() const;
+private:
 	int palette(Color color, int charId) const;
 	QPoint letterPos(int charId) const;
 	static QSize letterSize();

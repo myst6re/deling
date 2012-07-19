@@ -21,6 +21,7 @@
 #include <QtGui>
 #include "widgets/TdwGrid.h"
 #include "widgets/TdwLetter.h"
+#include "widgets/TdwPalette.h"
 #include "FF8Text.h"
 
 class TdwWidget2 : public QWidget
@@ -47,6 +48,7 @@ private:
 	bool isAdditionnalTable;
 	TdwGrid *tdwGrid;
 	TdwLetter *tdwLetter;
+	TdwPalette *tdwPalette;
 	QComboBox *selectPal, *selectTable;
 	QLineEdit *textLetter;
 	QPushButton *resetButton2;

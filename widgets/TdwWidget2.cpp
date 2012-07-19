@@ -18,10 +18,11 @@
 #include "TdwWidget2.h"
 
 TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
-	QWidget(parent), isAdditionnalTable(isAdditionnalTable)
+	QWidget(parent), isAdditionnalTable(isAdditionnalTable), ff8Font(0)
 {
 	tdwGrid = new TdwGrid(this);
 	tdwLetter = new TdwLetter(this);
+	tdwPalette = new TdwPalette(this);
 	selectPal = new QComboBox(this);
 	QStringList colors;
 	colors << tr("Gris foncé") << tr("Gris") << tr("Jaune") << tr("Rouge") << tr("Vert") << tr("Bleu") << tr("Violet") << tr("Blanc");
@@ -41,14 +42,15 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(tdwGrid, 0, 0, Qt::AlignRight);
 	layout->addWidget(tdwLetter, 0, 1, 1, 2, Qt::AlignLeft);
-	layout->addWidget(fromImage1, 1, 0, Qt::AlignLeft);
-	layout->addWidget(textLetter, 1, 1);
-	layout->addWidget(fromImage2, 1, 2, Qt::AlignRight);
-//	layout->addWidget(resetButton1, 2, 0, Qt::AlignLeft);
-	layout->addWidget(resetButton2, 2, 1, 1, 2, Qt::AlignRight);
-	layout->addWidget(selectPal, 3, 0, Qt::AlignRight);
-	layout->addWidget(selectTable, 3, 1, Qt::AlignLeft);
-	layout->setRowStretch(4, 1);
+	layout->addWidget(tdwPalette, 1, 1, 1, 2, Qt::AlignLeft);
+	layout->addWidget(fromImage1, 2, 0, Qt::AlignLeft);
+	layout->addWidget(textLetter, 2, 1);
+	layout->addWidget(fromImage2, 2, 2, Qt::AlignRight);
+//	layout->addWidget(resetButton1, 3, 0, Qt::AlignLeft);
+	layout->addWidget(resetButton2, 3, 1, 1, 2, Qt::AlignRight);
+	layout->addWidget(selectPal, 4, 0, Qt::AlignRight);
+	layout->addWidget(selectTable, 4, 1, Qt::AlignLeft);
+	layout->setRowStretch(5, 1);
 	layout->setColumnStretch(3, 1);
 	layout->setContentsMargins(QMargins());
 
@@ -59,12 +61,14 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 	connect(tdwLetter, SIGNAL(imageChanged(QRect)), SLOT(setModified()));
 //	connect(resetButton1, SIGNAL(clicked()), SLOT(reset()));
 	connect(resetButton2, SIGNAL(clicked()), SLOT(resetLetter()));
+	connect(tdwPalette, SIGNAL(colorChanged(int)), tdwLetter, SLOT(setPixelIndex(int)));
 }
 
 void TdwWidget2::clear()
 {
 	tdwGrid->clear();
 	tdwLetter->clear();
+	tdwPalette->clear();
 }
 
 void TdwWidget2::setFF8Font(FF8Font *ff8Font)
@@ -77,6 +81,7 @@ void TdwWidget2::setTdwFile(TdwFile *tdw)
 {
 	tdwGrid->setTdwFile(tdw);
 	tdwLetter->setTdwFile(tdw);
+	tdwPalette->setTdwFile(tdw);
 	setLetter(0);
 
 	tdwGrid->setFocus();
@@ -100,12 +105,14 @@ void TdwWidget2::setReadOnly(bool ro)
 {
 	textLetter->setReadOnly(isAdditionnalTable || ro);
 	tdwLetter->setReadOnly(ro);
+	tdwPalette->setReadOnly(ro);
 }
 
 void TdwWidget2::setColor(int i)
 {
 	tdwGrid->setColor((TdwFile::Color)i);
 	tdwLetter->setColor((TdwFile::Color)i);
+	tdwPalette->setCurrentPalette((TdwFile::Color)i);
 }
 
 void TdwWidget2::setTable(int i)
