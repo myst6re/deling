@@ -6,9 +6,13 @@
 
 class TdwManagerDialog : public QDialog
 {
+	Q_OBJECT
 public:
 	explicit TdwManagerDialog(QWidget *parent=0);
+private slots:
+	void setTdw(int id);
 private:
+	void fillList1();
 	QListWidget *list1;
 	TdwWidget2 *tdwWidget;
 };

@@ -29,6 +29,7 @@ class TdwWidget2 : public QWidget
 public:
 	TdwWidget2(bool isAdditionnalTable, QWidget *parent=0);
 	void clear();
+	void setFF8Font(FF8Font *ff8Font);
 	void setTdwFile(TdwFile *tdw);
 	void setIsAdditionnalTable(bool isAdditionnalTable);
 	void setReadOnly(bool ro);
@@ -49,6 +50,7 @@ private:
 	QComboBox *selectPal, *selectTable;
 	QLineEdit *textLetter;
 	QPushButton *resetButton2;
+	FF8Font *ff8Font;
 protected:
 	void focusInEvent(QFocusEvent *);
 
