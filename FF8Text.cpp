@@ -177,8 +177,8 @@ QString FF8Text::fromFF8(const QByteArray &ff8str)
 QByteArray FF8Text::toFF8(const QString &string, bool jp)
 {
 	FF8Text ff8Txt(string);
-	QStringList fontL = ::Data::fontList();
-	ff8Txt.setTables(::Data::font(fontL.at((int)jp))->tables);
+	QStringList fontL = ::FF8Font::fontList();
+	ff8Txt.setTables(::FF8Font::font(fontL.at((int)jp))->tables());
 
 	return ff8Txt.toFF8();
 }
@@ -402,8 +402,8 @@ QString FF8Text::caract(quint8 ord, quint8 table) const
 QString FF8Text::getCaract(quint8 ord, quint8 table, bool jp)
 {
 	FF8Text ff8Txt;
-	QStringList fontL = ::Data::fontList();
-	ff8Txt.setTables(::Data::font(fontL.at((int)jp))->tables);
+	QStringList fontL = ::FF8Font::fontList();
+	ff8Txt.setTables(::FF8Font::font(fontL.at((int)jp))->tables());
 
 	return ff8Txt.caract(ord, table);
 }
@@ -417,11 +417,11 @@ const QList<QStringList> &FF8Text::getCurrentConfigTable()
 {
 	QString font = Config::value("encoding", "00").toString();
 
-	QStringList fontL = ::Data::fontList();
+	QStringList fontL = ::FF8Font::fontList();
 	if(fontL.contains(font)) {
-		return ::Data::font(font)->tables;
+		return ::FF8Font::font(font)->tables();
 	}
-	return ::Data::font(fontL.first())->tables;
+	return ::FF8Font::font(fontL.first())->tables();
 }
 
 const char *FF8Text::names[14] =

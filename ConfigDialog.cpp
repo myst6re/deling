@@ -76,9 +76,9 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 	}
 	appPathLine->setText(appPath);
 
-	foreach(const QString &fontName, Data::fontList()) {
+	foreach(const QString &fontName, FF8Font::fontList()) {
 		if(fontName == "00" || fontName == "01")	continue;
-		FF8Font *font = Data::font(fontName);
+		FF8Font *font = FF8Font::font(fontName);
 		if(font) {
 			encodingComboBox->addItem(font->name(), fontName);
 		}

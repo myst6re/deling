@@ -31,6 +31,7 @@ public:
 	void clear();
 	int currentTable() const;
 	void setCurrentTable(int currentTable);
+	int currentLetter() const;
 public slots:
 	void setColor(TdwFile::Color color);
 	virtual void setLetter(int letter);

@@ -40,6 +40,7 @@ public slots:
 	void setColor(int i);
 	void setTable(int i);
 	void setLetter(int i);
+	void editLetter(const QString &letter);
 	void reset();
 	void resetLetter();
 private slots:

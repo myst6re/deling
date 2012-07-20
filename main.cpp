@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 	else
 		Config::setValue("lang", "fr");
 	
-	if(!Data::listFonts()) {
+	if(!FF8Font::listFonts()) {
 		QMessageBox::critical(0, QObject::tr("Chargement des données"), QObject::tr("Les polices de caractères n'ont pas pu être chargées !"));
 		return -1;
 	}

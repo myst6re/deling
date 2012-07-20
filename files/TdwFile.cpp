@@ -249,6 +249,8 @@ void TdwFile::setImage(const QImage &image, int hCount, int vCount)
 			++y;
 		}
 	}
+
+	modified = true;
 }
 
 uint TdwFile::letterPixelIndex(quint8 tableId, quint8 charId, const QPoint &pos) const
@@ -314,6 +316,7 @@ quint8 TdwFile::charWidth(quint8 tableId, quint8 charId) const
 void TdwFile::setCharWidth(quint8 tableId, quint8 charId, quint8 width)
 {
 	_charWidth[tableId][charId] = width;
+	modified = true;
 }
 
 int TdwFile::tableCount() const

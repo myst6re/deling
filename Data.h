@@ -32,21 +32,16 @@ class Data
 public:
     static bool ff8Found();
 	static QString AppPath();
-	static bool listFonts();
-	static QStringList fontList();
-	static FF8Font *font(QString name);
 	static const char *location(int i);
 	static const char *name(int i);
 	static const char *magic(int i);
 	static QStringList maplist();
 private:
-	static FF8Font *openFont(const QString &tdwPath, const QString &txtPath);
 	static const char *locations[LOC_COUNT];
 	static const char *names[NAM_COUNT];
 	static const char *_magic[];
 	static const char *_maplist[MAP_COUNT];
 	static QString AppPath_cache;
-	static QMap<QString, FF8Font *> fonts;
 };
 
 #endif // DATA_H

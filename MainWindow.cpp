@@ -177,6 +177,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		Config::setValue("toolbarVisible", toolBar->isVisible());
 		Config::setValue("list1ColumnSort", list1->sortColumn());
 		Config::setValue("currentPage", stackedWidget->currentIndex());
+		if(!FF8Font::saveFonts()) {
+			QMessageBox::critical(0, QObject::tr("Enregistrement des données"), QObject::tr("Les polices de caractères n'ont pas pu être enregistrées !"));
+		}
 		event->accept();
 	}
 }

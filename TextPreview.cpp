@@ -108,11 +108,11 @@ void TextPreview::clear()
 
 void TextPreview::reloadFont()
 {
-	FF8Font *ff8Font = Data::font(Config::value("encoding", "00").toString());
+	FF8Font *ff8Font = FF8Font::font(Config::value("encoding", "00").toString());
 	if(!ff8Font) {
-		font = Data::font("00")->tdw;
+		font = FF8Font::font("00")->tdw();
 	} else {
-		font = ff8Font->tdw;
+		font = ff8Font->tdw();
 	}
 }
 

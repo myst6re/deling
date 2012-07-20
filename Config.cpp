@@ -20,8 +20,13 @@
 QSettings *Config::settings = 0;
 
 void Config::set() {
-	if(!settings)
-		settings = new QSettings(qApp->applicationDirPath()%"/"%PROG_NAME%".ini", QSettings::IniFormat);
+	if(!settings) {
+#ifdef Q_WS_WIN
+		settings = new QSettings(qApp->applicationDirPath()+"/"+PROG_NAME+".ini", QSettings::IniFormat);
+#else
+		settings = new QSettings(PROG_NAME, PROG_NAME);
+#endif
+	}
 }
 
 void Config::remove() {

@@ -62,6 +62,7 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 //	connect(resetButton1, SIGNAL(clicked()), SLOT(reset()));
 	connect(resetButton2, SIGNAL(clicked()), SLOT(resetLetter()));
 	connect(tdwPalette, SIGNAL(colorChanged(int)), tdwLetter, SLOT(setPixelIndex(int)));
+	connect(textLetter, SIGNAL(textEdited(QString)), SLOT(editLetter(QString)));
 }
 
 void TdwWidget2::clear()
@@ -74,7 +75,7 @@ void TdwWidget2::clear()
 void TdwWidget2::setFF8Font(FF8Font *ff8Font)
 {
 	this->ff8Font = ff8Font;
-	setTdwFile(ff8Font->tdw);
+	setTdwFile(ff8Font->tdw());
 }
 
 void TdwWidget2::setTdwFile(TdwFile *tdw)
@@ -135,12 +136,19 @@ void TdwWidget2::setLetter(int i)
 
 	if(tdwGrid->currentTable() <= 3) {
 		if(ff8Font) {
-			textLetter->setText(FF8Text(ba.append((char)(0x20 + i)), ff8Font->tables));
+			textLetter->setText(FF8Text(ba.append((char)(0x20 + i)), ff8Font->tables()));
 		} else {
 			textLetter->setText(FF8Text(ba.append((char)(0x20 + i))));
 		}
 	}
 	resetButton2->setEnabled(false);
+}
+
+void TdwWidget2::editLetter(const QString &letter)
+{
+	if(ff8Font) {
+		ff8Font->setChar(tdwGrid->currentTable(), tdwGrid->currentLetter(), letter);
+	}
 }
 
 void TdwWidget2::reset()

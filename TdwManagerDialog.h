@@ -11,8 +11,12 @@ public:
 	explicit TdwManagerDialog(QWidget *parent=0);
 private slots:
 	void setTdw(int id);
+	void addFont();
+	void removeFont();
 private:
 	void fillList1();
+	bool newNameDialog(QString &name, QString &nameId);
+	QToolBar *toolbar1;
 	QListWidget *list1;
 	TdwWidget2 *tdwWidget;
 };

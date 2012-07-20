@@ -49,6 +49,11 @@ void TdwDisplay::setCurrentTable(int currentTable)
 	update();
 }
 
+int TdwDisplay::currentLetter() const
+{
+	return _letter;
+}
+
 void TdwDisplay::setColor(TdwFile::Color color)
 {
 	_color = color;
