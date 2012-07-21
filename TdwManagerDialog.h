@@ -17,6 +17,7 @@ private:
 	void fillList1();
 	bool newNameDialog(QString &name, QString &nameId);
 	QToolBar *toolbar1;
+	QAction *plusAction, *minusAction;
 	QListWidget *list1;
 	TdwWidget2 *tdwWidget;
 };

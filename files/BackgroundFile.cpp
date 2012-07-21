@@ -222,7 +222,7 @@ QImage BackgroundFile::type2(bool hideBG) const
 //	x=y=0;
 //	for(int i=2048 ; i<6144 ; ++i) {
 //		memcpy(&color, &constMimData[i*2], 2);
-//		couleur = qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
+//		couleur = FF8Image::fromPsColor(color);
 
 //		imageDebugPal.setPixel(QPoint(x*4,y*4), couleur);
 //		imageDebugPal.setPixel(QPoint(x*4,y*4+1), couleur);
@@ -258,10 +258,10 @@ QImage BackgroundFile::type2(bool hideBG) const
 //		x=y=0;
 //		for(int i=12288 ; i<438272 ; ++i) {
 //			memcpy(&color, &constMimData[palStart2+((quint8)mim.at(i)/*&0xF*/)*2], 2);
-//			imageDebugTex.setPixel(QPoint(x,y), qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR));
+//			imageDebugTex.setPixel(QPoint(x,y), FF8Image::fromPsColor(color));
 //			++x;
 ////			memcpy(&color, &constMimData[palStart2+((quint8)mim.at(i)>>4)*2], 2);
-////			imageDebugTex.setPixel(QPoint(x,y), qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR));
+////			imageDebugTex.setPixel(QPoint(x,y), FF8Image::fromPsColor(color));
 ////			++x;
 //			if(x==1664/**2*/){
 //				x=0;

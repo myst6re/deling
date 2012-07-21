@@ -135,7 +135,9 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 
 	openModels();
 
-	Config::setValue("encoding", "00");
+	if(Config::value("encoding", "00").toString() == "01") {
+		Config::setValue("encoding", "00");
+	}
 
 	return 0;
 }

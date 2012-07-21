@@ -6,13 +6,12 @@ TdwManagerDialog::TdwManagerDialog(QWidget *parent) :
 	setWindowTitle(tr("Gestionnaire de police"));
 	setSizeGripEnabled(true);
 
-	QAction *action;
 	toolbar1 = new QToolBar(this);
 	toolbar1->setIconSize(QSize(16, 16));
-	action = toolbar1->addAction(QIcon(":/images/plus.png"), tr("Copier"), this, SLOT(addFont()));
-	action->setShortcut(QKeySequence("Ctrl++"));
-	action = toolbar1->addAction(QIcon(":/images/minus.png"), tr("Effacer"), this, SLOT(removeFont()));
-	action->setShortcut(QKeySequence::Delete);
+	plusAction = toolbar1->addAction(QIcon(":/images/plus.png"), tr("Copier"), this, SLOT(addFont()));
+	plusAction->setShortcut(QKeySequence("Ctrl++"));
+	minusAction = toolbar1->addAction(QIcon(":/images/minus.png"), tr("Effacer"), this, SLOT(removeFont()));
+	minusAction->setShortcut(QKeySequence::Delete);
 
 	list1 = new QListWidget(this);
 	list1->setFixedWidth(125);
@@ -71,7 +70,8 @@ void TdwManagerDialog::setTdw(int id)
 	if(font) {
 		tdwWidget->setFF8Font(font);
 	}
-	tdwWidget->setReadOnly(id < 2);
+
+	minusAction->setEnabled(!font->isReadOnly());
 }
 
 void TdwManagerDialog::addFont()

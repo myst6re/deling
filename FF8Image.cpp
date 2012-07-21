@@ -19,13 +19,12 @@
 
 quint16 FF8Image::toPsColor(const QRgb &color)
 {
-	return ((int)(qRed(color)/COEFF_COLOR) & 31) | (((int)(qGreen(color)/COEFF_COLOR) & 31) << 5) | (((int)(qBlue(color)/COEFF_COLOR) & 31) << 10) | ((qAlpha(color)==255) << 15);
+	return (qRound(qRed(color)/COEFF_COLOR) & 31) | ((qRound(qGreen(color)/COEFF_COLOR) & 31) << 5) | ((qRound(qBlue(color)/COEFF_COLOR) & 31) << 10) | ((qAlpha(color)==255) << 15);
 }
 
 QRgb FF8Image::fromPsColor(quint16 color, bool useAlpha)
 {
-	return useAlpha ? qRgba((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR, color == 0 ? 0 : 255)
-					: qRgb((color & 31)*COEFF_COLOR, (color>>5 & 31)*COEFF_COLOR, (color>>10 & 31)*COEFF_COLOR);
+	return qRgba(qRound((color & 31)*COEFF_COLOR), qRound((color>>5 & 31)*COEFF_COLOR), qRound((color>>10 & 31)*COEFF_COLOR), color == 0 && useAlpha ? 0 : 255);
 }
 
 QPixmap FF8Image::lzs(const QByteArray &data)

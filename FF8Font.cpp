@@ -316,10 +316,35 @@ bool FF8Font::copyFont(const QString &name, const QString &from, const QString &
 		return false;
 	}
 
-	if(!QFile::copy(ff8Font->txtPath(), font_dirPath + "/" + name + ".txt")
-	|| !QFile::copy(ff8Font->tdwPath(), font_dirPath + "/" + name + ".tdw")) {
+	QFile ftxt(font_dirPath + "/" + name + ".txt");
+	if(!ftxt.open(QIODevice::WriteOnly)) {
 		return false;
 	}
+
+	QFile ftxt2(ff8Font->txtPath());
+	if(!ftxt2.open(QIODevice::ReadOnly)) {
+		return false;
+	}
+
+	ftxt.write(ftxt2.readAll());
+
+	ftxt.close();
+	ftxt2.close();
+
+	QFile ftdw(font_dirPath + "/" + name + ".tdw");
+	if(!ftdw.open(QIODevice::WriteOnly)) {
+		return false;
+	}
+
+	QFile ftdw2(ff8Font->tdwPath());
+	if(!ftdw2.open(QIODevice::ReadOnly)) {
+		return false;
+	}
+
+	ftdw.write(ftdw2.readAll());
+
+	ftdw.close();
+	ftdw2.close();
 
 	fonts.insert(name, NULL);
 
@@ -329,6 +354,7 @@ bool FF8Font::copyFont(const QString &name, const QString &from, const QString &
 	}
 
 	ff8Font->setName(name2);
+	ff8Font->setReadOnly(false);
 
 	return true;
 }

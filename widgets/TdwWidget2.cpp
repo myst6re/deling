@@ -76,6 +76,7 @@ void TdwWidget2::setFF8Font(FF8Font *ff8Font)
 {
 	this->ff8Font = ff8Font;
 	setTdwFile(ff8Font->tdw());
+	setReadOnly(ff8Font->isReadOnly());
 }
 
 void TdwWidget2::setTdwFile(TdwFile *tdw)
@@ -125,6 +126,7 @@ void TdwWidget2::setTable(int i)
 void TdwWidget2::setLetter(int i)
 {
 	tdwLetter->setLetter(i);
+	tdwGrid->setLetter(i);
 
 	QByteArray ba;
 
