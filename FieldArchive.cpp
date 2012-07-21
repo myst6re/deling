@@ -439,7 +439,7 @@ const QStringList &FieldArchive::mapList() const
 	return _mapList;
 }
 
-void FieldArchive::setMapList(QStringList mapList)
+void FieldArchive::setMapList(const QStringList &mapList)
 {
 	_mapList = mapList.isEmpty() ? Data::maplist() : mapList;
 }

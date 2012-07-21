@@ -30,13 +30,13 @@ public:
 		Inf, Ca, Id, Map, Msk, Rat, Mrt, AKAO, Msd, Pmd, Jsm, Last
 	};
 
-	FieldPS(const QByteArray &data, quint32 isoFieldID);
+	FieldPS(const QByteArray &data, const QByteArray &mim, quint32 isoFieldID);
 	virtual ~FieldPS();
 
 	bool hasMapMimFiles() const;
 //	void setIsoFieldID(quint32 isoFieldID);
 	quint32 isoFieldID() const;
-	bool open(const QByteArray &dat_data);
+	bool open(const QByteArray &dat_data, const QByteArray &mim);
 	bool open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
 	bool save(QByteArray &dat_data);
 

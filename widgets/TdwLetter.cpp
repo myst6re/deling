@@ -20,12 +20,22 @@
 TdwLetter::TdwLetter(QWidget *parent) :
 	TdwDisplay(parent), _pixelIndex(0), readOnly(false), startDrag(false), startDrag2(false)
 {
-	setFixedSize(16*PIXEL_SIZE, 12*PIXEL_SIZE);
+	setFixedSize(sizeHint());
 	setMouseTracking(true);
 }
 
 TdwLetter::~TdwLetter()
 {
+}
+
+QSize TdwLetter::sizeHint() const
+{
+	return QSize(16*PIXEL_SIZE, 12*PIXEL_SIZE);
+}
+
+QSize TdwLetter::minimumSizeHint() const
+{
+	return sizeHint();
 }
 
 void TdwLetter::setReadOnly(bool ro)
@@ -37,6 +47,14 @@ void TdwLetter::setReadOnly(bool ro)
 void TdwLetter::setPixelIndex(int index)
 {
 	_pixelIndex = index;
+}
+
+void TdwLetter::setTdwFile(TdwFile *tdwFile)
+{
+	if(tdwFile) {
+		copyLetter = tdwFile->letter(_currentTable, _letter, _color, true);
+	}
+	TdwDisplay::setTdwFile(tdwFile);
 }
 
 void TdwLetter::setLetter(int letter)
@@ -81,6 +99,8 @@ QPoint TdwLetter::getPixel(const QPoint &pos)
 
 bool TdwLetter::setPixel(const QPoint &pixel)
 {
+	if(!tdwFile)	return false;
+
 	if(pixel.x() >= 0 && pixel.y() >= 0 && pixel.x() < 12 && pixel.y() < 12
 			&& tdwFile->setLetterPixelIndex(_currentTable, _letter, pixel, _pixelIndex)) {
 		update(QRect(pixel * PIXEL_SIZE, QSize(PIXEL_SIZE, PIXEL_SIZE)));

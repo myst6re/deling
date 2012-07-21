@@ -59,10 +59,11 @@ bool TdwFile::open(const QByteArray &tdw)
 
 	sizeHeader = posData - posHeader;
 
+	_charWidth.clear();
+	_charCount.clear();
+
 	if(sizeHeader != 0) {
 		tableCount = sizeHeader / 112 + int(sizeHeader % 112 != 0);
-
-		_charWidth.clear();
 
 		for(tableID=0 ; tableID<tableCount ; ++tableID) {
 
@@ -81,7 +82,7 @@ bool TdwFile::open(const QByteArray &tdw)
 			_charWidth.append(charWidth);
 			_charCount.append(qMin((sizeHeader - tableID*112) * 2, quint32(224)));
 		}
-	}
+	} // else empty tdw, the tim contains only palettes
 
 	if(!_tim.open(tdw.mid(posData))
 			|| (_tim.colorTableCount() != 8 && _tim.colorTableCount() != 16 && _tim.colorTableCount() != 32)) {
@@ -310,7 +311,7 @@ bool TdwFile::setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex
 
 quint8 TdwFile::charWidth(quint8 tableId, quint8 charId) const
 {
-	return _charWidth[tableId][charId];
+	return tableId < _charWidth.size() && charId < 224 ? _charWidth[tableId][charId] : 0;
 }
 
 void TdwFile::setCharWidth(quint8 tableId, quint8 charId, quint8 width)
@@ -328,7 +329,7 @@ int TdwFile::charCount(quint8 tableId) const
 {
 	return _charCount.value(tableId, 0);
 
-	if(tableId >= tableCount())		return 0;
+	/*if(tableId >= tableCount())		return 0;
 
 	quint8 *charWidth = _charWidth.at(tableId);
 
@@ -336,5 +337,5 @@ int TdwFile::charCount(quint8 tableId) const
 		if(charWidth[i]==0)		return i;
 	}
 
-	return 224;
+	return 224;*/
 }

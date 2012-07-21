@@ -135,6 +135,10 @@ void TdwManagerDialog::removeFont()
 	QList<QListWidgetItem *> items = list1->selectedItems();
 	if(items.isEmpty())		return;
 
+	if(QMessageBox::Yes != QMessageBox::question(this, tr("Supprimer une police"), tr("Voulez-vous vraiment supprimer la police sélectionnée ?"), QMessageBox::Yes | QMessageBox::Cancel)) {
+		return;
+	}
+
 	QListWidgetItem *item = items.first();
 
 	if(FF8Font::removeFont(item->data(Qt::UserRole).toString())) {

@@ -21,7 +21,7 @@ Field::Field(const QString &name)
 	: _isOpen(false), _name(name),
 	  msdFile(NULL), jsmFile(NULL), walkmeshFile(NULL),
 	  encounterFile(NULL), miscFile(NULL), backgroundFile(NULL),
-	  tdwFile(NULL)
+	  tdwFile(NULL), mskFile(NULL)
 {
 }
 
@@ -35,6 +35,7 @@ Field::~Field()
 	deleteBackgroundFile();
 	deleteTdwFile();
 	deleteCharaFile();
+	deleteMskFile();
 }
 
 bool Field::isOpen() const
@@ -144,6 +145,17 @@ void Field::openCharaFile(const QByteArray &one, bool ps)
 	}
 }
 
+void Field::openMskFile(const QByteArray &msk)
+{
+	deleteMskFile();
+	mskFile = new MskFile();
+
+	if(!mskFile->open(msk)) {
+		qWarning() << "Field::openMskFile error" << _name;
+		deleteMskFile();
+	}
+}
+
 void Field::deleteMsdFile()
 {
 	if(msdFile!=NULL) {
@@ -208,6 +220,14 @@ void Field::deleteCharaFile()
 	}
 }
 
+void Field::deleteMskFile()
+{
+	if(mskFile!=NULL) {
+		delete mskFile;
+		mskFile = NULL;
+	}
+}
+
 bool Field::hasMsdFile() const
 {
 	return msdFile != NULL;
@@ -246,6 +266,11 @@ bool Field::hasTdwFile() const
 bool Field::hasCharaFile() const
 {
 	return charaFile != NULL;
+}
+
+bool Field::hasMskFile() const
+{
+	return mskFile != NULL;
 }
 
 bool Field::hasFiles() const
@@ -294,6 +319,11 @@ CharaFile *Field::getCharaFile() const
 	return charaFile;
 }
 
+MskFile *Field::getMskFile() const
+{
+	return mskFile;
+}
+
 bool Field::isModified() const
 {
 	return (msdFile != NULL && msdFile->isModified())
@@ -303,7 +333,8 @@ bool Field::isModified() const
 			|| (walkmeshFile != NULL && walkmeshFile->isModified())
 			|| (backgroundFile != NULL && backgroundFile->isModified())
 			|| (tdwFile != NULL && tdwFile->isModified())
-			|| (charaFile != NULL && charaFile->isModified());
+			|| (charaFile != NULL && charaFile->isModified())
+			|| (mskFile != NULL && mskFile->isModified());
 }
 
 const QString &Field::name() const

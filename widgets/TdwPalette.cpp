@@ -18,12 +18,23 @@
 #include "TdwPalette.h"
 
 TdwPalette::TdwPalette(QWidget *parent) :
-	QWidget(parent), colorCount(16), _currentColor(0), _currentPalette(TdwFile::White), readOnly(false), tdw(0)
+	QWidget(parent), colorCount(16), _currentColor(0),
+	_currentPalette(TdwFile::White), readOnly(false), tdw(0)
 {
 }
 
 TdwPalette::~TdwPalette()
 {
+}
+
+QSize TdwPalette::sizeHint() const
+{
+	return QSize(colorCount * (CELL_SIZE + BORDER_SIZE) + BORDER_SIZE, CELL_SIZE + 2 * BORDER_SIZE);
+}
+
+QSize TdwPalette::minimumSizeHint() const
+{
+	return sizeHint();
 }
 
 void TdwPalette::setReadOnly(bool ro)
@@ -34,7 +45,7 @@ void TdwPalette::setReadOnly(bool ro)
 void TdwPalette::setColorCount(quint8 colorCount)
 {
 	this->colorCount = qMin(colorCount, quint8(16));
-	setFixedSize(this->colorCount * (CELL_SIZE + BORDER_SIZE) + BORDER_SIZE, CELL_SIZE + 2 * BORDER_SIZE);
+	setFixedSize(sizeHint());
 }
 
 void TdwPalette::setTdwFile(TdwFile *tdw)
@@ -99,7 +110,7 @@ void TdwPalette::paintEvent(QPaintEvent *)
 	int id=0;
 
 	foreach(const QRgb &color, palette) {
-		if(id == _currentColor) {
+		if(!readOnly && id == _currentColor) {
 			p.fillRect(QRect(id * (CELL_SIZE + BORDER_SIZE), 0, CELL_SIZE + 2 * BORDER_SIZE, CELL_SIZE + 2 * BORDER_SIZE), Qt::red);
 		} else {
 			p.setPen(Qt::black);

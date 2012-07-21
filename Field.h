@@ -27,6 +27,7 @@
 #include "files/BackgroundFile.h"
 #include "files/TdwFile.h"
 #include "files/CharaFile.h"
+#include "files/MskFile.h"
 
 class Field
 {
@@ -45,6 +46,7 @@ public:
 	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
 	void openTdwFile(const QByteArray &tdw);
 	void openCharaFile(const QByteArray &one, bool ps);
+	void openMskFile(const QByteArray &msk);
 
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
@@ -54,6 +56,7 @@ public:
 	bool hasBackgroundFile() const;
 	bool hasTdwFile() const;
 	bool hasCharaFile() const;
+	bool hasMskFile() const;
 
 	virtual bool hasMapMimFiles() const=0;
 	bool hasFiles() const;
@@ -66,6 +69,7 @@ public:
 	BackgroundFile *getBackgroundFile() const;
 	TdwFile *getTdwFile() const;
 	CharaFile *getCharaFile() const;
+	MskFile *getMskFile() const;
 
 	bool isModified() const;
 	const QString &name() const;
@@ -79,6 +83,7 @@ protected:
 	void deleteBackgroundFile();
 	void deleteTdwFile();
 	void deleteCharaFile();
+	void deleteMskFile();
 
 	bool _isOpen;
 	QString _name;
@@ -90,6 +95,7 @@ protected:
 	BackgroundFile *backgroundFile;
 	TdwFile *tdwFile;
 	static CharaFile *charaFile;
+	MskFile *mskFile;
 };
 
 #endif // FIELD_H

@@ -97,6 +97,13 @@ bool FieldPC::open(const QString &path)
 			openWalkmeshFile(header->fileData("*.id"));
 	}
 
+	/* MSK */
+
+	if(header->fileExists("*.msk"))
+	{
+		openMskFile(header->fileData("*.msk"));
+	}
+
 	/* RAT & MRT */
 
 	if(header->fileExists("*.rat") || header->fileExists("*.mrt"))
@@ -132,13 +139,14 @@ bool FieldPC::open(FsArchive *archive)
 		return false;
 	}
 
-	FsHeader *msd_infos, *jsm_infos, *sym_infos, *id_infos, *ca_infos, *inf_infos, *rat_infos, *mrt_infos, *pmp_infos, *pmd_infos, *pvp_infos;
+	FsHeader *msd_infos, *jsm_infos, *sym_infos, *id_infos, *ca_infos, *msk_infos, *inf_infos, *rat_infos, *mrt_infos, *pmp_infos, *pmd_infos, *pvp_infos;
 
 	msd_infos = header->getFile("*"%_name%".msd");
 	jsm_infos = header->getFile("*"%_name%".jsm");
 	sym_infos = header->getFile("*"%_name%".sym");
 	id_infos = header->getFile("*"%_name%".id");
 	ca_infos = header->getFile("*"%_name%".ca");
+	msk_infos = header->getFile("*"%_name%".msk");
 	inf_infos = header->getFile("*"%_name%".inf");
 	rat_infos = header->getFile("*"%_name%".rat");
 	mrt_infos = header->getFile("*"%_name%".mrt");
@@ -157,6 +165,8 @@ bool FieldPC::open(FsArchive *archive)
 		maxSize = qMax(maxSize, id_infos->position()+id_infos->uncompressed_size());
 	if(ca_infos!=NULL)
 		maxSize = qMax(maxSize, ca_infos->position()+ca_infos->uncompressed_size());
+	if(msk_infos!=NULL)
+		maxSize = qMax(maxSize, msk_infos->position()+msk_infos->uncompressed_size());
 	if(inf_infos!=NULL)
 		maxSize = qMax(maxSize, inf_infos->position()+inf_infos->uncompressed_size());
 	if(rat_infos!=NULL)
@@ -211,6 +221,13 @@ bool FieldPC::open(FsArchive *archive)
 			openWalkmeshFile(id_infos->data(fs_data), ca_infos->data(fs_data));
 		else
 			openWalkmeshFile(id_infos->data(fs_data));
+	}
+
+	/* MSK */
+
+	if(msk_infos!=NULL)
+	{
+		openMskFile(msk_infos->data(fs_data));
 	}
 
 	/* RAT & MRT */
@@ -322,6 +339,12 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 		QByteArray ca;
 		walkmeshFile->save(ca);
 		header->setFileData("*"%_name%".ca", fs_data, ca);
+	}
+	if(mskFile!=NULL && mskFile->isModified()) {
+		QByteArray msk;
+		if(mskFile->save(msk)) {
+			header->setFileData("*"%_name%".msk", fs_data, msk);
+		}
 	}
 	if(tdwFile!=NULL && tdwFile->isModified()) {
 		QByteArray tdw;

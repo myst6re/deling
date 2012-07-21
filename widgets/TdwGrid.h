@@ -34,6 +34,8 @@ signals:
 public slots:
 	void updateLetter(const QRect &rect);
 protected:
+	virtual QSize sizeHint() const;
+	virtual QSize minimumSizeHint() const;
 	virtual void mousePressEvent(QMouseEvent * e);
 	virtual void keyPressEvent(QKeyEvent *e);
 	virtual void paintEvent(QPaintEvent *e);

@@ -61,7 +61,7 @@ public:
 	QMap<int, int> searchAllOpcodeTypes() const;
 	QStringList fieldList() const;
 	const QStringList &mapList() const;
-	void setMapList(QStringList mapList);
+	void setMapList(const QStringList &mapList);
 protected:
 	QString errorMsg;
 	QList<Field *> fields;

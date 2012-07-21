@@ -31,8 +31,10 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 
 	selectTable = new QComboBox(this);
 
-	QPushButton *fromImage1 = new QPushButton(tr("À partir d'une image..."), this);
-	QPushButton *fromImage2 = new QPushButton(tr("À partir d'une image..."), this);
+	fromImage1 = new QPushButton(tr("À partir d'une image..."), this);
+	fromImage1->setVisible(false);//TODO
+	fromImage2 = new QPushButton(tr("À partir d'une image..."), this);
+	fromImage2->setVisible(false);//TODO
 //	QPushButton *resetButton1 = new QPushButton(tr("Annuler les modifications"), this);//TODO
 	textLetter = new QLineEdit(this);
 	textLetter->setReadOnly(isAdditionnalTable);
@@ -40,16 +42,16 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 	resetButton2->setEnabled(false);
 
 	QGridLayout *layout = new QGridLayout(this);
-	layout->addWidget(tdwGrid, 0, 0, Qt::AlignRight);
-	layout->addWidget(tdwLetter, 0, 1, 1, 2, Qt::AlignLeft);
-	layout->addWidget(tdwPalette, 1, 1, 1, 2, Qt::AlignLeft);
-	layout->addWidget(fromImage1, 2, 0, Qt::AlignLeft);
-	layout->addWidget(textLetter, 2, 1);
-	layout->addWidget(fromImage2, 2, 2, Qt::AlignRight);
-//	layout->addWidget(resetButton1, 3, 0, Qt::AlignLeft);
-	layout->addWidget(resetButton2, 3, 1, 1, 2, Qt::AlignRight);
-	layout->addWidget(selectPal, 4, 0, Qt::AlignRight);
-	layout->addWidget(selectTable, 4, 1, Qt::AlignLeft);
+	layout->addWidget(tdwGrid, 0, 0, 1, 2, Qt::AlignRight);
+	layout->addWidget(tdwLetter, 0, 2, 2, 2, Qt::AlignLeft);
+	layout->addWidget(fromImage1, 1, 0, 1, 2, Qt::AlignLeft);
+	layout->addWidget(selectPal, 2, 0, Qt::AlignRight);
+	layout->addWidget(selectTable, 2, 1, Qt::AlignLeft);
+	layout->addWidget(tdwPalette, 2, 2, 1, 2, Qt::AlignLeft);
+	layout->addWidget(textLetter, 3, 2);
+	layout->addWidget(fromImage2, 3, 3, Qt::AlignRight);
+//	layout->addWidget(resetButton1, 4, 0, 1, 2, Qt::AlignLeft);
+	layout->addWidget(resetButton2, 4, 2, 1, 2, Qt::AlignRight);
 	layout->setRowStretch(5, 1);
 	layout->setColumnStretch(3, 1);
 	layout->setContentsMargins(QMargins());
@@ -86,8 +88,6 @@ void TdwWidget2::setTdwFile(TdwFile *tdw)
 	tdwPalette->setTdwFile(tdw);
 	setLetter(0);
 
-	tdwGrid->setFocus();
-
 	if(selectTable->count() != tdw->tableCount()) {
 		selectTable->clear();
 		for(int i=1 ; i<=tdw->tableCount() ; ++i) {
@@ -108,6 +108,8 @@ void TdwWidget2::setReadOnly(bool ro)
 	textLetter->setReadOnly(isAdditionnalTable || ro);
 	tdwLetter->setReadOnly(ro);
 	tdwPalette->setReadOnly(ro);
+	fromImage1->setDisabled(ro);
+	fromImage2->setDisabled(ro);
 }
 
 void TdwWidget2::setColor(int i)

@@ -51,6 +51,7 @@ private:
 	TdwLetter *tdwLetter;
 	TdwPalette *tdwPalette;
 	QComboBox *selectPal, *selectTable;
+	QPushButton *fromImage1, *fromImage2;
 	QLineEdit *textLetter;
 	QPushButton *resetButton2;
 	FF8Font *ff8Font;

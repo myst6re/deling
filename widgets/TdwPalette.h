@@ -41,6 +41,8 @@ public slots:
 signals:
 	void colorChanged(int id);
 protected:
+	virtual QSize sizeHint() const;
+	virtual QSize minimumSizeHint() const;
 	virtual void paintEvent(QPaintEvent *e);
 	virtual void mousePressEvent(QMouseEvent *e);
 private:

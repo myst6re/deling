@@ -15,32 +15,28 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef MISCWIDGET_H
-#define MISCWIDGET_H
+#ifndef MSKFILE_H
+#define MSKFILE_H
 
-#include <QtGui>
-#include "widgets/PageWidget.h"
-#include "files/MiscFile.h"
-#include "files/WalkmeshFile.h"
+#include <QtCore>
+#include "WalkmeshFile.h"
 
-class MiscWidget : public PageWidget
+class MskFile
 {
-	Q_OBJECT
 public:
-	MiscWidget(QWidget *parent=0);
-	void build();
-	void clear();
-	void setReadOnly(bool readOnly);
-	void fill();
-	inline QString tabName() const { return tr("Divers"); }
-private slots:
-	void editName(const QString &);
-	void editPmp(const QString &);
-	void editPmd(const QString &);
-	void editPvp(const QString &);
+	MskFile();
+	virtual ~MskFile();
+	bool open(const QByteArray &msk);
+	bool save(QByteArray &msk);
+	bool isModified() const;
+	int cameraPositionCount() const;
+	Vertex_s *cameraPosition(int frame) const;
+	void setCameraPosition(int frame, Vertex_s camPos[4]);
+	void insertCameraPosition(int frame, Vertex_s camPos[4]);
+	void removeCameraPosition(int frame);
 private:
-
-	QLineEdit *nameEdit, *pmpEdit, *pmdEdit, *pvpEdit;
+	bool modified;
+	QList<Vertex_s *> vertices;
 };
 
-#endif // MISCWIDGET_H
+#endif // MSKFILE_H

@@ -85,7 +85,7 @@ int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 		QByteArray fieldData = iso->fileLZS(fieldFiles.at(i));
 
 		if(!fieldData.isEmpty()) {
-			field = new FieldPS(fieldData, i);
+			field = new FieldPS(fieldData, iso->fileLZS(fieldFiles.at(i-1)), i);
 			if(field->isOpen()) {
 				if(field->hasJsmFile())
 					desc = Data::location(field->getJsmFile()->mapID());

@@ -17,10 +17,10 @@
  ****************************************************************************/
 #include "FieldPS.h"
 
-FieldPS::FieldPS(const QByteArray &data, quint32 isoFieldID)
+FieldPS::FieldPS(const QByteArray &data, const QByteArray &mim, quint32 isoFieldID)
 	: Field(QString()), _isoFieldID(isoFieldID)
 {
-	open(data);
+	open(data, mim);
 }
 
 FieldPS::~FieldPS()
@@ -42,15 +42,17 @@ quint32 FieldPS::isoFieldID() const
 	return _isoFieldID;
 }
 
-bool FieldPS::open(const QByteArray &dat_data)
+bool FieldPS::open(const QByteArray &dat_data, const QByteArray &mim)
 {
 	// pvp + mim + tdw + pmp (MIM)
 	// inf + ca + id + map + msk + rat + mrt + AKAO + msd + pmd + jsm (DAT)
 	quint32 posSections[12];
+	quint32 posSectionsMim[5], posTdw, posPmp;
 	const char *constData = dat_data.constData();
+	const char *constDataMim = mim.constData();
 	int memoryPos;
 
-	memcpy(posSections, constData, 48);
+	memcpy(posSections, constData, 48);// 12 * 4
 
 	memoryPos = posSections[Inf] - 48;
 
@@ -61,6 +63,18 @@ bool FieldPS::open(const QByteArray &dat_data)
 		qWarning() << "Mauvaise position section 1" << posSections[Last] << memoryPos << dat_data.size();
 		return false;
 	}
+
+	posSectionsMim[0] = 8;
+	posSectionsMim[1] = posSectionsMim[0] + 4;
+	posSectionsMim[2] = posSectionsMim[1] + 438272;
+
+	memcpy(&posTdw, constDataMim, 4);
+	memoryPos = posTdw - posSectionsMim[2];
+
+	memcpy(&posPmp, &constDataMim[4], 4);
+
+	posSectionsMim[3] = posPmp - memoryPos;
+	posSectionsMim[4] = mim.size();
 
 	_name = dat_data.mid(48, 8);
 
@@ -77,17 +91,20 @@ bool FieldPS::open(const QByteArray &dat_data)
 				dat_data.mid(posSections[Id], posSections[Id+1]-posSections[Id]),
 				dat_data.mid(posSections[Ca], posSections[Ca+1]-posSections[Ca]));
 
+	/* MSK */
+	openMskFile(dat_data.mid(posSections[Msk], posSections[Msk+1]-posSections[Msk]));
+
 	/* RAT & MRT */
 	openEncounterFile(
 				dat_data.mid(posSections[Rat], posSections[Rat+1]-posSections[Rat]),
 				dat_data.mid(posSections[Mrt], posSections[Mrt+1]-posSections[Mrt]));
 
-	/* INF & PMD */
+	/* INF, PMP, PMD & PVP */
 	openMiscFile(
 				dat_data.mid(posSections[Inf], posSections[Inf+1]-posSections[Inf]),
-				QByteArray(),
+				mim.mid(posSectionsMim[Pmp], posSectionsMim[Pmp+1]-posSectionsMim[Pmp]),
 				dat_data.mid(posSections[Pmd], posSections[Pmd+1]-posSections[Pmd]),
-				QByteArray());
+				mim.mid(posSectionsMim[Pvp], posSectionsMim[Pvp+1]-posSectionsMim[Pvp]));
 
 	setOpen(true);
 	return true;
@@ -170,11 +187,11 @@ bool FieldPS::save(QByteArray &dat_data)
 		dat_data.replace(posSections[Inf], posSections[Inf+1] - posSections[Inf], inf);
 		diff = inf.size() - (posSections[Inf+1] - posSections[Inf]);
 		for(int i=Inf+1 ; i<12 ; ++i)	posSections[i] += diff;
-		// TODO pmp
+		// TODO: pmp
 		dat_data.replace(posSections[Pmd], posSections[Pmd+1] - posSections[Pmd], pmd);
 		diff = pmd.size() - (posSections[Pmd+1] - posSections[Pmd]);
 		for(int i=Pmd+1 ; i<12 ; ++i)	posSections[i] += diff;
-		// TODO pvp
+		// TODO: pvp
 	}
 	if(walkmeshFile!=NULL && walkmeshFile->isModified()) {
 		QByteArray ca;
@@ -182,6 +199,14 @@ bool FieldPS::save(QByteArray &dat_data)
 		dat_data.replace(posSections[Ca], posSections[Ca+1] - posSections[Ca], ca);
 		diff = ca.size() - (posSections[Ca+1] - posSections[Ca]);
 		for(int i=Ca+1 ; i<12 ; ++i)	posSections[i] += diff;
+	}
+	if(mskFile!=NULL && mskFile->isModified()) {
+		QByteArray msk;
+		if(mskFile->save(msk)) {
+			dat_data.replace(posSections[Msk], posSections[Msk+1] - posSections[Msk], msk);
+			diff = msk.size() - (posSections[Msk+1] - posSections[Msk]);
+			for(int i=Msk+1 ; i<12 ; ++i)	posSections[i] += diff;
+		}
 	}
 	if(tdwFile!=NULL && tdwFile->isModified()) {
 		QByteArray tdw;

@@ -25,14 +25,27 @@
 
 class WalkmeshWidget : public PageWidget
 {
+	Q_OBJECT
 public:
 	WalkmeshWidget(QWidget *parent=0);
 	void clear();
 	void fill();
 	inline QString tabName() const { return tr("Walkmesh"); }
+private slots:
+	void editCaVector(int value);
+	void editCaPos(double value);
 private:
 	void build();
+	QWidget *buildCameraPage();
+	QWidget *buildGatewaysPage();
+	QWidget *buildMovieCameraPage();
+	void editCaVector(int id, int id2, int value);
+	void editCaPos(int id, int value);
+
 	WalkmeshGLWidget *walkmeshGL;
+	QSpinBox *caVectorX1Edit, *caVectorX2Edit, *caVectorX3Edit, *caVectorY1Edit, *caVectorY2Edit, *caVectorY3Edit, *caVectorZ1Edit, *caVectorZ2Edit, *caVectorZ3Edit;
+	QDoubleSpinBox *caSpaceXEdit, *caSpaceYEdit, *caSpaceZEdit;
+	QListWidget *gateList, *frameList;
 };
 
 #endif // WALKMESHWIDGET_H

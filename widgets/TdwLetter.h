@@ -31,13 +31,16 @@ public:
 	explicit TdwLetter(QWidget *parent=0);
 	virtual ~TdwLetter();
 	void setReadOnly(bool ro);
+	virtual void setTdwFile(TdwFile *tdwFile);
 public slots:
-	void setLetter(int letter);
+	virtual void setLetter(int letter);
 	void setPixelIndex(int index);
 	void reset();
 signals:
 	void imageChanged(const QRect &rect);
 protected:
+	virtual QSize sizeHint() const;
+	virtual QSize minimumSizeHint() const;
 	virtual void paintEvent(QPaintEvent *e);
 	virtual void mouseMoveEvent(QMouseEvent *e);
 	virtual void mousePressEvent(QMouseEvent *e);

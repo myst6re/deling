@@ -71,7 +71,8 @@ HEADERS += MainWindow.h \
     FF8Font.h \
     widgets/TdwWidget2.h \
     TdwManagerDialog.h \
-    widgets/TdwPalette.h
+    widgets/TdwPalette.h \
+    files/MskFile.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -135,7 +136,8 @@ SOURCES += MainWindow.cpp \
     FF8Font.cpp \
     widgets/TdwWidget2.cpp \
     TdwManagerDialog.cpp \
-    widgets/TdwPalette.cpp
+    widgets/TdwPalette.cpp \
+    files/MskFile.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

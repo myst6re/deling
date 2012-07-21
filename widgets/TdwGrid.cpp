@@ -20,11 +20,21 @@
 TdwGrid::TdwGrid(QWidget *parent) :
 	TdwDisplay(parent)
 {
-	setFixedSize(16 * (12 + 1 + 1*2) + 1, 14 * (12 + 1 + 1*2) + 1);
+	setFixedSize(sizeHint());
 }
 
 TdwGrid::~TdwGrid()
 {
+}
+
+QSize TdwGrid::sizeHint() const
+{
+	return QSize(16 * (12 + 1 + 1*2) + 1, 14 * (12 + 1 + 1*2) + 1);
+}
+
+QSize TdwGrid::minimumSizeHint() const
+{
+	return sizeHint();
 }
 
 void TdwGrid::paintEvent(QPaintEvent *)
