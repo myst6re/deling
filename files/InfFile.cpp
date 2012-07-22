@@ -33,6 +33,8 @@ bool InfFile::open(const QByteArray &inf)
 
     memcpy(&infStruct, constInf, sizeof(InfStruct));
 
+	qDebug() << "WARNING" << infStruct.control;
+
 	return true;
 }
 
@@ -60,6 +62,7 @@ void InfFile::setMapName(const QString &mapName)
     char *name = mapName.toLatin1().leftJustified(8, '\0', true).data();
 
     memcpy(&infStruct.name, name, 8);
+	infStruct.name[8] = '\0';
 
 	modified = true;
 }
@@ -75,11 +78,24 @@ QList<Gateway> InfFile::getGateways() const
     return gates;
 }
 
-void InfFile::setGateways(const QList<Gateway> &gateways)
+const Gateway &InfFile::getGateway(int id) const
 {
-    for(int i=0 ; i<12 ; ++i) {
-        infStruct.gateways[i] = gateways.at(i);
-    }
+	return infStruct.gateways[id];
+}
+
+void InfFile::setGateway(int id, const Gateway &gateway)
+{
+	infStruct.gateways[id] = gateway;
 
 	modified = true;
+}
+
+const UnknownStruct2 &InfFile::getUnknown(int id) const
+{
+	return infStruct.unknown3[id];
+}
+
+void InfFile::setUnknown(int id, const UnknownStruct2 &unknown)
+{
+	infStruct.unknown3[id] = unknown;
 }

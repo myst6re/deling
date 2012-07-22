@@ -22,6 +22,10 @@
 #include "WalkmeshFile.h"
 
 typedef struct {
+	quint8 unknown[8];
+} UnknownStruct1;
+
+typedef struct {
     Vertex_s exitLine[2];
     Vertex_s destinationPoint;
     quint16 fieldId;
@@ -30,13 +34,16 @@ typedef struct {
 
 typedef struct {
     quint8 unknown[16];
-} UnknownStruct;
+} UnknownStruct2;
 
 typedef struct {
-    char name[8];
-    quint8 unknown1[92];
+	char name[9];
+	quint8 control;
+	quint8 unknown0[10];
+	UnknownStruct1 unknown1[8];
+	quint8 unknown2[16];
     Gateway gateways[12];
-    UnknownStruct unknown2[12];
+	UnknownStruct2 unknown3[12];
 } InfStruct;
 
 class InfFile
@@ -49,7 +56,10 @@ public:
     QString getMapName() const;
 	void setMapName(const QString &mapName);
     QList<Gateway> getGateways() const;
-    void setGateways(const QList<Gateway> &gateways);
+	const Gateway &getGateway(int id) const;
+	void setGateway(int id, const Gateway &gateway);
+	const UnknownStruct2 &getUnknown(int id) const;
+	void setUnknown(int id, const UnknownStruct2 &unknown);
 private:
     InfStruct infStruct;
 	bool modified;

@@ -33,22 +33,33 @@ public:
 	void fill();
 	inline QString tabName() const { return tr("Walkmesh"); }
 private slots:
-	void editCaVector(int value);
+	void editCaVector(const Vertex_s &values);
 	void editCaPos(double value);
     void setCurrentGateway(int id);
+	void editExitPoint(const Vertex_s &values);
+	void editEntryPoint(const Vertex_s &values);
+	void editUnknownGate(const QString &u);
+	void editUnknownGate2(const QString &u);
     void setCurrentMoviePosition(int id);
+	void setMovieCameraPageEnabled(bool enabled);
+	void addMovieCameraPosition();
+	void removeMovieCameraPosition();
 private:
 	void build();
 	QWidget *buildCameraPage();
 	QWidget *buildGatewaysPage();
 	QWidget *buildMovieCameraPage();
-	void editCaVector(int id, int id2, int value);
+	void editCaVector(int id, const Vertex_s &values);
 	void editCaPos(int id, int value);
+	void editExitPoint(int id, const Vertex_s &values);
 
 	WalkmeshGLWidget *walkmeshGL;
-	QSpinBox *caVectorX1Edit, *caVectorX2Edit, *caVectorX3Edit, *caVectorY1Edit, *caVectorY2Edit, *caVectorY3Edit, *caVectorZ1Edit, *caVectorZ2Edit, *caVectorZ3Edit;
+	VertexWidget *caVectorXEdit, *caVectorYEdit, *caVectorZEdit;
 	QDoubleSpinBox *caSpaceXEdit, *caSpaceYEdit, *caSpaceZEdit;
 	QListWidget *gateList, *frameList;
+	QLineEdit *unknownGate, *unknownGate2;
+	QToolBar *camToolbar;
+	QAction *camPlusAction, *camMinusAction;
     VertexWidget *exitPoints[2], *entryPoint;
     VertexWidget *camPoints[4];
 };

@@ -92,7 +92,9 @@ bool FieldPS::open(const QByteArray &dat_data, const QByteArray &mim)
 				dat_data.mid(posSections[Ca], posSections[Ca+1]-posSections[Ca]));
 
 	/* MSK */
-	openMskFile(dat_data.mid(posSections[Msk], posSections[Msk+1]-posSections[Msk]));
+	if(posSections[Msk+1]-posSections[Msk] > 0) {
+		openMskFile(dat_data.mid(posSections[Msk], posSections[Msk+1]-posSections[Msk]));
+	}
 
 	/* RAT & MRT */
 	openEncounterFile(

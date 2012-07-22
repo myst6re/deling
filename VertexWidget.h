@@ -28,8 +28,13 @@ public:
 	explicit VertexWidget(QWidget *parent=0);
     Vertex_s values() const;
     void setValues(const Vertex_s &v);
+private slots:
+	void emitValuesChanged();
+signals:
+	void valuesChanged(const Vertex_s &v);
 private:
 	QSpinBox *x, *y, *z;
+	bool dontEmit;
 };
 
 #endif // VERTEXWIDGET_H

@@ -18,7 +18,7 @@
 #include "VertexWidget.h"
 
 VertexWidget::VertexWidget(QWidget *parent) :
-	QWidget(parent)
+	QWidget(parent), dontEmit(false)
 {
 	x = new QSpinBox;
 	x->setRange(-32768, 32767);
@@ -35,6 +35,10 @@ VertexWidget::VertexWidget(QWidget *parent) :
 	layout->addWidget(y);
 	layout->addWidget(new QLabel(tr("Z")));
 	layout->addWidget(z);
+
+	connect(x, SIGNAL(valueChanged(int)), SLOT(emitValuesChanged()));
+	connect(y, SIGNAL(valueChanged(int)), SLOT(emitValuesChanged()));
+	connect(z, SIGNAL(valueChanged(int)), SLOT(emitValuesChanged()));
 }
 
 Vertex_s VertexWidget::values() const
@@ -48,7 +52,17 @@ Vertex_s VertexWidget::values() const
 
 void VertexWidget::setValues(const Vertex_s &v)
 {
+	dontEmit = true;
 	x->setValue(v.x);
 	y->setValue(v.y);
 	z->setValue(v.z);
+	dontEmit = false;
+	emitValuesChanged();
+}
+
+void VertexWidget::emitValuesChanged()
+{
+	if(!dontEmit) {
+		emit valuesChanged(values());
+	}
 }
