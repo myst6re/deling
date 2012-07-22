@@ -2,6 +2,7 @@
 #define FF8FONT_H
 
 #include "files/TdwFile.h"
+#include "parameters.h"
 
 class FF8Font
 {

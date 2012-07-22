@@ -15,26 +15,21 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef MISCSEARCH_H
-#define MISCSEARCH_H
+#ifndef VERTEXWIDGET_H
+#define VERTEXWIDGET_H
 
-#include "Search.h"
+#include <QtGui>
+#include "files/WalkmeshFile.h"
 
-class MiscSearch : public QDialog
+class VertexWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	MiscSearch(FieldArchive *fieldArchive, QWidget *parent=0);
-
-private slots:
-	void search(int);
+	explicit VertexWidget(QWidget *parent=0);
+    Vertex_s values() const;
+    void setValues(const Vertex_s &v);
 private:
-	void fillList();
-    static int getMapId(const QList<Field *> &fields);
-
-	QListWidget *list;
-	QPlainTextEdit *textEdit;
-	FieldArchive *fieldArchive;
+	QSpinBox *x, *y, *z;
 };
 
-#endif // MISCSEARCH_H
+#endif // VERTEXWIDGET_H

@@ -129,6 +129,7 @@ QWidget *WalkmeshWidget::buildCameraPage()
 	caLayout->addWidget(caSpaceXEdit, 3, 0);
 	caLayout->addWidget(caSpaceYEdit, 3, 1);
 	caLayout->addWidget(caSpaceZEdit, 3, 2);
+    caLayout->setRowStretch(4, 1);
 
 	return ret;
 }
@@ -140,8 +141,20 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	gateList = new QListWidget(ret);
 	gateList->setFixedWidth(150);
 
+    exitPoints[0] = new VertexWidget(ret);
+    exitPoints[1] = new VertexWidget(ret);
+    entryPoint = new VertexWidget(ret);
+
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(gateList, 0, 0);
+    layout->addWidget(gateList, 0, 0, 2, 1);
+    layout->addWidget(new QLabel(tr("Ligne de sortie")), 0, 1, Qt::AlignTop);
+    layout->addWidget(exitPoints[0], 0, 2, Qt::AlignTop);
+    layout->addWidget(exitPoints[1], 0, 3, Qt::AlignTop);
+    layout->addWidget(new QLabel(tr("Point de destination")), 1, 1, 1, 2, Qt::AlignTop);
+    layout->addWidget(entryPoint, 1, 3, Qt::AlignTop);
+    layout->setRowStretch(1, 1);
+
+    connect(gateList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentGateway(int)));
 
 	return ret;
 }
@@ -153,8 +166,19 @@ QWidget *WalkmeshWidget::buildMovieCameraPage()
 	frameList = new QListWidget(ret);
 	frameList->setFixedWidth(150);
 
+    camPoints[0] = new VertexWidget(ret);
+    camPoints[1] = new VertexWidget(ret);
+    camPoints[2] = new VertexWidget(ret);
+    camPoints[3] = new VertexWidget(ret);
+
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(frameList, 0, 0);
+    layout->addWidget(frameList, 0, 0, 4, 1);
+    layout->addWidget(camPoints[0], 0, 1);
+    layout->addWidget(camPoints[1], 1, 1);
+    layout->addWidget(camPoints[2], 2, 1);
+    layout->addWidget(camPoints[3], 3, 1);
+
+    connect(frameList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentMoviePosition(int)));
 
 	return ret;
 }
@@ -202,11 +226,12 @@ void WalkmeshWidget::fill()
 		caSpaceZEdit->setValue(data()->getWalkmeshFile()->camPos(2));
 	}
 
-	if(data()->hasMiscFile()) {
+    if(data()->hasInfFile()) {
 		gateList->clear();
-		foreach(quint16 mapId, data()->getMiscFile()->getGateways()) {
-			gateList->addItem(QString("%1 (%2)").arg(Data::maplist().value(mapId)).arg(mapId));
+        foreach(const Gateway &gateway, data()->getInfFile()->getGateways()) {
+            gateList->addItem(QString("%1 (%2)").arg(Data::maplist().value(gateway.fieldId)).arg(gateway.fieldId));
 		}
+        gateList->setCurrentRow(0);
 	}
 
 	if(data()->hasMskFile()) {
@@ -215,6 +240,7 @@ void WalkmeshWidget::fill()
 		for(int i=0 ; i<cameraPositionCount ; ++i) {
 			frameList->addItem(QString("Position %1").arg(i+1));
 		}
+        frameList->setCurrentRow(0);
 	}
 
 	PageWidget::fill();
@@ -275,4 +301,32 @@ void WalkmeshWidget::editCaPos(int id, int value)
 			emit modified();
 		}
 	}
+}
+
+void WalkmeshWidget::setCurrentGateway(int id)
+{
+    if(!data()->hasInfFile() || id < 0)    return;
+
+    InfFile *inf = data()->getInfFile();
+    QList<Gateway> gateways = inf->getGateways();
+    if(gateways.size() <= id)    return;
+
+    Gateway gateway = gateways.at(id);
+
+    exitPoints[0]->setValues(gateway.exitLine[0]);
+    exitPoints[1]->setValues(gateway.exitLine[1]);
+    entryPoint->setValues(gateway.destinationPoint);
+}
+
+void WalkmeshWidget::setCurrentMoviePosition(int id)
+{
+    if(!data()->hasMskFile() || id < 0)    return;
+
+    MskFile *msk = data()->getMskFile();
+    if(msk->cameraPositionCount() <= id)    return;
+
+    camPoints[0]->setValues(msk->cameraPosition(id)[0]);
+    camPoints[1]->setValues(msk->cameraPosition(id)[1]);
+    camPoints[2]->setValues(msk->cameraPosition(id)[2]);
+    camPoints[3]->setValues(msk->cameraPosition(id)[3]);
 }

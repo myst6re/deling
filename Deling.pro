@@ -72,7 +72,9 @@ HEADERS += MainWindow.h \
     widgets/TdwWidget2.h \
     TdwManagerDialog.h \
     widgets/TdwPalette.h \
-    files/MskFile.h
+    files/MskFile.h \
+    VertexWidget.h \
+    files/InfFile.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -137,7 +139,9 @@ SOURCES += MainWindow.cpp \
     widgets/TdwWidget2.cpp \
     TdwManagerDialog.cpp \
     widgets/TdwPalette.cpp \
-    files/MskFile.cpp
+    files/MskFile.cpp \
+    VertexWidget.cpp \
+    files/InfFile.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

@@ -22,20 +22,8 @@ MiscFile::MiscFile()
 {
 }
 
-bool MiscFile::open(const QByteArray &inf, const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp)
+bool MiscFile::open(const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp)
 {
-	quint16 mapId;
-	const char *constInf = inf.constData();
-
-	mapName = inf.left(8);
-
-	gateways.clear();
-	for(int i=0 ; i<12 ; ++i) {
-		memcpy(&mapId, &constInf[118 + i*32], 2);
-		gateways.append(mapId);
-	}
-
-	this->inf = inf;
 	this->pmp = pmp;
 	this->pmd = pmd;
 	this->pvp = pvp;
@@ -43,17 +31,8 @@ bool MiscFile::open(const QByteArray &inf, const QByteArray &pmp, const QByteArr
 	return true;
 }
 
-bool MiscFile::save(QByteArray &inf, QByteArray &pmp, QByteArray &pmd, QByteArray &pvp)
+bool MiscFile::save(QByteArray &pmp, QByteArray &pmd, QByteArray &pvp)
 {
-	quint16 mapId;
-
-	this->inf.replace(0, 8, mapName.toLatin1().leftJustified(8, '\x00', true));
-	for(int i=0 ; i<12 ; ++i) {
-		mapId = gateways.at(i);
-		this->inf.replace(118 + i*32, 2, (char *)&mapId, 2);
-	}
-
-	inf = this->inf;
 	pmp = this->pmp;
 	pmd = this->pmd;
 	pvp = this->pvp;
@@ -65,29 +44,6 @@ bool MiscFile::save(QByteArray &inf, QByteArray &pmp, QByteArray &pmd, QByteArra
 bool MiscFile::isModified() const
 {
 	return modified;
-}
-
-const QString &MiscFile::getMapName() const
-{
-	return mapName;
-}
-
-void MiscFile::setMapName(const QString &mapName)
-{
-	this->mapName = mapName;
-//	qDebug() << "newMapName" << mapName;
-	modified = true;
-}
-
-const QList<quint16> &MiscFile::getGateways() const
-{
-	return gateways;
-}
-
-void MiscFile::setGateways(const QList<quint16> &gateways)
-{
-	this->gateways = gateways;
-	modified = true;
 }
 
 const QByteArray &MiscFile::getPvpData() const

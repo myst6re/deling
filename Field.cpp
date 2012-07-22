@@ -20,7 +20,7 @@
 Field::Field(const QString &name)
 	: _isOpen(false), _name(name),
 	  msdFile(NULL), jsmFile(NULL), walkmeshFile(NULL),
-	  encounterFile(NULL), miscFile(NULL), backgroundFile(NULL),
+      encounterFile(NULL), infFile(NULL), miscFile(NULL), backgroundFile(NULL),
 	  tdwFile(NULL), mskFile(NULL)
 {
 }
@@ -31,6 +31,7 @@ Field::~Field()
 	deleteJsmFile();
 	deleteWalkmeshFile();
 	deleteEncounterFile();
+    deleteInfFile();
 	deleteMiscFile();
 	deleteBackgroundFile();
 	deleteTdwFile();
@@ -92,13 +93,24 @@ void Field::openEncounterFile(const QByteArray &rat, const QByteArray &mrt)
 	}
 }
 
-void Field::openMiscFile(const QByteArray &inf, const QByteArray &pmp,
+void Field::openInfFile(const QByteArray &inf)
+{
+    deleteInfFile();
+    infFile = new InfFile();
+
+    if(!infFile->open(inf)) {
+        qWarning() << "Field::openInfFile error" << _name;
+        deleteInfFile();
+    }
+}
+
+void Field::openMiscFile(const QByteArray &pmp,
 						 const QByteArray &pmd, const QByteArray &pvp)
 {
 	deleteMiscFile();
 	miscFile = new MiscFile();
 
-	if(!miscFile->open(inf, pmp, pmd, pvp)) {
+    if(!miscFile->open(pmp, pmd, pvp)) {
 		qWarning() << "Field::openMiscFile error" << _name;
 		deleteMiscFile();
 	}
@@ -188,6 +200,14 @@ void Field::deleteEncounterFile()
 	}
 }
 
+void Field::deleteInfFile()
+{
+    if(infFile!=NULL) {
+        delete infFile;
+        infFile = NULL;
+    }
+}
+
 void Field::deleteMiscFile()
 {
 	if(miscFile!=NULL) {
@@ -248,6 +268,11 @@ bool Field::hasEncounterFile() const
 	return encounterFile != NULL;
 }
 
+bool Field::hasInfFile() const
+{
+    return infFile != NULL;
+}
+
 bool Field::hasMiscFile() const
 {
 	return miscFile != NULL;
@@ -299,6 +324,11 @@ EncounterFile *Field::getEncounterFile() const
 	return encounterFile;
 }
 
+InfFile *Field::getInfFile() const
+{
+    return infFile;
+}
+
 MiscFile *Field::getMiscFile() const
 {
 	return miscFile;
@@ -329,6 +359,7 @@ bool Field::isModified() const
 	return (msdFile != NULL && msdFile->isModified())
 			|| (jsmFile != NULL && jsmFile->isModified())
 			|| (encounterFile != NULL && encounterFile->isModified())
+            || (infFile != NULL && infFile->isModified())
 			|| (miscFile != NULL && miscFile->isModified())
 			|| (walkmeshFile != NULL && walkmeshFile->isModified())
 			|| (backgroundFile != NULL && backgroundFile->isModified())

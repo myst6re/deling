@@ -171,7 +171,7 @@ void MiscSearch::fillList()
 
 }
 
-int MiscSearch::getMapId(QList<Field *> fields)
+int MiscSearch::getMapId(const QList<Field *> &fields)
 {
 	foreach(Field *field, fields) {
 		if(field->getJsmFile()->mapID() != -1)

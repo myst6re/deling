@@ -111,13 +111,19 @@ bool FieldPC::open(const QString &path)
 		openEncounterFile(header->fileData("*.rat"), header->fileData("*.mrt"));
 	}
 
-	/* INF, PMP, PMD & PVP */
+    /* INF */
 
-	if(header->fileExists("*.inf") || header->fileExists("*.pmp")
+    if(header->fileExists("*.inf"))
+    {
+        openInfFile(header->fileData("*.inf"));
+    }
+
+    /* PMP, PMD & PVP */
+
+    if(header->fileExists("*.pmp")
 			|| header->fileExists("*.pmd") || header->fileExists("*.pvp"))
 	{
-		openMiscFile(header->fileData("*.inf"),
-					 header->fileData("*.pmp"),
+        openMiscFile(header->fileData("*.pmp"),
 					 header->fileData("*.pmd"),
 					 header->fileData("*.pvp"));
 	}
@@ -238,13 +244,19 @@ bool FieldPC::open(FsArchive *archive)
 						  mrt_infos!=NULL ? mrt_infos->data(fs_data) : QByteArray());
 	}
 
-	/* INF, PMP, PMD & PVP */
+    /* INF */
 
-	if(inf_infos!=NULL || pmp_infos!=NULL
+    if(inf_infos!=NULL)
+    {
+        openInfFile(inf_infos!=NULL ? inf_infos->data(fs_data) : QByteArray());
+    }
+
+    /* PMP, PMD & PVP */
+
+    if(pmp_infos!=NULL
 			|| pmd_infos!=NULL || pvp_infos!=NULL)
 	{
-		openMiscFile(inf_infos!=NULL ? inf_infos->data(fs_data) : QByteArray(),
-					 pmp_infos!=NULL ? pmp_infos->data(fs_data) : QByteArray(),
+        openMiscFile(pmp_infos!=NULL ? pmp_infos->data(fs_data) : QByteArray(),
 					 pmd_infos!=NULL ? pmd_infos->data(fs_data) : QByteArray(),
 					 pvp_infos!=NULL ? pvp_infos->data(fs_data) : QByteArray());
 	}
@@ -312,41 +324,46 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 {
 	if(!header)	return;
 
-	if(msdFile!=NULL && msdFile->isModified())
+    if(hasMsdFile() && msdFile->isModified()) {
 		header->setFileData("*"%_name%".msd", fs_data, msdFile->save());
-	if(jsmFile!=NULL && jsmFile->isModified()) {
+    }
+    if(hasJsmFile() && jsmFile->isModified()) {
 		QByteArray sym;
 		header->setFileData("*"%_name%".jsm", fs_data, jsmFile->save(sym));
 		if(!sym.isEmpty()) {
 			header->setFileData("*"%_name%".sym", fs_data, sym);
 		}
 	}
-	if(encounterFile!=NULL && encounterFile->isModified()) {
+    if(hasEncounterFile() && encounterFile->isModified()) {
 		QByteArray rat, mrt;
 		encounterFile->save(rat, mrt);
 		header->setFileData("*"%_name%".rat", fs_data, rat);
 		header->setFileData("*"%_name%".mrt", fs_data, mrt);
 	}
-	if(miscFile!=NULL && miscFile->isModified()) {
-		QByteArray inf, pmp, pmd, pvp;
-		miscFile->save(inf, pmp, pmd, pvp);
-		header->setFileData("*"%_name%".inf", fs_data, inf);
+    if(hasInfFile() && infFile->isModified()) {
+        QByteArray inf;
+        infFile->save(inf);
+        header->setFileData("*"%_name%".inf", fs_data, inf);
+    }
+    if(hasMiscFile() && miscFile->isModified()) {
+        QByteArray pmp, pmd, pvp;
+        miscFile->save(pmp, pmd, pvp);
 		header->setFileData("*"%_name%".pmp", fs_data, pmp);
 		header->setFileData("*"%_name%".pmd", fs_data, pmd);
 		header->setFileData("*"%_name%".pvp", fs_data, pvp);
 	}
-	if(walkmeshFile!=NULL && walkmeshFile->isModified()) {
+    if(hasWalkmeshFile() && walkmeshFile->isModified()) {
 		QByteArray ca;
 		walkmeshFile->save(ca);
 		header->setFileData("*"%_name%".ca", fs_data, ca);
 	}
-	if(mskFile!=NULL && mskFile->isModified()) {
+    if(hasMskFile() && mskFile->isModified()) {
 		QByteArray msk;
 		if(mskFile->save(msk)) {
 			header->setFileData("*"%_name%".msk", fs_data, msk);
 		}
 	}
-	if(tdwFile!=NULL && tdwFile->isModified()) {
+    if(hasTdwFile() && tdwFile->isModified()) {
 		QByteArray tdw;
 		if(tdwFile->save(tdw)) {
 			header->setFileData("*"%_name%".tdw", fs_data, tdw);

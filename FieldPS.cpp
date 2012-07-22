@@ -99,10 +99,12 @@ bool FieldPS::open(const QByteArray &dat_data, const QByteArray &mim)
 				dat_data.mid(posSections[Rat], posSections[Rat+1]-posSections[Rat]),
 				dat_data.mid(posSections[Mrt], posSections[Mrt+1]-posSections[Mrt]));
 
-	/* INF, PMP, PMD & PVP */
+    /* INF */
+    openInfFile(dat_data.mid(posSections[Inf], posSections[Inf+1]-posSections[Inf]));
+
+    /* PMP, PMD & PVP */
 	openMiscFile(
-				dat_data.mid(posSections[Inf], posSections[Inf+1]-posSections[Inf]),
-				mim.mid(posSectionsMim[Pmp], posSectionsMim[Pmp+1]-posSectionsMim[Pmp]),
+                mim.mid(posSectionsMim[Pmp], posSectionsMim[Pmp+1]-posSectionsMim[Pmp]),
 				dat_data.mid(posSections[Pmd], posSections[Pmd+1]-posSections[Pmd]),
 				mim.mid(posSectionsMim[Pvp], posSectionsMim[Pvp+1]-posSectionsMim[Pvp]));
 
@@ -159,19 +161,19 @@ bool FieldPS::save(QByteArray &dat_data)
 		return false;
 	}
 
-	if(msdFile!=NULL && msdFile->isModified()) {
+    if(hasMsdFile() && msdFile->isModified()) {
 		QByteArray msd = msdFile->save();
 		dat_data.replace(posSections[Msd], posSections[Msd+1] - posSections[Msd], msd);
 		diff = msd.size() - (posSections[Msd+1] - posSections[Msd]);
 		for(int i=Msd+1 ; i<12 ; ++i)	posSections[i] += diff;
 	}
-	if(jsmFile!=NULL && jsmFile->isModified()) {
+    if(hasJsmFile() && jsmFile->isModified()) {
 		QByteArray sym, jsm = jsmFile->save(sym);
 		dat_data.replace(posSections[Jsm], posSections[Jsm+1] - posSections[Jsm], jsm);
 		diff = jsm.size() - (posSections[Jsm+1] - posSections[Jsm]);
 		for(int i=Jsm+1 ; i<12 ; ++i)	posSections[i] += diff;
 	}
-	if(encounterFile!=NULL && encounterFile->isModified()) {
+    if(hasEncounterFile() && encounterFile->isModified()) {
 		QByteArray rat, mrt;
 		encounterFile->save(rat, mrt);
 		dat_data.replace(posSections[Rat], posSections[Rat+1] - posSections[Rat], rat);
@@ -181,26 +183,30 @@ bool FieldPS::save(QByteArray &dat_data)
 		diff = mrt.size() - (posSections[Mrt+1] - posSections[Mrt]);
 		for(int i=Mrt+1 ; i<12 ; ++i)	posSections[i] += diff;
 	}
-	if(miscFile!=NULL && miscFile->isModified()) {
-		QByteArray inf, pmp, pmd, pvp;
-		miscFile->save(inf, pmp, pmd, pvp);
-		dat_data.replace(posSections[Inf], posSections[Inf+1] - posSections[Inf], inf);
-		diff = inf.size() - (posSections[Inf+1] - posSections[Inf]);
-		for(int i=Inf+1 ; i<12 ; ++i)	posSections[i] += diff;
+    if(hasInfFile() && infFile->isModified()) {
+        QByteArray inf;
+        infFile->save(inf);
+        dat_data.replace(posSections[Inf], posSections[Inf+1] - posSections[Inf], inf);
+        diff = inf.size() - (posSections[Inf+1] - posSections[Inf]);
+        for(int i=Inf+1 ; i<12 ; ++i)	posSections[i] += diff;
+    }
+    if(hasMiscFile() && miscFile->isModified()) {
+        QByteArray pmp, pmd, pvp;
+        miscFile->save(pmp, pmd, pvp);
 		// TODO: pmp
 		dat_data.replace(posSections[Pmd], posSections[Pmd+1] - posSections[Pmd], pmd);
 		diff = pmd.size() - (posSections[Pmd+1] - posSections[Pmd]);
 		for(int i=Pmd+1 ; i<12 ; ++i)	posSections[i] += diff;
 		// TODO: pvp
 	}
-	if(walkmeshFile!=NULL && walkmeshFile->isModified()) {
+    if(hasWalkmeshFile() && walkmeshFile->isModified()) {
 		QByteArray ca;
 		walkmeshFile->save(ca);
 		dat_data.replace(posSections[Ca], posSections[Ca+1] - posSections[Ca], ca);
 		diff = ca.size() - (posSections[Ca+1] - posSections[Ca]);
 		for(int i=Ca+1 ; i<12 ; ++i)	posSections[i] += diff;
 	}
-	if(mskFile!=NULL && mskFile->isModified()) {
+    if(hasMskFile() && mskFile->isModified()) {
 		QByteArray msk;
 		if(mskFile->save(msk)) {
 			dat_data.replace(posSections[Msk], posSections[Msk+1] - posSections[Msk], msk);
@@ -208,7 +214,7 @@ bool FieldPS::save(QByteArray &dat_data)
 			for(int i=Msk+1 ; i<12 ; ++i)	posSections[i] += diff;
 		}
 	}
-	if(tdwFile!=NULL && tdwFile->isModified()) {
+    if(hasTdwFile() && tdwFile->isModified()) {
 		QByteArray tdw;
 		tdwFile->save(tdw);
 		dat_data.replace(posSections[Tdw], posSections[Tdw+1] - posSections[Tdw], tdw);

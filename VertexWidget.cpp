@@ -15,26 +15,40 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef MISCSEARCH_H
-#define MISCSEARCH_H
+#include "VertexWidget.h"
 
-#include "Search.h"
-
-class MiscSearch : public QDialog
+VertexWidget::VertexWidget(QWidget *parent) :
+	QWidget(parent)
 {
-	Q_OBJECT
-public:
-	MiscSearch(FieldArchive *fieldArchive, QWidget *parent=0);
+	x = new QSpinBox;
+	x->setRange(-32768, 32767);
+	y = new QSpinBox;
+	y->setRange(-32768, 32767);
+	z = new QSpinBox;
+	z->setRange(-32768, 32767);
 
-private slots:
-	void search(int);
-private:
-	void fillList();
-    static int getMapId(const QList<Field *> &fields);
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setContentsMargins(QMargins());
+	layout->addWidget(new QLabel(tr("X")));
+	layout->addWidget(x);
+	layout->addWidget(new QLabel(tr("Y")));
+	layout->addWidget(y);
+	layout->addWidget(new QLabel(tr("Z")));
+	layout->addWidget(z);
+}
 
-	QListWidget *list;
-	QPlainTextEdit *textEdit;
-	FieldArchive *fieldArchive;
-};
+Vertex_s VertexWidget::values() const
+{
+    Vertex_s v;
+	v.x = x->value();
+	v.y = y->value();
+	v.z = z->value();
+	return v;
+}
 
-#endif // MISCSEARCH_H
+void VertexWidget::setValues(const Vertex_s &v)
+{
+	x->setValue(v.x);
+	y->setValue(v.y);
+	z->setValue(v.z);
+}

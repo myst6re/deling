@@ -22,6 +22,7 @@
 #include "widgets/PageWidget.h"
 #include "files/WalkmeshFile.h"
 #include "WalkmeshGLWidget.h"
+#include "VertexWidget.h"
 
 class WalkmeshWidget : public PageWidget
 {
@@ -34,6 +35,8 @@ public:
 private slots:
 	void editCaVector(int value);
 	void editCaPos(double value);
+    void setCurrentGateway(int id);
+    void setCurrentMoviePosition(int id);
 private:
 	void build();
 	QWidget *buildCameraPage();
@@ -46,6 +49,8 @@ private:
 	QSpinBox *caVectorX1Edit, *caVectorX2Edit, *caVectorX3Edit, *caVectorY1Edit, *caVectorY2Edit, *caVectorY3Edit, *caVectorZ1Edit, *caVectorZ2Edit, *caVectorZ3Edit;
 	QDoubleSpinBox *caSpaceXEdit, *caSpaceYEdit, *caSpaceZEdit;
 	QListWidget *gateList, *frameList;
+    VertexWidget *exitPoints[2], *entryPoint;
+    VertexWidget *camPoints[4];
 };
 
 #endif // WALKMESHWIDGET_H

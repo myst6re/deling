@@ -28,6 +28,7 @@ void MiscWidget::build()
 
 	QLabel *nameLbl = new QLabel(tr("Nom :"), this);
 	nameEdit = new QLineEdit(this);
+    nameEdit->setMaxLength(8);
 	QLabel *pmpLbl = new QLabel(tr("PMP :"), this);
 	pmpEdit = new QLineEdit(this);
 	QLabel *pmdLbl = new QLabel(tr("PMD :"), this);
@@ -85,21 +86,24 @@ void MiscWidget::fill()
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(!hasData() || (!data()->hasMiscFile() && !data()->hasWalkmeshFile()))	return;
+    if(!hasData() || (!data()->hasMiscFile() && !data()->hasInfFile()))	return;
 
-	if(data()->hasMiscFile()) {
-		nameEdit->setText(data()->getMiscFile()->getMapName());
-		pmpEdit->setText(data()->getMiscFile()->getPmpData().toHex());
-		pmdEdit->setText(data()->getMiscFile()->getPmdData().toHex());
-		pvpEdit->setText(data()->getMiscFile()->getPvpData().toHex());
-	}
+    if(data()->hasInfFile()) {
+        nameEdit->setText(data()->getInfFile()->getMapName());
+    }
+
+    if(data()->hasMiscFile()) {
+        pmpEdit->setText(data()->getMiscFile()->getPmpData().toHex());
+        pmdEdit->setText(data()->getMiscFile()->getPmdData().toHex());
+        pvpEdit->setText(data()->getMiscFile()->getPvpData().toHex());
+    }
 
 	PageWidget::fill();
 }
 
 void MiscWidget::editName(const QString &name)
 {
-	data()->getMiscFile()->setMapName(name);
+    data()->getInfFile()->setMapName(name);
 	emit modified();
 }
 
