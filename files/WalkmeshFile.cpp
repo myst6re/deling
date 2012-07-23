@@ -33,13 +33,19 @@ bool WalkmeshFile::open(const QByteArray &id, const QByteArray &ca)
 	int id_data_size = id.size(), ca_data_size = ca.size();
 	quint32 i, nbSector, accessStart;
 
-	if(id_data_size < 4)	return false;
+	if(id_data_size < 4) {
+		qWarning() << "size id error" << id_data_size;
+		return false;
+	}
 
 	memcpy(&nbSector, id_data, 4);
 
 	accessStart = 4+nbSector*24;
 
-	if((quint32)id_data_size < accessStart+nbSector*6)	return false;
+	if((quint32)id_data_size != accessStart+nbSector*6) {
+		qWarning() << "size id error" << id_data_size << (accessStart+nbSector*6);
+		return false;
+	}
 
 	Triangle triangle;
 	Access acc;
@@ -58,16 +64,24 @@ bool WalkmeshFile::open(const QByteArray &id, const QByteArray &ca)
 //		qDebug() << "=====";
 	}
 
-	if(!ca.isEmpty() && ca_data_size==38)
+	cameras.clear();
+
+	if(!ca.isEmpty())
 	{
-		memcpy(&camera_axis, ca_data, 18);
-		memcpy(&camera_unknown1, &ca_data[18], 2);
-		memcpy(&camera_position, &ca_data[20], 12);
-		memcpy(&camera_unknown2, &ca_data[32], 4);
-		memcpy(&camera_zoom, &ca_data[36], 2);
-		if(ca.size() != 38) {
-			qWarning() << "Mauvaise taille open ca";
+		if(ca_data_size != 38 && ca_data_size != 40 && ca_data_size != 80) {
+			qWarning() << "size ca error" << ca_data_size << sizeof(CaStruct);
+			return false;
 		}
+
+		CaStruct caStruct;
+
+		int caCount = ca_data_size == 80 ? 2 : 1;
+
+		for(i=0 ; i<caCount ; ++i) {
+			memcpy(&caStruct, &ca_data[i*40], 38);
+			cameras.append(caStruct);
+		}
+
 //		qDebug() << camera_axis[0].x << camera_axis[0].y << camera_axis[0].z
 //				<< camera_axis[1].x << camera_axis[1].y << camera_axis[1].z
 //				<< camera_axis[2].x << camera_axis[2].y << camera_axis[2].z;
@@ -83,14 +97,9 @@ bool WalkmeshFile::save(QByteArray &ca)
 {
 	if(!modified)	return false;
 
-	ca.append((char *)&camera_axis, 18);
-	ca.append((char *)&camera_unknown1, 2);
-	ca.append((char *)&camera_position, 12);
-	ca.append((char *)&camera_unknown2, 4);
-	ca.append((char *)&camera_zoom, 2);
-
-	if(ca.size() != 38) {
-		qWarning() << "Mauvaise taille save ca";
+	foreach(const CaStruct &caStruct, cameras) {
+		ca.append((char *)&caStruct, 38);
+		ca.append((char *)&caStruct.camera_zoom, 2);//Padding
 	}
 
 	return true;
@@ -101,24 +110,17 @@ const QList<Triangle> &WalkmeshFile::getTriangles() const
 	return triangles;
 }
 
-const Vertex_s &WalkmeshFile::camAxis(quint8 id) const
+int WalkmeshFile::cameraCount() const
 {
-	return camera_axis[id];
+	return cameras.size();
 }
 
-qint32 WalkmeshFile::camPos(quint8 id) const
+const CaStruct &WalkmeshFile::camera(int camID) const
 {
-	return camera_position[id];
+	return cameras.at(camID);
 }
 
-void WalkmeshFile::setCamAxis(quint8 id, const Vertex_s &cam_axis)
+void WalkmeshFile::setCamera(int camID, const CaStruct &cam)
 {
-	camera_axis[id] = cam_axis;
-	modified = true;
-}
-
-void WalkmeshFile::setCamPos(quint8 id, qint32 camPos)
-{
-	camera_position[id] = camPos;
-	modified = true;
+	cameras[camID] = cam;
 }

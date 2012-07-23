@@ -51,7 +51,7 @@ private:
 	QWidget *buildGatewaysPage();
 	QWidget *buildMovieCameraPage();
 	void editCaVector(int id, const Vertex_s &values);
-	void editCaPos(int id, int value);
+	void editCaPos(int id, double value);
 	void editExitPoint(int id, const Vertex_s &values);
 	void editDoorPoint(int id, const Vertex_s &values);
 

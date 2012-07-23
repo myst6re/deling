@@ -59,12 +59,12 @@ void WalkmeshGLWidget::resizeGL(int width, int height)
 //	gluPerspective(60.0, (float)width/(float)height, 0.0, 1000.0);
 //	int side = qMin(width, height);
 	glViewport(0, 0, width, height);
-
+	gluPerspective(60.0, (float)width/(float)height, 1.0, 150.0);
 
 //	glMatrixMode(GL_PROJECTION);
 //	glLoadIdentity();
 //#ifdef QT_OPENGL_ES_1
-	glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 150.0);
+//	glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 150.0);
 //#else
 //	glOrtho(-0.5, +0.5, -0.5, +0.5, 4.0, 15.0);
 //#endif
@@ -81,37 +81,55 @@ void WalkmeshGLWidget::paintGL()
 
 //	gluLookAt(distance,0,0,0,0,0,0,1,0);
 
-	double camAxisXx = walkmeshFile->camAxis(0).x/4096.0;
-	double camAxisXy = walkmeshFile->camAxis(0).y/4096.0;
-	double camAxisXz = walkmeshFile->camAxis(0).z/4096.0;
+	if(walkmeshFile->cameraCount() > 0) {
+		const int camID = 0;
 
-	double camAxisYx = walkmeshFile->camAxis(1).x/4096.0;
-	double camAxisYy = walkmeshFile->camAxis(1).y/4096.0;
-	double camAxisYz = walkmeshFile->camAxis(1).z/4096.0;
+		CaStruct cam = walkmeshFile->camera(camID);
 
-	double camAxisZx = walkmeshFile->camAxis(2).x/4096.0;
-	double camAxisZy = walkmeshFile->camAxis(2).y/4096.0;
-	double camAxisZz = walkmeshFile->camAxis(2).z/4096.0;
+		double camAxisXx = cam.camera_axis[0].x/4096.0;
+		double camAxisXy = cam.camera_axis[0].y/4096.0;
+		double camAxisXz = cam.camera_axis[0].z/4096.0;
 
-	double camPosX = walkmeshFile->camPos(0)/4096.0;
-	double camPosY = walkmeshFile->camPos(1)/4096.0;
-	double camPosZ = walkmeshFile->camPos(2)/4096.0;
+		double camAxisYx = -cam.camera_axis[1].x/4096.0;
+		double camAxisYy = -cam.camera_axis[1].y/4096.0;
+		double camAxisYz = -cam.camera_axis[1].z/4096.0;
 
-	double posCamX = -(camPosX*camAxisXx + camPosY*camAxisYx + camPosZ*camAxisZx);
-	double posCamY = -(camPosX*camAxisXy + camPosY*camAxisYy + camPosZ*camAxisZy);
-	double posCamZ = -(camPosX*camAxisXz + camPosY*camAxisYz + camPosZ*camAxisZz);
-//	qDebug() << posCamX << posCamY << posCamZ;
-//	glTranslatef(walkmeshFile->camPos(0)/4096.0, walkmeshFile->camPos(1)/4096.0, walkmeshFile->camPos(2)/4096.0);
+		double camAxisZx = -cam.camera_axis[2].x/4096.0;
+		double camAxisZy = -cam.camera_axis[2].y/4096.0;
+		double camAxisZz = -cam.camera_axis[2].z/4096.0;
 
-//	glScalef(-1.0, 1.0, 1.0);
-//	gluLookAt(posCamX, posCamY, posCamZ, posCamX + camAxisZx, posCamY + camAxisZy, posCamZ + camAxisZz, camAxisYx, camAxisYy, camAxisYz);
-    //gluLookAt(posCamX, posCamY, posCamZ, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		double camPosX = cam.camera_position[0]/4096.0;
+		double camPosY = -cam.camera_position[1]/4096.0;
+		double camPosZ = cam.camera_position[2]/4096.0;
 
-//	qDebug() << "xRot" << (walkmeshFile->camAxis(2).y*45)/4096.0 << "yRot" << (walkmeshFile->camAxis(2).x*45)/4096.0 << "zRot" << (walkmeshFile->camAxis(0).y*45)/4096.0;
+		double tx = -(camPosX*camAxisXx + camPosY*camAxisYx + camPosZ*camAxisZx);
+		double ty = -(camPosX*camAxisXy + camPosY*camAxisYy + camPosZ*camAxisZy);
+		double tz = -(camPosX*camAxisXz + camPosY*camAxisYz + camPosZ*camAxisZz);
 
-//	glRotatef(xRot, walkmeshFile->camAxis(0).x/4096.0, 0.0, 0.0);
-//	glRotatef(yRot, 0.0, -walkmeshFile->camAxis(1).y/4096.0, 0.0);
-//	glRotatef(zRot, 0.0, 0.0, -walkmeshFile->camAxis(2).z/4096.0);
+//		gluLookAt(tx, ty, tz, tx + camAxisZx, ty + camAxisZy, tz + camAxisZz, camAxisYx, camAxisYy, camAxisYz);
+
+//		Matrix mat(-vxx, vyx, vzx, 0,
+//				   -vxy, vyy, vzy, 0,
+//				   -vxz, vyz, vzz, 0,
+//				   0,   0,   0,   1);
+
+//		Matrix mat2;
+//		MatrixTranslation(mat2, -tx, -ty, -tz);
+
+//		MatrixMultiply(camera, mat, mat2);
+
+//		qDebug() << posCamX << posCamY << posCamZ;
+//		glTranslatef(walkmeshFile->camPos(camID, 0)/4096.0, walkmeshFile->camPos(camID, 1)/4096.0, walkmeshFile->camPos(camID, 2)/4096.0);
+
+//		glScalef(-1.0, 1.0, 1.0);
+//		gluLookAt(posCamX, posCamY, posCamZ, posCamX + camAxisZx, posCamY + camAxisZy, posCamZ + camAxisZz, camAxisYx, camAxisYy, camAxisYz);
+//		gluLookAt(posCamX, posCamY, posCamZ, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+
+//		qDebug() << "xRot" << (walkmeshFile->camAxis(camID, 2).y*45)/4096.0 << "yRot" << (walkmeshFile->camAxis(camID, 2).x*45)/4096.0 << "zRot" << (walkmeshFile->camAxis(camID, 0).y*45)/4096.0;
+	}
+//	glRotatef(xRot, walkmeshFile->camAxis(camID, 0).x/4096.0, 0.0, 0.0);
+//	glRotatef(yRot, 0.0, -walkmeshFile->camAxis(camID, 1).y/4096.0, 0.0);
+//	glRotatef(zRot, 0.0, 0.0, -walkmeshFile->camAxis(camID, 2).z/4096.0);
 	glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
 	glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
 	glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
@@ -120,9 +138,9 @@ void WalkmeshGLWidget::paintGL()
 	glRotatef(yRot, 0.0, posCamY/4096.0, 0.0);
 	glRotatef(zRot, 0.0, 0.0, posCamZ/4096.0);
 */
-	/*glRotatef(xRot, walkmeshFile->camAxis(0).x/4096.0, walkmeshFile->camAxis(0).y/4096.0, walkmeshFile->camAxis(0).z/4096.0);
-	glRotatef(yRot, walkmeshFile->camAxis(1).x/4096.0, walkmeshFile->camAxis(1).y/4096.0, walkmeshFile->camAxis(1).z/4096.0);
-	glRotatef(zRot, walkmeshFile->camAxis(2).x/4096.0, walkmeshFile->camAxis(2).y/4096.0, walkmeshFile->camAxis(2).z/4096.0);*/
+	/*glRotatef(xRot, walkmeshFile->camAxis(camID, 0).x/4096.0, walkmeshFile->camAxis(camID, 0).y/4096.0, walkmeshFile->camAxis(camID, 0).z/4096.0);
+	glRotatef(yRot, walkmeshFile->camAxis(camID, 1).x/4096.0, walkmeshFile->camAxis(camID, 1).y/4096.0, walkmeshFile->camAxis(camID, 1).z/4096.0);
+	glRotatef(zRot, walkmeshFile->camAxis(camID, 2).x/4096.0, walkmeshFile->camAxis(camID, 2).y/4096.0, walkmeshFile->camAxis(camID, 2).z/4096.0);*/
 	/*glBegin(GL_POINTS);
 		glColor3ub(0xFF, 0xFF, 0xFF);
 		glVertex3f(posCamX, posCamY, posCamZ);
@@ -133,11 +151,11 @@ void WalkmeshGLWidget::paintGL()
 	glBegin(GL_LINES);
 		/*glColor3ub(0, 255, 255);
 		glVertex3f(posCamX/4096.0, posCamY/4096.0, posCamZ/4096.0);
-		glVertex3f(walkmeshFile->camAxis(0).x/4096.0, walkmeshFile->camAxis(0).y/4096.0, walkmeshFile->camAxis(0).z/4096.0);
+		glVertex3f(walkmeshFile->camAxis(camID, 0).x/4096.0, walkmeshFile->camAxis(camID, 0).y/4096.0, walkmeshFile->camAxis(camID, 0).z/4096.0);
 		glVertex3f(posCamX/4096.0, posCamY/4096.0, posCamZ/4096.0);
-		glVertex3f(walkmeshFile->camAxis(1).x/4096.0, walkmeshFile->camAxis(1).y/4096.0, walkmeshFile->camAxis(1).z/4096.0);
+		glVertex3f(walkmeshFile->camAxis(camID, 1).x/4096.0, walkmeshFile->camAxis(camID, 1).y/4096.0, walkmeshFile->camAxis(camID, 1).z/4096.0);
 		glVertex3f(posCamX/4096.0, posCamY/4096.0, posCamZ/4096.0);
-		glVertex3f(walkmeshFile->camAxis(2).x/4096.0, walkmeshFile->camAxis(2).y/4096.0, walkmeshFile->camAxis(2).z/4096.0);*/
+		glVertex3f(walkmeshFile->camAxis(camID, 2).x/4096.0, walkmeshFile->camAxis(camID, 2).y/4096.0, walkmeshFile->camAxis(camID, 2).z/4096.0);*/
 		glColor3ub(0, 0, 255);
 		glVertex3f(-1.0, 0.0, 0.0);
 		glVertex3f(1.0, 0.0, 0.0);
@@ -158,11 +176,11 @@ void WalkmeshGLWidget::paintGL()
 
 	foreach(const Triangle &triangle, triangles) {
 		vertex = triangle.vertices[0];
-		glVertex3f(vertex.x/4096.0, vertex.y/4096.0, vertex.z/4096.0);
+		glVertex3f(vertex.x/4096.0, -vertex.y/4096.0, vertex.z/4096.0);
 		vertex = triangle.vertices[1];
-		glVertex3f(vertex.x/4096.0, vertex.y/4096.0, vertex.z/4096.0);
+		glVertex3f(vertex.x/4096.0, -vertex.y/4096.0, vertex.z/4096.0);
 		vertex = triangle.vertices[2];
-		glVertex3f(vertex.x/4096.0, vertex.y/4096.0, vertex.z/4096.0);
+		glVertex3f(vertex.x/4096.0, -vertex.y/4096.0, vertex.z/4096.0);
 	}
 
 	glEnd();

@@ -30,11 +30,11 @@ VertexWidget::VertexWidget(QWidget *parent) :
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(QMargins());
 	layout->addWidget(new QLabel(tr("X")));
-	layout->addWidget(x);
+	layout->addWidget(x, 1);
 	layout->addWidget(new QLabel(tr("Y")));
-	layout->addWidget(y);
+	layout->addWidget(y, 1);
 	layout->addWidget(new QLabel(tr("Z")));
-	layout->addWidget(z);
+	layout->addWidget(z, 1);
 
 	connect(x, SIGNAL(valueChanged(int)), SLOT(emitValuesChanged()));
 	connect(y, SIGNAL(valueChanged(int)), SLOT(emitValuesChanged()));

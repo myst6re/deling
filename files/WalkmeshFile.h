@@ -36,6 +36,14 @@ typedef struct {
 	qint16 a1, a2, a3;
 } Access;
 
+typedef struct {
+	Vertex_s camera_axis[3];
+	quint16 camera_unknown1;
+	qint32 camera_position[3];
+	quint32 camera_unknown2;
+	quint16 camera_zoom;
+} CaStruct;
+
 class WalkmeshFile
 {
 public:
@@ -43,17 +51,12 @@ public:
 	bool open(const QByteArray &id, const QByteArray &ca=QByteArray());
 	bool save(QByteArray &ca);
 	const QList<Triangle> &getTriangles() const;
-	const Vertex_s &camAxis(quint8) const;
-	qint32 camPos(quint8) const;
-	void setCamAxis(quint8 id, const Vertex_s &cam_axis);
-	void setCamPos(quint8 id, qint32 camPos);
+	int cameraCount() const;
+	const CaStruct &camera(int camID) const;
+	void setCamera(int camID, const CaStruct &cam);
 	bool isModified() const;
 private:
-	quint16 camera_unknown1;
-	quint32 camera_unknown2;
-	quint16 camera_zoom;
-	Vertex_s camera_axis[3];
-	qint32 camera_position[3];
+	QList<CaStruct> cameras;
 	QList<Triangle> triangles;
 	QList<Access> access;
 	bool modified;
