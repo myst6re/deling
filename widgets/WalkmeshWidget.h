@@ -38,8 +38,9 @@ private slots:
     void setCurrentGateway(int id);
 	void editExitPoint(const Vertex_s &values);
 	void editEntryPoint(const Vertex_s &values);
+	void editDoorPoint(const Vertex_s &values);
+	void editDoorId(int v);
 	void editUnknownGate(const QString &u);
-	void editUnknownGate2(const QString &u);
     void setCurrentMoviePosition(int id);
 	void setMovieCameraPageEnabled(bool enabled);
 	void addMovieCameraPosition();
@@ -52,15 +53,17 @@ private:
 	void editCaVector(int id, const Vertex_s &values);
 	void editCaPos(int id, int value);
 	void editExitPoint(int id, const Vertex_s &values);
+	void editDoorPoint(int id, const Vertex_s &values);
 
 	WalkmeshGLWidget *walkmeshGL;
 	VertexWidget *caVectorXEdit, *caVectorYEdit, *caVectorZEdit;
 	QDoubleSpinBox *caSpaceXEdit, *caSpaceYEdit, *caSpaceZEdit;
 	QListWidget *gateList, *frameList;
-	QLineEdit *unknownGate, *unknownGate2;
+	QLineEdit *unknownGate;
+	QSpinBox *doorId;
 	QToolBar *camToolbar;
 	QAction *camPlusAction, *camMinusAction;
-    VertexWidget *exitPoints[2], *entryPoint;
+	VertexWidget *exitPoints[2], *entryPoint, *doorPosition[2];
     VertexWidget *camPoints[4];
 };
 

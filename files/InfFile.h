@@ -29,12 +29,14 @@ typedef struct {
     Vertex_s exitLine[2];
     Vertex_s destinationPoint;
     quint16 fieldId;
-    quint8 unknown[12];
+	quint32 unknown[3];
 } Gateway;
 
 typedef struct {
-    quint8 unknown[16];
-} UnknownStruct2;
+	Vertex_s trigger_line[2];
+	quint8 doorID;
+	quint8 _blank[3];
+} Trigger;
 
 typedef struct {
 	char name[9];
@@ -43,7 +45,7 @@ typedef struct {
 	UnknownStruct1 unknown1[8];
 	quint8 unknown2[16];
     Gateway gateways[12];
-	UnknownStruct2 unknown3[12];
+	Trigger triggers[12];
 } InfStruct;
 
 class InfFile
@@ -58,8 +60,8 @@ public:
     QList<Gateway> getGateways() const;
 	const Gateway &getGateway(int id) const;
 	void setGateway(int id, const Gateway &gateway);
-	const UnknownStruct2 &getUnknown(int id) const;
-	void setUnknown(int id, const UnknownStruct2 &unknown);
+	const Trigger &getTrigger(int id) const;
+	void setTrigger(int id, const Trigger &trigger);
 private:
     InfStruct infStruct;
 	bool modified;

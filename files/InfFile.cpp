@@ -33,8 +33,6 @@ bool InfFile::open(const QByteArray &inf)
 
     memcpy(&infStruct, constInf, sizeof(InfStruct));
 
-	qDebug() << "WARNING" << infStruct.control;
-
 	return true;
 }
 
@@ -90,12 +88,12 @@ void InfFile::setGateway(int id, const Gateway &gateway)
 	modified = true;
 }
 
-const UnknownStruct2 &InfFile::getUnknown(int id) const
+const Trigger &InfFile::getTrigger(int id) const
 {
-	return infStruct.unknown3[id];
+	return infStruct.triggers[id];
 }
 
-void InfFile::setUnknown(int id, const UnknownStruct2 &unknown)
+void InfFile::setTrigger(int id, const Trigger &trigger)
 {
-	infStruct.unknown3[id] = unknown;
+	infStruct.triggers[id] = trigger;
 }

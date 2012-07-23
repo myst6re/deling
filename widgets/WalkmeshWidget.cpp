@@ -121,30 +121,39 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	exitPoints[1] = new VertexWidget(ret);
 	entryPoint = new VertexWidget(ret);
 
+	doorPosition[0] = new VertexWidget(ret);
+	doorPosition[1] = new VertexWidget(ret);
+
+	doorId = new QSpinBox(ret);
+	doorId->setRange(0, 255);
+
 	unknownGate = new QLineEdit(ret);
 	unknownGate->setMaxLength(12*2);
-	unknownGate2 = new QLineEdit(ret);
-	unknownGate2->setMaxLength(16*2);
 
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(gateList, 0, 0, 5, 1, Qt::AlignLeft);
+	layout->addWidget(gateList, 0, 0, 7, 1, Qt::AlignLeft);
 	layout->addWidget(new QLabel(tr("Ligne de sortie :")), 0, 1, Qt::AlignTop);
 	layout->addWidget(exitPoints[0], 0, 2, Qt::AlignTop);
 	layout->addWidget(exitPoints[1], 1, 2, Qt::AlignTop);
 	layout->addWidget(new QLabel(tr("Point de destination :")), 2, 1, Qt::AlignTop);
 	layout->addWidget(entryPoint, 2, 2, Qt::AlignTop);
-	layout->addWidget(new QLabel(tr("Inconnu 1 :")), 3, 1, Qt::AlignTop);
-	layout->addWidget(unknownGate, 3, 2, Qt::AlignTop);
-	layout->addWidget(new QLabel(tr("Inconnu 2 :")), 4, 1, Qt::AlignTop);
-	layout->addWidget(unknownGate2, 4, 2, Qt::AlignTop);
-	layout->setRowStretch(4, 1);
+	layout->addWidget(new QLabel(tr("Ligne déclench. porte :")), 3, 1, Qt::AlignTop);
+	layout->addWidget(doorPosition[0], 3, 2, Qt::AlignTop);
+	layout->addWidget(doorPosition[1], 4, 2, Qt::AlignTop);
+	layout->addWidget(new QLabel(tr("Id porte :")), 5, 1, Qt::AlignTop);
+	layout->addWidget(doorId, 5, 2, Qt::AlignTop);
+	layout->addWidget(new QLabel(tr("Inconnu :")), 6, 1, Qt::AlignTop);
+	layout->addWidget(unknownGate, 6, 2, Qt::AlignTop);
+	layout->setRowStretch(6, 1);
 
 	connect(gateList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentGateway(int)));
 	connect(exitPoints[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editExitPoint(Vertex_s)));
 	connect(exitPoints[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editExitPoint(Vertex_s)));
 	connect(entryPoint, SIGNAL(valuesChanged(Vertex_s)), SLOT(editEntryPoint(Vertex_s)));
+	connect(doorPosition[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editDoorPoint(Vertex_s)));
+	connect(doorPosition[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editDoorPoint(Vertex_s)));
+	connect(doorId, SIGNAL(valueChanged(int)), SLOT(editDoorId(int)));
 	connect(unknownGate, SIGNAL(textEdited(QString)), SLOT(editUnknownGate(QString)));
-	connect(unknownGate2, SIGNAL(textEdited(QString)), SLOT(editUnknownGate2(QString)));
 
 	return ret;
 }
@@ -290,12 +299,15 @@ void WalkmeshWidget::setCurrentGateway(int id)
 	if(gateways.size() <= id)    return;
 
 	const Gateway &gateway = gateways.at(id);
+	const Trigger &trigger = inf->getTrigger(id);
 
 	exitPoints[0]->setValues(gateway.exitLine[0]);
 	exitPoints[1]->setValues(gateway.exitLine[1]);
 	entryPoint->setValues(gateway.destinationPoint);
+	doorPosition[0]->setValues(trigger.trigger_line[0]);
+	doorPosition[1]->setValues(trigger.trigger_line[1]);
+	doorId->setValue(trigger.doorID);
 	unknownGate->setText(QByteArray((char *)&gateway.unknown, 12).toHex());
-	unknownGate2->setText(QByteArray((char *)&inf->getUnknown(id).unknown, 16).toHex());
 }
 
 void WalkmeshWidget::editExitPoint(const Vertex_s &values)
@@ -334,6 +346,28 @@ void WalkmeshWidget::editEntryPoint(const Vertex_s &values)
 	}
 }
 
+void WalkmeshWidget::editDoorPoint(const Vertex_s &values)
+{
+	QObject *s = sender();
+
+	if(s == doorPosition[0])			editDoorPoint(0, values);
+	else if(s == doorPosition[1])		editDoorPoint(1, values);
+}
+
+void WalkmeshWidget::editDoorPoint(int id, const Vertex_s &values)
+{
+	if(data()->hasInfFile()) {
+		int gateId = gateList->currentRow();
+		Trigger old = data()->getInfFile()->getTrigger(gateId);
+		Vertex_s oldVertex = old.trigger_line[id];
+		if(oldVertex.x != values.x || oldVertex.y != values.y || oldVertex.z != values.z) {
+			old.trigger_line[id] = values;
+			data()->getInfFile()->setTrigger(gateId, old);
+			emit modified();
+		}
+	}
+}
+
 void WalkmeshWidget::editUnknownGate(const QString &u)
 {
 	if(data()->hasInfFile()) {
@@ -346,15 +380,16 @@ void WalkmeshWidget::editUnknownGate(const QString &u)
 	}
 }
 
-void WalkmeshWidget::editUnknownGate2(const QString &u)
+void WalkmeshWidget::editDoorId(int v)
 {
 	if(data()->hasInfFile()) {
 		int gateId = gateList->currentRow();
-		const char *uData = QByteArray::fromHex(u.toLatin1()).leftJustified(16, '\0', true).constData();
-		UnknownStruct2 old = data()->getInfFile()->getUnknown(gateId);
-		memcpy(old.unknown, uData, 16);
-		data()->getInfFile()->setUnknown(gateId, old);
-		emit modified();
+		Trigger old = data()->getInfFile()->getTrigger(gateId);
+		if(old.doorID != v) {
+			old.doorID = v;
+			data()->getInfFile()->setTrigger(gateId, old);
+			emit modified();
+		}
 	}
 }
 
