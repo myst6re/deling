@@ -18,7 +18,7 @@
 #include "files/WalkmeshFile.h"
 
 WalkmeshFile::WalkmeshFile()
-	: modified(false)
+	: _unknown(0), modified(false), _hasUnknownData(false)
 {
 }
 
@@ -43,23 +43,29 @@ bool WalkmeshFile::open(const QByteArray &id, const QByteArray &ca)
 	accessStart = 4+nbSector*24;
 
 	if((quint32)id_data_size != accessStart+nbSector*6) {
-		qWarning() << "size id error" << id_data_size << (accessStart+nbSector*6);
-		return false;
+		if((quint32)id_data_size == accessStart+nbSector*6+2) {
+			memcpy(&_unknown, &id_data[accessStart+nbSector*6], 2);
+			_hasUnknownData = true;
+		} else {
+			qWarning() << "size id error" << id_data_size << (accessStart+nbSector*6);
+			return false;
+		}
 	}
 
 	Triangle triangle;
 	Access acc;
 	triangles.clear();
-	access.clear();
+	_access.clear();
 	for(i=0 ; i<nbSector ; ++i) {
 		memcpy(&triangle, &id_data[4+i*24], 24);
+
 		triangles.append(triangle);
 //		qDebug() << triangle.vertices[0].x << triangle.vertices[0].y << triangle.vertices[0].z << triangle.vertices[0].res;
 //		qDebug() << triangle.vertices[1].x << triangle.vertices[1].y << triangle.vertices[1].z << triangle.vertices[1].res;
 //		qDebug() << triangle.vertices[2].x << triangle.vertices[2].y << triangle.vertices[2].z << triangle.vertices[2].res;
 //		qDebug() << "=====";
 		memcpy(&acc, &id_data[accessStart+i*6], 6);
-		access.append(acc);
+		_access.append(acc);
 //		qDebug() << acc.a1 << acc.a2 << acc.a3;
 //		qDebug() << "=====";
 	}
@@ -68,17 +74,23 @@ bool WalkmeshFile::open(const QByteArray &id, const QByteArray &ca)
 
 	if(!ca.isEmpty())
 	{
-		if(ca_data_size != 38 && ca_data_size != 40 && ca_data_size != 80) {
+		if(ca_data_size != 38 && ca_data_size % 40 != 0) {
 			qWarning() << "size ca error" << ca_data_size << sizeof(CaStruct);
+			return false;
+		}
+
+		if(sizeof(CaStruct) != 40) {
+			qWarning() << "sizeof ca struct error" << sizeof(CaStruct);
 			return false;
 		}
 
 		CaStruct caStruct;
 
-		int caCount = ca_data_size == 80 ? 2 : 1;
+		quint32 caCount = (ca_data_size / 40) + int(ca_data_size % 40 >= 38);
 
 		for(i=0 ; i<caCount ; ++i) {
 			memcpy(&caStruct, &ca_data[i*40], 38);
+
 			cameras.append(caStruct);
 		}
 
@@ -97,17 +109,43 @@ bool WalkmeshFile::save(QByteArray &ca)
 {
 	if(!modified)	return false;
 
-	foreach(const CaStruct &caStruct, cameras) {
-		ca.append((char *)&caStruct, 38);
-		ca.append((char *)&caStruct.camera_zoom, 2);//Padding
+	foreach(CaStruct caStruct, cameras) {
+		caStruct.camera_axis2z = caStruct.camera_axis[2].z;
+		caStruct.camera_zoom2 = caStruct.camera_zoom;
+		ca.append((char *)&caStruct, sizeof(CaStruct));
 	}
 
 	return true;
 }
 
+int WalkmeshFile::triangleCount() const
+{
+	return triangles.size();
+}
+
 const QList<Triangle> &WalkmeshFile::getTriangles() const
 {
 	return triangles;
+}
+
+const Triangle &WalkmeshFile::triangle(int triangleID) const
+{
+	return triangles.at(triangleID);
+}
+
+void WalkmeshFile::setTriangle(int triangleID, const Triangle &triangle)
+{
+	triangles[triangleID] = triangle;
+}
+
+const Access &WalkmeshFile::access(int triangleID) const
+{
+	return _access.at(triangleID);
+}
+
+void WalkmeshFile::setAccess(int triangleID, const Access &access)
+{
+	_access[triangleID] = access;
 }
 
 int WalkmeshFile::cameraCount() const
@@ -123,4 +161,15 @@ const CaStruct &WalkmeshFile::camera(int camID) const
 void WalkmeshFile::setCamera(int camID, const CaStruct &cam)
 {
 	cameras[camID] = cam;
+	modified = true;
+}
+
+bool WalkmeshFile::hasUnknownData() const
+{
+	return _hasUnknownData;
+}
+
+qint16 WalkmeshFile::unknown() const
+{
+	return _unknown;
 }

@@ -70,6 +70,8 @@ QWidget *WalkmeshWidget::buildCameraPage()
 {
 	QWidget *ret = new QWidget(this);
 
+	camSelect = new QComboBox(ret);
+
 	caVectorXEdit = new VertexWidget(ret);
 	caVectorYEdit = new VertexWidget(ret);
 	caVectorZEdit = new VertexWidget(ret);
@@ -85,22 +87,30 @@ QWidget *WalkmeshWidget::buildCameraPage()
 	caSpaceZEdit->setRange(-maxInt, maxInt);
 	caSpaceZEdit->setDecimals(0);
 
+	caZoomEdit = new QSpinBox(ret);
+	caZoomEdit->setRange(-32768, 32767);
+
 	QGridLayout *caLayout = new QGridLayout(ret);
-	caLayout->addWidget(new QLabel(tr("Axes de la caméra :")), 0, 0, 1, 6);
-	caLayout->addWidget(caVectorXEdit, 1, 0, 1, 6);
-	caLayout->addWidget(caVectorYEdit, 2, 0, 1, 6);
-	caLayout->addWidget(caVectorZEdit, 3, 0, 1, 6);
-	caLayout->addWidget(new QLabel(tr("Position de la caméra :")), 4, 0, 1, 6);
-	caLayout->addWidget(new QLabel(tr("X")), 5, 0);
-	caLayout->addWidget(caSpaceXEdit, 5, 1);
-	caLayout->addWidget(new QLabel(tr("Y")), 5, 2);
-	caLayout->addWidget(caSpaceYEdit, 5, 3);
-	caLayout->addWidget(new QLabel(tr("Z")), 5, 4);
-	caLayout->addWidget(caSpaceZEdit, 5, 5);
-	caLayout->setRowStretch(6, 1);
+	caLayout->addWidget(camSelect, 0, 0, 1, 2);
+	caLayout->addWidget(new QLabel(tr("Distance (zoom) :")), 0, 2, 1, 2);
+	caLayout->addWidget(caZoomEdit, 0, 4, 1, 2);
+	caLayout->addWidget(new QLabel(tr("Axes de la caméra :")), 1, 0, 1, 6);
+	caLayout->addWidget(caVectorXEdit, 2, 0, 1, 6);
+	caLayout->addWidget(caVectorYEdit, 3, 0, 1, 6);
+	caLayout->addWidget(caVectorZEdit, 4, 0, 1, 6);
+	caLayout->addWidget(new QLabel(tr("Position de la caméra :")), 5, 0, 1, 6);
+	caLayout->addWidget(new QLabel(tr("X")), 6, 0);
+	caLayout->addWidget(caSpaceXEdit, 6, 1);
+	caLayout->addWidget(new QLabel(tr("Y")), 6, 2);
+	caLayout->addWidget(caSpaceYEdit, 6, 3);
+	caLayout->addWidget(new QLabel(tr("Z")), 6, 4);
+	caLayout->addWidget(caSpaceZEdit, 6, 5);
+	caLayout->setRowStretch(7, 1);
 	caLayout->setColumnStretch(1, 1);
 	caLayout->setColumnStretch(3, 1);
 	caLayout->setColumnStretch(5, 1);
+
+	connect(camSelect, SIGNAL(currentIndexChanged(int)), SLOT(setCurrentCamera(int)));
 
 	connect(caVectorXEdit, SIGNAL(valuesChanged(Vertex_s)), SLOT(editCaVector(Vertex_s)));
 	connect(caVectorYEdit, SIGNAL(valuesChanged(Vertex_s)), SLOT(editCaVector(Vertex_s)));
@@ -109,6 +119,8 @@ QWidget *WalkmeshWidget::buildCameraPage()
 	connect(caSpaceXEdit, SIGNAL(valueChanged(double)), SLOT(editCaPos(double)));
 	connect(caSpaceYEdit, SIGNAL(valueChanged(double)), SLOT(editCaPos(double)));
 	connect(caSpaceZEdit, SIGNAL(valueChanged(double)), SLOT(editCaPos(double)));
+
+	connect(caZoomEdit, SIGNAL(valueChanged(int)), SLOT(editCaZoom(int)));
 
 	return ret;
 }
@@ -218,33 +230,20 @@ void WalkmeshWidget::fill()
 
 	if(data()->hasWalkmeshFile()) {
 		walkmeshGL->fill(data()->getWalkmeshFile());
-		bool hasCamera = data()->getWalkmeshFile()->cameraCount() > 0;
 
-		if(hasCamera) {
-			const int camID = 0;
-			const CaStruct &cam = data()->getWalkmeshFile()->camera(camID);
+		int camCount = data()->getWalkmeshFile()->cameraCount();
 
-//			qDebug() << cam.camera_axis[0].x << cam.camera_axis[0].y << cam.camera_axis[0].z;
-//			qDebug() << cam.camera_axis[1].x << cam.camera_axis[1].y << cam.camera_axis[1].z;
-//			qDebug() << cam.camera_axis[2].x << cam.camera_axis[2].y << cam.camera_axis[2].z;
-//			qDebug() << cam.camera_position[0] << cam.camera_position[1] << cam.camera_position[2];
-
-			caVectorXEdit->setValues(cam.camera_axis[0]);
-			caVectorYEdit->setValues(cam.camera_axis[1]);
-			caVectorZEdit->setValues(cam.camera_axis[2]);
-
-			caSpaceXEdit->setValue(cam.camera_position[0]);
-			caSpaceYEdit->setValue(cam.camera_position[1]);
-			caSpaceZEdit->setValue(cam.camera_position[2]);
+		if(camSelect->count() != camCount) {
+			camSelect->blockSignals(true);
+			camSelect->clear();
+			for(int i=0 ; i<camCount ; ++i) {
+				camSelect->addItem(tr("Caméra %1").arg(i));
+			}
+			camSelect->setEnabled(camCount > 1);
+			camSelect->blockSignals(false);
 		}
 
-		caVectorXEdit->setEnabled(hasCamera);
-		caVectorYEdit->setEnabled(hasCamera);
-		caVectorZEdit->setEnabled(hasCamera);
-
-		caSpaceXEdit->setEnabled(hasCamera);
-		caSpaceYEdit->setEnabled(hasCamera);
-		caSpaceZEdit->setEnabled(hasCamera);
+		setCurrentCamera(0);
 	}
 
 	if(data()->hasInfFile()) {
@@ -267,6 +266,62 @@ void WalkmeshWidget::fill()
 	PageWidget::fill();
 }
 
+int WalkmeshWidget::currentCamera() const
+{
+	if(!data()->hasWalkmeshFile())	return 0;
+
+	int camID = camSelect->currentIndex();
+	return camID < 0 || camID >= data()->getWalkmeshFile()->cameraCount() ? 0 : camID;
+}
+
+void WalkmeshWidget::setCurrentCamera(int camID)
+{
+	if(!data()->hasWalkmeshFile())	return;
+
+	qDebug() << "setCurrentCamera" << camID;
+
+	bool hasCamera = camID < data()->getWalkmeshFile()->cameraCount();
+
+	if(hasCamera) {
+		const CaStruct &cam = data()->getWalkmeshFile()->camera(camID);
+
+//		qDebug() << cam.camera_axis[0].x << cam.camera_axis[0].y << cam.camera_axis[0].z;
+//		qDebug() << cam.camera_axis[1].x << cam.camera_axis[1].y << cam.camera_axis[1].z;
+//		qDebug() << cam.camera_axis[2].x << cam.camera_axis[2].y << cam.camera_axis[2].z;
+//		qDebug() << cam.camera_position[0] << cam.camera_position[1] << cam.camera_position[2];
+
+		blockSignals(true);
+		caVectorXEdit->setValues(cam.camera_axis[0]);
+		caVectorYEdit->setValues(cam.camera_axis[1]);
+		caVectorZEdit->setValues(cam.camera_axis[2]);
+
+		caSpaceXEdit->setValue(cam.camera_position[0]);
+		caSpaceYEdit->setValue(cam.camera_position[1]);
+		caSpaceZEdit->setValue(cam.camera_position[2]);
+
+		caZoomEdit->setValue(cam.camera_zoom);
+
+		walkmeshGL->setCurrentFieldCamera(camID);
+		blockSignals(false);
+	}
+
+	caVectorXEdit->setEnabled(hasCamera);
+	caVectorYEdit->setEnabled(hasCamera);
+	caVectorZEdit->setEnabled(hasCamera);
+
+	caSpaceXEdit->setEnabled(hasCamera);
+	caSpaceYEdit->setEnabled(hasCamera);
+	caSpaceZEdit->setEnabled(hasCamera);
+
+	caZoomEdit->setEnabled(hasCamera);
+
+	if(camSelect->currentIndex() != camID) {
+		camSelect->blockSignals(true);
+		camSelect->setCurrentIndex(camID);
+		camSelect->blockSignals(false);
+	}
+}
+
 void WalkmeshWidget::editCaVector(const Vertex_s &values)
 {
 	QObject *s = sender();
@@ -279,7 +334,7 @@ void WalkmeshWidget::editCaVector(const Vertex_s &values)
 void WalkmeshWidget::editCaVector(int id, const Vertex_s &values)
 {
 	if(data()->hasWalkmeshFile() && data()->getWalkmeshFile()->cameraCount() > 0) {
-		const int camID = 0;
+		const int camID = currentCamera();
 		CaStruct cam = data()->getWalkmeshFile()->camera(camID);
 		Vertex_s oldV = cam.camera_axis[id];
 
@@ -303,10 +358,23 @@ void WalkmeshWidget::editCaPos(double value)
 void WalkmeshWidget::editCaPos(int id, double value)
 {
 	if(data()->hasWalkmeshFile() && data()->getWalkmeshFile()->cameraCount() > 0) {
-		const int camID = 0;
+		const int camID = currentCamera();
 		CaStruct cam = data()->getWalkmeshFile()->camera(camID);
 		if(cam.camera_position[id] != (qint32)value) {
 			cam.camera_position[id] = value;
+			data()->getWalkmeshFile()->setCamera(camID, cam);
+			emit modified();
+		}
+	}
+}
+
+void WalkmeshWidget::editCaZoom(int value)
+{
+	if(data()->hasWalkmeshFile() && data()->getWalkmeshFile()->cameraCount() > 0) {
+		const int camID = currentCamera();
+		CaStruct cam = data()->getWalkmeshFile()->camera(camID);
+		if(cam.camera_zoom != value) {
+			cam.camera_zoom = value;
 			data()->getWalkmeshFile()->setCamera(camID, cam);
 			emit modified();
 		}

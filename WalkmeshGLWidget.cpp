@@ -18,7 +18,7 @@
 #include "WalkmeshGLWidget.h"
 
 WalkmeshGLWidget::WalkmeshGLWidget(QWidget *parent)
-	: QGLWidget(parent), dataLoaded(false), distance(-35), xRot(0), yRot(0), zRot(0), walkmeshFile(NULL)
+	: QGLWidget(parent), dataLoaded(false), distance(-35), xRot(0), yRot(0), zRot(0), camID(0), walkmeshFile(NULL)
 {
 }
 
@@ -81,10 +81,8 @@ void WalkmeshGLWidget::paintGL()
 
 //	gluLookAt(distance,0,0,0,0,0,0,1,0);
 
-	if(walkmeshFile->cameraCount() > 0) {
-		const int camID = 0;
-
-		CaStruct cam = walkmeshFile->camera(camID);
+	if(walkmeshFile->cameraCount() > 0 && camID < walkmeshFile->cameraCount()) {
+		const CaStruct &cam = walkmeshFile->camera(camID);
 
 		double camAxisXx = cam.camera_axis[0].x/4096.0;
 		double camAxisXy = cam.camera_axis[0].y/4096.0;
@@ -106,7 +104,7 @@ void WalkmeshGLWidget::paintGL()
 		double ty = -(camPosX*camAxisXy + camPosY*camAxisYy + camPosZ*camAxisZy);
 		double tz = -(camPosX*camAxisXz + camPosY*camAxisYz + camPosZ*camAxisZz);
 
-//		gluLookAt(tx, ty, tz, tx + camAxisZx, ty + camAxisZy, tz + camAxisZz, camAxisYx, camAxisYy, camAxisYz);
+		gluLookAt(tx, ty, tz, tx + camAxisZx, ty + camAxisZy, tz + camAxisZz, camAxisYx, camAxisYy, camAxisYz);
 
 //		Matrix mat(-vxx, vyx, vzx, 0,
 //				   -vxy, vyy, vzy, 0,
@@ -239,5 +237,11 @@ void WalkmeshGLWidget::setZRotation(int angle)
 void WalkmeshGLWidget::setZoom(int zoom)
 {
 	distance = zoom;
+	updateGL();
+}
+
+void WalkmeshGLWidget::setCurrentFieldCamera(int camID)
+{
+	this->camID = camID;
 	updateGL();
 }

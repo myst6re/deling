@@ -32,9 +32,13 @@ public:
 	void clear();
 	void fill();
 	inline QString tabName() const { return tr("Walkmesh"); }
+	int currentCamera() const;
+public slots:
+	void setCurrentCamera(int camID);
 private slots:
 	void editCaVector(const Vertex_s &values);
 	void editCaPos(double value);
+	void editCaZoom(int value);
     void setCurrentGateway(int id);
 	void editExitPoint(const Vertex_s &values);
 	void editEntryPoint(const Vertex_s &values);
@@ -56,14 +60,19 @@ private:
 	void editDoorPoint(int id, const Vertex_s &values);
 
 	WalkmeshGLWidget *walkmeshGL;
+	//CamPage
+	QComboBox *camSelect;
 	VertexWidget *caVectorXEdit, *caVectorYEdit, *caVectorZEdit;
 	QDoubleSpinBox *caSpaceXEdit, *caSpaceYEdit, *caSpaceZEdit;
+	QSpinBox *caZoomEdit;
+	//DoorPage
 	QListWidget *gateList, *frameList;
 	QLineEdit *unknownGate;
 	QSpinBox *doorId;
+	VertexWidget *exitPoints[2], *entryPoint, *doorPosition[2];
+	//MovieCamPage
 	QToolBar *camToolbar;
 	QAction *camPlusAction, *camMinusAction;
-	VertexWidget *exitPoints[2], *entryPoint, *doorPosition[2];
     VertexWidget *camPoints[4];
 };
 

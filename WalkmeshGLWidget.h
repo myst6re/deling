@@ -35,10 +35,12 @@ public slots:
 	void setYRotation(int);
 	void setZRotation(int);
 	void setZoom(int);
+	void setCurrentFieldCamera(int);
 private:
 	bool dataLoaded;
 	int distance;
 	int xRot, yRot, zRot;
+	int camID;
 	WalkmeshFile *walkmeshFile;
 
 protected:
