@@ -38,9 +38,6 @@ void WalkmeshGLWidget::fill(WalkmeshFile *walkmeshFile)
 
 void WalkmeshGLWidget::initializeGL()
 {
-//	glMatrixMode(GL_PROJECTION);
-//	glLoadIdentity();
-
 	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_COLOR_MATERIAL);
 	glDepthFunc(GL_LEQUAL);
@@ -49,26 +46,26 @@ void WalkmeshGLWidget::initializeGL()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 }
 
 void WalkmeshGLWidget::resizeGL(int width, int height)
 {
-	//if(h>0)
-		//gluPerspective(70, (double)(w/h), 1, 1000);
-//	gluPerspective(60.0, (float)width/(float)height, 0.0, 1000.0);
-//	int side = qMin(width, height);
 	glViewport(0, 0, width, height);
-	gluPerspective(60.0, (float)width/(float)height, 1.0, 150.0);
 
-//	glMatrixMode(GL_PROJECTION);
-//	glLoadIdentity();
-//#ifdef QT_OPENGL_ES_1
-//	glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 150.0);
-//#else
-//	glOrtho(-0.5, +0.5, -0.5, +0.5, 4.0, 15.0);
-//#endif
-//	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	if(dataLoaded && walkmeshFile!=NULL && walkmeshFile->cameraCount() > 0 && camID < walkmeshFile->cameraCount()) {
+		const CaStruct &cam = walkmeshFile->camera(camID);
+		double fovy = (2 * atan(240.0/(2.0 * cam.camera_zoom))) * 57.29577951;
+		qDebug() << fovy;
+		fovy = 70;
+		gluPerspective(fovy, (double)width/(double)height, 0.001, 1000.0);
+	} else {
+		gluPerspective(70.0, (double)width/(double)height, 0.001, 1000.0);
+	}
+
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void WalkmeshGLWidget::paintGL()
@@ -78,8 +75,6 @@ void WalkmeshGLWidget::paintGL()
 	glLoadIdentity();
 
 	if(!dataLoaded || walkmeshFile==NULL)	return;
-
-//	gluLookAt(distance,0,0,0,0,0,0,1,0);
 
 	if(walkmeshFile->cameraCount() > 0 && camID < walkmeshFile->cameraCount()) {
 		const CaStruct &cam = walkmeshFile->camera(camID);
@@ -92,9 +87,9 @@ void WalkmeshGLWidget::paintGL()
 		double camAxisYy = -cam.camera_axis[1].y/4096.0;
 		double camAxisYz = -cam.camera_axis[1].z/4096.0;
 
-		double camAxisZx = -cam.camera_axis[2].x/4096.0;
-		double camAxisZy = -cam.camera_axis[2].y/4096.0;
-		double camAxisZz = -cam.camera_axis[2].z/4096.0;
+		double camAxisZx = cam.camera_axis[2].x/4096.0;
+		double camAxisZy = cam.camera_axis[2].y/4096.0;
+		double camAxisZz = cam.camera_axis[2].z/4096.0;
 
 		double camPosX = cam.camera_position[0]/4096.0;
 		double camPosY = -cam.camera_position[1]/4096.0;
@@ -105,64 +100,22 @@ void WalkmeshGLWidget::paintGL()
 		double tz = -(camPosX*camAxisXz + camPosY*camAxisYz + camPosZ*camAxisZz);
 
 		gluLookAt(tx, ty, tz, tx + camAxisZx, ty + camAxisZy, tz + camAxisZz, camAxisYx, camAxisYy, camAxisYz);
-
-//		Matrix mat(-vxx, vyx, vzx, 0,
-//				   -vxy, vyy, vzy, 0,
-//				   -vxz, vyz, vzz, 0,
-//				   0,   0,   0,   1);
-
-//		Matrix mat2;
-//		MatrixTranslation(mat2, -tx, -ty, -tz);
-
-//		MatrixMultiply(camera, mat, mat2);
-
-//		qDebug() << posCamX << posCamY << posCamZ;
-//		glTranslatef(walkmeshFile->camPos(camID, 0)/4096.0, walkmeshFile->camPos(camID, 1)/4096.0, walkmeshFile->camPos(camID, 2)/4096.0);
-
-//		glScalef(-1.0, 1.0, 1.0);
-//		gluLookAt(posCamX, posCamY, posCamZ, posCamX + camAxisZx, posCamY + camAxisZy, posCamZ + camAxisZz, camAxisYx, camAxisYy, camAxisYz);
-//		gluLookAt(posCamX, posCamY, posCamZ, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
-
-//		qDebug() << "xRot" << (walkmeshFile->camAxis(camID, 2).y*45)/4096.0 << "yRot" << (walkmeshFile->camAxis(camID, 2).x*45)/4096.0 << "zRot" << (walkmeshFile->camAxis(camID, 0).y*45)/4096.0;
 	}
-//	glRotatef(xRot, walkmeshFile->camAxis(camID, 0).x/4096.0, 0.0, 0.0);
-//	glRotatef(yRot, 0.0, -walkmeshFile->camAxis(camID, 1).y/4096.0, 0.0);
-//	glRotatef(zRot, 0.0, 0.0, -walkmeshFile->camAxis(camID, 2).z/4096.0);
+
 	glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
 	glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
 	glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
 
-	/*glRotatef(xRot, posCamX/4096.0, 0.0, 0.0);
-	glRotatef(yRot, 0.0, posCamY/4096.0, 0.0);
-	glRotatef(zRot, 0.0, 0.0, posCamZ/4096.0);
-*/
-	/*glRotatef(xRot, walkmeshFile->camAxis(camID, 0).x/4096.0, walkmeshFile->camAxis(camID, 0).y/4096.0, walkmeshFile->camAxis(camID, 0).z/4096.0);
-	glRotatef(yRot, walkmeshFile->camAxis(camID, 1).x/4096.0, walkmeshFile->camAxis(camID, 1).y/4096.0, walkmeshFile->camAxis(camID, 1).z/4096.0);
-	glRotatef(zRot, walkmeshFile->camAxis(camID, 2).x/4096.0, walkmeshFile->camAxis(camID, 2).y/4096.0, walkmeshFile->camAxis(camID, 2).z/4096.0);*/
-	/*glBegin(GL_POINTS);
-		glColor3ub(0xFF, 0xFF, 0xFF);
-		glVertex3f(posCamX, posCamY, posCamZ);
-	glEnd();*/
-
-	//glTranslatef(xtrans, ytrans, ztrans);
-
 	glBegin(GL_LINES);
-		/*glColor3ub(0, 255, 255);
-		glVertex3f(posCamX/4096.0, posCamY/4096.0, posCamZ/4096.0);
-		glVertex3f(walkmeshFile->camAxis(camID, 0).x/4096.0, walkmeshFile->camAxis(camID, 0).y/4096.0, walkmeshFile->camAxis(camID, 0).z/4096.0);
-		glVertex3f(posCamX/4096.0, posCamY/4096.0, posCamZ/4096.0);
-		glVertex3f(walkmeshFile->camAxis(camID, 1).x/4096.0, walkmeshFile->camAxis(camID, 1).y/4096.0, walkmeshFile->camAxis(camID, 1).z/4096.0);
-		glVertex3f(posCamX/4096.0, posCamY/4096.0, posCamZ/4096.0);
-		glVertex3f(walkmeshFile->camAxis(camID, 2).x/4096.0, walkmeshFile->camAxis(camID, 2).y/4096.0, walkmeshFile->camAxis(camID, 2).z/4096.0);*/
 		glColor3ub(0, 0, 255);
-		glVertex3f(-1.0, 0.0, 0.0);
-		glVertex3f(1.0, 0.0, 0.0);
+		glVertex3f(-1.0f, 0.0f, 0.0f);
+		glVertex3f(1.0f, 0.0f, 0.0f);
 		glColor3ub(0, 255, 0);
-		glVertex3f(0.0, -1.0, 0.0);
-		glVertex3f(0.0, 1.0, 0.0);
+		glVertex3f(0.0f, -1.0f, 0.0f);
+		glVertex3f(0.0f, 1.0f, 0.0f);
 		glColor3ub(255, 0, 0);
-		glVertex3f(0.0, 0.0, -1.0);
-		glVertex3f(0.0, 0.0, 1.0);
+		glVertex3f(0.0f, 0.0f, -1.0f);
+		glVertex3f(0.0f, 0.0f, 1.0f);
 	glEnd();
 
 	const QList<Triangle> &triangles = walkmeshFile->getTriangles();
@@ -174,11 +127,11 @@ void WalkmeshGLWidget::paintGL()
 
 	foreach(const Triangle &triangle, triangles) {
 		vertex = triangle.vertices[0];
-		glVertex3f(vertex.x/4096.0, -vertex.y/4096.0, vertex.z/4096.0);
+		glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
 		vertex = triangle.vertices[1];
-		glVertex3f(vertex.x/4096.0, -vertex.y/4096.0, vertex.z/4096.0);
+		glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
 		vertex = triangle.vertices[2];
-		glVertex3f(vertex.x/4096.0, -vertex.y/4096.0, vertex.z/4096.0);
+		glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
 	}
 
 	glEnd();
