@@ -22,8 +22,11 @@
 #include "CaFile.h"
 
 typedef struct {
-	quint8 unknown[8];
-} UnknownStruct1;
+	quint16 top;
+	quint16 bottom;
+	quint16 left;
+	quint16 right;
+} Range;
 
 typedef struct {
     Vertex_s exitLine[2];
@@ -41,9 +44,9 @@ typedef struct {
 typedef struct {
 	char name[9];
 	quint8 control;
-	quint8 unknown0[10];
-	UnknownStruct1 unknown1[8];
-	quint8 unknown2[16];
+	quint8 unknown[10];
+	Range cameraRange[8];
+	Range screenRange[2];
     Gateway gateways[12];
 	Trigger triggers[12];
 } InfStruct;
@@ -57,12 +60,20 @@ public:
 	bool isModified() const;
     QString getMapName() const;
 	void setMapName(const QString &mapName);
+	quint8 controlDirection() const;
+	void setControlDirection(quint8 controlDirection);
+	const quint8 *unknown() const;
+	void setUnknown(const quint8 *unknown);
     QList<Gateway> getGateways() const;
 	const Gateway &getGateway(int id) const;
 	void setGateway(int id, const Gateway &gateway);
 	QList<Trigger> getTriggers() const;
 	const Trigger &getTrigger(int id) const;
 	void setTrigger(int id, const Trigger &trigger);
+	const Range &cameraRange(int id) const;
+	void setCameraRange(int id, const Range &range);
+	const Range &screenRange(int id) const;
+	void setScreenRange(int id, const Range &range);
 private:
     InfStruct infStruct;
 	bool modified;

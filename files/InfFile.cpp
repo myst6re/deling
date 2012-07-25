@@ -65,6 +65,28 @@ void InfFile::setMapName(const QString &mapName)
 	modified = true;
 }
 
+quint8 InfFile::controlDirection() const
+{
+	return infStruct.control;
+}
+
+void InfFile::setControlDirection(quint8 controlDirection)
+{
+	infStruct.control = controlDirection;
+	modified = true;
+}
+
+const quint8 *InfFile::unknown() const
+{
+	return infStruct.unknown;
+}
+
+void InfFile::setUnknown(const quint8 *unknown)
+{
+	memcpy(infStruct.unknown, unknown, 10);
+	modified = true;
+}
+
 QList<Gateway> InfFile::getGateways() const
 {
     QList<Gateway> gates;
@@ -109,4 +131,28 @@ const Trigger &InfFile::getTrigger(int id) const
 void InfFile::setTrigger(int id, const Trigger &trigger)
 {
 	infStruct.triggers[id] = trigger;
+
+	modified = true;
+}
+
+const Range &InfFile::cameraRange(int id) const
+{
+	return infStruct.cameraRange[id];
+}
+
+void InfFile::setCameraRange(int id, const Range &range)
+{
+	infStruct.cameraRange[id] = range;
+	modified = true;
+}
+
+const Range &InfFile::screenRange(int id) const
+{
+	return infStruct.screenRange[id];
+}
+
+void InfFile::setScreenRange(int id, const Range &range)
+{
+	infStruct.screenRange[id] = range;
+	modified = true;
 }

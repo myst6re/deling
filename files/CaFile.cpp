@@ -95,3 +95,15 @@ void CaFile::setCamera(int camID, const CaStruct &cam)
 	cameras[camID] = cam;
 	modified = true;
 }
+
+void CaFile::insertCamera(int camID, const CaStruct &cam)
+{
+	cameras.insert(camID, cam);
+	modified = true;
+}
+
+void CaFile::removeCamera(int camID)
+{
+	cameras.removeAt(camID);
+	modified = true;
+}

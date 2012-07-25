@@ -48,7 +48,7 @@ void WalkmeshWidget::build()
 	tabWidget->addTab(buildWalkmeshPage(), tr("Walkmesh"));
 	tabWidget->addTab(buildGatewaysPage(), tr("Sorties"));
 	tabWidget->addTab(buildMovieCameraPage(), tr("Caméra cinématique"));
-	tabWidget->setFixedHeight(200);
+	tabWidget->setFixedHeight(250);
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(walkmeshGL, 0, 0);
@@ -131,7 +131,7 @@ QWidget *WalkmeshWidget::buildWalkmeshPage()
 	QWidget *ret = new QWidget(this);
 
 	idList = new QListWidget(ret);
-	idList->setFixedWidth(150);
+	idList->setFixedWidth(125);
 
 	idVertices[0] = new VertexWidget(ret);
 	idVertices[1] = new VertexWidget(ret);
@@ -167,7 +167,8 @@ QWidget *WalkmeshWidget::buildWalkmeshPage()
 	layout->addWidget(idVertices[2], 2, 2);
 	layout->addLayout(accessLayout0, 3, 1, 1, 2);
 	layout->addLayout(accessLayout1, 4, 1, 1, 2);
-	layout->addLayout(accessLayout2, 5, 1, 1, 2);
+	layout->addLayout(accessLayout2, 5, 1, 1, 2, Qt::AlignTop);
+	layout->setRowStretch(5, 1);
 
 	connect(idList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentId(int)));
 	connect(idVertices[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
@@ -185,7 +186,7 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	QWidget *ret = new QWidget(this);
 
 	gateList = new QListWidget(ret);
-	gateList->setFixedWidth(100);
+	gateList->setFixedWidth(125);
 
 	exitPoints[0] = new VertexWidget(ret);
 	exitPoints[1] = new VertexWidget(ret);
@@ -200,17 +201,19 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	doorId = new QSpinBox(ret);
 	doorId->setRange(0, 255);
 
-	QHBoxLayout *idsLayout = new QHBoxLayout;
-	idsLayout->addWidget(new QLabel(tr("Id écran :")));
-	idsLayout->addWidget(fieldId);
-	idsLayout->addWidget(new QLabel(tr("Id porte :")));
-	idsLayout->addWidget(doorId);
-
 	unknownGate = new QLineEdit(ret);
 	unknownGate->setMaxLength(12*2);
 
+	QGridLayout *idsLayout = new QGridLayout;
+	idsLayout->addWidget(new QLabel(tr("Id écran :")), 0, 0);
+	idsLayout->addWidget(fieldId, 0, 1);
+	idsLayout->addWidget(new QLabel(tr("Id porte :")), 0, 2);
+	idsLayout->addWidget(doorId, 0, 3);
+	idsLayout->addWidget(new QLabel(tr("Inconnu :")), 1, 0);
+	idsLayout->addWidget(unknownGate, 1, 1, 1, 3);
+
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(gateList, 0, 0, 7, 1, Qt::AlignLeft);
+	layout->addWidget(gateList, 0, 0, 6, 1, Qt::AlignLeft);
 	layout->addWidget(new QLabel(tr("Ligne de sortie :")), 0, 1, Qt::AlignTop);
 	layout->addWidget(exitPoints[0], 0, 2, Qt::AlignTop);
 	layout->addWidget(exitPoints[1], 1, 2, Qt::AlignTop);
@@ -220,9 +223,7 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	layout->addWidget(doorPosition[0], 3, 2, Qt::AlignTop);
 	layout->addWidget(doorPosition[1], 4, 2, Qt::AlignTop);
 	layout->addLayout(idsLayout, 5, 1, 1, 2, Qt::AlignTop);
-	layout->addWidget(new QLabel(tr("Inconnu :")), 6, 1, Qt::AlignTop);
-	layout->addWidget(unknownGate, 6, 2, Qt::AlignTop);
-	layout->setRowStretch(6, 1);
+	layout->setRowStretch(5, 1);
 
 	connect(gateList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentGateway(int)));
 	connect(exitPoints[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editExitPoint(Vertex_s)));
@@ -243,15 +244,19 @@ QWidget *WalkmeshWidget::buildMovieCameraPage()
 
 	camToolbar = new QToolBar(this);
 	camToolbar->setIconSize(QSize(16, 16));
-	camToolbar->setFixedWidth(150);
+	camToolbar->setFixedWidth(125);
 	camPlusAction = camToolbar->addAction(QIcon(":/images/plus.png"), tr("Ajouter"), this, SLOT(addMovieCameraPosition()));
 	camPlusAction->setShortcut(QKeySequence("Ctrl++"));
 	camMinusAction = camToolbar->addAction(QIcon(":/images/minus.png"), tr("Effacer"), this, SLOT(removeMovieCameraPosition()));
 	camMinusAction->setShortcut(QKeySequence::Delete);
 
 	frameList = new QListWidget(ret);
-	frameList->setFixedWidth(150);
+	frameList->setFixedWidth(125);
 //	frameList->setDragDropMode(QAbstractItemView::InternalMove);//TODO
+
+	QVBoxLayout *listLayout = new QVBoxLayout;
+	listLayout->addWidget(camToolbar);
+	listLayout->addWidget(frameList);
 
 	camPoints[0] = new VertexWidget(ret);
 	camPoints[1] = new VertexWidget(ret);
@@ -259,13 +264,12 @@ QWidget *WalkmeshWidget::buildMovieCameraPage()
 	camPoints[3] = new VertexWidget(ret);
 
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(camToolbar, 0, 0);
-	layout->addWidget(frameList, 1, 0, 4, 1, Qt::AlignLeft);
-	layout->addWidget(camPoints[0], 1, 1, Qt::AlignLeft | Qt::AlignTop);
-	layout->addWidget(camPoints[1], 2, 1, Qt::AlignLeft | Qt::AlignTop);
-	layout->addWidget(camPoints[2], 3, 1, Qt::AlignLeft | Qt::AlignTop);
-	layout->addWidget(camPoints[3], 4, 1, Qt::AlignLeft | Qt::AlignTop);
-	layout->setRowStretch(4, 1);
+	layout->addLayout(listLayout, 0, 0, 4, 1);
+	layout->addWidget(camPoints[0], 0, 1, Qt::AlignTop);
+	layout->addWidget(camPoints[1], 1, 1, Qt::AlignTop);
+	layout->addWidget(camPoints[2], 2, 1, Qt::AlignTop);
+	layout->addWidget(camPoints[3], 3, 1, Qt::AlignTop);
+	layout->setRowStretch(3, 1);
 
 	connect(frameList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentMoviePosition(int)));
 

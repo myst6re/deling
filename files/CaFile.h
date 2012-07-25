@@ -42,6 +42,8 @@ public:
 	int cameraCount() const;
 	const CaStruct &camera(int camID) const;
 	void setCamera(int camID, const CaStruct &cam);
+	void insertCamera(int camID, const CaStruct &cam);
+	void removeCamera(int camID);
 	bool isModified() const;
 private:
 	QList<CaStruct> cameras;
