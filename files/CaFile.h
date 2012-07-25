@@ -15,37 +15,37 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef BACKGROUNDWIDGET_H
-#define BACKGROUNDWIDGET_H
+#ifndef CAFILE_H
+#define CAFILE_H
 
-#include <QtGui>
-#include "widgets/PageWidget.h"
-#include "BGPreview.h"
-#include "BGPreview2.h"
-#include "FF8Image.h"
+#include <QtCore>
 
-class BackgroundWidget : public PageWidget
+typedef struct {
+	qint16 x, y, z;
+} Vertex_s;
+
+typedef struct {
+	Vertex_s camera_axis[3];
+	qint16 camera_axis2z;// copy (padding)
+	qint32 camera_position[3];
+	qint32 blank;
+	quint16 camera_zoom;
+	quint16 camera_zoom2;// copy (padding)
+} CaStruct;
+
+class CaFile
 {
-	Q_OBJECT
 public:
-	BackgroundWidget(QWidget *parent=0);
-	void clear();
-	void fill();
-	inline QString tabName() const { return tr("Décors"); }
-private slots:
-	void parameterChanged(int index);
-	void enableState(QListWidgetItem *item);
-	void enableLayer(QListWidgetItem *item);
-//	void switchItem(QListWidgetItem *item);
-	void setHideBack(bool);
+	CaFile();
+	bool open(const QByteArray &ca);
+	bool save(QByteArray &ca);
+	int cameraCount() const;
+	const CaStruct &camera(int camID) const;
+	void setCamera(int camID, const CaStruct &cam);
+	bool isModified() const;
 private:
-	void updateBackground();
-	void build();
-
-	BGPreview2 *image;
-	QComboBox *parametersWidget;
-	QListWidget *statesWidget, *layersWidget;
-	QCheckBox *hideBack;
+	QList<CaStruct> cameras;
+	bool modified;
 };
 
-#endif // BACKGROUNDWIDGET_H
+#endif // WALKMESHFILE_H

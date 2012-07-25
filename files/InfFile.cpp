@@ -88,6 +88,19 @@ void InfFile::setGateway(int id, const Gateway &gateway)
 	modified = true;
 }
 
+QList<Trigger> InfFile::getTriggers() const
+{
+	QList<Trigger> triggers;
+
+	for(int i=0 ; i<12 ; ++i) {
+		if(infStruct.triggers[i].doorID != 0xff) {
+			triggers.append(infStruct.triggers[i]);
+		}
+	}
+
+	return triggers;
+}
+
 const Trigger &InfFile::getTrigger(int id) const
 {
 	return infStruct.triggers[id];

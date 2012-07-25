@@ -15,14 +15,11 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef WALKMESHFILE_H
-#define WALKMESHFILE_H
+#ifndef IDFILE_H
+#define IDFILE_H
 
 #include <QtCore>
-
-typedef struct {
-	qint16 x, y, z;
-} Vertex_s;
+#include "files/CaFile.h"
 
 typedef struct {
 	qint16 x, y, z, res;// res = Triangle[0].z (padding)
@@ -36,39 +33,30 @@ typedef struct {
 	qint16 a1, a2, a3;
 } Access;
 
-typedef struct {
-	Vertex_s camera_axis[3];
-	qint16 camera_axis2z;// copy (padding)
-	qint32 camera_position[3];
-	qint32 blank;
-	quint16 camera_zoom;
-	quint16 camera_zoom2;// copy (padding)
-} CaStruct;
-
-class WalkmeshFile
+class IdFile
 {
 public:
-	WalkmeshFile();
-	bool open(const QByteArray &id, const QByteArray &ca=QByteArray());
-	bool save(QByteArray &ca);
+	IdFile();
+	bool open(const QByteArray &id);
+	bool save(QByteArray &id);
 	int triangleCount() const;
 	const QList<Triangle> &getTriangles() const;
 	const Triangle &triangle(int triangleID) const;
 	void setTriangle(int triangleID, const Triangle &triangle);
+	void insertTriangle(int triangleID, const Triangle &triangle, const Access &access);
+	void removeTriangle(int triangleID);
 	const Access &access(int triangleID) const;
 	void setAccess(int triangleID, const Access &access);
-	int cameraCount() const;
-	const CaStruct &camera(int camID) const;
-	void setCamera(int camID, const CaStruct &cam);
 	bool hasUnknownData() const;
 	qint16 unknown() const;
 	bool isModified() const;
+	static Vertex_sr fromVertex_s(const Vertex_s &vertex_s);
+	static Vertex_s toVertex_s(const Vertex_sr &vertex_sr);
 private:
-	QList<CaStruct> cameras;
 	QList<Triangle> triangles;
 	QList<Access> _access;
 	qint16 _unknown;
 	bool modified, _hasUnknownData;
 };
 
-#endif // WALKMESHFILE_H
+#endif // IDFILE_H

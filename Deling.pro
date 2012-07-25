@@ -49,7 +49,7 @@ HEADERS += MainWindow.h \
 	widgets/MiscWidget.h \
 	files/MsdFile.h \
 	files/JsmFile.h \
-	files/WalkmeshFile.h \
+	files/CaFile.h \
 	files/MiscFile.h \
 	files/BackgroundFile.h \
 	files/TdwFile.h \
@@ -74,7 +74,8 @@ HEADERS += MainWindow.h \
     widgets/TdwPalette.h \
     files/MskFile.h \
     VertexWidget.h \
-    files/InfFile.h
+    files/InfFile.h \
+    files/IdFile.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -116,7 +117,7 @@ SOURCES += MainWindow.cpp \
 	widgets/MiscWidget.cpp \
 	files/MsdFile.cpp \
 	files/JsmFile.cpp \
-	files/WalkmeshFile.cpp \
+	files/CaFile.cpp \
 	files/MiscFile.cpp \
 	files/BackgroundFile.cpp \
 	files/TdwFile.cpp \
@@ -141,7 +142,8 @@ SOURCES += MainWindow.cpp \
     widgets/TdwPalette.cpp \
     files/MskFile.cpp \
     VertexWidget.cpp \
-    files/InfFile.cpp
+    files/InfFile.cpp \
+    files/IdFile.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

@@ -22,7 +22,6 @@
 #include "widgets/PageWidget.h"
 #include "BGPreview.h"
 #include "TextPreview.h"
-#include "files/MsdFile.h"
 #include "MsdHighlighter.h"
 
 class MsdWidget : public PageWidget

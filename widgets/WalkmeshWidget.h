@@ -20,7 +20,6 @@
 
 #include <QtGui>
 #include "widgets/PageWidget.h"
-#include "files/WalkmeshFile.h"
 #include "WalkmeshGLWidget.h"
 #include "VertexWidget.h"
 
@@ -39,10 +38,14 @@ private slots:
 	void editCaVector(const Vertex_s &values);
 	void editCaPos(double value);
 	void editCaZoom(int value);
+	void setCurrentId(int i);
+	void editIdTriangle(const Vertex_s &values);
+	void editIdAccess(int value);
     void setCurrentGateway(int id);
 	void editExitPoint(const Vertex_s &values);
 	void editEntryPoint(const Vertex_s &values);
 	void editDoorPoint(const Vertex_s &values);
+	void editFieldId(int v);
 	void editDoorId(int v);
 	void editUnknownGate(const QString &u);
     void setCurrentMoviePosition(int id);
@@ -52,28 +55,39 @@ private slots:
 private:
 	void build();
 	QWidget *buildCameraPage();
+	QWidget *buildWalkmeshPage();
 	QWidget *buildGatewaysPage();
 	QWidget *buildMovieCameraPage();
 	void editCaVector(int id, const Vertex_s &values);
 	void editCaPos(int id, double value);
+	void editIdTriangle(int id, const Vertex_s &values);
+	void editIdAccess(int id, int value);
 	void editExitPoint(int id, const Vertex_s &values);
 	void editDoorPoint(int id, const Vertex_s &values);
 
 	WalkmeshGLWidget *walkmeshGL;
+	QTabWidget *tabWidget;
 	//CamPage
 	QComboBox *camSelect;
 	VertexWidget *caVectorXEdit, *caVectorYEdit, *caVectorZEdit;
 	QDoubleSpinBox *caSpaceXEdit, *caSpaceYEdit, *caSpaceZEdit;
 	QSpinBox *caZoomEdit;
+	//WalkmeshPage
+	QListWidget *idList;
+	VertexWidget *idVertices[3];
+	QSpinBox *idAccess[3];
 	//DoorPage
-	QListWidget *gateList, *frameList;
+	QListWidget *gateList;
 	QLineEdit *unknownGate;
-	QSpinBox *doorId;
+	QSpinBox *fieldId, *doorId;
 	VertexWidget *exitPoints[2], *entryPoint, *doorPosition[2];
 	//MovieCamPage
+	QListWidget *frameList;
 	QToolBar *camToolbar;
 	QAction *camPlusAction, *camMinusAction;
     VertexWidget *camPoints[4];
+protected:
+	void focusInEvent(QFocusEvent *);
 };
 
 #endif // WALKMESHWIDGET_H

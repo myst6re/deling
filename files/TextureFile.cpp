@@ -33,7 +33,7 @@ TextureFile::TextureFile(const QImage &image) :
 
 bool TextureFile::isValid() const
 {
-	return _image.isNull();
+	return !_image.isNull();
 }
 
 void TextureFile::clear()

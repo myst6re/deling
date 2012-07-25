@@ -42,6 +42,9 @@ bool CharaModel::open(const QList<quint32> &toc, const QByteArray &data)
 		quint32 pos = toc.at(i) & 0xFFFFFF;
 //		qDebug() << "ouverture tim" << pos << ((toc.at(i+1) & 0xFFFFFF) - pos);
 		_textures.append(TimFile(data.mid(pos, (toc.at(i+1) & 0xFFFFFF) - pos)));
+		if(!_textures.last().isValid()) {
+			qDebug() << "tim error: unknown format!" << _name << i;
+		}
 	}
 
 //	qDebug() << "charaModel ouvert" << _name;

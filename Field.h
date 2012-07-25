@@ -21,7 +21,8 @@
 #include <QtCore>
 #include "files/MsdFile.h"
 #include "files/JsmFile.h"
-#include "files/WalkmeshFile.h"
+#include "files/IdFile.h"
+#include "files/CaFile.h"
 #include "files/InfFile.h"
 #include "files/MiscFile.h"
 #include "files/EncounterFile.h"
@@ -41,7 +42,8 @@ public:
 
 	void openMsdFile(const QByteArray &msd);
 	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray());
-	void openWalkmeshFile(const QByteArray &id, const QByteArray &ca=QByteArray());
+	void openIdFile(const QByteArray &id);
+	void openCaFile(const QByteArray &ca);
 	void openEncounterFile(const QByteArray &rat, const QByteArray &mrt);
     void openInfFile(const QByteArray &inf);
     void openMiscFile(const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
@@ -52,7 +54,8 @@ public:
 
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
-	bool hasWalkmeshFile() const;
+	bool hasIdFile() const;
+	bool hasCaFile() const;
 	bool hasEncounterFile() const;
     bool hasInfFile() const;
 	bool hasMiscFile() const;
@@ -66,7 +69,8 @@ public:
 
 	MsdFile *getMsdFile() const;
 	JsmFile *getJsmFile() const;
-	WalkmeshFile *getWalkmeshFile() const;
+	IdFile *getIdFile() const;
+	CaFile *getCaFile() const;
 	EncounterFile *getEncounterFile() const;
     InfFile *getInfFile() const;
 	MiscFile *getMiscFile() const;
@@ -81,7 +85,8 @@ public:
 protected:
 	void deleteMsdFile();
 	void deleteJsmFile();
-	void deleteWalkmeshFile();
+	void deleteIdFile();
+	void deleteCaFile();
 	void deleteEncounterFile();
     void deleteInfFile();
 	void deleteMiscFile();
@@ -94,7 +99,8 @@ protected:
 	QString _name;
 	MsdFile *msdFile;
 	JsmFile *jsmFile;
-	WalkmeshFile *walkmeshFile;
+	IdFile *idFile;
+	CaFile *caFile;
 	EncounterFile *encounterFile;
     InfFile *infFile;
 	MiscFile *miscFile;

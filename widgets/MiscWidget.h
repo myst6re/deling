@@ -20,8 +20,6 @@
 
 #include <QtGui>
 #include "widgets/PageWidget.h"
-#include "files/MiscFile.h"
-#include "files/WalkmeshFile.h"
 
 class MiscWidget : public PageWidget
 {

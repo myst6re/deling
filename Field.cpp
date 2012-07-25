@@ -19,7 +19,7 @@
 
 Field::Field(const QString &name)
 	: _isOpen(false), _name(name),
-	  msdFile(NULL), jsmFile(NULL), walkmeshFile(NULL),
+	  msdFile(NULL), jsmFile(NULL), idFile(NULL), caFile(NULL),
       encounterFile(NULL), infFile(NULL), miscFile(NULL), backgroundFile(NULL),
 	  tdwFile(NULL), mskFile(NULL)
 {
@@ -29,7 +29,8 @@ Field::~Field()
 {
 	deleteMsdFile();
 	deleteJsmFile();
-	deleteWalkmeshFile();
+	deleteIdFile();
+	deleteCaFile();
 	deleteEncounterFile();
     deleteInfFile();
 	deleteMiscFile();
@@ -71,14 +72,25 @@ void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym)
 	}
 }
 
-void Field::openWalkmeshFile(const QByteArray &id, const QByteArray &ca)
+void Field::openIdFile(const QByteArray &id)
 {
-	deleteWalkmeshFile();
-	walkmeshFile = new WalkmeshFile();
+	deleteIdFile();
+	idFile = new IdFile();
 
-	if(!walkmeshFile->open(id, ca)) {
-		qWarning() << "Field::openWalkmeshFile error" << _name;
-		deleteWalkmeshFile();
+	if(!idFile->open(id)) {
+		qWarning() << "Field::openIdFile error" << _name;
+		deleteIdFile();
+	}
+}
+
+void Field::openCaFile(const QByteArray &ca)
+{
+	deleteCaFile();
+	caFile = new CaFile();
+
+	if(!caFile->open(ca)) {
+		qWarning() << "Field::openCaFile error" << _name;
+		deleteCaFile();
 	}
 }
 
@@ -184,11 +196,19 @@ void Field::deleteJsmFile()
 	}
 }
 
-void Field::deleteWalkmeshFile()
+void Field::deleteIdFile()
 {
-	if(walkmeshFile!=NULL) {
-		delete walkmeshFile;
-		walkmeshFile = NULL;
+	if(idFile!=NULL) {
+		delete idFile;
+		idFile = NULL;
+	}
+}
+
+void Field::deleteCaFile()
+{
+	if(caFile!=NULL) {
+		delete caFile;
+		caFile = NULL;
 	}
 }
 
@@ -258,9 +278,14 @@ bool Field::hasJsmFile() const
 	return jsmFile != NULL;
 }
 
-bool Field::hasWalkmeshFile() const
+bool Field::hasCaFile() const
 {
-	return walkmeshFile != NULL;
+	return caFile != NULL;
+}
+
+bool Field::hasIdFile() const
+{
+	return idFile != NULL;
 }
 
 bool Field::hasEncounterFile() const
@@ -301,7 +326,9 @@ bool Field::hasMskFile() const
 bool Field::hasFiles() const
 {
 	return hasMsdFile() || hasJsmFile() || hasMapMimFiles()
-			|| hasWalkmeshFile() || hasEncounterFile() || hasMiscFile();
+			|| hasCaFile() || hasIdFile() || hasEncounterFile()
+			|| hasInfFile() || hasMiscFile() || hasTdwFile()
+			|| hasCharaFile() || hasMskFile();
 }
 
 MsdFile *Field::getMsdFile() const
@@ -314,9 +341,14 @@ JsmFile *Field::getJsmFile() const
 	return jsmFile;
 }
 
-WalkmeshFile *Field::getWalkmeshFile() const
+IdFile *Field::getIdFile() const
 {
-	return walkmeshFile;
+	return idFile;
+}
+
+CaFile *Field::getCaFile() const
+{
+	return caFile;
 }
 
 EncounterFile *Field::getEncounterFile() const
@@ -356,16 +388,17 @@ MskFile *Field::getMskFile() const
 
 bool Field::isModified() const
 {
-	return (msdFile != NULL && msdFile->isModified())
-			|| (jsmFile != NULL && jsmFile->isModified())
-			|| (encounterFile != NULL && encounterFile->isModified())
-            || (infFile != NULL && infFile->isModified())
-			|| (miscFile != NULL && miscFile->isModified())
-			|| (walkmeshFile != NULL && walkmeshFile->isModified())
-			|| (backgroundFile != NULL && backgroundFile->isModified())
-			|| (tdwFile != NULL && tdwFile->isModified())
-			|| (charaFile != NULL && charaFile->isModified())
-			|| (mskFile != NULL && mskFile->isModified());
+	return (hasMsdFile() && msdFile->isModified())
+			|| (hasJsmFile() && jsmFile->isModified())
+			|| (hasEncounterFile() && encounterFile->isModified())
+			|| (hasInfFile() && infFile->isModified())
+			|| (hasMiscFile() && miscFile->isModified())
+			|| (hasIdFile() && idFile->isModified())
+			|| (hasCaFile() && caFile->isModified())
+			|| (hasBackgroundFile() && backgroundFile->isModified())
+			|| (hasTdwFile() && tdwFile->isModified())
+			|| (hasCharaFile() && charaFile->isModified())
+			|| (hasMskFile() && mskFile->isModified());
 }
 
 const QString &Field::name() const

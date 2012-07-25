@@ -87,14 +87,18 @@ bool FieldPC::open(const QString &path)
 			openJsmFile(header->fileData("*.jsm"));
 	}
 
-	/* ID & CA */
+	/* ID */
 
 	if(header->fileExists("*.id"))
 	{
-		if(header->fileExists("*.ca"))
-			openWalkmeshFile(header->fileData("*.id"), header->fileData("*.ca"));
-		else
-			openWalkmeshFile(header->fileData("*.id"));
+		openIdFile(header->fileData("*.id"));
+	}
+
+	/* CA */
+
+	if(header->fileExists("*.ca"))
+	{
+		openCaFile(header->fileData("*.ca"));
 	}
 
 	/* MSK */
@@ -219,14 +223,18 @@ bool FieldPC::open(FsArchive *archive)
 			openJsmFile(jsm_infos->data(fs_data));
 	}
 
-	/* ID & CA */
+	/* ID */
 
 	if(id_infos!=NULL)
 	{
-		if(ca_infos!=NULL)
-			openWalkmeshFile(id_infos->data(fs_data), ca_infos->data(fs_data));
-		else
-			openWalkmeshFile(id_infos->data(fs_data));
+		openIdFile(id_infos->data(fs_data));
+	}
+
+	/* CA */
+
+	if(ca_infos!=NULL)
+	{
+		openCaFile(ca_infos->data(fs_data));
 	}
 
 	/* MSK */
@@ -336,26 +344,36 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 	}
     if(hasEncounterFile() && encounterFile->isModified()) {
 		QByteArray rat, mrt;
-		encounterFile->save(rat, mrt);
-		header->setFileData("*"%_name%".rat", fs_data, rat);
-		header->setFileData("*"%_name%".mrt", fs_data, mrt);
+		if(encounterFile->save(rat, mrt)) {
+			header->setFileData("*"%_name%".rat", fs_data, rat);
+			header->setFileData("*"%_name%".mrt", fs_data, mrt);
+		}
 	}
     if(hasInfFile() && infFile->isModified()) {
         QByteArray inf;
-        infFile->save(inf);
-        header->setFileData("*"%_name%".inf", fs_data, inf);
+		if(infFile->save(inf)) {
+			header->setFileData("*"%_name%".inf", fs_data, inf);
+		}
     }
     if(hasMiscFile() && miscFile->isModified()) {
         QByteArray pmp, pmd, pvp;
-        miscFile->save(pmp, pmd, pvp);
-		header->setFileData("*"%_name%".pmp", fs_data, pmp);
-		header->setFileData("*"%_name%".pmd", fs_data, pmd);
-		header->setFileData("*"%_name%".pvp", fs_data, pvp);
+		if(miscFile->save(pmp, pmd, pvp)) {
+			header->setFileData("*"%_name%".pmp", fs_data, pmp);
+			header->setFileData("*"%_name%".pmd", fs_data, pmd);
+			header->setFileData("*"%_name%".pvp", fs_data, pvp);
+		}
 	}
-    if(hasWalkmeshFile() && walkmeshFile->isModified()) {
+	if(hasIdFile() && idFile->isModified()) {
+		QByteArray id;
+		if(idFile->save(id)) {
+			header->setFileData("*"%_name%".id", fs_data, id);
+		}
+	}
+	if(hasCaFile() && caFile->isModified()) {
 		QByteArray ca;
-		walkmeshFile->save(ca);
-		header->setFileData("*"%_name%".ca", fs_data, ca);
+		if(caFile->save(ca)) {
+			header->setFileData("*"%_name%".ca", fs_data, ca);
+		}
 	}
     if(hasMskFile() && mskFile->isModified()) {
 		QByteArray msk;

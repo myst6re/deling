@@ -21,7 +21,7 @@
 #include <QtGui>
 #include <QGLWidget>
 #include <GL/glu.h>
-#include "files/WalkmeshFile.h"
+#include "Field.h"
 
 class WalkmeshGLWidget : public QGLWidget
 {
@@ -29,26 +29,35 @@ class WalkmeshGLWidget : public QGLWidget
 public:
 	explicit WalkmeshGLWidget(QWidget *parent=0);
 	void clear();
-	void fill(WalkmeshFile *walkmeshFile);
+	void fill(Field *data);
+	void updatePerspective();
 public slots:
 	void setXRotation(int);
 	void setYRotation(int);
 	void setZRotation(int);
-	void setZoom(int);
+//	void setZoom(int);
 	void setCurrentFieldCamera(int);
 private:
-	bool dataLoaded;
-	int distance;
+	void computeFov();
+	void drawIdLine(const Vertex_sr &vertex1, const Vertex_sr &vertex2, qint16 access);
+//	int distance;
 	int xRot, yRot, zRot;
+	float xTrans, yTrans, zTrans;
 	int camID;
-	WalkmeshFile *walkmeshFile;
+	double fovy;
+	Field *data;
+	int curFrame;
 
 protected:
-	void initializeGL();
-	void resizeGL(int w, int h);
-	void paintGL();
-//	void wheelEvent(QWheelEvent *event);
-//	void mousePressEvent(QMouseEvent *event);
+	virtual void timerEvent(QTimerEvent *);
+	virtual void initializeGL();
+	virtual void resizeGL(int w, int h);
+	virtual void paintGL();
+//	virtual void wheelEvent(QWheelEvent *event);
+//	virtual void mousePressEvent(QMouseEvent *event);
+	virtual void keyPressEvent(QKeyEvent *event);
+	virtual void mousePressEvent(QMouseEvent *event);
+	virtual void mouseMoveEvent(QMouseEvent *event);
 };
 
 #endif // WALKMESHGLWIDGET_H

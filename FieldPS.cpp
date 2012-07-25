@@ -79,17 +79,16 @@ bool FieldPS::open(const QByteArray &dat_data, const QByteArray &mim)
 	_name = dat_data.mid(48, 8);
 
 	/* MSD */
-
 	openMsdFile(dat_data.mid(posSections[Msd], posSections[Msd+1]-posSections[Msd]));
 
 	/* JSM */
-
 	openJsmFile(dat_data.mid(posSections[Jsm], posSections[Jsm+1]-posSections[Jsm]));
 
-	/* ID & CA */
-	openWalkmeshFile(
-				dat_data.mid(posSections[Id], posSections[Id+1]-posSections[Id]),
-				dat_data.mid(posSections[Ca], posSections[Ca+1]-posSections[Ca]));
+	/* ID */
+	openIdFile(dat_data.mid(posSections[Id], posSections[Id+1]-posSections[Id]));
+
+	/* CA */
+	openCaFile(dat_data.mid(posSections[Ca], posSections[Ca+1]-posSections[Ca]));
 
 	/* MSK */
 	if(posSections[Msk+1]-posSections[Msk] > 0) {
@@ -177,36 +176,48 @@ bool FieldPS::save(QByteArray &dat_data)
 	}
     if(hasEncounterFile() && encounterFile->isModified()) {
 		QByteArray rat, mrt;
-		encounterFile->save(rat, mrt);
-		dat_data.replace(posSections[Rat], posSections[Rat+1] - posSections[Rat], rat);
-		diff = rat.size() - (posSections[Rat+1] - posSections[Rat]);
-		for(int i=Rat+1 ; i<12 ; ++i)	posSections[i] += diff;
-		dat_data.replace(posSections[Mrt], posSections[Mrt+1] - posSections[Mrt], mrt);
-		diff = mrt.size() - (posSections[Mrt+1] - posSections[Mrt]);
-		for(int i=Mrt+1 ; i<12 ; ++i)	posSections[i] += diff;
+		if(encounterFile->save(rat, mrt)) {
+			dat_data.replace(posSections[Rat], posSections[Rat+1] - posSections[Rat], rat);
+			diff = rat.size() - (posSections[Rat+1] - posSections[Rat]);
+			for(int i=Rat+1 ; i<12 ; ++i)	posSections[i] += diff;
+			dat_data.replace(posSections[Mrt], posSections[Mrt+1] - posSections[Mrt], mrt);
+			diff = mrt.size() - (posSections[Mrt+1] - posSections[Mrt]);
+			for(int i=Mrt+1 ; i<12 ; ++i)	posSections[i] += diff;
+		}
 	}
     if(hasInfFile() && infFile->isModified()) {
         QByteArray inf;
-        infFile->save(inf);
-        dat_data.replace(posSections[Inf], posSections[Inf+1] - posSections[Inf], inf);
-        diff = inf.size() - (posSections[Inf+1] - posSections[Inf]);
-        for(int i=Inf+1 ; i<12 ; ++i)	posSections[i] += diff;
+		if(infFile->save(inf)) {
+			dat_data.replace(posSections[Inf], posSections[Inf+1] - posSections[Inf], inf);
+			diff = inf.size() - (posSections[Inf+1] - posSections[Inf]);
+			for(int i=Inf+1 ; i<12 ; ++i)	posSections[i] += diff;
+		}
     }
     if(hasMiscFile() && miscFile->isModified()) {
         QByteArray pmp, pmd, pvp;
-        miscFile->save(pmp, pmd, pvp);
-		// TODO: pmp
-		dat_data.replace(posSections[Pmd], posSections[Pmd+1] - posSections[Pmd], pmd);
-		diff = pmd.size() - (posSections[Pmd+1] - posSections[Pmd]);
-		for(int i=Pmd+1 ; i<12 ; ++i)	posSections[i] += diff;
-		// TODO: pvp
+		if(miscFile->save(pmp, pmd, pvp)) {
+			// TODO: pmp
+			dat_data.replace(posSections[Pmd], posSections[Pmd+1] - posSections[Pmd], pmd);
+			diff = pmd.size() - (posSections[Pmd+1] - posSections[Pmd]);
+			for(int i=Pmd+1 ; i<12 ; ++i)	posSections[i] += diff;
+			// TODO: pvp
+		}
 	}
-    if(hasWalkmeshFile() && walkmeshFile->isModified()) {
+	if(hasIdFile() && idFile->isModified()) {
+		QByteArray id;
+		if(idFile->save(id)) {
+			dat_data.replace(posSections[Id], posSections[Id+1] - posSections[Id], id);
+			diff = id.size() - (posSections[Id+1] - posSections[Id]);
+			for(int i=Id+1 ; i<12 ; ++i)	posSections[i] += diff;
+		}
+	}
+	if(hasCaFile() && caFile->isModified()) {
 		QByteArray ca;
-		walkmeshFile->save(ca);
-		dat_data.replace(posSections[Ca], posSections[Ca+1] - posSections[Ca], ca);
-		diff = ca.size() - (posSections[Ca+1] - posSections[Ca]);
-		for(int i=Ca+1 ; i<12 ; ++i)	posSections[i] += diff;
+		if(caFile->save(ca)) {
+			dat_data.replace(posSections[Ca], posSections[Ca+1] - posSections[Ca], ca);
+			diff = ca.size() - (posSections[Ca+1] - posSections[Ca]);
+			for(int i=Ca+1 ; i<12 ; ++i)	posSections[i] += diff;
+		}
 	}
     if(hasMskFile() && mskFile->isModified()) {
 		QByteArray msk;
@@ -218,10 +229,11 @@ bool FieldPS::save(QByteArray &dat_data)
 	}
     if(hasTdwFile() && tdwFile->isModified()) {
 		QByteArray tdw;
-		tdwFile->save(tdw);
-		dat_data.replace(posSections[Tdw], posSections[Tdw+1] - posSections[Tdw], tdw);
-		diff = tdw.size() - (posSections[Tdw+1] - posSections[Tdw]);
-		for(int i=Tdw+1 ; i<12 ; ++i)	posSections[i] += diff;
+		if(tdwFile->save(tdw)) {
+			dat_data.replace(posSections[Tdw], posSections[Tdw+1] - posSections[Tdw], tdw);
+			diff = tdw.size() - (posSections[Tdw+1] - posSections[Tdw]);
+			for(int i=Tdw+1 ; i<12 ; ++i)	posSections[i] += diff;
+		}
 	}
 
 	for(int i=0 ; i<12 ; ++i)

@@ -21,7 +21,6 @@
 #include <QtGui>
 #include "widgets/PageWidget.h"
 #include "CharaPreview.h"
-#include "files/MchFile.h"
 
 class CharaWidget : public PageWidget
 {

@@ -19,7 +19,7 @@
 #define INFFILE_H
 
 #include <QtCore>
-#include "WalkmeshFile.h"
+#include "CaFile.h"
 
 typedef struct {
 	quint8 unknown[8];
@@ -60,6 +60,7 @@ public:
     QList<Gateway> getGateways() const;
 	const Gateway &getGateway(int id) const;
 	void setGateway(int id, const Gateway &gateway);
+	QList<Trigger> getTriggers() const;
 	const Trigger &getTrigger(int id) const;
 	void setTrigger(int id, const Trigger &trigger);
 private:

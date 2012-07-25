@@ -19,7 +19,7 @@
 #define MSKFILE_H
 
 #include <QtCore>
-#include "WalkmeshFile.h"
+#include "CaFile.h"
 
 class MskFile
 {
