@@ -18,7 +18,7 @@
 #include "TextureFile.h"
 
 TextureFile::TextureFile() :
-	_currentColorTable(0)
+	File(), _currentColorTable(0)
 {
 }
 

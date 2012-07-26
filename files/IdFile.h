@@ -18,7 +18,7 @@
 #ifndef IDFILE_H
 #define IDFILE_H
 
-#include <QtCore>
+#include "files/File.h"
 #include "files/CaFile.h"
 
 typedef struct {
@@ -33,7 +33,7 @@ typedef struct {
 	qint16 a1, a2, a3;
 } Access;
 
-class IdFile
+class IdFile : public File
 {
 public:
 	IdFile();
@@ -49,14 +49,13 @@ public:
 	void setAccess(int triangleID, const Access &access);
 	bool hasUnknownData() const;
 	qint16 unknown() const;
-	bool isModified() const;
 	static Vertex_sr fromVertex_s(const Vertex_s &vertex_s);
 	static Vertex_s toVertex_s(const Vertex_sr &vertex_sr);
 private:
 	QList<Triangle> triangles;
 	QList<Access> _access;
 	qint16 _unknown;
-	bool modified, _hasUnknownData;
+	bool _hasUnknownData;
 };
 
 #endif // IDFILE_H

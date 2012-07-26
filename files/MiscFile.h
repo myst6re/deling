@@ -18,15 +18,14 @@
 #ifndef MISCFILE_H
 #define MISCFILE_H
 
-#include <QtCore>
+#include "files/File.h"
 
-class MiscFile
+class MiscFile : public File
 {
 public:
 	MiscFile();
     bool open(const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
     bool save(QByteArray &pmp, QByteArray &pmd, QByteArray &pvp);
-	bool isModified() const;
 	const QByteArray &getPvpData() const;
 	void setPvpData(const QByteArray &pvp);
 	const QByteArray &getPmpData() const;
@@ -34,8 +33,7 @@ public:
 	const QByteArray &getPmdData() const;
 	void setPmdData(const QByteArray &pmd);
 private:
-    QByteArray pvp, pmp, pmd;
-	bool modified;
+	QByteArray pvp, pmp, pmd;
 };
 
 #endif // MISCFILE_H

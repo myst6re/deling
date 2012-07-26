@@ -18,10 +18,10 @@
 #ifndef TDWFILE_H
 #define TDWFILE_H
 
-#include <QtCore>
-#include "TimFile.h"
+#include "files/File.h"
+#include "files/TimFile.h"
 
-class TdwFile
+class TdwFile : public File
 {
 public:
 	enum Color {
@@ -34,7 +34,6 @@ public:
 	void close();
 	bool save(QByteArray &tdw);
 	bool isNull() const;
-	bool isModified() const;
 	QImage image(Color color=White);
 	static QImage image(const QByteArray &data, Color color=White);
 	// tableId + charId
@@ -59,7 +58,6 @@ private:
 	static QSize letterSize();
 	QRect letterRect(int charId) const;
 	TimFile _tim;
-	bool modified;
 	QList<int> _charCount;
 	QList<quint8 *> _charWidth;
 };

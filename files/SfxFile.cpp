@@ -15,34 +15,53 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef FIELDPS_H
-#define FIELDPS_H
+#include "files/SfxFile.h"
 
-#include "Field.h"
-
-class FieldPS : public Field
+SfxFile::SfxFile()
+	: File()
 {
-public:
-	enum MimSections {
-		Pvp, Mim, Tdw, Pmp
-	};
-	enum DatSections {
-		Inf, Ca, Id, Map, Msk, Rat, Mrt, AKAO, Msd, Pmd, Jsm, Last
-	};
+}
 
-	FieldPS(const QByteArray &data, const QByteArray &mim, quint32 isoFieldID);
-	virtual ~FieldPS();
+bool SfxFile::open(const QByteArray &sfx)
+{
+	int sfx_data_size = sfx.size();
 
-	bool isPc() const;
-	bool hasMapMimFiles() const;
-//	void setIsoFieldID(quint32 isoFieldID);
-	quint32 isoFieldID() const;
-	bool open(const QByteArray &dat_data, const QByteArray &mim);
-	bool open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
-	bool save(QByteArray &dat_data);
+	if(sfx_data_size % 4 != 0) {
+		qWarning() << "invalid sfx size" << sfx_data_size;
+		return false;
+	}
 
-private:
-	quint32 _isoFieldID;
-};
+	const quint32 *sfx_data = (const quint32 *)sfx.constData();
 
-#endif // FIELDPS_H
+	int count = sfx_data_size/4;
+
+	for(int i=0 ; i<count ; ++i) {
+		_values.append(sfx_data[i]);
+	}
+
+	modified = false;
+
+	return true;
+}
+
+bool SfxFile::save(QByteArray &sfx)
+{
+	foreach(const quint32 &v, _values) {
+		sfx.append((char *)&v, 4);
+	}
+
+	modified = false;
+
+	return true;
+}
+
+quint32 SfxFile::value(int id) const
+{
+	return _values.at(id);
+}
+
+void SfxFile::setValue(int id, quint32 v)
+{
+	_values[id] = v;
+	modified = true;
+}

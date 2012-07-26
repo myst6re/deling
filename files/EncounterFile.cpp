@@ -18,7 +18,7 @@
 #include "files/EncounterFile.h"
 
 EncounterFile::EncounterFile()
-	: modified(false)
+	: File()
 {
 }
 
@@ -42,11 +42,6 @@ bool EncounterFile::save(QByteArray &rat, QByteArray &mrt)
 	modified = false;
 
 	return true;
-}
-
-bool EncounterFile::isModified() const
-{
-	return modified;
 }
 
 quint16 EncounterFile::formation(int index) const

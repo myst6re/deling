@@ -18,13 +18,8 @@
 #include "files/CaFile.h"
 
 CaFile::CaFile()
-	: modified(false)
+	: File()
 {
-}
-
-bool CaFile::isModified() const
-{
-	return modified;
 }
 
 bool CaFile::open(const QByteArray &ca)

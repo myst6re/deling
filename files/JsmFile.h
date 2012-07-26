@@ -18,7 +18,7 @@
 #ifndef JSMFILE_H
 #define JSMFILE_H
 
-#include <QtCore>
+#include "files/File.h"
 #include <QtGui/QTextCursor>
 #include "Data.h"
 #include "JsmScripts.h"
@@ -45,7 +45,7 @@ typedef struct {
 	quint16 section2;
 } JsmHeader;
 
-class JsmFile
+class JsmFile : public File
 {
 public:
     JsmFile();
@@ -56,7 +56,7 @@ public:
 	bool open(QString);
 	bool open(const QByteArray &jsm, const QByteArray &sym_data=QByteArray());
 	bool save(const QString &);
-	QByteArray save(QByteArray &sym);
+	bool save(QByteArray &jsm, QByteArray &sym);
 	static QString lastError;
 
 	bool compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
@@ -75,7 +75,6 @@ public:
 	void searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const;
 
 	bool hasSym() const;
-	bool isModified() const;
 	int mapID() const;
 
 	int nbWindows(quint8 textID) const;
@@ -103,7 +102,6 @@ private:
 
 	JsmScripts scripts;
 	bool _hasSym;
-	bool modified;
 	bool needUpdate;
 	int section1_padding;
 	int _mapID;

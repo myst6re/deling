@@ -18,11 +18,11 @@
 #ifndef TEXTUREFILE_H
 #define TEXTUREFILE_H
 
-#include <QtCore>
+#include "files/File.h"
 #include <QImage>
 #include "FF8Image.h"
 
-class TextureFile
+class TextureFile : public File
 {
 public:
 	TextureFile();

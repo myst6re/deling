@@ -20,6 +20,8 @@ public slots:
 private:
 	void byte2degree(quint8 v);
 	quint8 degree2byte() const;
+	QPointF centerCircle() const;
+	double radiusCircle() const;
 	bool isInCircle(const QPointF &pos);
 	void moveCursor(const QPointF &pos);
 	int _value;

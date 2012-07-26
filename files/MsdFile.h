@@ -18,11 +18,11 @@
 #ifndef MSDFILE_H
 #define MSDFILE_H
 
-#include <QtCore>
+#include "files/File.h"
 #include "FF8Text.h"
 #include "Data.h"
 
-class MsdFile
+class MsdFile : public File
 {
 public:
 	MsdFile();
@@ -39,13 +39,11 @@ public:
 	int nbText() const;
 	int searchText(const QString &text, int &textID, int from=0, Qt::CaseSensitivity cs=Qt::CaseInsensitive, bool regExp=false) const;
 	int searchTextReverse(const QString &text, int &textID, int from=0, Qt::CaseSensitivity cs=Qt::CaseInsensitive, bool regExp=false) const;
-	bool isModified() const;
 	bool isJp() const;
 private:
 //	QString path;
 	QList<QByteArray> texts;
 	QList<bool> needEndOfString;
-	bool modified;
 };
 
 #endif // MSDFILE_H

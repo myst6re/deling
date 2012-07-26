@@ -15,34 +15,21 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef FIELDPS_H
-#define FIELDPS_H
+#ifndef SFXFILE_H
+#define SFXFILE_H
 
-#include "Field.h"
+#include "files/File.h"
 
-class FieldPS : public Field
+class SfxFile : public File
 {
 public:
-	enum MimSections {
-		Pvp, Mim, Tdw, Pmp
-	};
-	enum DatSections {
-		Inf, Ca, Id, Map, Msk, Rat, Mrt, AKAO, Msd, Pmd, Jsm, Last
-	};
-
-	FieldPS(const QByteArray &data, const QByteArray &mim, quint32 isoFieldID);
-	virtual ~FieldPS();
-
-	bool isPc() const;
-	bool hasMapMimFiles() const;
-//	void setIsoFieldID(quint32 isoFieldID);
-	quint32 isoFieldID() const;
-	bool open(const QByteArray &dat_data, const QByteArray &mim);
-	bool open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
-	bool save(QByteArray &dat_data);
-
+	SfxFile();
+	bool open(const QByteArray &sfx);
+	bool save(QByteArray &sfx);
+	quint32 value(int id) const;
+	void setValue(int id, quint32 v);
 private:
-	quint32 _isoFieldID;
+	QList<quint32> _values;
 };
 
-#endif // FIELDPS_H
+#endif // SFXFILE_H

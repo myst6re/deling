@@ -18,7 +18,7 @@
 #include "files/MiscFile.h"
 
 MiscFile::MiscFile()
-	: modified(false)
+	: File()
 {
 }
 
@@ -39,11 +39,6 @@ bool MiscFile::save(QByteArray &pmp, QByteArray &pmd, QByteArray &pvp)
 	modified = false;
 
 	return true;
-}
-
-bool MiscFile::isModified() const
-{
-	return modified;
 }
 
 const QByteArray &MiscFile::getPvpData() const

@@ -18,7 +18,7 @@
 #include "files/MskFile.h"
 
 MskFile::MskFile()
-	: modified(false)
+	: File()
 {
 }
 
@@ -74,11 +74,6 @@ bool MskFile::save(QByteArray &msk)
 	modified = false;
 
 	return true;
-}
-
-bool MskFile::isModified() const
-{
-	return modified;
 }
 
 int MskFile::cameraPositionCount() const

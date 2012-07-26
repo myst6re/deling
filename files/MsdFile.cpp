@@ -20,7 +20,7 @@
 QString MsdFile::lastError = QString();
 
 MsdFile::MsdFile() :
-	modified(false)
+	File()
 {
 }
 
@@ -193,11 +193,6 @@ int MsdFile::searchTextReverse(const QString &txt, int &textID, int from, Qt::Ca
 	}
 
 	return -1;
-}
-
-bool MsdFile::isModified() const
-{
-	return modified;
 }
 
 bool MsdFile::isJp() const

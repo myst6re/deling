@@ -76,7 +76,10 @@ HEADERS += MainWindow.h \
     VertexWidget.h \
     files/InfFile.h \
     files/IdFile.h \
-    OrientationWidget.h
+    OrientationWidget.h \
+    files/SfxFile.h \
+    files/AkaoListFile.h \
+    files/File.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -145,7 +148,10 @@ SOURCES += MainWindow.cpp \
     VertexWidget.cpp \
     files/InfFile.cpp \
     files/IdFile.cpp \
-    OrientationWidget.cpp
+    OrientationWidget.cpp \
+    files/SfxFile.cpp \
+    files/AkaoListFile.cpp \
+    files/File.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

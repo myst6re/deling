@@ -18,7 +18,7 @@
 #include "CharaFile.h"
 
 CharaFile::CharaFile() :
-	modified(false)
+	File()
 {
 }
 
@@ -26,17 +26,12 @@ CharaFile::~CharaFile()
 {
 }
 
-bool CharaFile::isModified() const
-{
-	return modified;
-}
-
 bool CharaFile::open(const QByteArray &one, bool ps)
 {
 	models.clear();
 
 	if(one.size() < 0x800) {
-		qWarning() << "file too short";
+		qWarning() << "chara file too short" << one.size();
 		return false;
 	}
 

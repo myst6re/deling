@@ -18,24 +18,22 @@
 #ifndef MSKFILE_H
 #define MSKFILE_H
 
-#include <QtCore>
-#include "CaFile.h"
+#include "files/File.h"
+#include "files/CaFile.h"
 
-class MskFile
+class MskFile : public File
 {
 public:
 	MskFile();
 	virtual ~MskFile();
 	bool open(const QByteArray &msk);
 	bool save(QByteArray &msk);
-	bool isModified() const;
 	int cameraPositionCount() const;
 	Vertex_s *cameraPosition(int frame) const;
 	void setCameraPosition(int frame, Vertex_s camPos[4]);
 	void insertCameraPosition(int frame, Vertex_s camPos[4]);
 	void removeCameraPosition(int frame);
 private:
-	bool modified;
 	QList<Vertex_s *> vertices;
 };
 

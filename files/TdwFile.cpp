@@ -18,7 +18,7 @@
 #include "files/TdwFile.h"
 
 TdwFile::TdwFile() :
-	modified(false)
+	File()
 {
 }
 
@@ -32,11 +32,6 @@ TdwFile::~TdwFile()
 bool TdwFile::isNull() const
 {
 	return !_tim.isValid();
-}
-
-bool TdwFile::isModified() const
-{
-	return modified;
 }
 
 bool TdwFile::open(const QByteArray &tdw)

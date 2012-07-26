@@ -1,7 +1,7 @@
 #include "MchFile.h"
 
 MchFile::MchFile() :
-	_model(0)
+	File(), _model(0)
 {
 }
 
@@ -10,7 +10,9 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 	_model = 0;
 
 	if(mch.size() < 0x100) {
-		qWarning() << "file too short" << mch.size();
+		if(mch.size() != 33) { // "This is dummy file. Kazuo Suzuki{0a}"
+			qWarning() << "mch file too short" << name << mch.size();
+		}
 		return false;
 	}
 

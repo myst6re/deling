@@ -18,8 +18,8 @@
 #ifndef INFFILE_H
 #define INFFILE_H
 
-#include <QtCore>
-#include "CaFile.h"
+#include "files/File.h"
+#include "files/CaFile.h"
 
 typedef struct {
 	qint16 top;
@@ -52,13 +52,12 @@ typedef struct {
 	Trigger triggers[12];
 } InfStruct;
 
-class InfFile
+class InfFile : public File
 {
 public:
     InfFile();
     bool open(const QByteArray &inf);
-    bool save(QByteArray &inf);
-	bool isModified() const;
+	bool save(QByteArray &inf);
     QString getMapName() const;
 	void setMapName(const QString &mapName);
 	quint8 controlDirection() const;
@@ -76,8 +75,7 @@ public:
 	const Range &screenRange(int id) const;
 	void setScreenRange(int id, const Range &range);
 private:
-    InfStruct infStruct;
-	bool modified;
+	InfStruct infStruct;
 };
 
 #endif // INFFILE_H

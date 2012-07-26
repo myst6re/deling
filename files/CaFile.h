@@ -18,7 +18,7 @@
 #ifndef CAFILE_H
 #define CAFILE_H
 
-#include <QtCore>
+#include "files/File.h"
 
 typedef struct {
 	qint16 x, y, z;
@@ -33,7 +33,7 @@ typedef struct {
 	quint16 camera_zoom2;// copy (padding)
 } CaStruct;
 
-class CaFile
+class CaFile : public File
 {
 public:
 	CaFile();
@@ -44,10 +44,8 @@ public:
 	void setCamera(int camID, const CaStruct &cam);
 	void insertCamera(int camID, const CaStruct &cam);
 	void removeCamera(int camID);
-	bool isModified() const;
 private:
 	QList<CaStruct> cameras;
-	bool modified;
 };
 
-#endif // WALKMESHFILE_H
+#endif // CAFILE_H

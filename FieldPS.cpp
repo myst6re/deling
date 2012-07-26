@@ -27,6 +27,11 @@ FieldPS::~FieldPS()
 {
 }
 
+bool FieldPS::isPc() const
+{
+	return false;
+}
+
 bool FieldPS::hasMapMimFiles() const
 {
 	return true;
@@ -100,12 +105,17 @@ bool FieldPS::open(const QByteArray &dat_data, const QByteArray &mim)
 				dat_data.mid(posSections[Rat], posSections[Rat+1]-posSections[Rat]),
 				dat_data.mid(posSections[Mrt], posSections[Mrt+1]-posSections[Mrt]));
 
-    /* INF */
-    openInfFile(dat_data.mid(posSections[Inf], posSections[Inf+1]-posSections[Inf]));
+	/* INF */
+	openInfFile(dat_data.mid(posSections[Inf], posSections[Inf+1]-posSections[Inf]));
 
-    /* PMP, PMD & PVP */
+	/* AKAO */
+	if(posSections[AKAO+1]-posSections[AKAO] > 0) {
+		openAkaoListFile(dat_data.mid(posSections[AKAO], posSections[AKAO+1]-posSections[AKAO]));
+	}
+
+	/* PMP, PMD & PVP */
 	openMiscFile(
-                mim.mid(posSectionsMim[Pmp], posSectionsMim[Pmp+1]-posSectionsMim[Pmp]),
+				mim.mid(posSectionsMim[Pmp], posSectionsMim[Pmp+1]-posSectionsMim[Pmp]),
 				dat_data.mid(posSections[Pmd], posSections[Pmd+1]-posSections[Pmd]),
 				mim.mid(posSectionsMim[Pvp], posSectionsMim[Pvp+1]-posSectionsMim[Pvp]));
 
@@ -137,7 +147,7 @@ bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArr
 
 	openBackgroundFile(dat.mid(posSectionMap - memoryPos, posSectionMsk-posSectionMap), mim.mid(0x0c, 438272));
 
-	openCharaFile(lzk, true);
+	openCharaFile(lzk);
 
 	return true;
 }
@@ -162,19 +172,21 @@ bool FieldPS::save(QByteArray &dat_data)
 		return false;
 	}
 
-    if(hasMsdFile() && msdFile->isModified()) {
+	if(hasMsdFile() && msdFile->isModified()) {
 		QByteArray msd = msdFile->save();
 		dat_data.replace(posSections[Msd], posSections[Msd+1] - posSections[Msd], msd);
 		diff = msd.size() - (posSections[Msd+1] - posSections[Msd]);
 		for(int i=Msd+1 ; i<12 ; ++i)	posSections[i] += diff;
 	}
-    if(hasJsmFile() && jsmFile->isModified()) {
-		QByteArray sym, jsm = jsmFile->save(sym);
-		dat_data.replace(posSections[Jsm], posSections[Jsm+1] - posSections[Jsm], jsm);
-		diff = jsm.size() - (posSections[Jsm+1] - posSections[Jsm]);
-		for(int i=Jsm+1 ; i<12 ; ++i)	posSections[i] += diff;
+	if(hasJsmFile() && jsmFile->isModified()) {
+		QByteArray sym, jsm;
+		if(jsmFile->save(jsm, sym)) {
+			dat_data.replace(posSections[Jsm], posSections[Jsm+1] - posSections[Jsm], jsm);
+			diff = jsm.size() - (posSections[Jsm+1] - posSections[Jsm]);
+			for(int i=Jsm+1 ; i<12 ; ++i)	posSections[i] += diff;
+		}
 	}
-    if(hasEncounterFile() && encounterFile->isModified()) {
+	if(hasEncounterFile() && encounterFile->isModified()) {
 		QByteArray rat, mrt;
 		if(encounterFile->save(rat, mrt)) {
 			dat_data.replace(posSections[Rat], posSections[Rat+1] - posSections[Rat], rat);
@@ -185,16 +197,16 @@ bool FieldPS::save(QByteArray &dat_data)
 			for(int i=Mrt+1 ; i<12 ; ++i)	posSections[i] += diff;
 		}
 	}
-    if(hasInfFile() && infFile->isModified()) {
-        QByteArray inf;
+	if(hasInfFile() && infFile->isModified()) {
+		QByteArray inf;
 		if(infFile->save(inf)) {
 			dat_data.replace(posSections[Inf], posSections[Inf+1] - posSections[Inf], inf);
 			diff = inf.size() - (posSections[Inf+1] - posSections[Inf]);
 			for(int i=Inf+1 ; i<12 ; ++i)	posSections[i] += diff;
 		}
-    }
-    if(hasMiscFile() && miscFile->isModified()) {
-        QByteArray pmp, pmd, pvp;
+	}
+	if(hasMiscFile() && miscFile->isModified()) {
+		QByteArray pmp, pmd, pvp;
 		if(miscFile->save(pmp, pmd, pvp)) {
 			// TODO: pmp
 			dat_data.replace(posSections[Pmd], posSections[Pmd+1] - posSections[Pmd], pmd);
@@ -219,7 +231,7 @@ bool FieldPS::save(QByteArray &dat_data)
 			for(int i=Ca+1 ; i<12 ; ++i)	posSections[i] += diff;
 		}
 	}
-    if(hasMskFile() && mskFile->isModified()) {
+	if(hasMskFile() && mskFile->isModified()) {
 		QByteArray msk;
 		if(mskFile->save(msk)) {
 			dat_data.replace(posSections[Msk], posSections[Msk+1] - posSections[Msk], msk);
@@ -227,12 +239,20 @@ bool FieldPS::save(QByteArray &dat_data)
 			for(int i=Msk+1 ; i<12 ; ++i)	posSections[i] += diff;
 		}
 	}
-    if(hasTdwFile() && tdwFile->isModified()) {
+	if(hasTdwFile() && tdwFile->isModified()) {
 		QByteArray tdw;
 		if(tdwFile->save(tdw)) {
 			dat_data.replace(posSections[Tdw], posSections[Tdw+1] - posSections[Tdw], tdw);
 			diff = tdw.size() - (posSections[Tdw+1] - posSections[Tdw]);
 			for(int i=Tdw+1 ; i<12 ; ++i)	posSections[i] += diff;
+		}
+	}
+	if(hasAkaoListFile() && akaoListFile->isModified()) {
+		QByteArray akao;
+		if(akaoListFile->save(akao)) {
+			dat_data.replace(posSections[AKAO], posSections[AKAO+1] - posSections[AKAO], akao);
+			diff = akao.size() - (posSections[AKAO+1] - posSections[AKAO]);
+			for(int i=AKAO+1 ; i<12 ; ++i)	posSections[i] += diff;
 		}
 	}
 

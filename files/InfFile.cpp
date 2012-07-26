@@ -18,7 +18,7 @@
 #include "files/InfFile.h"
 
 InfFile::InfFile()
-	: modified(false)
+	: File()
 {
 }
 
@@ -33,19 +33,6 @@ bool InfFile::open(const QByteArray &inf)
 
 	memcpy(&infStruct, constInf, sizeof(InfStruct));
 
-	if(infStruct.unknown[0] != '\0') {
-		qWarning() << "ALERT inf0" << infStruct.unknown[0];
-	}
-	if(infStruct.unknown[2] != '\0') {
-		qWarning() << "ALERT inf2" << infStruct.unknown[2];
-	}
-	if(infStruct.unknown[3] != '\0') {
-		qWarning() << "ALERT inf3" << infStruct.unknown[3];
-	}
-	if(infStruct.unknown[4] != '\0') {
-		qWarning() << "ALERT inf4" << infStruct.unknown[4];
-	}
-
 	return true;
 }
 
@@ -56,11 +43,6 @@ bool InfFile::save(QByteArray &inf)
 	modified = false;
 
 	return true;
-}
-
-bool InfFile::isModified() const
-{
-	return modified;
 }
 
 QString InfFile::getMapName() const

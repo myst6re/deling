@@ -3,13 +3,11 @@
 OrientationWidget::OrientationWidget(QWidget *parent) :
 	QWidget(parent)
 {
-//	setAutoFillBackground(true);
 }
 
 OrientationWidget::OrientationWidget(quint8 value, QWidget *parent) :
 	QWidget(parent)
 {
-//	setAutoFillBackground(true);
 	byte2degree(value);
 }
 
@@ -52,20 +50,25 @@ void OrientationWidget::paintEvent(QPaintEvent *e)
 	p.setPen(Qt::black);
 	p.setBrush(Qt::gray);
 
-	int size = qMin(width(), height());
-	QPoint pos((width() - size) / 2, (height() - size) / 2);
+	double radius = radiusCircle();
+	QPointF centerCircle = this->centerCircle();
 
-	p.drawEllipse(QRect(pos, QSize(size-1, size-1)));
+	p.drawEllipse(centerCircle, radius, radius);
 
-	p.translate(QPoint(width()/2, height()/2));
+	p.translate(centerCircle);
 
 	p.rotate(_value);
 
-	p.drawLines(QVector<QLine>()
-				<< QLine(QPoint(-size/2, 0), QPoint(size/2, 0))
-				<< QLine(QPoint(0, -size/2), QPoint(0, size/2)));
+	p.drawLines(QVector<QLineF>()
+				<< QLineF(QPointF(-radius, 0), QPointF(radius, 0))
+				<< QLineF(QPointF(0, -radius), QPointF(0, radius)));
 
-	p.drawText(QPoint(-size/2+4, -4), tr("Droite"));
+	if(_value >= 90 && _value < 270) {
+		p.rotate(180);
+		p.drawText(QRectF(0.0, 0.0, radius-4, radius-4), tr("Droite"), QTextOption(Qt::AlignRight));
+	} else {
+		p.drawText(QPointF(-radius+4, -4), tr("Droite"));
+	}
 }
 
 void OrientationWidget::mousePressEvent(QMouseEvent *e)
@@ -75,19 +78,28 @@ void OrientationWidget::mousePressEvent(QMouseEvent *e)
 	}
 }
 
+QPointF OrientationWidget::centerCircle() const
+{
+	return QPointF(width()/2.0, height()/2.0);
+}
+
+double OrientationWidget::radiusCircle() const
+{
+	return (qMin(width(), height()) - 1)/2.0;
+}
+
 bool OrientationWidget::isInCircle(const QPointF &pos)
 {
-	double radius = qMin(width(), height())/2.0;
-	QPointF centerCircle(width()/2.0, height()/2.0);
+	QPointF centerCircle = this->centerCircle();
 	qreal sizeX=pos.x() - centerCircle.x(), sizeY=pos.y() - centerCircle.y();
 	double distance = sqrt(sizeX*sizeX + sizeY*sizeY);
 
-	return distance <= radius;
+	return distance <= radiusCircle();
 }
 
 void OrientationWidget::moveCursor(const QPointF &pos)
 {
-	QPointF centerCircle(width()/2.0, height()/2.0);
+	QPointF centerCircle = this->centerCircle();
 	qreal sizeX=pos.x() - centerCircle.x(), sizeY=pos.y() - centerCircle.y();
 	double angle;
 

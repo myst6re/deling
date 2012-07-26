@@ -18,7 +18,7 @@
 #ifndef BACKGROUNDFILE_H
 #define BACKGROUNDFILE_H
 
-#include <QtCore>
+#include "files/File.h"
 #include <QPixmap>
 #include "FF8Image.h"
 
@@ -55,12 +55,11 @@ typedef struct{
 	quint8 state;
 } Tile2;
 
-class BackgroundFile
+class BackgroundFile : public File
 {
 public:
 	BackgroundFile();
 	bool open(const QByteArray &map, const QByteArray &mim, QMultiMap<quint8, quint8> *defaultParams=0);
-	bool isModified() const;
 
 	QImage background(bool hideBG=false) const;
 	QImage background(const QList<quint8> &activeParams, bool hideBG=false);
@@ -73,7 +72,7 @@ private:
 	QImage type2(bool hideBG=false) const;
 	static QRgb BGcolor(int value, quint8 blendType=4, QRgb color0=0);
 	static QByteArray map, mim;
-	bool modified, opened;
+	bool opened;
 };
 
 #endif // BACKGROUNDFILE_H

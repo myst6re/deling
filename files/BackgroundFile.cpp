@@ -21,7 +21,7 @@ QByteArray BackgroundFile::mim = QByteArray();
 QByteArray BackgroundFile::map = QByteArray();
 
 BackgroundFile::BackgroundFile() :
-	modified(false), opened(false)
+	File(), opened(false)
 {
 }
 
@@ -84,11 +84,6 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim, QMultiMa
 	opened = true;
 
 	return true;
-}
-
-bool BackgroundFile::isModified() const
-{
-	return modified;
 }
 
 QImage BackgroundFile::background(bool hideBG) const

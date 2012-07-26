@@ -30,6 +30,8 @@
 #include "files/TdwFile.h"
 #include "files/CharaFile.h"
 #include "files/MskFile.h"
+#include "files/SfxFile.h"
+#include "files/AkaoListFile.h"
 
 class Field
 {
@@ -40,6 +42,9 @@ public:
 	bool isOpen() const;
 	void setOpen(bool open);
 
+	virtual bool isPc() const=0;
+	bool isPs() const;
+
 	void openMsdFile(const QByteArray &msd);
 	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray());
 	void openIdFile(const QByteArray &id);
@@ -49,8 +54,10 @@ public:
     void openMiscFile(const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
 	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
 	void openTdwFile(const QByteArray &tdw);
-	void openCharaFile(const QByteArray &one, bool ps);
+	void openCharaFile(const QByteArray &one);
 	void openMskFile(const QByteArray &msk);
+	void openSfxFile(const QByteArray &sfx);
+	void openAkaoListFile(const QByteArray &akao);
 
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
@@ -63,6 +70,8 @@ public:
 	bool hasTdwFile() const;
 	bool hasCharaFile() const;
 	bool hasMskFile() const;
+	bool hasSfxFile() const;
+	bool hasAkaoListFile() const;
 
 	virtual bool hasMapMimFiles() const=0;
 	bool hasFiles() const;
@@ -78,6 +87,8 @@ public:
 	TdwFile *getTdwFile() const;
 	CharaFile *getCharaFile() const;
 	MskFile *getMskFile() const;
+	SfxFile *getSfxFile() const;
+	AkaoListFile *getAkaoListFile() const;
 
 	bool isModified() const;
 	const QString &name() const;
@@ -94,6 +105,8 @@ protected:
 	void deleteTdwFile();
 	void deleteCharaFile();
 	void deleteMskFile();
+	void deleteSfxFile();
+	void deleteAkaoListFile();
 
 	bool _isOpen;
 	QString _name;
@@ -108,6 +121,8 @@ protected:
 	TdwFile *tdwFile;
 	static CharaFile *charaFile;
 	MskFile *mskFile;
+	SfxFile *sfxFile;
+	AkaoListFile *akaoListFile;
 };
 
 #endif // FIELD_H

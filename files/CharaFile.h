@@ -18,22 +18,20 @@
 #ifndef CHARAFILE_H
 #define CHARAFILE_H
 
-#include <QtCore>
+#include "files/File.h"
 #include "CharaModel.h"
 
-class CharaFile
+class CharaFile : public File
 {
 public:
 	CharaFile();
 	virtual ~CharaFile();
 	bool open(const QByteArray &one, bool ps);
-	bool isModified() const;
 	const CharaModel &model(int id) const;
 	void setModel(int id, const CharaModel &model);
 	int modelCount() const;
 private:
 	QList<CharaModel> models;
-	bool modified;
 };
 
 #endif // CHARAFILE_H

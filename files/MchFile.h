@@ -1,11 +1,11 @@
 #ifndef MCHFILE_H
 #define MCHFILE_H
 
-#include <QtCore>
+#include "files/File.h"
 #include "files/TimFile.h"
 #include "CharaModel.h"
 
-class MchFile
+class MchFile : public File
 {
 public:
 	MchFile();

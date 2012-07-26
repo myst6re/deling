@@ -21,8 +21,8 @@ QStringList JsmFile::opcodeNameCalc;
 QStringList JsmFile::opcodeName;
 QString JsmFile::lastError = QString();
 
-JsmFile::JsmFile()
-	: _hasSym(false), modified(false), needUpdate(true), groupItem(0)
+JsmFile::JsmFile() :
+	File(), _hasSym(false), needUpdate(true), groupItem(0)
 {
 	if(opcodeNameCalc.isEmpty()) {
 		for(int i=0 ; i<15 ; ++i)
@@ -224,8 +224,9 @@ bool JsmFile::save(const QString &path)
 		lastError = jsm_file.errorString();
 		return false;
 	}
-	QByteArray sym;
-	jsm_file.write(save(sym));
+	QByteArray jsm, sym;
+	save(jsm, sym);
+	jsm_file.write(jsm);
 	jsm_file.close();
 
 	if(!sym.isEmpty()) {
@@ -241,9 +242,8 @@ bool JsmFile::save(const QString &path)
 	return true;
 }
 
-QByteArray JsmFile::save(QByteArray &sym)
+bool JsmFile::save(QByteArray &jsm, QByteArray &sym)
 {
-	QByteArray ret;
 	QByteArray section0(scripts.nbGroup()*2, '\x00'), section1;
 	quint16 data;
 	JsmHeader jsm_header;
@@ -298,21 +298,21 @@ QByteArray JsmFile::save(QByteArray &sym)
 	jsm_header.section1 = 8 + section0.size();
 	jsm_header.section2 = jsm_header.section1 + section1.size();
 
-	ret.append((char *)&jsm_header, 8);
-	ret.append(section0);
-	ret.append(section1);
-	ret.append(scripts.data().constData());// Section 2
+	jsm.append((char *)&jsm_header, 8);
+	jsm.append(section0);
+	jsm.append(section1);
+	jsm.append(scripts.data().constData());// Section 2
 
 //	QFile debug("debug.jsm");
 //	debug.open(QIODevice::WriteOnly);
-//	debug.write(ret);
+//	debug.write(jsm);
 //	debug.close();
 
 	sym = saveSym().toLatin1();
 
 	modified = false;
 
-	return ret;
+	return true;
 }
 
 QString JsmFile::saveSym()
@@ -1115,11 +1115,6 @@ void JsmFile::searchAllOpcodeTypes(QMap<int, int> &ret/*, QMap<int, QString> &st
 bool JsmFile::hasSym() const
 {
 	return _hasSym;
-}
-
-bool JsmFile::isModified() const
-{
-	return modified;
 }
 
 void JsmFile::setDecompiledScript(int groupID, int methodID, const QString &text)

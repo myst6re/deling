@@ -18,13 +18,8 @@
 #include "files/IdFile.h"
 
 IdFile::IdFile()
-	: _unknown(0), modified(false), _hasUnknownData(false)
+	: File(), _unknown(0), _hasUnknownData(false)
 {
-}
-
-bool IdFile::isModified() const
-{
-	return modified;
 }
 
 bool IdFile::open(const QByteArray &id)
