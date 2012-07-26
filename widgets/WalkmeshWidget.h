@@ -22,6 +22,7 @@
 #include "widgets/PageWidget.h"
 #include "WalkmeshGLWidget.h"
 #include "VertexWidget.h"
+#include "OrientationWidget.h"
 
 class WalkmeshWidget : public PageWidget
 {
@@ -42,28 +43,41 @@ private slots:
 	void editIdTriangle(const Vertex_s &values);
 	void editIdAccess(int value);
     void setCurrentGateway(int id);
+	void setCurrentDoor(int id);
 	void editExitPoint(const Vertex_s &values);
 	void editEntryPoint(const Vertex_s &values);
 	void editDoorPoint(const Vertex_s &values);
 	void editFieldId(int v);
 	void editDoorId(int v);
+	void setCurrentRange1(int id);
+	void setCurrentRange2(int id);
+	void editRange(int v);
+	void editUnknownGate(int val);
 	void editUnknownGate(const QString &u);
     void setCurrentMoviePosition(int id);
 	void setMovieCameraPageEnabled(bool enabled);
 	void addMovieCameraPosition();
 	void removeMovieCameraPosition();
+	void editNavigation(int v);
+	void editUnknown(const QString &u);
 private:
 	void build();
 	QWidget *buildCameraPage();
 	QWidget *buildWalkmeshPage();
 	QWidget *buildGatewaysPage();
+	QWidget *buildDoorsPage();
+	QWidget *buildCameraRangePage();
 	QWidget *buildMovieCameraPage();
+	QWidget *buildMiscPage();
 	void editCaVector(int id, const Vertex_s &values);
 	void editCaPos(int id, double value);
 	void editIdTriangle(int id, const Vertex_s &values);
 	void editIdAccess(int id, int value);
 	void editExitPoint(int id, const Vertex_s &values);
 	void editDoorPoint(int id, const Vertex_s &values);
+	void editRange1(int id, int v);
+	void editRange2(int id, int v);
+	void editUnknownGate(int id, int val);
 
 	WalkmeshGLWidget *walkmeshGL;
 	QTabWidget *tabWidget;
@@ -76,16 +90,27 @@ private:
 	QListWidget *idList;
 	VertexWidget *idVertices[3];
 	QSpinBox *idAccess[3];
-	//DoorPage
+	//GatePage
 	QListWidget *gateList;
-	QLineEdit *unknownGate;
-	QSpinBox *fieldId, *doorId;
-	VertexWidget *exitPoints[2], *entryPoint, *doorPosition[2];
+	QLineEdit *unknownGate2;
+	QSpinBox *unknownGate1[4], *fieldId;
+	VertexWidget *exitPoints[2], *entryPoint;
+	//DoorPage
+	QListWidget *doorList;
+	QSpinBox *doorId;
+	VertexWidget *doorPosition[2];
+	//CameraRangePage
+	QListWidget *rangeList1, *rangeList2;
+	QSpinBox *rangeEdit1[4], *rangeEdit2[4];
 	//MovieCamPage
 	QListWidget *frameList;
 	QToolBar *camToolbar;
 	QAction *camPlusAction, *camMinusAction;
     VertexWidget *camPoints[4];
+	//MiscPage
+	OrientationWidget *navigation;
+	QSpinBox *navigation2;
+	QLineEdit *unknown;
 protected:
 	void focusInEvent(QFocusEvent *);
 };

@@ -24,21 +24,34 @@ InfFile::InfFile()
 
 bool InfFile::open(const QByteArray &inf)
 {
-    if(sizeof(InfStruct) != inf.size()) {
-        qWarning() << "invalid inf size" << sizeof(InfStruct) << inf.size();
-        return false;
-    }
+	if(sizeof(InfStruct) != inf.size()) {
+		qWarning() << "invalid inf size" << sizeof(InfStruct) << inf.size();
+		return false;
+	}
 
 	const char *constInf = inf.constData();
 
-    memcpy(&infStruct, constInf, sizeof(InfStruct));
+	memcpy(&infStruct, constInf, sizeof(InfStruct));
+
+	if(infStruct.unknown[0] != '\0') {
+		qWarning() << "ALERT inf0" << infStruct.unknown[0];
+	}
+	if(infStruct.unknown[2] != '\0') {
+		qWarning() << "ALERT inf2" << infStruct.unknown[2];
+	}
+	if(infStruct.unknown[3] != '\0') {
+		qWarning() << "ALERT inf3" << infStruct.unknown[3];
+	}
+	if(infStruct.unknown[4] != '\0') {
+		qWarning() << "ALERT inf4" << infStruct.unknown[4];
+	}
 
 	return true;
 }
 
 bool InfFile::save(QByteArray &inf)
 {
-    inf.append((char *)&infStruct, sizeof(InfStruct));
+	inf.append((char *)&infStruct, sizeof(InfStruct));
 
 	modified = false;
 
@@ -52,14 +65,14 @@ bool InfFile::isModified() const
 
 QString InfFile::getMapName() const
 {
-    return QString(QByteArray(infStruct.name, 8));
+	return QString(QByteArray(infStruct.name, 8));
 }
 
 void InfFile::setMapName(const QString &mapName)
 {
-    char *name = mapName.toLatin1().leftJustified(8, '\0', true).data();
+	char *name = mapName.toLatin1().leftJustified(8, '\0', true).data();
 
-    memcpy(&infStruct.name, name, 8);
+	memcpy(&infStruct.name, name, 8);
 	infStruct.name[8] = '\0';
 
 	modified = true;
@@ -76,26 +89,26 @@ void InfFile::setControlDirection(quint8 controlDirection)
 	modified = true;
 }
 
-const quint8 *InfFile::unknown() const
+QByteArray InfFile::unknown() const
 {
-	return infStruct.unknown;
+	return QByteArray((char *)infStruct.unknown, 10);
 }
 
-void InfFile::setUnknown(const quint8 *unknown)
+void InfFile::setUnknown(const QByteArray &unknown)
 {
-	memcpy(infStruct.unknown, unknown, 10);
+	memcpy(infStruct.unknown, unknown.leftJustified(10, '\0', true).constData(), 10);
 	modified = true;
 }
 
 QList<Gateway> InfFile::getGateways() const
 {
-    QList<Gateway> gates;
+	QList<Gateway> gates;
 
-    for(int i=0 ; i<12 ; ++i) {
-        gates.append(infStruct.gateways[i]);
-    }
+	for(int i=0 ; i<12 ; ++i) {
+		gates.append(infStruct.gateways[i]);
+	}
 
-    return gates;
+	return gates;
 }
 
 const Gateway &InfFile::getGateway(int id) const
@@ -110,12 +123,12 @@ void InfFile::setGateway(int id, const Gateway &gateway)
 	modified = true;
 }
 
-QList<Trigger> InfFile::getTriggers() const
+QList<Trigger> InfFile::getTriggers(bool filter) const
 {
 	QList<Trigger> triggers;
 
 	for(int i=0 ; i<12 ; ++i) {
-		if(infStruct.triggers[i].doorID != 0xff) {
+		if(!filter || infStruct.triggers[i].doorID != 0xff) {
 			triggers.append(infStruct.triggers[i]);
 		}
 	}

@@ -47,7 +47,10 @@ void WalkmeshWidget::build()
 	tabWidget->addTab(buildCameraPage(), tr("Caméra"));
 	tabWidget->addTab(buildWalkmeshPage(), tr("Walkmesh"));
 	tabWidget->addTab(buildGatewaysPage(), tr("Sorties"));
+	tabWidget->addTab(buildDoorsPage(), tr("Portes"));
+	tabWidget->addTab(buildCameraRangePage(), tr("Limites caméra"));
 	tabWidget->addTab(buildMovieCameraPage(), tr("Caméra cinématique"));
+	tabWidget->addTab(buildMiscPage(), tr("Divers"));
 	tabWidget->setFixedHeight(250);
 
 	QGridLayout *layout = new QGridLayout(this);
@@ -192,25 +195,26 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	exitPoints[1] = new VertexWidget(ret);
 	entryPoint = new VertexWidget(ret);
 
-	doorPosition[0] = new VertexWidget(ret);
-	doorPosition[1] = new VertexWidget(ret);
-
 	fieldId = new QSpinBox(ret);
 	fieldId->setRange(0, 65535);
 
-	doorId = new QSpinBox(ret);
-	doorId->setRange(0, 255);
-
-	unknownGate = new QLineEdit(ret);
-	unknownGate->setMaxLength(12*2);
+	for(int i=0 ; i<4 ; ++i) {
+		unknownGate1[i] = new QSpinBox(ret);
+		unknownGate1[i]->setRange(0, 65535);
+	}
+	unknownGate2 = new QLineEdit(ret);
+	unknownGate2->setMaxLength(4*2);
 
 	QGridLayout *idsLayout = new QGridLayout;
 	idsLayout->addWidget(new QLabel(tr("Id écran :")), 0, 0);
-	idsLayout->addWidget(fieldId, 0, 1);
-	idsLayout->addWidget(new QLabel(tr("Id porte :")), 0, 2);
-	idsLayout->addWidget(doorId, 0, 3);
-	idsLayout->addWidget(new QLabel(tr("Inconnu :")), 1, 0);
-	idsLayout->addWidget(unknownGate, 1, 1, 1, 3);
+	idsLayout->addWidget(fieldId, 0, 1, 1, 4);
+	idsLayout->addWidget(new QLabel(tr("Inconnu 1 :")), 1, 0);
+	idsLayout->addWidget(unknownGate1[0], 1, 1);
+	idsLayout->addWidget(unknownGate1[1], 1, 2);
+	idsLayout->addWidget(unknownGate1[2], 1, 3);
+	idsLayout->addWidget(unknownGate1[3], 1, 4);
+	idsLayout->addWidget(new QLabel(tr("Inconnu 2 :")), 2, 0);
+	idsLayout->addWidget(unknownGate2, 2, 1, 1, 4);
 
 	QGridLayout *layout = new QGridLayout(ret);
 	layout->addWidget(gateList, 0, 0, 6, 1, Qt::AlignLeft);
@@ -219,21 +223,108 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	layout->addWidget(exitPoints[1], 1, 2, Qt::AlignTop);
 	layout->addWidget(new QLabel(tr("Point de destination :")), 2, 1, Qt::AlignTop);
 	layout->addWidget(entryPoint, 2, 2, Qt::AlignTop);
-	layout->addWidget(new QLabel(tr("Ligne déclench. porte :")), 3, 1, Qt::AlignTop);
-	layout->addWidget(doorPosition[0], 3, 2, Qt::AlignTop);
-	layout->addWidget(doorPosition[1], 4, 2, Qt::AlignTop);
-	layout->addLayout(idsLayout, 5, 1, 1, 2, Qt::AlignTop);
-	layout->setRowStretch(5, 1);
+	layout->addLayout(idsLayout, 3, 1, 1, 2, Qt::AlignTop);
+	layout->setRowStretch(3, 1);
 
 	connect(gateList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentGateway(int)));
 	connect(exitPoints[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editExitPoint(Vertex_s)));
 	connect(exitPoints[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editExitPoint(Vertex_s)));
 	connect(entryPoint, SIGNAL(valuesChanged(Vertex_s)), SLOT(editEntryPoint(Vertex_s)));
+	connect(fieldId, SIGNAL(valueChanged(int)), SLOT(editFieldId(int)));
+	for(int i=0 ; i<4 ; ++i) {
+		connect(unknownGate1[i], SIGNAL(valueChanged(int)), SLOT(editUnknownGate(int)));
+	}
+	connect(unknownGate2, SIGNAL(textEdited(QString)), SLOT(editUnknownGate(QString)));
+
+	return ret;
+}
+
+QWidget *WalkmeshWidget::buildDoorsPage()
+{
+	QWidget *ret = new QWidget(this);
+
+	doorList = new QListWidget(ret);
+	doorList->setFixedWidth(125);
+
+	doorPosition[0] = new VertexWidget(ret);
+	doorPosition[1] = new VertexWidget(ret);
+
+	doorId = new QSpinBox(ret);
+	doorId->setRange(0, 255);
+
+	QGridLayout *idsLayout = new QGridLayout;
+	idsLayout->addWidget(new QLabel(tr("Id porte :")), 0, 0);
+	idsLayout->addWidget(doorId, 0, 1);
+
+	QGridLayout *layout = new QGridLayout(ret);
+	layout->addWidget(doorList, 0, 0, 3, 1, Qt::AlignLeft);
+	layout->addWidget(new QLabel(tr("Ligne déclench. porte :")), 0, 1, Qt::AlignTop);
+	layout->addWidget(doorPosition[0], 0, 2, Qt::AlignTop);
+	layout->addWidget(doorPosition[1], 1, 2, Qt::AlignTop);
+	layout->addLayout(idsLayout, 2, 1, 1, 2, Qt::AlignTop);
+	layout->setRowStretch(2, 1);
+
+	connect(doorList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentDoor(int)));
 	connect(doorPosition[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editDoorPoint(Vertex_s)));
 	connect(doorPosition[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editDoorPoint(Vertex_s)));
-	connect(fieldId, SIGNAL(valueChanged(int)), SLOT(editFieldId(int)));
 	connect(doorId, SIGNAL(valueChanged(int)), SLOT(editDoorId(int)));
-	connect(unknownGate, SIGNAL(textEdited(QString)), SLOT(editUnknownGate(QString)));
+
+	return ret;
+}
+
+QWidget *WalkmeshWidget::buildCameraRangePage()
+{
+	QWidget *ret = new QWidget(this);
+
+	rangeList1 = new QListWidget(ret);
+	rangeList1->setFixedWidth(125);
+
+	for(int i=0 ; i<8 ; ++i) {
+		rangeList1->addItem(tr("Limite caméra %1").arg(i+1));
+	}
+
+	rangeList2 = new QListWidget(ret);
+	rangeList2->setFixedWidth(125);
+
+	for(int i=0 ; i<2 ; ++i) {
+		rangeList2->addItem(tr("Limite écran %1").arg(i+1));
+	}
+
+	for(int i=0 ; i<4 ; ++i) {
+		rangeEdit1[i] = new QSpinBox(ret);
+		rangeEdit1[i]->setRange(-32768, 32767);
+		rangeEdit2[i] = new QSpinBox(ret);
+		rangeEdit2[i]->setRange(-32768, 32767);
+	}
+
+	QGridLayout *layout = new QGridLayout(ret);
+	layout->addWidget(rangeList1, 0, 0, 2, 1, Qt::AlignLeft);
+	layout->addWidget(rangeList2, 2, 0, 2, 1, Qt::AlignLeft);
+	layout->addWidget(new QLabel(tr("Haut")), 0, 1, Qt::AlignTop);
+	layout->addWidget(rangeEdit1[0], 0, 2, Qt::AlignTop);
+	layout->addWidget(new QLabel(tr("Bas")), 0, 3, Qt::AlignTop);
+	layout->addWidget(rangeEdit1[1], 0, 4, Qt::AlignTop);
+	layout->addWidget(new QLabel(tr("Droite")), 1, 1, Qt::AlignTop);
+	layout->addWidget(rangeEdit1[2], 1, 2, Qt::AlignTop);
+	layout->addWidget(new QLabel(tr("Gauche")), 1, 3, Qt::AlignTop);
+	layout->addWidget(rangeEdit1[3], 1, 4, Qt::AlignTop);
+	layout->addWidget(new QLabel(tr("Haut")), 2, 1, Qt::AlignTop);
+	layout->addWidget(rangeEdit2[0], 2, 2, Qt::AlignTop);
+	layout->addWidget(new QLabel(tr("Bas")), 2, 3, Qt::AlignTop);
+	layout->addWidget(rangeEdit2[1], 2, 4, Qt::AlignTop);
+	layout->addWidget(new QLabel(tr("Droite")), 3, 1, Qt::AlignTop);
+	layout->addWidget(rangeEdit2[2], 3, 2, Qt::AlignTop);
+	layout->addWidget(new QLabel(tr("Gauche")), 3, 3, Qt::AlignTop);
+	layout->addWidget(rangeEdit2[3], 3, 4, Qt::AlignTop);
+	layout->setRowStretch(1, 1);
+	layout->setRowStretch(3, 1);
+
+	connect(rangeList1, SIGNAL(currentRowChanged(int)), SLOT(setCurrentRange1(int)));
+	connect(rangeList2, SIGNAL(currentRowChanged(int)), SLOT(setCurrentRange2(int)));
+	for(int i=0 ; i<4 ; ++i) {
+		connect(rangeEdit1[i], SIGNAL(valueChanged(int)), SLOT(editRange(int)));
+		connect(rangeEdit2[i], SIGNAL(valueChanged(int)), SLOT(editRange(int)));
+	}
 
 	return ret;
 }
@@ -272,6 +363,33 @@ QWidget *WalkmeshWidget::buildMovieCameraPage()
 	layout->setRowStretch(3, 1);
 
 	connect(frameList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentMoviePosition(int)));
+
+	return ret;
+}
+
+QWidget *WalkmeshWidget::buildMiscPage()
+{
+	QWidget *ret = new QWidget(this);
+
+	navigation = new OrientationWidget(ret);
+	navigation2 = new QSpinBox(ret);
+	navigation2->setRange(0, 255);
+	navigation2->setWrapping(true);
+
+	unknown = new QLineEdit(ret);
+	unknown->setMaxLength(10*2);
+
+	QGridLayout *layout = new QGridLayout(ret);
+	layout->addWidget(new QLabel(tr("Orientation des mouvements :")), 0, 0);
+	layout->addWidget(navigation, 0, 1);
+	layout->addWidget(navigation2, 0, 2);
+	layout->addWidget(new QLabel(tr("Inconnu :")), 1, 0);
+	layout->addWidget(unknown, 1, 1, 1, 2);
+	layout->setRowStretch(2, 1);
+
+	connect(navigation, SIGNAL(valueEdited(int)), navigation2, SLOT(setValue(int)));
+	connect(navigation2, SIGNAL(valueChanged(int)), SLOT(editNavigation(int)));
+	connect(unknown, SIGNAL(textEdited(QString)), SLOT(editUnknown(QString)));
 
 	return ret;
 }
@@ -327,6 +445,7 @@ void WalkmeshWidget::fill()
 			idList->blockSignals(false);
 		}
 		idList->setCurrentRow(0);
+		setCurrentId(0);
 	}
 	tabWidget->widget(1)->setEnabled(data()->hasIdFile());
 
@@ -340,8 +459,32 @@ void WalkmeshWidget::fill()
 			}
 		}
 		gateList->setCurrentRow(0);
+		setCurrentGateway(0);
+
+		doorList->clear();
+		foreach(const Trigger &trigger, data()->getInfFile()->getTriggers(false)) {
+			if(trigger.doorID != 0xFF) {
+				doorList->addItem(tr("Porte %1").arg(trigger.doorID));
+			} else {
+				doorList->addItem(tr("Inutilisé"));
+			}
+		}
+		doorList->setCurrentRow(0);
+		setCurrentDoor(0);
+
+		rangeList1->setCurrentRow(0);
+		setCurrentRange1(0);
+		rangeList2->setCurrentRow(0);
+		setCurrentRange2(0);
+
+		navigation->setValue(data()->getInfFile()->controlDirection());
+		navigation2->setValue(data()->getInfFile()->controlDirection());
+		unknown->setText(data()->getInfFile()->unknown().toHex());
 	}
 	tabWidget->widget(2)->setEnabled(data()->hasInfFile());
+	tabWidget->widget(3)->setEnabled(data()->hasInfFile());
+	tabWidget->widget(4)->setEnabled(data()->hasInfFile());
+	tabWidget->widget(6)->setEnabled(data()->hasInfFile());
 
 	if(data()->hasMskFile()) {
 		frameList->clear();
@@ -350,8 +493,9 @@ void WalkmeshWidget::fill()
 			frameList->addItem(QString("Position %1").arg(i+1));
 		}
 		frameList->setCurrentRow(0);
+		setCurrentMoviePosition(0);
 	}
-	tabWidget->widget(3)->setEnabled(data()->hasMskFile());
+	tabWidget->widget(5)->setEnabled(data()->hasMskFile());
 
 	PageWidget::fill();
 }
@@ -552,20 +696,34 @@ void WalkmeshWidget::setCurrentGateway(int id)
 	if(!data()->hasInfFile() || id < 0)    return;
 
 	InfFile *inf = data()->getInfFile();
-	QList<Gateway> gateways = inf->getGateways();
-	if(gateways.size() <= id)    return;
+	if(12 <= id)    return;
 
-	const Gateway &gateway = gateways.at(id);
-	const Trigger &trigger = inf->getTrigger(id);
+	const Gateway &gateway = inf->getGateway(id);
 
 	exitPoints[0]->setValues(gateway.exitLine[0]);
 	exitPoints[1]->setValues(gateway.exitLine[1]);
 	entryPoint->setValues(gateway.destinationPoint);
+	fieldId->setValue(gateway.fieldId);
+	unknownGate1[0]->setValue(gateway.unknown1[0]);
+	unknownGate1[1]->setValue(gateway.unknown1[1]);
+	unknownGate1[2]->setValue(gateway.unknown1[2]);
+	unknownGate1[3]->setValue(gateway.unknown1[3]);
+
+	unknownGate2->setText(QByteArray((char *)&gateway.unknown2, 4).toHex());
+}
+
+void WalkmeshWidget::setCurrentDoor(int id)
+{
+	if(!data()->hasInfFile() || id < 0)    return;
+
+	InfFile *inf = data()->getInfFile();
+	if(12 <= id)    return;
+
+	const Trigger &trigger = inf->getTrigger(id);
+
 	doorPosition[0]->setValues(trigger.trigger_line[0]);
 	doorPosition[1]->setValues(trigger.trigger_line[1]);
-	fieldId->setValue(gateway.fieldId);
 	doorId->setValue(trigger.doorID);
-	unknownGate->setText(QByteArray((char *)&gateway.unknown, 12).toHex());
 }
 
 void WalkmeshWidget::editExitPoint(const Vertex_s &values)
@@ -628,13 +786,36 @@ void WalkmeshWidget::editDoorPoint(int id, const Vertex_s &values)
 	}
 }
 
+void WalkmeshWidget::editUnknownGate(int val)
+{
+	QObject *s = sender();
+
+	if(s == unknownGate1[0])			editUnknownGate(0, val);
+	else if(s == unknownGate1[1])		editUnknownGate(1, val);
+	else if(s == unknownGate1[2])		editUnknownGate(2, val);
+	else if(s == unknownGate1[3])		editUnknownGate(3, val);
+}
+
+void WalkmeshWidget::editUnknownGate(int id, int val)
+{
+	if(data()->hasInfFile()) {
+		int gateId = gateList->currentRow();
+		Gateway old = data()->getInfFile()->getGateway(gateId);
+		if(old.unknown1[id] != val) {
+			old.unknown1[id] = val;
+			data()->getInfFile()->setGateway(gateId, old);
+			emit modified();
+		}
+	}
+}
+
 void WalkmeshWidget::editUnknownGate(const QString &u)
 {
 	if(data()->hasInfFile()) {
 		int gateId = gateList->currentRow();
-		const char *uData = QByteArray::fromHex(u.toLatin1()).leftJustified(12, '\0', true).constData();
+		const char *uData = QByteArray::fromHex(u.toLatin1()).leftJustified(4, '\0', true).constData();
 		Gateway old = data()->getInfFile()->getGateway(gateId);
-		memcpy(old.unknown, uData, 12);
+		memcpy(&old.unknown2, uData, 4);
 		data()->getInfFile()->setGateway(gateId, old);
 		emit modified();
 	}
@@ -668,6 +849,104 @@ void WalkmeshWidget::editDoorId(int v)
 			old.doorID = v;
 			data()->getInfFile()->setTrigger(gateId, old);
 			walkmeshGL->updateGL();
+			emit modified();
+		}
+	}
+}
+
+void WalkmeshWidget::setCurrentRange1(int id)
+{
+	if(!data()->hasInfFile() || id < 0)    return;
+
+	InfFile *inf = data()->getInfFile();
+	if(8 <= id)    return;
+
+	const Range &range = inf->cameraRange(id);
+
+	rangeEdit1[0]->setValue(range.top);
+	rangeEdit1[1]->setValue(range.bottom);
+	rangeEdit1[2]->setValue(range.right);
+	rangeEdit1[3]->setValue(range.left);
+}
+
+void WalkmeshWidget::setCurrentRange2(int id)
+{
+	if(!data()->hasInfFile() || id < 0)    return;
+
+	InfFile *inf = data()->getInfFile();
+	if(2 <= id)    return;
+
+	const Range &range = inf->screenRange(id);
+
+	rangeEdit2[0]->setValue(range.top);
+	rangeEdit2[1]->setValue(range.bottom);
+	rangeEdit2[2]->setValue(range.right);
+	rangeEdit2[3]->setValue(range.left);
+}
+
+void WalkmeshWidget::editRange(int v)
+{
+	QObject *s = sender();
+
+	if(s == rangeEdit1[0])			editRange1(0, v);
+	else if(s == rangeEdit1[1])		editRange1(1, v);
+	else if(s == rangeEdit1[2])		editRange1(2, v);
+	else if(s == rangeEdit1[3])		editRange1(3, v);
+	else if(s == rangeEdit2[0])		editRange2(0, v);
+	else if(s == rangeEdit2[1])		editRange2(1, v);
+	else if(s == rangeEdit2[2])		editRange2(2, v);
+	else if(s == rangeEdit2[3])		editRange2(3, v);
+}
+
+void WalkmeshWidget::editRange1(int id, int v)
+{
+	if(data()->hasInfFile()) {
+		const int currentRange = rangeList1->currentRow();
+		Range old = data()->getInfFile()->cameraRange(currentRange);
+		qint16 oldv=0;
+
+		switch(id) {
+		case 0:	oldv = old.top;		break;
+		case 1:	oldv = old.bottom;	break;
+		case 2:	oldv = old.right;	break;
+		case 3:	oldv = old.left;	break;
+		}
+
+		if(oldv != v) {
+			switch(id) {
+			case 0:	old.top = v;	break;
+			case 1:	old.bottom = v;	break;
+			case 2:	old.right = v;	break;
+			case 3:	old.left = v;	break;
+			}
+			data()->getInfFile()->setCameraRange(currentRange, old);
+			emit modified();
+		}
+	}
+}
+
+void WalkmeshWidget::editRange2(int id, int v)
+{
+	if(data()->hasInfFile()) {
+		const int currentRange = rangeList2->currentRow();
+		Range old = data()->getInfFile()->screenRange(currentRange);
+		qint16 oldv=0;
+
+		switch(id) {
+		case 0:	oldv = old.top;		break;
+		case 1:	oldv = old.bottom;	break;
+		case 2:	oldv = old.right;	break;
+		case 3:	oldv = old.left;	break;
+		}
+
+		if(oldv != v) {
+			switch(id) {
+			case 0:	old.top = v;	break;
+			case 1:	old.bottom = v;	break;
+			case 2:	old.right = v;	break;
+			case 3:	old.left = v;	break;
+			}
+			data()->getInfFile()->setScreenRange(currentRange, old);
 			emit modified();
 		}
 	}
@@ -740,6 +1019,26 @@ void WalkmeshWidget::removeMovieCameraPosition()
 	}
 
 	emit modified();
+}
+
+void WalkmeshWidget::editNavigation(int v)
+{
+	if(data()->hasInfFile()) {
+		int old = data()->getInfFile()->controlDirection();
+		if(old != v) {
+			navigation->setValue(v);
+			data()->getInfFile()->setControlDirection(v);
+			emit modified();
+		}
+	}
+}
+
+void WalkmeshWidget::editUnknown(const QString &u)
+{
+	if(data()->hasInfFile()) {
+		data()->getInfFile()->setUnknown(QByteArray::fromHex(u.toLatin1()));
+		emit modified();
+	}
 }
 
 void WalkmeshWidget::focusInEvent(QFocusEvent *)

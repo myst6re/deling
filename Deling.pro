@@ -75,7 +75,8 @@ HEADERS += MainWindow.h \
     files/MskFile.h \
     VertexWidget.h \
     files/InfFile.h \
-    files/IdFile.h
+    files/IdFile.h \
+    OrientationWidget.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -143,7 +144,8 @@ SOURCES += MainWindow.cpp \
     files/MskFile.cpp \
     VertexWidget.cpp \
     files/InfFile.cpp \
-    files/IdFile.cpp
+    files/IdFile.cpp \
+    OrientationWidget.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

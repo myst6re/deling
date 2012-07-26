@@ -22,17 +22,18 @@
 #include "CaFile.h"
 
 typedef struct {
-	quint16 top;
-	quint16 bottom;
-	quint16 left;
-	quint16 right;
+	qint16 top;
+	qint16 bottom;
+	qint16 right;
+	qint16 left;
 } Range;
 
 typedef struct {
     Vertex_s exitLine[2];
     Vertex_s destinationPoint;
     quint16 fieldId;
-	quint32 unknown[3];
+	quint16 unknown1[4];
+	quint32 unknown2;
 } Gateway;
 
 typedef struct {
@@ -62,12 +63,12 @@ public:
 	void setMapName(const QString &mapName);
 	quint8 controlDirection() const;
 	void setControlDirection(quint8 controlDirection);
-	const quint8 *unknown() const;
-	void setUnknown(const quint8 *unknown);
+	QByteArray unknown() const;
+	void setUnknown(const QByteArray &unknown);
     QList<Gateway> getGateways() const;
 	const Gateway &getGateway(int id) const;
 	void setGateway(int id, const Gateway &gateway);
-	QList<Trigger> getTriggers() const;
+	QList<Trigger> getTriggers(bool filter=true) const;
 	const Trigger &getTrigger(int id) const;
 	void setTrigger(int id, const Trigger &trigger);
 	const Range &cameraRange(int id) const;
