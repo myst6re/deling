@@ -79,7 +79,9 @@ HEADERS += MainWindow.h \
     OrientationWidget.h \
     files/SfxFile.h \
     files/AkaoListFile.h \
-    files/File.h
+    files/File.h \
+    widgets/SoundWidget.h \
+    HexLineEdit.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -151,7 +153,9 @@ SOURCES += MainWindow.cpp \
     OrientationWidget.cpp \
     files/SfxFile.cpp \
     files/AkaoListFile.cpp \
-    files/File.cpp
+    files/File.cpp \
+    widgets/SoundWidget.cpp \
+    HexLineEdit.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

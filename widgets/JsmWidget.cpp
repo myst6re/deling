@@ -30,7 +30,7 @@ void JsmWidget::build()
 	font.setPointSize(8);
 
 	list1 = new QTreeWidget(this);
-	list1->setHeaderLabels(QStringList() << tr("Id") << tr("Groupe"));
+	list1->setHeaderLabels(QStringList() << tr("Id") << tr("Groupe") << tr("Exec"));
 	list1->setFixedWidth(180);
 	list1->setAutoScroll(false);
 	list1->setIndentation(0);
@@ -281,7 +281,7 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 	for(int groupID=0 ; groupID<nbGroup ; ++groupID) {
 		const JsmGroup &grp = data()->getJsmFile()->getScripts().group(groupID);
 		QString name = grp.name();
-		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(groupID, 3) << QString());
+		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(groupID, 3) << QString() << QString("%1").arg(grp.execOrder(), 3));
 		item->setData(0, Qt::UserRole, groupID);
 		switch(grp.type()) {
 		case JsmGroup::Main:
@@ -383,6 +383,8 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 		items.append(item);
 	}
 
+	qDebug() << data()->getJsmFile()->printCount();
+
 	return items;
 }
 
@@ -454,6 +456,9 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 		}
 		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(methodID, 3) << name << QString("%1").arg(begin+methodID, 3));
 		item->setData(0, Qt::UserRole, methodID);
+		if(script.flag()) {
+			item->setForeground(0, Qt::darkGreen);
+		}
 		items.append(item);
 	}
 

@@ -26,8 +26,9 @@ public:
 	AkaoListFile();
 	bool open(const QByteArray &akao);
 	bool save(QByteArray &akao);
+	int akaoCount() const;
 	const QByteArray &akao(int id) const;
-	void setAkao(int id, const QByteArray &akao);
+	bool setAkao(int id, const QByteArray &akao);
 private:
 	QList<QByteArray> _akaos;
 };

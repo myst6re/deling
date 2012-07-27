@@ -39,7 +39,7 @@ JsmFile::~JsmFile()
 
 QString JsmFile::printCount()
 {
-	return QString("count0 = %1, count1 = %2, count2 = %3, count3 = %4").arg(scripts.countDoors()).arg(scripts.countLines()).arg(scripts.countBackgrounds()).arg(scripts.countOthers());
+	return QString("doors = %1, lines = %2, bgs = %3, other = %4").arg(scripts.countDoors()).arg(scripts.countLines()).arg(scripts.countBackgrounds()).arg(scripts.countOthers());
 }
 
 bool JsmFile::open(QString path)
@@ -481,13 +481,36 @@ void JsmFile::searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const
 	}
 }
 
+/*void JsmFile::searchLines(QMap<quint8, Vertex_s[2]> &lines) const
+{
+//	qDebug() << "JsmFile::searchDefaultBGStates";
+	int nbGroup = scripts.nbGroup(), nbOpcode;
+
+	for(int groupID=0 ; groupID < nbGroup ; ++groupID) {
+		const JsmGroup &jsmGroup = scripts.group(groupID);
+		int methodCount = (int)jsmGroup.scriptCount();
+
+		if(jsmGroup.type() == JsmGroup::Location && methodCount > 0) {
+			int pos = scripts.posScript(groupID, 0, &nbOpcode);
+
+			for(int opcodeID=0 ; opcodeID < nbOpcode ; ++opcodeID) {
+				switch(scripts.key(pos + opcodeID)) {
+				case JsmOpcode::SETLINE:
+					//TODO
+					break;
+			}
+		}
+	}
+}*/
+
 void JsmFile::searchGroupTypes()
 {
 //	qDebug() << "JsmFile::searchGroupTypes";
 	unsigned int key;
 	int param;
-	int nbGroup=scripts.nbGroup(), nbOpcode, methodCount, pos, character, model_id, bg_id;
-	bool main_type, location_type, door_type, bg_type;
+	int nbGroup=scripts.nbGroup(), nbOpcode, methodCount, pos, character,
+			model_id, line_id, door_id, bg_id;
+	bool main_type;
 	QMap<quint16, int> bgExecOrder;
 
 	_mapID = -1;
@@ -495,13 +518,13 @@ void JsmFile::searchGroupTypes()
 	for(int groupID=0 ; groupID < nbGroup ; ++groupID) {
 		const JsmGroup &jsmGroup = scripts.group(groupID);
 		methodCount = (int)jsmGroup.scriptCount();
-		main_type = location_type = door_type = bg_type = false;
+		main_type = false;
 		character = model_id = -1;
 
-		for(int methodID=0 ; methodID < methodCount && !location_type && !door_type ; ++methodID) {
+		for(int methodID=0 ; methodID < methodCount ; ++methodID) {
 			pos = scripts.posScript(groupID, methodID, &nbOpcode);
 
-			for(int opcodeID=0 ; opcodeID < nbOpcode && !location_type && !door_type ; ++opcodeID) {
+			for(int opcodeID=0 ; opcodeID < nbOpcode ; ++opcodeID) {
 				JsmOpcode op = scripts.opcode(pos + opcodeID);
 				key = op.key();
 				param = op.param();
@@ -536,18 +559,7 @@ void JsmFile::searchGroupTypes()
 						break;
 					}
 				} else {
-					switch(key) {
-					case JsmOpcode::SETLINE:
-						location_type = true;
-						break;
-					case JsmOpcode::DOORLINEON:
-					case JsmOpcode::DOORLINEOFF:
-						door_type = true;
-						break;
-					default:
-						bg_type = true;
-						break;
-					}
+					break;
 				}
 			}
 		}
@@ -559,25 +571,28 @@ void JsmFile::searchGroupTypes()
 			scripts.setGroupType(groupID, JsmGroup::Model);
 			scripts.setGroupModelId(groupID, model_id);
 		}
-		else if(location_type) {
-			scripts.setGroupType(groupID, JsmGroup::Location);
-		}
 		else if(main_type) {
 			scripts.setGroupType(groupID, JsmGroup::Main);
 		}
-		else if(door_type) {
-			scripts.setGroupType(groupID, JsmGroup::Door);
-		}
-		else if(bg_type) {
-			bgExecOrder.insert(jsmGroup.execOrder(), groupID);
-			scripts.setGroupType(groupID, JsmGroup::Background);
-		}
+
+		bgExecOrder.insert(jsmGroup.execOrder(), groupID);
 	}
 
 	QMap<quint16, int>::const_iterator it = bgExecOrder.constBegin();
-	bg_id = 0;
+	line_id = door_id = bg_id = 0;
 	while(it != bgExecOrder.constEnd()) {
-		scripts.setGroupBackgroundParamId(it.value(), bg_id++);
+		if(line_id < scripts.countLines()) {
+			scripts.setGroupType(it.value(), JsmGroup::Location);
+			++line_id;
+		} else if(door_id < scripts.countDoors()) {
+			scripts.setGroupType(it.value(), JsmGroup::Door);
+			++door_id;
+		} else if(bg_id < scripts.countBackgrounds()) {
+			scripts.setGroupType(it.value(), JsmGroup::Background);
+			scripts.setGroupBackgroundParamId(it.value(), bg_id);
+			++bg_id;
+		}
+
 		++it;
 	}
 }

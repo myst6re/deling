@@ -36,14 +36,20 @@ public slots:
 	void setYRotation(int);
 	void setZRotation(int);
 //	void setZoom(int);
-	void setCurrentFieldCamera(int);
+	void setCurrentFieldCamera(int camID);
+	void setSelectedTriangle(int triangle);
+	void setSelectedDoor(int door);
+	void setSelectedGate(int gate);
 private:
 	void computeFov();
-	void drawIdLine(const Vertex_sr &vertex1, const Vertex_sr &vertex2, qint16 access);
+	void drawIdLine(int triangleID, const Vertex_sr &vertex1, const Vertex_sr &vertex2, qint16 access);
 //	int distance;
 	int xRot, yRot, zRot;
 	float xTrans, yTrans, zTrans;
 	int camID;
+	int _selectedTriangle;
+	int _selectedDoor;
+	int _selectedGate;
 	double fovy;
 	Field *data;
 	int curFrame;

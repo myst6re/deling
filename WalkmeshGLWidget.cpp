@@ -19,7 +19,9 @@
 
 WalkmeshGLWidget::WalkmeshGLWidget(QWidget *parent)
 	: QGLWidget(parent), /*distance(-35),*/ xRot(0), yRot(0), zRot(0),
-	  xTrans(0), yTrans(0), zTrans(0), camID(0), fovy(70.0), data(0), curFrame(0)
+	  xTrans(0), yTrans(0), zTrans(0), camID(0),
+	  _selectedTriangle(-1), _selectedDoor(-1), _selectedGate(-1),
+	  fovy(70.0), data(0), curFrame(0)
 {
 	setMouseTracking(true);
 //	startTimer(100);
@@ -71,6 +73,7 @@ void WalkmeshGLWidget::initializeGL()
 	glDisable(GL_LIGHTING);
 	//glEnable(GL_BLEND);
 //	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDepthFunc(GL_LESS);
 }
 
 void WalkmeshGLWidget::resizeGL(int width, int height)
@@ -200,49 +203,98 @@ void WalkmeshGLWidget::paintGL()
 		int i=0;
 
 		foreach(const Triangle &triangle, data->getIdFile()->getTriangles()) {
-			const Access &access = data->getIdFile()->access(i++);
+			const Access &access = data->getIdFile()->access(i);
 
-			drawIdLine(triangle.vertices[0], triangle.vertices[1], access.a1);
-			drawIdLine(triangle.vertices[1], triangle.vertices[2], access.a2);
-			drawIdLine(triangle.vertices[2], triangle.vertices[0], access.a3);
+			drawIdLine(i, triangle.vertices[0], triangle.vertices[1], access.a1);
+			drawIdLine(i, triangle.vertices[1], triangle.vertices[2], access.a2);
+			drawIdLine(i, triangle.vertices[2], triangle.vertices[0], access.a3);
+
+			++i;
 		}
-
-		glEnd();
 
 		if(data->hasInfFile()) {
 			InfFile *inf = data->getInfFile();
 
-			glBegin(GL_LINES);
-
 			glColor3ub(0xFF, 0x00, 0x00);
 
-			foreach(const Gateway &door, inf->getGateways()) {
-				Vertex_s vertex;
-				vertex = door.exitLine[0];
-				glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
-				vertex = door.exitLine[1];
-				glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
+			foreach(const Gateway &gate, inf->getGateways()) {
+				if(gate.fieldId != 0x7FFF) {
+					Vertex_s vertex;
+					vertex = gate.exitLine[0];
+					glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
+					vertex = gate.exitLine[1];
+					glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
+				}
 			}
 
 			glColor3ub(0x00, 0xFF, 0x00);
 
 			foreach(const Trigger &trigger, inf->getTriggers()) {
-				Vertex_s vertex;
-				vertex = trigger.trigger_line[0];
-				glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
-				vertex = trigger.trigger_line[1];
-				glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
+				if(trigger.doorID != 0xFF) {
+					Vertex_s vertex;
+					vertex = trigger.trigger_line[0];
+					glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
+					vertex = trigger.trigger_line[1];
+					glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
+				}
+			}
+		}
+
+		glEnd();
+
+		glPointSize(7.0);
+
+		glBegin(GL_POINTS);
+
+
+		glColor3ub(0xFF, 0x90, 0x00);
+
+		if(_selectedTriangle >= 0 && _selectedTriangle < data->getIdFile()->triangleCount()) {
+			const Triangle &triangle = data->getIdFile()->triangle(_selectedTriangle);
+			const Vertex_sr &vertex1 = triangle.vertices[0];
+			glVertex3f(vertex1.x/4096.0f, vertex1.y/4096.0f, vertex1.z/4096.0f);
+			const Vertex_sr &vertex2 = triangle.vertices[1];
+			glVertex3f(vertex2.x/4096.0f, vertex2.y/4096.0f, vertex2.z/4096.0f);
+			const Vertex_sr &vertex3 = triangle.vertices[2];
+			glVertex3f(vertex3.x/4096.0f, vertex3.y/4096.0f, vertex3.z/4096.0f);
+		}
+
+		if(data->hasInfFile()) {
+			glColor3ub(0xFF, 0x00, 0x00);
+
+			if(_selectedGate >= 0 && _selectedGate < 12) {
+				const Gateway &gate = data->getInfFile()->getGateway(_selectedGate);
+				if(gate.fieldId != 0x7FFF) {
+					const Vertex_s &vertex1 = gate.exitLine[0];
+					glVertex3f(vertex1.x/4096.0f, vertex1.y/4096.0f, vertex1.z/4096.0f);
+					const Vertex_s &vertex2 = gate.exitLine[1];
+					glVertex3f(vertex2.x/4096.0f, vertex2.y/4096.0f, vertex2.z/4096.0f);
+				}
 			}
 
-			glEnd();
+			glColor3ub(0x00, 0xFF, 0x00);
+
+			if(_selectedDoor >= 0 && _selectedDoor < 12) {
+				const Trigger &trigger = data->getInfFile()->getTrigger(_selectedDoor);
+				if(trigger.doorID != 0xFF) {
+					const Vertex_s &vertex1 = trigger.trigger_line[0];
+					glVertex3f(vertex1.x/4096.0f, vertex1.y/4096.0f, vertex1.z/4096.0f);
+					const Vertex_s &vertex2 = trigger.trigger_line[1];
+					glVertex3f(vertex2.x/4096.0f, vertex2.y/4096.0f, vertex2.z/4096.0f);
+				}
+			}
 		}
+
+		glEnd();
 	}
 }
 
-void WalkmeshGLWidget::drawIdLine(const Vertex_sr &vertex1, const Vertex_sr &vertex2, qint16 access)
+void WalkmeshGLWidget::drawIdLine(int triangleID, const Vertex_sr &vertex1, const Vertex_sr &vertex2, qint16 access)
 {
-	if(access == -1) {
-		glColor3ub(0x00, 0x00, 0xFF);
+	if(triangleID == _selectedTriangle) {
+		glColor3ub(0xFF, 0x90, 0x00);
+	} else if(access == -1) {
+		glColor3ub(0x66, 0x99, 0xCC);
 	} else {
 		glColor3ub(0xFF, 0xFF, 0xFF);
 	}
@@ -311,6 +363,24 @@ void WalkmeshGLWidget::setCurrentFieldCamera(int camID)
 {
 	this->camID = camID;
 	updatePerspective();
+}
+
+void WalkmeshGLWidget::setSelectedTriangle(int triangle)
+{
+	_selectedTriangle = triangle;
+	updateGL();
+}
+
+void WalkmeshGLWidget::setSelectedDoor(int door)
+{
+	_selectedDoor = door;
+	updateGL();
+}
+
+void WalkmeshGLWidget::setSelectedGate(int gate)
+{
+	_selectedGate = gate;
+	updateGL();
 }
 
 void WalkmeshGLWidget::keyPressEvent(QKeyEvent *event)

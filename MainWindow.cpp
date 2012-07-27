@@ -96,6 +96,7 @@ MainWindow::MainWindow()
 	pageWidgets.append(new BackgroundWidget());
 	pageWidgets.append(new EncounterWidget());
 	pageWidgets.append(new TdwWidget());
+	pageWidgets.append(new SoundWidget());
 	pageWidgets.append(new MiscWidget());
 
 	tabBar = new QTabBar();

@@ -89,13 +89,23 @@ bool AkaoListFile::save(QByteArray &akao)
 	return true;
 }
 
+int AkaoListFile::akaoCount() const
+{
+	return _akaos.size();
+}
+
 const QByteArray &AkaoListFile::akao(int id) const
 {
 	return _akaos.at(id);
 }
 
-void AkaoListFile::setAkao(int id, const QByteArray &akao)
+bool AkaoListFile::setAkao(int id, const QByteArray &akao)
 {
-	_akaos[id] = akao;
-	modified = true;
+	if(akao.startsWith("AKAO")) {
+		_akaos[id] = akao;
+		modified = true;
+		return true;
+	} else {
+		return false;
+	}
 }

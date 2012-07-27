@@ -55,6 +55,11 @@ bool SfxFile::save(QByteArray &sfx)
 	return true;
 }
 
+int SfxFile::valueCount() const
+{
+	return _values.size();
+}
+
 quint32 SfxFile::value(int id) const
 {
 	return _values.at(id);

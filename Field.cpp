@@ -145,7 +145,7 @@ void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 //		getJsmFile()->searchDefaultBGStates(params);
 //	}
 
-	if(!backgroundFile->open(map, mim)) {
+	if(!backgroundFile->open(map, mim/*, &params*/)) {
 		qWarning() << "Field::openBackgroundFile error" << _name;
 		deleteBackgroundFile();
 	}

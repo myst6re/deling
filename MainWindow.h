@@ -36,6 +36,7 @@
 #include "widgets/BackgroundWidget.h"
 #include "widgets/EncounterWidget.h"
 #include "widgets/TdwWidget.h"
+#include "widgets/SoundWidget.h"
 #include "widgets/MiscWidget.h"
 #include "VarManager.h"
 #include "MiscSearch.h"

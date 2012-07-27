@@ -66,3 +66,15 @@ void VertexWidget::emitValuesChanged()
 		emit valuesChanged(values());
 	}
 }
+
+bool VertexWidget::isReadOnly() const
+{
+	return x->isReadOnly();
+}
+
+void VertexWidget::setReadOnly(bool ro)
+{
+	x->setReadOnly(ro);
+	y->setReadOnly(ro);
+	z->setReadOnly(ro);
+}

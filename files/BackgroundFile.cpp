@@ -66,8 +66,12 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim, QMultiMa
 				{
 					allparams.insert(tile2.parameter, tile2.state);
 					// enable parameter only when state = 0
-					if(!defaultParams && tile2.state==0)
-						params.insert(tile2.parameter, tile2.state);
+					if(tile2.state==0) {
+						if(!defaultParams)
+							params.insert(tile2.parameter, tile2.state);
+						else if(!defaultParams->contains(tile2.parameter))
+							defaultParams->insert(tile2.parameter, tile2.state);
+					}
 				}
 				layers.insert(tile2.layerID, true);
 				tilePos += 16;

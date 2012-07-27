@@ -10,6 +10,8 @@ public:
 	explicit OrientationWidget(QWidget *parent = 0);
 	explicit OrientationWidget(quint8 value, QWidget *parent = 0);
 	quint8 value() const;
+	bool isReadOnly() const;
+	void setReadOnly(bool ro);
 	virtual QSize minimumSizeHint() const;
 	virtual QSize sizeHint() const;
 signals:
@@ -25,6 +27,7 @@ private:
 	bool isInCircle(const QPointF &pos);
 	void moveCursor(const QPointF &pos);
 	int _value;
+	bool _readOnly;
 protected:
 	virtual void paintEvent(QPaintEvent *);
 	virtual void mousePressEvent(QMouseEvent *e);

@@ -26,6 +26,7 @@ public:
 	SfxFile();
 	bool open(const QByteArray &sfx);
 	bool save(QByteArray &sfx);
+	int valueCount() const;
 	quint32 value(int id) const;
 	void setValue(int id, quint32 v);
 private:

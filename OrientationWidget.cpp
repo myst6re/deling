@@ -1,12 +1,12 @@
 #include "OrientationWidget.h"
 
 OrientationWidget::OrientationWidget(QWidget *parent) :
-	QWidget(parent)
+	QWidget(parent), _readOnly(false)
 {
 }
 
 OrientationWidget::OrientationWidget(quint8 value, QWidget *parent) :
-	QWidget(parent)
+	QWidget(parent), _readOnly(false)
 {
 	byte2degree(value);
 }
@@ -31,6 +31,16 @@ void OrientationWidget::byte2degree(quint8 v)
 quint8 OrientationWidget::degree2byte() const
 {
 	return (360 - _value) * 256 / 360;
+}
+
+bool OrientationWidget::isReadOnly() const
+{
+	return _readOnly;
+}
+
+void OrientationWidget::setReadOnly(bool ro)
+{
+	_readOnly = ro;
 }
 
 QSize OrientationWidget::minimumSizeHint() const
@@ -73,6 +83,11 @@ void OrientationWidget::paintEvent(QPaintEvent *e)
 
 void OrientationWidget::mousePressEvent(QMouseEvent *e)
 {
+	if(_readOnly) {
+		e->ignore();
+		return;
+	}
+
 	if(isInCircle(e->posF())) {
 		moveCursor(e->posF());
 	}
@@ -132,6 +147,11 @@ void OrientationWidget::moveCursor(const QPointF &pos)
 
 void OrientationWidget::mouseMoveEvent(QMouseEvent *e)
 {
+	if(_readOnly) {
+		e->ignore();
+		return;
+	}
+
 	if(isInCircle(e->posF())) {
 		moveCursor(e->posF());
 	}

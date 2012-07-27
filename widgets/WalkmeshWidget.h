@@ -23,6 +23,7 @@
 #include "WalkmeshGLWidget.h"
 #include "VertexWidget.h"
 #include "OrientationWidget.h"
+#include "HexLineEdit.h"
 
 class WalkmeshWidget : public PageWidget
 {
@@ -30,6 +31,7 @@ class WalkmeshWidget : public PageWidget
 public:
 	WalkmeshWidget(QWidget *parent=0);
 	void clear();
+	void setReadOnly(bool ro);
 	void fill();
 	inline QString tabName() const { return tr("Walkmesh"); }
 	int currentCamera() const;
@@ -48,18 +50,19 @@ private slots:
 	void editEntryPoint(const Vertex_s &values);
 	void editDoorPoint(const Vertex_s &values);
 	void editFieldId(int v);
+	void editDoorUsed(bool enable);
 	void editDoorId(int v);
 	void setCurrentRange1(int id);
 	void setCurrentRange2(int id);
 	void editRange(int v);
 	void editUnknownGate(int val);
-	void editUnknownGate(const QString &u);
+	void editUnknownGate(const QByteArray &u);
     void setCurrentMoviePosition(int id);
 	void setMovieCameraPageEnabled(bool enabled);
 	void addMovieCameraPosition();
 	void removeMovieCameraPosition();
 	void editNavigation(int v);
-	void editUnknown(const QString &u);
+	void editUnknown(const QByteArray &u);
 private:
 	void build();
 	QWidget *buildCameraPage();
@@ -92,11 +95,12 @@ private:
 	QSpinBox *idAccess[3];
 	//GatePage
 	QListWidget *gateList;
-	QLineEdit *unknownGate2;
+	HexLineEdit *unknownGate2;
 	QSpinBox *unknownGate1[4], *fieldId;
 	VertexWidget *exitPoints[2], *entryPoint;
 	//DoorPage
 	QListWidget *doorList;
+	QCheckBox *doorUsed;
 	QSpinBox *doorId;
 	VertexWidget *doorPosition[2];
 	//CameraRangePage
@@ -110,7 +114,7 @@ private:
 	//MiscPage
 	OrientationWidget *navigation;
 	QSpinBox *navigation2;
-	QLineEdit *unknown;
+	HexLineEdit *unknown;
 protected:
 	void focusInEvent(QFocusEvent *);
 };

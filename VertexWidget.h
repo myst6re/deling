@@ -28,6 +28,8 @@ public:
 	explicit VertexWidget(QWidget *parent=0);
     Vertex_s values() const;
     void setValues(const Vertex_s &v);
+	bool isReadOnly() const;
+	void setReadOnly(bool ro);
 private slots:
 	void emitValuesChanged();
 signals:
