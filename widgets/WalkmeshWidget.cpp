@@ -18,7 +18,7 @@
 #include "widgets/WalkmeshWidget.h"
 
 WalkmeshWidget::WalkmeshWidget(QWidget *parent) :
-	PageWidget(parent), walkmeshGL(NULL)
+	PageWidget(parent)
 {
 }
 
@@ -404,8 +404,7 @@ void WalkmeshWidget::clear()
 {
 	if(!isFilled())		return;
 
-	if(walkmeshGL != NULL)
-		walkmeshGL->clear();
+	walkmeshGL->clear();
 
 	blockSignals(true);
 	camSelect->clear();
@@ -445,6 +444,7 @@ void WalkmeshWidget::setReadOnly(bool ro)
 		doorId->setReadOnly(ro);
 		doorPosition[0]->setReadOnly(ro);
 		doorPosition[1]->setReadOnly(ro);
+		doorUsed->setDisabled(ro);
 		// CamRangePage
 		for(int i=0 ; i<4 ; ++i) {
 			rangeEdit1[i]->setReadOnly(ro);
@@ -471,8 +471,10 @@ void WalkmeshWidget::fill()
 
 	walkmeshGL->fill(data());
 
+	int camCount = 0;
+
 	if(data()->hasCaFile()) {
-		int camCount = data()->getCaFile()->cameraCount();
+		camCount = data()->getCaFile()->cameraCount();
 
 		if(camSelect->count() != camCount) {
 			camSelect->blockSignals(true);
@@ -486,7 +488,7 @@ void WalkmeshWidget::fill()
 
 		setCurrentCamera(0);
 	}
-	tabWidget->widget(0)->setEnabled(data()->hasCaFile() && data()->getCaFile()->cameraCount() > 0);
+	tabWidget->widget(0)->setEnabled(data()->hasCaFile() && camCount > 0);
 
 	if(data()->hasIdFile()) {
 		int triangleCount = data()->getIdFile()->triangleCount();
@@ -553,6 +555,8 @@ void WalkmeshWidget::fill()
 	tabWidget->widget(5)->setEnabled(data()->hasMskFile());
 
 	PageWidget::fill();
+
+	qDebug() << "filled";
 }
 
 int WalkmeshWidget::currentCamera() const

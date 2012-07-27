@@ -96,6 +96,8 @@ void WalkmeshGLWidget::paintGL()
 
 	if(!data)	return;
 
+	qDebug() << "paintGL";
+
 	/*if(data->hasBackgroundFile()) {
 
 		glMatrixMode(GL_PROJECTION);
@@ -287,6 +289,8 @@ void WalkmeshGLWidget::paintGL()
 
 		glEnd();
 	}
+
+	qDebug() << "/paintGL";
 }
 
 void WalkmeshGLWidget::drawIdLine(int triangleID, const Vertex_sr &vertex1, const Vertex_sr &vertex2, qint16 access)

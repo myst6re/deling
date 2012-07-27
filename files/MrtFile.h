@@ -15,28 +15,22 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef TDWMANAGERDIALOG_H
-#define TDWMANAGERDIALOG_H
+#ifndef MRTFILE_H
+#define MRTFILE_H
 
-#include <QtGui>
-#include "widgets/TdwWidget2.h"
+#include "files/File.h"
 
-class TdwManagerDialog : public QDialog
+class MrtFile : public File
 {
-	Q_OBJECT
 public:
-	explicit TdwManagerDialog(QWidget *parent=0);
-private slots:
-	void setTdw(int id);
-	void addFont();
-	void removeFont();
+	MrtFile();
+	bool open(const QByteArray &mrt);
+	bool save(QByteArray &mrt);
+	quint16 formation(int index) const;
+	void setFormation(int index, quint16 formation);
+	QList<int> searchAllBattles() const;
 private:
-	void fillList1();
-	bool newNameDialog(QString &name, QString &nameId);
-	QToolBar *toolbar1;
-	QAction *plusAction, *minusAction;
-	QListWidget *list1;
-	TdwWidget2 *tdwWidget;
+	quint16 formations[4];
 };
 
-#endif // TDWMANAGERDIALOG_H
+#endif // MRTFILE_H

@@ -29,7 +29,7 @@ public:
 	bool open(const QString &path);
 	bool open(const QByteArray &msd);
 	bool save(const QString &path);
-	QByteArray save();
+	bool save(QByteArray &msd);
 	static QString lastError;
 	QByteArray data(int id) const;
 	FF8Text text(int) const;
@@ -41,7 +41,6 @@ public:
 	int searchTextReverse(const QString &text, int &textID, int from=0, Qt::CaseSensitivity cs=Qt::CaseInsensitive, bool regExp=false) const;
 	bool isJp() const;
 private:
-//	QString path;
 	QList<QByteArray> texts;
 	QList<bool> needEndOfString;
 };

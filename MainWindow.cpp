@@ -403,8 +403,10 @@ void MainWindow::fillPage()
 		bgPreview->fill(FF8Image::errorPixmap());
 
 //	qDebug() << "BG" << t.elapsed();
-
+	qDebug() << "field";
 	pageWidgets.at(tabBar->currentIndex())->fill();
+
+	qDebug() << "/field";
 }
 
 void MainWindow::fillBackground(const QImage &image)

@@ -15,28 +15,41 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef TDWMANAGERDIALOG_H
-#define TDWMANAGERDIALOG_H
+#include "files/RatFile.h"
 
-#include <QtGui>
-#include "widgets/TdwWidget2.h"
-
-class TdwManagerDialog : public QDialog
+RatFile::RatFile()
+	: File()
 {
-	Q_OBJECT
-public:
-	explicit TdwManagerDialog(QWidget *parent=0);
-private slots:
-	void setTdw(int id);
-	void addFont();
-	void removeFont();
-private:
-	void fillList1();
-	bool newNameDialog(QString &name, QString &nameId);
-	QToolBar *toolbar1;
-	QAction *plusAction, *minusAction;
-	QListWidget *list1;
-	TdwWidget2 *tdwWidget;
-};
+}
 
-#endif // TDWMANAGERDIALOG_H
+bool RatFile::open(const QByteArray &rat)
+{
+	if(rat.size() != 4) {
+		qWarning() << "RatFile::open Bad sizes" << rat.size();
+		return false;
+	}
+
+	memcpy(rates, rat.constData(), 4);
+	modified = false;
+
+	return true;
+}
+
+bool RatFile::save(QByteArray &rat)
+{
+	rat = QByteArray((char *)rates, 4);
+	modified = false;
+
+	return true;
+}
+
+quint8 RatFile::rate(int index) const
+{
+	return rates[index];
+}
+
+void RatFile::setRate(int index, quint8 rate)
+{
+	rates[index] = rate;
+	modified = true;
+}

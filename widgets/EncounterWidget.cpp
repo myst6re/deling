@@ -82,15 +82,23 @@ void EncounterWidget::fill()
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(!hasData() || !data()->hasEncounterFile())	return;
+	if(!hasData())	return;
+
+	bool hasMrt = data()->hasMrtFile(), hasRat = data()->hasRatFile();
+
+	if(!hasMrt && !hasRat)		return;
 
 	for(int i=0 ; i<4 ; ++i) {
-		formationEdit[i]->blockSignals(true);
-		formationEdit[i]->setValue(data()->getEncounterFile()->formation(i));
-		formationEdit[i]->blockSignals(false);
-		rateEdit[i]->blockSignals(true);
-		rateEdit[i]->setValue(data()->getEncounterFile()->rate(i));
-		rateEdit[i]->blockSignals(false);
+		if(hasMrt) {
+			formationEdit[i]->blockSignals(true);
+			formationEdit[i]->setValue(data()->getMrtFile()->formation(i));
+			formationEdit[i]->blockSignals(false);
+		}
+		if(hasRat) {
+			rateEdit[i]->blockSignals(true);
+			rateEdit[i]->setValue(data()->getRatFile()->rate(i));
+			rateEdit[i]->blockSignals(false);
+		}
 	}
 
 	PageWidget::fill();
@@ -114,7 +122,7 @@ void EncounterWidget::editFormation()
 		return;
 	}
 
-	data()->getEncounterFile()->setFormation(index, value);
+	data()->getMrtFile()->setFormation(index, value);
 
 	emit modified();
 }
@@ -137,7 +145,7 @@ void EncounterWidget::editRate()
 		return;
 	}
 
-	data()->getEncounterFile()->setRate(index, value);
+	data()->getRatFile()->setRate(index, value);
 
 	emit modified();
 }

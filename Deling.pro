@@ -50,10 +50,10 @@ HEADERS += MainWindow.h \
 	files/MsdFile.h \
 	files/JsmFile.h \
 	files/CaFile.h \
-	files/MiscFile.h \
 	files/BackgroundFile.h \
 	files/TdwFile.h \
-    files/EncounterFile.h \
+	files/RatFile.h \
+	files/MrtFile.h \
     widgets/EncounterWidget.h \
     FieldThread.h \
     files/CharaFile.h \
@@ -81,7 +81,10 @@ HEADERS += MainWindow.h \
     files/AkaoListFile.h \
     files/File.h \
     widgets/SoundWidget.h \
-    HexLineEdit.h
+	HexLineEdit.h \
+    files/PvpFile.h \
+    files/PmpFile.h \
+    files/PmdFile.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -124,10 +127,10 @@ SOURCES += MainWindow.cpp \
 	files/MsdFile.cpp \
 	files/JsmFile.cpp \
 	files/CaFile.cpp \
-	files/MiscFile.cpp \
 	files/BackgroundFile.cpp \
 	files/TdwFile.cpp \
-    files/EncounterFile.cpp \
+	files/RatFile.cpp \
+	files/MrtFile.cpp \
     widgets/EncounterWidget.cpp \
     FieldThread.cpp \
     files/CharaFile.cpp \
@@ -155,7 +158,10 @@ SOURCES += MainWindow.cpp \
     files/AkaoListFile.cpp \
     files/File.cpp \
     widgets/SoundWidget.cpp \
-    HexLineEdit.cpp
+	HexLineEdit.cpp \
+    files/PvpFile.cpp \
+    files/PmpFile.cpp \
+    files/PmdFile.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

@@ -24,6 +24,8 @@ AkaoListFile::AkaoListFile()
 
 bool AkaoListFile::open(const QByteArray &akao)
 {
+	if(akao.isEmpty())	return true;
+
 	const char *akao_data = akao.constData();
 	int akao_data_size = akao.size();
 

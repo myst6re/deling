@@ -15,61 +15,21 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "files/MiscFile.h"
+#ifndef PVPFILE_H
+#define PVPFILE_H
 
-MiscFile::MiscFile()
-	: File()
+#include "files/File.h"
+
+class PvpFile : public File
 {
-}
+public:
+	PvpFile();
+	bool open(const QByteArray &pvp);
+	bool save(QByteArray &pvp);
+	quint32 value() const;
+	void setValue(quint32 value);
+private:
+	quint32 _value;
+};
 
-bool MiscFile::open(const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp)
-{
-	this->pmp = pmp;
-	this->pmd = pmd;
-	this->pvp = pvp;
-
-	return true;
-}
-
-bool MiscFile::save(QByteArray &pmp, QByteArray &pmd, QByteArray &pvp)
-{
-	pmp = this->pmp;
-	pmd = this->pmd;
-	pvp = this->pvp;
-	modified = false;
-
-	return true;
-}
-
-const QByteArray &MiscFile::getPvpData() const
-{
-	return pvp;
-}
-
-void MiscFile::setPvpData(const QByteArray &pvp)
-{
-	this->pvp = pvp;
-	modified = true;
-}
-
-const QByteArray &MiscFile::getPmpData() const
-{
-	return pmp;
-}
-
-void MiscFile::setPmpData(const QByteArray &pmp)
-{
-	this->pmp = pmp;
-	modified = true;
-}
-
-const QByteArray &MiscFile::getPmdData() const
-{
-	return pmd;
-}
-
-void MiscFile::setPmdData(const QByteArray &pmd)
-{
-	this->pmd = pmd;
-	modified = true;
-}
+#endif // PVPFILE_H

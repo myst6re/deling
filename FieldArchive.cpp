@@ -385,8 +385,8 @@ QMap<Field *, QList<int> > FieldArchive::searchAllBattles() const
 	QMap<Field *, QList<int> > battles;
 
 	foreach(Field *field, fields) {
-		if(field->hasEncounterFile()) {
-			battles.insert(field, field->getEncounterFile()->searchAllBattles());
+		if(field->hasMrtFile()) {
+			battles.insert(field, field->getMrtFile()->searchAllBattles());
 		}
 	}
 

@@ -15,25 +15,35 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef MISCFILE_H
-#define MISCFILE_H
+#include "files/PmdFile.h"
 
-#include "files/File.h"
-
-class MiscFile : public File
+PmdFile::PmdFile()
+	: File()
 {
-public:
-	MiscFile();
-    bool open(const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
-    bool save(QByteArray &pmp, QByteArray &pmd, QByteArray &pvp);
-	const QByteArray &getPvpData() const;
-	void setPvpData(const QByteArray &pvp);
-	const QByteArray &getPmpData() const;
-	void setPmpData(const QByteArray &pmp);
-	const QByteArray &getPmdData() const;
-	void setPmdData(const QByteArray &pmd);
-private:
-	QByteArray pvp, pmp, pmd;
-};
+}
 
-#endif // MISCFILE_H
+bool PmdFile::open(const QByteArray &pmd)
+{
+	this->pmd = pmd;
+
+	return true;
+}
+
+bool PmdFile::save(QByteArray &pmd)
+{
+	pmd = this->pmd;
+	modified = false;
+
+	return true;
+}
+
+const QByteArray &PmdFile::getPmdData() const
+{
+	return pmd;
+}
+
+void PmdFile::setPmdData(const QByteArray &pmd)
+{
+	this->pmd = pmd;
+	modified = true;
+}

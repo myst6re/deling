@@ -15,58 +15,45 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "files/EncounterFile.h"
+#include "files/MrtFile.h"
 
-EncounterFile::EncounterFile()
+MrtFile::MrtFile()
 	: File()
 {
 }
 
-bool EncounterFile::open(const QByteArray &rat, const QByteArray &mrt)
+bool MrtFile::open(const QByteArray &mrt)
 {
-	if(rat.size() != 4 || mrt.size() != 8) {
-		qWarning() << "EncounterFile::open Bad sizes" << rat.size() << mrt.size();
+	if(mrt.size() != 8) {
+		qWarning() << "MrtFile::open Bad sizes" << mrt.size();
 		return false;
 	}
 
-	memcpy(rates, rat.constData(), 4);
 	memcpy(formations, mrt.constData(), 2*4);
 
 	return true;
 }
 
-bool EncounterFile::save(QByteArray &rat, QByteArray &mrt)
+bool MrtFile::save(QByteArray &mrt)
 {
-	rat = QByteArray((char *)rates, 4);
 	mrt = QByteArray((char *)formations, 2*4);
 	modified = false;
 
 	return true;
 }
 
-quint16 EncounterFile::formation(int index) const
+quint16 MrtFile::formation(int index) const
 {
 	return formations[index];
 }
 
-quint8 EncounterFile::rate(int index) const
-{
-	return rates[index];
-}
-
-void EncounterFile::setFormation(int index, quint16 formation)
+void MrtFile::setFormation(int index, quint16 formation)
 {
 	formations[index] = formation;
 	modified = true;
 }
 
-void EncounterFile::setRate(int index, quint8 rate)
-{
-	rates[index] = rate;
-	modified = true;
-}
-
-QList<int> EncounterFile::searchAllBattles() const
+QList<int> MrtFile::searchAllBattles() const
 {
 	QList<int> battles;
 

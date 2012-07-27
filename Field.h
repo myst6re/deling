@@ -24,8 +24,11 @@
 #include "files/IdFile.h"
 #include "files/CaFile.h"
 #include "files/InfFile.h"
-#include "files/MiscFile.h"
-#include "files/EncounterFile.h"
+#include "files/PmpFile.h"
+#include "files/PmdFile.h"
+#include "files/PvpFile.h"
+#include "files/RatFile.h"
+#include "files/MrtFile.h"
 #include "files/BackgroundFile.h"
 #include "files/TdwFile.h"
 #include "files/CharaFile.h"
@@ -33,39 +36,36 @@
 #include "files/SfxFile.h"
 #include "files/AkaoListFile.h"
 
+#define FILE_COUNT		15
+
 class Field
 {
 public:
+	enum FileType {
+		Msd, Jsm, Id, Ca, Rat, Mrt, Inf, Pmp, Pmd, Pvp, Background, Tdw, Msk, Sfx, AkaoList
+	};
+
 	Field(const QString &name);
 	virtual ~Field();
 
 	bool isOpen() const;
-	void setOpen(bool open);
 
 	virtual bool isPc() const=0;
 	bool isPs() const;
 
-	void openMsdFile(const QByteArray &msd);
-	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray());
-	void openIdFile(const QByteArray &id);
-	void openCaFile(const QByteArray &ca);
-	void openEncounterFile(const QByteArray &rat, const QByteArray &mrt);
-    void openInfFile(const QByteArray &inf);
-    void openMiscFile(const QByteArray &pmp, const QByteArray &pmd, const QByteArray &pvp);
-	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
-	void openTdwFile(const QByteArray &tdw);
-	void openCharaFile(const QByteArray &one);
-	void openMskFile(const QByteArray &msk);
-	void openSfxFile(const QByteArray &sfx);
-	void openAkaoListFile(const QByteArray &akao);
+	bool isModified() const;
+	const QString &name() const;
 
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
 	bool hasIdFile() const;
 	bool hasCaFile() const;
-	bool hasEncounterFile() const;
+	bool hasRatFile() const;
+	bool hasMrtFile() const;
     bool hasInfFile() const;
-	bool hasMiscFile() const;
+	bool hasPmpFile() const;
+	bool hasPmdFile() const;
+	bool hasPvpFile() const;
 	bool hasBackgroundFile() const;
 	bool hasTdwFile() const;
 	bool hasCharaFile() const;
@@ -80,49 +80,39 @@ public:
 	JsmFile *getJsmFile() const;
 	IdFile *getIdFile() const;
 	CaFile *getCaFile() const;
-	EncounterFile *getEncounterFile() const;
+	RatFile *getRatFile() const;
+	MrtFile *getMrtFile() const;
     InfFile *getInfFile() const;
-	MiscFile *getMiscFile() const;
+	PmpFile *getPmpFile() const;
+	PmdFile *getPmdFile() const;
+	PvpFile *getPvpFile() const;
 	BackgroundFile *getBackgroundFile() const;
 	TdwFile *getTdwFile() const;
 	CharaFile *getCharaFile() const;
 	MskFile *getMskFile() const;
 	SfxFile *getSfxFile() const;
 	AkaoListFile *getAkaoListFile() const;
-
-	bool isModified() const;
-	const QString &name() const;
-
 protected:
-	void deleteMsdFile();
-	void deleteJsmFile();
-	void deleteIdFile();
-	void deleteCaFile();
-	void deleteEncounterFile();
-    void deleteInfFile();
-	void deleteMiscFile();
-	void deleteBackgroundFile();
-	void deleteTdwFile();
+	void setOpen(bool open);
+	void setName(const QString &name);
+
+	bool hasFile(FileType fileType) const;
+	File *getFile(FileType fileType) const;
+
+	void openFile(FileType fileType, const QByteArray &data);
+	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray());
+	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
+	void openCharaFile(const QByteArray &one);
+private:
+	File *newFile(FileType fileType);
+	void deleteFile(FileType fileType);
 	void deleteCharaFile();
-	void deleteMskFile();
-	void deleteSfxFile();
-	void deleteAkaoListFile();
 
 	bool _isOpen;
 	QString _name;
-	MsdFile *msdFile;
-	JsmFile *jsmFile;
-	IdFile *idFile;
-	CaFile *caFile;
-	EncounterFile *encounterFile;
-    InfFile *infFile;
-	MiscFile *miscFile;
-	BackgroundFile *backgroundFile;
-	TdwFile *tdwFile;
 	static CharaFile *charaFile;
-	MskFile *mskFile;
-	SfxFile *sfxFile;
-	AkaoListFile *akaoListFile;
+
+	QList<File *> files;
 };
 
 #endif // FIELD_H

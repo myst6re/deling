@@ -15,28 +15,40 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef TDWMANAGERDIALOG_H
-#define TDWMANAGERDIALOG_H
+#include "files/PvpFile.h"
 
-#include <QtGui>
-#include "widgets/TdwWidget2.h"
-
-class TdwManagerDialog : public QDialog
+PvpFile::PvpFile()
+	: File(), _value(0)
 {
-	Q_OBJECT
-public:
-	explicit TdwManagerDialog(QWidget *parent=0);
-private slots:
-	void setTdw(int id);
-	void addFont();
-	void removeFont();
-private:
-	void fillList1();
-	bool newNameDialog(QString &name, QString &nameId);
-	QToolBar *toolbar1;
-	QAction *plusAction, *minusAction;
-	QListWidget *list1;
-	TdwWidget2 *tdwWidget;
-};
+}
 
-#endif // TDWMANAGERDIALOG_H
+bool PvpFile::open(const QByteArray &pvp)
+{
+	if(pvp.size() != 4) {
+		qWarning() << "error pvp size" << pvp.size();
+		return false;
+	}
+
+	memcpy(&_value, pvp.constData(), 4);// values = 9, 10, 11, 12
+
+	return true;
+}
+
+bool PvpFile::save(QByteArray &pvp)
+{
+	pvp.append((char *)&_value, 4);
+	modified = false;
+
+	return true;
+}
+
+quint32 PvpFile::value() const
+{
+	return _value;
+}
+
+void PvpFile::setValue(quint32 value)
+{
+	_value = value;
+	modified = true;
+}

@@ -35,7 +35,6 @@ private slots:
 	void editFormation();
 	void editRate();
 private:
-	EncounterFile *encounterFile;
 	QSpinBox *formationEdit[4], *rateEdit[4];
 };
 

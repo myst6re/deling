@@ -35,10 +35,11 @@ private slots:
 	void editName(const QString &);
 	void editPmp(const QString &);
 	void editPmd(const QString &);
-	void editPvp(const QString &);
+	void editPvp(double);
 private:
 
-	QLineEdit *nameEdit, *pmpEdit, *pmdEdit, *pvpEdit;
+	QLineEdit *nameEdit, *pmpEdit, *pmdEdit;
+	QDoubleSpinBox *pvpEdit;
 };
 
 #endif // MISCWIDGET_H

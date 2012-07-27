@@ -18,28 +18,20 @@
 #include "Field.h"
 
 Field::Field(const QString &name)
-	: _isOpen(false), _name(name),
-	  msdFile(0), jsmFile(0), idFile(0), caFile(0),
-	  encounterFile(0), infFile(0), miscFile(0), backgroundFile(0),
-	  tdwFile(0), mskFile(0), sfxFile(0), akaoListFile(0)
+	: _isOpen(false), _name(name)
 {
+	for(int i=0 ; i<FILE_COUNT ; ++i) {
+		files.append(0);
+	}
 }
 
 Field::~Field()
 {
-	deleteMsdFile();
-	deleteJsmFile();
-	deleteIdFile();
-	deleteCaFile();
-	deleteEncounterFile();
-    deleteInfFile();
-	deleteMiscFile();
-	deleteBackgroundFile();
-	deleteTdwFile();
+	for(int i=0 ; i<files.size() ; ++i) {
+		deleteFile((FileType)i);
+	}
+
 	deleteCharaFile();
-	deleteMskFile();
-	deleteSfxFile();
-	deleteAkaoListFile();
 }
 
 bool Field::isOpen() const
@@ -57,109 +49,46 @@ bool Field::isPs() const
 	return !isPc();
 }
 
-void Field::openMsdFile(const QByteArray &msd)
+void Field::openFile(FileType fileType, const QByteArray &data)
 {
-	deleteMsdFile();
-	msdFile = new MsdFile();
+	deleteFile(fileType);
+	File *f = newFile(fileType);
 
-	if(!msdFile->open(msd)) {
-		qWarning() << "Field::openMsdFile error" << _name;
-		deleteMsdFile();
+	if(!f->open(data)) {
+		qWarning() << "Field::openFile error" << _name;
+		deleteFile(fileType);
 	}
 }
 
 void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym)
 {
-	deleteJsmFile();
-	jsmFile = new JsmFile();
+	deleteFile(Jsm);
+	JsmFile *f = (JsmFile *)newFile(Jsm);
 
-	if(!jsmFile->open(jsm, sym)) {
+	if(!f->open(jsm, sym)) {
 		qWarning() << "Field::openJsmFile error" << _name;
-		deleteJsmFile();
-	}
-}
-
-void Field::openIdFile(const QByteArray &id)
-{
-	deleteIdFile();
-	idFile = new IdFile();
-
-	if(!idFile->open(id)) {
-		qWarning() << "Field::openIdFile error" << _name;
-		deleteIdFile();
-	}
-}
-
-void Field::openCaFile(const QByteArray &ca)
-{
-	deleteCaFile();
-	caFile = new CaFile();
-
-	if(!caFile->open(ca)) {
-		qWarning() << "Field::openCaFile error" << _name;
-		deleteCaFile();
-	}
-}
-
-void Field::openEncounterFile(const QByteArray &rat, const QByteArray &mrt)
-{
-	deleteEncounterFile();
-	encounterFile = new EncounterFile();
-
-	if(!encounterFile->open(rat, mrt)) {
-		qWarning() << "Field::openEncounterFile error" << _name;
-		deleteEncounterFile();
-	}
-}
-
-void Field::openInfFile(const QByteArray &inf)
-{
-    deleteInfFile();
-    infFile = new InfFile();
-
-    if(!infFile->open(inf)) {
-        qWarning() << "Field::openInfFile error" << _name;
-        deleteInfFile();
-    }
-}
-
-void Field::openMiscFile(const QByteArray &pmp,
-						 const QByteArray &pmd, const QByteArray &pvp)
-{
-	deleteMiscFile();
-	miscFile = new MiscFile();
-
-    if(!miscFile->open(pmp, pmd, pvp)) {
-		qWarning() << "Field::openMiscFile error" << _name;
-		deleteMiscFile();
+		deleteFile(Jsm);
 	}
 }
 
 void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 {
-	if(backgroundFile==0)
-		backgroundFile = new BackgroundFile();
+	BackgroundFile *f;
+
+	if(!hasBackgroundFile()) {
+		f = (BackgroundFile *)newFile(Background);
+	} else {
+		f = getBackgroundFile();
+	}
 
 //	QMultiMap<quint8, quint8> params;
 //	if(hasJsmFile()) {
 //		getJsmFile()->searchDefaultBGStates(params);
 //	}
 
-	if(!backgroundFile->open(map, mim/*, &params*/)) {
+	if(!f->open(map, mim/*, &params*/)) {
 		qWarning() << "Field::openBackgroundFile error" << _name;
-		deleteBackgroundFile();
-	}
-}
-
-void Field::openTdwFile(const QByteArray &tdw)
-{
-	if(tdwFile != 0)
-		return;
-	tdwFile = new TdwFile();
-
-	if(!tdwFile->open(tdw)) {
-		qWarning() << "Field::openTdwFile error" << _name;
-		deleteTdwFile();
+		deleteFile(Background);
 	}
 }
 
@@ -176,108 +105,50 @@ void Field::openCharaFile(const QByteArray &one)
 	}
 }
 
-void Field::openMskFile(const QByteArray &msk)
+File *Field::newFile(FileType fileType)
 {
-	deleteMskFile();
-	mskFile = new MskFile();
-
-	if(!mskFile->open(msk)) {
-		qWarning() << "Field::openMskFile error" << _name;
-		deleteMskFile();
+	switch(fileType) {
+	case Msd:
+		return files[fileType] = new MsdFile();
+	case Jsm:
+		return files[fileType] = new JsmFile();
+	case Id:
+		return files[fileType] = new IdFile();
+	case Ca:
+		return files[fileType] = new CaFile();
+	case Rat:
+		return files[fileType] = new RatFile();
+	case Mrt:
+		return files[fileType] = new MrtFile();
+	case Inf:
+		return files[fileType] = new InfFile();
+	case Pmp:
+		return files[fileType] = new PmpFile();
+	case Pmd:
+		return files[fileType] = new PmdFile();
+	case Pvp:
+		return files[fileType] = new PvpFile();
+	case Background:
+		return files[fileType] = new BackgroundFile();
+	case Tdw:
+		return files[fileType] = new TdwFile();
+	case Msk:
+		return files[fileType] = new MskFile();
+	case Sfx:
+		return files[fileType] = new SfxFile();
+	case AkaoList:
+		return files[fileType] = new AkaoListFile();
 	}
+	return 0;
 }
 
-void Field::openSfxFile(const QByteArray &sfx)
+void Field::deleteFile(FileType fileType)
 {
-	deleteSfxFile();
-	sfxFile = new SfxFile();
+	File *f = files.at(fileType);
 
-	if(!sfxFile->open(sfx)) {
-		qWarning() << "Field::openSfxFile error" << _name;
-		deleteSfxFile();
-	}
-}
-
-void Field::openAkaoListFile(const QByteArray &akao)
-{
-	deleteAkaoListFile();
-	akaoListFile = new AkaoListFile();
-
-	if(!akaoListFile->open(akao)) {
-		qWarning() << "Field::openAkaoListFile error" << _name;
-		deleteAkaoListFile();
-	}
-}
-
-void Field::deleteMsdFile()
-{
-	if(msdFile!=0) {
-		delete msdFile;
-		msdFile = 0;
-	}
-}
-
-void Field::deleteJsmFile()
-{
-	if(jsmFile!=0) {
-		delete jsmFile;
-		jsmFile = 0;
-	}
-}
-
-void Field::deleteIdFile()
-{
-	if(idFile!=0) {
-		delete idFile;
-		idFile = 0;
-	}
-}
-
-void Field::deleteCaFile()
-{
-	if(caFile!=0) {
-		delete caFile;
-		caFile = 0;
-	}
-}
-
-void Field::deleteEncounterFile()
-{
-	if(encounterFile!=0) {
-		delete encounterFile;
-		encounterFile = 0;
-	}
-}
-
-void Field::deleteInfFile()
-{
-	if(infFile!=0) {
-        delete infFile;
-		infFile = 0;
-    }
-}
-
-void Field::deleteMiscFile()
-{
-	if(miscFile!=0) {
-		delete miscFile;
-		miscFile = 0;
-	}
-}
-
-void Field::deleteBackgroundFile()
-{
-	if(backgroundFile!=0) {
-		delete backgroundFile;
-		backgroundFile = 0;
-	}
-}
-
-void Field::deleteTdwFile()
-{
-	if(tdwFile!=0) {
-		delete tdwFile;
-		tdwFile = 0;
+	if(f != 0) {
+		delete f;
+		files[fileType] = 0;
 	}
 }
 
@@ -289,73 +160,69 @@ void Field::deleteCharaFile()
 	}
 }
 
-void Field::deleteMskFile()
+bool Field::hasFile(FileType fileType) const
 {
-	if(mskFile!=0) {
-		delete mskFile;
-		mskFile = 0;
-	}
-}
-
-void Field::deleteSfxFile()
-{
-	if(sfxFile!=0) {
-		delete sfxFile;
-		sfxFile = 0;
-	}
-}
-
-void Field::deleteAkaoListFile()
-{
-	if(akaoListFile!=0) {
-		delete akaoListFile;
-		akaoListFile = 0;
-	}
+	return files.at(fileType) != 0;
 }
 
 bool Field::hasMsdFile() const
 {
-	return msdFile != 0;
+	return hasFile(Msd);
 }
 
 bool Field::hasJsmFile() const
 {
-	return jsmFile != 0;
+	return hasFile(Jsm);
 }
 
 bool Field::hasCaFile() const
 {
-	return caFile != 0;
+	return hasFile(Ca);
 }
 
 bool Field::hasIdFile() const
 {
-	return idFile != 0;
+	return hasFile(Id);
 }
 
-bool Field::hasEncounterFile() const
+bool Field::hasRatFile() const
 {
-	return encounterFile != 0;
+	return hasFile(Rat);
+}
+
+bool Field::hasMrtFile() const
+{
+	return hasFile(Mrt);
 }
 
 bool Field::hasInfFile() const
 {
-	return infFile != 0;
+	return hasFile(Inf);
 }
 
-bool Field::hasMiscFile() const
+bool Field::hasPmpFile() const
 {
-	return miscFile != 0;
+	return hasFile(Pmp);
+}
+
+bool Field::hasPmdFile() const
+{
+	return hasFile(Pmd);
+}
+
+bool Field::hasPvpFile() const
+{
+	return hasFile(Pvp);
 }
 
 bool Field::hasBackgroundFile() const
 {
-	return backgroundFile != 0;
+	return hasFile(Background);
 }
 
 bool Field::hasTdwFile() const
 {
-	return tdwFile != 0;
+	return hasFile(Tdw);
 }
 
 bool Field::hasCharaFile() const
@@ -365,71 +232,93 @@ bool Field::hasCharaFile() const
 
 bool Field::hasMskFile() const
 {
-	return mskFile != 0;
+	return hasFile(Msk);
 }
 
 bool Field::hasSfxFile() const
 {
-	return sfxFile != 0;
+	return hasFile(Sfx);
 }
 
 bool Field::hasAkaoListFile() const
 {
-	return akaoListFile != 0;
+	return hasFile(AkaoList);
 }
 
 bool Field::hasFiles() const
 {
-	return hasMsdFile() || hasJsmFile() || hasMapMimFiles()
-			|| hasCaFile() || hasIdFile() || hasEncounterFile()
-			|| hasInfFile() || hasMiscFile() || hasTdwFile()
-			|| hasCharaFile() || hasMskFile()
-			|| hasSfxFile() || hasAkaoListFile();
+	for(int i=0 ; i<files.size() ; ++i) {
+		if(hasFile((FileType)i)) {
+			return true;
+		}
+	}
+
+	return hasMapMimFiles() || hasCharaFile();
+}
+
+File *Field::getFile(FileType fileType) const
+{
+	return files.at(fileType);
 }
 
 MsdFile *Field::getMsdFile() const
 {
-	return msdFile;
+	return (MsdFile *)getFile(Msd);
 }
 
 JsmFile *Field::getJsmFile() const
 {
-	return jsmFile;
+	return (JsmFile *)getFile(Jsm);
 }
 
 IdFile *Field::getIdFile() const
 {
-	return idFile;
+	return (IdFile *)getFile(Id);
 }
 
 CaFile *Field::getCaFile() const
 {
-	return caFile;
+	return (CaFile *)getFile(Ca);
 }
 
-EncounterFile *Field::getEncounterFile() const
+RatFile *Field::getRatFile() const
 {
-	return encounterFile;
+	return (RatFile *)getFile(Rat);
+}
+
+MrtFile *Field::getMrtFile() const
+{
+	return (MrtFile *)getFile(Mrt);
 }
 
 InfFile *Field::getInfFile() const
 {
-    return infFile;
+	return (InfFile *)getFile(Inf);
 }
 
-MiscFile *Field::getMiscFile() const
+PmpFile *Field::getPmpFile() const
 {
-	return miscFile;
+	return (PmpFile *)getFile(Pmp);
+}
+
+PmdFile *Field::getPmdFile() const
+{
+	return (PmdFile *)getFile(Pmd);
+}
+
+PvpFile *Field::getPvpFile() const
+{
+	return (PvpFile *)getFile(Pvp);
 }
 
 BackgroundFile *Field::getBackgroundFile() const
 {
-	return backgroundFile;
+	return (BackgroundFile *)getFile(Background);
 }
 
 TdwFile *Field::getTdwFile() const
 {
-	return tdwFile;
+	return (TdwFile *)getFile(Tdw);
 }
 
 CharaFile *Field::getCharaFile() const
@@ -439,37 +328,36 @@ CharaFile *Field::getCharaFile() const
 
 MskFile *Field::getMskFile() const
 {
-	return mskFile;
+	return (MskFile *)getFile(Msk);
 }
 
 SfxFile *Field::getSfxFile() const
 {
-	return sfxFile;
+	return (SfxFile *)getFile(Sfx);
 }
 
 AkaoListFile *Field::getAkaoListFile() const
 {
-	return akaoListFile;
+	return (AkaoListFile *)getFile(AkaoList);
 }
 
 bool Field::isModified() const
 {
-	return (hasMsdFile() && msdFile->isModified())
-			|| (hasJsmFile() && jsmFile->isModified())
-			|| (hasEncounterFile() && encounterFile->isModified())
-			|| (hasInfFile() && infFile->isModified())
-			|| (hasMiscFile() && miscFile->isModified())
-			|| (hasIdFile() && idFile->isModified())
-			|| (hasCaFile() && caFile->isModified())
-			|| (hasBackgroundFile() && backgroundFile->isModified())
-			|| (hasTdwFile() && tdwFile->isModified())
-			|| (hasCharaFile() && charaFile->isModified())
-			|| (hasMskFile() && mskFile->isModified())
-			|| (hasSfxFile() && sfxFile->isModified())
-			|| (hasAkaoListFile() && akaoListFile->isModified());
+	foreach(File *f, files) {
+		if(f && f->isModified()) {
+			return true;
+		}
+	}
+
+	return hasCharaFile() && charaFile->isModified();
 }
 
 const QString &Field::name() const
 {
 	return _name;
+}
+
+void Field::setName(const QString &name)
+{
+	_name = name;
 }

@@ -39,6 +39,8 @@ bool MskFile::open(const QByteArray &msk)
 	}
 	vertices.clear();
 
+	if(msk.isEmpty())	return true;
+
 	if(msk.size() < 4) {
 		qWarning() << "msk size too short" << msk.size();
 		return false;

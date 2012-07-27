@@ -15,28 +15,21 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef TDWMANAGERDIALOG_H
-#define TDWMANAGERDIALOG_H
+#ifndef PMPFILE_H
+#define PMPFILE_H
 
-#include <QtGui>
-#include "widgets/TdwWidget2.h"
+#include "files/File.h"
 
-class TdwManagerDialog : public QDialog
+class PmpFile : public File
 {
-	Q_OBJECT
 public:
-	explicit TdwManagerDialog(QWidget *parent=0);
-private slots:
-	void setTdw(int id);
-	void addFont();
-	void removeFont();
+	PmpFile();
+	bool open(const QByteArray &pmp);
+	bool save(QByteArray &pmp);
+	const QByteArray &getPmpData() const;
+	void setPmpData(const QByteArray &pmp);
 private:
-	void fillList1();
-	bool newNameDialog(QString &name, QString &nameId);
-	QToolBar *toolbar1;
-	QAction *plusAction, *minusAction;
-	QListWidget *list1;
-	TdwWidget2 *tdwWidget;
+	QByteArray pmp;
 };
 
-#endif // TDWMANAGERDIALOG_H
+#endif // PMPFILE_H

@@ -15,25 +15,21 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef ENCOUNTERFILE_H
-#define ENCOUNTERFILE_H
+#ifndef RATFILE_H
+#define RATFILE_H
 
 #include "files/File.h"
 
-class EncounterFile : public File
+class RatFile : public File
 {
 public:
-	EncounterFile();
-	bool open(const QByteArray &rat, const QByteArray &mrt);
-	bool save(QByteArray &rat, QByteArray &mrt);
-	quint16 formation(int index) const;
+	RatFile();
+	bool open(const QByteArray &rat);
+	bool save(QByteArray &rat);
 	quint8 rate(int index) const;
-	void setFormation(int index, quint16 formation);
 	void setRate(int index, quint8 rate);
-	QList<int> searchAllBattles() const;
 private:
-	quint16 formations[4];
 	quint8 rates[4];
 };
 
-#endif // ENCOUNTERFILE_H
+#endif // RATFILE_H

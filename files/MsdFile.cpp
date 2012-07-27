@@ -77,20 +77,23 @@ bool MsdFile::save(const QString &path)
 		return false;
 	}
 
-	msd_file.write(save());
+	QByteArray msd;
+	if(save(msd)) {
+		msd_file.write(msd);
+	}
 	msd_file.close();
 
 	return true;
 }
 
-QByteArray MsdFile::save()
+bool MsdFile::save(QByteArray &msd)
 {
-	QByteArray msd_data, msd_header;
+	QByteArray msd_data;
 	int headerSize = nbText()*4, pos, i=0;
 
 	foreach(const QByteArray &text, texts) {
 		pos = headerSize + msd_data.size();
-		msd_header.append((char *)&pos, 4);
+		msd.append((char *)&pos, 4);
 		msd_data.append(text);
 		if(!text.isEmpty() || needEndOfString.at(i++)) {
 			msd_data.append('\x00');
@@ -99,7 +102,9 @@ QByteArray MsdFile::save()
 
 	modified = false;
 
-	return msd_header.append(msd_data);
+	msd.append(msd_data);
+
+	return true;
 }
 
 QByteArray MsdFile::data(int id) const

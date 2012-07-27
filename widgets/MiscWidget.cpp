@@ -34,12 +34,14 @@ void MiscWidget::build()
 	QLabel *pmdLbl = new QLabel(tr("PMD :"), this);
 	pmdEdit = new QLineEdit(this);
 	QLabel *pvpLbl = new QLabel(tr("PVP :"), this);
-	pvpEdit = new QLineEdit(this);
+	pvpEdit = new QDoubleSpinBox(this);
+	pvpEdit->setDecimals(0);
+	pvpEdit->setRange(0, (quint32)-1);
 
 	connect(nameEdit, SIGNAL(textEdited(QString)), SLOT(editName(QString)));
 	connect(pmpEdit, SIGNAL(textEdited(QString)), SLOT(editPmp(QString)));
 	connect(pmdEdit, SIGNAL(textEdited(QString)), SLOT(editPmd(QString)));
-	connect(pvpEdit, SIGNAL(textEdited(QString)), SLOT(editPvp(QString)));
+	connect(pvpEdit, SIGNAL(valueChanged(double)), SLOT(editPvp(double)));
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(nameLbl, 0, 0);
@@ -86,50 +88,68 @@ void MiscWidget::fill()
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-    if(!hasData() || (!data()->hasMiscFile() && !data()->hasInfFile()))	return;
+	if(!hasData() || (!data()->hasPmpFile() && !data()->hasPmdFile()
+					  && !data()->hasPvpFile() && !data()->hasInfFile()))	return;
 
     if(data()->hasInfFile()) {
         nameEdit->setText(data()->getInfFile()->getMapName());
     }
+	nameEdit->setEnabled(data()->hasInfFile());
 
-    if(data()->hasMiscFile()) {
-        pmpEdit->setText(data()->getMiscFile()->getPmpData().toHex());
-        pmdEdit->setText(data()->getMiscFile()->getPmdData().toHex());
-        pvpEdit->setText(data()->getMiscFile()->getPvpData().toHex());
+	if(data()->hasPmpFile()) {
+		pmpEdit->setText(data()->getPmpFile()->getPmpData().toHex());
     }
+	pmpEdit->setEnabled(data()->hasPmpFile());
+
+	if(data()->hasPmdFile()) {
+		pmdEdit->setText(data()->getPmdFile()->getPmdData().toHex());
+	}
+	pmdEdit->setEnabled(data()->hasPmdFile());
+
+	if(data()->hasPvpFile()) {
+		pvpEdit->setValue(data()->getPvpFile()->value());
+	}
+	pvpEdit->setEnabled(data()->hasPvpFile());
 
 	PageWidget::fill();
 }
 
 void MiscWidget::editName(const QString &name)
 {
-    data()->getInfFile()->setMapName(name);
-	emit modified();
+	if(data()->hasInfFile()) {
+		data()->getInfFile()->setMapName(name);
+		emit modified();
+	}
 }
 
 void MiscWidget::editPmp(const QString &pmp)
 {
-	data()->getMiscFile()->setPmpData(
-				QByteArray::fromHex(pmp.toLatin1())
-				.leftJustified(data()->getMiscFile()->getPmpData().size(), '\x00', true));
-	emit modified();
-	pmpEdit->setText(data()->getMiscFile()->getPmpData().toHex());
+	if(data()->hasPmpFile()) {
+		data()->getPmpFile()->setPmpData(
+					QByteArray::fromHex(pmp.toLatin1())
+					.leftJustified(data()->getPmpFile()->getPmpData().size(), '\x00', true));
+		emit modified();
+		pmpEdit->setText(data()->getPmpFile()->getPmpData().toHex());
+	}
 }
 
 void MiscWidget::editPmd(const QString &pmd)
 {
-	data()->getMiscFile()->setPmdData(
-				QByteArray::fromHex(pmd.toLatin1())
-				.leftJustified(data()->getMiscFile()->getPmdData().size(), '\x00', true));
-	emit modified();
-	pmdEdit->setText(data()->getMiscFile()->getPmdData().toHex());
+	if(data()->hasPmdFile()) {
+		data()->getPmdFile()->setPmdData(
+					QByteArray::fromHex(pmd.toLatin1())
+					.leftJustified(data()->getPmdFile()->getPmdData().size(), '\x00', true));
+		emit modified();
+		pmdEdit->setText(data()->getPmdFile()->getPmdData().toHex());
+	}
 }
 
-void MiscWidget::editPvp(const QString &pvp)
+void MiscWidget::editPvp(double value)
 {
-	data()->getMiscFile()->setPvpData(
-				QByteArray::fromHex(pvp.toLatin1())
-				.leftJustified(data()->getMiscFile()->getPvpData().size(), '\x00', true));
-	emit modified();
-	pvpEdit->setText(data()->getMiscFile()->getPvpData().toHex());
+	if(data()->hasPvpFile()) {
+		if(data()->getPvpFile()->value() != value) {
+			data()->getPvpFile()->setValue(value);
+			emit modified();
+		}
+	}
 }
