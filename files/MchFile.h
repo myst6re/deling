@@ -27,6 +27,9 @@ class MchFile : public File
 public:
 	MchFile();
 	bool open(const QByteArray &mch, const QString &name);
+	inline QString filterText() const {
+		return QObject::tr("Fichier modèle 3D écran (*.mch)");
+	}
 	bool hasModel() const;
 	CharaModel *model() const;
 	void setModel(CharaModel *model);

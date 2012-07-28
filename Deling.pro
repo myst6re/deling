@@ -7,8 +7,6 @@ DEPENDPATH += . \
     release
 INCLUDEPATH += .
 
-LIBS = -lGLU
-
 # Input
 HEADERS += MainWindow.h \
     parameters.h \
@@ -183,6 +181,8 @@ OTHER_FILES += Deling.rc \
 
 #only on linux/unix (for package creation and other deploys)
 unix:!macx:!symbian {
+	LIBS = -lGLU
+
 	system(lrelease Deling.pro)
 
 	target.path = /opt/deling

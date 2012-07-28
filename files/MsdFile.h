@@ -26,10 +26,11 @@ class MsdFile : public File
 {
 public:
 	MsdFile();
-	bool open(const QString &path);
 	bool open(const QByteArray &msd);
-	bool save(const QString &path);
 	bool save(QByteArray &msd);
+	inline QString filterText() const {
+		return QObject::tr("Fichier dialogues écran PC (*.msd)");
+	}
 	static QString lastError;
 	QByteArray data(int id) const;
 	FF8Text text(int) const;

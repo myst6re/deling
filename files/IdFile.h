@@ -39,6 +39,9 @@ public:
 	IdFile();
 	bool open(const QByteArray &id);
 	bool save(QByteArray &id);
+	inline QString filterText() const {
+		return QObject::tr("Fichier walkmesh écran PC (*.id)");
+	}
 	int triangleCount() const;
 	const QList<Triangle> &getTriangles() const;
 	const Triangle &triangle(int triangleID) const;

@@ -26,6 +26,9 @@ public:
 	RatFile();
 	bool open(const QByteArray &rat);
 	bool save(QByteArray &rat);
+	inline QString filterText() const {
+		return QObject::tr("Fichier inconnu combat écran PC (*.rat)");
+	}
 	quint8 rate(int index) const;
 	void setRate(int index, quint8 rate);
 private:

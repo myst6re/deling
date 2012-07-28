@@ -27,6 +27,9 @@ public:
 	CharaFile();
 	virtual ~CharaFile();
 	bool open(const QByteArray &one, bool ps);
+	inline QString filterText() const {
+		return QString();
+	}
 	const CharaModel &model(int id) const;
 	void setModel(int id, const CharaModel &model);
 	int modelCount() const;

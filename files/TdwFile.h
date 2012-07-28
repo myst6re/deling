@@ -33,6 +33,9 @@ public:
 	bool open(const QByteArray &tdw);
 	void close();
 	bool save(QByteArray &tdw);
+	inline QString filterText() const {
+		return QObject::tr("Fichier caractères additionnels écran PC (*.tdw)");
+	}
 	bool isNull() const;
 	QImage image(Color color=White);
 	static QImage image(const QByteArray &data, Color color=White);

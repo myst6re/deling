@@ -70,3 +70,15 @@ void SfxFile::setValue(int id, quint32 v)
 	_values[id] = v;
 	modified = true;
 }
+
+void SfxFile::insertValue(int id, quint32 v)
+{
+	_values.insert(id, v);
+	modified = true;
+}
+
+void SfxFile::removeValue(int id)
+{
+	_values.removeAt(id);
+	modified = true;
+}

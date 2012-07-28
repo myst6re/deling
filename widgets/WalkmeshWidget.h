@@ -39,10 +39,14 @@ public:
 public slots:
 	void setCurrentCamera(int camID);
 private slots:
+	void addCamera();
+	void removeCamera();
 	void editCaVector(const Vertex_s &values);
 	void editCaPos(double value);
 	void editCaZoom(int value);
 	void setCurrentId(int i);
+	void addTriangle();
+	void removeTriangle();
 	void editIdTriangle(const Vertex_s &values);
 	void editIdAccess(int value);
     void setCurrentGateway(int id);
@@ -86,11 +90,13 @@ private:
 	WalkmeshGLWidget *walkmeshGL;
 	QTabWidget *tabWidget;
 	//CamPage
-	QComboBox *camSelect;
+	QToolBar *caToolbar;
+	QListWidget *camList;
 	VertexWidget *caVectorXEdit, *caVectorYEdit, *caVectorZEdit;
 	QDoubleSpinBox *caSpaceXEdit, *caSpaceYEdit, *caSpaceZEdit;
 	QSpinBox *caZoomEdit;
 	//WalkmeshPage
+	QToolBar *idToolbar;
 	QListWidget *idList;
 	VertexWidget *idVertices[3];
 	QSpinBox *idAccess[3];

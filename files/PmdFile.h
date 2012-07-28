@@ -26,6 +26,9 @@ public:
 	PmdFile();
 	bool open(const QByteArray &pmd);
 	bool save(QByteArray &pmd);
+	inline QString filterText() const {
+		return QObject::tr("Fichier informations particules écran PC (*.pmd)");
+	}
 	const QByteArray &getPmdData() const;
 	void setPmdData(const QByteArray &pmd);
 private:

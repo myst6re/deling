@@ -28,6 +28,9 @@ public:
 	virtual ~MskFile();
 	bool open(const QByteArray &msk);
 	bool save(QByteArray &msk);
+	inline QString filterText() const {
+		return QObject::tr("Fichier caméra cinématique écran PC (*.msk)");
+	}
 	int cameraPositionCount() const;
 	Vertex_s *cameraPosition(int frame) const;
 	void setCameraPosition(int frame, Vertex_s camPos[4]);

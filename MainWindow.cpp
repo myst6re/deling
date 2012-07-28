@@ -18,7 +18,8 @@
 #include "MainWindow.h"
 
 MainWindow::MainWindow()
-	: fieldArchive(NULL), field(NULL), fieldThread(new FieldThread), fsDialog(0), _varManager(NULL), firstShow(true)
+	: fieldArchive(NULL), field(NULL), currentField(0),
+	  fieldThread(new FieldThread), fsDialog(0), _varManager(NULL), firstShow(true)
 {
 	QFont font;
 	font.setPointSize(8);
@@ -40,6 +41,8 @@ MainWindow::MainWindow()
 	QAction *actionOpen = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogOpenButton), tr("&Ouvrir..."), this, SLOT(openFile()), QKeySequence::Open);
 	actionSave = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton), tr("Enregi&strer"), this, SLOT(save()), QKeySequence::Save);
 	actionSaveAs = menu->addAction(tr("Enre&gistrer Sous..."), this, SLOT(saveAs()), QKeySequence::SaveAs);
+	actionExport = menu->addAction(tr("Exporter..."), this, SLOT(exportCurrent()));
+	actionImport = menu->addAction(tr("Importer..."), this, SLOT(importCurrent()));
 	actionOpti = menu->addAction(tr("Optimiser l'archive..."), this, SLOT(optimizeArchive()));
 	menu->addSeparator();
 	menu->addAction(tr("Plein écran"), this, SLOT(fullScreen()), Qt::Key_F11);
@@ -249,6 +252,9 @@ bool MainWindow::openArchive(const QString &path)
 		list1->resizeColumnToContents(1);
 		list1->resizeColumnToContents(2);
 
+		actionExport->setEnabled(true);
+		actionImport->setEnabled(false);
+
 		((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(fieldArchive->getModels());
 		((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(fieldArchive->getModels());
 
@@ -366,10 +372,9 @@ void MainWindow::fillPage()
 	bgPreview->clear();
 
 	QTime t;t.start();
-	Field *field;
 
 	if(this->field != NULL) {
-		field = this->field;
+		currentField = this->field;
 
 		this->field->open2();
 	} else {
@@ -380,25 +385,25 @@ void MainWindow::fillPage()
 
 		int fieldID = item->data(0, Qt::UserRole).toInt();
 		searchDialog->setFieldId(fieldID);
-		field = fieldArchive->getField(fieldID);
-		if(field == NULL)	return;
+		currentField = fieldArchive->getField(fieldID);
+		if(currentField == NULL)	return;
 
-		fieldArchive->openBG(field);
+		fieldArchive->openBG(currentField);
 		/*if(fieldThread->isRunning()) {
 			qDebug() << "exit thread";
 			fieldThread->exit(0);
 		}
 		qDebug() << "setData thread";
-		fieldThread->setData(fieldArchive, field);
+		fieldThread->setData(fieldArchive, currentField);
 		qDebug() << "start thread";
 		fieldThread->start();*/
 	}
 
 	foreach(PageWidget *pageWidget, pageWidgets)
-		pageWidget->setData(field);
+		pageWidget->setData(currentField);
 
-	if(field->hasBackgroundFile())
-		bgPreview->fill(QPixmap::fromImage(field->getBackgroundFile()->background()));
+	if(currentField->hasBackgroundFile())
+		bgPreview->fill(QPixmap::fromImage(currentField->getBackgroundFile()->background()));
 	else
 		bgPreview->fill(FF8Image::errorPixmap());
 
@@ -450,6 +455,8 @@ int MainWindow::closeFiles(bool quit)
 	list1->clear();
 	setModified(false);
 	actionSaveAs->setEnabled(false);
+	actionExport->setEnabled(false);
+	actionImport->setEnabled(false);
 	actionOpti->setEnabled(false);
 	tabBar->setTabEnabled(tabBar->count()-1, false);
 	actionClose->setEnabled(false);
@@ -470,6 +477,8 @@ int MainWindow::closeFiles(bool quit)
 		fsDialog->deleteLater();
 		fsDialog = 0;
 	}
+
+	currentField = 0;
 
 	if(fieldArchive!=NULL) {
 		delete fieldArchive;
@@ -530,12 +539,14 @@ void MainWindow::openFile(QString path)
 
 void MainWindow::save()
 {
+	if(fieldArchive == NULL)	return;
+
 	saveAs(fieldArchive->archivePath());
 }
 
 void MainWindow::saveAs(QString path)
 {
-	if(list1->currentItem()==NULL)	return;
+	if(fieldArchive == NULL)	return;
 
 	/* int errorFieldID, errorGroupID, errorMethodID, errorLine;
 	QString errorStr;
@@ -569,6 +580,73 @@ void MainWindow::saveAs(QString path)
 	} else {
 		QMessageBox::warning(this, tr("Erreur"), tr("Une erreur s'est produite lors de l'enregistrement de l'archive."));
 	}
+}
+
+void MainWindow::exportCurrent()
+{
+	if(currentField == NULL)	return;
+
+	QString path = fieldArchive != NULL ? fieldArchive->archivePath() : field->path();
+	QStringList filter;
+	QList<int> typeList;
+
+	/*if(currentField->hasPvpFile()
+			&& currentField->hasBackgroundFile()
+			&& currentField->hasTdwFile()) {
+		filter.append(tr("Fichier données écran PlayStation (*.MIM)"));
+		typeList.append(MIM);
+	}
+	if(currentField->hasInfFile()
+			&& currentField->hasCaFile()
+			&& currentField->hasIdFile()
+			&& currentField->hasBackgroundFile()) {
+		filter.append(tr("Fichier informations écran PlayStation (*.MAP)"));
+		typeList.append(MAP);
+	}
+	if(currentField->hasCharaFile()) {
+		filter.append(tr("Fichier modèles 3D écran PlayStation (*.LZK)"));
+		typeList.append(LZK);
+		filter.append(tr("Fichier modèles 3D écran PC (*.one)"));
+		typeList.append(one);
+	}
+	if(currentField->hasBackgroundFile()) {
+		filter.append(tr("Fichier données décors écran PC (*.mim)"));
+		typeList.append(mim);
+		filter.append(tr("Fichier informations décors écran PC (*.map)"));
+		typeList.append(map);
+	}
+	if(currentField->hasJsmFile()) {
+		filter.append(tr("Fichier scripts écran PC (*.jsm)"));
+		typeList.append(jsm);
+		if(currentField->getJsmFile()->hasSym()) {
+			filter.append(tr("Fichier nom des scripts écran PC (*.sym)"));
+			typeList.append(sym);
+		}
+	}*/
+	for(int i=0 ; i<FILE_COUNT ; ++i) {
+		if(i != Field::Background && i != Field::Jsm) {
+			if(currentField->hasFile((Field::FileType)i)) {
+				filter.append(currentField->getFile((Field::FileType)i)->filterText());
+				typeList.append(i);
+			}
+		}
+	}
+
+	if(filter.isEmpty()) {
+		QMessageBox::warning(this, tr("Erreur"), tr("Cet écran ne contient pas assez d'éléments pour être exporté."));
+		return;
+	}
+
+	QString selectedFilter;
+	path = QFileDialog::getSaveFileName(this, tr("Exporter"), path, filter.join(";;"), &selectedFilter);
+	if(path.isNull())		return;
+
+	currentField->getFile((Field::FileType)typeList.at(filter.indexOf(selectedFilter)))->toFile(path);
+}
+
+void MainWindow::importCurrent()
+{
+
 }
 
 void MainWindow::optimizeArchive()

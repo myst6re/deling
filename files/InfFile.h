@@ -58,6 +58,9 @@ public:
     InfFile();
     bool open(const QByteArray &inf);
 	bool save(QByteArray &inf);
+	inline QString filterText() const {
+		return QObject::tr("Fichier passages et portes écran PC (*.inf)");
+	}
     QString getMapName() const;
 	void setMapName(const QString &mapName);
 	quint8 controlDirection() const;

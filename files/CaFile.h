@@ -39,6 +39,9 @@ public:
 	CaFile();
 	bool open(const QByteArray &ca);
 	bool save(QByteArray &ca);
+	inline QString filterText() const {
+		return QObject::tr("Fichier caméra écran PC (*.ca)");
+	}
 	int cameraCount() const;
 	const CaStruct &camera(int camID) const;
 	void setCamera(int camID, const CaStruct &cam);

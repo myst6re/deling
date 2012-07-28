@@ -26,6 +26,9 @@ public:
 	PvpFile();
 	bool open(const QByteArray &pvp);
 	bool save(QByteArray &pvp);
+	inline QString filterText() const {
+		return QObject::tr("Fichier inconnu écran PC (*.pvp)");
+	}
 	quint32 value() const;
 	void setValue(quint32 value);
 private:

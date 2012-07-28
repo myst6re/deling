@@ -22,7 +22,7 @@ File::File() :
 {
 }
 
-bool File::open(const QString &path)
+bool File::fromFile(const QString &path)
 {
 	QFile f(path);
 	if(f.open(QIODevice::ReadOnly)) {
@@ -33,7 +33,7 @@ bool File::open(const QString &path)
 	return false;
 }
 
-bool File::save(const QString &path)
+bool File::toFile(const QString &path)
 {
 	QFile f(path);
 	if(f.open(QIODevice::WriteOnly)) {

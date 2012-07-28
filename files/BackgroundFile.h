@@ -60,6 +60,9 @@ class BackgroundFile : public File
 public:
 	BackgroundFile();
 	bool open(const QByteArray &map, const QByteArray &mim, QMultiMap<quint8, quint8> *defaultParams=0);
+	inline QString filterText() const {
+		return QString();
+	}
 
 	QImage background(bool hideBG=false) const;
 	QImage background(const QList<quint8> &activeParams, bool hideBG=false);

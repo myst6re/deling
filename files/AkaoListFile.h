@@ -26,9 +26,14 @@ public:
 	AkaoListFile();
 	bool open(const QByteArray &akao);
 	bool save(QByteArray &akao);
+	inline QString filterText() const {
+		return QString();
+	}
 	int akaoCount() const;
 	const QByteArray &akao(int id) const;
 	bool setAkao(int id, const QByteArray &akao);
+	bool insertAkao(int id, const QByteArray &akao);
+	void removeAkao(int id);
 private:
 	QList<QByteArray> _akaos;
 };

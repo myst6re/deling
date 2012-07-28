@@ -69,7 +69,12 @@ QWidget *WalkmeshWidget::buildCameraPage()
 {
 	QWidget *ret = new QWidget(this);
 
-	camSelect = new QComboBox(ret);
+	ListWidget *listWidget = new ListWidget(ret);
+	listWidget->addAction(ListWidget::Add, tr("Ajouter caméra"), this, SLOT(addCamera()));
+	listWidget->addAction(ListWidget::Rem, tr("Supprimer caméra"), this, SLOT(removeCamera()));
+
+	caToolbar = listWidget->toolBar();
+	camList = listWidget->listWidget();
 
 	caVectorXEdit = new VertexWidget(ret);
 	caVectorYEdit = new VertexWidget(ret);
@@ -90,26 +95,26 @@ QWidget *WalkmeshWidget::buildCameraPage()
 	caZoomEdit->setRange(-32768, 32767);
 
 	QGridLayout *caLayout = new QGridLayout(ret);
-	caLayout->addWidget(camSelect, 0, 0, 1, 2);
-	caLayout->addWidget(new QLabel(tr("Distance (zoom) :")), 0, 2, 1, 2);
+	caLayout->addWidget(listWidget, 0, 0, 8, 1);
+	caLayout->addWidget(new QLabel(tr("Distance (zoom) :")), 0, 1, 1, 3);
 	caLayout->addWidget(caZoomEdit, 0, 4, 1, 2);
-	caLayout->addWidget(new QLabel(tr("Axes de la caméra :")), 1, 0, 1, 6);
-	caLayout->addWidget(caVectorXEdit, 2, 0, 1, 6);
-	caLayout->addWidget(caVectorYEdit, 3, 0, 1, 6);
-	caLayout->addWidget(caVectorZEdit, 4, 0, 1, 6);
-	caLayout->addWidget(new QLabel(tr("Position de la caméra :")), 5, 0, 1, 6);
-	caLayout->addWidget(new QLabel(tr("X")), 6, 0);
-	caLayout->addWidget(caSpaceXEdit, 6, 1);
-	caLayout->addWidget(new QLabel(tr("Y")), 6, 2);
-	caLayout->addWidget(caSpaceYEdit, 6, 3);
-	caLayout->addWidget(new QLabel(tr("Z")), 6, 4);
-	caLayout->addWidget(caSpaceZEdit, 6, 5);
+	caLayout->addWidget(new QLabel(tr("Axes de la caméra :")), 1, 1, 1, 6);
+	caLayout->addWidget(caVectorXEdit, 2, 1, 1, 6);
+	caLayout->addWidget(caVectorYEdit, 3, 1, 1, 6);
+	caLayout->addWidget(caVectorZEdit, 4, 1, 1, 6);
+	caLayout->addWidget(new QLabel(tr("Position de la caméra :")), 5, 1, 1, 6);
+	caLayout->addWidget(new QLabel(tr("X")), 6, 1);
+	caLayout->addWidget(caSpaceXEdit, 6, 2);
+	caLayout->addWidget(new QLabel(tr("Y")), 6, 3);
+	caLayout->addWidget(caSpaceYEdit, 6, 4);
+	caLayout->addWidget(new QLabel(tr("Z")), 6, 5);
+	caLayout->addWidget(caSpaceZEdit, 6, 6);
 	caLayout->setRowStretch(7, 1);
-	caLayout->setColumnStretch(1, 1);
-	caLayout->setColumnStretch(3, 1);
-	caLayout->setColumnStretch(5, 1);
+	caLayout->setColumnStretch(2, 1);
+	caLayout->setColumnStretch(4, 1);
+	caLayout->setColumnStretch(6, 1);
 
-    connect(camSelect, SIGNAL(currentIndexChanged(int)), SLOT(setCurrentCamera(int)));
+	connect(camList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentCamera(int)));
 
     connect(caVectorXEdit, SIGNAL(valuesChanged(Vertex_s)), SLOT(editCaVector(Vertex_s)));
     connect(caVectorYEdit, SIGNAL(valuesChanged(Vertex_s)), SLOT(editCaVector(Vertex_s)));
@@ -128,8 +133,12 @@ QWidget *WalkmeshWidget::buildWalkmeshPage()
 {
 	QWidget *ret = new QWidget(this);
 
-	idList = new QListWidget(ret);
-	idList->setFixedWidth(125);
+	ListWidget *listWidget = new ListWidget(ret);
+	listWidget->addAction(ListWidget::Add, tr("Ajouter triangle"), this, SLOT(addTriangle()));
+	listWidget->addAction(ListWidget::Rem, tr("Supprimer triangle"), this, SLOT(removeTriangle()));
+
+	idToolbar = listWidget->toolBar();
+	idList = listWidget->listWidget();
 
 	idVertices[0] = new VertexWidget(ret);
 	idVertices[1] = new VertexWidget(ret);
@@ -156,7 +165,7 @@ QWidget *WalkmeshWidget::buildWalkmeshPage()
 	accessLayout2->addWidget(idAccess[2]);
 
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(idList, 0, 0, 6, 1, Qt::AlignLeft);
+	layout->addWidget(listWidget, 0, 0, 6, 1, Qt::AlignLeft);
 	layout->addWidget(new QLabel(tr("Point 1 :")), 0, 1);
 	layout->addWidget(idVertices[0], 0, 2);
 	layout->addWidget(new QLabel(tr("Point 2 :")), 1, 1);
@@ -168,7 +177,7 @@ QWidget *WalkmeshWidget::buildWalkmeshPage()
 	layout->addLayout(accessLayout2, 5, 1, 1, 2, Qt::AlignTop);
 	layout->setRowStretch(5, 1);
 
-    connect(idList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentId(int)));
+	connect(idList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentId(int)));
     connect(idVertices[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
     connect(idVertices[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
     connect(idVertices[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
@@ -395,7 +404,7 @@ void WalkmeshWidget::clear()
     walkmeshGL->clear();
 
 	blockSignals(true);
-	camSelect->clear();
+	camList->clear();
 	idList->clear();
 	gateList->clear();
 	doorList->clear();
@@ -409,6 +418,7 @@ void WalkmeshWidget::setReadOnly(bool ro)
 {
 	if(isBuilded()) {
 		// CamPage
+		caToolbar->setDisabled(ro);
 		caVectorXEdit->setReadOnly(ro);
 		caVectorYEdit->setReadOnly(ro);
 		caVectorZEdit->setReadOnly(ro);
@@ -417,6 +427,7 @@ void WalkmeshWidget::setReadOnly(bool ro)
 		caSpaceZEdit->setReadOnly(ro);
 		caZoomEdit->setReadOnly(ro);
 		// WalkPage
+		idToolbar->setDisabled(ro);
 		for(int i=0 ; i<3 ; ++i) {
 			idVertices[i]->setReadOnly(ro);
 			idAccess[i]->setReadOnly(ro);
@@ -464,14 +475,13 @@ void WalkmeshWidget::fill()
 	if(data()->hasCaFile()) {
 		camCount = data()->getCaFile()->cameraCount();
 
-		if(camSelect->count() != camCount) {
-			camSelect->blockSignals(true);
-			camSelect->clear();
+		if(camList->count() != camCount) {
+			camList->blockSignals(true);
+			camList->clear();
 			for(int i=0 ; i<camCount ; ++i) {
-				camSelect->addItem(tr("Caméra %1").arg(i));
+				camList->addItem(tr("Caméra %1").arg(i));
 			}
-			camSelect->setEnabled(camCount > 1);
-			camSelect->blockSignals(false);
+			camList->blockSignals(false);
 		}
 
 		setCurrentCamera(0);
@@ -543,15 +553,13 @@ void WalkmeshWidget::fill()
 	tabWidget->widget(5)->setEnabled(data()->hasMskFile());
 
 	PageWidget::fill();
-
-	qDebug() << "filled";
 }
 
 int WalkmeshWidget::currentCamera() const
 {
 	if(!data()->hasCaFile())	return 0;
 
-	int camID = camSelect->currentIndex();
+	int camID = camList->currentRow();
 	return camID < 0 || camID >= data()->getCaFile()->cameraCount() ? 0 : camID;
 }
 
@@ -596,11 +604,49 @@ void WalkmeshWidget::setCurrentCamera(int camID)
 
 	caZoomEdit->setEnabled(hasCamera);
 
-	if(camSelect->currentIndex() != camID) {
-		camSelect->blockSignals(true);
-		camSelect->setCurrentIndex(camID);
-		camSelect->blockSignals(false);
+	if(camList->currentRow() != camID) {
+		camList->blockSignals(true);
+		camList->setCurrentRow(camID);
+		camList->blockSignals(false);
     }
+}
+
+void WalkmeshWidget::addCamera()
+{
+	int row = camList->currentRow();
+
+	if(data()->hasCaFile()) {
+		CaStruct ca;
+		if(row < data()->getCaFile()->cameraCount()) {
+			ca = data()->getCaFile()->camera(row);
+		} else {
+			memset(&ca, 0, sizeof(CaStruct));
+		}
+		data()->getCaFile()->insertCamera(row+1, ca);
+		camList->insertItem(row+1, tr("Camera %1").arg(row+1));
+		for(int i=row+2 ; i<camList->count() ; ++i) {
+			camList->item(i)->setText(tr("Camera %1").arg(i));
+		}
+		camList->setCurrentRow(row+1);
+		emit modified();
+	}
+}
+
+void WalkmeshWidget::removeCamera()
+{
+	int row = camList->currentRow();
+
+	if(row < 0)		return;
+
+	if(data()->hasCaFile() && row < data()->getCaFile()->cameraCount()) {
+		data()->getCaFile()->removeCamera(row);
+		delete camList->item(row);
+		for(int i=row ; i<camList->count() ; ++i) {
+			camList->item(i)->setText(tr("Camera %1").arg(i));
+		}
+		setCurrentCamera(row);
+		emit modified();
+	}
 }
 
 void WalkmeshWidget::editCaVector(const Vertex_s &values)
@@ -684,6 +730,47 @@ void WalkmeshWidget::setCurrentId(int i)
 	idAccess[2]->setValue(access.a3);
 
     walkmeshGL->setSelectedTriangle(i);
+}
+
+void WalkmeshWidget::addTriangle()
+{
+	int row = idList->currentRow();
+
+	if(data()->hasIdFile()) {
+		Triangle tri;
+		Access acc;
+		if(row < data()->getIdFile()->triangleCount()) {
+			tri = data()->getIdFile()->triangle(row);
+			acc = data()->getIdFile()->access(row);
+		} else {
+			memset(&tri, 0, sizeof(Triangle));
+			memset(&acc, 0, sizeof(Access));
+		}
+		data()->getIdFile()->insertTriangle(row+1, tri, acc);
+		idList->insertItem(row+1, tr("Triangle %1").arg(row+1));
+		for(int i=row+2 ; i<idList->count() ; ++i) {
+			idList->item(i)->setText(tr("Triangle %1").arg(i));
+		}
+		idList->setCurrentRow(row+1);
+		emit modified();
+	}
+}
+
+void WalkmeshWidget::removeTriangle()
+{
+	int row = idList->currentRow();
+
+	if(row < 0)		return;
+
+	if(data()->hasIdFile() && row < data()->getIdFile()->triangleCount()) {
+		data()->getIdFile()->removeTriangle(row);
+		delete idList->item(row);
+		for(int i=row ; i<idList->count() ; ++i) {
+			idList->item(i)->setText(tr("Triangle %1").arg(i));
+		}
+		setCurrentId(row);
+		emit modified();
+	}
 }
 
 void WalkmeshWidget::editIdTriangle(const Vertex_s &values)

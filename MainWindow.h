@@ -51,6 +51,10 @@ public:
 		TextPage, ScriptPage, ModelPage, WalkmeshPage, BackgroundPage, EncounterPage, FontPage, MiscPage
 	};
 
+	enum ExportType {
+		MIM, MAP, LZK, one, mim, map, jsm, sym, msd, inf, id, ca, tdw, msk, mrt, rat, pmp, pmd, sfx, pvp
+	};
+
 	MainWindow();
 public slots:
 	void openFile(QString path=QString());
@@ -63,6 +67,8 @@ private slots:
 	void setModified(bool modified=true);
 	void save();
 	void saveAs(QString path=QString());
+	void exportCurrent();
+	void importCurrent();
 	void optimizeArchive();
 	void manageArchive();
 	void configDialog();
@@ -86,6 +92,7 @@ private:
 
 	FieldArchive *fieldArchive;
 	FieldPC *field;
+	Field *currentField;
 	FieldThread *fieldThread;//TODO
 
 	MiscSearch *miscSearchD;
@@ -93,6 +100,7 @@ private:
 	Search *searchDialog;
 	QAction *actionSave;
 	QAction *actionSaveAs;
+	QAction *actionExport, *actionImport;
 	QAction *actionOpti;
 	QAction *actionClose;
 	QAction *actionFind;

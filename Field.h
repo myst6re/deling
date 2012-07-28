@@ -56,6 +56,7 @@ public:
 	bool isModified() const;
 	const QString &name() const;
 
+	bool hasFile(FileType fileType) const;
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
 	bool hasIdFile() const;
@@ -76,6 +77,7 @@ public:
 	virtual bool hasMapMimFiles() const=0;
 	bool hasFiles() const;
 
+	File *getFile(FileType fileType) const;
 	MsdFile *getMsdFile() const;
 	JsmFile *getJsmFile() const;
 	IdFile *getIdFile() const;
@@ -95,9 +97,6 @@ public:
 protected:
 	void setOpen(bool open);
 	void setName(const QString &name);
-
-	bool hasFile(FileType fileType) const;
-	File *getFile(FileType fileType) const;
 
 	void openFile(FileType fileType, const QByteArray &data);
 	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray());

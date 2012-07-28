@@ -19,6 +19,7 @@
 #define SOUNDWIDGET_H
 
 #include "widgets/PageWidget.h"
+#include "Listwidget.h"
 
 class SoundWidget : public PageWidget
 {
@@ -31,6 +32,8 @@ public:
 	inline QString tabName() const { return tr("Sons"); }
 private slots:
 	void setCurrentSound(int id);
+	void addSound();
+	void removeSound();
 	void editSfxValue(double v);
 	void exportAkao();
 	void importAkao();
@@ -38,6 +41,7 @@ private:
 	void build();
 	void fillList(int count);
 
+	QToolBar *toolBar;
 	QListWidget *list1;
 	// Sfx
 	QWidget *sfxGroup;

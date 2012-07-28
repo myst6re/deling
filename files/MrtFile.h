@@ -26,6 +26,9 @@ public:
 	MrtFile();
 	bool open(const QByteArray &mrt);
 	bool save(QByteArray &mrt);
+	inline QString filterText() const {
+		return QObject::tr("Fichier formations combat écran PC (*.mrt)");
+	}
 	quint16 formation(int index) const;
 	void setFormation(int index, quint16 formation);
 	QList<int> searchAllBattles() const;

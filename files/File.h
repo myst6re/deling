@@ -24,10 +24,11 @@ class File
 {
 public:
 	File();
-	bool open(const QString &path);
-	bool save(const QString &path);
     virtual bool open(const QByteArray &);
     virtual bool save(QByteArray &);
+	bool fromFile(const QString &path);
+	bool toFile(const QString &path);
+	virtual QString filterText() const=0;
 	bool isModified() const;
 protected:
 	bool modified;

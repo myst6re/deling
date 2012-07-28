@@ -107,7 +107,22 @@ bool AkaoListFile::setAkao(int id, const QByteArray &akao)
 		_akaos[id] = akao;
 		modified = true;
 		return true;
-	} else {
-		return false;
 	}
+	return false;
+}
+
+bool AkaoListFile::insertAkao(int id, const QByteArray &akao)
+{
+	if(akao.startsWith("AKAO")) {
+		_akaos.insert(id, akao);
+		modified = true;
+		return true;
+	}
+	return false;
+}
+
+void AkaoListFile::removeAkao(int id)
+{
+	_akaos.removeAt(id);
+	modified = true;
 }

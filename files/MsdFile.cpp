@@ -24,18 +24,6 @@ MsdFile::MsdFile() :
 {
 }
 
-bool MsdFile::open(const QString &path)
-{
-	QFile msd_file(path);
-	if(!msd_file.open(QIODevice::ReadOnly)) {
-		lastError = msd_file.errorString();
-		return false;
-	}
-//	this->path = msd_file.fileName();
-
-	return open(msd_file.readAll());
-}
-
 bool MsdFile::open(const QByteArray &msd)
 {
 	const char *msd_data = msd.constData();
@@ -65,23 +53,6 @@ bool MsdFile::open(const QByteArray &msd)
 	}
 	texts.append(QByteArray(&msd_data[textPos], dataSize-textPos));
 	needEndOfString.append(dataSize-textPos > 0 && msd_data[dataSize-1] == '\x00');
-
-	return true;
-}
-
-bool MsdFile::save(const QString &path)
-{
-	QFile msd_file(path);
-	if(!msd_file.open(QIODevice::WriteOnly)) {
-		lastError = msd_file.errorString();
-		return false;
-	}
-
-	QByteArray msd;
-	if(save(msd)) {
-		msd_file.write(msd);
-	}
-	msd_file.close();
 
 	return true;
 }

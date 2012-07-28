@@ -57,6 +57,9 @@ public:
 	bool open(const QByteArray &jsm, const QByteArray &sym_data=QByteArray());
 	bool save(const QString &);
 	bool save(QByteArray &jsm, QByteArray &sym);
+	inline QString filterText() const {
+		return QString();
+	}
 	static QString lastError;
 
 	bool compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);

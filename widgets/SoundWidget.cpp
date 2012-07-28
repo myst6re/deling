@@ -26,8 +26,12 @@ void SoundWidget::build()
 {
 	if(isBuilded())	return;
 
-	list1 = new QListWidget(this);
-	list1->setFixedWidth(125);
+	ListWidget *listWidget = new ListWidget(this);
+	listWidget->addAction(ListWidget::Add, tr("Ajouter son"), this, SLOT(addSound()));
+	listWidget->addAction(ListWidget::Rem, tr("Supprimer son"), this, SLOT(removeSound()));
+
+	toolBar = listWidget->toolBar();
+	list1 = listWidget->listWidget();
 
 	// Sfx
 
@@ -59,7 +63,7 @@ void SoundWidget::build()
 	akaoLayout->setContentsMargins(QMargins());
 
 	QGridLayout *layout = new QGridLayout(this);
-	layout->addWidget(list1, 0, 0, 3, 1, Qt::AlignLeft);
+	layout->addWidget(listWidget, 0, 0, 3, 1, Qt::AlignLeft);
 	layout->addWidget(sfxGroup, 0, 1);
 	layout->addWidget(akaoGroup, 1, 1);
 	layout->setRowStretch(2, 1);
@@ -86,6 +90,7 @@ void SoundWidget::clear()
 void SoundWidget::setReadOnly(bool ro)
 {
 	if(isBuilded()) {
+		toolBar->setDisabled(ro);
 		sfxValue->setReadOnly(ro);
 		importButton->setDisabled(ro);
 	}
@@ -132,6 +137,73 @@ void SoundWidget::setCurrentSound(int id)
 		if(id < data()->getSfxFile()->valueCount()) {
 			sfxValue->setValue(data()->getSfxFile()->value(id));
 		}
+	}
+}
+
+void SoundWidget::addSound()
+{
+	int row = list1->currentRow();
+
+	bool inserted = false;
+
+	if(data()->hasSfxFile()) {
+		data()->getSfxFile()->insertValue(row+1, 0);
+		inserted = true;
+	}
+	else if(data()->hasAkaoListFile()) {
+
+		QString path = QFileDialog::getOpenFileName(this, tr("Ajouter son"), QString(), tr("AKAO file (*.akao)"));
+		if(path.isNull())		return;
+
+		QFile f(path);
+		if(f.open(QIODevice::ReadOnly)) {
+			if(!data()->getAkaoListFile()->insertAkao(row+1, f.readAll())) {
+				QMessageBox::warning(this, tr("Erreur"), tr("Fichier invalide."));
+			} else {
+				inserted = true;
+			}
+			f.close();
+		} else {
+			QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ajouter le son (%1).").arg(f.errorString()));
+		}
+	}
+
+	if(inserted) {
+		list1->insertItem(row+1, tr("Son %1").arg(row+1));
+		for(int i=row+2 ; i<list1->count() ; ++i) {
+			list1->item(i)->setText(tr("Son %1").arg(i));
+		}
+		list1->setCurrentRow(row+1);
+		emit modified();
+	}
+}
+
+void SoundWidget::removeSound()
+{
+	int row = list1->currentRow();
+
+	if(row < 0)		return;
+
+	bool removed = false;
+
+	if(data()->hasSfxFile()) {
+		if(row < data()->getSfxFile()->valueCount()) {
+			data()->getSfxFile()->removeValue(row);
+			removed = true;
+		}
+	} else if(data()->hasAkaoListFile()) {
+		if(row < data()->getAkaoListFile()->akaoCount()) {
+			data()->getAkaoListFile()->removeAkao(row);
+			removed = true;
+		}
+	}
+
+	if(removed) {
+		delete list1->item(row);
+		for(int i=row ; i<list1->count() ; ++i) {
+			list1->item(i)->setText(tr("Son %1").arg(i));
+		}
+		emit modified();
 	}
 }
 

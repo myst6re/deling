@@ -29,6 +29,9 @@ public:
 	TextureFile(const QImage &image);
 	virtual bool open(const QByteArray &data)=0;
 	virtual bool save(QByteArray &data)=0;
+	inline QString filterText() const {
+		return QString();
+	}
 	bool isValid() const;
 	void clear();
 	const QImage &image() const;

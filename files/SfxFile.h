@@ -26,9 +26,14 @@ public:
 	SfxFile();
 	bool open(const QByteArray &sfx);
 	bool save(QByteArray &sfx);
+	inline QString filterText() const {
+		return QObject::tr("Fichier sons écran PC (*.sfx)");
+	}
 	int valueCount() const;
 	quint32 value(int id) const;
 	void setValue(int id, quint32 v);
+	void insertValue(int id, quint32 v);
+	void removeValue(int id);
 private:
 	QList<quint32> _values;
 };
