@@ -74,13 +74,8 @@ void OrientationWidget::paintEvent(QPaintEvent *e)
 {
 	QPainter p(this);
 
-
-	if(isEnabled()) {
-		p.setPen(Qt::black);
-		p.setBrush(Qt::gray);
-	} else {
-		p.setPen(Qt::gray);
-	}
+    p.setPen(palette().color(QPalette::Text));
+    p.setBrush(palette().window());
 
 	double radius = radiusCircle();
 	QPointF centerCircle = this->centerCircle();

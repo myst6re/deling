@@ -23,23 +23,17 @@ TdwManagerDialog::TdwManagerDialog(QWidget *parent) :
 	setWindowTitle(tr("Gestionnaire de police"));
 	setSizeGripEnabled(true);
 
-	toolbar1 = new QToolBar(this);
-	toolbar1->setIconSize(QSize(16, 16));
-	plusAction = toolbar1->addAction(QIcon(":/images/plus.png"), tr("Copier"), this, SLOT(addFont()));
-	plusAction->setShortcut(QKeySequence("Ctrl++"));
-	minusAction = toolbar1->addAction(QIcon(":/images/minus.png"), tr("Effacer"), this, SLOT(removeFont()));
-	minusAction->setShortcut(QKeySequence::Delete);
-
-	list1 = new QListWidget(this);
-	list1->setFixedWidth(125);
+    ListWidget *listWidget = new ListWidget(this);
+    plusAction = listWidget->addAction(ListWidget::Add, tr("Copier"), this, SLOT(addFont()));
+    minusAction = listWidget->addAction(ListWidget::Rem, tr("Effacer"), this, SLOT(removeFont()));
+    toolbar1 = listWidget->toolBar();
+    list1 = listWidget->listWidget();
 
 	tdwWidget = new TdwWidget2(false, this);
 
-	QGridLayout *layout = new QGridLayout(this);
-	layout->addWidget(toolbar1, 0, 0);
-	layout->addWidget(list1, 1, 0);
-	layout->addWidget(tdwWidget, 0, 1, 2, 1);
-	layout->setColumnStretch(1, 1);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->addWidget(listWidget);
+    layout->addWidget(tdwWidget, 1);
 
 	fillList1();
 	setTdw(list1->currentRow());

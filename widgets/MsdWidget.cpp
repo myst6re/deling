@@ -26,26 +26,14 @@ void MsdWidget::build()
 {
 	if(isBuilded())	return;
 
-	QFont font;
-	font.setPointSize(8);
-
 	QAction *action;
 
-	toolBar0 = new QToolBar(this);
-	toolBar0->setIconSize(QSize(16, 16));
-	action = toolBar0->addAction(QIcon(":images/plus.png"), tr("Ajouter un texte"), this, SLOT(insertText()));
-	action->setShortcut(QKeySequence("Ctrl++"));
-	action = toolBar0->addAction(QIcon(":images/minus.png"), tr("Supprimer un texte"), this, SLOT(removeText()));
-	action->setShortcut(QKeySequence::Delete);
+    ListWidget *listWidget = new ListWidget(this);
+    listWidget->addAction(ListWidget::Add, tr("Ajouter un texte"), this, SLOT(insertText()));
+    listWidget->addAction(ListWidget::Rem, tr("Supprimer un texte"), this, SLOT(removeText()));
 
-	textList = new QListWidget(this);
-	textList->setUniformItemSizes(true);
-	textList->setFixedWidth(120);
-	textList->setFont(font);
-
-	QVBoxLayout *textListLayout = new QVBoxLayout;
-	textListLayout->addWidget(toolBar0);
-	textListLayout->addWidget(textList);
+    toolBar0 = listWidget->toolBar();
+    textList = listWidget->listWidget();
 
 	toolBar = new QToolBar(this);
 	toolBar->setIconSize(QSize(16, 16));
@@ -300,7 +288,7 @@ void MsdWidget::build()
 	groupTextPreview->setFixedHeight(224);
 
 	QGridLayout *mainLayout = new QGridLayout(this);
-	mainLayout->addLayout(textListLayout, 0, 0, 2, 1);
+    mainLayout->addWidget(listWidget, 0, 0, 2, 1);
 	mainLayout->addLayout(toolBars, 0, 1);
 	mainLayout->addWidget(textEdit, 1, 1);
 	mainLayout->addWidget(groupTextPreview, 2, 0, 1, 2);
@@ -330,8 +318,8 @@ void MsdWidget::clear()
 
 	textPreview->clear();
 	dontUpdateCurrentText = true;
-	textList->clear();
-	textEdit->setPlainText(QString());
+    textList->clear();
+    textEdit->setPlainText(QString());
 	dontUpdateCurrentText = false;
 
 	PageWidget::clear();
@@ -344,7 +332,7 @@ void MsdWidget::setReadOnly(bool readOnly)
 		xCoord->setReadOnly(readOnly);
 		yCoord->setReadOnly(readOnly);
 		textPreview->setReadOnly(readOnly);
-		toolBar0->setDisabled(readOnly);
+        toolBar0->setDisabled(readOnly);
 		toolBar->setDisabled(readOnly);
 		toolBar2->setDisabled(readOnly);
 	}
@@ -384,10 +372,10 @@ void MsdWidget::fill()
 		else
 			item->setIcon(iconDisabled);
 		item->setData(Qt::UserRole, i);
-		textList->addItem(item);
+        textList->addItem(item);
 	}
 
-	textList->setCurrentRow(0);
+    textList->setCurrentRow(0);
 
 	PageWidget::fill();
 }
@@ -396,7 +384,7 @@ void MsdWidget::fillTextEdit(QListWidgetItem *item)
 {
 	if(item==NULL)	return;
 
-	textList->scrollToItem(item);
+    textList->scrollToItem(item);
 	if(!hasData() || !data()->hasMsdFile())	return;
 
 	int textID = item->data(Qt::UserRole).toInt();
@@ -478,7 +466,7 @@ void MsdWidget::changeXCoord(int x)
 {
 	if(textPreview->getNbWin()<=0)	return;
 
-	int textID = textList->currentItem()->data(Qt::UserRole).toInt();
+    int textID = textList->currentItem()->data(Qt::UserRole).toInt();
 	int winID = textPreview->getCurrentWin()-1;
 	FF8Window ff8Window = textPreview->getWindow();
 	if(ff8Window.x != x) {
@@ -496,7 +484,7 @@ void MsdWidget::changeYCoord(int y)
 {
 	if(textPreview->getNbWin()<=0)	return;
 
-	int textID = textList->currentItem()->data(Qt::UserRole).toInt();
+    int textID = textList->currentItem()->data(Qt::UserRole).toInt();
 	int winID = textPreview->getCurrentWin()-1;
 	FF8Window ff8Window = textPreview->getWindow();
 	if(ff8Window.y != y) {
@@ -523,8 +511,8 @@ void MsdWidget::updateCurrentText()
 	if(dontUpdateCurrentText || !hasData() || !data()->hasMsdFile())	return;
 
 	emit modified();
-	data()->getMsdFile()->setText(textList->currentRow(), textEdit->toPlainText());
-	textPreview->setText(data()->getMsdFile()->data(textList->currentRow()), false);
+    data()->getMsdFile()->setText(textList->currentRow(), textEdit->toPlainText());
+    textPreview->setText(data()->getMsdFile()->data(textList->currentRow()), false);
 	changeTextPreviewPage();
 	changeTextPreviewWin();
 }
@@ -540,26 +528,26 @@ void MsdWidget::updateText()
 {
 	if(!isBuilded())	return;
 
-	fillTextEdit(textList->currentItem());
+    fillTextEdit(textList->currentItem());
 	textPreview->reloadFont();
 	textPreview->calcSize();
 }
 
 void MsdWidget::insertText()
 {
-	int row = textList->currentRow()+1;
+    int row = textList->currentRow()+1;
 	data()->getMsdFile()->insertText(row);
 	fill();
-	textList->setCurrentRow(row);
+    textList->setCurrentRow(row);
 	emit modified();
 }
 
 void MsdWidget::removeText()
 {
-	int row = textList->currentRow();
+    int row = textList->currentRow();
 	data()->getMsdFile()->removeText(row);
 	fill();
-	textList->setCurrentRow(qMax(row-1, 0));
+    textList->setCurrentRow(qMax(row-1, 0));
 	emit modified();
 }
 
@@ -567,7 +555,7 @@ void MsdWidget::gotoText(const QString &text, int textID, Qt::CaseSensitivity cs
 {
 	if(!isBuilded())	build();
 
-	textList->setCurrentRow(textID);
+    textList->setCurrentRow(textID);
 	QTextDocument::FindFlags flag;
 	if(cs == Qt::CaseSensitive)
 		flag |= QTextDocument::FindCaseSensitively;

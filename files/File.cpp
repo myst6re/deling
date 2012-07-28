@@ -48,12 +48,12 @@ bool File::save(const QString &path)
 	return false;
 }
 
-bool File::open(const QByteArray &data)
+bool File::open(const QByteArray &)
 {
 	return false;
 }
 
-bool File::save(QByteArray &data)
+bool File::save(QByteArray &)
 {
 	return false;
 }

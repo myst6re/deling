@@ -7,6 +7,8 @@ DEPENDPATH += . \
     release
 INCLUDEPATH += .
 
+LIBS = -lGLU
+
 # Input
 HEADERS += MainWindow.h \
     parameters.h \
@@ -84,7 +86,8 @@ HEADERS += MainWindow.h \
 	HexLineEdit.h \
     files/PvpFile.h \
     files/PmpFile.h \
-    files/PmdFile.h
+    files/PmdFile.h \
+	Listwidget.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -161,7 +164,8 @@ SOURCES += MainWindow.cpp \
 	HexLineEdit.cpp \
     files/PvpFile.cpp \
     files/PmpFile.cpp \
-    files/PmdFile.cpp
+    files/PmdFile.cpp \
+	Listwidget.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

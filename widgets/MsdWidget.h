@@ -23,6 +23,7 @@
 #include "BGPreview.h"
 #include "TextPreview.h"
 #include "MsdHighlighter.h"
+#include "Listwidget.h"
 
 class MsdWidget : public PageWidget
 {
@@ -60,8 +61,8 @@ signals:
 private:
 	void updateWindowCoord();
 
-	QListWidget *textList;
-	QToolBar *toolBar0, *toolBar, *toolBar2;
+    QListWidget *textList;
+    QToolBar *toolBar0, *toolBar, *toolBar2;
 	QPlainTextEdit *textEdit;
 	TextPreview *textPreview;
 	QToolButton *prevPage, *prevWin;
