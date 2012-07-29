@@ -39,9 +39,12 @@ bool FieldPC::isPc() const
 	return true;
 }
 
-bool FieldPC::hasMapMimFiles() const
+bool FieldPC::hasFiles2() const
 {
-	return header && header->fileExists("*"%name()%".mim") && header->fileExists("*"%name()%".map");
+	return header &&
+			((header->fileExists("*"%name()%".mim") && header->fileExists("*"%name()%".map"))
+			|| header->fileExists("*"%name()%".tdw")
+			|| header->fileExists("*chara.one"));
 }
 
 //void FieldPC::setArchiveHeader(FsArchive *header)
@@ -322,7 +325,7 @@ bool FieldPC::open(FsArchive *archive)
 		openFile(Pmd, pmd_infos!=NULL ? pmd_infos->data(fs_data) : QByteArray());
 	}
 
-	/* PMP */
+	/* PVP */
 
 	if(pvp_infos!=NULL)
 	{

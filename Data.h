@@ -27,6 +27,8 @@
 #define MAG_COUNT	57
 #define MAP_COUNT	982
 
+typedef struct { const char *source; const char *comment; } TranslateChar;
+
 class Data
 {
 public:
@@ -37,7 +39,7 @@ public:
 	static const char *magic(int i);
 	static QStringList maplist();
 private:
-	static const char *locations[LOC_COUNT];
+	static TranslateChar locations[LOC_COUNT];
 	static const char *names[NAM_COUNT];
 	static const char *_magic[];
 	static const char *_maplist[MAP_COUNT];

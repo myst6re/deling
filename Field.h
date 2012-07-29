@@ -74,7 +74,7 @@ public:
 	bool hasSfxFile() const;
 	bool hasAkaoListFile() const;
 
-	virtual bool hasMapMimFiles() const=0;
+	virtual bool hasFiles2() const=0;
 	bool hasFiles() const;
 
 	File *getFile(FileType fileType) const;

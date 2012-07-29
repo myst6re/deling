@@ -241,7 +241,7 @@ bool JsmFile::save(const QString &path)
 	return true;
 }
 
-bool JsmFile::save(QByteArray &jsm, QByteArray &sym)
+bool JsmFile::save(QByteArray &jsm)
 {
 	QByteArray section0(scripts.nbGroup()*2, '\x00'), section1;
 	quint16 data;
@@ -302,14 +302,15 @@ bool JsmFile::save(QByteArray &jsm, QByteArray &sym)
 	jsm.append(section1);
 	jsm.append(scripts.data().constData());// Section 2
 
-//	QFile debug("debug.jsm");
-//	debug.open(QIODevice::WriteOnly);
-//	debug.write(jsm);
-//	debug.close();
-
-	sym = saveSym().toLatin1();
-
 	modified = false;
+
+	return true;
+}
+
+bool JsmFile::save(QByteArray &jsm, QByteArray &sym)
+{
+	save(jsm);
+	sym = saveSym().toLatin1();
 
 	return true;
 }
@@ -345,13 +346,6 @@ QString JsmFile::saveSym()
 			ret.append('\n');
 		}
 	}
-
-//	QFile debug("debug.sym");
-//	debug.open(QIODevice::WriteOnly);
-//	debug.write(ret.toLatin1());
-//	debug.close();
-
-	modified = false;
 
 	return ret;
 }

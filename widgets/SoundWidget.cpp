@@ -103,7 +103,9 @@ void SoundWidget::fill()
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(!hasData()) return;
+	if(!hasData()
+			|| !data()->hasSfxFile()
+			|| !data()->hasAkaoListFile()) return;
 
 	if(data()->hasSfxFile()) {
 		fillList(data()->getSfxFile()->valueCount());
@@ -152,7 +154,7 @@ void SoundWidget::addSound()
 	}
 	else if(data()->hasAkaoListFile()) {
 
-		QString path = QFileDialog::getOpenFileName(this, tr("Ajouter son"), QString(), tr("AKAO file (*.akao)"));
+		QString path = QFileDialog::getOpenFileName(this, tr("Ajouter son"), QString(), tr("Fichier AKAO (*.akao)"));
 		if(path.isNull())		return;
 
 		QFile f(path);
@@ -226,7 +228,7 @@ void SoundWidget::exportAkao()
 		int id = list1->currentRow();
 		if(id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
 
-			QString path = QFileDialog::getSaveFileName(this, tr("Exporter son"), tr("son%1").arg(id), tr("AKAO file (*.akao)"));
+			QString path = QFileDialog::getSaveFileName(this, tr("Exporter son"), tr("son%1").arg(id), tr("Fichier AKAO (*.akao)"));
 			if(path.isNull())		return;
 
 			QFile f(path);
@@ -246,7 +248,7 @@ void SoundWidget::importAkao()
 		int id = list1->currentRow();
 		if(id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
 
-			QString path = QFileDialog::getOpenFileName(this, tr("Importer son"), QString(), tr("AKAO file (*.akao)"));
+			QString path = QFileDialog::getOpenFileName(this, tr("Importer son"), QString(), tr("Fichier AKAO (*.akao)"));
 			if(path.isNull())		return;
 
 			QFile f(path);

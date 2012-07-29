@@ -29,7 +29,7 @@ public:
 	virtual ~FieldPC();
 
 	bool isPc() const;
-	bool hasMapMimFiles() const;
+	bool hasFiles2() const;
 //	void setArchiveHeader(FsArchive *header);
 	FsArchive *getArchiveHeader() const;
 	const QString &path() const;

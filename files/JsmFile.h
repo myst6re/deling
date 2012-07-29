@@ -56,9 +56,12 @@ public:
 	bool open(QString);
 	bool open(const QByteArray &jsm, const QByteArray &sym_data=QByteArray());
 	bool save(const QString &);
+	bool save(QByteArray &jsm);
 	bool save(QByteArray &jsm, QByteArray &sym);
+	bool openSym(const QByteArray &sym_data);
+	QString saveSym();
 	inline QString filterText() const {
-		return QString();
+		return QObject::tr("Fichier scripts écran PC (*.jsm)");
     }
 
 	bool compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
@@ -94,8 +97,6 @@ public:
 	static QStringList opcodeNameCalc;
 private:
 	bool search(int type, quint64 value, quint16 pos, int opcodeID) const;
-	bool openSym(const QByteArray &sym_data);
-	QString saveSym();
 	QString _toString(int position, int nbOpcode) const;
 
 	void searchWindows();

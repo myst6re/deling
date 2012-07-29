@@ -99,6 +99,8 @@ void CaFile::insertCamera(int camID, const CaStruct &cam)
 
 void CaFile::removeCamera(int camID)
 {
-	cameras.removeAt(camID);
-	modified = true;
+	if(cameras.size() > 1) {
+		cameras.removeAt(camID);
+		modified = true;
+	}
 }

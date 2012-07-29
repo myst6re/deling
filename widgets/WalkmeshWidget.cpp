@@ -466,7 +466,10 @@ void WalkmeshWidget::fill()
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(!hasData()) return;
+	if(!hasData() ||
+			(!data()->hasCaFile()
+			 && !data()->hasIdFile()
+			 && !data()->hasInfFile())) return;
 
     walkmeshGL->fill(data());
 
@@ -634,6 +637,8 @@ void WalkmeshWidget::addCamera()
 
 void WalkmeshWidget::removeCamera()
 {
+	if(data()->getCaFile()->cameraCount() < 2) return;
+
 	int row = camList->currentRow();
 
 	if(row < 0)		return;

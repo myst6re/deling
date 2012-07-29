@@ -253,7 +253,7 @@ bool Field::hasFiles() const
 		}
 	}
 
-	return hasMapMimFiles() || hasCharaFile();
+	return hasFiles2() || hasCharaFile();
 }
 
 File *Field::getFile(FileType fileType) const

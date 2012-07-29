@@ -625,7 +625,23 @@ void MainWindow::exportCurrent()
 		}
 	}*/
 	for(int i=0 ; i<FILE_COUNT ; ++i) {
-		if(i != Field::Background && i != Field::Jsm) {
+		if(i == Field::Jsm) {
+			if(currentField->hasJsmFile()) {
+				filter.append(currentField->getJsmFile()->filterText());
+				typeList.append(i);
+//				if(currentField->getJsmFile()->hasSym()) {
+//					filter.append(tr("Fichier nom des scripts écran PC (*.sym)"));
+//					typeList.append(FILE_COUNT);
+//				}
+			}
+		}
+		else if(i == Field::Background) {
+			if(currentField->hasBackgroundFile()) {
+//				filter.append(currentField->getJsmFile()->filterText());
+//				typeList.append(i);
+			}
+		}
+		else {
 			if(currentField->hasFile((Field::FileType)i)) {
 				filter.append(currentField->getFile((Field::FileType)i)->filterText());
 				typeList.append(i);
@@ -641,10 +657,18 @@ void MainWindow::exportCurrent()
 	QString selectedFilter;
 	path = QFileDialog::getSaveFileName(this, tr("Exporter"), path, filter.join(";;"), &selectedFilter);
 	if(path.isNull())		return;
+	
+	int type = typeList.at(filter.indexOf(selectedFilter));
 
-    if(!currentField->getFile((Field::FileType)typeList.at(filter.indexOf(selectedFilter)))->toFile(path)) {
-        QMessageBox::warning(this, tr("Erreur"), currentField->getFile((Field::FileType)typeList.at(filter.indexOf(selectedFilter)))->errorString());
-    }
+	switch(type) {
+	case FILE_COUNT:
+//		currentField->getJsmFile()->saveSym();//TODO
+		break;
+	default:
+		if(!currentField->getFile((Field::FileType)type)->toFile(path)) {
+			QMessageBox::warning(this, tr("Erreur"), currentField->getFile((Field::FileType)type)->errorString());
+		}
+	}
 }
 
 void MainWindow::importCurrent()
@@ -822,7 +846,7 @@ void MainWindow::gotoScript(int fieldID, int groupID, int methodID, int opcodeID
 void MainWindow::about()
 {
 	QDialog apropos(this, Qt::Dialog | Qt::CustomizeWindowHint);
-	apropos.setFixedSize(200,250);
+	apropos.setFixedSize(200,270);
 
 	QFont font;
 	font.setPointSize(12);
@@ -838,7 +862,7 @@ void MainWindow::about()
 
 	font.setPointSize(8);
 
-	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci à :<br/> - Aali<br/> - Aladore384<br/>"), &apropos);
+	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci à :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li></ul>"), &apropos);
 	desc2.setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
 	desc2.setTextFormat(Qt::RichText);
 	desc2.setOpenExternalLinks(true);
