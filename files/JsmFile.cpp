@@ -19,7 +19,6 @@
 
 QStringList JsmFile::opcodeNameCalc;
 QStringList JsmFile::opcodeName;
-QString JsmFile::lastError = QString();
 
 JsmFile::JsmFile() :
 	File(), _hasSym(false), needUpdate(true), groupItem(0)

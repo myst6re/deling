@@ -253,7 +253,6 @@ bool MainWindow::openArchive(const QString &path)
 		list1->resizeColumnToContents(2);
 
 		actionExport->setEnabled(true);
-		actionImport->setEnabled(false);
 
 		((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(fieldArchive->getModels());
 		((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(fieldArchive->getModels());
@@ -355,6 +354,8 @@ void MainWindow::setReadOnly(bool readOnly)
 {
 	foreach(PageWidget *pageWidget, pageWidgets)
 		pageWidget->setReadOnly(readOnly);
+
+    actionImport->setDisabled(readOnly);
 }
 
 bool MainWindow::openIsoArchive(const QString &path)
@@ -584,7 +585,7 @@ void MainWindow::saveAs(QString path)
 
 void MainWindow::exportCurrent()
 {
-	if(currentField == NULL)	return;
+    if(!currentField)	return;
 
 	QString path = fieldArchive != NULL ? fieldArchive->archivePath() : field->path();
 	QStringList filter;
@@ -641,12 +642,40 @@ void MainWindow::exportCurrent()
 	path = QFileDialog::getSaveFileName(this, tr("Exporter"), path, filter.join(";;"), &selectedFilter);
 	if(path.isNull())		return;
 
-	currentField->getFile((Field::FileType)typeList.at(filter.indexOf(selectedFilter)))->toFile(path);
+    if(!currentField->getFile((Field::FileType)typeList.at(filter.indexOf(selectedFilter)))->toFile(path)) {
+        QMessageBox::warning(this, tr("Erreur"), currentField->getFile((Field::FileType)typeList.at(filter.indexOf(selectedFilter)))->errorString());
+    }
 }
 
 void MainWindow::importCurrent()
 {
+    if(!currentField)	return;
 
+    QString path = fieldArchive != NULL ? fieldArchive->archivePath() : field->path();
+    QStringList filter;
+    QList<int> typeList;
+
+    for(int i=0 ; i<FILE_COUNT ; ++i) {
+        if(i != Field::Background && i != Field::Jsm) {
+            if(currentField->hasFile((Field::FileType)i)) {
+                filter.append(currentField->getFile((Field::FileType)i)->filterText());
+                typeList.append(i);
+            }
+        }
+    }
+
+    if(filter.isEmpty()) {
+        QMessageBox::warning(this, tr("Erreur"), tr("Cet écran ne contient pas assez d'éléments pour être importé."));
+        return;
+    }
+
+    QString selectedFilter;
+    path = QFileDialog::getSaveFileName(this, tr("Importer"), path, filter.join(";;"), &selectedFilter);
+    if(path.isNull())		return;
+
+    if(!currentField->getFile((Field::FileType)typeList.at(filter.indexOf(selectedFilter)))->fromFile(path)) {
+        QMessageBox::warning(this, tr("Erreur"), currentField->getFile((Field::FileType)typeList.at(filter.indexOf(selectedFilter)))->errorString());
+    }
 }
 
 void MainWindow::optimizeArchive()

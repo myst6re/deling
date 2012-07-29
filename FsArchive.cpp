@@ -208,34 +208,32 @@ FsArchive::~FsArchive()
 		fi.close();
 		qDebug() << "close fs" << fs.fileName();
 	}
-	foreach(FsHeader *header, infos) 	delete header;
+    foreach(FsHeader *header, toc_access) 	delete header;
 }
 
 void FsArchive::addFile(const QString &path, quint32 uncompressed_size, quint32 position, bool isCompressed)
 {
-	if(uncompressed_size!=0) {
-		if(infos.contains(position) || toc_access.contains(path.toLower())) {
-			qWarning() << "addFile error:" << path << uncompressed_size << position << isCompressed;
-			return;
-		}
-		infos.insert(position, new FsHeader(path, uncompressed_size, position, isCompressed));
-		toc_access.insert(path.toLower(), position);
-	}
-	else {
-		qWarning() << "Empty file!" << path << uncompressed_size << position << isCompressed;
-	}
+    if(toc_access.contains(path.toLower())) {
+        qWarning() << "addFile error: file already exists" << path << uncompressed_size << position << isCompressed;
+        return;
+    }
+    FsHeader *header = new FsHeader(path, uncompressed_size, position, isCompressed);
+    sortedByPosition.insert(position, header);
+    toc_access.insert(path.toLower(), header);
 }
 
 bool FsArchive::removeFile(QString path)
 {
 	path = path.toLower();
-	if(toc_access.contains(path)) {
-		FsHeader *header = infos.take(toc_access.value(path));
-		if(header != 0) {
-			delete header;
-			return toc_access.remove(path)>=1;
-		}
-	}
+    FsHeader *header = toc_access.take(path);
+    if(header != 0) {
+        bool ok = sortedByPosition.remove(header->position(), header)==1;
+        if(!ok) {
+            qWarning() << "FsArchive::removeFile impossible" << path;
+        }
+        delete header;
+        return ok;
+    }
 	return false;
 }
 
@@ -246,18 +244,18 @@ FsHeader *FsArchive::getFile(const QString &path) const
 	if(path.startsWith('*'))
 	{
 		QString path2 = path.mid(1);
-		QMapIterator<QString, quint32> i(toc_access);
+        QMapIterator<QString, FsHeader *> i(toc_access);
 		while(i.hasNext())
 		{
 			i.next();
 			if(i.key().endsWith(path2, Qt::CaseInsensitive))
 			{
-				return infos.value(i.value());
+                return i.value();
 			}
 		}
 	}
 	else {
-		return infos.value(toc_access.value(path.toLower(), -1), NULL);
+        return toc_access.value(path.toLower(), NULL);
 	}
 
 	//	qDebug() << path << "non trouvé";
@@ -277,7 +275,7 @@ bool FsArchive::dirExists(QString dir) const
 	if(dir.isEmpty())
 		return true;
 
-	foreach(FsHeader *info, infos) {
+    foreach(FsHeader *info, toc_access) {
 		if(info->path().startsWith(dir, Qt::CaseInsensitive)) {
 			return true;
 		}
@@ -292,17 +290,21 @@ QString FsArchive::filePath(const QString &path) const
 	return header!=NULL ? header->path() : QString();
 }
 
-void FsArchive::setFilePath(QString path, const QString &newPath)
+bool FsArchive::setFilePath(QString path, const QString &newPath)
 {
 	path = path.toLower();
 
 	if(toc_access.contains(path) && !toc_access.contains(newPath.toLower()))
 	{
-		int pos = toc_access.value(path);
-		infos.value(pos)->setPath(newPath);
+        FsHeader *header = toc_access.value(path);
+        header->setPath(newPath);
 		toc_access.remove(path);
-		toc_access.insert(newPath.toLower(), pos);
+        toc_access.insert(newPath.toLower(), header);
+
+        return true;
 	}
+
+    return false;
 }
 
 quint32 FsArchive::uncompressedFileSize(const QString &path) const
@@ -368,25 +370,30 @@ void FsArchive::changePositions(FsHeader *start, int diff)
 	FsHeader *header;
 
 	// décalage des positions des fichiers qui suivent
-	QMap<quint32, FsHeader *>::iterator i = infos.find(infos.key(start));
-	++i;
-	while(i != infos.end())
-	{
-		header = i.value();
-		header->setPosition(header->position() + diff);
-		// toc_access.insert(header->path().toLower(), newPos);
-		++i;
-	}
+    QMap<quint32, FsHeader *>::iterator i = sortedByPosition.find(sortedByPosition.key(start), start);
+    if(i != sortedByPosition.end())
+    {
+        ++i;
+        while(i != sortedByPosition.end())
+        {
+            header = i.value();
+            header->setPosition(header->position() + diff);
+            // toc_access.insert(header->path().toLower(), newPos);
+            ++i;
+        }
+    } else {
+        qWarning() << "FsArchive::changePositions already at the end";
+    }
 }
 
 QMap<QString, FsHeader> FsArchive::getHeader() const
 {
 	QMap<QString, FsHeader> header;
-	QMapIterator<QString, quint32> i(toc_access);
+    QMapIterator<QString, FsHeader *> i(toc_access);
 	while(i.hasNext()) {
 		i.next();
-		header.insert(i.key(), *(infos.value(i.value())));
-	}
+        header.insert(i.key(), *(i.value()));
+    }
 	return header;
 }
 
@@ -395,9 +402,13 @@ void FsArchive::setHeader(const QMap<QString, FsHeader> &header)
 	QMapIterator<QString, FsHeader> i(header);
 	while(i.hasNext()) {
 		i.next();
-		FsHeader h = i.value(), *h2 = infos.value(toc_access.value(i.key()));
-		h2->setPosition(h.position());
-		h2->setUncompressed_size(h.uncompressed_size());
+        FsHeader h = i.value(), *h2 = toc_access.value(i.key());
+        if(h2) {
+            h2->setPosition(h.position());
+            h2->setUncompressed_size(h.uncompressed_size());
+        } else {
+            qWarning() << "FsArchive::setHeader error:" << i.key() << "doesn't exists!";
+        }
 	}
 	rebuildInfos();
 }
@@ -407,7 +418,7 @@ QStringList FsArchive::toc() const
 	QStringList toc;
 
 	// Files sorted by positions
-	foreach(FsHeader *header, infos) {
+    foreach(FsHeader *header, sortedByPosition) {
 		toc.append(header->path());
 	}
 
@@ -421,7 +432,7 @@ QStringList FsArchive::dirs() const
 	int lastIndex;
 
 	// Files sorted by positions
-	foreach(FsHeader *header, infos) {
+    foreach(FsHeader *header, sortedByPosition) {
 		dir = header->path();
 		cleanPath(dir);
 		lastIndex = dir.lastIndexOf('\\', -2);
@@ -486,7 +497,7 @@ FsArchive::Error FsArchive::extractFiles(const QStringList &fileNames, const QSt
 			dir.mkpath(QDir::cleanPath(fileName.mid(sizeOfBaseFileName, index-sizeOfBaseFileName)));
 		}
 
-		QFile fic(QDir::cleanPath(fileDir % "/" % fileName.mid(sizeOfBaseFileName)));
+        QFile fic(QDir::cleanPath(fileDir % QDir::separator() % fileName.mid(sizeOfBaseFileName).replace('\\', '/')));
 		if(!fic.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
 			return TargetCantBeOpened;
 		}
@@ -669,7 +680,7 @@ FsArchive::Error FsArchive::remove(QStringList destinations, QProgressDialog *pr
 		pos = temp.pos();
 
 		if(destinations.contains(entry, Qt::CaseInsensitive)) {
-			removeFile(entry);
+            removeFile(entry);
 			destinations.removeOne(entry);
 		}
 		else {
@@ -800,7 +811,7 @@ void FsArchive::save(QByteArray &fl_data, QByteArray &fi_data) const
 {
 	int size, pos, isCompressed;
 
-	foreach(FsHeader *header, infos) {
+    foreach(FsHeader *header, sortedByPosition) {
 		fl_data.append(header->path().toLatin1());
 		fl_data.append("\r\n", 2);
 		size = header->uncompressed_size();
@@ -841,7 +852,7 @@ int FsArchive::replaceArchive(QFile *newFile)
 	fs.close();
 
 	if(!fs.remove()) {
-		qWarning() << "Impossible de supprimer le fs" << fs.errorString();
+        qWarning() << "Impossible to remove the fs" << fs.errorString();
 		fs.open(QIODevice::ReadWrite);		
 		return 1;
 	}
@@ -938,10 +949,10 @@ void FsArchive::fileToTheEnd(const QString &path, QByteArray &fs_data)
 
 	if(header==NULL)	return;
 
-	QMap<quint32, FsHeader *>::iterator i = infos.find(header->position());
-	if(i == infos.end())	return;
+    QMap<quint32, FsHeader *>::iterator i = sortedByPosition.find(header->position(), header);
+    if(i == sortedByPosition.end())	return;
 	++i;
-	if(i == infos.end())	return;
+    if(i == sortedByPosition.end())	return;
 
 	int size = i.value()->position() - header->position();// nextHeaderPos - headerPos = RealHeaderSize
 
@@ -960,13 +971,13 @@ void FsArchive::rebuildInfos()
 {
 	// Rebuild structure and order indication
 	QMap<quint32, FsHeader *> newInfos;
-	QMap<QString, quint32> newToc;
-	foreach(FsHeader *info, infos) {
+    QMap<QString, FsHeader *> newToc;
+    foreach(FsHeader *info, sortedByPosition) {
 		newInfos.insert(info->position(), info);
-		newToc.insert(info->path().toLower(), info->position());
+        newToc.insert(info->path().toLower(), info);
 	}
 
-	infos = newInfos;
+    sortedByPosition = newInfos;
 	toc_access = newToc;
 }
 
@@ -979,7 +990,7 @@ QMap<QString, FsHeader *> FsArchive::fileList(QString dir) const
 
 	// qDebug() << "FsArchive::fileList(QString dir)" << dir;
 
-	foreach(FsHeader *info, infos) {
+    foreach(FsHeader *info, sortedByPosition) {
 		filePath = info->path();
 
 		if(filePath.compare(dir, Qt::CaseInsensitive)!=0
@@ -1006,7 +1017,7 @@ QStringList FsArchive::tocInDirectory(QString dir) const
 
 	dir = cleanPath(dir);
 
-	foreach(FsHeader *info, infos) {
+    foreach(FsHeader *info, sortedByPosition) {
 		filePath = info->path();
 		if(filePath.compare(dir, Qt::CaseInsensitive)!=0
 				&& (dir.isEmpty() || filePath.startsWith(dir, Qt::CaseInsensitive))) {
@@ -1070,7 +1081,7 @@ QString FsArchive::errorString(Error error, const QString &fileName)
   }
 
   foreach(int pos, toc_access) {
-   header = infos.value(pos);
+   header = sortedByPosition.value(pos);
    ret.append(QString("%1 = pos:%2 | uncompressed_size:%3 | isCompressed:%4 | isNull:%5\n")
 		.arg(header->path()).arg(header->position()).arg(header->uncompressed_size()).arg(header->isCompressed()).arg(header->isNull()));
   }

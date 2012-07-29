@@ -17,8 +17,6 @@
  ****************************************************************************/
 #include "files/MsdFile.h"
 
-QString MsdFile::lastError = QString();
-
 MsdFile::MsdFile() :
 	File()
 {

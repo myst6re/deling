@@ -59,8 +59,7 @@ public:
 	bool save(QByteArray &jsm, QByteArray &sym);
 	inline QString filterText() const {
 		return QString();
-	}
-	static QString lastError;
+    }
 
 	bool compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
 	QString toString(int groupID, int methodID);

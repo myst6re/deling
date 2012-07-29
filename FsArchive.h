@@ -110,7 +110,7 @@ private:
 	void addFile(const QString &path, quint32 uncompressed_size, quint32 position, bool isCompressed);
 	bool removeFile(QString);
 	QString filePath(const QString &path) const;
-	void setFilePath(QString path, const QString &newPath);
+    bool setFilePath(QString path, const QString &newPath);
 	quint32 uncompressedFileSize(const QString &path) const;
 	quint32 filePosition(const QString &path) const;
 	void changePositions(FsHeader *start, int diff);
@@ -118,8 +118,8 @@ private:
 	bool load(const QString &fl_data, const QByteArray &fi_data);
 	bool load(const QString &path);
 
-	QMap<quint32, FsHeader *> infos;// <order, headerData>
-	QMap<QString, quint32> toc_access;// <path, order>
+    QMultiMap<quint32, FsHeader *> sortedByPosition;// <order, headerData>
+    QMap<QString, FsHeader *> toc_access;// <path, headerData>
 	QFile fs, fl, fi;
 	bool fromFile;
 	bool _isOpen;

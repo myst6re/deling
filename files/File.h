@@ -30,8 +30,10 @@ public:
 	bool toFile(const QString &path);
 	virtual QString filterText() const=0;
 	bool isModified() const;
+    const QString &errorString() const;
 protected:
 	bool modified;
+    static QString lastError;
 };
 
 #endif // FILE_H

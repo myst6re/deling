@@ -31,7 +31,6 @@ public:
 	inline QString filterText() const {
 		return QObject::tr("Fichier dialogues écran PC (*.msd)");
 	}
-	static QString lastError;
 	QByteArray data(int id) const;
 	FF8Text text(int) const;
 	void setText(int, const FF8Text &);
