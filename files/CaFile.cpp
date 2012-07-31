@@ -62,15 +62,11 @@ bool CaFile::open(const QByteArray &ca)
 
 bool CaFile::save(QByteArray &ca)
 {
-	if(!modified)	return false;
-
 	foreach(CaStruct caStruct, cameras) {
 		caStruct.camera_axis2z = caStruct.camera_axis[2].z;
 		caStruct.camera_zoom2 = caStruct.camera_zoom;
 		ca.append((char *)&caStruct, sizeof(CaStruct));
 	}
-
-	modified = false;
 
 	return true;
 }

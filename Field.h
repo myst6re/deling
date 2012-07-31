@@ -54,6 +54,7 @@ public:
 	bool isPs() const;
 
 	bool isModified() const;
+	void setModified(bool modified);
 	const QString &name() const;
 
 	bool hasFile(FileType fileType) const;

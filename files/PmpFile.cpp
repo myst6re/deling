@@ -27,41 +27,42 @@ PmpFile::PmpFile()
 bool PmpFile::open(const QByteArray &pmp)
 {
 	this->pmp = pmp;
+	modified = false;
 
-	if(pmp.size() != 4) {
-		int height = (pmp.size() - 516) / 128;
-		const char *constPmp = pmp.constData();
+//	if(pmp.size() != 4) {
+//		int height = (pmp.size() - 516) / 128;
+//		const char *constPmp = pmp.constData();
 
-		QImage pal(16, 16, QImage::Format_RGB32);
-		QRgb *pxPal = (QRgb *)pal.bits();
-		qDebug() << pal.width()*pal.height() << pal.byteCount();
-		for(int i=0 ; i<pal.width()*pal.height() ; ++i) {
-			quint16 color;
-			memcpy(&color, &constPmp[4+i*2], 2);
-			pxPal[i] = FF8Image::fromPsColor(color);
-		}
-		pal.save(QString("pmp/%1-palette.png").arg(currentFieldName));
+//		QImage pal(16, 16, QImage::Format_RGB32);
+//		QRgb *pxPal = (QRgb *)pal.bits();
+//		qDebug() << pal.width()*pal.height() << pal.byteCount();
+//		for(int i=0 ; i<pal.width()*pal.height() ; ++i) {
+//			quint16 color;
+//			memcpy(&color, &constPmp[4+i*2], 2);
+//			pxPal[i] = FF8Image::fromPsColor(color);
+//		}
+//		pal.save(QString("pmp/%1-palette.png").arg(currentFieldName));
 
-//		for(int palID=0 ; palID<16 ; ++palID) {
-			QImage img(64, height, QImage::Format_RGB32);
-			QRgb *px = (QRgb *)img.bits();
+////		for(int palID=0 ; palID<16 ; ++palID) {
+//			QImage img(64, height, QImage::Format_RGB32);
+//			QRgb *px = (QRgb *)img.bits();
 
-			for(int j=0 ; j<img.width()*img.height() ; ++j) {
-				quint16 color;
-				memcpy(&color, &constPmp[516 + j*2], 2);
-
-				px[j] = FF8Image::fromPsColor(color);
-
-//				++j;
-//				memcpy(&color, &constPmp[4 + palID * 32 + ((quint8)pmp.at(516 + j/2) >> 4)*2], 2);
+//			for(int j=0 ; j<img.width()*img.height() ; ++j) {
+//				quint16 color;
+//				memcpy(&color, &constPmp[516 + j*2], 2);
 
 //				px[j] = FF8Image::fromPsColor(color);
-			}
+
+////				++j;
+////				memcpy(&color, &constPmp[4 + palID * 32 + ((quint8)pmp.at(516 + j/2) >> 4)*2], 2);
+
+////				px[j] = FF8Image::fromPsColor(color);
+//			}
 
 
-			img.save(QString("pmp/%1-non.png").arg(currentFieldName));
-//		}
-	}
+//			img.save(QString("pmp/%1-non.png").arg(currentFieldName));
+////		}
+//	}
 
 	return true;
 }
@@ -69,7 +70,6 @@ bool PmpFile::open(const QByteArray &pmp)
 bool PmpFile::save(QByteArray &pmp)
 {
 	pmp = this->pmp;
-	modified = false;
 
 	return true;
 }

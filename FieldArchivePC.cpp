@@ -59,10 +59,10 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 	clearFields();
 
 	// Ouverture de la liste des écrans (facultatif)
-	FsArchive mapData(archive->fileData("*mapdata.fl"), archive->fileData("*mapdata.fi"));
+	FsArchive mapData(archive->fileData("*field\\mapdata.fl"), archive->fileData("*field\\mapdata.fi"));
 	if(mapData.isOpen()) {
-		QByteArray mapdata_fs = archive->fileData("*mapdata.fs");
-		setMapList(QString(mapData.fileData(QString("*maplist"), mapdata_fs)).split('\n'));
+		QByteArray mapdata_fs = archive->fileData("*field\\mapdata.fs");
+		setMapList(QString(mapData.fileData(QString("*field\\mapdata\\maplist"), mapdata_fs)).split('\n'));
 	} else {
 		setMapList(QStringList());
 	}
@@ -370,6 +370,10 @@ bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
 	}
 	else if(!archive->setPath(save_path)) {
 		return false;
+	}
+
+	foreach(Field *field, fields) {
+		field->setModified(false);
 	}
 
 	archive->rebuildInfos();

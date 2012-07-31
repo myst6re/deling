@@ -30,6 +30,7 @@ public:
 	bool toFile(const QString &path);
 	virtual QString filterText() const=0;
 	bool isModified() const;
+	void setModified(bool modified);
     const QString &errorString() const;
 protected:
 	bool modified;

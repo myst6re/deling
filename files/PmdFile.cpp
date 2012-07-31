@@ -26,6 +26,7 @@ PmdFile::PmdFile()
 bool PmdFile::open(const QByteArray &pmd)
 {
 	this->pmd = pmd;
+	modified = false;
 
 	if(pmd.size() == 4 && pmd != "\x20\x20\x20\x20") {
 		qWarning() << "Unknown pmd format!" << pmd.toHex();
@@ -34,28 +35,28 @@ bool PmdFile::open(const QByteArray &pmd)
 	if(pmd.size() != 4 && pmd.size() != 10016)
 		qDebug() << "pmd size" << pmd.size();
 
-	if(pmd.size() == 10016) {
-		QFile debug("pmp/_debug_"+PmpFile::currentFieldName+".txt");
-		debug.open(QIODevice::WriteOnly | QIODevice::Truncate);
-		const char *constPmd = pmd.constData();
+//	if(pmd.size() == 10016) {
+//		QFile debug("pmp/_debug_"+PmpFile::currentFieldName+".txt");
+//		debug.open(QIODevice::WriteOnly | QIODevice::Truncate);
+//		const char *constPmd = pmd.constData();
 
-		for(int i=0 ; i<16 ; ++i) {
-			for(int j=0 ; j<16 ; ++j) {
-				qint16 zz1, zz2, zz3;
-				memcpy(&zz1, &constPmd[i*372 + j*20], 2);
-				memcpy(&zz2, &constPmd[i*372 + j*20 + 2], 2);
-				memcpy(&zz3, &constPmd[i*372 + j*20 + 4], 2);
-				debug.write(QString("%1 %2 %3 ").arg(zz1, 4, 10, QChar('0')).arg(zz2, 4, 10, QChar('0')).arg(zz3, 4, 10, QChar('0')).toLatin1());
-				for(int k=3 ; k<10 ; ++k) {
-					debug.write(QString("%1|%2 ").arg((quint8)pmd.at(i*372 + j*20 + k*2), 3, 10, QChar('0')).arg((quint8)pmd.at(i*372 + j*20 + k*2 + 1), 3, 10, QChar('0')).toLatin1());
-				}
-				debug.write("\n");
-			}
-			debug.write(pmd.mid(16*20 + i*372, 52).toHex());
-			debug.write("\n\n");
-		}
-		debug.close();
-	}
+//		for(int i=0 ; i<16 ; ++i) {
+//			for(int j=0 ; j<16 ; ++j) {
+//				qint16 zz1, zz2, zz3;
+//				memcpy(&zz1, &constPmd[i*372 + j*20], 2);
+//				memcpy(&zz2, &constPmd[i*372 + j*20 + 2], 2);
+//				memcpy(&zz3, &constPmd[i*372 + j*20 + 4], 2);
+//				debug.write(QString("%1 %2 %3 ").arg(zz1, 4, 10, QChar('0')).arg(zz2, 4, 10, QChar('0')).arg(zz3, 4, 10, QChar('0')).toLatin1());
+//				for(int k=3 ; k<10 ; ++k) {
+//					debug.write(QString("%1|%2 ").arg((quint8)pmd.at(i*372 + j*20 + k*2), 3, 10, QChar('0')).arg((quint8)pmd.at(i*372 + j*20 + k*2 + 1), 3, 10, QChar('0')).toLatin1());
+//				}
+//				debug.write("\n");
+//			}
+//			debug.write(pmd.mid(16*20 + i*372, 52).toHex());
+//			debug.write("\n\n");
+//		}
+//		debug.close();
+//	}
 
 	return true;
 }
@@ -63,7 +64,6 @@ bool PmdFile::open(const QByteArray &pmd)
 bool PmdFile::save(QByteArray &pmd)
 {
 	pmd = this->pmd;
-	modified = false;
 
 	return true;
 }

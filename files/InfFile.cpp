@@ -33,14 +33,14 @@ bool InfFile::open(const QByteArray &inf)
 
 	memcpy(&infStruct, constInf, sizeof(InfStruct));
 
+	modified = false;
+
 	return true;
 }
 
 bool InfFile::save(QByteArray &inf)
 {
 	inf.append((char *)&infStruct, sizeof(InfStruct));
-
-	modified = false;
 
 	return true;
 }

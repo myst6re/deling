@@ -98,8 +98,6 @@ bool IdFile::save(QByteArray &id)
 		id.append((char *)&_unknown, 2);
 	}
 
-	modified = false;
-
 	return true;
 }
 

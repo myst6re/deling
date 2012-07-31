@@ -59,6 +59,7 @@ public:
 	bool save(QByteArray &jsm);
 	bool save(QByteArray &jsm, QByteArray &sym);
 	bool openSym(const QByteArray &sym_data);
+	bool toFileSym(const QString &path);
 	QString saveSym();
 	inline QString filterText() const {
 		return QObject::tr("Fichier scripts écran PC (*.jsm)");

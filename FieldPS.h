@@ -20,15 +20,43 @@
 
 #include "Field.h"
 
+class HeaderPS
+{
+	quint32 *posSections;
+	int memoryPos;
+	int sectionCount;
+public:
+	explicit HeaderPS(const QByteArray &data, int count);
+	bool isValid(int size) const;
+	quint32 position(int section) const;
+	quint32 size(int section) const;
+	void setSize(int section, quint32 newSize);
+	QByteArray save() const;
+};
+
+class FieldDatHeader
+{
+	quint32 posSections[12];
+	int memoryPos;
+public:
+	enum DatSections {
+		Inf, Ca, Id, Map, Msk, Rat, Mrt, AKAO, Msd, Pmd, Jsm, Last
+	};
+	explicit FieldDatHeader(const QByteArray &dat);
+	bool isValid(int datSize) const;
+	quint32 position(DatSections section) const;
+	quint32 size(DatSections section) const;
+	void setSize(DatSections section, quint32 newSize);
+	QByteArray save() const;
+};
+
 class FieldPS : public Field
 {
 public:
 	enum MimSections {
 		Pvp, Mim, Tdw, Pmp
 	};
-	enum DatSections {
-		Inf, Ca, Id, Map, Msk, Rat, Mrt, AKAO, Msd, Pmd, Jsm, Last
-	};
+
 
 	FieldPS(const QByteArray &dat, quint32 isoFieldID);
 	virtual ~FieldPS();
@@ -39,7 +67,7 @@ public:
 	quint32 isoFieldID() const;
 	bool open(const QByteArray &dat);
 	bool open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
-	bool save(QByteArray &dat);
+	bool save(QByteArray &dat, QByteArray &mim);
 
 private:
 	quint32 _isoFieldID;

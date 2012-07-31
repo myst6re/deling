@@ -73,7 +73,7 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data)
 	JsmHeader jsm_header;
 
 	if(jsm_data_size<8) {
-		qWarning() << "JsmFile::open error 1" << jsm_data_size;
+		qWarning() << "JsmFile::open error (1)" << jsm_data_size;
 		return false;
 	}
 
@@ -83,12 +83,12 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data)
 	int scriptCount = (jsm_header.section2-jsm_header.section1)/2;
 
 	if(jsm_data_size <= jsm_header.section1 || jsm_data_size <= jsm_header.section2) {
-		qWarning() << "JsmFile::open error 2" << jsm_data_size << jsm_header.section1 << jsm_header.section2;
+		qWarning() << "JsmFile::open error (2)" << jsm_data_size << jsm_header.section1 << jsm_header.section2;
 		return false;
 	}
 
 	if(groupCount != jsm_header.count0 + jsm_header.count1 + jsm_header.count2 + jsm_header.count3) {
-		qWarning() << "JsmFile::open Nombre de groupes invalide !" << groupCount << jsm_header.count0 << jsm_header.count1 << jsm_header.count2 << jsm_header.count3;
+		qWarning() << "JsmFile::open invalid group count!" << groupCount << jsm_header.count0 << jsm_header.count1 << jsm_header.count2 << jsm_header.count3;
 		return false;
 	}
 
@@ -98,7 +98,7 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data)
 		count = group & 0x7F;
 
 		if(label+count+1 >= scriptCount) {
-			qWarning() << "JsmFile::open error 3" << label << count << scriptCount;
+			qWarning() << "JsmFile::open error (3)" << label << count << scriptCount;
 			return false;
 		}
 
@@ -126,7 +126,7 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data)
 		bool flag = pos >> 15;
 		pos &= 0x7FFF;
 		if((jsm_header.section2 + pos*4) > jsm_data_size || (int)pos < oldPos) {
-			qWarning() << "JsmFile::open error 4" << (jsm_header.section2 + pos*4) << jsm_data_size;
+			qWarning() << "JsmFile::open error (4)" << (jsm_header.section2 + pos*4) << jsm_data_size;
 			return false;
 		}
 		oldPos = pos;
@@ -142,6 +142,8 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data)
 	searchGroupTypes();
 
 	_hasSym = openSym(sym_data);
+
+	modified = false;
 
 	return true;
 }
@@ -302,8 +304,6 @@ bool JsmFile::save(QByteArray &jsm)
 	jsm.append(section1);
 	jsm.append(scripts.data().constData());// Section 2
 
-	modified = false;
-
 	return true;
 }
 
@@ -313,6 +313,18 @@ bool JsmFile::save(QByteArray &jsm, QByteArray &sym)
 	sym = saveSym().toLatin1();
 
 	return true;
+}
+
+bool JsmFile::toFileSym(const QString &path)
+{
+	QFile f(path);
+	if(f.open(QIODevice::WriteOnly)) {
+		f.write(saveSym().toLatin1());
+		f.close();
+		return true;
+	}
+	lastError = f.errorString();
+	return false;
 }
 
 QString JsmFile::saveSym()

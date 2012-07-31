@@ -38,7 +38,6 @@ bool RatFile::open(const QByteArray &rat)
 bool RatFile::save(QByteArray &rat)
 {
 	rat = QByteArray((char *)rates, 4);
-	modified = false;
 
 	return true;
 }

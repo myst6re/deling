@@ -30,6 +30,7 @@ bool PvpFile::open(const QByteArray &pvp)
 	}
 
 	memcpy(&_value, pvp.constData(), 4);// values = 9, 10, 11, 12
+	modified = false;
 
 	return true;
 }
@@ -37,7 +38,6 @@ bool PvpFile::open(const QByteArray &pvp)
 bool PvpFile::save(QByteArray &pvp)
 {
 	pvp.append((char *)&_value, 4);
-	modified = false;
 
 	return true;
 }

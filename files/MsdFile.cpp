@@ -29,6 +29,8 @@ bool MsdFile::open(const QByteArray &msd)
 	texts.clear();
 	needEndOfString.clear();
 
+	modified = false;
+
 	if(dataSize==0)	return true;
 
 	memcpy(&textPos, msd_data, 4);
@@ -68,8 +70,6 @@ bool MsdFile::save(QByteArray &msd)
 			msd_data.append('\x00');
 		}
 	}
-
-	modified = false;
 
 	msd.append(msd_data);
 

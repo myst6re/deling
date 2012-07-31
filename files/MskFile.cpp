@@ -39,6 +39,8 @@ bool MskFile::open(const QByteArray &msk)
 	}
 	vertices.clear();
 
+	modified = false;
+
 	if(msk.isEmpty())	return true;
 
 	if(msk.size() < 4) {
@@ -72,8 +74,6 @@ bool MskFile::save(QByteArray &msk)
 	foreach(Vertex_s *vertex, vertices) {
 		msk.append((char *)&vertex, 24);
 	}
-
-	modified = false;
 
 	return true;
 }

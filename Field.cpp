@@ -349,8 +349,17 @@ bool Field::isModified() const
 			return true;
 		}
 	}
+	return false;
+//	return hasCharaFile() && charaFile->isModified();
+}
 
-	return hasCharaFile() && charaFile->isModified();
+void Field::setModified(bool modified)
+{
+	foreach(File *f, files) {
+		if(f) {
+			f->setModified(modified);
+		}
+	}
 }
 
 const QString &Field::name() const

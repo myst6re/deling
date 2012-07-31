@@ -72,6 +72,11 @@ bool File::isModified() const
 	return modified;
 }
 
+void File::setModified(bool modified)
+{
+	this->modified = modified;
+}
+
 const QString &File::errorString() const
 {
     return lastError;

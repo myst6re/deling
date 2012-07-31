@@ -37,6 +37,7 @@ public:
 	bool open(FsArchive *archive);
 	bool open2();
 	bool open2(FsArchive *archive);
+	bool save(const QString &path);
 	void save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
 	void optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
 

@@ -391,6 +391,42 @@ bool FieldPC::open2(FsArchive *archive)
 	return true;
 }
 
+bool FieldPC::save(const QString &path)
+{
+	QString archivePath = path;
+	archivePath.chop(1);
+
+	QFile fs(archivePath%'s');
+	if(fs.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+		QFile fl(archivePath%'l');
+		if(fl.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+			QFile fi(archivePath%'i');
+			if(fi.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+
+				QByteArray fs_data, fl_data, fi_data;
+
+				save(fs_data, fl_data, fi_data);
+
+				fs.write(fs_data);
+				fl.write(fl_data);
+				fi.write(fi_data);
+
+				fi.close();
+			} else {
+				return false;
+			}
+			fl.close();
+		} else {
+			return false;
+		}
+		fs.close();
+	} else {
+		return false;
+	}
+
+	return true;
+}
+
 void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data)
 {
 	if(!header)	return;

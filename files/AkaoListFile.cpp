@@ -86,8 +86,6 @@ bool AkaoListFile::save(QByteArray &akao)
 		akao.append(data);
 	}
 
-	modified = false;
-
 	return true;
 }
 

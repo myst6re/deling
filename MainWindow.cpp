@@ -420,7 +420,8 @@ void MainWindow::fillBackground(const QImage &image)
 
 void MainWindow::setModified(bool modified)
 {
-	if(modified && (!fieldArchive || fieldArchive->isReadOnly()))		return;
+	if(modified && (!fieldArchive || fieldArchive->isReadOnly()) && (!field || !field->isOpen()))
+		return;
 
 	actionSave->setEnabled(modified);
 	setWindowModified(modified);
@@ -540,14 +541,14 @@ void MainWindow::openFile(QString path)
 
 void MainWindow::save()
 {
-	if(fieldArchive == NULL)	return;
+	if(fieldArchive == NULL && (field == NULL || !field->isOpen()))	return;
 
-	saveAs(fieldArchive->archivePath());
+	saveAs(fieldArchive != NULL ? fieldArchive->archivePath() : field->getArchiveHeader()->path());
 }
 
 void MainWindow::saveAs(QString path)
 {
-	if(fieldArchive == NULL)	return;
+	if(fieldArchive == NULL && (field == NULL || !field->isOpen()))	return;
 
 	/* int errorFieldID, errorGroupID, errorMethodID, errorLine;
 	QString errorStr;
@@ -566,20 +567,29 @@ void MainWindow::saveAs(QString path)
 
 	if(path.isEmpty())
 	{
-		path = QFileDialog::getSaveFileName(this, tr("Enregistrer Sous"), fieldArchive->archivePath(), tr("Archive FS (*.fs)"));
+		path = fieldArchive != NULL ? fieldArchive->archivePath() : field->getArchiveHeader()->path();
+		path = QFileDialog::getSaveFileName(this, tr("Enregistrer Sous"), path, tr("Archive FS (*.fs)"));
 		if(path.isNull())		return;
 	}
 
-	QProgressDialog progress(tr("Enregistrement..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
-	progress.setWindowModality(Qt::WindowModal);
-	progress.show();
+	bool ok = true;
 
-	if(((FieldArchivePC *)fieldArchive)->save(&progress, path)) {
+	if(fieldArchive != NULL) {
+		QProgressDialog progress(tr("Enregistrement..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
+		progress.setWindowModality(Qt::WindowModal);
+		progress.show();
+
+		ok = ((FieldArchivePC *)fieldArchive)->save(&progress, path);
+	} else {
+		ok = field->save(path);
+	}
+
+	if(ok) {
 		setModified(false);
 		currentPath->setText(path);
 		setWindowTitle(QString("[*]%1 - %2").arg(path.mid(path.lastIndexOf('/')+1), PROG_FULLNAME));
 	} else {
-		QMessageBox::warning(this, tr("Erreur"), tr("Une erreur s'est produite lors de l'enregistrement de l'archive."));
+		QMessageBox::warning(this, tr("Erreur"), tr("Une erreur s'est produite lors de l'enregistrement."));
 	}
 }
 
@@ -615,24 +625,16 @@ void MainWindow::exportCurrent()
 		typeList.append(mim);
 		filter.append(tr("Fichier informations décors écran PC (*.map)"));
 		typeList.append(map);
-	}
-	if(currentField->hasJsmFile()) {
-		filter.append(tr("Fichier scripts écran PC (*.jsm)"));
-		typeList.append(jsm);
-		if(currentField->getJsmFile()->hasSym()) {
-			filter.append(tr("Fichier nom des scripts écran PC (*.sym)"));
-			typeList.append(sym);
-		}
 	}*/
 	for(int i=0 ; i<FILE_COUNT ; ++i) {
 		if(i == Field::Jsm) {
 			if(currentField->hasJsmFile()) {
 				filter.append(currentField->getJsmFile()->filterText());
 				typeList.append(i);
-//				if(currentField->getJsmFile()->hasSym()) {
-//					filter.append(tr("Fichier nom des scripts écran PC (*.sym)"));
-//					typeList.append(FILE_COUNT);
-//				}
+				if(currentField->getJsmFile()->hasSym()) {
+					filter.append(tr("Fichier nom des scripts écran PC (*.sym)"));
+					typeList.append(FILE_COUNT);
+				}
 			}
 		}
 		else if(i == Field::Background) {
@@ -662,7 +664,9 @@ void MainWindow::exportCurrent()
 
 	switch(type) {
 	case FILE_COUNT:
-//		currentField->getJsmFile()->saveSym();//TODO
+		if(!currentField->getJsmFile()->toFileSym(path)) {
+			QMessageBox::warning(this, tr("Erreur"), currentField->getJsmFile()->errorString());
+		}
 		break;
 	default:
 		if(!currentField->getFile((Field::FileType)type)->toFile(path)) {

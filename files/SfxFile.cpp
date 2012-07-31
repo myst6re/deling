@@ -50,8 +50,6 @@ bool SfxFile::save(QByteArray &sfx)
 		sfx.append((char *)&v, 4);
 	}
 
-	modified = false;
-
 	return true;
 }
 

@@ -85,6 +85,8 @@ bool TdwFile::open(const QByteArray &tdw)
 		return false;
 	}
 
+	modified = false;
+
 	return true;
 }
 
@@ -129,8 +131,6 @@ bool TdwFile::save(QByteArray &tdw)
 	} else {
 		return false;
 	}
-
-	modified = false;
 
 	return true;
 }

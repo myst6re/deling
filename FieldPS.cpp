@@ -17,6 +17,70 @@
  ****************************************************************************/
 #include "FieldPS.h"
 
+FieldDatHeader::FieldDatHeader(const QByteArray &dat)
+{
+	memcpy(posSections, dat.constData(), 48);// 12 * 4
+
+	memoryPos = posSections[Inf] - 48;
+
+	for(int i=Inf ; i<=Last ; ++i)
+		posSections[i] -= memoryPos;
+}
+
+bool FieldDatHeader::isValid(int datSize) const
+{
+	if((int)posSections[Last] != datSize) {
+		return false;
+	}
+
+	for(int i=Inf ; i<Last ; ++i) {
+		if(posSections[i] > posSections[i+1]) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+quint32 FieldDatHeader::position(DatSections section) const
+{
+	return posSections[section];
+}
+
+quint32 FieldDatHeader::size(DatSections section) const
+{
+	if(section == Last) {
+		return 0;
+	}
+
+	return posSections[section+1] - posSections[section];
+}
+
+void FieldDatHeader::setSize(DatSections section, quint32 newSize)
+{
+	if(section == Last) {
+		return;
+	}
+
+	int diff = newSize - size(section);
+
+	for(int i=section+1 ; i<=Last ; ++i) {
+		posSections[i] += diff;
+	}
+}
+
+QByteArray FieldDatHeader::save() const
+{
+	QByteArray header;
+
+	for(int i=Inf ; i<=Last ; ++i) {
+		quint32 posSection = posSections[i] + memoryPos;
+		header.append((char *)&posSection, 4);
+	}
+
+	return header;
+}
+
 FieldPS::FieldPS(const QByteArray &dat, quint32 isoFieldID)
 	: Field(QString()), _isoFieldID(isoFieldID)
 {
@@ -52,53 +116,44 @@ bool FieldPS::open(const QByteArray &dat)
 	setOpen(false);
 	// pvp + mim + tdw + pmp (MIM)
 	// inf + ca + id + map + msk + rat + mrt + AKAO + msd + pmd + jsm (DAT)
-	quint32 posSections[12];
-	const char *constData = dat.constData();
-	int memoryPos;
+	FieldDatHeader header(dat);
 
-	memcpy(posSections, constData, 48);// 12 * 4
-
-	memoryPos = posSections[Inf] - 48;
-
-	for(int i=0 ; i<12 ; ++i)
-		posSections[i] -= memoryPos;
-
-	if((int)posSections[Last] != dat.size()) {
-		qWarning() << "Mauvaise position section 1" << posSections[Last] << memoryPos << dat.size();
+	if(!header.isValid(dat.size())) {
+		qWarning() << "Bad dat header" << dat.size();
 		return false;
 	}
 
 	setName(dat.mid(48, 8));
 
-	/* MSD */
-	openFile(Field::Msd, dat.mid(posSections[Msd], posSections[Msd+1]-posSections[Msd]));
-
-	/* JSM */
-	openJsmFile(dat.mid(posSections[Jsm], posSections[Jsm+1]-posSections[Jsm]));
-
-	/* ID */
-	openFile(Field::Id, dat.mid(posSections[Id], posSections[Id+1]-posSections[Id]));
+	/* INF */
+	openFile(Field::Inf, dat.mid(header.position(FieldDatHeader::Inf), header.size(FieldDatHeader::Inf)));
 
 	/* CA */
-	openFile(Field::Ca, dat.mid(posSections[Ca], posSections[Ca+1]-posSections[Ca]));
+	openFile(Field::Ca, dat.mid(header.position(FieldDatHeader::Ca), header.size(FieldDatHeader::Ca)));
+
+	/* ID */
+	openFile(Field::Id, dat.mid(header.position(FieldDatHeader::Id), header.size(FieldDatHeader::Id)));
 
 	/* MSK */
-	openFile(Field::Msk, dat.mid(posSections[Msk], posSections[Msk+1]-posSections[Msk]));
+	openFile(Field::Msk, dat.mid(header.position(FieldDatHeader::Msk), header.size(FieldDatHeader::Msk)));
 
 	/* RAT */
-	openFile(Field::Rat, dat.mid(posSections[Rat], posSections[Rat+1]-posSections[Rat]));
+	openFile(Field::Rat, dat.mid(header.position(FieldDatHeader::Rat), header.size(FieldDatHeader::Rat)));
 
 	/* MRT */
-	openFile(Field::Mrt, dat.mid(posSections[Mrt], posSections[Mrt+1]-posSections[Mrt]));
-
-	/* INF */
-	openFile(Field::Inf, dat.mid(posSections[Inf], posSections[Inf+1]-posSections[Inf]));
+	openFile(Field::Mrt, dat.mid(header.position(FieldDatHeader::Mrt), header.size(FieldDatHeader::Mrt)));
 
 	/* AKAO */
-	openFile(Field::AkaoList, dat.mid(posSections[AKAO], posSections[AKAO+1]-posSections[AKAO]));
+	openFile(Field::AkaoList, dat.mid(header.position(FieldDatHeader::AKAO), header.size(FieldDatHeader::AKAO)));
+
+	/* MSD */
+	openFile(Field::Msd, dat.mid(header.position(FieldDatHeader::Msd), header.size(FieldDatHeader::Msd)));
 
 	/* PMD */
-	openFile(Field::Pmd, dat.mid(posSections[Pmd], posSections[Pmd+1]-posSections[Pmd]));
+	openFile(Field::Pmd, dat.mid(header.position(FieldDatHeader::Pmd), header.size(FieldDatHeader::Pmd)));
+
+	/* JSM */
+	openJsmFile(dat.mid(header.position(FieldDatHeader::Jsm), header.size(FieldDatHeader::Jsm)));
 
 	setOpen(true);
 	return true;
@@ -142,64 +197,45 @@ bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArr
 	return true;
 }
 
-bool FieldPS::save(QByteArray &dat)
+bool FieldPS::save(QByteArray &dat, QByteArray &mim)
 {
 	// pvp + mim + tdw + pmp (MIM)
 	// inf + ca + id + map + msk + rat + mrt + AKAO + msd + pmd + jsm (DAT)
-	quint32 posSections[12];
-	const char *constData = dat.constData();
-	int memoryPos, diff;
-
-	memcpy(posSections, constData, 48);
-
-	memoryPos = posSections[Inf] - 48;
-
-	for(int i=0 ; i<12 ; ++i)
-		posSections[i] -= memoryPos;
-
-	if((int)posSections[Last] != dat.size()) {
-		qWarning() << "Mauvaise position section 1" << posSections[Last] << memoryPos << dat.size();
-		return false;
-	}
+	FieldDatHeader header(dat);
 
 	if(hasMsdFile() && getMsdFile()->isModified()) {
 		QByteArray msd;
 		if(getMsdFile()->save(msd)) {
-			dat.replace(posSections[Msd], posSections[Msd+1] - posSections[Msd], msd);
-			diff = msd.size() - (posSections[Msd+1] - posSections[Msd]);
-			for(int i=Msd+1 ; i<12 ; ++i)	posSections[i] += diff;
+			dat.replace(header.position(FieldDatHeader::Msd), header.size(FieldDatHeader::Msd), msd);
+			header.setSize(FieldDatHeader::Msd, msd.size());
 		}
 	}
 	if(hasJsmFile() && getJsmFile()->isModified()) {
 		QByteArray sym, jsm;
 		if(getJsmFile()->save(jsm, sym)) {
-			dat.replace(posSections[Jsm], posSections[Jsm+1] - posSections[Jsm], jsm);
-			diff = jsm.size() - (posSections[Jsm+1] - posSections[Jsm]);
-			for(int i=Jsm+1 ; i<12 ; ++i)	posSections[i] += diff;
+			dat.replace(header.position(FieldDatHeader::Jsm), header.size(FieldDatHeader::Jsm), jsm);
+			header.setSize(FieldDatHeader::Jsm, jsm.size());
 		}
 	}
 	if(hasRatFile() && getRatFile()->isModified()) {
 		QByteArray rat;
 		if(getRatFile()->save(rat)) {
-			dat.replace(posSections[Rat], posSections[Rat+1] - posSections[Rat], rat);
-			diff = rat.size() - (posSections[Rat+1] - posSections[Rat]);
-			for(int i=Rat+1 ; i<12 ; ++i)	posSections[i] += diff;
+			dat.replace(header.position(FieldDatHeader::Rat), header.size(FieldDatHeader::Rat), rat);
+			header.setSize(FieldDatHeader::Rat, rat.size());
 		}
 	}
 	if(hasMrtFile() && getMrtFile()->isModified()) {
 		QByteArray mrt;
 		if(getMrtFile()->save(mrt)) {
-			dat.replace(posSections[Mrt], posSections[Mrt+1] - posSections[Mrt], mrt);
-			diff = mrt.size() - (posSections[Mrt+1] - posSections[Mrt]);
-			for(int i=Mrt+1 ; i<12 ; ++i)	posSections[i] += diff;
+			dat.replace(header.position(FieldDatHeader::Mrt), header.size(FieldDatHeader::Mrt), mrt);
+			header.setSize(FieldDatHeader::Mrt, mrt.size());
 		}
 	}
 	if(hasInfFile() && getInfFile()->isModified()) {
 		QByteArray inf;
 		if(getInfFile()->save(inf)) {
-			dat.replace(posSections[Inf], posSections[Inf+1] - posSections[Inf], inf);
-			diff = inf.size() - (posSections[Inf+1] - posSections[Inf]);
-			for(int i=Inf+1 ; i<12 ; ++i)	posSections[i] += diff;
+			dat.replace(header.position(FieldDatHeader::Inf), header.size(FieldDatHeader::Inf), inf);
+			header.setSize(FieldDatHeader::Inf, inf.size());
 		}
 	}
 	if(hasPmpFile() && getPmpFile()->isModified()) {
@@ -211,62 +247,52 @@ bool FieldPS::save(QByteArray &dat)
 	if(hasPmdFile() && getPmdFile()->isModified()) {
 		QByteArray pmd;
 		if(getPmdFile()->save(pmd)) {
-			dat.replace(posSections[Pmd], posSections[Pmd+1] - posSections[Pmd], pmd);
-			diff = pmd.size() - (posSections[Pmd+1] - posSections[Pmd]);
-			for(int i=Pmd+1 ; i<12 ; ++i)	posSections[i] += diff;
+			dat.replace(header.position(FieldDatHeader::Pmd), header.size(FieldDatHeader::Pmd), pmd);
+			header.setSize(FieldDatHeader::Pmd, pmd.size());
 		}
 	}
 	if(hasPvpFile() && getPvpFile()->isModified()) {
 		QByteArray pvp;
 		if(getPvpFile()->save(pvp)) {
-			// TODO: pvp
+			mim.replace(8, 4, pvp);
 		}
 	}
 	if(hasIdFile() && getIdFile()->isModified()) {
 		QByteArray id;
 		if(getIdFile()->save(id)) {
-			dat.replace(posSections[Id], posSections[Id+1] - posSections[Id], id);
-			diff = id.size() - (posSections[Id+1] - posSections[Id]);
-			for(int i=Id+1 ; i<12 ; ++i)	posSections[i] += diff;
+			dat.replace(header.position(FieldDatHeader::Id), header.size(FieldDatHeader::Id), id);
+			header.setSize(FieldDatHeader::Id, id.size());
 		}
 	}
 	if(hasCaFile() && getCaFile()->isModified()) {
 		QByteArray ca;
 		if(getCaFile()->save(ca)) {
-			dat.replace(posSections[Ca], posSections[Ca+1] - posSections[Ca], ca);
-			diff = ca.size() - (posSections[Ca+1] - posSections[Ca]);
-			for(int i=Ca+1 ; i<12 ; ++i)	posSections[i] += diff;
+			dat.replace(header.position(FieldDatHeader::Ca), header.size(FieldDatHeader::Ca), ca);
+			header.setSize(FieldDatHeader::Ca, ca.size());
 		}
 	}
 	if(hasMskFile() && getMskFile()->isModified()) {
 		QByteArray msk;
 		if(getMskFile()->save(msk)) {
-			dat.replace(posSections[Msk], posSections[Msk+1] - posSections[Msk], msk);
-			diff = msk.size() - (posSections[Msk+1] - posSections[Msk]);
-			for(int i=Msk+1 ; i<12 ; ++i)	posSections[i] += diff;
+			dat.replace(header.position(FieldDatHeader::Msk), header.size(FieldDatHeader::Msk), msk);
+			header.setSize(FieldDatHeader::Msk, msk.size());
 		}
 	}
 	if(hasTdwFile() && getTdwFile()->isModified()) {
 		QByteArray tdw;
 		if(getTdwFile()->save(tdw)) {
-			dat.replace(posSections[Tdw], posSections[Tdw+1] - posSections[Tdw], tdw);
-			diff = tdw.size() - (posSections[Tdw+1] - posSections[Tdw]);
-			for(int i=Tdw+1 ; i<12 ; ++i)	posSections[i] += diff;
+			//TODO: tdw
 		}
 	}
 	if(hasAkaoListFile() && getAkaoListFile()->isModified()) {
 		QByteArray akao;
 		if(getAkaoListFile()->save(akao)) {
-			dat.replace(posSections[AKAO], posSections[AKAO+1] - posSections[AKAO], akao);
-			diff = akao.size() - (posSections[AKAO+1] - posSections[AKAO]);
-			for(int i=AKAO+1 ; i<12 ; ++i)	posSections[i] += diff;
+			dat.replace(header.position(FieldDatHeader::AKAO), header.size(FieldDatHeader::AKAO), akao);
+			header.setSize(FieldDatHeader::AKAO, akao.size());
 		}
 	}
 
-	for(int i=0 ; i<12 ; ++i)
-		posSections[i] += memoryPos;
-
-	dat.replace(0, 48, (char *)posSections, 48);
+	dat.replace(0, 48, header.save());
 
 	return true;
 }

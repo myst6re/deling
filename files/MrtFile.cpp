@@ -31,13 +31,14 @@ bool MrtFile::open(const QByteArray &mrt)
 
 	memcpy(formations, mrt.constData(), 2*4);
 
+	modified = false;
+
 	return true;
 }
 
 bool MrtFile::save(QByteArray &mrt)
 {
 	mrt = QByteArray((char *)formations, 2*4);
-	modified = false;
 
 	return true;
 }

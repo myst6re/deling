@@ -123,6 +123,7 @@ void TdwWidget2::setTable(int i)
 {
 	tdwGrid->setCurrentTable(i);
 	tdwLetter->setCurrentTable(i);
+	setLetter(0);
 }
 
 void TdwWidget2::setLetter(int i)
