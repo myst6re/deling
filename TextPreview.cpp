@@ -433,13 +433,13 @@ void TextPreview::drawTextArea(QPainter *painter)
 				charId = (quint8)ff8Text.at(i);
 
 				if(charId>=0x30 && charId<=0x3a)
-					word(&x, &y, names.at(charId-0x30), painter);
+					word(&x, &y, names.at(charId-0x30), painter, 5);
 				else if(charId==0x40)
-					word(&x, &y, names.at(11), painter);
+					word(&x, &y, names.at(11), painter, 5);
 				else if(charId==0x50)
-					word(&x, &y, names.at(12), painter);
+					word(&x, &y, names.at(12), painter, 5);
 				else if(charId==0x60)
-					word(&x, &y, names.at(13), painter);
+					word(&x, &y, names.at(13), painter, 5);
 				break;
 			case 0x04:// Var
 				charId = (quint8)ff8Text.at(i);
@@ -472,7 +472,7 @@ void TextPreview::drawTextArea(QPainter *painter)
 			case 0x0e: // Locations
 				charId = (quint8)ff8Text.at(i);
 				if(charId>=0x20 && charId<=0x27)
-					word(&x, &y, locations.at(charId-0x20), painter);
+					word(&x, &y, locations.at(charId-0x20), painter, 5);
 				break;
 			case 0x19: // Jap 1
 				if(jp) {
@@ -596,7 +596,10 @@ void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 t
 {
 	QImage image;
 
-	if(tableId >= 4) {
+	if(tableId >= 5) {
+		bool tagInJp = tr("false", "Use Japanese Encoding") == "true";
+		image = FF8Font::font(tagInJp ? "01" : "00")->tdw()->letter(charId, fontColor, curFrame);
+	} else if(tableId == 4) {
 		if(tdwFile) {
 			image = tdwFile->letter(0, charId, fontColor, curFrame);
 		}
@@ -608,7 +611,10 @@ void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 t
 		painter->drawImage(*x, *y, image);
 	}
 
-	if(tableId >= 4) {
+	if(tableId >= 5) {
+		bool tagInJp = tr("false", "Use Japanese Encoding") == "true";
+		*x += FF8Font::font(tagInJp ? "01" : "00")->tdw()->charWidth(0, charId);
+	} else if(tableId == 4) {
 		if(tdwFile) {
 			*x += tdwFile->charWidth(0, charId);
 		}

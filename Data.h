@@ -29,19 +29,18 @@
 
 typedef struct { const char *source; const char *comment; } TranslateChar;
 
-class Data
+class Data : public QObject
 {
+	Q_OBJECT
 public:
     static bool ff8Found();
 	static QString AppPath();
-	static const char *location(int i);
-	static const char *name(int i);
-	static const char *magic(int i);
+	static QString location(int i);
+	static QString name(int i);
+	static QString magic(int i);
 	static QStringList maplist();
 private:
 	static TranslateChar locations[LOC_COUNT];
-	static const char *names[NAM_COUNT];
-	static const char *_magic[];
 	static const char *_maplist[MAP_COUNT];
 	static QString AppPath_cache;
 };

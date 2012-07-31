@@ -203,7 +203,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
-        <source>Plateau Monterosa -Galbadia</source>
+        <source>Plateau Monterosa - Galbadia</source>
+        <oldsource>Plateau Monterosa -Galbadia</oldsource>
         <comment>15</comment>
         <translation>Galbadia- Monterosa Plateau</translation>
     </message>
@@ -299,7 +300,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
-        <source>Atoll Albatross -Trabia</source>
+        <source>Atoll Albatross - Trabia</source>
+        <oldsource>Atoll Albatross -Trabia</oldsource>
         <comment>31</comment>
         <translation>Trabia- Albatross Archipelago</translation>
     </message>
@@ -389,7 +391,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
-        <source>Mont Sollet -Esthar</source>
+        <source>Mont Sollet - Esthar</source>
+        <oldsource>Mont Sollet -Esthar</oldsource>
         <comment>47</comment>
         <translation>Esthar- Sollet Mountains</translation>
     </message>
@@ -485,7 +488,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
-        <source>Ile Poccarahi -Centra</source>
+        <source>Ile Poccarahi - Centra</source>
+        <oldsource>Ile Poccarahi -Centra</oldsource>
         <comment>63</comment>
         <translation>Centra- Poccarahi Island</translation>
     </message>
@@ -581,7 +585,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
-        <source>Zone secrète -BGU</source>
+        <source>Zone secrète - BGU</source>
+        <oldsource>Zone secrète -BGU</oldsource>
         <comment>79</comment>
         <translation>B-Garden- Secret Area</translation>
     </message>
@@ -870,7 +875,8 @@ Dollet Harbor</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
-        <source>Manoir Caraway - DelingCity</source>
+        <source>Manoir Caraway - Deling City</source>
+        <oldsource>Manoir Caraway - DelingCity</oldsource>
         <comment>127</comment>
         <translation>Deling City- Caraway&apos;s Mansion</translation>
     </message>
@@ -966,7 +972,8 @@ Dollet Harbor</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
-        <source>Hôtel -Winhill</source>
+        <source>Hôtel - Winhill</source>
+        <oldsource>Hôtel -Winhill</oldsource>
         <comment>143</comment>
         <translation>Winhill- Hotel</translation>
     </message>
@@ -1545,7 +1552,8 @@ Dollet Harbor</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
-        <source>Citadelle d&apos;Ultimecia -Ecluse</source>
+        <source>Citadelle d&apos;Ultimecia - Ecluse</source>
+        <oldsource>Citadelle d&apos;Ultimecia -Ecluse</oldsource>
         <comment>239</comment>
         <translation>Ultimecia Castle- Flood Gate</translation>
     </message>
@@ -1646,357 +1654,357 @@ Dollet Harbor</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="70"/>
+        <location filename="Data.cpp" line="67"/>
         <source>Squall</source>
         <translation>Squall</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="70"/>
+        <location filename="Data.cpp" line="67"/>
         <source>Zell</source>
         <translation>Zell</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="70"/>
+        <location filename="Data.cpp" line="67"/>
         <source>Irvine</source>
         <translation>Irvine</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="70"/>
+        <location filename="Data.cpp" line="67"/>
         <source>Quistis</source>
         <translation>Quistis</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="70"/>
+        <location filename="Data.cpp" line="67"/>
         <source>Linoa</source>
         <translation>Rinoa</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="71"/>
+        <location filename="Data.cpp" line="68"/>
         <source>Selphie</source>
         <translation>Selphie</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="71"/>
+        <location filename="Data.cpp" line="68"/>
         <source>Seifer</source>
         <translation>Seifer</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="71"/>
+        <location filename="Data.cpp" line="68"/>
         <source>Edea</source>
         <translation>Edea</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="71"/>
+        <location filename="Data.cpp" line="68"/>
         <source>Laguna</source>
         <translation>Laguna</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="71"/>
+        <location filename="Data.cpp" line="68"/>
         <source>Kiros</source>
         <translation>Kiros</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="72"/>
+        <location filename="Data.cpp" line="69"/>
         <source>Ward</source>
         <translation>Ward</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="72"/>
+        <location filename="Data.cpp" line="69"/>
         <source>Cronos</source>
         <translation>Griever</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="72"/>
+        <location filename="Data.cpp" line="69"/>
         <source>MiniMog</source>
         <translation>MiniMog</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="72"/>
+        <location filename="Data.cpp" line="69"/>
         <source>Boko</source>
         <translation>Boko</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="72"/>
+        <location filename="Data.cpp" line="69"/>
         <source>Angel</source>
         <translation>Angelo</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="81"/>
+        <location filename="Data.cpp" line="78"/>
         <source>Brasier</source>
         <translation>Fire</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="81"/>
+        <location filename="Data.cpp" line="78"/>
         <source>Brasier+</source>
         <translation>Fira</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="81"/>
+        <location filename="Data.cpp" line="78"/>
         <source>BrasierX</source>
         <translation>Firaga</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="81"/>
+        <location filename="Data.cpp" line="78"/>
         <source>Glacier</source>
         <translation>Blizzard</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="81"/>
+        <location filename="Data.cpp" line="78"/>
         <source>Glacier+</source>
         <translation>Blizzara</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>GlacierX</source>
         <translation>Blizzaga</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>Foudre</source>
         <translation>Thunder</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>Foudre+</source>
         <translation>Thundara</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>FoudreX</source>
         <translation>Thundaga</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>H2O</source>
         <translation>Water</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>Rafale</source>
         <translation>Aero</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>Cyanure</source>
         <translation>Bio</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Quart</source>
         <translation>Demi</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Sidéral</source>
         <translation>Holy</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Fournaise</source>
         <translation>Flare</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Météore</source>
         <translation>Meteor</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Quake</source>
         <translation>Quake</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Tornade</source>
         <translation>Tornado</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Ultima</source>
         <translation>Ultima</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Apocalypse</source>
         <translation>Apocalypse</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Soin</source>
         <translation>Cure</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Soin+</source>
         <translation>Cura</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Soin Max</source>
         <translation>Curaga</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Vie</source>
         <translation>Life</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Vie Max</source>
         <translation>Full-life</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Récup</source>
         <translation>Regen</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Esuna</source>
         <translation>Esuna</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Anti-sort</source>
         <translation>Dispel</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Carapace</source>
         <translation>Protect</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Blindage</source>
         <translation>Shell</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Boormg</source>
         <translation>Reflect</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Aura</source>
         <translation>Aura</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Double</source>
         <translation>Double</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Triple</source>
         <translation>Triple</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Booster</source>
         <translation>Haste</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Somni</source>
         <translation>Slow</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Stop</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Cécité</source>
         <translation>Blind</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Folie</source>
         <translation>Confuse</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Morphée</source>
         <translation>Sleep</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Aphasie</source>
         <translation>Silence</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Mégalith</source>
         <translation>Break</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Ankou</source>
         <translation>Death</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Saignée</source>
         <translation>Drain</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Supplice</source>
         <translation>Pain</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Furie</source>
         <translation>Berserk</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Décubitus</source>
         <translation>Float</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Zombie</source>
         <translation>Zombie</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Meltdown</source>
         <translation>Meltdown</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Scan</source>
         <translation>Scan</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Joobu</source>
         <translation>Full-cure</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="88"/>
+        <location filename="Data.cpp" line="85"/>
         <source>Wall</source>
         <translation>Wall</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="88"/>
+        <location filename="Data.cpp" line="85"/>
         <source>Arkange</source>
         <translation>Rapture</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="88"/>
+        <location filename="Data.cpp" line="85"/>
         <source>Percent</source>
         <translation>Percent</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="88"/>
+        <location filename="Data.cpp" line="85"/>
         <source>Catastrophe</source>
         <translation>Catastrophe</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="88"/>
+        <location filename="Data.cpp" line="85"/>
         <source>The End</source>
         <translation>The End</translation>
     </message>
@@ -2579,272 +2587,286 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
 <context>
     <name>MsdWidget</name>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="69"/>
+        <location filename="widgets/MsdWidget.cpp" line="86"/>
         <source>Nouvelle page</source>
         <translation>New page</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="71"/>
+        <location filename="widgets/MsdWidget.cpp" line="89"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="74"/>
+        <location filename="widgets/MsdWidget.cpp" line="93"/>
         <source>Gris foncé</source>
         <translation>Dark grey</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="76"/>
+        <location filename="widgets/MsdWidget.cpp" line="96"/>
         <source>Gris</source>
         <translation>Grey</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="78"/>
+        <location filename="widgets/MsdWidget.cpp" line="99"/>
         <source>Jaune</source>
         <translation>Yellow</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="80"/>
+        <location filename="widgets/MsdWidget.cpp" line="102"/>
         <source>Rouge</source>
         <translation>Red</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="82"/>
+        <location filename="widgets/MsdWidget.cpp" line="105"/>
         <source>Vert</source>
         <translation>Green</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="84"/>
+        <location filename="widgets/MsdWidget.cpp" line="108"/>
         <source>Bleu</source>
         <translation>Blue</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="86"/>
+        <location filename="widgets/MsdWidget.cpp" line="111"/>
         <source>Violet</source>
         <translation>Purple</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="88"/>
+        <location filename="widgets/MsdWidget.cpp" line="114"/>
         <source>Blanc</source>
         <translation>White</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="91"/>
+        <location filename="widgets/MsdWidget.cpp" line="118"/>
         <source>Gris foncé clignotant</source>
         <translation>Dark grey blink</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="93"/>
+        <location filename="widgets/MsdWidget.cpp" line="121"/>
         <source>Gris clignotant</source>
         <translation>Grey blink</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="95"/>
+        <location filename="widgets/MsdWidget.cpp" line="124"/>
         <source>Jaune clignotant</source>
         <translation>Yellow blink</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="97"/>
+        <location filename="widgets/MsdWidget.cpp" line="127"/>
         <source>Rouge clignotant</source>
         <translation>Red blink</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="99"/>
+        <location filename="widgets/MsdWidget.cpp" line="130"/>
         <source>Vert clignotant</source>
         <translation>Green blink</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="101"/>
+        <location filename="widgets/MsdWidget.cpp" line="133"/>
         <source>Bleu clignotant</source>
         <translation>Blue blink</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="103"/>
+        <location filename="widgets/MsdWidget.cpp" line="136"/>
         <source>Violet clignotant</source>
         <translation>Purple blink</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="105"/>
+        <location filename="widgets/MsdWidget.cpp" line="139"/>
         <source>Blanc clignotant</source>
         <translation>White blink</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="126"/>
+        <location filename="widgets/MsdWidget.cpp" line="161"/>
         <source>Lieux</source>
         <translation>Locations</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="110"/>
+        <location filename="widgets/MsdWidget.cpp" line="145"/>
         <source>Galbadia</source>
         <translation>Galbadia</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="112"/>
+        <location filename="widgets/MsdWidget.cpp" line="34"/>
+        <source>Insérer un texte au-dessus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/MsdWidget.cpp" line="35"/>
+        <source>Insérer un texte en dessous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/MsdWidget.cpp" line="147"/>
         <source>Esthar</source>
         <translation>Esthar</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="114"/>
+        <location filename="widgets/MsdWidget.cpp" line="149"/>
         <source>Balamb</source>
         <translation>Balamb</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="116"/>
+        <location filename="widgets/MsdWidget.cpp" line="151"/>
         <source>Dollet</source>
         <translation>Balamb</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="118"/>
+        <location filename="widgets/MsdWidget.cpp" line="153"/>
         <source>Timber</source>
         <translation>Timber</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="120"/>
+        <location filename="widgets/MsdWidget.cpp" line="155"/>
         <source>Trabia</source>
         <translation>Trabia</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="122"/>
+        <location filename="widgets/MsdWidget.cpp" line="157"/>
         <source>Centra</source>
         <translation>Centra</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="124"/>
+        <location filename="widgets/MsdWidget.cpp" line="159"/>
         <source>Horizon</source>
         <translation>F. Horizon</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="136"/>
+        <location filename="widgets/MsdWidget.cpp" line="171"/>
         <source>Var</source>
         <translation>Var</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="130"/>
+        <location filename="widgets/MsdWidget.cpp" line="165"/>
         <source>Var0</source>
         <translation>Var0</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="132"/>
+        <location filename="widgets/MsdWidget.cpp" line="167"/>
         <source>Var00</source>
         <translation>Var00</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="134"/>
+        <location filename="widgets/MsdWidget.cpp" line="169"/>
         <source>Varb0</source>
         <translation>Varb0</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="168"/>
+        <location filename="widgets/MsdWidget.cpp" line="203"/>
         <source>Touches</source>
         <translation>Keys</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="140"/>
+        <location filename="widgets/MsdWidget.cpp" line="175"/>
         <source>L2</source>
         <translation>L2</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="32"/>
         <source>Ajouter un texte</source>
-        <translation>Add text</translation>
+        <translation type="obsolete">Add text</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="33"/>
+        <location filename="widgets/MsdWidget.cpp" line="36"/>
         <source>Supprimer un texte</source>
         <translation>Remove text</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="142"/>
+        <location filename="widgets/MsdWidget.cpp" line="177"/>
         <source>R2</source>
         <translation>R2</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="144"/>
+        <location filename="widgets/MsdWidget.cpp" line="179"/>
         <source>L1</source>
         <translation>L1</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="146"/>
+        <location filename="widgets/MsdWidget.cpp" line="181"/>
         <source>R1</source>
         <translation>R1</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="148"/>
+        <location filename="widgets/MsdWidget.cpp" line="183"/>
         <source>Triangle</source>
         <translation>Triangle</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="150"/>
+        <location filename="widgets/MsdWidget.cpp" line="185"/>
         <source>Rond</source>
         <translation>Circle</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="152"/>
+        <location filename="widgets/MsdWidget.cpp" line="187"/>
         <source>Croix</source>
         <translation>Cross</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="154"/>
+        <location filename="widgets/MsdWidget.cpp" line="189"/>
         <source>Carré</source>
         <translation>Square</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="156"/>
+        <location filename="widgets/MsdWidget.cpp" line="191"/>
         <source>Select</source>
         <translation>Select</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="158"/>
+        <location filename="widgets/MsdWidget.cpp" line="193"/>
         <source>Start</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="160"/>
+        <location filename="widgets/MsdWidget.cpp" line="195"/>
         <source>Haut</source>
         <translation>Up</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="162"/>
+        <location filename="widgets/MsdWidget.cpp" line="197"/>
         <source>Droite</source>
         <translation>Right</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="164"/>
+        <location filename="widgets/MsdWidget.cpp" line="199"/>
         <source>Bas</source>
         <translation>Down</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="166"/>
+        <location filename="widgets/MsdWidget.cpp" line="201"/>
         <source>Gauche</source>
         <translation>left</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="276"/>
+        <location filename="widgets/MsdWidget.cpp" line="208"/>
+        <source>Caractères spéciaux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/MsdWidget.cpp" line="249"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="278"/>
+        <location filename="widgets/MsdWidget.cpp" line="251"/>
         <source>Y</source>
         <translation>Y</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="369"/>
+        <location filename="widgets/MsdWidget.cpp" line="341"/>
         <source>Texte %1</source>
         <translation>Text %1</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="428"/>
+        <location filename="widgets/MsdWidget.cpp" line="400"/>
         <source>Page %1/%2</source>
         <translation>Page %1/%2</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="450"/>
+        <location filename="widgets/MsdWidget.cpp" line="422"/>
         <source>Fenêtre %1/%2</source>
         <translation>Window %1/%2</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.h" line="40"/>
+        <location filename="widgets/MsdWidget.h" line="41"/>
         <source>Textes</source>
         <translation>Texts</translation>
     </message>
@@ -3067,7 +3089,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="files/PmpFile.h" line="30"/>
+        <location filename="files/PmpFile.h" line="32"/>
         <source>Fichier données particules écran PC (*.pmp)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3288,6 +3310,29 @@ poursuite de la recherche dans le dernier fichier.</source>
     </message>
 </context>
 <context>
+    <name>SpecialCharactersDialog</name>
+    <message>
+        <location filename="SpecialCharactersDialog.cpp" line="6"/>
+        <source>Caractères spéciaux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="SpecialCharactersDialog.cpp" line="14"/>
+        <source>Table %1</source>
+        <translation type="unfinished">Table %1</translation>
+    </message>
+    <message>
+        <location filename="SpecialCharactersDialog.cpp" line="21"/>
+        <source>Insérer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="SpecialCharactersDialog.cpp" line="29"/>
+        <source>Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TdwManagerDialog</name>
     <message>
         <location filename="TdwManagerDialog.cpp" line="23"/>
@@ -3421,6 +3466,8 @@ poursuite de la recherche dans le dernier fichier.</source>
     <name>TextPreview</name>
     <message>
         <location filename="TextPreview.cpp" line="36"/>
+        <location filename="TextPreview.cpp" line="600"/>
+        <location filename="TextPreview.cpp" line="615"/>
         <source>false</source>
         <comment>Use Japanese Encoding</comment>
         <translation>false</translation>

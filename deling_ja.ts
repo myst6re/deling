@@ -219,7 +219,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
-        <source>Plateau Monterosa -Galbadia</source>
+        <source>Plateau Monterosa - Galbadia</source>
+        <oldsource>Plateau Monterosa -Galbadia</oldsource>
         <comment>15</comment>
         <translation>ガルバディア・モンテローザ高原</translation>
     </message>
@@ -227,7 +228,7 @@
         <location filename="Data.cpp" line="46"/>
         <source>???</source>
         <comment>0</comment>
-        <translation type="unfinished"></translation>
+        <translation>???</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
@@ -315,7 +316,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
-        <source>Atoll Albatross -Trabia</source>
+        <source>Atoll Albatross - Trabia</source>
+        <oldsource>Atoll Albatross -Trabia</oldsource>
         <comment>31</comment>
         <translation>トラビア・アルバトロス諸島</translation>
     </message>
@@ -405,7 +407,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
-        <source>Mont Sollet -Esthar</source>
+        <source>Mont Sollet - Esthar</source>
+        <oldsource>Mont Sollet -Esthar</oldsource>
         <comment>47</comment>
         <translation>エスタ・スール山脈</translation>
     </message>
@@ -501,7 +504,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
-        <source>Ile Poccarahi -Centra</source>
+        <source>Ile Poccarahi - Centra</source>
+        <oldsource>Ile Poccarahi -Centra</oldsource>
         <comment>63</comment>
         <translation>セントラ・ポッカラヒレリア島</translation>
     </message>
@@ -597,7 +601,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
-        <source>Zone secrète -BGU</source>
+        <source>Zone secrète - BGU</source>
+        <oldsource>Zone secrète -BGU</oldsource>
         <comment>79</comment>
         <translation>Ｂガーデン・秘密の場所</translation>
     </message>
@@ -885,7 +890,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
-        <source>Manoir Caraway - DelingCity</source>
+        <source>Manoir Caraway - Deling City</source>
+        <oldsource>Manoir Caraway - DelingCity</oldsource>
         <comment>127</comment>
         <translation>デリングシティ・カーウェイ邸</translation>
     </message>
@@ -981,7 +987,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
-        <source>Hôtel -Winhill</source>
+        <source>Hôtel - Winhill</source>
+        <oldsource>Hôtel -Winhill</oldsource>
         <comment>143</comment>
         <translation>ウィンヒル・ホテル</translation>
     </message>
@@ -1560,7 +1567,8 @@
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
-        <source>Citadelle d&apos;Ultimecia -Ecluse</source>
+        <source>Citadelle d&apos;Ultimecia - Ecluse</source>
+        <oldsource>Citadelle d&apos;Ultimecia -Ecluse</oldsource>
         <comment>239</comment>
         <translation>アルティミシア城・水門</translation>
     </message>
@@ -1661,357 +1669,357 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="70"/>
+        <location filename="Data.cpp" line="67"/>
         <source>Squall</source>
         <translation>スコール</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="70"/>
+        <location filename="Data.cpp" line="67"/>
         <source>Zell</source>
         <translation>ゼル</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="70"/>
+        <location filename="Data.cpp" line="67"/>
         <source>Irvine</source>
         <translation>アーヴァイン</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="70"/>
+        <location filename="Data.cpp" line="67"/>
         <source>Quistis</source>
         <translation>キスティス</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="70"/>
+        <location filename="Data.cpp" line="67"/>
         <source>Linoa</source>
         <translation>リノア</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="71"/>
+        <location filename="Data.cpp" line="68"/>
         <source>Selphie</source>
         <translation>セルフィー</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="71"/>
+        <location filename="Data.cpp" line="68"/>
         <source>Seifer</source>
         <translation>サイファー</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="71"/>
+        <location filename="Data.cpp" line="68"/>
         <source>Edea</source>
         <translation>イデア</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="71"/>
+        <location filename="Data.cpp" line="68"/>
         <source>Laguna</source>
         <translation>ラグナ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="71"/>
+        <location filename="Data.cpp" line="68"/>
         <source>Kiros</source>
         <translation>キロス</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="72"/>
+        <location filename="Data.cpp" line="69"/>
         <source>Ward</source>
         <translation>ウォード</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="72"/>
+        <location filename="Data.cpp" line="69"/>
         <source>Cronos</source>
         <translation>グリーヴァ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="72"/>
+        <location filename="Data.cpp" line="69"/>
         <source>MiniMog</source>
         <translation>コモーグリ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="72"/>
+        <location filename="Data.cpp" line="69"/>
         <source>Boko</source>
         <translation>コチョコボ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="72"/>
+        <location filename="Data.cpp" line="69"/>
         <source>Angel</source>
         <translation>アンジェロ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="81"/>
+        <location filename="Data.cpp" line="78"/>
         <source>Brasier</source>
         <translation>ファイア</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="81"/>
+        <location filename="Data.cpp" line="78"/>
         <source>Brasier+</source>
         <translation>ファイラ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="81"/>
+        <location filename="Data.cpp" line="78"/>
         <source>BrasierX</source>
         <translation>ファイガ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="81"/>
+        <location filename="Data.cpp" line="78"/>
         <source>Glacier</source>
         <translation>ブリザド</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="81"/>
+        <location filename="Data.cpp" line="78"/>
         <source>Glacier+</source>
         <translation>ブリザラ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>GlacierX</source>
         <translation>ブリザガ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>Foudre</source>
         <translation>サンダー</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>Foudre+</source>
         <translation>サンダラ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>FoudreX</source>
         <translation>サンダガ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>H2O</source>
         <translation>ウォータ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>Rafale</source>
         <translation>エアロ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="82"/>
+        <location filename="Data.cpp" line="79"/>
         <source>Cyanure</source>
         <translation>バイオ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Quart</source>
         <translation>グラビデ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Sidéral</source>
         <translation>ホーリー</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Fournaise</source>
         <translation>フレア</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Météore</source>
         <translation>メテオ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Quake</source>
         <translation>クエイク</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Tornade</source>
         <translation>トルネド</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="83"/>
+        <location filename="Data.cpp" line="80"/>
         <source>Ultima</source>
         <translation>アルテマ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Apocalypse</source>
         <translation>アポカリプス</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Soin</source>
         <translation>ケアル</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Soin+</source>
         <translation>ケアルラ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Soin Max</source>
         <translation>ケアルガ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Vie</source>
         <translation>レイズ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Vie Max</source>
         <translation>アレイズ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Récup</source>
         <translation>リジェネ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="84"/>
+        <location filename="Data.cpp" line="81"/>
         <source>Esuna</source>
         <translation>エスナ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Anti-sort</source>
         <translation>デスペル</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Carapace</source>
         <translation>プロテス</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Blindage</source>
         <translation>シェル</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Boormg</source>
         <translation>リフレク</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Aura</source>
         <translation>オーラ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Double</source>
         <translation>ダブル</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Triple</source>
         <translation>トリプル</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="85"/>
+        <location filename="Data.cpp" line="82"/>
         <source>Booster</source>
         <translation>ヘイスト</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Somni</source>
         <translation>スロウ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Stop</source>
         <translation>ストップ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Cécité</source>
         <translation>ブライン</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Folie</source>
         <translation>コンフュ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Morphée</source>
         <translation>スリプル</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Aphasie</source>
         <translation>サイレス</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Mégalith</source>
         <translation>ブレイク</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="86"/>
+        <location filename="Data.cpp" line="83"/>
         <source>Ankou</source>
         <translation>デス</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Saignée</source>
         <translation>ドレイン</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Supplice</source>
         <translation>ペイン</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Furie</source>
         <translation>バーサク</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Décubitus</source>
         <translation>レビテト</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Zombie</source>
         <translation>ゾンビー</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Meltdown</source>
         <translation>メルトン</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Scan</source>
         <translation>ライブラ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="87"/>
+        <location filename="Data.cpp" line="84"/>
         <source>Joobu</source>
         <translation>フルケア</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="88"/>
+        <location filename="Data.cpp" line="85"/>
         <source>Wall</source>
         <translation>ウォール</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="88"/>
+        <location filename="Data.cpp" line="85"/>
         <source>Arkange</source>
         <translation>レビテガ</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="88"/>
+        <location filename="Data.cpp" line="85"/>
         <source>Percent</source>
         <translation>パセント</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="88"/>
+        <location filename="Data.cpp" line="85"/>
         <source>Catastrophe</source>
         <translation>カタスト</translation>
     </message>
     <message>
-        <location filename="Data.cpp" line="88"/>
+        <location filename="Data.cpp" line="85"/>
         <source>The End</source>
         <translation>ジエンド</translation>
     </message>
@@ -2685,325 +2693,339 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
 <context>
     <name>MsdWidget</name>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="69"/>
+        <location filename="widgets/MsdWidget.cpp" line="86"/>
         <source>Nouvelle page</source>
         <translatorcomment>New page</translatorcomment>
         <translation>新しいページ</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="71"/>
+        <location filename="widgets/MsdWidget.cpp" line="89"/>
         <source>Pause</source>
         <translatorcomment>Pause</translatorcomment>
         <translation>ポーズ</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="74"/>
+        <location filename="widgets/MsdWidget.cpp" line="93"/>
         <source>Gris foncé</source>
         <translatorcomment>Dark grey</translatorcomment>
         <translation>ダーク グレイ</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="76"/>
+        <location filename="widgets/MsdWidget.cpp" line="96"/>
         <source>Gris</source>
         <translatorcomment>Grey</translatorcomment>
         <translation>グレイ</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="78"/>
+        <location filename="widgets/MsdWidget.cpp" line="99"/>
         <source>Jaune</source>
         <translatorcomment>Yellow</translatorcomment>
         <translation>黄色</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="80"/>
+        <location filename="widgets/MsdWidget.cpp" line="102"/>
         <source>Rouge</source>
         <translatorcomment>Red</translatorcomment>
         <translation>赤</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="82"/>
+        <location filename="widgets/MsdWidget.cpp" line="105"/>
         <source>Vert</source>
         <translatorcomment>Green</translatorcomment>
         <translation>緑</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="84"/>
+        <location filename="widgets/MsdWidget.cpp" line="108"/>
         <source>Bleu</source>
         <translatorcomment>Blue</translatorcomment>
         <translation>青</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="86"/>
+        <location filename="widgets/MsdWidget.cpp" line="111"/>
         <source>Violet</source>
         <translatorcomment>Purple</translatorcomment>
         <translation>紫</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="88"/>
+        <location filename="widgets/MsdWidget.cpp" line="114"/>
         <source>Blanc</source>
         <translatorcomment>White</translatorcomment>
         <translation>白</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="91"/>
+        <location filename="widgets/MsdWidget.cpp" line="118"/>
         <source>Gris foncé clignotant</source>
         <translatorcomment>Dark grey blink</translatorcomment>
         <translation>点滅 (ダーク グレー)</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="93"/>
+        <location filename="widgets/MsdWidget.cpp" line="121"/>
         <source>Gris clignotant</source>
         <translatorcomment>Grey blink</translatorcomment>
         <translation>点滅 (グレー)</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="95"/>
+        <location filename="widgets/MsdWidget.cpp" line="124"/>
         <source>Jaune clignotant</source>
         <translatorcomment>Yellow blink</translatorcomment>
         <translation>点滅 (黄)</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="97"/>
+        <location filename="widgets/MsdWidget.cpp" line="127"/>
         <source>Rouge clignotant</source>
         <translatorcomment>Red blink</translatorcomment>
         <translation>点滅 (赤)</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="99"/>
+        <location filename="widgets/MsdWidget.cpp" line="130"/>
         <source>Vert clignotant</source>
         <translatorcomment>Green blink</translatorcomment>
         <translation>点滅 (緑)</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="101"/>
+        <location filename="widgets/MsdWidget.cpp" line="133"/>
         <source>Bleu clignotant</source>
         <translatorcomment>Blue blink</translatorcomment>
         <translation>点滅 (青)</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="103"/>
+        <location filename="widgets/MsdWidget.cpp" line="136"/>
         <source>Violet clignotant</source>
         <translatorcomment>Purple blink</translatorcomment>
         <translation>点滅 (紫)</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="105"/>
+        <location filename="widgets/MsdWidget.cpp" line="139"/>
         <source>Blanc clignotant</source>
         <translatorcomment>White blink</translatorcomment>
         <translation>点滅 (白)</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="126"/>
+        <location filename="widgets/MsdWidget.cpp" line="161"/>
         <source>Lieux</source>
         <translatorcomment>Locations</translatorcomment>
         <translation>場所</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="110"/>
+        <location filename="widgets/MsdWidget.cpp" line="145"/>
         <source>Galbadia</source>
         <translatorcomment>Galbadia</translatorcomment>
         <translation>ガルバディア</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="112"/>
+        <location filename="widgets/MsdWidget.cpp" line="34"/>
+        <source>Insérer un texte au-dessus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/MsdWidget.cpp" line="35"/>
+        <source>Insérer un texte en dessous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/MsdWidget.cpp" line="147"/>
         <source>Esthar</source>
         <translatorcomment>Esthar</translatorcomment>
         <translation>エスタ</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="114"/>
+        <location filename="widgets/MsdWidget.cpp" line="149"/>
         <source>Balamb</source>
         <translatorcomment>Balamb</translatorcomment>
         <translation>バラム</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="116"/>
+        <location filename="widgets/MsdWidget.cpp" line="151"/>
         <source>Dollet</source>
         <translatorcomment>Balamb</translatorcomment>
         <translation>ドール</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="118"/>
+        <location filename="widgets/MsdWidget.cpp" line="153"/>
         <source>Timber</source>
         <translatorcomment>Timber</translatorcomment>
         <translation>ティンバー</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="120"/>
+        <location filename="widgets/MsdWidget.cpp" line="155"/>
         <source>Trabia</source>
         <translatorcomment>Trabia</translatorcomment>
         <translation>トラビア</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="122"/>
+        <location filename="widgets/MsdWidget.cpp" line="157"/>
         <source>Centra</source>
         <translatorcomment>Centra</translatorcomment>
         <translation>セントラ</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="124"/>
+        <location filename="widgets/MsdWidget.cpp" line="159"/>
         <source>Horizon</source>
         <translatorcomment>F. Horizon</translatorcomment>
         <translation>Ｆ．Ｈ．</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="136"/>
+        <location filename="widgets/MsdWidget.cpp" line="171"/>
         <source>Var</source>
         <translatorcomment>Var</translatorcomment>
         <translation>変数</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="130"/>
+        <location filename="widgets/MsdWidget.cpp" line="165"/>
         <source>Var0</source>
         <translatorcomment>Var0</translatorcomment>
         <translation>Var0</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="132"/>
+        <location filename="widgets/MsdWidget.cpp" line="167"/>
         <source>Var00</source>
         <translatorcomment>Var00</translatorcomment>
         <translation>Var00</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="134"/>
+        <location filename="widgets/MsdWidget.cpp" line="169"/>
         <source>Varb0</source>
         <translatorcomment>Varb0</translatorcomment>
         <translation>Varb0</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="168"/>
+        <location filename="widgets/MsdWidget.cpp" line="203"/>
         <source>Touches</source>
         <translatorcomment>Keys</translatorcomment>
         <translation>キー</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="140"/>
+        <location filename="widgets/MsdWidget.cpp" line="175"/>
         <source>L2</source>
         <translatorcomment>L2</translatorcomment>
         <translation>L2</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="32"/>
         <source>Ajouter un texte</source>
         <translatorcomment>Add text</translatorcomment>
-        <translation>テキストの追加</translation>
+        <translation type="obsolete">テキストの追加</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="33"/>
+        <location filename="widgets/MsdWidget.cpp" line="36"/>
         <source>Supprimer un texte</source>
         <translatorcomment>Remove text</translatorcomment>
         <translation>テキストの削除</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="142"/>
+        <location filename="widgets/MsdWidget.cpp" line="177"/>
         <source>R2</source>
         <translatorcomment>R2</translatorcomment>
         <translation>R2</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="144"/>
+        <location filename="widgets/MsdWidget.cpp" line="179"/>
         <source>L1</source>
         <translatorcomment>L1</translatorcomment>
         <translation>L1</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="146"/>
+        <location filename="widgets/MsdWidget.cpp" line="181"/>
         <source>R1</source>
         <translatorcomment>R1</translatorcomment>
         <translation>R1</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="148"/>
+        <location filename="widgets/MsdWidget.cpp" line="183"/>
         <source>Triangle</source>
         <translatorcomment>Triangle</translatorcomment>
         <translation>△</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="150"/>
+        <location filename="widgets/MsdWidget.cpp" line="185"/>
         <source>Rond</source>
         <translatorcomment>Circle</translatorcomment>
         <translation>○</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="152"/>
+        <location filename="widgets/MsdWidget.cpp" line="187"/>
         <source>Croix</source>
         <translatorcomment>Cross</translatorcomment>
         <translation>×</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="154"/>
+        <location filename="widgets/MsdWidget.cpp" line="189"/>
         <source>Carré</source>
         <translatorcomment>Square</translatorcomment>
         <translation>□</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="156"/>
+        <location filename="widgets/MsdWidget.cpp" line="191"/>
         <source>Select</source>
         <translatorcomment>Select</translatorcomment>
         <translation>Select</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="158"/>
+        <location filename="widgets/MsdWidget.cpp" line="193"/>
         <source>Start</source>
         <translatorcomment>Start</translatorcomment>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="160"/>
+        <location filename="widgets/MsdWidget.cpp" line="195"/>
         <source>Haut</source>
         <translatorcomment>Up</translatorcomment>
         <translation>上</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="162"/>
+        <location filename="widgets/MsdWidget.cpp" line="197"/>
         <source>Droite</source>
         <translatorcomment>Right</translatorcomment>
         <translation>右</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="164"/>
+        <location filename="widgets/MsdWidget.cpp" line="199"/>
         <source>Bas</source>
         <translatorcomment>Down</translatorcomment>
         <translation>下</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="166"/>
+        <location filename="widgets/MsdWidget.cpp" line="201"/>
         <source>Gauche</source>
         <translatorcomment>left</translatorcomment>
         <translation>左</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="276"/>
+        <location filename="widgets/MsdWidget.cpp" line="208"/>
+        <source>Caractères spéciaux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/MsdWidget.cpp" line="249"/>
         <source>X</source>
         <translatorcomment>X</translatorcomment>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="278"/>
+        <location filename="widgets/MsdWidget.cpp" line="251"/>
         <source>Y</source>
         <translatorcomment>Y</translatorcomment>
         <translation>Y</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="369"/>
+        <location filename="widgets/MsdWidget.cpp" line="341"/>
         <source>Texte %1</source>
         <translatorcomment>Text %1</translatorcomment>
         <translation>テキスト %1</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="428"/>
+        <location filename="widgets/MsdWidget.cpp" line="400"/>
         <source>Page %1/%2</source>
         <translatorcomment>Page %1/%2</translatorcomment>
         <translation>ページ %1/%2</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.cpp" line="450"/>
+        <location filename="widgets/MsdWidget.cpp" line="422"/>
         <source>Fenêtre %1/%2</source>
         <translatorcomment>Window %1/%2</translatorcomment>
         <translation>ウィンドウ %1/%2</translation>
     </message>
     <message>
-        <location filename="widgets/MsdWidget.h" line="40"/>
+        <location filename="widgets/MsdWidget.h" line="41"/>
         <source>Textes</source>
         <translation>テキスト</translation>
     </message>
@@ -3248,7 +3270,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="files/PmpFile.h" line="30"/>
+        <location filename="files/PmpFile.h" line="32"/>
         <source>Fichier données particules écran PC (*.pmp)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3488,6 +3510,29 @@ poursuite de la recherche dans le dernier fichier.</source>
     </message>
 </context>
 <context>
+    <name>SpecialCharactersDialog</name>
+    <message>
+        <location filename="SpecialCharactersDialog.cpp" line="6"/>
+        <source>Caractères spéciaux</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="SpecialCharactersDialog.cpp" line="14"/>
+        <source>Table %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="SpecialCharactersDialog.cpp" line="21"/>
+        <source>Insérer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="SpecialCharactersDialog.cpp" line="29"/>
+        <source>Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TdwManagerDialog</name>
     <message>
         <location filename="TdwManagerDialog.cpp" line="23"/>
@@ -3621,6 +3666,8 @@ poursuite de la recherche dans le dernier fichier.</source>
     <name>TextPreview</name>
     <message>
         <location filename="TextPreview.cpp" line="36"/>
+        <location filename="TextPreview.cpp" line="600"/>
+        <location filename="TextPreview.cpp" line="615"/>
         <source>false</source>
         <comment>Use Japanese Encoding</comment>
         <translation>true</translation>

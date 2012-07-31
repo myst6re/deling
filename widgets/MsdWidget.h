@@ -55,6 +55,7 @@ private slots:
 	void changeXCoord(int);
 	void changeYCoord(int);
 	void insertTag(QAction *);
+	void insertTextAbove();
 	void insertText();
 	void removeText();
 

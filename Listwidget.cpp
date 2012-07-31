@@ -18,62 +18,73 @@
 #include "Listwidget.h"
 
 ListWidget::ListWidget(QWidget *parent) :
-    QWidget(parent)
+	QWidget(parent)
 {
-    _toolBar = new QToolBar(this);
-    _toolBar->setIconSize(QSize(16, 16));
+	setContextMenuPolicy(Qt::ActionsContextMenu);
+	setFixedWidth(120);
 
-    QFont font;
-    font.setPointSize(8);
+	_toolBar = new QToolBar(this);
+	_toolBar->setIconSize(QSize(16, 16));
 
-    _listWidget = new QListWidget(this);
-    _listWidget->setUniformItemSizes(true);
-    _listWidget->setFixedWidth(120);
-    _listWidget->setFont(font);
+	QFont font;
+	font.setPointSize(8);
 
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->addWidget(_toolBar);
-    layout->addWidget(_listWidget);
-    layout->setContentsMargins(QMargins());
+	_listWidget = new QListWidget(this);
+	_listWidget->setUniformItemSizes(true);
+	_listWidget->setFont(font);
+
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->addWidget(_toolBar);
+	layout->addWidget(_listWidget);
+	layout->setContentsMargins(QMargins());
 }
 
 QAction *ListWidget::addAction(ActionType type, const QString &text,
-                               const QObject *receiver, const char *member)
+							   const QObject *receiver, const char *member)
 {
-    QIcon icon;
-    QKeySequence shortcut;
+	QIcon icon;
+	QKeySequence shortcut;
+	QAction *action;
 
-    switch(type) {
-    case Add:
-        icon = QIcon(":images/plus.png");
-        shortcut = QKeySequence("Ctrl++");
-        break;
-    case Rem:
-        icon = QIcon(":images/minus.png");
-        shortcut = QKeySequence::Delete;
-        break;
-    case Up:
-        icon = QIcon(":images/up.png");
-        shortcut = QKeySequence("Shift+Up");
-        break;
-    case Down:
-        icon = QIcon(":images/down.png");
-        shortcut = QKeySequence("Shift+Down");
-        break;
-    }
+	switch(type) {
+	case Add:
+		icon = QIcon(":images/plus.png");
+		shortcut = QKeySequence("Ctrl++");
+		break;
+	case Invisible:
+		action = new QAction(text, this);
+		action->setStatusTip(text);
+		insertAction(0, action);
+		connect(action, SIGNAL(triggered()), receiver, member);
+		return action;
+	case Rem:
+		icon = QIcon(":images/minus.png");
+		shortcut = QKeySequence::Delete;
+		break;
+	case Up:
+		icon = QIcon(":images/up.png");
+		shortcut = QKeySequence("Shift+Up");
+		break;
+	case Down:
+		icon = QIcon(":images/down.png");
+		shortcut = QKeySequence("Shift+Down");
+		break;
+	}
 
-    QAction *action = _toolBar->addAction(icon, text, receiver, member);
-    action->setShortcut(shortcut);
+	action = _toolBar->addAction(icon, text, receiver, member);
+	action->setShortcut(shortcut);
+	action->setStatusTip(text);
+	insertAction(0, action);
 
-    return action;
+	return action;
 }
 
 QToolBar *ListWidget::toolBar() const
 {
-    return _toolBar;
+	return _toolBar;
 }
 
 QListWidget *ListWidget::listWidget() const
 {
-    return _listWidget;
+	return _listWidget;
 }

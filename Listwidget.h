@@ -25,7 +25,7 @@ class ListWidget : public QWidget
     Q_OBJECT
 public:
     enum ActionType {
-        Add, Rem, Up, Down
+		Invisible, Add, Rem, Up, Down
     };
 
     explicit ListWidget(QWidget *parent = 0);
