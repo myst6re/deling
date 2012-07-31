@@ -20,6 +20,7 @@
 
 #include "files/TdwFile.h"
 #include "parameters.h"
+#include "Config.h"
 
 class FF8Font
 {
@@ -43,6 +44,7 @@ public:
 	static bool listFonts();
 	static QStringList fontList();
 	static FF8Font *font(QString name);
+	static FF8Font *getCurrentConfigFont();
 	static bool saveFonts();
 	static bool copyFont(const QString &name, const QString &from, const QString &name2);
 	static bool removeFont(const QString &name);

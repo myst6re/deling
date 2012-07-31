@@ -30,9 +30,9 @@ public:
 	virtual void setTdwFile(TdwFile *tdwFile);
 	void clear();
 	int currentTable() const;
-	void setCurrentTable(int currentTable);
 	int currentLetter() const;
 public slots:
+	void setCurrentTable(int currentTable);
 	void setColor(TdwFile::Color color);
 	virtual void setLetter(int letter);
 protected:

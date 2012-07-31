@@ -37,7 +37,6 @@ public:
 	void setTables(const QList<QStringList> &tables);
 private:
 	QString fromFF8(const QByteArray &ff8str);
-	static const QList<QStringList> &getCurrentConfigTable();
 	QList<QStringList> tables;
 	static const char *names[14];
 	static const char *colors[16];

@@ -291,6 +291,17 @@ FF8Font *FF8Font::font(QString name)
 	return NULL;
 }
 
+FF8Font *FF8Font::getCurrentConfigFont()
+{
+	QString fnt = Config::value("encoding", "00").toString();
+
+	QStringList fontL = fontList();
+	if(fontL.contains(fnt)) {
+		return font(fnt);
+	}
+	return font(fontL.first());
+}
+
 bool FF8Font::saveFonts()
 {
 	bool ok = true;

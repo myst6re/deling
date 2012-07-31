@@ -85,7 +85,8 @@ HEADERS += MainWindow.h \
     files/PvpFile.h \
     files/PmpFile.h \
     files/PmdFile.h \
-	Listwidget.h
+	Listwidget.h \
+    SpecialCharactersDialog.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -163,7 +164,8 @@ SOURCES += MainWindow.cpp \
     files/PvpFile.cpp \
     files/PmpFile.cpp \
     files/PmdFile.cpp \
-	Listwidget.cpp
+	Listwidget.cpp \
+    SpecialCharactersDialog.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

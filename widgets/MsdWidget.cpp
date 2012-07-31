@@ -170,68 +170,7 @@ void MsdWidget::build()
 
     toolBar2 = new QToolBar(this);
     toolBar2->setIconSize(QSize(16, 16));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-1.png"), FF8Text::getCaract(0x30));
-    action->setData(FF8Text::getCaract(0x30));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-2.png"), FF8Text::getCaract(0x3a));
-    action->setData(FF8Text::getCaract(0x3a));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-3.png"), FF8Text::getCaract(0x3e));
-    action->setData(FF8Text::getCaract(0x3e));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-4.png"), FF8Text::getCaract(0x3f));
-    action->setData(FF8Text::getCaract(0x3f));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-5.png"), FF8Text::getCaract(0x40));
-    action->setData(FF8Text::getCaract(0x40));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-6.png"), "{xa8}");
-    action->setData("{xa8}");
-    action = toolBar2->addAction(QIcon(":/images/icon-char-7.png"), FF8Text::getCaract(0xab));
-    action->setData(FF8Text::getCaract(0xab));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-8.png"), FF8Text::getCaract(0xac));
-    action->setData(FF8Text::getCaract(0xac));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-9.png"), FF8Text::getCaract(0xad));
-    action->setData(FF8Text::getCaract(0xad));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-10.png"), FF8Text::getCaract(0xae));
-    action->setData(FF8Text::getCaract(0xae));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-11.png"), FF8Text::getCaract(0xaf));
-    action->setData(FF8Text::getCaract(0xaf));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-12.png"), FF8Text::getCaract(0xb0));
-    action->setData(FF8Text::getCaract(0xb0));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-13.png"), "{xb1}");
-    action->setData("{xb1}");
-    action = toolBar2->addAction(QIcon(":/images/icon-char-14.png"), FF8Text::getCaract(0xb2));
-    action->setData(FF8Text::getCaract(0xb2));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-15.png"), FF8Text::getCaract(0xb3));
-    action->setData(FF8Text::getCaract(0xb3));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-16.png"), "{xb4}");
-    action->setData("{xb4}");
-    action = toolBar2->addAction(QIcon(":/images/icon-char-17.png"), "{xb6}");
-    action->setData("{xb6}");
-    action = toolBar2->addAction(QIcon(":/images/icon-char-18.png"), FF8Text::getCaract(0xb7));
-    action->setData(FF8Text::getCaract(0xb7));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-19.png"), FF8Text::getCaract(0xb8));
-    action->setData(FF8Text::getCaract(0xb8));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-20.png"), "{xb9}");
-    action->setData("{xb9}");
-    action = toolBar2->addAction(QIcon(":/images/icon-char-21.png"), "{xba}");
-    action->setData("{xba}");
-    action = toolBar2->addAction(QIcon(":/images/icon-char-22.png"), FF8Text::getCaract(0xbb));
-    action->setData(FF8Text::getCaract(0xbb));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-23.png"), FF8Text::getCaract(0xbf));
-    action->setData(FF8Text::getCaract(0xbf));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-24.png"), FF8Text::getCaract(0xc0));
-    action->setData(FF8Text::getCaract(0xc0));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-25.png"), FF8Text::getCaract(0xc1));
-    action->setData(FF8Text::getCaract(0xc1));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-26.png"), FF8Text::getCaract(0xc2));
-    action->setData(FF8Text::getCaract(0xc2));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-27.png"), FF8Text::getCaract(0xc3));
-    action->setData(FF8Text::getCaract(0xc3));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-28.png"), FF8Text::getCaract(0xc5));
-    action->setData(FF8Text::getCaract(0xc5));
-    action = toolBar2->addAction(QIcon(":/images/icon-char-29.png"), "{xc6}");
-    action->setData("{xc6}");
-    action = toolBar2->addAction(QIcon(":/images/icon-char-30.png"), "{xc7}");
-    action->setData("{xc7}");
-    action = toolBar2->addAction(QIcon(":/images/icon-char-31.png"), FF8Text::getCaract(0xc9));
-    action->setData(FF8Text::getCaract(0xc9));
+	toolBar2->addAction(tr("Caractères spéciaux"), this, SLOT(specialCharactersDialog()));
 
     QVBoxLayout *toolBars = new QVBoxLayout();
     toolBars->addWidget(toolBar);
@@ -306,8 +245,7 @@ void MsdWidget::build()
     connect(toolBar, SIGNAL(actionTriggered(QAction*)), SLOT(insertTag(QAction*)));
     connect(menu1, SIGNAL(triggered(QAction*)), SLOT(insertTag(QAction*)));
     connect(menu2, SIGNAL(triggered(QAction*)), SLOT(insertTag(QAction*)));
-    connect(menu3, SIGNAL(triggered(QAction*)), SLOT(insertTag(QAction*)));
-    connect(toolBar2, SIGNAL(actionTriggered(QAction*)), SLOT(insertTag(QAction*)));
+	connect(menu3, SIGNAL(triggered(QAction*)), SLOT(insertTag(QAction*)));
 
     PageWidget::build();
 }
@@ -532,6 +470,16 @@ void MsdWidget::updateText()
     fillTextEdit(textList->currentItem());
     textPreview->reloadFont();
     textPreview->calcSize();
+}
+
+void MsdWidget::specialCharactersDialog()
+{
+	if(!isBuilded())	return;
+
+	SpecialCharactersDialog dialog(this);
+	if(dialog.exec() == QDialog::Accepted) {
+		textEdit->insertPlainText(dialog.selectedCharacter());
+	}
 }
 
 void MsdWidget::insertText()

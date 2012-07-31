@@ -51,6 +51,7 @@ bool Field::isPs() const
 
 void Field::openFile(FileType fileType, const QByteArray &data)
 {
+	PmpFile::currentFieldName = _name;
 	deleteFile(fileType);
 	File *f = newFile(fileType);
 

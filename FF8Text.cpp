@@ -20,25 +20,25 @@
 FF8Text::FF8Text() :
 	QString()
 {
-	setTables(getCurrentConfigTable());
+	setTables(::FF8Font::getCurrentConfigFont()->tables());
 }
 
 FF8Text::FF8Text(const QString &str) :
 	QString(str)
 {
-	setTables(getCurrentConfigTable());
+	setTables(::FF8Font::getCurrentConfigFont()->tables());
 }
 
 FF8Text::FF8Text(const char *str) :
 	QString(str)
 {
-	setTables(getCurrentConfigTable());
+	setTables(::FF8Font::getCurrentConfigFont()->tables());
 }
 
 FF8Text::FF8Text(const QByteArray &ba) :
 	QString()
 {
-	setTables(getCurrentConfigTable());
+	setTables(::FF8Font::getCurrentConfigFont()->tables());
 	append(fromFF8(ba));
 }
 
@@ -411,17 +411,6 @@ QString FF8Text::getCaract(quint8 ord, quint8 table, bool jp)
 void FF8Text::setTables(const QList<QStringList> &tables)
 {
 	this->tables = tables;
-}
-
-const QList<QStringList> &FF8Text::getCurrentConfigTable()
-{
-	QString font = Config::value("encoding", "00").toString();
-
-	QStringList fontL = ::FF8Font::fontList();
-	if(fontL.contains(font)) {
-		return ::FF8Font::font(font)->tables();
-	}
-	return ::FF8Font::font(fontL.first())->tables();
 }
 
 const char *FF8Text::names[14] =

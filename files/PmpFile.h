@@ -19,10 +19,12 @@
 #define PMPFILE_H
 
 #include "files/File.h"
+#include "FF8Image.h"
 
 class PmpFile : public File
 {
 public:
+	static QString currentFieldName;
 	PmpFile();
 	bool open(const QByteArray &pmp);
 	bool save(QByteArray &pmp);

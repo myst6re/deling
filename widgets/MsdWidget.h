@@ -24,6 +24,7 @@
 #include "TextPreview.h"
 #include "MsdHighlighter.h"
 #include "Listwidget.h"
+#include "SpecialCharactersDialog.h"
 
 class MsdWidget : public PageWidget
 {
@@ -41,6 +42,7 @@ public:
 public slots:
 	void gotoText(const QString &text, int textID, Qt::CaseSensitivity cs, bool reverse, bool regexp);
 private slots:
+	void specialCharactersDialog();
 	void fillTextEdit(QListWidgetItem *);
 	void updateCurrentText();
 	void prevTextPreviewPage();
