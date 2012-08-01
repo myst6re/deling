@@ -334,3 +334,97 @@ int TdwFile::charCount(quint8 tableId) const
 
 	return 224;*/
 }
+
+TexFile TdwFile::toTexFile() const
+{
+	if(_tim.colorTableCount() != 8 || _tim.image().width() != 256 || _tim.image().height() != 120) {
+		qWarning() << "tim format nbPal=" << _tim.colorTableCount() << _tim.image().width() << "x" << _tim.image().height();
+		return TexFile();
+	}
+
+	QImage img(256, 128, QImage::Format_Indexed8);
+	QVector<QRgb> colorTable = _tim.image().colorTable();
+	for(int i=0 ; i<colorTable.size() ; ++i) {
+		QRgb &color = colorTable[i];
+		if(color != 0) {
+			color = qRgba(qRed(color), qGreen(color), qBlue(color), 254);
+		} else {
+			color = qRgba(0, 0, 0, 0);
+		}
+	}
+	img.setColorTable(colorTable);
+	img.fill(0);
+
+	for(int y=0 ; y<120 ; ++y) {
+		for(int x=0 ; x<256 ; ++x) {
+			img.setPixel(x, y, _tim.image().pixelIndex(x, y));
+		}
+	}
+
+	TexStruct header;
+
+	memset(&header, 0, sizeof(TexStruct));
+
+	header.version = 2;
+//	header.unknown1= 0;
+	header.hasColorKey= 1;
+	header.unknown2= 1;
+	header.unknown3= 31;
+	header.minBitsPerColor= 4;
+	header.maxBitsPerColor= 8;
+	header.minAlphaBits= 4;
+	header.maxAlphaBits= 8;
+	header.minBitsPerPixel= 8;
+	header.maxBitsPerPixel= 32;
+//	header.unknown4= 0;
+	header.nbPalettes= 16;
+	header.nbColorsPerPalette1= 16;
+	header.bitDepth= 4;
+	header.imageWidth= 256;
+	header.imageHeight= 128;
+//	header.pitch= 0;
+//	header.unknown5= 0;
+	header.hasPal= 1;
+	header.bitsPerIndex= 8;
+//	header.indexedTo8bit= 0;
+	header.paletteSize= 256;
+	header.nbColorsPerPalette2= 16;
+	header.runtimeData1= 94790092;
+	header.bitsPerPixel= 8;
+	header.bytesPerPixel= 1;
+//	header.nbRedBits1= 0;
+//	header.nbGreenBits1= 0;
+//	header.nbBlueBits1= 0;
+//	header.nbAlphaBits1= 0;
+//	header.redBitmask= 0;
+//	header.greenBitmask= 0;
+//	header.blueBitmask= 0;
+//	header.alphaBitmask= 0;
+//	header.redShift= 0;
+//	header.greenShift= 0;
+//	header.blueShift= 0;
+//	header.alphaShift= 0;
+//	header.nbRedBits2= 0;
+//	header.nbGreenBits2= 0;
+//	header.nbBlueBits2= 0;
+//	header.nbAlphaBits2= 0;
+//	header.redMax= 0;
+//	header.greenMax= 0;
+//	header.blueMax= 0;
+//	header.alphaMax= 0;
+//	header.hasColorKeyArray= 0;
+//	header.runtimeData2= 0;
+	header.referenceAlpha= 255;
+	header.runtimeData3= 4;
+//	header.unknown6= 0;
+//	header.paletteIndex= 0;
+//	header.runtimeData4= 0;
+	header.runtimeData5= 94822908;
+//	header.unknown7= 0;
+	header.unknown8= 288;
+	header.unknown9= 224;
+	header.unknown10= 960;
+	header.unknown11= 256;
+
+	return TexFile(TextureFile(img, _tim.colorTables()), header);
+}

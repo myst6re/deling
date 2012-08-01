@@ -582,6 +582,7 @@ void MainWindow::saveAs(QString path)
 		ok = ((FieldArchivePC *)fieldArchive)->save(&progress, path);
 	} else {
 		ok = field->save(path);
+		field->setModified(false);
 	}
 
 	if(ok) {

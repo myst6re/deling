@@ -94,12 +94,14 @@ class TexFile : public TextureFile
 public:
 	TexFile() : TextureFile() {}
 	explicit TexFile(const QByteArray &data);
-	bool open(const QByteArray &data);
-	bool save(QByteArray &data);
+	TexFile(const TextureFile &textureFile, const TexStruct &header,
+			const QVector<quint8> &colorKeyArray=QVector<quint8>());
+	virtual bool open(const QByteArray &data);
+	virtual bool save(QByteArray &data);
 	void debug();
 private:
 	TexStruct header;
-	QList<quint8> colorKeyArray;
+	QVector<quint8> colorKeyArray;
 };
 
 #endif // TEXFILE_H

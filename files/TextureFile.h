@@ -27,8 +27,9 @@ class TextureFile : public File
 public:
 	TextureFile();
 	TextureFile(const QImage &image);
-	virtual bool open(const QByteArray &data)=0;
-	virtual bool save(QByteArray &data)=0;
+	TextureFile(const QImage &image, const QList< QVector<QRgb> > &colorTables);
+	virtual bool open(const QByteArray &data) {return false;}
+	virtual bool save(QByteArray &data) {return false;}
 	inline QString filterText() const {
 		return QString();
 	}
@@ -37,6 +38,7 @@ public:
 	const QImage &image() const;
 	QImage *imagePtr();
 	bool isPaletted() const;
+	const QList< QVector<QRgb> > &colorTables() const;
 	int currentColorTable() const;
 	QVector<QRgb> colorTable(int id) const;
 	void setCurrentColorTable(int id);

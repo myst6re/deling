@@ -31,6 +31,11 @@ TextureFile::TextureFile(const QImage &image) :
 	}
 }
 
+TextureFile::TextureFile(const QImage &image, const QList< QVector<QRgb> > &colorTables) :
+	_image(image), _colorTables(colorTables), _currentColorTable(0)
+{
+}
+
 bool TextureFile::isValid() const
 {
 	return !_image.isNull();
@@ -56,6 +61,11 @@ QImage *TextureFile::imagePtr()
 bool TextureFile::isPaletted() const
 {
 	return !_colorTables.isEmpty();
+}
+
+const QList< QVector<QRgb> > &TextureFile::colorTables() const
+{
+	return _colorTables;
 }
 
 int TextureFile::currentColorTable() const

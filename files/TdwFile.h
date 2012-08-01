@@ -20,6 +20,7 @@
 
 #include "files/File.h"
 #include "files/TimFile.h"
+#include "files/TexFile.h"
 
 class TdwFile : public File
 {
@@ -55,6 +56,7 @@ public:
 	int tableCount() const;
 	int charCount(quint8 tableId=0) const;
 	bool isOptimizedVersion() const;
+	TexFile toTexFile() const;
 private:
 	int palette(Color color, int charId) const;
 	QPoint letterPos(int charId) const;
