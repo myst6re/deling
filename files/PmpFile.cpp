@@ -30,38 +30,10 @@ bool PmpFile::open(const QByteArray &pmp)
 	modified = false;
 
 //	if(pmp.size() != 4) {
-//		int height = (pmp.size() - 516) / 128;
-//		const char *constPmp = pmp.constData();
-
-//		QImage pal(16, 16, QImage::Format_RGB32);
-//		QRgb *pxPal = (QRgb *)pal.bits();
-//		qDebug() << pal.width()*pal.height() << pal.byteCount();
-//		for(int i=0 ; i<pal.width()*pal.height() ; ++i) {
-//			quint16 color;
-//			memcpy(&color, &constPmp[4+i*2], 2);
-//			pxPal[i] = FF8Image::fromPsColor(color);
+//		palette().save(QString("pmp/%1-palette.png").arg(currentFieldName));
+//		for(int palID=0 ; palID<16 ; ++palID) {
+//			image(4, palID).save(QString("pmp/%1-%2.png").arg(currentFieldName).arg(palID));
 //		}
-//		pal.save(QString("pmp/%1-palette.png").arg(currentFieldName));
-
-////		for(int palID=0 ; palID<16 ; ++palID) {
-//			QImage img(64, height, QImage::Format_RGB32);
-//			QRgb *px = (QRgb *)img.bits();
-
-//			for(int j=0 ; j<img.width()*img.height() ; ++j) {
-//				quint16 color;
-//				memcpy(&color, &constPmp[516 + j*2], 2);
-
-//				px[j] = FF8Image::fromPsColor(color);
-
-////				++j;
-////				memcpy(&color, &constPmp[4 + palID * 32 + ((quint8)pmp.at(516 + j/2) >> 4)*2], 2);
-
-////				px[j] = FF8Image::fromPsColor(color);
-//			}
-
-
-//			img.save(QString("pmp/%1-non.png").arg(currentFieldName));
-////		}
 //	}
 
 	return true;
@@ -74,13 +46,99 @@ bool PmpFile::save(QByteArray &pmp)
 	return true;
 }
 
-const QByteArray &PmpFile::getPmpData() const
+QByteArray PmpFile::getPmpData() const
 {
-	return pmp;
+	return pmp.left(4);
 }
 
 void PmpFile::setPmpData(const QByteArray &pmp)
 {
-	this->pmp = pmp;
+	this->pmp.replace(0, 4, pmp.leftJustified(4, '\0', true));
 	modified = true;
+}
+
+QImage PmpFile::palette() const
+{
+	if(pmp.size() < 516) return QImage();
+
+	const char *constPmp = pmp.constData();
+
+	QImage pal(16, 16, QImage::Format_RGB32);
+	QRgb *pxPal = (QRgb *)pal.bits();
+
+	for(int i=0 ; i<pal.width()*pal.height() ; ++i) {
+		quint16 color;
+		memcpy(&color, &constPmp[4+i*2], 2);
+		pxPal[i] = FF8Image::fromPsColor(color);
+	}
+
+	return pal;
+}
+
+QImage PmpFile::image(quint8 deph, quint8 palID) const
+{
+	if(pmp.size() <= 516) return QImage();
+
+	if(deph == 4) {
+		int width = 256;
+		int height = (pmp.size() - 516) * 2 / width;
+		const char *constPmp = pmp.constData();
+
+		if(pmp.size() < 516 + width * height / 2) return QImage();
+
+		QImage img(width, height, QImage::Format_RGB32);
+		QRgb *px = (QRgb *)img.bits();
+
+		for(int j=0 ; j<width*height ; ++j) {
+			quint16 color;
+			memcpy(&color, &constPmp[4 + palID * 32 + ((quint8)pmp.at(516 + j/2) & 0xF)*2], 2);
+
+			px[j] = FF8Image::fromPsColor(color);
+
+			++j;
+			memcpy(&color, &constPmp[4 + palID * 32 + ((quint8)pmp.at(516 + j/2) >> 4)*2], 2);
+
+			px[j] = FF8Image::fromPsColor(color);
+		}
+
+		return img;
+	} else if(deph == 8) {
+		int width = 128;
+		int height = (pmp.size() - 516) / width;
+		const char *constPmp = pmp.constData();
+
+		if(pmp.size() < 516 + width * height) return QImage();
+
+		QImage img(width, height, QImage::Format_RGB32);
+		QRgb *px = (QRgb *)img.bits();
+
+		for(int j=0 ; j<width*height ; ++j) {
+			quint16 color;
+			memcpy(&color, &constPmp[4 + (quint8)pmp.at(516 + j)*2], 2);
+
+			px[j] = FF8Image::fromPsColor(color);
+		}
+
+		return img;
+	} else if(deph == 16) {
+		int width = 64;
+		int height = (pmp.size() - 516) / 2 / width;
+		const char *constPmp = pmp.constData();
+
+		if(pmp.size() < 516 + width * height * 2) return QImage();
+
+		QImage img(width, height, QImage::Format_RGB32);
+		QRgb *px = (QRgb *)img.bits();
+
+		for(int j=0 ; j<width*height ; ++j) {
+			quint16 color;
+			memcpy(&color, &constPmp[516 + j*2], 2);
+
+			px[j] = FF8Image::fromPsColor(color);
+		}
+
+		return img;
+	}
+
+	return QImage();
 }

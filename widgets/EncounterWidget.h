@@ -35,7 +35,10 @@ private slots:
 	void editFormation();
 	void editRate();
 private:
-	QSpinBox *formationEdit[4], *rateEdit[4];
+	void fillRateLabel(int value);
+	QSpinBox *formationEdit[4];
+	QSlider *rateEdit;
+	QLabel *rateEditLabel;
 };
 
 #endif // ENCOUNTERWIDGET_H

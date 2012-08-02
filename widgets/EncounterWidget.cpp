@@ -26,25 +26,45 @@ void EncounterWidget::build()
 {
 	if(isBuilded())	return;
 
+	QLabel *labelColumn1 = new QLabel(tr("Formations"));
+	QLabel *labelColumn2 = new QLabel(tr("Fréquence"));
+
+	QFont font = labelColumn1->font();
+	font.setPointSize(font.pointSize()+4);
+
+	labelColumn1->setFont(font);
+	labelColumn2->setFont(font);
+
 	QGridLayout *layout = new QGridLayout(this);
-	layout->addWidget(new QLabel(tr("Formation")), 0, 0);
-	layout->addWidget(new QLabel(tr("Mode ?")), 0, 1);
+	layout->addWidget(labelColumn1, 0, 0, Qt::AlignCenter);
+	layout->addWidget(labelColumn2, 0, 1, 1, 3, Qt::AlignCenter);
 
 	for(int i=0 ; i<4 ; ++i) {
 		formationEdit[i] = new QSpinBox();
 		formationEdit[i]->setRange(0, 65535);
-		rateEdit[i] = new QSpinBox();
-		rateEdit[i]->setRange(0, 255);
+		if(i==0) {
+			rateEdit = new QSlider(Qt::Horizontal);
+			rateEdit->setRange(0, 255);
+			rateEditLabel = new QLabel();
+		}
 
-		layout->addWidget(formationEdit[i], 1+i, 0);
-		layout->addWidget(rateEdit[i], 1+i, 1);
+		int row = 1+i;
+
+		layout->addWidget(formationEdit[i], row, 0);
+		if(i==0) {
+			layout->addWidget(new QLabel(tr("Basse")), row, 1);
+			layout->addWidget(rateEdit, row, 2);
+			layout->addWidget(new QLabel(tr("Haute")), row, 3);
+			layout->addWidget(rateEditLabel, row+1, 1, 1, 3, Qt::AlignCenter);
+
+			connect(rateEdit, SIGNAL(valueChanged(int)), SLOT(editRate()));
+		}
 
 		connect(formationEdit[i], SIGNAL(valueChanged(int)), SLOT(editFormation()));
-		connect(rateEdit[i], SIGNAL(valueChanged(int)), SLOT(editRate()));
 	}
 
-	layout->setRowStretch(5, 1);
-	layout->setColumnStretch(2, 1);
+	layout->setRowStretch(9, 1);
+	layout->setColumnStretch(4, 1);
 
 	PageWidget::build();
 }
@@ -57,10 +77,11 @@ void EncounterWidget::clear()
 		formationEdit[i]->blockSignals(true);
 		formationEdit[i]->setValue(0);
 		formationEdit[i]->blockSignals(false);
-		rateEdit[i]->blockSignals(true);
-		rateEdit[i]->setValue(0);
-		rateEdit[i]->blockSignals(false);
 	}
+	rateEdit->blockSignals(true);
+	rateEdit->setValue(0);
+	rateEdit->blockSignals(false);
+	fillRateLabel(0);
 
 	PageWidget::clear();
 }
@@ -70,8 +91,8 @@ void EncounterWidget::setReadOnly(bool readOnly)
 	if(isBuilded()) {
 		for(int i=0 ; i<4 ; ++i) {
 			formationEdit[i]->setReadOnly(readOnly);
-			rateEdit[i]->setReadOnly(readOnly);
 		}
+		rateEdit->setDisabled(readOnly);
 	}
 
 	PageWidget::setReadOnly(readOnly);
@@ -94,11 +115,13 @@ void EncounterWidget::fill()
 			formationEdit[i]->setValue(data()->getMrtFile()->formation(i));
 			formationEdit[i]->blockSignals(false);
 		}
-		if(hasRat) {
-			rateEdit[i]->blockSignals(true);
-			rateEdit[i]->setValue(data()->getRatFile()->rate(i));
-			rateEdit[i]->blockSignals(false);
-		}
+	}
+
+	if(hasRat) {
+		rateEdit->blockSignals(true);
+		rateEdit->setValue(data()->getRatFile()->rate());
+		rateEdit->blockSignals(false);
+		fillRateLabel(data()->getRatFile()->rate());
 	}
 
 	PageWidget::fill();
@@ -129,23 +152,17 @@ void EncounterWidget::editFormation()
 
 void EncounterWidget::editRate()
 {
-	QObject *s = sender();
-	int index, value = ((QSpinBox *)s)->value();
-
-	if(s == rateEdit[0]) {
-		index = 0;
-	} else if(s == rateEdit[1]) {
-		index = 1;
-	} else if(s == rateEdit[2]) {
-		index = 2;
-	} else if(s == rateEdit[3]) {
-		index = 3;
-	} else {
-		qWarning() << "EncounterWidget::editRate Bad sender object";
-		return;
-	}
-
-	data()->getRatFile()->setRate(index, value);
+	fillRateLabel(rateEdit->value());
+	data()->getRatFile()->setRate(rateEdit->value());
 
 	emit modified();
+}
+
+void EncounterWidget::fillRateLabel(int value)
+{
+	if(value == 0) {
+		rateEditLabel->setText(tr("Pas de combats"));
+	} else {
+		rateEditLabel->setNum(value);
+	}
 }

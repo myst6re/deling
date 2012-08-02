@@ -29,10 +29,10 @@ public:
 	inline QString filterText() const {
 		return QObject::tr("Fichier inconnu combat écran PC (*.rat)");
 	}
-	quint8 rate(int index) const;
-	void setRate(int index, quint8 rate);
+	quint8 rate() const;
+	void setRate(quint8 rate);
 private:
-	quint8 rates[4];
+	quint8 _rate;
 };
 
 #endif // RATFILE_H

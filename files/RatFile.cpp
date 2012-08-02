@@ -18,7 +18,7 @@
 #include "files/RatFile.h"
 
 RatFile::RatFile()
-	: File()
+	: File(), _rate(0)
 {
 }
 
@@ -29,7 +29,7 @@ bool RatFile::open(const QByteArray &rat)
 		return false;
 	}
 
-	memcpy(rates, rat.constData(), 4);
+	_rate = rat.at(0);
 	modified = false;
 
 	return true;
@@ -37,18 +37,21 @@ bool RatFile::open(const QByteArray &rat)
 
 bool RatFile::save(QByteArray &rat)
 {
-	rat = QByteArray((char *)rates, 4);
+	rat.append((char)_rate);
+	rat.append((char)_rate);
+	rat.append((char)_rate);
+	rat.append((char)_rate);
 
 	return true;
 }
 
-quint8 RatFile::rate(int index) const
+quint8 RatFile::rate() const
 {
-	return rates[index];
+	return _rate;
 }
 
-void RatFile::setRate(int index, quint8 rate)
+void RatFile::setRate(quint8 rate)
 {
-	rates[index] = rate;
+	_rate = rate;
 	modified = true;
 }

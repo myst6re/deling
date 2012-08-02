@@ -38,10 +38,28 @@ void MiscWidget::build()
 	pvpEdit->setDecimals(0);
 	pvpEdit->setRange(0, (quint32)-1);
 
+	pmpGroup = new QGroupBox(tr("PMP : données particules"), this);
+	pmpView = new QLabel(pmpGroup);
+	pmpPaletteView = new QLabel(pmpGroup);
+	pmpPaletteBox = new QComboBox(pmpGroup);
+	for(int i=0 ; i<16 ; ++i)
+		pmpPaletteBox->addItem(tr("Palette %1").arg(i));
+	pmpDephBox = new QComboBox(pmpGroup);
+	pmpDephBox->addItem("4", 4);
+	pmpDephBox->addItem("8", 8);
+	pmpDephBox->addItem("16", 16);
+	QGridLayout *pmpLayout = new QGridLayout(pmpGroup);
+	pmpLayout->addWidget(pmpPaletteBox, 0, 0);
+	pmpLayout->addWidget(pmpDephBox, 0, 1);
+	pmpLayout->addWidget(pmpView, 1, 0);
+	pmpLayout->addWidget(pmpPaletteView, 1, 1);
+
 	connect(nameEdit, SIGNAL(textEdited(QString)), SLOT(editName(QString)));
 	connect(pmpEdit, SIGNAL(textEdited(QString)), SLOT(editPmp(QString)));
 	connect(pmdEdit, SIGNAL(textEdited(QString)), SLOT(editPmd(QString)));
 	connect(pvpEdit, SIGNAL(valueChanged(double)), SLOT(editPvp(double)));
+	connect(pmpPaletteBox, SIGNAL(currentIndexChanged(int)), SLOT(updatePmpView()));
+	connect(pmpDephBox, SIGNAL(currentIndexChanged(int)), SLOT(updatePmpView()));
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(nameLbl, 0, 0);
@@ -52,7 +70,8 @@ void MiscWidget::build()
 	layout->addWidget(pmdEdit, 2, 1);
 	layout->addWidget(pvpLbl, 3, 0);
 	layout->addWidget(pvpEdit, 3, 1);
-	layout->setRowStretch(4, 1);
+	layout->addWidget(pmpGroup, 4, 0, 1, 2);
+	layout->setRowStretch(5, 1);
 	layout->setColumnStretch(1, 1);
 	layout->setContentsMargins(QMargins());
 
@@ -65,6 +84,8 @@ void MiscWidget::clear()
 
 	nameEdit->clear();
 	pmpEdit->clear();
+	pmpView->clear();
+	pmpPaletteView->clear();
 	pmdEdit->clear();
 	pvpEdit->clear();
 
@@ -98,6 +119,12 @@ void MiscWidget::fill()
 
 	if(data()->hasPmpFile()) {
 		pmpEdit->setText(data()->getPmpFile()->getPmpData().toHex());
+		QPixmap pal = QPixmap::fromImage(data()->getPmpFile()->palette());
+		if(!pal.isNull()) {
+			pal = pal.scaledToWidth(256);
+		}
+		pmpPaletteView->setPixmap(pal);
+		updatePmpView();
     }
 	pmpEdit->setEnabled(data()->hasPmpFile());
 
@@ -152,4 +179,14 @@ void MiscWidget::editPvp(double value)
 			emit modified();
 		}
 	}
+}
+
+void MiscWidget::updatePmpView()
+{
+	if(hasData() && data()->hasPmpFile()) {
+		int palID = pmpPaletteBox->currentIndex(), deph=pmpDephBox->itemData(pmpDephBox->currentIndex()).toInt();
+
+		pmpView->setPixmap(QPixmap::fromImage(data()->getPmpFile()->image(deph, palID)));
+	}
+	pmpGroup->setEnabled(!pmpView->pixmap()->isNull());
 }

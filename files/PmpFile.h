@@ -31,8 +31,10 @@ public:
 	inline QString filterText() const {
 		return QObject::tr("Fichier données particules écran PC (*.pmp)");
 	}
-	const QByteArray &getPmpData() const;
+	QByteArray getPmpData() const;
 	void setPmpData(const QByteArray &pmp);
+	QImage palette() const;
+	QImage image(quint8 deph=4, quint8 palID=0) const;
 private:
 	QByteArray pmp;
 };

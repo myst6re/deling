@@ -36,8 +36,11 @@ private slots:
 	void editPmp(const QString &);
 	void editPmd(const QString &);
 	void editPvp(double);
+	void updatePmpView();
 private:
-
+	QGroupBox *pmpGroup;
+	QLabel *pmpView, *pmpPaletteView;
+	QComboBox *pmpPaletteBox, *pmpDephBox;
 	QLineEdit *nameEdit, *pmpEdit, *pmdEdit;
 	QDoubleSpinBox *pvpEdit;
 };
