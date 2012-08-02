@@ -32,6 +32,7 @@ public:
 	void setChar(int tableId, int charId, const QString &c);
 	bool isValid() const;
 	bool isModified() const;
+	void setModified(bool modified);
 	const QString &name() const;
 	void setName(const QString &name);
 	void setPaths(const QString &txtPath, const QString &tdwPath);

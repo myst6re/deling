@@ -57,6 +57,12 @@ bool FF8Font::isModified() const
 	return modified || _tdw->isModified();
 }
 
+void FF8Font::setModified(bool modified)
+{
+	this->modified = modified;
+	_tdw->setModified(modified);
+}
+
 const QString &FF8Font::name() const
 {
 	return _name;
@@ -174,8 +180,6 @@ QString FF8Font::saveTxt()
 		}
 		data.append("\n");
 	}
-
-	modified = false;
 
 	return data;
 }
@@ -326,6 +330,9 @@ bool FF8Font::saveFonts()
 				f2.close();
 			} else {
 				ok = false;
+			}
+			if(ok) {
+				font->setModified(false);
 			}
 		}
 	}

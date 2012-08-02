@@ -42,6 +42,7 @@ public slots:
 	void setLetter(int i);
 	void editLetter(const QString &letter);
 	void exportFont();
+	void importFont();
 	void reset();
 	void resetLetter();
 private slots:
@@ -49,7 +50,7 @@ private slots:
 private:
 	bool isAdditionnalTable;
 	TdwGrid *tdwGrid;
-	QPushButton *exportButton;
+	QPushButton *exportButton, *importButton;
 	TdwLetter *tdwLetter;
 	TdwPalette *tdwPalette;
 	QComboBox *selectPal, *selectTable;

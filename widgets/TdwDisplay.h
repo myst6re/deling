@@ -27,6 +27,7 @@ class TdwDisplay : public QWidget
 public:
 	explicit TdwDisplay(QWidget *parent=0);
 	virtual ~TdwDisplay();
+	TdwFile *tdwFile() const;
 	virtual void setTdwFile(TdwFile *tdwFile);
 	void clear();
 	int currentTable() const;
@@ -38,7 +39,7 @@ public slots:
 protected:
 	static QPoint getCellPos(const QPoint &pos, const QSize &cellSize);
 	static int getCell(const QPoint &pos, const QSize &cellSize, int colCount);
-	TdwFile *tdwFile;
+	TdwFile *_tdwFile;
 	TdwFile::Color _color;
 	int _currentTable, _letter;
 private:

@@ -143,20 +143,17 @@ bool TimFile::open(const QByteArray &data)
 
 	if(bpp==0)//mag176, icon
 	{
-		while(i<size && _image.valid(x, y))
+		while(i<size && y<h)
 		{
 			_image.setPixel(x, y, (quint8)data.at(20+palSize+i) & 0xF);
-			//pixels[x + y*w] = (quint8)data.at(20+palSize+i) & 0xF;
 			++x;
 			if(x==w)
 			{
 				x = 0;
 				++y;
 			}
-			if(!_image.valid(x, y))	break;
 
 			_image.setPixel(x, y, (quint8)data.at(20+palSize+i) >> 4);
-			//pixels[x + y*w] = (quint8)data.at(20+palSize+i) >> 4;
 			++x;
 			if(x==w)
 			{
@@ -168,10 +165,9 @@ bool TimFile::open(const QByteArray &data)
 	}
 	else if(bpp==1)
 	{
-		while(i<size && _image.valid(x, y))
+		while(i<size && y<h)
 		{
 			_image.setPixel(x, y, (quint8)data.at(20+palSize+i));
-			//pixels[x + y*w] = (quint8)data.at(20+palSize+i);
 
 			++x;
 			if(x==w)
@@ -184,7 +180,7 @@ bool TimFile::open(const QByteArray &data)
 	}
 	else if(bpp==2)
 	{
-		while(i<size && _image.valid(x, y))
+		while(i<size && y<h)
 		{
 			memcpy(&color, &constData[20+palSize+i], 2);
 			pixels[x + y*w] = FF8Image::fromPsColor(color, true);
@@ -200,7 +196,7 @@ bool TimFile::open(const QByteArray &data)
 	}
 	else if(bpp==3)
 	{
-		while(i<size && _image.valid(x, y))
+		while(i<size && y<h)
 		{
 			memcpy(&color, &constData[20+palSize+i], 3);
 			pixels[x + y*w] = qRgb(color >> 16, (color >> 8) & 0xFF, color & 0xFF);

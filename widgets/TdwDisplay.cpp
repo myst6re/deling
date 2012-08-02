@@ -18,7 +18,7 @@
 #include "TdwDisplay.h"
 
 TdwDisplay::TdwDisplay(QWidget *parent) :
-	QWidget(parent), tdwFile(0), _color(TdwFile::White), _currentTable(0), _letter(0)
+	QWidget(parent), _tdwFile(0), _color(TdwFile::White), _currentTable(0), _letter(0)
 {
 }
 
@@ -26,15 +26,20 @@ TdwDisplay::~TdwDisplay()
 {
 }
 
+TdwFile *TdwDisplay::tdwFile() const
+{
+	return _tdwFile;
+}
+
 void TdwDisplay::setTdwFile(TdwFile *tdwFile)
 {
-	this->tdwFile = tdwFile;
+	_tdwFile = tdwFile;
 	update();
 }
 
 void TdwDisplay::clear()
 {
-	this->tdwFile = 0;
+	_tdwFile = 0;
 	update();
 }
 
