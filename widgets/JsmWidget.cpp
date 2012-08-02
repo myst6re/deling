@@ -184,7 +184,6 @@ void JsmWidget::fill()
 	if(isFilled())		clear();
 
 //	qDebug() << "JsmWidget::fill()";
-//	qDebug() << data()->getJsmFile()->printCount();
 
 	if(!hasData() || !data()->hasJsmFile())		return;
 

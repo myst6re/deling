@@ -28,6 +28,13 @@ void CharaPreview::createContents()
 	label = new BGPreview2();
 }
 
+void CharaPreview::clear()
+{
+	mainModels = 0;
+
+	BGPreview::clear();
+}
+
 void CharaPreview::setMainModels(QHash<int, CharaModel *> *mainModels)
 {
 	this->mainModels = mainModels;

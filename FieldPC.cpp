@@ -396,17 +396,22 @@ bool FieldPC::save(const QString &path)
 	QString archivePath = path;
 	archivePath.chop(1);
 
-	QFile fs(archivePath%'s');
-	if(fs.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-		QFile fl(archivePath%'l');
+	QFile fs(FsArchive::fsPath(archivePath));
+	if(fs.open(QIODevice::ReadWrite)) {
+		QFile fl(FsArchive::flPath(archivePath));
 		if(fl.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-			QFile fi(archivePath%'i');
+			QFile fi(FsArchive::fiPath(archivePath));
 			if(fi.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
 
-				QByteArray fs_data, fl_data, fi_data;
+				QByteArray fs_data=fs.readAll(), fl_data, fi_data;
 
+				/* fs_data must be filled by the file contents
+				 * fl_data and fi_data are rebuilt
+				 */
 				save(fs_data, fl_data, fi_data);
 
+				fs.resize(0);
+				fs.reset();
 				fs.write(fs_data);
 				fl.write(fl_data);
 				fi.write(fi_data);

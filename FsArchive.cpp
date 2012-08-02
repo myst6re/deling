@@ -372,11 +372,11 @@ void FsArchive::changePositions(FsHeader *start, int diff)
 	// décalage des positions des fichiers qui suivent
     QMap<quint32, FsHeader *>::iterator i = sortedByPosition.find(sortedByPosition.key(start), start);
     if(i != sortedByPosition.end())
-    {
+	{
         ++i;
         while(i != sortedByPosition.end())
-        {
-            header = i.value();
+		{
+			header = i.value();
             header->setPosition(header->position() + diff);
             // toc_access.insert(header->path().toLower(), newPos);
             ++i;

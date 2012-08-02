@@ -27,6 +27,7 @@ class CharaPreview : public BGPreview
 	Q_OBJECT
 public:
 	explicit CharaPreview(QWidget *parent = 0);
+	virtual void clear();
 	void setMainModels(QHash<int, CharaModel *> *mainModels);
 	void setModel(const CharaModel &model);
 signals:

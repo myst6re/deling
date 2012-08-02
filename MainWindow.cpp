@@ -19,7 +19,7 @@
 
 MainWindow::MainWindow()
 	: fieldArchive(NULL), field(NULL), currentField(0),
-	  fieldThread(new FieldThread), fsDialog(0), _varManager(NULL), firstShow(true)
+	  fieldThread(new FieldThread), file(0), fsDialog(0), _varManager(NULL), firstShow(true)
 {
 	QFont font;
 	font.setPointSize(8);
@@ -311,17 +311,17 @@ bool MainWindow::openMsdFile(const QString &path)
 
 	return false;
 
-//	msdFile = new MsdFile();
-//	if(!msdFile->open(path)) {
-//		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, msdFile->lastError));
-//		delete msdFile;
-//		msdFile = NULL;
+//	file = new MsdFile();
+//	if(!file->open(path)) {
+//		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, file->lastError));
+//		delete file;
+//		file = 0;
 //		return false;
 //	}
 
 //	list1->setEnabled(false);
 //	lineSearch->setEnabled(false);
-////	pageWidgets.at(TextPage)->setData(msdFile);//TODO
+//	pageWidgets.at(TextPage)->setData(file);
 //	pageWidgets.at(TextPage)->setFocus();
 //	setCurrentPage(TextPage);
 
@@ -468,6 +468,8 @@ int MainWindow::closeFiles(bool quit)
 		pageWidget->clear();
 		pageWidget->cleanData();
 	}
+	((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(0);
+	((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(0);
 	currentPath->setText(QString());
 	setReadOnly(false);
 
@@ -508,7 +510,7 @@ void MainWindow::openFile(QString path)
 				path.append("/Data");
 		}
 
-        path = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), path, tr("Fichiers compatibles (*.fs *.msd *.jsm *.iso *.bin);;Archives FS (*.fs);;Fichiers MSD (*.msd);;Fichiers JSM (*.jsm);;Fichiers Image Disque (*.iso *.bin)"));
+		path = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), path, tr("Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)"));
 	}
 
 	if(!path.isEmpty())
@@ -524,10 +526,10 @@ void MainWindow::openFile(QString path)
 		bool ok = false;
 		if(ext == "fs")
 			ok = openFsArchive(path);
-		else if(ext == "msd")
-			ok = openMsdFile(path);
-		else if(ext == "jsm")
-			ok = openJsmFile(path);
+//		else if(ext == "msd")
+//			ok = openMsdFile(path);
+//		else if(ext == "jsm")
+//			ok = openJsmFile(path);
 		else if(ext == "iso" || ext == "bin")
 			ok = openIsoArchive(path);
 

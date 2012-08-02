@@ -94,6 +94,7 @@ private:
 	FieldPC *field;
 	Field *currentField;
 	FieldThread *fieldThread;//TODO
+	File *file;
 
 	MiscSearch *miscSearchD;
 	QLabel *currentPath;

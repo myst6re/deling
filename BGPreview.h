@@ -27,7 +27,7 @@ class BGPreview : public QScrollArea
 public:
 	BGPreview(QWidget *parent=0);
 
-	void clear();
+	virtual void clear();
 public slots:
 	void fill(const QPixmap &background);
 signals:
