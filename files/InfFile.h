@@ -45,7 +45,9 @@ typedef struct {
 typedef struct {
 	char name[9];
 	quint8 control;
-	quint8 unknown[10];
+	quint8 unknown[6];
+	quint16 pvp;
+	quint16 cameraFocusHeight;
 	Range cameraRange[8];
 	Range screenRange[2];
     Gateway gateways[12];
@@ -67,6 +69,10 @@ public:
 	void setControlDirection(quint8 controlDirection);
 	QByteArray unknown() const;
 	void setUnknown(const QByteArray &unknown);
+	quint16 pvp() const;
+	void setPvp(quint16 pvp);
+	quint16 cameraFocusHeight() const;
+	void setCameraFocusHeight(quint16 cameraFocusHeight);
     QList<Gateway> getGateways() const;
 	const Gateway &getGateway(int id) const;
 	void setGateway(int id, const Gateway &gateway);

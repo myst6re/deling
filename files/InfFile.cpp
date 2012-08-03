@@ -73,12 +73,34 @@ void InfFile::setControlDirection(quint8 controlDirection)
 
 QByteArray InfFile::unknown() const
 {
-	return QByteArray((char *)infStruct.unknown, 10);
+	return QByteArray((char *)infStruct.unknown, 6);
 }
 
 void InfFile::setUnknown(const QByteArray &unknown)
 {
-	memcpy(infStruct.unknown, unknown.leftJustified(10, '\0', true).constData(), 10);
+	memcpy(infStruct.unknown, unknown.leftJustified(6, '\0', true).constData(), 6);
+	modified = true;
+}
+
+quint16 InfFile::pvp() const
+{
+	return infStruct.pvp;
+}
+
+void InfFile::setPvp(quint16 pvp)
+{
+	infStruct.pvp = pvp;
+	modified = true;
+}
+
+quint16 InfFile::cameraFocusHeight() const
+{
+	return infStruct.cameraFocusHeight;
+}
+
+void InfFile::setCameraFocusHeight(quint16 cameraFocusHeight)
+{
+	infStruct.cameraFocusHeight = cameraFocusHeight;
 	modified = true;
 }
 

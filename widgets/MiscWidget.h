@@ -36,6 +36,7 @@ private slots:
 	void editPmp(const QString &);
 	void editPmd(const QString &);
 	void editPvp(double);
+	void editPvp2(int);
 	void updatePmpView();
 private:
 	QGroupBox *pmpGroup;
@@ -43,6 +44,7 @@ private:
 	QComboBox *pmpPaletteBox, *pmpDephBox;
 	QLineEdit *nameEdit, *pmpEdit, *pmdEdit;
 	QDoubleSpinBox *pvpEdit;
+	QSpinBox *pvpEdit2;
 };
 
 #endif // MISCWIDGET_H

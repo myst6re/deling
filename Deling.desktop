@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Version=0.6b
+Version=0.7b
 Name=Deling
 GenericName=FF8 Field Editor
 GenericName[fr]=Éditeur d'écrans FF8
@@ -12,5 +12,5 @@ Path=
 Terminal=false
 MimeType=application/octet-stream
 Categories=Application;Game;
-Keywords=PlayStation;Final Fantasy;
+Keywords=PlayStation;Final Fantasy;FF8;
 StartupNotify=false

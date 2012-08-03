@@ -381,6 +381,8 @@ QWidget *WalkmeshWidget::buildMiscPage()
 	navigation2->setWrapping(true);
 
 	unknown = new HexLineEdit(ret);
+	cameraFocus = new QSpinBox(ret);
+	cameraFocus->setRange(0, 65535);
 
 	QGridLayout *layout = new QGridLayout(ret);
 	layout->addWidget(new QLabel(tr("Orientation des mouvements :")), 0, 0);
@@ -388,11 +390,14 @@ QWidget *WalkmeshWidget::buildMiscPage()
 	layout->addWidget(navigation2, 0, 2);
 	layout->addWidget(new QLabel(tr("Inconnu :")), 1, 0);
 	layout->addWidget(unknown, 1, 1, 1, 2);
-	layout->setRowStretch(2, 1);
+	layout->addWidget(new QLabel(tr("Hauteur focus caméra sur le personnage :")), 2, 0);
+	layout->addWidget(cameraFocus, 2, 1, 1, 2);
+	layout->setRowStretch(4, 1);
 
     connect(navigation, SIGNAL(valueEdited(int)), navigation2, SLOT(setValue(int)));
     connect(navigation2, SIGNAL(valueChanged(int)), SLOT(editNavigation(int)));
     connect(unknown, SIGNAL(dataEdited(QByteArray)), SLOT(editUnknown(QByteArray)));
+	connect(cameraFocus, SIGNAL(valueChanged(int)), SLOT(editCameraFocus(int)));
 
 	return ret;
 }
@@ -456,6 +461,7 @@ void WalkmeshWidget::setReadOnly(bool ro)
 		navigation->setReadOnly(ro);
 		navigation2->setReadOnly(ro);
 		unknown->setReadOnly(ro);
+		cameraFocus->setReadOnly(ro);
 	}
 
 	PageWidget::setReadOnly(ro);
@@ -538,6 +544,7 @@ void WalkmeshWidget::fill()
 		navigation->setValue(data()->getInfFile()->controlDirection());
 		navigation2->setValue(data()->getInfFile()->controlDirection());
 		unknown->setData(data()->getInfFile()->unknown());
+		cameraFocus->setValue(data()->getInfFile()->cameraFocusHeight());
 	}
 	tabWidget->widget(2)->setEnabled(data()->hasInfFile());
 	tabWidget->widget(3)->setEnabled(data()->hasInfFile());
@@ -1208,6 +1215,16 @@ void WalkmeshWidget::editUnknown(const QByteArray &u)
 	if(data()->hasInfFile()) {
 		if(u != data()->getInfFile()->unknown()) {
 			data()->getInfFile()->setUnknown(u);
+			emit modified();
+		}
+	}
+}
+
+void WalkmeshWidget::editCameraFocus(int value)
+{
+	if(data()->hasInfFile()) {
+		if(value != data()->getInfFile()->cameraFocusHeight()) {
+			data()->getInfFile()->setCameraFocusHeight(value);
 			emit modified();
 		}
 	}

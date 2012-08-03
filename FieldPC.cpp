@@ -71,8 +71,8 @@ bool FieldPC::open(const QString &path)
 
 	if(header)	delete header;
 	header = new FsArchive(archivePath);
-	if(!header->isOpen()) {
-		qWarning() << "fieldData pas ouvert" << name();
+	if(!header->isOpen() || !header->fileExists("*.inf")) {
+		qWarning() << "fieldData pas ouvert" << path;
 		delete header;
 		header = 0;
 		return false;
@@ -135,6 +135,8 @@ bool FieldPC::open(const QString &path)
 	if(header->fileExists("*.inf"))
 	{
 		openFile(Inf, header->fileData("*.inf"));
+		if(hasInfFile())
+			setName(getInfFile()->getMapName());
 	}
 
 	/* SFX */

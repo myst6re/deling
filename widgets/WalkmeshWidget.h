@@ -68,6 +68,7 @@ private slots:
 	void removeMovieCameraPosition();
 	void editNavigation(int v);
 	void editUnknown(const QByteArray &u);
+	void editCameraFocus(int value);
 private:
 	void build();
 	QWidget *buildCameraPage();
@@ -122,6 +123,7 @@ private:
 	OrientationWidget *navigation;
 	QSpinBox *navigation2;
 	HexLineEdit *unknown;
+	QSpinBox *cameraFocus;
 protected:
 	void focusInEvent(QFocusEvent *);
 };

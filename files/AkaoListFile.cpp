@@ -41,7 +41,7 @@ bool AkaoListFile::open(const QByteArray &akao)
 	count = position / 4;
 
 	if((quint32)akao_data_size < position) {
-		qWarning() << "akaoList file too short" << akao_data_size << position;
+		qWarning() << "akaoList file too short (1)" << akao_data_size << position;
 		return false;
 	}
 
@@ -51,7 +51,7 @@ bool AkaoListFile::open(const QByteArray &akao)
 	for(quint32 i=1 ; i<count ; ++i) {
 		memcpy(&position, &akao_data[i * 4], 4);
 		if((quint32)akao_data_size < position) {
-			qWarning() << "akaoList file too short" << akao_data_size << position;
+			qWarning() << "akaoList file too short (2)" << akao_data_size << position;
 			return false;
 		}
 		if(position < positions.last()) {

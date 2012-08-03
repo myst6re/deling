@@ -33,10 +33,13 @@ void MiscWidget::build()
 	pmpEdit = new QLineEdit(this);
 	QLabel *pmdLbl = new QLabel(tr("PMD :"), this);
 	pmdEdit = new QLineEdit(this);
-	QLabel *pvpLbl = new QLabel(tr("PVP :"), this);
+	QLabel *pvpLbl = new QLabel(tr("PVP (1) :"), this);
 	pvpEdit = new QDoubleSpinBox(this);
 	pvpEdit->setDecimals(0);
 	pvpEdit->setRange(0, (quint32)-1);
+	QLabel *pvpLbl2 = new QLabel(tr("PVP (2) :"), this);
+	pvpEdit2 = new QSpinBox(this);
+	pvpEdit2->setRange(0, (quint16)-1);
 
 	pmpGroup = new QGroupBox(tr("PMP : données particules"), this);
 	pmpView = new QLabel(pmpGroup);
@@ -58,6 +61,7 @@ void MiscWidget::build()
 	connect(pmpEdit, SIGNAL(textEdited(QString)), SLOT(editPmp(QString)));
 	connect(pmdEdit, SIGNAL(textEdited(QString)), SLOT(editPmd(QString)));
 	connect(pvpEdit, SIGNAL(valueChanged(double)), SLOT(editPvp(double)));
+	connect(pvpEdit2, SIGNAL(valueChanged(int)), SLOT(editPvp2(int)));
 	connect(pmpPaletteBox, SIGNAL(currentIndexChanged(int)), SLOT(updatePmpView()));
 	connect(pmpDephBox, SIGNAL(currentIndexChanged(int)), SLOT(updatePmpView()));
 
@@ -70,8 +74,10 @@ void MiscWidget::build()
 	layout->addWidget(pmdEdit, 2, 1);
 	layout->addWidget(pvpLbl, 3, 0);
 	layout->addWidget(pvpEdit, 3, 1);
-	layout->addWidget(pmpGroup, 4, 0, 1, 2);
-	layout->setRowStretch(5, 1);
+	layout->addWidget(pvpLbl2, 4, 0);
+	layout->addWidget(pvpEdit2, 4, 1);
+	layout->addWidget(pmpGroup, 5, 0, 1, 2);
+	layout->setRowStretch(6, 1);
 	layout->setColumnStretch(1, 1);
 	layout->setContentsMargins(QMargins());
 
@@ -88,6 +94,7 @@ void MiscWidget::clear()
 	pmpPaletteView->clear();
 	pmdEdit->clear();
 	pvpEdit->clear();
+	pvpEdit2->clear();
 
 	PageWidget::clear();
 }
@@ -99,6 +106,7 @@ void MiscWidget::setReadOnly(bool readOnly)
 		pmpEdit->setReadOnly(readOnly);
 		pmdEdit->setReadOnly(readOnly);
 		pvpEdit->setReadOnly(readOnly);
+		pvpEdit2->setReadOnly(readOnly);
 	}
 
 	PageWidget::setReadOnly(readOnly);
@@ -114,8 +122,10 @@ void MiscWidget::fill()
 
     if(data()->hasInfFile()) {
         nameEdit->setText(data()->getInfFile()->getMapName());
+		pvpEdit2->setValue(data()->getInfFile()->pvp());
     }
 	nameEdit->setEnabled(data()->hasInfFile());
+	pvpEdit2->setEnabled(data()->hasInfFile());
 
 	if(data()->hasPmpFile()) {
 		pmpEdit->setText(data()->getPmpFile()->getPmpData().toHex());
@@ -176,6 +186,16 @@ void MiscWidget::editPvp(double value)
 	if(data()->hasPvpFile()) {
 		if(data()->getPvpFile()->value() != value) {
 			data()->getPvpFile()->setValue(value);
+			emit modified();
+		}
+	}
+}
+
+void MiscWidget::editPvp2(int value)
+{
+	if(data()->hasInfFile()) {
+		if(data()->getInfFile()->pvp() != value) {
+			data()->getInfFile()->setPvp(value);
 			emit modified();
 		}
 	}
