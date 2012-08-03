@@ -3899,13 +3899,13 @@ poursuite de la recherche dans le dernier fichier.</source>
         <location filename="widgets/WalkmeshWidget.cpp" line="310"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="318"/>
         <source>Haut</source>
-        <translation>Up</translation>
+        <translation>Top</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="312"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="320"/>
         <source>Bas</source>
-        <translation>Down</translation>
+        <translation>Bottom</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="314"/>
@@ -3917,7 +3917,7 @@ poursuite de la recherche dans le dernier fichier.</source>
         <location filename="widgets/WalkmeshWidget.cpp" line="316"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="324"/>
         <source>Gauche</source>
-        <translation>left</translation>
+        <translation>Left</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="348"/>

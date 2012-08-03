@@ -305,7 +305,7 @@ bool MainWindow::openFsArchive(const QString &path)
 	return true;
 }
 
-bool MainWindow::openMsdFile(const QString &path)
+bool MainWindow::openMsdFile(const QString &)
 {
 //	qDebug() << QString("MainWindow::openMsdFile(%1)").arg(path);
 
@@ -328,7 +328,7 @@ bool MainWindow::openMsdFile(const QString &path)
 //	return true;
 }
 
-bool MainWindow::openJsmFile(const QString &path)
+bool MainWindow::openJsmFile(const QString &)
 {
 //	qDebug() << QString("MainWindow::openJsmFile(%1)").arg(path);
 

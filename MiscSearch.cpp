@@ -180,7 +180,7 @@ int MiscSearch::getMapId(const QList<Field *> &fields)
 	return -1;
 }
 
-void MiscSearch::search(int fieldID)
+void MiscSearch::search(int /*fieldID*/)
 {
 //	int count=0;
 //	textEdit->setPlainText(fieldArchive->searchAllSpells(fieldID, count));

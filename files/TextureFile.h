@@ -28,8 +28,8 @@ public:
 	TextureFile();
 	TextureFile(const QImage &image);
 	TextureFile(const QImage &image, const QList< QVector<QRgb> > &colorTables);
-	virtual bool open(const QByteArray &data) {return false;}
-	virtual bool save(QByteArray &data) {return false;}
+	virtual bool open(const QByteArray &) {return false;}
+	virtual bool save(QByteArray &) {return false;}
 	inline QString filterText() const {
 		return QString();
 	}

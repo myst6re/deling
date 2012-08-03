@@ -46,7 +46,7 @@ private:
 	int _value;
 	bool _readOnly;
 protected:
-	virtual void paintEvent(QPaintEvent *);
+	virtual void paintEvent(QPaintEvent *e);
 	virtual void mousePressEvent(QMouseEvent *e);
 	virtual void mouseMoveEvent(QMouseEvent *e);
 };

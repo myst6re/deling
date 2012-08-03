@@ -405,12 +405,11 @@ void WalkmeshGLWidget::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-void WalkmeshGLWidget::mousePressEvent(QMouseEvent *event)
+void WalkmeshGLWidget::mousePressEvent(QMouseEvent *)
 {
 	setFocus();
 }
 
-void WalkmeshGLWidget::mouseMoveEvent(QMouseEvent *event)
+void WalkmeshGLWidget::mouseMoveEvent(QMouseEvent *)
 {
-	QPointF pos = event->posF();
 }

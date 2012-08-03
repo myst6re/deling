@@ -70,7 +70,7 @@ QSize OrientationWidget::sizeHint() const
 	return minimumSizeHint();
 }
 
-void OrientationWidget::paintEvent(QPaintEvent *e)
+void OrientationWidget::paintEvent(QPaintEvent *)
 {
 	QPainter p(this);
 

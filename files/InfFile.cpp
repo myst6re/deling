@@ -24,14 +24,67 @@ InfFile::InfFile()
 
 bool InfFile::open(const QByteArray &inf)
 {
-	if(sizeof(InfStruct) != inf.size()) {
+	if(sizeof(InfStruct) != inf.size() && 672 != inf.size() && 576 != inf.size() && 504 != inf.size()) {
 		qWarning() << "invalid inf size" << sizeof(InfStruct) << inf.size();
 		return false;
 	}
 
 	const char *constInf = inf.constData();
 
-	memcpy(&infStruct, constInf, sizeof(InfStruct));
+	if(inf.size() == 672) {
+		memcpy(&infStruct, constInf, 14);
+		infStruct.unknown[4] = '\0';
+		infStruct.unknown[5] = '\0';
+		infStruct.pvp = 0x0C;
+		memcpy(&infStruct.cameraFocusHeight, &constInf[14], 658);
+	} else if(inf.size() == 576) {
+		memcpy(&infStruct, constInf, 14);
+		infStruct.unknown[4] = '\0';
+		infStruct.unknown[5] = '\0';
+		infStruct.pvp = 0x0C;
+		memcpy(&infStruct.cameraFocusHeight, &constInf[14], 2 + 10 * sizeof(Range));
+
+		for(int i=0 ; i<12 ; ++i) {
+			memcpy(&infStruct.gateways[i], &constInf[96 + i*24], 3 * sizeof(Vertex_s) + 2);
+			quint16 val = infStruct.gateways[i].fieldId == 0x7FFF ? 0x7FFF : 0;
+			infStruct.gateways[i].unknown1[0] = val;
+			infStruct.gateways[i].unknown1[1] = val;
+			infStruct.gateways[i].unknown1[2] = val;
+			infStruct.gateways[i].unknown1[3] = val;
+			memcpy(&infStruct.gateways[i].unknown2, &constInf[116 + i*24], 4);
+		}
+
+		memcpy(infStruct.triggers, &constInf[384], 12 * sizeof(Trigger));
+	} else if(inf.size() == 504) {
+		memcpy(&infStruct, constInf, 14);
+		infStruct.unknown[4] = '\0';
+		infStruct.unknown[5] = '\0';
+		infStruct.pvp = 0x0C;
+		memcpy(&infStruct.cameraFocusHeight, &constInf[14], 2 + sizeof(Range));
+		infStruct.cameraRange[7] = infStruct.cameraRange[6]
+				= infStruct.cameraRange[5] = infStruct.cameraRange[4]
+				= infStruct.cameraRange[3] = infStruct.cameraRange[2]
+				= infStruct.cameraRange[1] = infStruct.cameraRange[0];
+		infStruct.screenRange[0].top = 0;
+		infStruct.screenRange[0].bottom = 224;
+		infStruct.screenRange[0].left = 0;
+		infStruct.screenRange[0].right = 320;
+		infStruct.screenRange[1] = infStruct.screenRange[0];
+
+		for(int i=0 ; i<12 ; ++i) {
+			memcpy(&infStruct.gateways[i], &constInf[24 + i*24], 3 * sizeof(Vertex_s) + 2);
+			quint16 val = infStruct.gateways[i].fieldId == 0x7FFF ? 0x7FFF : 0;
+			infStruct.gateways[i].unknown1[0] = val;
+			infStruct.gateways[i].unknown1[1] = val;
+			infStruct.gateways[i].unknown1[2] = val;
+			infStruct.gateways[i].unknown1[3] = val;
+			memcpy(&infStruct.gateways[i].unknown2, &constInf[44 + i*24], 4);
+		}
+
+		memcpy(infStruct.triggers, &constInf[312], 12 * sizeof(Trigger));
+	} else {
+		memcpy(&infStruct, constInf, sizeof(InfStruct));
+	}
 
 	modified = false;
 
