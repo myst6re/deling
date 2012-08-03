@@ -8,6 +8,7 @@
 
 class SpecialCharactersDialog : public QDialog
 {
+	Q_OBJECT
 public:
 	explicit SpecialCharactersDialog(QWidget *parent = 0);
 	QString selectedCharacter() const;

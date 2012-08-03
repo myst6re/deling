@@ -152,7 +152,7 @@ void VarManager::search()
 	list->resizeColumnToContents(1);
 
 	setEnabled(true);
-	countLabel->setText(QString("Vars utilisés : %1/1536").arg(count.size()));
+	countLabel->setText(tr("Vars utilisés : %1/1536").arg(count.size()));
 }
 
 void VarManager::save()

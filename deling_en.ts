@@ -82,7 +82,7 @@
     <message>
         <location filename="ConfigDialog.cpp" line="38"/>
         <source>Encodage des textes</source>
-        <translation>text encoding</translation>
+        <translation>Text encoding</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="40"/>
@@ -2012,19 +2012,42 @@ Dollet Harbor</translation>
 <context>
     <name>EncounterWidget</name>
     <message>
-        <location filename="widgets/EncounterWidget.cpp" line="30"/>
         <source>Formation</source>
-        <translation>Formation</translation>
+        <translation type="obsolete">Formation</translation>
     </message>
     <message>
-        <location filename="widgets/EncounterWidget.cpp" line="31"/>
         <source>Mode ?</source>
-        <translation>Mode?</translation>
+        <translation type="obsolete">Mode?</translation>
     </message>
     <message>
         <location filename="widgets/EncounterWidget.h" line="33"/>
         <source>Rencontres aléatoires</source>
         <translation>Encounters</translation>
+    </message>
+    <message>
+        <location filename="widgets/EncounterWidget.cpp" line="29"/>
+        <source>Formations</source>
+        <translation>Formations</translation>
+    </message>
+    <message>
+        <location filename="widgets/EncounterWidget.cpp" line="30"/>
+        <source>Fréquence</source>
+        <translation>Rate</translation>
+    </message>
+    <message>
+        <location filename="widgets/EncounterWidget.cpp" line="55"/>
+        <source>Basse</source>
+        <translation>Low</translation>
+    </message>
+    <message>
+        <location filename="widgets/EncounterWidget.cpp" line="57"/>
+        <source>Haute</source>
+        <translation>High</translation>
+    </message>
+    <message>
+        <location filename="widgets/EncounterWidget.cpp" line="164"/>
+        <source>Pas de combats</source>
+        <translation>No fights</translation>
     </message>
 </context>
 <context>
@@ -2388,9 +2411,14 @@ Dollet Harbor</translation>
         <translation>Quick Search</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="510"/>
-        <source>Fichiers compatibles (*.fs *.msd *.jsm *.iso *.bin);;Archives FS (*.fs);;Fichiers MSD (*.msd);;Fichiers JSM (*.jsm);;Fichiers Image Disque (*.iso *.bin)</source>
-        <translation type="unfinished"></translation>
+        <location filename="MainWindow.cpp" line="595"/>
+        <source>Une erreur s&apos;est produite lors de l&apos;enregistrement.</source>
+        <translation>An error occurred when saving.</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="638"/>
+        <source>Fichier nom des scripts écran PC (*.sym)</source>
+        <translation>Script names field PC file (*.sym)</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="109"/>
@@ -2409,41 +2437,42 @@ Dollet Harbor</translation>
         <translation>Restart the program for the settings to take effect.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="582"/>
-        <location filename="MainWindow.cpp" line="653"/>
-        <location filename="MainWindow.cpp" line="669"/>
-        <location filename="MainWindow.cpp" line="692"/>
-        <location filename="MainWindow.cpp" line="701"/>
-        <location filename="MainWindow.cpp" line="755"/>
+        <location filename="MainWindow.cpp" line="595"/>
+        <location filename="MainWindow.cpp" line="658"/>
+        <location filename="MainWindow.cpp" line="671"/>
+        <location filename="MainWindow.cpp" line="676"/>
+        <location filename="MainWindow.cpp" line="699"/>
+        <location filename="MainWindow.cpp" line="708"/>
+        <location filename="MainWindow.cpp" line="762"/>
         <source>Erreur</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="447"/>
+        <location filename="MainWindow.cpp" line="448"/>
         <source>Sauvegarder</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="447"/>
+        <location filename="MainWindow.cpp" line="448"/>
         <source>Voulez-vous enregistrer les changements de %1 ?</source>
         <translation>Would you like to save changes of %1?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="447"/>
+        <location filename="MainWindow.cpp" line="448"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="447"/>
+        <location filename="MainWindow.cpp" line="448"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="210"/>
-        <location filename="MainWindow.cpp" line="447"/>
-        <location filename="MainWindow.cpp" line="573"/>
-        <location filename="MainWindow.cpp" line="709"/>
-        <location filename="MainWindow.cpp" line="712"/>
+        <location filename="MainWindow.cpp" line="448"/>
+        <location filename="MainWindow.cpp" line="580"/>
+        <location filename="MainWindow.cpp" line="716"/>
+        <location filename="MainWindow.cpp" line="719"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
@@ -2463,87 +2492,91 @@ Dollet Harbor</translation>
         <translation>Opening error</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="510"/>
+        <location filename="MainWindow.cpp" line="513"/>
         <source>Ouvrir un fichier</source>
         <translation>Open a file</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="569"/>
+        <location filename="MainWindow.cpp" line="513"/>
+        <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)</source>
+        <translation>Compatible File (*.fs *.iso *.bin);;FS Archive (*.fs);;Image Disk File (*.iso *.bin)</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="573"/>
         <source>Enregistrer Sous</source>
         <translation>Save As</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="569"/>
+        <location filename="MainWindow.cpp" line="573"/>
         <source>Archive FS (*.fs)</source>
         <translation>FS Archive (*.fs)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="573"/>
+        <location filename="MainWindow.cpp" line="580"/>
         <source>Enregistrement...</source>
         <translation>Save...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="582"/>
         <source>Une erreur s&apos;est produite lors de l&apos;enregistrement de l&apos;archive.</source>
-        <translation>An error occurred when saving the archive.</translation>
-    </message>
-    <message>
-        <location filename="MainWindow.cpp" line="653"/>
-        <source>Cet écran ne contient pas assez d&apos;éléments pour être exporté.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">An error occurred when saving the archive.</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="658"/>
+        <source>Cet écran ne contient pas assez d&apos;éléments pour être exporté.</source>
+        <translation>This field does not contains enough information to be exported.</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="663"/>
         <source>Exporter</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="692"/>
+        <location filename="MainWindow.cpp" line="699"/>
         <source>Cet écran ne contient pas assez d&apos;éléments pour être importé.</source>
-        <translation type="unfinished"></translation>
+        <translation>This field does not contains enough information to be imported.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="697"/>
+        <location filename="MainWindow.cpp" line="704"/>
         <source>Importer</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="707"/>
+        <location filename="MainWindow.cpp" line="714"/>
         <source>À propos de l&apos;optimisation</source>
         <translation>About optimization</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="708"/>
+        <location filename="MainWindow.cpp" line="715"/>
         <source>L&apos;optimiseur d&apos;archive va modifier l&apos;ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.
 Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de continuer.</source>
         <translation>The optimizer will modify the archive file order to allow an opening much faster with Deling.
 It is strongly recommended to save the archive (fs, fi and fl) before continuing.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="709"/>
+        <location filename="MainWindow.cpp" line="716"/>
         <source>Lancer l&apos;optimisation !</source>
         <translation>Start optimizing!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="712"/>
+        <location filename="MainWindow.cpp" line="719"/>
         <source>Optimisation...</source>
         <translation>Optimization...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="755"/>
+        <location filename="MainWindow.cpp" line="762"/>
         <source>Final Fantasy VIII n&apos;a pas pu être lancé.
 %1</source>
         <translation>Final Fantasy VIII could not be launched.
 %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="865"/>
+        <location filename="MainWindow.cpp" line="872"/>
         <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</source>
         <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;br/&gt; - Aali&lt;br/&gt; - Aladore384&lt;br/&gt;</oldsource>
         <translation>By myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="872"/>
+        <location filename="MainWindow.cpp" line="879"/>
         <source>Fermer</source>
         <translation>Close</translation>
     </message>
@@ -2575,8 +2608,24 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     </message>
     <message>
         <location filename="widgets/MiscWidget.cpp" line="36"/>
-        <source>PVP :</source>
-        <translation>PVP:</translation>
+        <source>PVP (1) :</source>
+        <oldsource>PVP :</oldsource>
+        <translation>PVP (1):</translation>
+    </message>
+    <message>
+        <location filename="widgets/MiscWidget.cpp" line="40"/>
+        <source>PVP (2) :</source>
+        <translation>PVP (2):</translation>
+    </message>
+    <message>
+        <location filename="widgets/MiscWidget.cpp" line="44"/>
+        <source>PMP : données particules</source>
+        <translation>PMP: particles data</translation>
+    </message>
+    <message>
+        <location filename="widgets/MiscWidget.cpp" line="49"/>
+        <source>Palette %1</source>
+        <translation>Palette %1</translation>
     </message>
     <message>
         <location filename="widgets/MiscWidget.h" line="33"/>
@@ -2689,12 +2738,12 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="widgets/MsdWidget.cpp" line="34"/>
         <source>Insérer un texte au-dessus</source>
-        <translation type="unfinished"></translation>
+        <translation>Insert text above</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="35"/>
         <source>Insérer un texte en dessous</source>
-        <translation type="unfinished"></translation>
+        <translation>Insert text below</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="147"/>
@@ -2838,7 +2887,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="widgets/MsdWidget.cpp" line="208"/>
         <source>Caractères spéciaux</source>
-        <translation type="unfinished"></translation>
+        <translation>Special Characters</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="249"/>
@@ -2884,8 +2933,8 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <name>QObject</name>
     <message>
         <location filename="files/File.cpp" line="33"/>
-        <location filename="files/MsdFile.cpp" line="37"/>
-        <location filename="files/MsdFile.cpp" line="45"/>
+        <location filename="files/MsdFile.cpp" line="39"/>
+        <location filename="files/MsdFile.cpp" line="47"/>
         <source>Format de fichier invalide</source>
         <translation>Invalid file format</translation>
     </message>
@@ -2960,168 +3009,169 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation>Unknown error.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="761"/>
+        <location filename="files/JsmFile.cpp" line="773"/>
         <source>Trop d&apos;arguments</source>
         <translation>Too many arguments</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="770"/>
-        <location filename="files/JsmFile.cpp" line="804"/>
+        <location filename="files/JsmFile.cpp" line="782"/>
+        <location filename="files/JsmFile.cpp" line="816"/>
         <source>Conversion en entier impossible après &apos;LABEL&apos; : %1</source>
         <translation>Unable to convert to integer after &apos;LABEL&apos;: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="774"/>
+        <location filename="files/JsmFile.cpp" line="786"/>
         <source>&apos;LABEL%1&apos; déjà déclaré précédemment.</source>
         <translation>&apos;LABEL %1&apos; already declared.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="783"/>
+        <location filename="files/JsmFile.cpp" line="795"/>
         <source>Opcode non reconnu : %1</source>
         <translation>Unknown opcode: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="791"/>
+        <location filename="files/JsmFile.cpp" line="803"/>
         <source>Cet opcode ne peut pas avoir de paramètre : %1</source>
         <translation>This opcode can not have parameters: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="797"/>
+        <location filename="files/JsmFile.cpp" line="809"/>
         <source>Opération non reconnue : %1</source>
         <translation>Unknown operation: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="817"/>
-        <location filename="files/JsmFile.cpp" line="824"/>
+        <location filename="files/JsmFile.cpp" line="829"/>
+        <location filename="files/JsmFile.cpp" line="836"/>
         <source>Conversion en entier impossible : %1</source>
         <translation>Unable to convert to integer: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="848"/>
+        <location filename="files/JsmFile.cpp" line="860"/>
         <source>&apos;LABEL%1&apos; indéfini.</source>
         <translation>&apos;LABEL %1&apos; undefined.</translation>
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="52"/>
         <source>Impossible d&apos;ouvrir l&apos;archive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unable to open the archive.</translation>
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="92"/>
         <location filename="FieldArchivePS.cpp" line="78"/>
         <source>Ouverture annulée.</source>
-        <translation type="unfinished"></translation>
+        <translation>Opening canceled.</translation>
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="132"/>
         <location filename="FieldArchivePS.cpp" line="111"/>
         <source>Aucun écran trouvé.</source>
-        <translation type="unfinished"></translation>
+        <translation>No field found.</translation>
     </message>
     <message>
         <location filename="FieldArchivePS.cpp" line="50"/>
         <source>Impossible d&apos;ouvrir le fichier image disque. (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Can not open the disk image file. (%1)</translation>
     </message>
     <message>
         <location filename="FieldArchivePS.cpp" line="55"/>
         <source>Fichier FF8DISC?.IMG introuvable.</source>
-        <translation type="unfinished"></translation>
+        <translation>FF8DISC?.IMG File not found.</translation>
     </message>
     <message>
         <location filename="FieldArchivePS.cpp" line="63"/>
         <source>Impossible d&apos;ouvrir le dossier field.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unable to open the field dir.</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="185"/>
         <source>Enregistrement des données</source>
-        <translation type="unfinished"></translation>
+        <translation>Saving data</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="185"/>
         <source>Les polices de caractères n&apos;ont pas pu être enregistrées !</source>
-        <translation type="unfinished"></translation>
+        <translation>Fonts could not be saved!</translation>
     </message>
     <message>
         <location filename="files/CaFile.h" line="43"/>
         <source>Fichier caméra écran PC (*.ca)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field camera PC File (*.ca)</translation>
     </message>
     <message>
         <location filename="files/IdFile.h" line="43"/>
         <source>Fichier walkmesh écran PC (*.id)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field walkmesh PC File (*.id)</translation>
     </message>
     <message>
-        <location filename="files/InfFile.h" line="62"/>
+        <location filename="files/InfFile.h" line="64"/>
         <source>Fichier passages et portes écran PC (*.inf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field gate and doors PC File (*.inf)</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.h" line="64"/>
+        <location filename="files/JsmFile.h" line="65"/>
         <source>Fichier scripts écran PC (*.jsm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field Script PC file (*.jsm)</translation>
     </message>
     <message>
         <location filename="files/MchFile.h" line="31"/>
         <source>Fichier modèle 3D écran (*.mch)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field 3D model file (*.mch)</translation>
     </message>
     <message>
         <location filename="files/MrtFile.h" line="30"/>
         <source>Fichier formations combat écran PC (*.mrt)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field battle formation PC file (*.mrt)</translation>
     </message>
     <message>
         <location filename="files/MsdFile.h" line="32"/>
         <source>Fichier dialogues écran PC (*.msd)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field dialogs PC file (*.msd)</translation>
     </message>
     <message>
         <location filename="files/MskFile.h" line="32"/>
         <source>Fichier caméra cinématique écran PC (*.msk)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field movie camera PC file (*.msk)</translation>
     </message>
     <message>
         <location filename="files/PmdFile.h" line="30"/>
         <source>Fichier informations particules écran PC (*.pmd)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field particles infos PC file (*.pmd)</translation>
     </message>
     <message>
         <location filename="files/PmpFile.h" line="32"/>
         <source>Fichier données particules écran PC (*.pmp)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field particles data PC file (*.pmp)</translation>
     </message>
     <message>
         <location filename="files/PvpFile.h" line="30"/>
         <source>Fichier inconnu écran PC (*.pvp)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field unknown PC file (*.pvp)</translation>
     </message>
     <message>
         <location filename="files/RatFile.h" line="30"/>
-        <source>Fichier inconnu combat écran PC (*.rat)</source>
-        <translation type="unfinished"></translation>
+        <source>Fichier fréquence combat écran PC (*.rat)</source>
+        <oldsource>Fichier inconnu combat écran PC (*.rat)</oldsource>
+        <translation>Field battle rate PC file (*.rat)</translation>
     </message>
     <message>
         <location filename="files/SfxFile.h" line="30"/>
         <source>Fichier sons écran PC (*.sfx)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field sounds PC file (*.sfx)</translation>
     </message>
     <message>
-        <location filename="files/TdwFile.h" line="37"/>
+        <location filename="files/TdwFile.h" line="38"/>
         <source>Fichier caractères additionnels écran PC (*.tdw)</source>
-        <translation type="unfinished"></translation>
+        <translation>Field additionnal fonts PC file (*.tdw)</translation>
     </message>
     <message>
         <location filename="main.cpp" line="52"/>
         <source>Chargement des données</source>
-        <translation type="unfinished"></translation>
+        <translation>Loading data</translation>
     </message>
     <message>
         <location filename="main.cpp" line="52"/>
         <source>Les polices de caractères n&apos;ont pas pu être chargées !</source>
-        <translation type="unfinished"></translation>
+        <translation>Fonts could not be loaded!</translation>
     </message>
 </context>
 <context>
@@ -3314,22 +3364,22 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="SpecialCharactersDialog.cpp" line="6"/>
         <source>Caractères spéciaux</source>
-        <translation type="unfinished"></translation>
+        <translation>Special Characters</translation>
     </message>
     <message>
         <location filename="SpecialCharactersDialog.cpp" line="14"/>
         <source>Table %1</source>
-        <translation type="unfinished">Table %1</translation>
+        <translation>Table %1</translation>
     </message>
     <message>
         <location filename="SpecialCharactersDialog.cpp" line="21"/>
         <source>Insérer</source>
-        <translation type="unfinished"></translation>
+        <translation>Insert</translation>
     </message>
     <message>
         <location filename="SpecialCharactersDialog.cpp" line="29"/>
         <source>Table</source>
-        <translation type="unfinished"></translation>
+        <translation>Table</translation>
     </message>
 </context>
 <context>
@@ -3453,13 +3503,104 @@ poursuite de la recherche dans le dernier fichier.</source>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="41"/>
+        <source>Exporter...</source>
+        <translation>Export...</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="42"/>
+        <source>Importer...</source>
+        <translation>Import...</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="43"/>
         <source>Annuler les modifications</source>
         <translation>Cancel Changes</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="94"/>
+        <location filename="widgets/TdwWidget2.cpp" line="100"/>
         <source>Table %1</source>
         <translation>Table %1</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="173"/>
+        <source>Fichier texture FF8 (*.tex)</source>
+        <translation>FF8 Texture File (*.tex)</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="174"/>
+        <location filename="widgets/TdwWidget2.cpp" line="249"/>
+        <source>Fichier police FF8 (*.tdw)</source>
+        <translation>FF8 Font File (*.tdw)</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="175"/>
+        <source>Fichier image PNG (*.png)</source>
+        <translation>PNG image File (*.png)</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="176"/>
+        <source>Fichier image JPG (*.jpg)</source>
+        <translation>JPG image File (*.jpg)</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="177"/>
+        <source>Fichier image BMP (*.bmp)</source>
+        <translation>BMP image File (*.bmp)</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="181"/>
+        <source>Fichier traduction Deling (*.txt)</source>
+        <translation>Deling translation File (*.txt)</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="184"/>
+        <source>Exporter police de caractère</source>
+        <translation>Export font</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="197"/>
+        <location filename="widgets/TdwWidget2.cpp" line="200"/>
+        <location filename="widgets/TdwWidget2.cpp" line="213"/>
+        <location filename="widgets/TdwWidget2.cpp" line="216"/>
+        <location filename="widgets/TdwWidget2.cpp" line="225"/>
+        <location filename="widgets/TdwWidget2.cpp" line="266"/>
+        <location filename="widgets/TdwWidget2.cpp" line="270"/>
+        <source>Erreur</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="197"/>
+        <location filename="widgets/TdwWidget2.cpp" line="213"/>
+        <location filename="widgets/TdwWidget2.cpp" line="225"/>
+        <location filename="widgets/TdwWidget2.cpp" line="270"/>
+        <source>Erreur d&apos;ouverture du fichier. (%1)</source>
+        <translation>Error when opening file. (%1)</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="200"/>
+        <location filename="widgets/TdwWidget2.cpp" line="216"/>
+        <source>Erreur lors de l&apos;enregistrement.</source>
+        <translation>Error when saving.</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="203"/>
+        <source>Information</source>
+        <translation>Information</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="203"/>
+        <source>Format de police de caractère inexportable.</source>
+        <translation>Font format unexportable.</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="253"/>
+        <source>Importer police de caractère</source>
+        <translation>Import font</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="266"/>
+        <source>Fichier invalide</source>
+        <translation>Invalid File</translation>
     </message>
 </context>
 <context>
@@ -3557,6 +3698,11 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Save</translation>
     </message>
     <message>
+        <location filename="VarManager.cpp" line="155"/>
+        <source>Vars utilisés : %1/1536</source>
+        <translation>Used vars: %1/1536</translation>
+    </message>
+    <message>
         <location filename="VarManager.cpp" line="33"/>
         <location filename="VarManager.cpp" line="47"/>
         <source>Nom</source>
@@ -3597,22 +3743,22 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="46"/>
         <source>Sorties</source>
-        <translation type="unfinished"></translation>
+        <translation>Exits</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="47"/>
         <source>Portes</source>
-        <translation type="unfinished"></translation>
+        <translation>Doors</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="48"/>
         <source>Limites caméra</source>
-        <translation type="unfinished"></translation>
+        <translation>Camera Ranges</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="49"/>
         <source>Caméra cinématique</source>
-        <translation type="unfinished"></translation>
+        <translation>Movie Camera</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="50"/>
@@ -3622,27 +3768,27 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="73"/>
         <source>Ajouter caméra</source>
-        <translation type="unfinished"></translation>
+        <translation>Add camera</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="74"/>
         <source>Supprimer caméra</source>
-        <translation type="unfinished"></translation>
+        <translation>Remove camera</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="99"/>
         <source>Distance (zoom) :</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoom:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="101"/>
         <source>Axes de la caméra :</source>
-        <translation type="unfinished"></translation>
+        <translation>Camera axis:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="105"/>
         <source>Position de la caméra :</source>
-        <translation type="unfinished"></translation>
+        <translation>Camera position:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="106"/>
@@ -3662,92 +3808,92 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="137"/>
         <source>Ajouter triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Add triangle</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="138"/>
         <source>Supprimer triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Remove triangle</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="156"/>
         <source>Triangle accessible via la ligne 1-2 :</source>
-        <translation type="unfinished"></translation>
+        <translation>Triangle accessible via the line 1-2:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="160"/>
         <source>Triangle accessible via la ligne 2-3 :</source>
-        <translation type="unfinished"></translation>
+        <translation>Triangle accessible via la ligne 2-3:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="164"/>
         <source>Triangle accessible via la ligne 3-1 :</source>
-        <translation type="unfinished"></translation>
+        <translation>Triangle accessible via la ligne 3-1:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="169"/>
         <source>Point 1 :</source>
-        <translation type="unfinished"></translation>
+        <translation>Point 1:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="171"/>
         <source>Point 2 :</source>
-        <translation type="unfinished"></translation>
+        <translation>Point 2:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="173"/>
         <source>Point 3 :</source>
-        <translation type="unfinished"></translation>
+        <translation>Point 3:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="212"/>
         <source>Id écran :</source>
-        <translation type="unfinished"></translation>
+        <translation>Field ID:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="214"/>
         <source>Inconnu 1 :</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown 1:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="219"/>
         <source>Inconnu 2 :</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown 2:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="224"/>
         <source>Ligne de sortie :</source>
-        <translation type="unfinished"></translation>
+        <translation>Exit Line:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="227"/>
         <source>Point de destination :</source>
-        <translation type="unfinished"></translation>
+        <translation>Destination point:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="255"/>
         <source>Utilisé</source>
-        <translation type="unfinished"></translation>
+        <translation>Used</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="262"/>
         <source>Id porte :</source>
-        <translation type="unfinished"></translation>
+        <translation>Door ID:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="267"/>
         <source>Ligne déclench. porte :</source>
-        <translation type="unfinished"></translation>
+        <translation>Trigger Line Door:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="290"/>
         <source>Limite caméra %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Camera Range %1</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="297"/>
         <source>Limite écran %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Screen Range %1</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="310"/>
@@ -3784,54 +3930,61 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="386"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="388"/>
         <source>Orientation des mouvements :</source>
-        <translation type="unfinished"></translation>
+        <translation>Movements orientation:</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="389"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="391"/>
         <source>Inconnu :</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown:</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="485"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="393"/>
+        <source>Hauteur focus caméra sur le personnage :</source>
+        <translation>Camera Focus Height on the playable character:</translation>
+    </message>
+    <message>
+        <location filename="widgets/WalkmeshWidget.cpp" line="491"/>
         <source>Caméra %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Camera %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="501"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="755"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="757"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="774"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="507"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="762"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="764"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="781"/>
         <source>Triangle %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Triangle %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="516"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="527"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="991"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1018"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="522"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="533"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="998"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1025"/>
         <source>Inutilisé</source>
-        <translation type="unfinished"></translation>
+        <translation>Unused</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="525"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="531"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1023"/>
         <source>Porte %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Door %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="629"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="631"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="650"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="636"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="638"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="657"/>
         <source>Camera %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Camera %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1167"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1169"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1188"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="558"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1174"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1176"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1195"/>
         <source>Position %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Position %1</translation>
     </message>
 </context>
 </TS>

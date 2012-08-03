@@ -165,7 +165,7 @@ QWidget *WalkmeshWidget::buildWalkmeshPage()
 	accessLayout2->addWidget(idAccess[2]);
 
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(listWidget, 0, 0, 6, 1, Qt::AlignLeft);
+	layout->addWidget(listWidget, 0, 0, 7, 1, Qt::AlignLeft);
 	layout->addWidget(new QLabel(tr("Point 1 :")), 0, 1);
 	layout->addWidget(idVertices[0], 0, 2);
 	layout->addWidget(new QLabel(tr("Point 2 :")), 1, 1);
@@ -174,8 +174,8 @@ QWidget *WalkmeshWidget::buildWalkmeshPage()
 	layout->addWidget(idVertices[2], 2, 2);
 	layout->addLayout(accessLayout0, 3, 1, 1, 2);
 	layout->addLayout(accessLayout1, 4, 1, 1, 2);
-	layout->addLayout(accessLayout2, 5, 1, 1, 2, Qt::AlignTop);
-	layout->setRowStretch(5, 1);
+	layout->addLayout(accessLayout2, 5, 1, 1, 2);
+	layout->setRowStretch(6, 1);
 
 	connect(idList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentId(int)));
     connect(idVertices[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
@@ -220,14 +220,14 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	idsLayout->addWidget(unknownGate2, 2, 1, 1, 4);
 
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(gateList, 0, 0, 6, 1, Qt::AlignLeft);
-	layout->addWidget(new QLabel(tr("Ligne de sortie :")), 0, 1, Qt::AlignTop);
-	layout->addWidget(exitPoints[0], 0, 2, Qt::AlignTop);
-	layout->addWidget(exitPoints[1], 1, 2, Qt::AlignTop);
-	layout->addWidget(new QLabel(tr("Point de destination :")), 2, 1, Qt::AlignTop);
-	layout->addWidget(entryPoint, 2, 2, Qt::AlignTop);
-	layout->addLayout(idsLayout, 3, 1, 1, 2, Qt::AlignTop);
-	layout->setRowStretch(3, 1);
+	layout->addWidget(gateList, 0, 0, 5, 1, Qt::AlignLeft);
+	layout->addWidget(new QLabel(tr("Ligne de sortie :")), 0, 1);
+	layout->addWidget(exitPoints[0], 0, 2);
+	layout->addWidget(exitPoints[1], 1, 2);
+	layout->addWidget(new QLabel(tr("Point de destination :")), 2, 1);
+	layout->addWidget(entryPoint, 2, 2);
+	layout->addLayout(idsLayout, 3, 1, 1, 2);
+	layout->setRowStretch(4, 1);
 
     connect(gateList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentGateway(int)));
     connect(exitPoints[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editExitPoint(Vertex_s)));
@@ -263,12 +263,12 @@ QWidget *WalkmeshWidget::buildDoorsPage()
 	idsLayout->addWidget(doorId, 0, 2);
 
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(doorList, 0, 0, 3, 1, Qt::AlignLeft);
-	layout->addWidget(new QLabel(tr("Ligne déclench. porte :")), 0, 1, Qt::AlignTop);
-	layout->addWidget(doorPosition[0], 0, 2, Qt::AlignTop);
-	layout->addWidget(doorPosition[1], 1, 2, Qt::AlignTop);
-	layout->addLayout(idsLayout, 2, 1, 1, 2, Qt::AlignTop);
-	layout->setRowStretch(2, 1);
+	layout->addWidget(doorList, 0, 0, 4, 1, Qt::AlignLeft);
+	layout->addWidget(new QLabel(tr("Ligne déclench. porte :")), 0, 1);
+	layout->addWidget(doorPosition[0], 0, 2);
+	layout->addWidget(doorPosition[1], 1, 2);
+	layout->addLayout(idsLayout, 2, 1, 1, 2);
+	layout->setRowStretch(3, 1);
 
     connect(doorList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentDoor(int)));
     connect(doorPosition[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editDoorPoint(Vertex_s)));
@@ -555,7 +555,7 @@ void WalkmeshWidget::fill()
 		frameList->clear();
 		int cameraPositionCount = data()->getMskFile()->cameraPositionCount();
 		for(int i=0 ; i<cameraPositionCount ; ++i) {
-			frameList->addItem(QString("Position %1").arg(i+1));
+			frameList->addItem(tr("Position %1").arg(i+1));
 		}
 		frameList->setCurrentRow(0);
 		setCurrentMoviePosition(0);
@@ -1020,7 +1020,7 @@ void WalkmeshWidget::editDoorId(int v)
 			old.doorID = v;
 			data()->getInfFile()->setTrigger(gateId, old);
 			if(v != 0xFF) {
-				doorList->currentItem()->setText(QString("Porte %1").arg(v));
+				doorList->currentItem()->setText(tr("Porte %1").arg(v));
 			} else {
 				doorList->currentItem()->setText(tr("Inutilisé"));
 			}
