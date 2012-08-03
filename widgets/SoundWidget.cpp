@@ -104,8 +104,8 @@ void SoundWidget::fill()
 	if(isFilled())		clear();
 
 	if(!hasData()
-			|| !data()->hasSfxFile()
-			|| !data()->hasAkaoListFile()) return;
+			|| (!data()->hasSfxFile()
+			&& !data()->hasAkaoListFile())) return;
 
 	if(data()->hasSfxFile()) {
 		fillList(data()->getSfxFile()->valueCount());
