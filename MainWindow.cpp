@@ -852,33 +852,40 @@ void MainWindow::gotoScript(int fieldID, int groupID, int methodID, int opcodeID
 
 void MainWindow::about()
 {
-	QDialog apropos(this, Qt::Dialog | Qt::CustomizeWindowHint);
-	apropos.setFixedSize(200,270);
+	QDialog about(this, Qt::Dialog | Qt::CustomizeWindowHint);
+	about.setFixedSize(200,270);
 
 	QFont font;
 	font.setPointSize(12);
 
-	QLabel image(&apropos);
+	QLabel image(&about);
 	image.setPixmap(QPixmap(":/images/deling_city.png"));
-	image.move(-5, apropos.height() - 128);
+	image.move(-5, about.height() - 128);
 
-	QLabel desc1(PROG_FULLNAME, &apropos);
+	QLabel desc1(PROG_FULLNAME, &about);
 	desc1.setFont(font);
 	desc1.setFixedWidth(200);
 	desc1.setAlignment(Qt::AlignHCenter);
 
 	font.setPointSize(8);
 
-	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci à :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li></ul>"), &apropos);
+	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci à :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li></ul>"), &about);
 	desc2.setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
 	desc2.setTextFormat(Qt::RichText);
 	desc2.setOpenExternalLinks(true);
 	desc2.move(9,40);
 	desc2.setFont(font);
 
-	QPushButton button(tr("Fermer"), &apropos);
-	button.move(8,apropos.height() - 4 - button.height());
-	connect(&button, SIGNAL(released()), &apropos, SLOT(close()));
+	QLabel desc3(QString("Qt %1").arg(QT_VERSION_STR), &about);
+	QPalette pal = desc3.palette();
+	pal.setColor(QPalette::WindowText, QColor(0xAA,0xAA,0xAA));
+	desc3.setPalette(pal);
+	desc3.move(about.width()-8-desc3.sizeHint().width(), about.height()-8-desc3.sizeHint().height());
+	desc3.setFont(font);
 
-	apropos.exec();
+	QPushButton button(tr("Fermer"), &about);
+	button.move(8, about.height()-8-button.sizeHint().height());
+	connect(&button, SIGNAL(released()), &about, SLOT(close()));
+
+	about.exec();
 }
