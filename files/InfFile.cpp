@@ -146,12 +146,12 @@ void InfFile::setPvp(quint16 pvp)
 	modified = true;
 }
 
-quint16 InfFile::cameraFocusHeight() const
+qint16 InfFile::cameraFocusHeight() const
 {
 	return infStruct.cameraFocusHeight;
 }
 
-void InfFile::setCameraFocusHeight(quint16 cameraFocusHeight)
+void InfFile::setCameraFocusHeight(qint16 cameraFocusHeight)
 {
 	infStruct.cameraFocusHeight = cameraFocusHeight;
 	modified = true;

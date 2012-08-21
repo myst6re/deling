@@ -31,29 +31,24 @@ bool CaFile::open(const QByteArray &ca)
 	cameras.clear();
 
 	if(ca_data_size != 38 && ca_data_size % 40 != 0) {
-		qWarning() << "size ca error" << ca_data_size << sizeof(CaStruct);
+		qWarning() << "size ca error" << ca_data_size << sizeof(Camera);
 		return false;
 	}
 
-	if(sizeof(CaStruct) != 40) {
-		qWarning() << "sizeof ca struct error" << sizeof(CaStruct);
+	if(sizeof(Camera) != 40) {
+		qWarning() << "sizeof ca struct error" << sizeof(Camera);
 		return false;
 	}
 
-	CaStruct caStruct;
+	Camera camera;
 
 	quint32 caCount = (ca_data_size / 40) + int(ca_data_size % 40 >= 38);
 
 	for(i=0 ; i<caCount ; ++i) {
-		memcpy(&caStruct, &ca_data[i*40], 38);
+		memcpy(&camera, &ca_data[i*40], 38);
 
-		cameras.append(caStruct);
+		cameras.append(camera);
 	}
-
-//	qDebug() << camera_axis[0].x << camera_axis[0].y << camera_axis[0].z
-//			<< camera_axis[1].x << camera_axis[1].y << camera_axis[1].z
-//			<< camera_axis[2].x << camera_axis[2].y << camera_axis[2].z;
-//	qDebug() << camera_position[0] << camera_position[1] << camera_position[2];
 
 	modified = false;
 
@@ -62,13 +57,18 @@ bool CaFile::open(const QByteArray &ca)
 
 bool CaFile::save(QByteArray &ca)
 {
-	foreach(CaStruct caStruct, cameras) {
-		caStruct.camera_axis2z = caStruct.camera_axis[2].z;
-		caStruct.camera_zoom2 = caStruct.camera_zoom;
-		ca.append((char *)&caStruct, sizeof(CaStruct));
+	foreach(Camera camera, cameras) {
+		camera.camera_axis2z = camera.camera_axis[2].z;
+		camera.camera_zoom2 = camera.camera_zoom;
+		ca.append((char *)&camera, sizeof(Camera));
 	}
 
 	return true;
+}
+
+bool CaFile::hasCamera() const
+{
+	return !cameras.isEmpty();
 }
 
 int CaFile::cameraCount() const
@@ -76,18 +76,18 @@ int CaFile::cameraCount() const
 	return cameras.size();
 }
 
-const CaStruct &CaFile::camera(int camID) const
+const Camera &CaFile::camera(int camID) const
 {
 	return cameras.at(camID);
 }
 
-void CaFile::setCamera(int camID, const CaStruct &cam)
+void CaFile::setCamera(int camID, const Camera &cam)
 {
 	cameras[camID] = cam;
 	modified = true;
 }
 
-void CaFile::insertCamera(int camID, const CaStruct &cam)
+void CaFile::insertCamera(int camID, const Camera &cam)
 {
 	cameras.insert(camID, cam);
 	modified = true;

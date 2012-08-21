@@ -2700,8 +2700,8 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="widgets/MiscWidget.cpp" line="34"/>
         <source>PMD :</source>
-        <translatorcomment>PMP:</translatorcomment>
-        <translation>PMP:</translation>
+        <translatorcomment>PMD:</translatorcomment>
+        <translation>PMD:</translation>
     </message>
     <message>
         <location filename="widgets/MiscWidget.cpp" line="36"/>

@@ -101,6 +101,11 @@ bool IdFile::save(QByteArray &id)
 	return true;
 }
 
+bool IdFile::hasTriangle() const
+{
+	return !triangles.empty();
+}
+
 int IdFile::triangleCount() const
 {
 	return triangles.size();

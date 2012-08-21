@@ -50,7 +50,7 @@ void WalkmeshGLWidget::computeFov()
 	if(data && data->hasCaFile()
 			&& data->getCaFile()->cameraCount() > 0
 			&& camID < data->getCaFile()->cameraCount()) {
-		const CaStruct &cam = data->getCaFile()->camera(camID);
+		const Camera &cam = data->getCaFile()->camera(camID);
 		fovy = (2 * atan(240.0/(2.0 * cam.camera_zoom))) * 57.29577951;
 	} else {
 		fovy = 70.0;
@@ -126,7 +126,7 @@ void WalkmeshGLWidget::paintGL()
 	}*/
 
 	if(data->hasCaFile() && data->getCaFile()->cameraCount() > 0 && camID < data->getCaFile()->cameraCount()) {
-		const CaStruct &cam = data->getCaFile()->camera(camID);
+		const Camera &cam = data->getCaFile()->camera(camID);
 
 		double camAxisXx = cam.camera_axis[0].x/4096.0;
 		double camAxisXy = cam.camera_axis[0].y/4096.0;
@@ -205,9 +205,9 @@ void WalkmeshGLWidget::paintGL()
 		foreach(const Triangle &triangle, data->getIdFile()->getTriangles()) {
 			const Access &access = data->getIdFile()->access(i);
 
-			drawIdLine(i, triangle.vertices[0], triangle.vertices[1], access.a1);
-			drawIdLine(i, triangle.vertices[1], triangle.vertices[2], access.a2);
-			drawIdLine(i, triangle.vertices[2], triangle.vertices[0], access.a3);
+			drawIdLine(i, triangle.vertices[0], triangle.vertices[1], access.a[0]);
+			drawIdLine(i, triangle.vertices[1], triangle.vertices[2], access.a[1]);
+			drawIdLine(i, triangle.vertices[2], triangle.vertices[0], access.a[2]);
 
 			++i;
 		}

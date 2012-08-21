@@ -382,7 +382,7 @@ QWidget *WalkmeshWidget::buildMiscPage()
 
 	unknown = new HexLineEdit(ret);
 	cameraFocus = new QSpinBox(ret);
-	cameraFocus->setRange(0, 65535);
+	cameraFocus->setRange(-32768, 32767);
 
 	QGridLayout *layout = new QGridLayout(ret);
 	layout->addWidget(new QLabel(tr("Orientation des mouvements :")), 0, 0);
@@ -582,7 +582,7 @@ void WalkmeshWidget::setCurrentCamera(int camID)
     bool hasCamera = camID < data()->getCaFile()->cameraCount();
 
 	if(hasCamera) {
-		const CaStruct &cam = data()->getCaFile()->camera(camID);
+		const Camera &cam = data()->getCaFile()->camera(camID);
 
 //		qDebug() << cam.camera_axis[0].x << cam.camera_axis[0].y << cam.camera_axis[0].z;
 //		qDebug() << cam.camera_axis[1].x << cam.camera_axis[1].y << cam.camera_axis[1].z;
@@ -626,11 +626,11 @@ void WalkmeshWidget::addCamera()
 	int row = camList->currentRow();
 
 	if(data()->hasCaFile()) {
-		CaStruct ca;
+		Camera ca;
 		if(row < data()->getCaFile()->cameraCount()) {
 			ca = data()->getCaFile()->camera(row);
 		} else {
-			memset(&ca, 0, sizeof(CaStruct));
+			memset(&ca, 0, sizeof(Camera));
 		}
 		data()->getCaFile()->insertCamera(row+1, ca);
 		camList->insertItem(row+1, tr("Camera %1").arg(row+1));
@@ -674,7 +674,7 @@ void WalkmeshWidget::editCaVector(int id, const Vertex_s &values)
 {
 	if(data()->hasCaFile() && data()->getCaFile()->cameraCount() > 0) {
 		const int camID = currentCamera();
-		CaStruct cam = data()->getCaFile()->camera(camID);
+		Camera cam = data()->getCaFile()->camera(camID);
 		Vertex_s oldV = cam.camera_axis[id];
 
 		if(oldV.x != values.x || oldV.y != values.y || oldV.z != values.z) {
@@ -699,7 +699,7 @@ void WalkmeshWidget::editCaPos(int id, double value)
 {
 	if(data()->hasCaFile() && data()->getCaFile()->cameraCount() > 0) {
 		const int camID = currentCamera();
-		CaStruct cam = data()->getCaFile()->camera(camID);
+		Camera cam = data()->getCaFile()->camera(camID);
 		if(cam.camera_position[id] != (qint32)value) {
 			cam.camera_position[id] = value;
 			data()->getCaFile()->setCamera(camID, cam);
@@ -713,7 +713,7 @@ void WalkmeshWidget::editCaZoom(int value)
 {
 	if(data()->hasCaFile() && data()->getCaFile()->cameraCount() > 0) {
 		const int camID = currentCamera();
-		CaStruct cam = data()->getCaFile()->camera(camID);
+		Camera cam = data()->getCaFile()->camera(camID);
 		if(cam.camera_zoom != value) {
 			cam.camera_zoom = value;
 			data()->getCaFile()->setCamera(camID, cam);
@@ -737,9 +737,9 @@ void WalkmeshWidget::setCurrentId(int i)
 	idVertices[1]->setValues(IdFile::toVertex_s(triangle.vertices[1]));
 	idVertices[2]->setValues(IdFile::toVertex_s(triangle.vertices[2]));
 
-	idAccess[0]->setValue(access.a1);
-	idAccess[1]->setValue(access.a2);
-	idAccess[2]->setValue(access.a3);
+	idAccess[0]->setValue(access.a[0]);
+	idAccess[1]->setValue(access.a[1]);
+	idAccess[2]->setValue(access.a[2]);
 
     walkmeshGL->setSelectedTriangle(i);
 }
@@ -826,13 +826,9 @@ void WalkmeshWidget::editIdAccess(int id, int value)
 		const int triangleID = idList->currentRow();
 		if(triangleID > -1 && triangleID < data()->getIdFile()->triangleCount()) {
 			Access old = data()->getIdFile()->access(triangleID);
-			qint16 oldV = id==0 ? old.a1 : (id==1 ? old.a2 : old.a3);
+			qint16 oldV = old.a[id];
 			if(oldV != value) {
-				switch(id) {
-				case 0: old.a1 = value; break;
-				case 1: old.a2 = value; break;
-				case 2: old.a3 = value; break;
-				}
+				old.a[id] = value;
 				data()->getIdFile()->setAccess(triangleID, old);
                 walkmeshGL->updateGL();
 				emit modified();

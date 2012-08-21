@@ -31,7 +31,7 @@ typedef struct {
 	qint32 blank;
 	quint16 camera_zoom;
 	quint16 camera_zoom2;// copy (padding)
-} CaStruct;
+} Camera;
 
 class CaFile : public File
 {
@@ -42,13 +42,14 @@ public:
 	inline QString filterText() const {
 		return QObject::tr("Fichier caméra écran PC (*.ca)");
 	}
+	bool hasCamera() const;
 	int cameraCount() const;
-	const CaStruct &camera(int camID) const;
-	void setCamera(int camID, const CaStruct &cam);
-	void insertCamera(int camID, const CaStruct &cam);
+	const Camera &camera(int camID) const;
+	void setCamera(int camID, const Camera &cam);
+	void insertCamera(int camID, const Camera &cam);
 	void removeCamera(int camID);
 private:
-	QList<CaStruct> cameras;
+	QList<Camera> cameras;
 };
 
 #endif // CAFILE_H

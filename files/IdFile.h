@@ -30,7 +30,7 @@ typedef struct {
 } Triangle;
 
 typedef struct {
-	qint16 a1, a2, a3;
+	qint16 a[3];
 } Access;
 
 class IdFile : public File
@@ -42,6 +42,7 @@ public:
 	inline QString filterText() const {
 		return QObject::tr("Fichier walkmesh écran PC (*.id)");
 	}
+	bool hasTriangle() const;
 	int triangleCount() const;
 	const QList<Triangle> &getTriangles() const;
 	const Triangle &triangle(int triangleID) const;
