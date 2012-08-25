@@ -38,7 +38,7 @@ public:
 	void clearFields();
 	const QString &errorMessage() const;
 	virtual QString archivePath() const=0;
-	Field *getField(int id) const;
+	virtual Field *getField(int id) const;
 	const QList<Field *> &getFields() const;
 	int nbFields() const;
 	CharaModel *getModel(int id) const;

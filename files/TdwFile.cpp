@@ -361,9 +361,7 @@ TexFile TdwFile::toTexFile() const
 		}
 	}
 
-	TexStruct header;
-
-	memset(&header, 0, sizeof(TexStruct));
+	TexStruct header = TexStruct();
 
 	header.version = 2;
 //	header.unknown1= 0;

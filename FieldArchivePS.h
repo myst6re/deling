@@ -28,6 +28,7 @@ public:
 	FieldArchivePS();
 	virtual ~FieldArchivePS();
 	QString archivePath() const;
+	FieldPS *getField(int id) const;
 	FF8DiscArchive *getFF8DiscArchive() const;
 	int open(const QString &, QProgressDialog *progress);
 	bool openModels();

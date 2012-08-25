@@ -32,6 +32,11 @@ QString FieldArchivePC::archivePath() const
 	return archive ? archive->path() : QString();
 }
 
+FieldPC *FieldArchivePC::getField(int id) const
+{
+	return (FieldPC *)FieldArchive::getField(id);
+}
+
 FsArchive *FieldArchivePC::getFsArchive() const
 {
 	return archive;

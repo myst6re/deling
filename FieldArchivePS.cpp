@@ -33,6 +33,11 @@ QString FieldArchivePS::archivePath() const
 	return iso ? iso->fileName() : QString();
 }
 
+FieldPS *FieldArchivePS::getField(int id) const
+{
+	return (FieldPS *)FieldArchive::getField(id);
+}
+
 FF8DiscArchive *FieldArchivePS::getFF8DiscArchive() const
 {
 	return iso;

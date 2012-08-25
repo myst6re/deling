@@ -28,6 +28,7 @@ public:
 	FieldArchivePC();
 	virtual ~FieldArchivePC();
 	QString archivePath() const;
+	FieldPC *getField(int id) const;
 	FsArchive *getFsArchive() const;
 	int open(const QString &, QProgressDialog *progress);
 	bool save(QProgressDialog *progress, QString save_path=QString());
