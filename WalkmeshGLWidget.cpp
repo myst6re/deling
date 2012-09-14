@@ -17,13 +17,14 @@
  ****************************************************************************/
 #include "WalkmeshGLWidget.h"
 
-WalkmeshGLWidget::WalkmeshGLWidget(QWidget *parent)
-	: QGLWidget(parent), /*distance(-35),*/ xRot(0), yRot(0), zRot(0),
-	  xTrans(0), yTrans(0), zTrans(0), camID(0),
-	  _selectedTriangle(-1), _selectedDoor(-1), _selectedGate(-1),
+WalkmeshGLWidget::WalkmeshGLWidget(QWidget *parent, const QGLWidget *shareWidget)
+	: QGLWidget(parent, shareWidget),
+	  distance(0.0f), xRot(0.0f), yRot(0.0f), zRot(0.0f),
+	  xTrans(0.0f), yTrans(0.0f), transStep(360.0f), lastKeyPressed(-1),
+	  camID(0), _selectedTriangle(-1), _selectedDoor(-1), _selectedGate(-1),
 	  fovy(70.0), data(0), curFrame(0)
 {
-	setMouseTracking(true);
+//	setMouseTracking(true);
 //	startTimer(100);
 }
 
@@ -41,7 +42,6 @@ void WalkmeshGLWidget::clear()
 void WalkmeshGLWidget::fill(Field *data)
 {
 	this->data = data;
-
 	updatePerspective();
 }
 
@@ -73,7 +73,7 @@ void WalkmeshGLWidget::initializeGL()
 	glDisable(GL_LIGHTING);
 	//glEnable(GL_BLEND);
 //	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glDepthFunc(GL_LESS);
+//	glDepthFunc(GL_LESS);
 }
 
 void WalkmeshGLWidget::resizeGL(int width, int height)
@@ -95,6 +95,8 @@ void WalkmeshGLWidget::paintGL()
 	glLoadIdentity();
 
     if(!data)	return;
+
+	glTranslatef(xTrans, yTrans, distance);
 
 	/*if(data->hasBackgroundFile()) {
 
@@ -125,6 +127,10 @@ void WalkmeshGLWidget::paintGL()
 
 	}*/
 
+	glRotatef(xRot, 1.0, 0.0, 0.0);
+	glRotatef(yRot, 0.0, 1.0, 0.0);
+	glRotatef(zRot, 0.0, 0.0, 1.0);
+
 	if(data->hasCaFile() && data->getCaFile()->cameraCount() > 0 && camID < data->getCaFile()->cameraCount()) {
 		const Camera &cam = data->getCaFile()->camera(camID);
 
@@ -148,7 +154,7 @@ void WalkmeshGLWidget::paintGL()
 		double ty = -(camPosX*camAxisXy + camPosY*camAxisYy + camPosZ*camAxisZy);
 		double tz = -(camPosX*camAxisXz + camPosY*camAxisYz + camPosZ*camAxisZz);
 
-		gluLookAt(tx+xTrans, ty+yTrans, tz+zTrans, tx + camAxisZx, ty + camAxisZy, tz + camAxisZz, camAxisYx, camAxisYy, camAxisYz);
+		gluLookAt(tx, ty, tz, tx + camAxisZx, ty + camAxisZy, tz + camAxisZz, camAxisYx, camAxisYy, camAxisYz);
 	}
 
 	if(data->hasIdFile()) {
@@ -179,10 +185,6 @@ void WalkmeshGLWidget::paintGL()
 			gluLookAt(tx+xTrans, ty+yTrans, tz+zTrans, tx + camAxisZx, ty + camAxisZy, tz + camAxisZz, camAxisYx, camAxisYy, camAxisYz);
 			curFrame = (curFrame + 1) % data->getMskFile()->cameraPositionCount();
 		}*/
-
-		glRotatef(xRot / 16.0f, 1.0f, 0.0f, 0.0f);
-		glRotatef(yRot / 16.0f, 0.0f, 1.0f, 0.0f);
-		glRotatef(zRot / 16.0f, 0.0f, 0.0f, 1.0f);
 
 		/*glBegin(GL_LINES);
 			glColor3ub(0, 0, 255);
@@ -246,7 +248,6 @@ void WalkmeshGLWidget::paintGL()
 
 		glBegin(GL_POINTS);
 
-
 		glColor3ub(0xFF, 0x90, 0x00);
 
 		if(_selectedTriangle >= 0 && _selectedTriangle < data->getIdFile()->triangleCount()) {
@@ -303,20 +304,85 @@ void WalkmeshGLWidget::drawIdLine(int triangleID, const Vertex_sr &vertex1, cons
 	glVertex3f(vertex2.x/4096.0f, vertex2.y/4096.0f, vertex2.z/4096.0f);
 }
 
-/* void WalkmeshGLWidget::wheelEvent(QWheelEvent *event)
+void WalkmeshGLWidget::wheelEvent(QWheelEvent *event)
 {
-	distance += event->delta()/120;
+	setFocus();
+	distance += event->delta() / 4096.0;
 	updateGL();
 }
 
 void WalkmeshGLWidget::mousePressEvent(QMouseEvent *event)
 {
-	if(event->button()==Qt::MidButton)
+	setFocus();
+	if(event->button() == Qt::MidButton)
 	{
 		distance = -35;
 		updateGL();
 	}
-} */
+	else if(event->button() == Qt::LeftButton)
+	{
+		moveStart = event->pos();
+	}
+}
+
+void WalkmeshGLWidget::mouseMoveEvent(QMouseEvent *event)
+{
+	xTrans += (event->pos().x() - moveStart.x()) / 4096.0;
+	yTrans -= (event->pos().y() - moveStart.y()) / 4096.0;
+	moveStart = event->pos();
+	updateGL();
+}
+
+void WalkmeshGLWidget::keyPressEvent(QKeyEvent *event)
+{
+	if(lastKeyPressed == event->key()
+			&& (event->key() == Qt::Key_Left
+				|| event->key() == Qt::Key_Right
+				|| event->key() == Qt::Key_Down
+				|| event->key() == Qt::Key_Up)) {
+		if(transStep > 100.0f) {
+			transStep *= 0.90f; // accelerator
+		}
+	} else {
+		transStep = 360.0f;
+	}
+	lastKeyPressed = event->key();
+
+	switch(event->key())
+	{
+	case Qt::Key_Left:
+		xTrans += 1.0f/transStep;
+		updateGL();
+		break;
+	case Qt::Key_Right:
+		xTrans -= 1.0f/transStep;
+		updateGL();
+		break;
+	case Qt::Key_Down:
+		yTrans += 1.0f/transStep;
+		updateGL();
+		break;
+	case Qt::Key_Up:
+		yTrans -= 1.0f/transStep;
+		updateGL();
+		break;
+	default:
+		QWidget::keyPressEvent(event);
+		return;
+	}
+}
+
+void WalkmeshGLWidget::focusInEvent(QFocusEvent *event)
+{
+	grabKeyboard();
+	QWidget::focusInEvent(event);
+}
+
+void WalkmeshGLWidget::focusOutEvent(QFocusEvent *event)
+{
+	releaseKeyboard();
+	QWidget::focusOutEvent(event);
+}
 
 static void qNormalizeAngle(int &angle)
 {
@@ -353,11 +419,18 @@ void WalkmeshGLWidget::setZRotation(int angle)
 	}
 }
 
-/*void WalkmeshGLWidget::setZoom(int zoom)
+void WalkmeshGLWidget::setZoom(int zoom)
 {
-	distance = zoom;
+	distance = zoom / 4096.0;
+}
+
+void WalkmeshGLWidget::resetCamera()
+{
+	distance = 0;
+	zRot = yRot = xRot = 0;
+	xTrans = yTrans = 0;
 	updateGL();
-}*/
+}
 
 void WalkmeshGLWidget::setCurrentFieldCamera(int camID)
 {
@@ -381,35 +454,4 @@ void WalkmeshGLWidget::setSelectedGate(int gate)
 {
 	_selectedGate = gate;
 	updateGL();
-}
-
-void WalkmeshGLWidget::keyPressEvent(QKeyEvent *event)
-{
-	switch(event->key()) {
-	case Qt::Key_Left:
-		xTrans += 128 / 4096.0f;
-		updateGL();
-		break;
-	case Qt::Key_Right:
-		xTrans -= 128 / 4096.0f;
-		updateGL();
-		break;
-	case Qt::Key_Up:
-		zTrans -= 128 / 4096.0f;
-		updateGL();
-		break;
-	case Qt::Key_Down:
-		zTrans += 128 / 4096.0f;
-		updateGL();
-		break;
-	}
-}
-
-void WalkmeshGLWidget::mousePressEvent(QMouseEvent *)
-{
-	setFocus();
-}
-
-void WalkmeshGLWidget::mouseMoveEvent(QMouseEvent *)
-{
 }

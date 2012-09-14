@@ -21,6 +21,7 @@
 #include <QtCore>
 #include "IsoArchive.h"
 #include "LZS.h"
+#include "GZIP.h"
 
 class FF8DiscFile
 {

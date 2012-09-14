@@ -37,6 +37,7 @@ public:
 	inline QString tabName() const { return tr("Walkmesh"); }
 	int currentCamera() const;
 public slots:
+	void resetCamera();
 	void setCurrentCamera(int camID);
 private slots:
 	void addCamera();
@@ -69,6 +70,9 @@ private slots:
 	void editNavigation(int v);
 	void editUnknown(const QByteArray &u);
 	void editCameraFocus(int value);
+protected:
+	virtual void focusInEvent(QFocusEvent *e);
+	virtual void focusOutEvent(QFocusEvent *e);
 private:
 	void build();
 	QWidget *buildCameraPage();
@@ -89,6 +93,7 @@ private:
 	void editUnknownGate(int id, int val);
 
 	WalkmeshGLWidget *walkmeshGL;
+	QSlider *slider1, *slider2, *slider3;
 	QTabWidget *tabWidget;
 	//CamPage
 	QToolBar *caToolbar;
@@ -124,8 +129,6 @@ private:
 	QSpinBox *navigation2;
 	HexLineEdit *unknown;
 	QSpinBox *cameraFocus;
-protected:
-	void focusInEvent(QFocusEvent *);
 };
 
 #endif // WALKMESHWIDGET_H

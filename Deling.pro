@@ -86,7 +86,8 @@ HEADERS += MainWindow.h \
     files/PmpFile.h \
     files/PmdFile.h \
 	Listwidget.h \
-    SpecialCharactersDialog.h
+    SpecialCharactersDialog.h \
+    GZIP.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -165,7 +166,8 @@ SOURCES += MainWindow.cpp \
     files/PmpFile.cpp \
     files/PmdFile.cpp \
 	Listwidget.cpp \
-    SpecialCharactersDialog.cpp
+    SpecialCharactersDialog.cpp \
+    GZIP.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

@@ -40,6 +40,7 @@ signals:
 private slots:
 	void setButtonsEnabled();
 	void generatePreview();
+	void changeImagePaletteInPreview(int palID);
 	void doubleClicked(QTreeWidgetItem *);
 	void openDir();
 	void parentDir();
@@ -61,6 +62,7 @@ private:
 	QLineEdit *pathWidget;
 	QString currentPath;
 	FsArchive *fsArchive;
+	int currentPal;
 };
 
 #endif // FSDIALOG_H

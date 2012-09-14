@@ -28,11 +28,22 @@ FsPreviewWidget::FsPreviewWidget(QWidget *parent) :
 
 QWidget *FsPreviewWidget::imageWidget()
 {
-	QScrollArea *scrollArea = new QScrollArea(this);
+	QWidget *ret = new QWidget(this);
+
+	palSelect = new QComboBox(ret);
+
+	scrollArea = new QScrollArea(ret);
 	scrollArea->setAlignment(Qt::AlignCenter);
 	scrollArea->setFrameShape(QFrame::NoFrame);
 
-	return scrollArea;
+	QVBoxLayout *layout = new QVBoxLayout(ret);
+	layout->setContentsMargins(QMargins());
+	layout->addWidget(palSelect, 0, Qt::AlignCenter);
+	layout->addWidget(scrollArea);
+
+	connect(palSelect, SIGNAL(currentIndexChanged(int)), SIGNAL(currentPaletteChanged(int)));
+
+	return ret;
 }
 
 QWidget *FsPreviewWidget::textWidget()
@@ -48,13 +59,26 @@ void FsPreviewWidget::clearPreview()
 	setCurrentIndex(EmptyPage);
 }
 
-void FsPreviewWidget::imagePreview(const QPixmap &image, const QString &name)
+void FsPreviewWidget::imagePreview(const QPixmap &image, const QString &name, int palID, int palCount)
 {
 	setCurrentIndex(ImagePage);
 	BGPreview2 *lbl = new BGPreview2();
 	lbl->setPixmap(image);
 	lbl->setName(name);
-	((QScrollArea *)currentWidget())->setWidget(lbl);
+	scrollArea->setWidget(lbl);
+
+	palSelect->blockSignals(true);
+	palSelect->clear();
+	if(palCount > 1) {
+		palSelect->setVisible(true);
+		for(int i=0 ; i<palCount ; ++i) {
+			palSelect->addItem(tr("Palette %1").arg(i));
+		}
+		palSelect->setCurrentIndex(palID);
+	} else {
+		palSelect->setVisible(false);
+	}
+	palSelect->blockSignals(false);
 }
 
 void FsPreviewWidget::textPreview(const QString &text)

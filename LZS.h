@@ -30,13 +30,6 @@
 
 #define MAX	10000000
 
-class GZIP
-{
-public:
-	static QByteArray decompress(const QByteArray &data);
-	static QByteArray compress(const QByteArray &ungzip);
-};
-
 class LZS
 {
 public:

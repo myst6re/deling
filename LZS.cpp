@@ -24,48 +24,6 @@
 		CompuServe	74050,1022
 **************************************************************/
 #include "LZS.h"
-#include "zlib-1.2.7/zlib.h"
-
-QByteArray GZIP::decompress(const QByteArray &data)
-{
-	QByteArray ungzip;
-
-	QTemporaryFile temp;
-	if(!temp.open()) {
-		return QByteArray();
-	}
-	temp.write(data);
-	temp.close();
-	gzFile file = gzopen(temp.fileName().toLatin1(), "rb");
-	if(!file) {
-		return QByteArray();
-	}
-	char buffer[1024];
-	while(gzread(file, buffer, 1024) > 0) {
-		ungzip.append(buffer, 1024);
-	}
-	gzclose(file);
-
-	return ungzip;
-}
-
-QByteArray GZIP::compress(const QByteArray &ungzip)
-{
-	QString tempPath = QDir::tempPath()+"/qt_temp.gz";
-
-	gzFile file2 = gzopen(tempPath.toLatin1(), "wb");
-	if(!file2) {
-		return QByteArray();
-	}
-	gzwrite(file2, ungzip.constData(), ungzip.size());
-	gzclose(file2);
-	QFile finalFile(tempPath);
-	if(!finalFile.open(QIODevice::ReadOnly)) {
-		return QByteArray();
-	}
-
-	return finalFile.readAll();
-}
 
 qint32 LZS::match_length=0;//of longest match. These are set by the InsertNode() procedure.
 qint32 LZS::match_position=0;

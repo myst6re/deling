@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Deling Final Fantasy VIII Field Editor
+ ** Makou Reactor Final Fantasy VII Field Script Editor
  ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
@@ -15,28 +15,16 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef FSPREVIEWWIDGET_H
-#define FSPREVIEWWIDGET_H
+#ifndef GZIP_H
+#define GZIP_H
 
-#include <QtGui>
-#include "BGPreview2.h"
+#include <QtCore>
 
-class FsPreviewWidget : public QStackedWidget
+class GZIP
 {
-	Q_OBJECT
 public:
-	enum Pages { EmptyPage, ImagePage, TextPage };
-    explicit FsPreviewWidget(QWidget *parent = 0);
-	void clearPreview();
-	void imagePreview(const QPixmap &image, const QString &name=QString(), int palID=0, int palCount=0);
-	void textPreview(const QString &text);
-signals:
-	void currentPaletteChanged(int);
-private:
-	QWidget *imageWidget();
-	QWidget *textWidget();
-	QScrollArea *scrollArea;
-	QComboBox *palSelect;
+	static QByteArray decompress(const QByteArray &data/*, int decSize*/);
+	static QByteArray compress(const QByteArray &ungzip);
 };
 
-#endif // FSPREVIEWWIDGET_H
+#endif // GZIP_H

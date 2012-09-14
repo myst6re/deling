@@ -18,7 +18,7 @@
 #include "FsDialog.h"
 
 FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
-	QWidget(parent), fsArchive(fsArchive)
+	QWidget(parent), fsArchive(fsArchive), currentPal(0)
 {
 	setMinimumSize(800, 528);
 
@@ -61,6 +61,7 @@ FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	connect(list, SIGNAL(itemSelectionChanged()), SLOT(generatePreview()));
 	connect(up, SIGNAL(released()), SLOT(parentDir()));
 	connect(pathWidget, SIGNAL(returnPressed()), SLOT(openDir()));
+	connect(preview, SIGNAL(currentPaletteChanged(int)), SLOT(changeImagePaletteInPreview(int)));
 
 	if(fsArchive!=NULL && fsArchive->dirExists("c:\\ff8\\data\\"))
 		openDir("c:\\ff8\\data\\");
@@ -140,15 +141,19 @@ void FsDialog::generatePreview()
 	}
 	else if(fileType == "tex")
 	{
-		preview->imagePreview(QPixmap::fromImage(TexFile(data).image()), fileName);
+		TexFile texFile(data);
+		texFile.setCurrentColorTable(currentPal);
+		preview->imagePreview(QPixmap::fromImage(texFile.image()), fileName, currentPal, texFile.colorTableCount());
 	}
 	else if(fileType == "tim")
 	{
-		preview->imagePreview(QPixmap::fromImage(TimFile(data).image()), fileName);
+		TimFile timFile(data);
+		timFile.setCurrentColorTable(currentPal);
+		preview->imagePreview(QPixmap::fromImage(timFile.image()), fileName, currentPal, timFile.colorTableCount());
 	}
 	else if(fileType == "tdw")
 	{
-		preview->imagePreview(QPixmap::fromImage(TdwFile::image(data)), fileName);
+		preview->imagePreview(QPixmap::fromImage(TdwFile::image(data, (TdwFile::Color)currentPal)), fileName, currentPal, 8);
 	}
 	else if(fileType == "map" || fileType == "mim")
 	{
@@ -185,6 +190,14 @@ void FsDialog::generatePreview()
 			preview->clearPreview();
 		}
 	}
+}
+
+void FsDialog::changeImagePaletteInPreview(int palID)
+{
+	if(palID < 0)	return;
+
+	currentPal = palID;
+	generatePreview();
 }
 
 void FsDialog::openDir(const QString &name)
