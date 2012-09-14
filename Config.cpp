@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "Config.h"
+#include "parameters.h"
 
 QSettings *Config::settings = 0;
 

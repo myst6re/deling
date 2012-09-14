@@ -20,7 +20,6 @@
 //#define QT_NO_WARNING_OUTPUT 1
 
 #include <QApplication>
-#include "parameters.h"
 #include "Config.h"
 #include "MainWindow.h"
 #include "IsoArchive.h"

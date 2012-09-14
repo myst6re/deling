@@ -16,6 +16,9 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "MainWindow.h"
+#include "parameters.h"
+#include "Config.h"
+#include "Data.h"
 
 MainWindow::MainWindow()
 	: fieldArchive(NULL), field(NULL), currentField(0),

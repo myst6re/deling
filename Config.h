@@ -19,7 +19,6 @@
 #define CONFIG_H
 
 #include <QtCore>
-#include "parameters.h"
 
 class Config
 {

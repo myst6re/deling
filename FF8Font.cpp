@@ -16,6 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "FF8Font.h"
+#include "parameters.h"
+#include "Config.h"
 
 FF8Font::FF8Font(TdwFile *tdw, const QByteArray &txtFileData) :
 	_tdw(tdw), modified(false), readOnly(false)

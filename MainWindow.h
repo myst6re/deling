@@ -19,9 +19,6 @@
 #define MAINWINDOW_H
 
 #include <QtGui>
-#include "parameters.h"
-#include "Config.h"
-#include "Data.h"
 #include "files/MsdFile.h"
 #include "FieldArchivePC.h"
 #include "FieldArchivePS.h"

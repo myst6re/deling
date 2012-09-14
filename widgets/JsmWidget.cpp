@@ -189,6 +189,8 @@ void JsmWidget::fill()
 
 	int groupID = data()->getJsmFile()->currentGroupItem();
 
+	modelPreview->setMainModels(mainModels);
+
 	list1->addTopLevelItems(nameList());
 	list1->scrollToTop();
 	list1->resizeColumnToContents(0);

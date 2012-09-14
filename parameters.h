@@ -16,9 +16,9 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #define PROG_NAME		"Deling"
-#define PROG_VERSION	"0.7b"
+#define PROG_VERSION	"0.8b"
 #define PROG_FULLNAME	QString("%1 %2").arg(PROG_NAME, PROG_VERSION)
 
-#define RC_PRODUCT_VERSION			0,7,0,0
+#define RC_PRODUCT_VERSION			0,8,0,0
 #define RC_FILE_DESCRIPTION_STR		"Deling FF8 Field Editor"
 #define RC_COMPANY_NAME_STR			"myst6re"

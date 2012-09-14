@@ -20,9 +20,6 @@
 
 #include <QtCore>
 #include <QtGui/QProgressDialog>
-#include "parameters.h"
-#include "LZS.h"
-#include "Data.h"
 #include "Field.h"
 #include "files/MchFile.h"
 
