@@ -28,17 +28,17 @@
 
 #include <QtCore>
 
-#define MAX	10000000
-
 class LZS
 {
 public:
-	static const QByteArray &decompress(const char *, int, int=MAX);
-//	static QByteArray decompress(QFile *, int, int);
-//	static void decompress(QFile *, int, QFile *, int);
-	static QByteArray compress(const char *, int);
+	static const QByteArray &decompress(const QByteArray &data, int max);
+	static const QByteArray &decompress(const char *data, int fileSize, int max);
+	static const QByteArray &decompressAll(const QByteArray &data);
+	static const QByteArray &decompressAll(const char *data, int fileSize);
+	static const QByteArray &compress(const QByteArray &fileData);
+	static const QByteArray &compress(const char *data, int sizeData);
+	static void clear();
 private:
-	static QByteArray result;
 	static void InsertNode(qint32 r);
 	static void DeleteNode(qint32 p);
 	static qint32 match_length;//of longest match. These are set by the InsertNode() procedure.
@@ -47,7 +47,7 @@ private:
 	static qint32 rson[4353];
 	static qint32 dad[4097];
 	static unsigned char text_buf[4113];//ring buffer of size 4096, with extra 17 bytes to facilitate string comparison
-
+	static QByteArray result;
 };
 
 #endif

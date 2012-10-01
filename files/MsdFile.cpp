@@ -117,56 +117,49 @@ int MsdFile::nbText() const
 	return texts.size();
 }
 
-int MsdFile::searchText(const QString &txt, int &textID, int from, Qt::CaseSensitivity cs, bool regExp) const
+bool MsdFile::hasText(const QRegExp &txt, int &textID) const
 {
-	int nbTexts = nbText(), index;
-	if(textID < 0 || textID >= nbTexts)	textID = 0;
-
-	if(regExp) {
-		QRegExp re(txt);
-		re.setCaseSensitivity(cs);
-		while(textID < nbTexts) {
-			if((index=text(textID).indexOf(re, from)) != -1)
-				return index;
-			++textID;
-			from = 0;
-		}
-	} else {
-		while(textID < nbTexts) {
-			if((index=text(textID).indexOf(txt, from, cs)) != -1)
-				return index;
-			++textID;
-			from = 0;
-		}
+	if(textID < 0)
+		textID = 0;
+	if(textID >= nbText())
+		return false;
+	if(txt.indexIn(text(textID)) != -1) {
+		return true;
 	}
 
-	return -1;
+	return hasText(txt, ++textID);
 }
 
-int MsdFile::searchTextReverse(const QString &txt, int &textID, int from, Qt::CaseSensitivity cs, bool regExp) const
+bool MsdFile::searchText(const QRegExp &txt, int &textID, int &from, int &size) const
 {
-	int index;
-	if(textID < 0 || textID >= nbText())	textID = nbText()-1;
-
-	if(regExp) {
-		QRegExp re(txt);
-		re.setCaseSensitivity(cs);
-		while(textID >= 0) {
-			if((index=text(textID).lastIndexOf(re, from)) != -1)
-				return index;
-			--textID;
-			from = -1;
-		}
-	} else {
-		while(textID >= 0) {
-			if((index=text(textID).lastIndexOf(txt, from, cs)) != -1)
-				return index;
-			--textID;
-			from = -1;
-		}
+	if(textID < 0)
+		textID = 0;
+	if(textID >= nbText())
+		return false;
+	if((from = txt.indexIn(text(textID), from)) != -1) {
+		size = txt.matchedLength();
+		return true;
 	}
 
-	return -1;
+	return searchText(txt, ++textID, from = 0, size);
+}
+
+bool MsdFile::searchTextReverse(const QRegExp &txt, int &textID, int &from, int &index, int &size) const
+{
+	if(textID >= nbText()) {
+		textID = nbText()-1;
+		from = -1;
+	}
+	if(textID < 0)
+		return false;
+	FF8Text t = text(textID);
+	if((index = txt.lastIndexIn(t, from)) != -1) {
+		from = index - t.size();
+		size = txt.matchedLength();
+		return true;
+	}
+
+	return searchTextReverse(txt, --textID, from = -1, index, size);
 }
 
 bool MsdFile::isJp() const

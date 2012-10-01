@@ -40,11 +40,12 @@ public:
 	void updateText();
 	inline QString tabName() const { return tr("Textes"); }
 public slots:
-	void gotoText(const QString &text, int textID, Qt::CaseSensitivity cs, bool reverse, bool regexp);
+	void gotoText(int textID, int from, int size);
 private slots:
 	void specialCharactersDialog();
 	void fillTextEdit(QListWidgetItem *);
 	void updateCurrentText();
+	void emitFromChanged();
 	void prevTextPreviewPage();
 	void nextTextPreviewPage();
 	void changeTextPreviewPage();
@@ -61,6 +62,7 @@ private slots:
 
 signals:
 	void textIdChanged(int);
+	void fromChanged(int);
 private:
 	void updateWindowCoord();
 

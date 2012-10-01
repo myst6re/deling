@@ -269,6 +269,7 @@ void MsdWidget::build()
 
 	connect(textList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), SLOT(fillTextEdit(QListWidgetItem*)));
 	connect(textEdit, SIGNAL(textChanged()), SLOT(updateCurrentText()));
+	connect(textEdit, SIGNAL(cursorPositionChanged()), SLOT(emitFromChanged()));
 	connect(prevPage, SIGNAL(released()), SLOT(prevTextPreviewPage()));
 	connect(nextPage, SIGNAL(released()), SLOT(nextTextPreviewPage()));
 	connect(prevWin, SIGNAL(released()), SLOT(prevTextPreviewWin()));
@@ -379,6 +380,11 @@ void MsdWidget::fillTextEdit(QListWidgetItem *item)
 	changeTextPreviewWin();
 
 	emit textIdChanged(textID);
+}
+
+void MsdWidget::emitFromChanged()
+{
+	emit fromChanged(textEdit->textCursor().position());
 }
 
 void MsdWidget::prevTextPreviewPage()
@@ -543,21 +549,22 @@ void MsdWidget::removeText()
 	emit modified();
 }
 
-void MsdWidget::gotoText(const QString &text, int textID, Qt::CaseSensitivity cs, bool reverse, bool regexp)
+void MsdWidget::gotoText(int textID, int from, int size)
 {
 	if(!isBuilded())	build();
 
-	textList->setCurrentRow(textID);
-	QTextDocument::FindFlags flag;
-	if(cs == Qt::CaseSensitive)
-		flag |= QTextDocument::FindCaseSensitively;
-	if(reverse)
-		flag |= QTextDocument::FindBackward;
-	if(!regexp)
-		textEdit->find(text, flag);
-	else {
-		QRegExp re(text);
-		re.setCaseSensitivity(cs);
-		textEdit->setTextCursor(textEdit->document()->find(re, 0, flag));
+	for(int i=0 ; i<textList->count() ; ++i) {
+		if(textID == textList->item(i)->data(Qt::UserRole).toInt()) {
+			blockSignals(true);
+			textEdit->blockSignals(true);
+			textList->setCurrentItem(textList->item(i));
+			textList->scrollToItem(textList->item(i));
+			QTextCursor t = textEdit->textCursor();
+			t.setPosition(from);
+			t.setPosition(from + size, QTextCursor::KeepAnchor);
+			textEdit->setTextCursor(t);
+			blockSignals(false);
+			textEdit->blockSignals(false);
+		}
 	}
 }

@@ -128,6 +128,8 @@ public:
 	void insertScript(int groupID, int methodID, const JsmData &data, const QString &name=QString());
 	void removeScript(int groupID, int methodID);
 	void replaceScript(int groupID, int methodID, const JsmData &data);
+//	void insertGroup(int groupID);
+//	void removeGroup(int groupID);
 	// Decompiled data
 	void setDecompiledScript(int groupID, int methodID, const QString &text);
 private:

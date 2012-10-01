@@ -69,8 +69,8 @@ private slots:
 	void optimizeArchive();
 	void manageArchive();
 	void configDialog();
-	void gotoField(int fieldID);
-	void gotoText(const QString &text, int fieldID, int textID, Qt::CaseSensitivity cs, bool reverse, bool regexp);
+	bool gotoField(int fieldID);
+	void gotoText(int fieldID, int textID, int from, int size);
 	void gotoScript(int fieldID, int groupID, int methodID, int opcodeID);
 	void search();
 	void varManager();
@@ -79,6 +79,8 @@ private slots:
 	void bgPage();
 	void setCurrentPage(int index);
 	void fullScreen();
+signals:
+	void fieldIdChanged(int);
 private:
 	bool openArchive(const QString &path);
 	bool openFsArchive(const QString &);

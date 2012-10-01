@@ -119,8 +119,15 @@ QByteArray FsHeader::data(QFile *fs, bool uncompress, int maxUncompress) const
 			fs->seek(_position);
 			return fs->read(size+4);
 		}
+		char *buff = new char[size];
 
-		return LZS::decompress(fs->read(size).constData(), size, maxUncompress<=0 ? _uncompressed_size : maxUncompress);
+		if(fs->read(buff, size) != size)
+			return QByteArray();
+
+		const QByteArray &decData = LZS::decompress(buff, size, maxUncompress<=0 ? _uncompressed_size : maxUncompress);
+		delete buff;
+
+		return decData;
 	}
 	return fs->read(_uncompressed_size);
 }
@@ -137,7 +144,7 @@ int FsHeader::setData(QByteArray &fs_data, const QByteArray &new_data)
 		memcpy(&size, &fs_data_const[_position], 4);
 
 		_uncompressed_size = new_data.size();
-		QByteArray new_data_lzsed = LZS::compress(new_data.constData(), _uncompressed_size);
+		QByteArray new_data_lzsed = LZS::compress(new_data);
 		real_size = new_data_lzsed.size();
 
 		diff = real_size - size;
@@ -168,7 +175,7 @@ int FsHeader::setData(QFile *fs, QByteArray &new_data)
 		fs->read((char *)&size, 4);
 
 		_uncompressed_size = new_data.size();
-		new_data = LZS::compress(new_data.constData(), _uncompressed_size);
+		new_data = LZS::compress(new_data);
 		real_size = new_data.size();
 		new_data.prepend((char *)&real_size, 4);
 
@@ -625,7 +632,7 @@ QList<FsArchive::Error> FsArchive::append(const QStringList &sources, const QStr
 		addFile(destinations.at(i), (quint32)data.size(), (quint32)fs.pos(), compress);
 
 		if(compress) {
-			data = LZS::compress(data.constData(), data.size());
+			data = LZS::compress(data);
 			int size = data.size();
 			data.prepend((char *)&size, 4);
 		}

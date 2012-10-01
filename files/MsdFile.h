@@ -37,8 +37,9 @@ public:
 	void insertText(int);
 	void removeText(int);
 	int nbText() const;
-	int searchText(const QString &text, int &textID, int from=0, Qt::CaseSensitivity cs=Qt::CaseInsensitive, bool regExp=false) const;
-	int searchTextReverse(const QString &text, int &textID, int from=0, Qt::CaseSensitivity cs=Qt::CaseInsensitive, bool regExp=false) const;
+	bool hasText(const QRegExp &txt, int &textID) const;
+	bool searchText(const QRegExp &txt, int &textID, int &from, int &size) const;
+	bool searchTextReverse(const QRegExp &txt, int &textID, int &from, int &index, int &size) const;
 	bool isJp() const;
 private:
 	QList<QByteArray> texts;

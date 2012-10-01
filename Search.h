@@ -33,8 +33,9 @@ public:
 public slots:
 	void setFieldId(int);
 	void setTextId(int);
+	void setFrom(int);
 signals:
-	void foundText(QString text, int fieldID, int textID, Qt::CaseSensitivity cs, bool reverse, bool regexp);
+	void foundText(int fieldID, int textID, int from, int size);
 	void foundOpcode(int, int, int, int);
 private slots:
 	void findNext();

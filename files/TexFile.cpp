@@ -61,6 +61,8 @@ bool TexFile::open(const QByteArray &data)
 		return false;
 	}
 
+	debug();
+
 	quint32 i;
 
 	if(header.nbPalettes > 0)
@@ -99,13 +101,17 @@ bool TexFile::open(const QByteArray &data)
     }
     else
     {
-        quint16 color;
+		quint16 color;
 		_image = QImage(w, h, QImage::Format_ARGB32);
 		QRgb *pixels = (QRgb *)_image.bits();
 
-		for(i=0 ; i<imageSectionSize ; i+=2) {
-			memcpy(&color, &constData[headerSize+i], 2);
-			pixels[i/2] = FF8Image::fromPsColor(color);
+		for(i=0 ; i<imageSectionSize ; i+=header.bytesPerPixel) {
+			if(header.bytesPerPixel == 2) {
+				memcpy(&color, &constData[headerSize+i], 2);
+				pixels[i/2] = FF8Image::fromPsColor(color);
+			} else if(header.bytesPerPixel == 3) {
+				pixels[i/3] = qRgb(constData[headerSize+i], constData[headerSize+i+1], constData[headerSize+i+2]);
+			}
         }
     }
 

@@ -134,7 +134,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 						qWarning() << "Compression error" << i << lzsSize << data.size();
 						return false;
 					}
-					data = LZS::decompress(data.constData() + 4, lzsSize);
+					data = LZS::decompressAll(data.constData() + 4, lzsSize);
 				}
 				models.append(CharaModel(name, toc, data));
 //				qDebug() << "Tim ajouté" << name;

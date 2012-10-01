@@ -148,13 +148,15 @@ MainWindow::MainWindow()
 	closeFiles();
 	setCurrentPage(Config::value("currentPage", TextPage).toInt());
 
-	connect(searchDialog, SIGNAL(foundText(QString,int,int,Qt::CaseSensitivity,bool,bool)), SLOT(gotoText(QString,int,int,Qt::CaseSensitivity,bool,bool)));
+	connect(searchDialog, SIGNAL(foundText(int,int,int,int)), SLOT(gotoText(int,int,int,int)));
 	connect(searchDialog, SIGNAL(foundOpcode(int,int,int,int)), SLOT(gotoScript(int,int,int,int)));
 	connect(lineSearch, SIGNAL(textEdited(QString)), SLOT(filterMap()));
 	connect(lineSearch, SIGNAL(returnPressed()), SLOT(filterMap()));
+	connect(this, SIGNAL(fieldIdChanged(int)), searchDialog, SLOT(setFieldId(int)));
+	connect(pageWidgets.at(TextPage), SIGNAL(textIdChanged(int)), searchDialog, SLOT(setTextId(int)));
+	connect(pageWidgets.at(TextPage), SIGNAL(fromChanged(int)), searchDialog, SLOT(setFrom(int)));
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillPage()));
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(setCurrentPage(int)));
-	connect(pageWidgets.at(TextPage), SIGNAL(textIdChanged(int)), searchDialog, SLOT(setTextId(int)));
 	foreach(PageWidget *pageWidget, pageWidgets)
 		connect(pageWidget, SIGNAL(modified()), SLOT(setModified()));
 	connect(bgPreview, SIGNAL(triggered()), SLOT(bgPage()));
@@ -388,9 +390,10 @@ void MainWindow::fillPage()
 		if(fieldArchive==NULL)	return;
 
 		int fieldID = item->data(0, Qt::UserRole).toInt();
-		searchDialog->setFieldId(fieldID);
 		currentField = fieldArchive->getField(fieldID);
 		if(currentField == NULL)	return;
+
+		emit fieldIdChanged(fieldID);
 
 		fieldArchive->openBG(currentField);
 		/*if(fieldThread->isRunning()) {
@@ -822,26 +825,34 @@ void MainWindow::setCurrentPage(int index)
 	stackedWidget->setCurrentIndex(index);
 }
 
-void MainWindow::gotoField(int fieldID)
+bool MainWindow::gotoField(int fieldID)
 {
 	int i, size=list1->topLevelItemCount();
 
 	for(i=0 ; i<size ; ++i) {
 		QTreeWidgetItem *item = list1->topLevelItem(i);
 		if(item->data(0, Qt::UserRole).toInt() == fieldID) {
+			blockSignals(true);
 			list1->setCurrentItem(item);
-			return;
+			list1->scrollToItem(item);
+			blockSignals(false);
+			return true;
 		}
 	}
+	return false;
 }
 
-void MainWindow::gotoText(const QString &text, int fieldID, int textID, Qt::CaseSensitivity cs, bool reverse, bool regexp)
+void MainWindow::gotoText(int fieldID, int textID, int from, int size)
 {
-	if(tabBar->currentIndex()!=TextPage)
+	MsdWidget *msd = (MsdWidget *)pageWidgets.at(TextPage);
+	msd->blockSignals(true);
+	if(tabBar->currentIndex() != TextPage)
 		setCurrentPage(TextPage);
-//	qDebug() << text << fieldID << textID;
-	gotoField(fieldID);
-	((MsdWidget *)pageWidgets.at(TextPage))->gotoText(text, textID, cs, reverse, regexp);
+
+	if(gotoField(fieldID)) {
+		msd->gotoText(textID, from, size);
+	}
+	msd->blockSignals(false);
 }
 
 void MainWindow::gotoScript(int fieldID, int groupID, int methodID, int opcodeID)
@@ -849,8 +860,9 @@ void MainWindow::gotoScript(int fieldID, int groupID, int methodID, int opcodeID
 	if(tabBar->currentIndex()!=ScriptPage)
 		setCurrentPage(ScriptPage);
 //	qDebug() << "gotoScript" << fieldID << groupID << methodID << opcodeID;
-	gotoField(fieldID);
-	((JsmWidget *)pageWidgets.at(ScriptPage))->gotoScript(groupID, methodID, opcodeID);
+	if(gotoField(fieldID)) {
+		((JsmWidget *)pageWidgets.at(ScriptPage))->gotoScript(groupID, methodID, opcodeID);
+	}
 }
 
 void MainWindow::about()

@@ -35,7 +35,7 @@ bool PmpFile::open(const QByteArray &pmp)
 
 //	qDebug() << lzsSize << pmp.left(24).toHex() << pmp.size();
 //	int dec = 0;
-//	this->pmp = LZS::decompress(&(pmp.constData()[dec]), pmp.size()-dec);
+//	this->pmp = LZS::decompressAll(&(pmp.constData()[dec]), pmp.size()-dec);
 //	if(pmp.size() != 4) {
 //		palette().save(QString("pmp/%1-palette.png").arg(currentFieldName));
 //		for(int palID=0 ; palID<16 ; ++palID) {

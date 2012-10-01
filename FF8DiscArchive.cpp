@@ -116,7 +116,7 @@ QByteArray FF8DiscArchive::fileLZS(const FF8DiscFile &file, bool strict)
 	if((strict && file.getSize() != lzsSize+4) || (!strict && (lzsSize + 4)/2048 + (int)(lzsSize%2048 != 0) != file.getSize()/2048 + (int)(file.getSize()%2048 != 0)))
 		return QByteArray();
 
-	return LZS::decompress(readIso(lzsSize).constData(), lzsSize);
+	return LZS::decompressAll(readIso(lzsSize).constData(), lzsSize);
 }
 
 QByteArray FF8DiscArchive::fileGZ(const FF8DiscFile &file)

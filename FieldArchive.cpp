@@ -99,10 +99,9 @@ bool FieldArchive::compileScripts(int &errorFieldID, int &errorGroupID, int &err
 	return true;
 }
 
-int FieldArchive::searchText(const QString &text, int &fieldID, int &textID, int from, Sorting sorting, Qt::CaseSensitivity cs, bool regExp) const
+bool FieldArchive::searchIterators(QMap<QString, int>::const_iterator &i, QMap<QString, int>::const_iterator &end, int fieldID, Sorting sorting) const
 {
-	QMap<QString, int>::const_iterator i, end;
-	int index;
+	if(fieldID >= fields.size())		return false;
 
 	switch(sorting) {
 	case SortByName:
@@ -111,38 +110,28 @@ int FieldArchive::searchText(const QString &text, int &fieldID, int &textID, int
 		if(i==end) {
 			i = fieldsSortByName.constBegin();
 		}
-		break;
+		return true;
 	case SortByDesc:
 		i = fieldsSortByDesc.constFind(fieldsSortByDesc.key(fieldID), fieldID);
 		end = fieldsSortByDesc.constEnd();
 		if(i==end) {
 			i = fieldsSortByDesc.constBegin();
 		}
-		break;
+		return true;
 	case SortByMapId:
 		i = fieldsSortByMapId.constFind(fieldsSortByMapId.key(fieldID), fieldID);
 		end = fieldsSortByMapId.constEnd();
 		if(i==end) {
 			i = fieldsSortByMapId.constBegin();
 		}
-		break;
+		return true;
 	}
-
-	for( ; i != end ; ++i) {
-		fieldID = i.value();
-		Field *field = getField(fieldID);
-		if(field && field->hasMsdFile() && (index=field->getMsdFile()->searchText(text, textID, from, cs, regExp))!=-1)
-			return index;
-		textID = from = 0;
-	}
-
-	return -1;
+	return true;
 }
 
-int FieldArchive::searchTextReverse(const QString &text, int &fieldID, int &textID, int from, Sorting sorting, Qt::CaseSensitivity cs, bool regExp) const
+bool FieldArchive::searchIteratorsP(QMap<QString, int>::const_iterator &i, QMap<QString, int>::const_iterator &begin, int fieldID, Sorting sorting) const
 {
-	QMap<QString, int>::const_iterator i, begin;
-	int index;
+	if(fieldID < 0)		return false;
 
 	switch(sorting) {
 	case SortByName:
@@ -151,7 +140,7 @@ int FieldArchive::searchTextReverse(const QString &text, int &fieldID, int &text
 		if(i==fieldsSortByName.constEnd()) {
 			--i;
 		}
-		break;
+		return true;
 	case SortByDesc:
 		begin = fieldsSortByDesc.constBegin();
 		i = fieldsSortByDesc.constFind(fieldsSortByDesc.key(fieldID), fieldID);
@@ -165,22 +154,40 @@ int FieldArchive::searchTextReverse(const QString &text, int &fieldID, int &text
 		if(i==fieldsSortByMapId.constEnd()) {
 			--i;
 		}
-		break;
+		return true;
+	}
+	return true;
+}
+
+bool FieldArchive::searchText(const QRegExp &text, int &fieldID, int &textID, int &from, int &size, Sorting sorting) const
+{
+	QMap<QString, int>::const_iterator i, end;
+	if(!searchIterators(i, end, fieldID, sorting))	return false;
+
+	for( ; i != end ; ++i) {
+		Field *field = getField(fieldID = i.value());
+		if(field && field->hasMsdFile() && field->getMsdFile()->searchText(text, textID, from, size))
+			return true;
+		textID = from = 0;
 	}
 
-	if(i == begin-1)	return -1;
+	return false;
+}
 
-	if(textID < 0)	--i;
+bool FieldArchive::searchTextReverse(const QRegExp &text, int &fieldID, int &textID, int &from, int &index, int &size, Sorting sorting) const
+{
+	QMap<QString, int>::const_iterator i, begin;
+	if(!searchIteratorsP(i, begin, fieldID, sorting))	return false;
 
 	for( ; i != begin-1 ; --i) {
-		fieldID = i.value();
-		Field *field = getField(fieldID);
-		if(field && field->hasMsdFile() && (index=field->getMsdFile()->searchTextReverse(text, textID, from, cs, regExp))!=-1)
-			return index;
-		textID = from = -1;
+		Field *field = getField(fieldID = i.value());
+		if(field && field->hasMsdFile() && field->getMsdFile()->searchTextReverse(text, textID, from, index, size))
+			return true;
+		textID = 2147483647;
+		from = -1;
 	}
 
-	return -1;
+	return false;
 }
 
 bool FieldArchive::searchScript(quint8 type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
@@ -222,7 +229,7 @@ bool FieldArchive::searchScript(quint8 type, quint64 value, int &fieldID, int &g
 	return false;
 }
 
-bool FieldArchive::searchScriptText(const QString &text, Qt::CaseSensitivity sensitivity, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
+bool FieldArchive::searchScriptText(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
 	QMap<QString, int>::const_iterator i, end;
 	int textID = 0;
@@ -256,7 +263,7 @@ bool FieldArchive::searchScriptText(const QString &text, Qt::CaseSensitivity sen
 		Field *field = getField(fieldID);
 		if(field && field->hasMsdFile() && field->hasJsmFile()) {
 			MsdFile *msd = field->getMsdFile();
-			while(msd->searchText(text, textID, 0, sensitivity) != -1)
+			while(msd->hasText(text, textID) != -1)
 			{
 				if(field->getJsmFile()->search(0, textID, groupID, methodID, opcodeID))
 					return true;
@@ -308,7 +315,7 @@ bool FieldArchive::searchScriptReverse(quint8 type, quint64 value, int &fieldID,
 	return false;
 }
 
-bool FieldArchive::searchScriptTextReverse(const QString &text, Qt::CaseSensitivity sensitivity, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
+bool FieldArchive::searchScriptTextReverse(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
 	QMap<QString, int>::const_iterator i, begin;
 	int textID = 0;
@@ -342,7 +349,7 @@ bool FieldArchive::searchScriptTextReverse(const QString &text, Qt::CaseSensitiv
 		Field *field = getField(fieldID);
 		if(field && field->hasMsdFile() && field->hasJsmFile()) {
 			MsdFile *msd = field->getMsdFile();
-			while(msd->searchText(text, textID, 0, sensitivity) != -1)
+			while(msd->hasText(text, textID) != -1)
 			{
 				if(field->getJsmFile()->searchReverse(0, textID, groupID, methodID, opcodeID))
 					return true;
