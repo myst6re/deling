@@ -20,6 +20,7 @@
 MrtFile::MrtFile()
 	: File()
 {
+	memset(formations, 0, 2*4);
 }
 
 bool MrtFile::open(const QByteArray &mrt)

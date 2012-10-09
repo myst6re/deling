@@ -117,8 +117,7 @@ void MiscWidget::fill()
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(!hasData() || (!data()->hasPmpFile() && !data()->hasPmdFile()
-					  && !data()->hasPvpFile() && !data()->hasInfFile()))	return;
+	if(!hasData())	return;
 
     if(data()->hasInfFile()) {
         nameEdit->setText(data()->getInfFile()->getMapName());
@@ -146,7 +145,6 @@ void MiscWidget::fill()
 	if(data()->hasPvpFile()) {
 		pvpEdit->setValue(data()->getPvpFile()->value());
 	}
-	pvpEdit->setEnabled(data()->hasPvpFile());
 
 	PageWidget::fill();
 }
@@ -183,11 +181,12 @@ void MiscWidget::editPmd(const QString &pmd)
 
 void MiscWidget::editPvp(double value)
 {
-	if(data()->hasPvpFile()) {
-		if(data()->getPvpFile()->value() != value) {
-			data()->getPvpFile()->setValue(value);
-			emit modified();
-		}
+	if(!data()->hasPvpFile()) {
+		data()->addPvpFile();
+	}
+	if(data()->getPvpFile()->value() != value) {
+		data()->getPvpFile()->setValue(value);
+		emit modified();
 	}
 }
 

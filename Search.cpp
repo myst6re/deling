@@ -233,7 +233,7 @@ void Search::setFieldId(int fieldID)
 //	if(fieldID != this->fieldID)
 //	{
 		this->fieldID = fieldID;
-		qDebug() << "FieldID=" << fieldID << "(Search::setFieldId)";
+//		qDebug() << "FieldID=" << fieldID << "(Search::setFieldId)";
 		this->textID = -1;
 //		qDebug() << "textID=" << textID << "(Search::setFieldId::textID=0)";
 		this->from = -1;
@@ -245,7 +245,7 @@ void Search::setTextId(int textID)
 //	if(textID != this->textID)
 //	{
 		this->textID = textID;
-		qDebug() << "textID=" << textID << "(Search::setTextId)";
+//		qDebug() << "textID=" << textID << "(Search::setTextId)";
 		this->from = -1;
 //	}
 }

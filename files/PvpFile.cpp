@@ -18,7 +18,7 @@
 #include "files/PvpFile.h"
 
 PvpFile::PvpFile()
-	: File(), _value(0)
+	: File(), _value(0x0C)
 {
 }
 

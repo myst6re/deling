@@ -41,7 +41,7 @@ public:
 	void save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
 	void optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
 protected:
-	virtual void setFile(FileType fileType, File *file);
+	virtual void setFile(FileType fileType);
 private:
 	QString filePath(FileType fileType) const;
 	QString filePath(const QString &fileName) const;

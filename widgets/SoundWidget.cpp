@@ -103,19 +103,17 @@ void SoundWidget::fill()
 	if(!isBuilded())	build();
 	if(isFilled())		clear();
 
-	if(!hasData()
-			|| (!data()->hasSfxFile()
-			&& !data()->hasAkaoListFile())) return;
+	if(!hasData()) return;
 
-	if(data()->hasSfxFile()) {
+	if(data()->isPc() && data()->hasSfxFile()) {
 		fillList(data()->getSfxFile()->valueCount());
 	}
-	else if(data()->hasAkaoListFile()) {
+	else if(data()->isPs() && data()->hasAkaoListFile()) {
 		fillList(data()->getAkaoListFile()->akaoCount());
 	}
 
-	sfxGroup->setVisible(data()->hasSfxFile());
-	akaoGroup->setVisible(data()->hasAkaoListFile());
+	sfxGroup->setVisible(data()->isPc());
+	akaoGroup->setVisible(data()->isPs());
 
 	PageWidget::fill();
 }
@@ -133,12 +131,10 @@ void SoundWidget::fillList(int count)
 
 void SoundWidget::setCurrentSound(int id)
 {
-	if(!hasData() || id<0)	return;
+	if(!hasData() || id<0 || !data()->hasSfxFile())	return;
 
-	if(data()->hasSfxFile()) {
-		if(id < data()->getSfxFile()->valueCount()) {
-			sfxValue->setValue(data()->getSfxFile()->value(id));
-		}
+	if(id < data()->getSfxFile()->valueCount()) {
+		sfxValue->setValue(data()->getSfxFile()->value(id));
 	}
 }
 
@@ -148,17 +144,23 @@ void SoundWidget::addSound()
 
 	bool inserted = false;
 
-	if(data()->hasSfxFile()) {
+	if(data()->isPc()) {
+		if(!data()->hasSfxFile()) {
+			data()->addSfxFile();
+		}
 		data()->getSfxFile()->insertValue(row+1, 0);
 		inserted = true;
 	}
-	else if(data()->hasAkaoListFile()) {
-
+	else if(data()->isPs()) {
 		QString path = QFileDialog::getOpenFileName(this, tr("Ajouter son"), QString(), tr("Fichier AKAO (*.akao)"));
 		if(path.isNull())		return;
 
 		QFile f(path);
 		if(f.open(QIODevice::ReadOnly)) {
+			if(!data()->hasAkaoListFile()) {
+				data()->addAkaoListFile();
+			}
+
 			if(!data()->getAkaoListFile()->insertAkao(row+1, f.readAll())) {
 				QMessageBox::warning(this, tr("Erreur"), tr("Fichier invalide."));
 			} else {
@@ -188,12 +190,20 @@ void SoundWidget::removeSound()
 
 	bool removed = false;
 
-	if(data()->hasSfxFile()) {
+	if(data()->isPc()) {
+		if(!data()->hasSfxFile()) {
+			data()->addSfxFile();
+		}
+
 		if(row < data()->getSfxFile()->valueCount()) {
 			data()->getSfxFile()->removeValue(row);
 			removed = true;
 		}
-	} else if(data()->hasAkaoListFile()) {
+	} else if(data()->isPs()) {
+		if(!data()->hasAkaoListFile()) {
+			data()->addAkaoListFile();
+		}
+
 		if(row < data()->getAkaoListFile()->akaoCount()) {
 			data()->getAkaoListFile()->removeAkao(row);
 			removed = true;

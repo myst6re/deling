@@ -20,6 +20,33 @@
 InfFile::InfFile()
 	: File()
 {
+	memset(&infStruct, 0, sizeof(infStruct));
+	// Default values
+	infStruct.control = 128;
+	infStruct.pvp = 12;
+	infStruct.cameraFocusHeight = 200;
+	for(int i=0 ; i<8 ; ++i) {
+		infStruct.cameraRange[i].top = -112;
+		infStruct.cameraRange[i].bottom = 112;
+		infStruct.cameraRange[i].right = 160;
+		infStruct.cameraRange[i].left = -160;
+	}
+	for(int i=0 ; i<2 ; ++i) {
+		infStruct.screenRange[i].top = 0;
+		infStruct.screenRange[i].bottom = 224;
+		infStruct.screenRange[i].right = 320;
+		infStruct.screenRange[i].left = 0;
+	}
+	for(int i=0 ; i<12 ; ++i) {
+		infStruct.gateways[i].fieldId = 0x7FFF;
+		infStruct.gateways[i].unknown1[0] = 0x7FFF;
+		infStruct.gateways[i].unknown1[1] = 0x7FFF;
+		infStruct.gateways[i].unknown1[2] = 0x7FFF;
+		infStruct.gateways[i].unknown1[3] = 0x7FFF;
+	}
+	for(int i=0 ; i<12 ; ++i) {
+		infStruct.triggers[i].doorID = 0xFF;
+	}
 }
 
 bool InfFile::open(const QByteArray &inf)

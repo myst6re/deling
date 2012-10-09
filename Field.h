@@ -96,7 +96,13 @@ public:
 	SfxFile *getSfxFile() const;
 	AkaoListFile *getAkaoListFile() const;
 
-	void addMsdFile(MsdFile *file);
+	void addMsdFile();
+	void addRatFile();
+	void addMrtFile();
+	void addPvpFile();
+	void addMskFile();
+	void addSfxFile();
+	void addAkaoListFile();
 protected:
 	void setOpen(bool open);
 	void setName(const QString &name);
@@ -105,7 +111,7 @@ protected:
 	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray());
 	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
 	void openCharaFile(const QByteArray &one);
-	virtual void setFile(FileType fileType, File *file);
+	virtual void setFile(FileType fileType);
 private:
 	File *newFile(FileType fileType);
 	void deleteFile(FileType fileType);

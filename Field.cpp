@@ -342,16 +342,45 @@ AkaoListFile *Field::getAkaoListFile() const
 	return (AkaoListFile *)getFile(AkaoList);
 }
 
-void Field::addMsdFile(MsdFile *file)
+void Field::addMsdFile()
 {
-	setFile(Msd, file);
+	setFile(Msd);
 }
 
-void Field::setFile(FileType fileType, File *file)
+void Field::addRatFile()
+{
+	setFile(Rat);
+}
+
+void Field::addMrtFile()
+{
+	setFile(Mrt);
+}
+
+void Field::addPvpFile()
+{
+	setFile(Pvp);
+}
+
+void Field::addMskFile()
+{
+	setFile(Msk);
+}
+
+void Field::addSfxFile()
+{
+	setFile(Sfx);
+}
+
+void Field::addAkaoListFile()
+{
+	setFile(AkaoList);
+}
+
+void Field::setFile(FileType fileType)
 {
 	deleteFile(fileType);
-	files[fileType] = file;
-	file->setModified(true);
+	newFile(fileType);
 }
 
 bool Field::isModified() const

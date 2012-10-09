@@ -583,7 +583,7 @@ void WalkmeshWidget::fill()
 		frameList->setCurrentRow(0);
 		setCurrentMoviePosition(0);
 	}
-	tabWidget->widget(5)->setEnabled(data()->hasMskFile());
+//	tabWidget->widget(5)->setEnabled(data()->hasMskFile());
 
 	PageWidget::fill();
 }
@@ -1179,7 +1179,9 @@ void WalkmeshWidget::setMovieCameraPageEnabled(bool enabled)
 
 void WalkmeshWidget::addMovieCameraPosition()
 {
-	if(!data()->hasMskFile()) return;
+	if(!data()->hasMskFile()) {
+		data()->addMskFile();
+	}
 
 	int row = frameList->currentRow();
 	if(row < 0)	row = 0;
@@ -1202,7 +1204,9 @@ void WalkmeshWidget::addMovieCameraPosition()
 
 void WalkmeshWidget::removeMovieCameraPosition()
 {
-	if(!data()->hasMskFile()) return;
+	if(!data()->hasMskFile()) {
+		data()->addMskFile();
+	}
 
 	int row = frameList->currentRow();
 	if(row < 0)	row = 0;

@@ -549,13 +549,13 @@ void FieldPC::optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_
 	header->save(fl_data, fi_data);
 }
 
-void FieldPC::setFile(FileType fileType, File *file)
+void FieldPC::setFile(FileType fileType)
 {
 	QString path = filePath(fileType);
 	if(!path.isEmpty()) {
 		if(!header->fileExists(path)) {
 			header->addFile(path, false);
-			Field::setFile(fileType, file);
+			Field::setFile(fileType);
 		}
 	}
 }

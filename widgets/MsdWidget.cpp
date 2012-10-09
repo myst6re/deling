@@ -491,7 +491,7 @@ void MsdWidget::updateCurrentText()
 	if(dontUpdateCurrentText || !hasData())	return;
 
 	if(!data()->hasMsdFile()) {
-		data()->addMsdFile(new MsdFile());
+		data()->addMsdFile();
 	}
 
 	emit modified();
@@ -530,7 +530,7 @@ void MsdWidget::specialCharactersDialog()
 void MsdWidget::insertTextAbove()
 {
 	if(!data()->hasMsdFile()) {
-		data()->addMsdFile(new MsdFile());
+		data()->addMsdFile();
 	}
 
 	int row = textList->currentRow();
@@ -543,7 +543,7 @@ void MsdWidget::insertTextAbove()
 void MsdWidget::insertText()
 {
 	if(!data()->hasMsdFile()) {
-		data()->addMsdFile(new MsdFile());
+		data()->addMsdFile();
 	}
 
 	int row = textList->currentRow()+1;
