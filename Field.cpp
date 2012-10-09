@@ -145,7 +145,7 @@ File *Field::newFile(FileType fileType)
 
 void Field::deleteFile(FileType fileType)
 {
-	File *f = files.at(fileType);
+	File *f = getFile(fileType);
 
 	if(f != 0) {
 		delete f;
@@ -155,7 +155,7 @@ void Field::deleteFile(FileType fileType)
 
 void Field::deleteCharaFile()
 {
-	if(charaFile!=0) {
+	if(charaFile != 0) {
 		delete charaFile;
 		charaFile = 0;
 	}
@@ -163,7 +163,7 @@ void Field::deleteCharaFile()
 
 bool Field::hasFile(FileType fileType) const
 {
-	return files.at(fileType) != 0;
+	return getFile(fileType) != 0;
 }
 
 bool Field::hasMsdFile() const
@@ -340,6 +340,18 @@ SfxFile *Field::getSfxFile() const
 AkaoListFile *Field::getAkaoListFile() const
 {
 	return (AkaoListFile *)getFile(AkaoList);
+}
+
+void Field::addMsdFile(MsdFile *file)
+{
+	setFile(Msd, file);
+}
+
+void Field::setFile(FileType fileType, File *file)
+{
+	deleteFile(fileType);
+	files[fileType] = file;
+	file->setModified(true);
 }
 
 bool Field::isModified() const

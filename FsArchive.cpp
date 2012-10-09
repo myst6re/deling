@@ -229,6 +229,17 @@ void FsArchive::addFile(const QString &path, quint32 uncompressed_size, quint32 
     toc_access.insert(path.toLower(), header);
 }
 
+void FsArchive::addFile(const QString &path, bool isCompressed)
+{
+	if(toc_access.contains(path.toLower())) {
+		qWarning() << "addFile error: file already exists" << path << isCompressed;
+		return;
+	}
+	FsHeader *header = new FsHeader(path, 0, 0, isCompressed);
+	sortedByPosition.insert(0, header);
+	toc_access.insert(path.toLower(), header);
+}
+
 bool FsArchive::removeFile(QString path)
 {
 	path = path.toLower();

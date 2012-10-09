@@ -330,25 +330,26 @@ void MsdWidget::fill()
 	if(data()->hasTdwFile())
 		textPreview->setFontImageAdd(data()->getTdwFile());
 
-	if(!data()->hasMsdFile())		return;
+	if(data()->hasMsdFile()) {
 
-	int nbTexts = data()->getMsdFile()->nbText();
+		int nbTexts = data()->getMsdFile()->nbText();
 
-	if(nbTexts!=0) {
+		if(nbTexts!=0) {
 
-		QIcon icon(":/images/text_icon.png"), iconDisabled(":/images/text_icon_disabled.png");
+			QIcon icon(":/images/text_icon.png"), iconDisabled(":/images/text_icon_disabled.png");
 
-		for(int i=0 ; i<nbTexts ; ++i) {
-			QListWidgetItem *item = new QListWidgetItem(tr("Texte %1").arg(i));
-			if(data()->hasJsmFile() && data()->getJsmFile()->nbWindows(i)>0)
-				item->setIcon(icon);
-			else
-				item->setIcon(iconDisabled);
-			item->setData(Qt::UserRole, i);
-			textList->addItem(item);
+			for(int i=0 ; i<nbTexts ; ++i) {
+				QListWidgetItem *item = new QListWidgetItem(tr("Texte %1").arg(i));
+				if(data()->hasJsmFile() && data()->getJsmFile()->nbWindows(i)>0)
+					item->setIcon(icon);
+				else
+					item->setIcon(iconDisabled);
+				item->setData(Qt::UserRole, i);
+				textList->addItem(item);
+			}
+
+			textList->setCurrentRow(0);
 		}
-
-		textList->setCurrentRow(0);
 	}
 
 	PageWidget::fill();
@@ -356,7 +357,7 @@ void MsdWidget::fill()
 
 void MsdWidget::fillTextEdit(QListWidgetItem *item)
 {
-	if(item==NULL)	return;
+	if(item==NULL || !data()->hasMsdFile())	return;
 
 	textList->scrollToItem(item);
 	if(!hasData() || !data()->hasMsdFile())	return;
@@ -487,7 +488,11 @@ void MsdWidget::insertTag(QAction *action)
 void MsdWidget::updateCurrentText()
 {
 	//	qDebug() << "MsdWidget::updateCurrentText";
-	if(dontUpdateCurrentText || !hasData() || !data()->hasMsdFile())	return;
+	if(dontUpdateCurrentText || !hasData())	return;
+
+	if(!data()->hasMsdFile()) {
+		data()->addMsdFile(new MsdFile());
+	}
 
 	emit modified();
 	data()->getMsdFile()->setText(textList->currentRow(), textEdit->toPlainText());
@@ -524,6 +529,10 @@ void MsdWidget::specialCharactersDialog()
 
 void MsdWidget::insertTextAbove()
 {
+	if(!data()->hasMsdFile()) {
+		data()->addMsdFile(new MsdFile());
+	}
+
 	int row = textList->currentRow();
 	data()->getMsdFile()->insertText(row);
 	fill();
@@ -533,6 +542,10 @@ void MsdWidget::insertTextAbove()
 
 void MsdWidget::insertText()
 {
+	if(!data()->hasMsdFile()) {
+		data()->addMsdFile(new MsdFile());
+	}
+
 	int row = textList->currentRow()+1;
 	data()->getMsdFile()->insertText(row);
 	fill();

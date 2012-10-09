@@ -63,6 +63,7 @@ public:
 	FsArchive(const QString &);
 	virtual ~FsArchive();
 
+	void addFile(const QString &path, bool isCompressed);
 	FsHeader *getFile(const QString &path) const;
 	void fileToTheEnd(const QString &path, QByteArray &fs_data);
 	void rebuildInfos();

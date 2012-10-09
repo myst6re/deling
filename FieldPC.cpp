@@ -42,9 +42,9 @@ bool FieldPC::isPc() const
 bool FieldPC::hasFiles2() const
 {
 	return header &&
-			((header->fileExists("*"%name()%".mim") && header->fileExists("*"%name()%".map"))
-			|| header->fileExists("*"%name()%".tdw")
-			|| header->fileExists("*chara.one"));
+			((header->fileExists(filePath(name() + ".mim")) && header->fileExists(filePath(name() + ".map")))
+			|| header->fileExists(filePath(Tdw))
+			|| header->fileExists(filePath("chara.one")));
 }
 
 //void FieldPC::setArchiveHeader(FsArchive *header)
@@ -78,93 +78,98 @@ bool FieldPC::open(const QString &path)
 		return false;
 	}
 
+	QRegExp pathReg("^" + QRegExp::escape("C:\\ff8\\Data\\") + "(\\w+)" + QRegExp::escape("\\FIELD\\mapdata\\") + "(\\w+)" + QRegExp::escape("\\") + "(\\w+)" + QRegExp::escape("\\"), Qt::CaseInsensitive);
+	FsHeader *inf_infos = header->getFile("*.inf");
+	if(!inf_infos || pathReg.indexIn(inf_infos->path()) == -1) {
+		qWarning() << "fieldData not opened wrong path" << inf_infos->path();
+		return false;
+	}
+	_lang = pathReg.capturedTexts().at(1);
+	_subDir = pathReg.capturedTexts().at(2);
+	setName(pathReg.capturedTexts().at(3));
+
+	/* INF */
+
+	openFile(Inf, header->fileData(filePath(Inf)));
+
 	/* MSD */
 
-	if(header->fileExists("*.msd"))
+	if(header->fileExists(filePath(Msd)))
 	{
-		openFile(Msd, header->fileData("*.msd"));
+		openFile(Msd, header->fileData(filePath(Msd)));
 	}
 
 	/* JSM & SYM */
 
-	if(header->fileExists("*.jsm"))
+	if(header->fileExists(filePath(Jsm)))
 	{
-		if(header->fileExists("*.sym"))
-			openJsmFile(header->fileData("*.jsm"), header->fileData("*.sym"));
+		if(header->fileExists(filePath(Jsm)))
+			openJsmFile(header->fileData(filePath(Jsm)), header->fileData(filePath(name() + ".sym")));
 		else
-			openJsmFile(header->fileData("*.jsm"));
+			openJsmFile(header->fileData(filePath(Jsm)));
 	}
 
 	/* ID */
 
-	if(header->fileExists("*.id"))
+	if(header->fileExists(filePath(Id)))
 	{
-		openFile(Id, header->fileData("*.id"));
+		openFile(Id, header->fileData(filePath(Id)));
 	}
 
 	/* CA */
 
-	if(header->fileExists("*.ca"))
+	if(header->fileExists(filePath(Ca)))
 	{
-		openFile(Ca, header->fileData("*.ca"));
+		openFile(Ca, header->fileData(filePath(Ca)));
 	}
 
 	/* MSK */
 
-	if(header->fileExists("*.msk"))
+	if(header->fileExists(filePath(Msk)))
 	{
-		openFile(Msk, header->fileData("*.msk"));
+		openFile(Msk, header->fileData(filePath(Msk)));
 	}
 
 	/* RAT */
 
-	if(header->fileExists("*.rat"))
+	if(header->fileExists(filePath(Rat)))
 	{
-		openFile(Rat, header->fileData("*.rat"));
+		openFile(Rat, header->fileData(filePath(Rat)));
 	}
 
 	/* MRT */
 
-	if(header->fileExists("*.mrt"))
+	if(header->fileExists(filePath(Mrt)))
 	{
-		openFile(Mrt, header->fileData("*.mrt"));
-	}
-
-	/* INF */
-
-	if(header->fileExists("*.inf"))
-	{
-		openFile(Inf, header->fileData("*.inf"));
-		if(hasInfFile())
-			setName(getInfFile()->getMapName());
+		openFile(Mrt, header->fileData(filePath(Mrt)));
 	}
 
 	/* SFX */
 
-	if(header->fileExists("*.sfx"))
+	if(header->fileExists(filePath(Sfx)))
 	{
-		openFile(Sfx, header->fileData("*.sfx"));
+		openFile(Sfx, header->fileData(filePath(Sfx)));
 	}
 
 	/* PMP */
 
-	if(header->fileExists("*.pmp"))
+	if(header->fileExists(filePath(Pmp)))
 	{
-		openFile(Pmp, header->fileData("*.pmp"));
+		openFile(Pmp, header->fileData(filePath(Pmp)));
 	}
 
 	/* PMD */
 
-	if(header->fileExists("*.pmd"))
+	if(header->fileExists(filePath(Pmd)))
 	{
-		openFile(Pmd, header->fileData("*.pmd"));
+		openFile(Pmd, header->fileData(filePath(Pmd)));
 	}
 
 	/* PVP */
 
-	if(header->fileExists("*.pvp"))
+	if(header->fileExists(filePath(Pvp)))
 	{
-		openFile(Pvp, header->fileData("*.pvp"));
+		openFile(Pvp, header->fileData(filePath(Pvp)));
 	}
 
 	setOpen(true);
@@ -176,9 +181,19 @@ bool FieldPC::open(FsArchive *archive)
 	setOpen(false);
 
 	if(header)	delete header;
+
+	QRegExp pathReg("^" + QRegExp::escape("C:\\ff8\\Data\\") + "(\\w+)" + QRegExp::escape("\\FIELD\\mapdata\\") + "(\\w+)" + QRegExp::escape("\\"), Qt::CaseInsensitive);
+	FsHeader *fl_infos = archive->getFile("*"%name()%".fl");
+	if(!fl_infos || pathReg.indexIn(fl_infos->path()) == -1) {
+		qWarning() << "fieldData not opened" << name() << "wrong path" << fl_infos->path();
+		return false;
+	}
+	_lang = pathReg.capturedTexts().at(1);
+	_subDir = pathReg.capturedTexts().at(2);
+
 	header = new FsArchive(archive->fileData("*"%name()%".fl"), archive->fileData("*"%name()%".fi"));
 	if(!header->isOpen()) {
-		qWarning() << "fieldData pas ouvert" << name();
+		qWarning() << "fieldData not opened" << name();
 		delete header;
 		header = 0;
 		return false;
@@ -189,19 +204,19 @@ bool FieldPC::open(FsArchive *archive)
 			*mrt_infos, *pmp_infos, *pmd_infos, *pvp_infos,
 			*sfx_infos;
 
-	msd_infos = header->getFile("*"%name()%".msd");
-	jsm_infos = header->getFile("*"%name()%".jsm");
-	sym_infos = header->getFile("*"%name()%".sym");
-	id_infos = header->getFile("*"%name()%".id");
-	ca_infos = header->getFile("*"%name()%".ca");
-	msk_infos = header->getFile("*"%name()%".msk");
-	inf_infos = header->getFile("*"%name()%".inf");
-	rat_infos = header->getFile("*"%name()%".rat");
-	mrt_infos = header->getFile("*"%name()%".mrt");
-	pmp_infos = header->getFile("*"%name()%".pmp");
-	pmd_infos = header->getFile("*"%name()%".pmd");
-	pvp_infos = header->getFile("*"%name()%".pvp");
-	sfx_infos = header->getFile("*"%name()%".sfx");
+	msd_infos = header->getFile(filePath(Msd));
+	jsm_infos = header->getFile(filePath(Jsm));
+	sym_infos = header->getFile(filePath(name() + ".sym"));
+	id_infos = header->getFile(filePath(Id));
+	ca_infos = header->getFile(filePath(Ca));
+	msk_infos = header->getFile(filePath(Msk));
+	inf_infos = header->getFile(filePath(Inf));
+	rat_infos = header->getFile(filePath(Rat));
+	mrt_infos = header->getFile(filePath(Mrt));
+	pmp_infos = header->getFile(filePath(Pmp));
+	pmd_infos = header->getFile(filePath(Pmd));
+	pvp_infos = header->getFile(filePath(Pvp));
+	sfx_infos = header->getFile(filePath(Sfx));
 
 	quint32 maxSize = 0;
 	if(msd_infos!=NULL)
@@ -343,13 +358,13 @@ bool FieldPC::open2()
 	if(!header)
 		return false;
 
-	if(header->fileExists("*"%name()%".map") && header->fileExists("*"%name()%".mim")) {
-		openBackgroundFile(header->fileData("*"%name()%".map"), header->fileData("*"%name()%".mim"));
+	if(header->fileExists(filePath(name() + ".map")) && header->fileExists(filePath(name() + ".mim"))) {
+		openBackgroundFile(header->fileData(filePath(name() + ".map")), header->fileData(filePath(name() + ".mim")));
 	}
 	if(!hasTdwFile()) {
-		openFile(Tdw, header->fileData("*"%name()%".tdw"));
+		openFile(Tdw, header->fileData(filePath(Tdw)));
 	}
-	openCharaFile(header->fileData("*chara.one"));
+	openCharaFile(header->fileData(filePath("chara.one")));
 
 	return true;
 }
@@ -359,10 +374,10 @@ bool FieldPC::open2(FsArchive *archive)
 	if(!header)
 		return false;
 
-	FsHeader *fi_infos_mim = header->getFile("*"%name()%".mim");
-	FsHeader *fi_infos_map = header->getFile("*"%name()%".map");
-	FsHeader *fi_infos_tdw = !hasTdwFile() ? header->getFile("*"%name()%".tdw") : NULL;
-	FsHeader *fi_infos_one = header->getFile("*chara.one");
+	FsHeader *fi_infos_mim = header->getFile(filePath(name() + ".mim"));
+	FsHeader *fi_infos_map = header->getFile(filePath(name() + ".map"));
+	FsHeader *fi_infos_tdw = !hasTdwFile() ? header->getFile(filePath(Tdw)) : NULL;
+	FsHeader *fi_infos_one = header->getFile(filePath("chara.one"));
 
 	if(fi_infos_mim==NULL || fi_infos_map==NULL)
 		return false;
@@ -441,82 +456,82 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 	if(hasMsdFile() && getMsdFile()->isModified()) {
 		QByteArray msd;
 		if(getMsdFile()->save(msd)) {
-			header->setFileData("*"%name()%".msd", fs_data, msd);
+			header->setFileData(filePath(Msd), fs_data, msd);
 		}
 	}
 	if(hasJsmFile() && getJsmFile()->isModified()) {
 		QByteArray jsm, sym;
 		if(getJsmFile()->save(jsm, sym)) {
-			header->setFileData("*"%name()%".jsm", fs_data, jsm);
+			header->setFileData(filePath(Jsm), fs_data, jsm);
 			if(!sym.isEmpty()) {
-				header->setFileData("*"%name()%".sym", fs_data, sym);
+				header->setFileData(filePath(name() + ".sym"), fs_data, sym);
 			}
 		}
 	}
 	if(hasRatFile() && getRatFile()->isModified()) {
 		QByteArray rat;
 		if(getRatFile()->save(rat)) {
-			header->setFileData("*"%name()%".rat", fs_data, rat);
+			header->setFileData(filePath(Rat), fs_data, rat);
 		}
 	}
 	if(hasMrtFile() && getMrtFile()->isModified()) {
 		QByteArray mrt;
 		if(getMrtFile()->save(mrt)) {
-			header->setFileData("*"%name()%".mrt", fs_data, mrt);
+			header->setFileData(filePath(Mrt), fs_data, mrt);
 		}
 	}
 	if(hasInfFile() && getInfFile()->isModified()) {
 		QByteArray inf;
 		if(getInfFile()->save(inf)) {
-			header->setFileData("*"%name()%".inf", fs_data, inf);
+			header->setFileData(filePath(Inf), fs_data, inf);
 		}
 	}
 	if(hasPmpFile() && getPmpFile()->isModified()) {
 		QByteArray pmp;
 		if(getPmpFile()->save(pmp)) {
-			header->setFileData("*"%name()%".pmp", fs_data, pmp);
+			header->setFileData(filePath(Pmp), fs_data, pmp);
 		}
 	}
 	if(hasPmdFile() && getPmdFile()->isModified()) {
 		QByteArray pmd;
 		if(getPmdFile()->save(pmd)) {
-			header->setFileData("*"%name()%".pmd", fs_data, pmd);
+			header->setFileData(filePath(Pmd), fs_data, pmd);
 		}
 	}
 	if(hasPvpFile() && getPvpFile()->isModified()) {
 		QByteArray pvp;
 		if(getPvpFile()->save(pvp)) {
-			header->setFileData("*"%name()%".pvp", fs_data, pvp);
+			header->setFileData(filePath(Pvp), fs_data, pvp);
 		}
 	}
 	if(hasIdFile() && getIdFile()->isModified()) {
 		QByteArray id;
 		if(getIdFile()->save(id)) {
-			header->setFileData("*"%name()%".id", fs_data, id);
+			header->setFileData(filePath(Id), fs_data, id);
 		}
 	}
 	if(hasCaFile() && getCaFile()->isModified()) {
 		QByteArray ca;
 		if(getCaFile()->save(ca)) {
-			header->setFileData("*"%name()%".ca", fs_data, ca);
+			header->setFileData(filePath(Ca), fs_data, ca);
 		}
 	}
 	if(hasMskFile() && getMskFile()->isModified()) {
 		QByteArray msk;
 		if(getMskFile()->save(msk)) {
-			header->setFileData("*"%name()%".msk", fs_data, msk);
+			header->setFileData(filePath(Msk), fs_data, msk);
 		}
 	}
 	if(hasTdwFile() && getTdwFile()->isModified()) {
 		QByteArray tdw;
 		if(getTdwFile()->save(tdw)) {
-			header->setFileData("*"%name()%".tdw", fs_data, tdw);
+			header->setFileData(filePath(Tdw), fs_data, tdw);
 		}
 	}
 	if(hasSfxFile() && getSfxFile()->isModified()) {
 		QByteArray sfx;
 		if(getSfxFile()->save(sfx)) {
-			header->setFileData("*"%name()%".sfx", fs_data, sfx);
+			header->setFileData(filePath(Sfx), fs_data, sfx);
 		}
 	}
 	header->save(fl_data, fi_data);
@@ -526,10 +541,48 @@ void FieldPC::optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_
 {
 	if(!header)	return;
 
-	header->fileToTheEnd("*"%name()%".tdw", fs_data);
-	header->fileToTheEnd("*"%name()%".map", fs_data);
-	header->fileToTheEnd("*"%name()%".mim", fs_data);
-	header->fileToTheEnd("*chara.one", fs_data);
+	header->fileToTheEnd(filePath(Tdw), fs_data);
+	header->fileToTheEnd(filePath(name() + ".map"), fs_data);
+	header->fileToTheEnd(filePath(name() + ".mim"), fs_data);
+	header->fileToTheEnd(filePath("chara.one"), fs_data);
 
 	header->save(fl_data, fi_data);
+}
+
+void FieldPC::setFile(FileType fileType, File *file)
+{
+	QString path = filePath(fileType);
+	if(!path.isEmpty()) {
+		if(!header->fileExists(path)) {
+			header->addFile(path, false);
+			Field::setFile(fileType, file);
+		}
+	}
+}
+
+QString FieldPC::filePath(FileType fileType) const
+{
+	switch(fileType) {
+	case Msd:			return filePath(name() + ".msd");
+	case Jsm:			return filePath(name() + ".jsm");
+	case Id:			return filePath(name() + ".id");
+	case Ca:			return filePath(name() + ".ca");
+	case Rat:			return filePath(name() + ".rat");
+	case Mrt:			return filePath(name() + ".mrt");
+	case Inf:			return filePath(name() + ".inf");
+	case Pmp:			return filePath(name() + ".pmp");
+	case Pmd:			return filePath(name() + ".pmd");
+	case Pvp:			return filePath(name() + ".pvp");
+	case Background:	return QString();
+	case Tdw:			return filePath(name() + ".tdw");
+	case Msk:			return filePath(name() + ".msk");
+	case Sfx:			return filePath(name() + ".sfx");
+	case AkaoList:		return QString();
+	}
+	return QString();
+}
+
+QString FieldPC::filePath(const QString &fileName) const
+{
+	return "C:\\ff8\\Data\\" + _lang + "\\FIELD\\mapdata\\" + _subDir + "\\" + name() + "\\" + fileName;
 }
