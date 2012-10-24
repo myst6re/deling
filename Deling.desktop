@@ -10,7 +10,6 @@ Icon=deling.png
 Exec=/usr/bin/deling
 Path=
 Terminal=false
-MimeType=application/octet-stream
 Categories=Application;Game;
 Keywords=PlayStation;Final Fantasy;FF8;
 StartupNotify=false
