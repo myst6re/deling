@@ -86,7 +86,8 @@ HEADERS += MainWindow.h \
     files/PmdFile.h \
 	Listwidget.h \
     SpecialCharactersDialog.h \
-    GZIP.h
+    GZIP.h \
+	QTaskBarButton.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -166,14 +167,21 @@ SOURCES += MainWindow.cpp \
     files/PmdFile.cpp \
 	Listwidget.cpp \
     SpecialCharactersDialog.cpp \
-    GZIP.cpp
+    GZIP.cpp \
+    QTaskBarButton.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \
-	deling_ja.ts
+	deling_ja.ts \
+	deling_eu.ts
 # macx:ICON = images/Deling.icns
+!win32 {
+	LIBS += -lz
+}
 win32 {
 	RC_FILE = Deling.rc
+	LIBS += -lole32
+	HEADERS += shobjidl.h
 }
 
 OTHER_FILES += Deling.rc \

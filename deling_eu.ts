@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<TS version="2.0" language="eu-ES">
 <context>
     <name>BGPreview2</name>
     <message>
         <location filename="BGPreview2.cpp" line="65"/>
         <source>Enregistrer l&apos;image</source>
-        <oldsource>Enregistrer le background</oldsource>
-        <translation>Save image</translation>
+        <oldsource>Enregistrer l&apos;irudia</oldsource>
+        <translation type="unfinished">Gorde irudia</translation>
     </message>
     <message>
         <location filename="BGPreview2.cpp" line="65"/>
         <source>Image PNG (*.png);;Image JPG (*.jpg);;Image BMP (*.bmp);;Portable Pixmap (*.ppm)</source>
-        <translation>PNG image (*.png);;JPG image (*.jpg);;BMP image (*.bmp);;Portable Pixmap (*.ppm)</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>image PNG (*.png);;image JPG (*.jpg);;image BMP (*.bmp);;Portable Pixmap (*.ppm)</source>
+        <translation type="obsolete">PNG irudia (*.png);;JPG irudia (*.jpg);;BMP irudia (*.bmp);;Portable Pixmap (*.ppm)</translation>
     </message>
 </context>
 <context>
@@ -20,27 +24,27 @@
     <message>
         <location filename="widgets/BackgroundWidget.cpp" line="50"/>
         <source>Cacher background</source>
-        <translation>Hide background</translation>
+        <translation>Hondoa ezkutatu</translation>
     </message>
     <message>
         <location filename="widgets/BackgroundWidget.cpp" line="95"/>
         <source>État %1</source>
-        <translation>State %1</translation>
+        <translation>Egoera %1</translation>
     </message>
     <message>
         <location filename="widgets/BackgroundWidget.cpp" line="160"/>
         <source>Paramètre %1</source>
-        <translation>Parameter %1</translation>
+        <translation>Parametroa %1</translation>
     </message>
     <message>
         <location filename="widgets/BackgroundWidget.cpp" line="168"/>
         <source>Couche %1</source>
-        <translation>Layer %1</translation>
+        <translation>Geruza %1</translation>
     </message>
     <message>
         <location filename="widgets/BackgroundWidget.h" line="34"/>
         <source>Décors</source>
-        <translation>Background</translation>
+        <translation>Hondoa</translation>
     </message>
 </context>
 <context>
@@ -48,7 +52,7 @@
     <message>
         <location filename="widgets/CharaWidget.h" line="32"/>
         <source>Modèles 3D</source>
-        <translation>3D Model</translation>
+        <translation>Modelo 3D-a</translation>
     </message>
 </context>
 <context>
@@ -56,17 +60,17 @@
     <message>
         <location filename="ConfigDialog.cpp" line="23"/>
         <source>Configuration</source>
-        <translation>Configuration</translation>
+        <translation>Konfigurazio</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="26"/>
         <source>Langue</source>
-        <translation>Language</translation>
+        <translation>Hizkuntza</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="29"/>
         <source>Chemin de FF8</source>
-        <translation>FF8 path</translation>
+        <translation>FF8 bidea</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="30"/>
@@ -77,42 +81,42 @@
         <location filename="ConfigDialog.cpp" line="32"/>
         <source>Parcourir...</source>
         <oldsource>Parcourir</oldsource>
-        <translation>Browse...</translation>
+        <translation>Arakatu...</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="38"/>
         <source>Encodage des textes</source>
-        <translation>Text encoding</translation>
+        <translation>Testu kodeketa</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="40"/>
         <source>Latin</source>
-        <translation>Latin</translation>
+        <translation>Latina</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="41"/>
         <source>Japonais</source>
-        <translation>Japanese</translation>
+        <translation>Japoniera</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="42"/>
         <source>Gérer</source>
-        <translation>Manage</translation>
+        <translation>Zuzendu</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="50"/>
         <source>Enregistrer</source>
-        <translation>Save</translation>
+        <translation>Gorde</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="52"/>
         <source>Annuler</source>
-        <translation>Cancel</translation>
+        <translation>Ezeztatu</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="123"/>
         <source>Chemin d&apos;installation de Final Fantasy VIII PC</source>
-        <translation>Final Fantasy VIII PC install path</translation>
+        <translation>Final Fantasy VIII PC bide instalatua</translation>
     </message>
 </context>
 <context>
@@ -121,92 +125,94 @@
         <location filename="Data.cpp" line="46"/>
         <source>Plaines d&apos;Arkland - Balamb</source>
         <comment>1</comment>
-        <translation>Balamb- Alcauld Plains</translation>
+        <translation>Balamb- Alcauld Ordokiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Monts Gaulg - Balamb</source>
         <comment>2</comment>
-        <translation>Balamb- Gaulg Mountains</translation>
+        <translation>Balamb- Gaulg Mendiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Baie de Rinaul - Balamb</source>
         <comment>3</comment>
-        <translation>Balamb- Rinaul Coast</translation>
+        <translation>Balamb- Rinaul Kostaldea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Cap Raha - Balamb</source>
         <comment>4</comment>
-        <translation>Balamb- Raha Cape</translation>
+        <translation>Balamb- Raha Lurmuturra</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Forêt de Rosfall - Timber</source>
         <comment>5</comment>
-        <translation>Timber- Roshfall Forest</translation>
+        <translation>Timber- Roshfall Oihana</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Mandy Beach - Timber</source>
+        <oldsource>Mandy Hondartza - Timber</oldsource>
         <comment>6</comment>
-        <translation>Timber- Mandy Beach</translation>
+        <translation type="unfinished">Timber- Mandy Hondartza</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Lac Obel - Timber</source>
         <comment>7</comment>
-        <translation>Timber- Obel Lake</translation>
+        <translation>Timber- Obel Aintzira</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Vallée de Lanker - Timber</source>
         <comment>8</comment>
-        <translation>Timber- Lanker Plains</translation>
+        <translation>Timber- Lanker Ordokiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Ile Nantakhet - Timber</source>
         <comment>9</comment>
-        <translation>Timber- Nanchucket Island</translation>
+        <translation>Timber- Nanchucket Uhartea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Yaulny Canyon - Timber</source>
         <comment>10</comment>
-        <translation>Timber- Yaulny Canyon</translation>
+        <translation>Timber- Yaulny Arroila</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Val Hasberry - Dollet</source>
         <comment>11</comment>
-        <translation>Dollet- Hasberry Plains</translation>
+        <translation>Dollet- Hasberry Ordokiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Cap Holy Glory - Dollet</source>
         <comment>12</comment>
-        <translation>Dollet- Holy Glory Cape</translation>
+        <translation>Dollet- Holy Glory Lurmuturra</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Longhorn Island - Dollet</source>
+        <oldsource>Longhorn Uhartea - Dollet</oldsource>
         <comment>13</comment>
-        <translation>Dollet- Long Horn Island</translation>
+        <translation type="unfinished">Dollet- Longhorn Uhartea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Péninsule Malgo - Dollet</source>
         <comment>14</comment>
-        <translation>Dollet- Malgo Peninsula</translation>
+        <translation>Dollet- Malgo Penintsula</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
         <source>Plateau Monterosa - Galbadia</source>
         <oldsource>Plateau Monterosa -Galbadia</oldsource>
         <comment>15</comment>
-        <translation>Galbadia- Monterosa Plateau</translation>
+        <translation>Galbadia- Monterosa Goi-ordokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="46"/>
@@ -218,195 +224,197 @@
         <location filename="Data.cpp" line="47"/>
         <source>Lallapalooza Canyon - Galbadia</source>
         <comment>16</comment>
-        <translation>Galbadia- Lallapalooza Canyon</translation>
+        <translation>Galbadia- Lallapalooza Arroila</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Shenand Hill - Timber</source>
         <comment>17</comment>
-        <translation>Timber- Shenand Hill</translation>
+        <translation>Timber- Shenand Mendixka</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Péninsule Gotland - Galbadia</source>
         <comment>18</comment>
-        <translation>Galbadia- Gotland Peninsula</translation>
+        <translation>Galbadia- Gotland Penintsula</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Ile de l&apos;Enfer - Galbadia</source>
         <comment>19</comment>
-        <translation>Island Closest to Hell</translation>
+        <translation>Ia-ia Infernu Uhartea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Plaine Galbadienne</source>
         <comment>20</comment>
-        <translation>Great Plains of Galbadia</translation>
+        <translation>Galbadiako Ordoki Handiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Wilburn Hill - Galbadia</source>
         <comment>21</comment>
-        <translation>Galbadia- Wilburn Hill</translation>
+        <translation>Galbadia- Wilburn Mendixka</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Archipel Rem - Galbadia</source>
         <comment>22</comment>
-        <translation>Galbadia- Rem Archipelago</translation>
+        <translation>Galbadia- Rem Uhartedia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Dingo Désert - Galbadia</source>
         <comment>23</comment>
-        <translation>Galbadia- Dingo Desert</translation>
+        <translation>Galbadia- Dingo Basamortua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Cap Winhill</source>
         <comment>24</comment>
-        <translation>Winhill- Winhill Bluffs</translation>
+        <translation>Winhill- Winhill Amildegiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Archipel Humphrey - Winhill</source>
         <comment>25</comment>
-        <translation>Winhill- Humphrey Archipelago</translation>
+        <translation>Winhill- Humphrey Uhartedia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Ile Winter - Trabia</source>
         <comment>26</comment>
-        <translation>Trabia- Winter Island</translation>
+        <translation>Trabia- Winter Uhartea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Val de Solvard - Trabia</source>
         <comment>27</comment>
-        <translation>Trabia- Sorbald Snowfield</translation>
+        <translation>Trabia- Sorbald Elursoroa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Crête d&apos;Eldbeak - Trabia</source>
         <comment>28</comment>
-        <translation>Trabia- Eldbeak Peninsula</translation>
+        <translation>Trabia- Eldbeak Penintsula</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Plaine d&apos;Hawkind - Trabia</source>
         <comment>30</comment>
-        <translation>Trabia- Hawkwind Plains</translation>
+        <translation>Trabia- Hawkwind Ordokiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="47"/>
         <source>Atoll Albatross - Trabia</source>
         <oldsource>Atoll Albatross -Trabia</oldsource>
         <comment>31</comment>
-        <translation>Trabia- Albatross Archipelago</translation>
+        <translation>Trabia- Albatross Uhartedia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Vallon de Bika - Trabia</source>
         <comment>32</comment>
-        <translation>Trabia- Bika Snowfield</translation>
+        <translation>Trabia- Bika Elursoroa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Péninsule Thor - Trabia</source>
         <comment>33</comment>
-        <translation>Trabia- Thor Peninsula</translation>
+        <translation>Trabia- Thor Penintsula</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Crête d&apos;Heath - Trabia</source>
         <comment>35</comment>
-        <translation>Trabia- Heath Peninsula</translation>
+        <translation>Trabia- Heath Penintsula</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Trabia Crater - Trabia</source>
         <comment>36</comment>
-        <translation>Trabia- Trabia Crater</translation>
+        <translation>Trabia- Trabia Zulogunea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Mont Vienne - Trabia</source>
         <comment>37</comment>
-        <translation>Trabia- Vienne Mountains</translation>
+        <translation>Trabia- Vienne Mendiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Plaine de Mordor - Esthar</source>
         <comment>38</comment>
-        <translation>Esthar- Mordred Plains</translation>
+        <translation>Esthar- Mordred Ordokiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Mont Nortes - Esthar</source>
         <comment>39</comment>
-        <translation>Esthar- Nortes Mountains</translation>
+        <translation>Esthar- Nortes Mendiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Atoll Fulcura - Esthar</source>
         <comment>40</comment>
-        <translation>Esthar- Fulcura Archipelago</translation>
+        <translation>Esthar- Fulcura Uhartedia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Forêt Grandidi - Esthar</source>
         <comment>41</comment>
-        <translation>Esthar- Grandidi Forest</translation>
+        <translation>Esthar- Grandidi Oihana</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Iles Millefeuilles - Esthar</source>
         <comment>42</comment>
-        <translation>Esthar- Millefeuille Archipelago</translation>
+        <translation>Esthar- Millefeuille Uhartedia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Grandes plaines d&apos;Esthar</source>
         <comment>43</comment>
-        <translation>Great Plains of Esthar</translation>
+        <translation>Estharko Ordoki Handiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Esthar City</source>
+        <oldsource>Esthar Hiria</oldsource>
         <comment>44</comment>
-        <translation>Esthar City</translation>
+        <translation type="unfinished">Esthar Hiria</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Salt Lake - Esthar</source>
+        <oldsource>Salt Aintzira - Esthar</oldsource>
         <comment>45</comment>
-        <translation>Esthar- Great Salt Lake</translation>
+        <translation type="unfinished">Esthar- Aintzira Gatz Handia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Côte Ouest - Esthar</source>
         <comment>46</comment>
-        <translation>Esthar- West Coast</translation>
+        <translation>Esthar- Mendebaldeko Kostaldea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="48"/>
         <source>Mont Sollet - Esthar</source>
         <oldsource>Mont Sollet -Esthar</oldsource>
         <comment>47</comment>
-        <translation>Esthar- Sollet Mountains</translation>
+        <translation>Esthar- Sollet Mendiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Vallée d&apos;Abadan - Esthar</source>
         <comment>48</comment>
-        <translation>Esthar- Abadan Plains</translation>
+        <translation>Esthar- Abadan Ordokiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Ile Minde - Esthar</source>
         <comment>49</comment>
-        <translation>Esthar- Minde Island</translation>
+        <translation>Esthar- Minde Uhartea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
@@ -418,346 +426,345 @@
         <location filename="Data.cpp" line="49"/>
         <source>Ile Paradisiaque - Esthar</source>
         <comment>51</comment>
-        <translation>Island Closest to Heaven</translation>
+        <translation>Ia-ia Zeru Uhartea </translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Pic de Talle - Esthar</source>
         <comment>52</comment>
-        <translation>Esthar- Talle Mountains</translation>
+        <translation>Esthar- Talle Mendiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Atoll Shalmal - Esthar</source>
         <comment>53</comment>
-        <translation>Esthar- Shalmal Peninsula</translation>
+        <translation>Esthar- Shalmal Penintsula</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Vallée de Lolestern - Centra</source>
         <comment>54</comment>
-        <translation>Centra- Lolestern Plains</translation>
+        <translation>Centra- Lolestern Ordokiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Aiguille d&apos;Almage - Centra</source>
         <comment>55</comment>
-        <translation>Centra- Almaj Mountains</translation>
+        <translation>Centra- Almaj Mendiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Vallon Lenown - Centra</source>
         <comment>56</comment>
-        <translation>Centra- Lenown Plains</translation>
+        <translation>Centra- Lenown Ordokiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Cap de l&apos;espoir - Centra</source>
         <comment>57</comment>
-        <translation>Centra- Cape of Good Hope</translation>
+        <translation>Centra- Itxaropen Onako Lurmuturra</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Mont Yorn - Centra</source>
         <comment>58</comment>
-        <translation>Centra- Yorn Mountains</translation>
+        <translation>Centra- Yorn Mendiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Ile Pampa - Esthar</source>
         <comment>59</comment>
-        <translation>Esthar- Cactuar Island</translation>
+        <translation>Esthar- Cactuar Uhartea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Val Serengetti - Centra</source>
         <comment>60</comment>
-        <translation>Centra- Serengetti Plains</translation>
+        <translation>Centra- Serengetti Ordokiak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Péninsule Nectalle - Centra</source>
         <comment>61</comment>
-        <translation>Centra- Nectar Peninsula</translation>
+        <translation>Centra- Nektar Penintsula</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Centra Crater - Centra</source>
         <comment>62</comment>
-        <translation>Centra- Centra Crater</translation>
+        <translation>Centra- Centra Zulogunea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="49"/>
         <source>Ile Poccarahi - Centra</source>
         <oldsource>Ile Poccarahi -Centra</oldsource>
         <comment>63</comment>
-        <translation>Centra- Poccarahi Island</translation>
+        <translation>Centra- Poccarahi Uhartea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Bibliothèque - BGU</source>
         <comment>64</comment>
-        <translation>B-Garden- Library</translation>
+        <translation>B-Barazte- Liburutegia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Entrée - BGU</source>
         <comment>65</comment>
-        <translation>B-Garden- Front Gate</translation>
+        <translation>B-Barazte- Aurreko Atea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Salle de cours - BGU</source>
         <comment>66</comment>
-        <translation>B-Garden- Classroom</translation>
+        <translation>B-Barazte- Ikasgela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Cafétéria - BGU</source>
         <comment>67</comment>
-        <translation>B-Garden- Cafeteria</translation>
+        <translation>B-Barazte- Autozerbitzu-jatetxea </translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Niveau MD - BGU</source>
         <comment>68</comment>
-        <translation>B-Garden- MD Level</translation>
+        <translation>B-Barazte- MD Maila</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Hall 1er étage - BGU</source>
         <comment>69</comment>
-        <translation>B-Garden- 2F Hallway</translation>
+        <translation>B-Barazte- 2S Atondoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Hall - BGU</source>
         <comment>70</comment>
-        <translation>B-Garden- Hall</translation>
+        <translation>B-Barazte- Korridorea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Infirmerie - BGU</source>
         <comment>71</comment>
-        <translation>B-Garden- Infirmary</translation>
+        <translation>B-Barazte- Eritegia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Dortoirs doubles - BGU</source>
         <comment>72</comment>
-        <translation>B-Garden- Dormitory Double</translation>
+        <translation>B-Barazte- Biko Logela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Dortoirs simples - BGU</source>
         <comment>73</comment>
-        <translation>B-Garden- Dormitory Single</translation>
+        <translation>B-Barazte- Banakako Logela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Bureau proviseur - BGU</source>
         <comment>74</comment>
-        <translation>B-Garden- Headmaster&apos;s Office</translation>
+        <translation>B-Barazte- Zuzendariaren Bulegoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Parking - BGU</source>
         <comment>75</comment>
-        <translation>B-Garden- Parking Lot</translation>
+        <translation>B-Barazte- Aparkalekua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Salle de bal - BGU</source>
         <comment>76</comment>
-        <translation>B-Garden- Ballroom</translation>
+        <translation>B-Barazte- Dantza-aretoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Campus - BGU</source>
         <comment>77</comment>
-        <translation>B-Garden- Quad</translation>
+        <translation>B-Barazte- Patioa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Serre de combat - BGU</source>
         <comment>78</comment>
-        <translation>B-Garden- Training Center</translation>
+        <translation>B-Barazte- Entrenatzeko Zentroa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="50"/>
         <source>Zone secrète - BGU</source>
         <oldsource>Zone secrète -BGU</oldsource>
         <comment>79</comment>
-        <translation>B-Garden- Secret Area</translation>
+        <translation>B-Barazte- Gune Ezkutua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Corridor - BGU</source>
         <comment>80</comment>
-        <translation>B-Garden- Hallway</translation>
+        <translation>B-Barazte- Atondoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Temple - BGU</source>
         <comment>81</comment>
-        <translation>B-Garden- Master Room</translation>
+        <translation>B-Barazte- Gela Nagusia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Pont - BGU</source>
         <comment>82</comment>
-        <translation>B-Garden- Deck</translation>
+        <translation>B-Barazte- Bizkarra</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Villa Dincht - Balamb</source>
         <comment>83</comment>
-        <translation>Balamb- The Dincht&apos;s</translation>
+        <translation>Balamb- Dintchena</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Hôtel - Balamb</source>
         <comment>84</comment>
-        <translation>Balamb Hotel</translation>
+        <translation>Balamb Hotela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Place centrale - Balamb</source>
         <comment>85</comment>
-        <translation>Balamb- Town Square</translation>
+        <translation>Balamb- Plaza</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Place de la gare - Balamb</source>
         <comment>86</comment>
-        <translation>Balamb- Station Yard</translation>
+        <translation>Balamb- Tren-geltokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Port - Balamb</source>
         <comment>87</comment>
-        <translation>Balamb Harbor</translation>
+        <translation>Balamb Portua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Résidence - Balamb</source>
         <comment>88</comment>
-        <translation>Balamb- Residence</translation>
+        <translation>Balamb- Bizitokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Train</source>
         <comment>89</comment>
-        <translation>Train</translation>
+        <translation>Trena</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Voiture</source>
         <comment>90</comment>
-        <translation>Car</translation>
+        <translation>Autoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Vaisseau</source>
         <comment>91</comment>
-        <translation>Inside Ship</translation>
+        <translation>Itsas-ontzi Barnea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Mine de souffre</source>
         <comment>92</comment>
-        <translation>Fire Cavern</translation>
+        <translation>Su Kobazuloa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Place du village - Dollet</source>
         <comment>93</comment>
-        <translation>Dollet- Town Square</translation>
+        <translation>Dollet- Plaza</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Zuma Beach</source>
         <comment>94</comment>
-        <translation>Dollet- Lapin Beach</translation>
+        <translation>Dollet- Lapin Hondartza</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="51"/>
         <source>Port -Dollet</source>
         <comment>95</comment>
-        <translation>
-Dollet Harbor</translation>
+        <translation>Dollet Portua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Pub - Dollet</source>
         <comment>96</comment>
-        <translation>Dollet Pub</translation>
+        <translation>Dollet Taberna</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Hôtel - Dollet</source>
         <comment>97</comment>
-        <translation>Dollet Hotel</translation>
+        <translation>Dollet Hotela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Résidence - Dollet</source>
         <comment>98</comment>
-        <translation>Dollet- Residence</translation>
+        <translation>Dollet- Bizitokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Tour satellite - Dollet</source>
         <comment>99</comment>
-        <translation>Dollet- Comm Tower</translation>
+        <translation>Dollet- Satelite Dorrea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Refuge montagneux - Dollet</source>
         <comment>100</comment>
-        <translation>Dollet- Mountain Hideout</translation>
+        <translation>Dollet- Mendi Ezkutalekua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Centre ville - Timber</source>
         <comment>101</comment>
-        <translation>Timber- City Square</translation>
+        <translation>Timber- Plaza</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Chaîne de TV - Timber</source>
         <comment>102</comment>
-        <translation>Timber TV Station</translation>
+        <translation>Timber- TV Geltokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Base des Hiboux - Timber</source>
         <comment>103</comment>
-        <translation>Timber- Forest Owls&apos; Base</translation>
+        <translation>Timber- Oihan-Hontzaren Basea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Pub - Timber</source>
         <comment>104</comment>
-        <translation>Timber Pub</translation>
+        <translation>Timber Taberna</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Hôtel - Timber</source>
         <comment>105</comment>
-        <translation>Timber Hotel</translation>
+        <translation>Timber Hotela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Train - Timber</source>
         <comment>106</comment>
-        <translation>Timber- Train</translation>
+        <translation>Timber- Trena</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Résidence - Timber</source>
         <comment>107</comment>
-        <translation>Timber- Residence</translation>
+        <translation>Timber- Bizitokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
@@ -769,364 +776,364 @@ Dollet Harbor</translation>
         <location filename="Data.cpp" line="52"/>
         <source>Centre de presse - Timber</source>
         <comment>109</comment>
-        <translation>Timber- Editorial Department</translation>
+        <translation>Timber- Departamentu Editoriala</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Forêt de Timber</source>
         <comment>110</comment>
-        <translation>Timber Forest</translation>
+        <translation>Timber Oihana</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="52"/>
         <source>Entrée - Fac deGalbadia</source>
         <comment>111</comment>
-        <translation>Galbadia Garden- Front Gate</translation>
+        <translation>Galbadia Barazte- Aurreko Atea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Station Fac de Galbadia</source>
         <comment>112</comment>
-        <translation>G-Garden- Station</translation>
+        <translation>G-Barazte- Geltokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Hall - Fac de Galbadia</source>
         <comment>113</comment>
-        <translation>G-Garden- Hall</translation>
+        <translation>G-Barazte- Korridorea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Corridor - Fac de Galbadia</source>
         <comment>114</comment>
-        <translation>G-Garden- Hallway</translation>
+        <translation>G-Barazte- Atondoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Salle d&apos;attente - Fac Galbadia</source>
         <comment>115</comment>
-        <translation>G-Garden- Reception Room</translation>
+        <translation>G-Barazte- Harrera-lekua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Salle de cours - Fac Galbadia</source>
         <comment>116</comment>
-        <translation>G-Garden- Classroom</translation>
+        <translation>G-Barazte- Ikasgela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Salle de réunion - Fac Galbadia</source>
         <comment>117</comment>
-        <translation>G-Garden- Clubroom</translation>
+        <translation>G-Barazte- Aretoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Dortoirs - Fac de Galbadia</source>
         <comment>118</comment>
-        <translation>G-Garden- Dormitory</translation>
+        <translation>G-Barazte- Logela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Ascenseur - Fac de Galbadia</source>
         <comment>119</comment>
-        <translation>G-Garden- Elevator Hall</translation>
+        <translation>G-Barazte- Igogailua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Salle recteur - Fac Galbadia</source>
         <comment>120</comment>
-        <translation>G-Garden- Master Room</translation>
+        <translation>G-Barazte- Gela Nagusia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Auditorium - Fac de Galbadia</source>
         <comment>121</comment>
-        <translation>G-Garden- Auditorium</translation>
+        <translation>G-Barazte- Auditorio</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Stade - Fac de Galbadia</source>
         <comment>122</comment>
-        <translation>G-Garden- Athletic Track</translation>
+        <translation>G-Barazte- Ibilbide Atletikoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Stand - Fac de Galbadia</source>
         <comment>123</comment>
-        <translation>G-Garden- Stand</translation>
+        <translation>G-Barazte- Saltokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>2nde entrée - Fac Galbadia</source>
         <comment>124</comment>
-        <translation>G-Garden- Back Entrance</translation>
+        <translation>G-Barazte- Atzeko Sarrera</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Gymnase - Fac de Galbadia</source>
         <comment>125</comment>
-        <translation>G-Garden- Gymnasium</translation>
+        <translation>G-Barazte- Gimnasioa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Palais président - Deling City</source>
         <comment>126</comment>
-        <translation>Deling- Presidential Residence</translation>
+        <translation>Deling- Errege-jauregia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="53"/>
         <source>Manoir Caraway - Deling City</source>
         <oldsource>Manoir Caraway - DelingCity</oldsource>
         <comment>127</comment>
-        <translation>Deling City- Caraway&apos;s Mansion</translation>
+        <translation>Deling Hiria- Carawayen Jauretxea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Gare - Deling City</source>
         <comment>128</comment>
-        <translation>Deling City- Station Yard</translation>
+        <translation>Deling City- Geltokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Place centrale - Deling City</source>
         <comment>129</comment>
-        <translation>Deling City- City Square</translation>
+        <translation>Deling City- Plaza</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Hôtel - Deling City</source>
         <comment>130</comment>
-        <translation>Deling City- Hotel</translation>
+        <translation>Deling City- Hotela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Bar - Deling City</source>
         <comment>131</comment>
-        <translation>Deling City- Club</translation>
+        <translation>Deling City- Kluba</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Sortie - Deling City</source>
         <comment>132</comment>
-        <translation>Deling City- Gateway</translation>
+        <translation>Deling City- Sarrera</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Parade - Deling City</source>
         <comment>133</comment>
-        <translation>Deling City- Parade</translation>
+        <translation>Deling City- Desfilea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Egout - Deling City</source>
         <comment>134</comment>
-        <translation>Deling City- Sewer</translation>
+        <translation>Deling City- Estolda</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Prison du désert - Galbadia</source>
         <comment>135</comment>
-        <translation>Galbadia D-District Prison</translation>
+        <translation>Galbadia D-Barruti Espetxea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Désert</source>
         <comment>136</comment>
-        <translation>Desert</translation>
+        <translation>Basamortua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Base des missiles</source>
         <comment>137</comment>
-        <translation>Galbadia Missile Base</translation>
+        <translation>Galbadia Misil Basea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Village de Winhill</source>
         <comment>138</comment>
-        <translation>Winhill Village</translation>
+        <translation>Winhill Herrixka</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Pub - Winhill</source>
         <comment>139</comment>
-        <translation>Winhill Pub</translation>
+        <translation>Winhill Taberna</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Maison vide - Winhill</source>
         <comment>140</comment>
-        <translation>Winhill- Vacant House</translation>
+        <translation>Winhill- Etxe Librea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Manoir - Winhill</source>
         <comment>141</comment>
-        <translation>Winhill- Mansion</translation>
+        <translation>Winhill- Jauretxea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Résidence - Winhill</source>
         <comment>142</comment>
-        <translation>Winhill- Residence</translation>
+        <translation>Winhill- Bizitokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="54"/>
         <source>Hôtel - Winhill</source>
         <oldsource>Hôtel -Winhill</oldsource>
         <comment>143</comment>
-        <translation>Winhill- Hotel</translation>
+        <translation>Winhill- Hotela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Voiture - Winhill</source>
         <comment>144</comment>
-        <translation>Winhill- Car</translation>
+        <translation>Winhill- Autoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Tombe du roi inconnu</source>
         <comment>145</comment>
-        <translation>Tomb of the Unknown King</translation>
+        <translation>Errege Ezezaguneko Hilobia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Horizon</source>
         <comment>146</comment>
-        <translation>Fishermans Horizon</translation>
+        <translation>Arrantzalearen Zerumua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Habitations - Horizon</source>
         <comment>147</comment>
-        <translation>FH- Residential Area</translation>
+        <translation>AZ- Bizitegi-auzoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Ecrans solaires - Horizon</source>
         <comment>148</comment>
-        <translation>FH- Sun Panel</translation>
+        <translation>AZ- Eguzki-panela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Villa du maire - Horizon</source>
         <comment>149</comment>
-        <translation>FH- Mayor&apos;s Residence</translation>
+        <translation>AZ- Alkatearen Bizitokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Usine - Horizon</source>
         <comment>150</comment>
-        <translation>FH- Factory</translation>
+        <translation>AZ- Fabrika</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Salle des fêtes - Horizon</source>
         <comment>151</comment>
-        <translation>FH- Festival Grounds</translation>
+        <translation>AZ- Azoka</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Hôtel - Horizon</source>
         <comment>152</comment>
-        <translation>FH- Hotel</translation>
+        <translation>AZ- Hotela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Résidence - Horizon</source>
         <comment>153</comment>
-        <translation>FH- Residence</translation>
+        <translation>AZ- Bizitokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Gare - Horizon</source>
         <comment>154</comment>
-        <translation>FH- Station Yard</translation>
+        <translation>AZ- Geltokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Aqueduc d&apos;Horizon</source>
         <comment>155</comment>
-        <translation>FH- Horizon Bridge</translation>
+        <translation>AZ- Zubia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Station balnéaire</source>
         <comment>156</comment>
-        <translation>FH- Seaside Station</translation>
+        <translation>AZ- Geltoki Itsasaldea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Salt Lake</source>
         <comment>157</comment>
-        <translation>FH- Geat Salt Lake</translation>
+        <translation>AZ- Aintzira Gatz Handia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Bâtiment mystérieux</source>
         <comment>158</comment>
-        <translation>FH- Mystery Building</translation>
+        <translation>AZ- Eraikin Misterioa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="55"/>
         <source>Esthar City</source>
         <oldsource>EstharCity</oldsource>
         <comment>159</comment>
-        <translation>Esthar- City</translation>
+        <translation>Esthar- Hiria</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Laboratoire Geyser - Esthar</source>
         <comment>160</comment>
-        <translation>Esthar- Odine&apos;s Laboratory</translation>
+        <translation>Esthar- Odinen Laborategia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Aérodrome - Esthar</source>
         <comment>161</comment>
-        <translation>Esthar- Airstation</translation>
+        <translation>Esthar- Aireportua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Lunatic Pandora approche</source>
         <comment>162</comment>
-        <translation>Lunatic Pandora Approaching</translation>
+        <translation>Lunatic Pandora hurbiltzen da</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Résidence président - Esthar</source>
         <comment>163</comment>
-        <translation>Esthar- Presidential Palace</translation>
+        <translation>Esthar- Lehendakari-jauretxea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Hall - Résidence président</source>
         <comment>164</comment>
-        <translation>Presidential Palace- Hall</translation>
+        <translation>Lehendakari-jauretxea- Korridorea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Couloir - Résidence président</source>
         <comment>165</comment>
-        <translation>Presidential Palace- Hallway</translation>
+        <translation>Lehendakari-jauretxea- Atondoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Bureau - Résidence président</source>
         <comment>166</comment>
-        <translation>Presidential Palace- Office</translation>
+        <translation>Lehendakari-jauretxea- Office</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Accueil - Labo Geyser</source>
         <comment>167</comment>
-        <translation>Dr. Odine&apos;s Laboratory- Lobby</translation>
+        <translation>Dr. Odinen Laborategia- Itxaongela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Laboratoire Geyser</source>
         <comment>168</comment>
-        <translation>Dr. Odine&apos;s Laboratory- Lab</translation>
+        <translation>Dr. Odinen Laborategia- Laba</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
@@ -1138,67 +1145,67 @@ Dollet Harbor</translation>
         <location filename="Data.cpp" line="56"/>
         <source>Lunar Gate</source>
         <comment>170</comment>
-        <translation>Lunar Gate</translation>
+        <translation>Ilargiko Atea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Parvis - Lunar Gate</source>
         <comment>171</comment>
-        <translation>Lunar Gate- Concourse</translation>
+        <translation>Ilargiko Atea- Elkargune</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Glacière - Lunar gate</source>
         <comment>172</comment>
-        <translation>Lunar Gate- Deep Freeze</translation>
+        <translation>Ilargiko Atea- Hotzaro Sakona</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Mausolée - Esthar</source>
         <comment>173</comment>
-        <translation>Esthar Sorceress Memorial</translation>
+        <translation>Esthar Mausoleo</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Entrée - Mausolée</source>
         <comment>174</comment>
-        <translation>Sorceress Memorial- Entrance</translation>
+        <translation>Mausoleo- Sarrera</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="56"/>
         <source>Pod de confinement -Mausolée</source>
         <comment>175</comment>
-        <translation>Sorceress Memorial- Pod</translation>
+        <translation>Mausoleo- Leka</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Salle de contrôle - Mausolée</source>
         <comment>176</comment>
-        <translation>Sorceress Memorial- Ctrl Room</translation>
+        <translation>Sausoleo- Kontrol-gela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Tears Point</source>
         <comment>177</comment>
-        <translation>Tears&apos; Point</translation>
+        <translation>Negarren Puntua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Labo Lunatic Pandora</source>
         <comment>178</comment>
-        <translation>Lunatic Pandora Laboratory</translation>
+        <translation>Lunatic Pandora Laborategia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Zone d&apos;atterrissage de secours</source>
         <comment>179</comment>
-        <translation>Emergency Landing Zone</translation>
+        <translation>Larrialdiko Lurreratze-eremua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Zone d&apos;atterrissage officielle</source>
         <comment>180</comment>
-        <translation>Spaceship Landing Zone</translation>
+        <translation>Espazionttziko Lurreratze-eremua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
@@ -1210,412 +1217,413 @@ Dollet Harbor</translation>
         <location filename="Data.cpp" line="57"/>
         <source>Site des fouilles - Centra</source>
         <comment>182</comment>
-        <translation>Centra- Excavation Site</translation>
+        <translation>Centra- Aztarnategia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Orphelinat</source>
         <comment>183</comment>
-        <translation>Edea&apos;s House</translation>
+        <translation>Edearen Etxea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Salle de jeux - Orphelinat</source>
         <comment>184</comment>
-        <translation>Edea&apos;s House- Playroom</translation>
+        <translation>Edearen Etxea- Jokaldi-gela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Dortoir - Orphelinat</source>
         <comment>185</comment>
-        <translation>Edea&apos;s House- Bedroom</translation>
+        <translation>Edearen Etxea- Logela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Jardin - Orphelinat</source>
         <comment>186</comment>
-        <translation>Edea&apos;s House- Backyard</translation>
+        <translation>Edearen Etxea- Atzealdea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Front de mer - Orphelinat</source>
         <comment>187</comment>
-        <translation>Edea&apos;s House- Oceanside</translation>
+        <translation>Edearen Etxea- Itsasaldea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Champ - Orphelinat</source>
         <comment>188</comment>
-        <translation>Edea&apos;s House- Flower Field</translation>
+        <translation>Edearen Etxea- Zelaia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Ruines de Centra</source>
         <comment>189</comment>
-        <translation>Centra Ruins</translation>
+        <translation>Centra Aurriak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Entrée - Fac de Trabia</source>
         <comment>190</comment>
-        <translation>Trabia Garden- Front Gate</translation>
+        <translation>Trabia Barazte- Aurreko Atea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="57"/>
         <source>Cimetière - Fac deTrabia</source>
         <comment>191</comment>
-        <translation>T-Garden- Cemetery</translation>
+        <translation>T-Barazte- Hilerria</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Garage - Fac de Trabia</source>
         <comment>192</comment>
-        <translation>T-Garden- Garage</translation>
+        <translation>T-Barazte- Garajea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Campus - Fac Trabia</source>
         <comment>193</comment>
-        <translation>T-Garden- Festival Stage</translation>
+        <translation>T-Barazte- Antzeztokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Amphithéatre - Fac de Trabia</source>
         <comment>194</comment>
-        <translation>T-Garden- Classroom</translation>
+        <translation>T-Barazte- Ikasgela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Stade - Fac de Trabia</source>
         <comment>195</comment>
-        <translation>T-Garden- Athletic Ground</translation>
+        <translation>T-Barazte- Atletiko Inguruak</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Dôme mystérieux</source>
         <comment>196</comment>
-        <translation>Mystery Dome</translation>
+        <translation>Kupula Misterioa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Ville du désert - Shumi Village</source>
         <comment>197</comment>
-        <translation>Shumi Village- Desert Village</translation>
+        <translation>Shumi Herrixka- Basamortu Herrixka</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Ascenseur - Shumi Village</source>
         <comment>198</comment>
-        <translation>Shumi Village- Elevator</translation>
+        <translation>Shumi Herrixka- Igogailua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Shumi Village</source>
         <comment>199</comment>
-        <translation>Shumi Village- Village</translation>
+        <translation>Shumi Herrixka- Herrixka</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Habitation - Shumi Village</source>
         <comment>200</comment>
-        <translation>Shumi Village- Residence</translation>
+        <translation>Shumi Village- Bizitokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Résidence - Shumi Village</source>
         <comment>201</comment>
-        <translation>Shumi Village- Residence</translation>
+        <translation>Shumi Village- Bizitokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Habitat - Shumi Village</source>
         <comment>202</comment>
-        <translation>Shumi Village- Residence</translation>
+        <translation>Shumi Village- Bizitokia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Hôtel - Shumi Village</source>
         <comment>203</comment>
-        <translation>Shumi Village- Hotel</translation>
+        <translation>Shumi Village- Hotela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Trabia canyon</source>
         <comment>204</comment>
-        <translation>Trabia Canyon</translation>
+        <translation>Trabia Zulogunea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Vaisseau des Seeds blancs</source>
         <comment>205</comment>
-        <translation>White SeeD Ship</translation>
+        <translation>Itsasontzi SeeD Zuria</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Navire des Seeds Blancs</source>
         <comment>206</comment>
-        <translation>White SeeD Ship</translation>
+        <translation>Itsasontzi SeeD Zuria</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="58"/>
         <source>Cabine - Navire Seeds blancs</source>
         <oldsource>Cabine - Navire Seedsblancs</oldsource>
         <comment>207</comment>
-        <translation>White SeeD Ship- Cabin</translation>
+        <translation>Itsasontzi SeeD Zuria- Kabina</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Cockpit - Hydre</source>
         <comment>208</comment>
-        <translation>Ragnarok- Cockpit</translation>
+        <translation>Ragnarok- Kabina</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Siège passager - Hydre</source>
         <comment>209</comment>
-        <translation>Ragnarok- Passenger Seat</translation>
+        <translation>Ragnarok- Bidaiadeko Aulkia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Couloir - Hydre</source>
         <comment>210</comment>
-        <translation>Ragnarok- Aisle</translation>
+        <translation>Ragnarok- Pasabide</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Hangar - Hydre</source>
         <comment>211</comment>
-        <translation>Ragnarok- Hangar</translation>
+        <translation>Ragnarok- Hangarra</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Accès - Hydre</source>
         <comment>212</comment>
-        <translation>Ragnarok- Entrance</translation>
+        <translation>Ragnarok- Sarrera</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Air Room - Hydre</source>
+        <oldsource>Air Gela - Hydre</oldsource>
         <comment>213</comment>
-        <translation>Ragnarok- Air Room</translation>
+        <translation type="unfinished">Ragnarok- Aire-gela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Salle de pression - Hydre</source>
         <comment>214</comment>
-        <translation>Ragnarok- Space Hatch</translation>
+        <translation>Ragnarok- Espazio-eskotila</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Centre de recherches Deep Sea</source>
         <comment>215</comment>
-        <translation>Deep Sea Research Center</translation>
+        <translation>Aintzira-sakon Ikerkuntzarentzako Zentroa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Laboratoire - Deep Sea</source>
         <comment>216</comment>
-        <translation>Deep Sea Research Center- Lb</translation>
+        <translation>ASIZ- Laborategia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Salle de travail - Deep Sea</source>
         <comment>217</comment>
-        <translation>Deep Sea Research Center- Lv</translation>
+        <translation>ASIZ- Lantegia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Fouilles - Deep Sea</source>
         <comment>218</comment>
-        <translation>Deep Sea Deposit</translation>
+        <translation>Aintzira-sakon Depositua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Salle de contrôle - Base lunaire</source>
         <comment>219</comment>
-        <translation>Lunar Base- Control Room</translation>
+        <translation>Ilargiko Gela- Kontrol Gela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Centre médical - Base lunaire</source>
         <comment>220</comment>
-        <translation>Lunar Base- Medical Room</translation>
+        <translation>Ilargiko Gela- Medikuntzako Gela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Pod - Base lunaire</source>
         <comment>221</comment>
-        <translation>Lunar Base- Pod</translation>
+        <translation>Ilargiko Gela- Leka</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Dock - Base lunaire</source>
         <comment>222</comment>
-        <translation>Lunar Base- Dock</translation>
+        <translation>Ilargiko Gela- Kaia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="59"/>
         <source>Passage - Base lunaire</source>
         <oldsource>Passage - Baselunaire</oldsource>
         <comment>223</comment>
-        <translation>Lunar Base- Passageway</translation>
+        <translation>Ilargiko Gela- Pasabidea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Vestiaire - Base lunaire</source>
         <comment>224</comment>
-        <translation>Lunar Base- Locker</translation>
+        <translation>Ilargiko Gela- Armairua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Habitats - Base lunaire</source>
         <comment>225</comment>
-        <translation>Lunar Base- Residential Zone</translation>
+        <translation>Ilargiko Gela- Bizitegi-auzoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Hyper Espace</source>
         <comment>226</comment>
-        <translation>Outer Space</translation>
+        <translation>Kanpoko Espazioa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Forêt Chocobo</source>
         <comment>227</comment>
-        <translation>Chocobo Forest</translation>
+        <translation>Chocobo Oihana</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Jungle</source>
         <comment>228</comment>
-        <translation>Wilderness</translation>
+        <translation>Mortua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Citadelle d&apos;Ultimecia - Vestibule</source>
         <comment>229</comment>
-        <translation>Ultimecia Castle- Hall</translation>
+        <translation>Ultimeciaren Gaztelua- Korridorea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Citadelle d&apos;Ultimecia - Hall</source>
         <comment>230</comment>
-        <translation>Ultimecia Castle- Grand Hall</translation>
+        <translation>Ultimeciaren Gaztelua- Korridore Handia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Citadelle d&apos;Ultimecia - Terrasse</source>
         <comment>231</comment>
-        <translation>Ultimecia Castle- Terrace</translation>
+        <translation>Ultimeciaren Gaztelua- Terraza</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Citadelle d&apos;Ultimecia - Cave</source>
         <comment>232</comment>
-        <translation>Ultimecia Castle- Wine Cellar</translation>
+        <translation>Ultimeciaren Gaztelua- Sotoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Citadelle d&apos;Ultimecia - Couloir</source>
         <comment>233</comment>
-        <translation>Ultimecia Castle- Passageway</translation>
+        <translation>Ultimeciaren Gaztelua- Pasabidea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Elévateur - Citadelle</source>
         <comment>234</comment>
-        <translation>Ultimecia Castle- Elevator Hall</translation>
+        <translation>Ultimeciaren Gaztelua- Igogailua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Escalier - Citadelle d&apos;Ultimecia</source>
         <comment>235</comment>
-        <translation>Ultimecia Castle- Stairway Hall</translation>
+        <translation>Ultimeciaren Gaztelua- Eskailera-atondoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Salle du trésor - Citadelle</source>
         <comment>236</comment>
-        <translation>Ultimecia Castle- Treasure Rm</translation>
+        <translation>Ultimeciaren Gaztelua- Altxorgela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Salle de rangement - Citadelle</source>
         <comment>237</comment>
-        <translation>Ultimecia Castle- Storage Room</translation>
+        <translation>Ultimeciaren Gaztelua- Bilketa-gela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Citadelle d&apos;Ultimecia - Galerie</source>
         <comment>238</comment>
-        <translation>Ultimecia Castle- Art Gallery</translation>
+        <translation>Ultimeciaren Gaztelua- Arte-museo</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="60"/>
         <source>Citadelle d&apos;Ultimecia - Ecluse</source>
         <oldsource>Citadelle d&apos;Ultimecia -Ecluse</oldsource>
         <comment>239</comment>
-        <translation>Ultimecia Castle- Flood Gate</translation>
+        <translation>Ultimeciaren Gaztelua- Uhatea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="61"/>
         <source>Citadelle - Armurerie</source>
         <comment>240</comment>
-        <translation>Ultimecia Castle- Armory</translation>
+        <translation>Ultimeciaren Gaztelua- Armategia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="61"/>
         <source>Citadelle d&apos;Ultimecia - Prison</source>
         <comment>241</comment>
-        <translation>Ultimecia Castle- Prison Cell</translation>
+        <translation>Ultimeciaren Gaztelua- Ziega</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="61"/>
         <source>Citadelle d&apos;Ultimecia - Fossé</source>
         <comment>242</comment>
-        <translation>Ultimecia Castle- Waterway</translation>
+        <translation>Ultimeciaren Gaztelua- Ubidea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="61"/>
         <source>Citadelle d&apos;Ultimecia - Jardin</source>
         <comment>243</comment>
-        <translation>Ultimecia Castle- Courtyard</translation>
+        <translation>Ultimeciaren Gaztelua- Patioa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="61"/>
         <source>Citadelle d&apos;Ultimecia - Chapelle</source>
         <comment>244</comment>
-        <translation>Ultimecia Castle- Chapel</translation>
+        <translation>Ultimeciaren Gaztelua- Kapera</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="61"/>
         <source>Clocher - Citadelle d&apos;Ultimecia</source>
         <comment>245</comment>
-        <translation>Ultimecia Castle- Clock Tower</translation>
+        <translation>Ultimeciaren Gaztelua- Erloju-dorrea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="61"/>
         <source>Chambre d&apos;Ultimecia - Citadelle</source>
         <comment>246</comment>
-        <translation>Ultimecia Castle- Master Room</translation>
+        <translation>Ultimeciaren Gaztelua- Gela Nagusia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="61"/>
         <source>Citadelle d&apos;Ultimecia</source>
         <comment>248</comment>
-        <translation>Ultimecia Castle</translation>
+        <translation>Ultimeciaren Gaztelua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="61"/>
         <source>Salle d&apos;initiation</source>
         <comment>249</comment>
-        <translation>Commencement Room</translation>
+        <translation>Hastapen-gela</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="61"/>
         <source>Reine des cartes</source>
         <comment>250</comment>
-        <translation>Queen</translation>
+        <translation>Karta-erregina</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="61"/>
@@ -1731,92 +1739,92 @@ Dollet Harbor</translation>
     <message>
         <location filename="Data.cpp" line="78"/>
         <source>Brasier</source>
-        <translation>Fire</translation>
+        <translation>Sua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="78"/>
         <source>Brasier+</source>
-        <translation>Fira</translation>
+        <translation>Suagoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="78"/>
         <source>BrasierX</source>
-        <translation>Firaga</translation>
+        <translation>Suena</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="78"/>
         <source>Glacier</source>
-        <translation>Blizzard</translation>
+        <translation>Bisutsa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="78"/>
         <source>Glacier+</source>
-        <translation>Blizzara</translation>
+        <translation>Bisutsagoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="79"/>
         <source>GlacierX</source>
-        <translation>Blizzaga</translation>
+        <translation>Bisutsena</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="79"/>
         <source>Foudre</source>
-        <translation>Thunder</translation>
+        <translation>Dunbotsa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="79"/>
         <source>Foudre+</source>
-        <translation>Thundara</translation>
+        <translation>Dunbotsagoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="79"/>
         <source>FoudreX</source>
-        <translation>Thundaga</translation>
+        <translation>Dunbotsena</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="79"/>
         <source>H2O</source>
-        <translation>Water</translation>
+        <translation>Ura</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="79"/>
         <source>Rafale</source>
-        <translation>Aero</translation>
+        <translation>Airea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="79"/>
         <source>Cyanure</source>
-        <translation>Bio</translation>
+        <translation>Pozoia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="80"/>
         <source>Quart</source>
-        <translation>Demi</translation>
+        <translation>Erdia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="80"/>
         <source>Sidéral</source>
-        <translation>Holy</translation>
+        <translation>Santua</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="80"/>
         <source>Fournaise</source>
-        <translation>Flare</translation>
+        <translation>Garra</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="80"/>
         <source>Météore</source>
-        <translation>Meteor</translation>
+        <translation>Meteoroa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="80"/>
         <source>Quake</source>
-        <translation>Quake</translation>
+        <translation>Lurrikara</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="80"/>
         <source>Tornade</source>
-        <translation>Tornado</translation>
+        <translation>Tornadoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="80"/>
@@ -1826,37 +1834,37 @@ Dollet Harbor</translation>
     <message>
         <location filename="Data.cpp" line="81"/>
         <source>Apocalypse</source>
-        <translation>Apocalypse</translation>
+        <translation>Apokalipsia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="81"/>
         <source>Soin</source>
-        <translation>Cure</translation>
+        <translation>Sendagaia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="81"/>
         <source>Soin+</source>
-        <translation>Cura</translation>
+        <translation>Sendagaiagoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="81"/>
         <source>Soin Max</source>
-        <translation>Curaga</translation>
+        <translation>Sendagaiena</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="81"/>
         <source>Vie</source>
-        <translation>Life</translation>
+        <translation>Bizitza</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="81"/>
         <source>Vie Max</source>
-        <translation>Full-life</translation>
+        <translation>Bizitza-betea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="81"/>
         <source>Récup</source>
-        <translation>Regen</translation>
+        <translation>Birsortu</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="81"/>
@@ -1866,107 +1874,107 @@ Dollet Harbor</translation>
     <message>
         <location filename="Data.cpp" line="82"/>
         <source>Anti-sort</source>
-        <translation>Dispel</translation>
+        <translation>Barreiatu</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="82"/>
         <source>Carapace</source>
-        <translation>Protect</translation>
+        <translation>Babestu</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="82"/>
         <source>Blindage</source>
-        <translation>Shell</translation>
+        <translation>Azala</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="82"/>
         <source>Boormg</source>
-        <translation>Reflect</translation>
+        <translation>Isladatu</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="82"/>
         <source>Aura</source>
-        <translation>Aura</translation>
+        <translation>Giroa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="82"/>
         <source>Double</source>
-        <translation>Double</translation>
+        <translation>Bikoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="82"/>
         <source>Triple</source>
-        <translation>Triple</translation>
+        <translation>Hiruko</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="82"/>
         <source>Booster</source>
-        <translation>Haste</translation>
+        <translation>Lehia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="83"/>
         <source>Somni</source>
-        <translation>Slow</translation>
+        <translation>Mantsoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="83"/>
         <source>Stop</source>
-        <translation>Stop</translation>
+        <translation>Gelditu</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="83"/>
         <source>Cécité</source>
-        <translation>Blind</translation>
+        <translation>Itsutu</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="83"/>
         <source>Folie</source>
-        <translation>Confuse</translation>
+        <translation>nahasi</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="83"/>
         <source>Morphée</source>
-        <translation>Sleep</translation>
+        <translation>Lo</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="83"/>
         <source>Aphasie</source>
-        <translation>Silence</translation>
+        <translation>Isila</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="83"/>
         <source>Mégalith</source>
-        <translation>Break</translation>
+        <translation>Hautsi</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="83"/>
         <source>Ankou</source>
-        <translation>Death</translation>
+        <translation>Heriotza</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="84"/>
         <source>Saignée</source>
-        <translation>Drain</translation>
+        <translation>Agortu</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="84"/>
         <source>Supplice</source>
-        <translation>Pain</translation>
+        <translation>Mina</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="84"/>
         <source>Furie</source>
-        <translation>Berserk</translation>
+        <translation>Bortiztasuna</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="84"/>
         <source>Décubitus</source>
-        <translation>Float</translation>
+        <translation>Flotatu</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="84"/>
         <source>Zombie</source>
-        <translation>Zombie</translation>
+        <translation>Zonbia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="84"/>
@@ -1976,78 +1984,78 @@ Dollet Harbor</translation>
     <message>
         <location filename="Data.cpp" line="84"/>
         <source>Scan</source>
-        <translation>Scan</translation>
+        <translation>Eskaneatu</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="84"/>
         <source>Joobu</source>
-        <translation>Full-cure</translation>
+        <translation>FSendagai-betea</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="85"/>
         <source>Wall</source>
-        <translation>Wall</translation>
+        <translation>Horma</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="85"/>
         <source>Arkange</source>
-        <translation>Rapture</translation>
+        <translation>Eroaldia</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="85"/>
         <source>Percent</source>
-        <translation>Percent</translation>
+        <translation>Ehunekoa</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="85"/>
         <source>Catastrophe</source>
-        <translation>Catastrophe</translation>
+        <translation>Hondamena</translation>
     </message>
     <message>
         <location filename="Data.cpp" line="85"/>
         <source>The End</source>
-        <translation>The End</translation>
+        <translation>Bukaera</translation>
     </message>
 </context>
 <context>
     <name>EncounterWidget</name>
     <message>
         <source>Formation</source>
-        <translation type="obsolete">Formation</translation>
+        <translation type="obsolete">Eratzea</translation>
     </message>
     <message>
         <source>Mode ?</source>
-        <translation type="obsolete">Mode?</translation>
+        <translation type="obsolete">Modua?</translation>
     </message>
     <message>
         <location filename="widgets/EncounterWidget.h" line="33"/>
         <source>Rencontres aléatoires</source>
-        <translation>Encounters</translation>
+        <translation>Topaketak</translation>
     </message>
     <message>
         <location filename="widgets/EncounterWidget.cpp" line="29"/>
         <source>Formations</source>
-        <translation>Formations</translation>
+        <translation>Eratzeak</translation>
     </message>
     <message>
         <location filename="widgets/EncounterWidget.cpp" line="30"/>
         <source>Fréquence</source>
-        <translation>Rate</translation>
+        <translation>Heina</translation>
     </message>
     <message>
         <location filename="widgets/EncounterWidget.cpp" line="55"/>
         <source>Basse</source>
-        <translation>Low</translation>
+        <translation>Motza</translation>
     </message>
     <message>
         <location filename="widgets/EncounterWidget.cpp" line="57"/>
         <source>Haute</source>
-        <translation>High</translation>
+        <translation>Garaia</translation>
     </message>
     <message>
         <location filename="widgets/EncounterWidget.cpp" line="170"/>
         <source>Pas de combats</source>
-        <translation>No fights</translation>
+        <translation>Ez borrokarik</translation>
     </message>
 </context>
 <context>
@@ -2057,53 +2065,50 @@ Dollet Harbor</translation>
         <location filename="FsDialog.cpp" line="330"/>
         <location filename="FsDialog.cpp" line="334"/>
         <source>Extraire</source>
-        <translation>Extract</translation>
+        <translation>Atera</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="27"/>
         <source>Ctrl+E</source>
-        <comment>Extract</comment>
-        <translation>Ctrl+E</translation>
+        <comment>Atera</comment>
+        <translation type="obsolete">Ctrl+E</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="28"/>
         <location filename="FsDialog.cpp" line="371"/>
         <source>Remplacer</source>
-        <translation>Replace</translation>
+        <translation>Birjarri</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="29"/>
         <source>Ctrl+R</source>
-        <comment>Replace</comment>
-        <translation>Ctrl+R</translation>
+        <comment>Birjarri</comment>
+        <translation type="obsolete">Ctrl+R</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="30"/>
         <location filename="FsDialog.cpp" line="400"/>
         <source>Ajouter</source>
-        <translation>Add</translation>
+        <translation>Gehitu</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="32"/>
         <location filename="FsDialog.cpp" line="463"/>
         <source>Supprimer</source>
-        <translation>Remove</translation>
+        <translation>Kendu</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="34"/>
         <source>Renommer</source>
-        <translation>Rename</translation>
+        <translation>Berriz izendatu</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="35"/>
         <source>F2</source>
-        <comment>Rename</comment>
-        <translation>F2</translation>
+        <comment>Berriz izendatu</comment>
+        <translation type="obsolete">F2</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="38"/>
         <source>Parent</source>
-        <translation>Parent</translation>
+        <translation>Gurasoa</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="237"/>
@@ -2112,7 +2117,7 @@ Dollet Harbor</translation>
         <location filename="FsDialog.cpp" line="463"/>
         <source>Oui</source>
         <oldsource>oui</oldsource>
-        <translation>Yes</translation>
+        <translation>Bai</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="237"/>
@@ -2120,114 +2125,132 @@ Dollet Harbor</translation>
         <location filename="FsDialog.cpp" line="425"/>
         <location filename="FsDialog.cpp" line="463"/>
         <source>Non</source>
-        <translation>No</translation>
+        <translation>Ez</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="342"/>
         <location filename="FsDialog.cpp" line="353"/>
         <source>Erreur</source>
-        <translation>Error</translation>
+        <translation>Hutsa</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="342"/>
         <source>Le fichier n&apos;a pas été extrait !</source>
-        <translation>The file was not extracted!</translation>
+        <translation>Fitxa ez atera ahal du!</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="353"/>
         <source>Les fichiers n&apos;ont pas été extraits !</source>
-        <translation>The files were not extracted!</translation>
+        <translation>Fitxak ez atera ahal ditu!</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="348"/>
         <location filename="FsDialog.cpp" line="375"/>
         <location filename="FsDialog.cpp" line="466"/>
         <source>Annuler</source>
-        <translation>Cancel</translation>
+        <translation>Ezeztatu</translation>
+    </message>
+    <message>
+        <location filename="FsDialog.cpp" line="27"/>
+        <source>Ctrl+E</source>
+        <comment>Extract</comment>
+        <translation type="unfinished">Ctrl+E</translation>
+    </message>
+    <message>
+        <location filename="FsDialog.cpp" line="29"/>
+        <source>Ctrl+R</source>
+        <comment>Replace</comment>
+        <translation type="unfinished">Ctrl+R</translation>
+    </message>
+    <message>
+        <location filename="FsDialog.cpp" line="35"/>
+        <source>F2</source>
+        <comment>Rename</comment>
+        <translation type="unfinished">F2</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="348"/>
         <source>Extraction...</source>
-        <translation>Extract...</translation>
+        <translation>Atera aritzen...</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="375"/>
         <source>Remplacement...</source>
-        <translation>Replace...</translation>
+        <translation>Birjartzen...</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="384"/>
         <source>Erreur de remplacement</source>
-        <translation>Replacement error</translation>
+        <translation>Birjartze-hutsa</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="411"/>
         <source>Compression</source>
-        <translation>Compression</translation>
+        <translation>Tinkatzea</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="411"/>
         <source>Voulez-vous compresser le fichier ?</source>
-        <translation>Would you compress the file?</translation>
+        <translation>Fitxa tinkatuko al zenuke?</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="413"/>
         <source>Ajout...</source>
-        <translation>Add...</translation>
+        <translation>Gehitzen...</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="413"/>
         <source>Arrêter</source>
-        <translation>Stop</translation>
+        <translation>Gelditu</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="420"/>
         <location filename="FsDialog.cpp" line="434"/>
         <source>Erreur d&apos;ajout</source>
-        <translation>Add error</translation>
+        <translation>Gehitze-hutsa</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="425"/>
         <source>Le fichier existe déjà</source>
-        <translation>The file already exists</translation>
+        <translation>Fitxa jadanik egoten da</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="425"/>
         <source>Le fichier existe déjà, voulez-vous le remplacer ?</source>
-        <translation>The file already exists, do you want to replace it?</translation>
+        <translation>Fitxa jadanik egoten da, birjartzen nahi al duzu?</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="434"/>
         <source>Un problème est survenu pour un ou plusieurs des fichiers à ajouter :
  - %1</source>
-        <translation>There was a problem for one or more files to add:
+        <translation>Bat edo gehiago fitxa gehitzerakoan hutsa zegoen:
  - %1</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="463"/>
         <source>Voulez-vous supprimer les éléments sélectionnés ?</source>
-        <translation>Do you want to delete the selected items?</translation>
+        <translation>Aukeratutako gaiak kentzen ahal duzu?</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="466"/>
         <source>Suppression...</source>
-        <translation>Deleting...</translation>
+        <translation>Kentzen...</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="473"/>
         <source>Erreur de suppression</source>
-        <translation>Deleting error</translation>
+        <translation>Kentze-hutsa</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="505"/>
         <location filename="FsDialog.cpp" line="529"/>
         <source>Erreur de renommage</source>
-        <translation>Rename error</translation>
+        <translation>Berriz izendatze-hutsa</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="505"/>
         <source>Caractères interdits utilisés (par exemple : &apos;\&apos; ou &apos;/&apos;)</source>
-        <translation>Illegal characters used (eg &apos;\&apos; or &apos;/&apos;)</translation>
+        <translation>Legez kanpoko karakterrak erabili dituzu (eg &apos;\&apos; or &apos;/&apos;)</translation>
     </message>
 </context>
 <context>
@@ -2235,7 +2258,7 @@ Dollet Harbor</translation>
     <message>
         <location filename="FsPreviewWidget.cpp" line="75"/>
         <source>Palette %1</source>
-        <translation type="unfinished">Palette %1</translation>
+        <translation type="unfinished">Paleta %1</translation>
     </message>
 </context>
 <context>
@@ -2243,17 +2266,17 @@ Dollet Harbor</translation>
     <message>
         <location filename="FsWidget.cpp" line="36"/>
         <source>Fichiers</source>
-        <translation>Files</translation>
+        <translation>Fitxak</translation>
     </message>
     <message>
         <location filename="FsWidget.cpp" line="36"/>
         <source>Taille</source>
-        <translation>Size</translation>
+        <translation>Neurria</translation>
     </message>
     <message>
         <location filename="FsWidget.cpp" line="36"/>
         <source>Compressé ?</source>
-        <translation>Compressed?</translation>
+        <translation>Tinkatua?</translation>
     </message>
 </context>
 <context>
@@ -2267,48 +2290,48 @@ Dollet Harbor</translation>
     <message>
         <location filename="widgets/JsmWidget.cpp" line="33"/>
         <source>Groupe</source>
-        <translation>Entity</translation>
+        <translation>Erakundea</translation>
     </message>
     <message>
         <location filename="widgets/JsmWidget.cpp" line="33"/>
         <source>Exec</source>
-        <translation>Exec</translation>
+        <translation>Exek</translation>
     </message>
     <message>
         <location filename="widgets/JsmWidget.cpp" line="50"/>
         <source>Script</source>
-        <translation>Script</translation>
+        <translation>Gidoia</translation>
     </message>
     <message>
         <location filename="widgets/JsmWidget.cpp" line="50"/>
         <source>Script label</source>
-        <translation>Script label</translation>
+        <translation>Gidoi-labela</translation>
     </message>
     <message>
         <location filename="widgets/JsmWidget.cpp" line="78"/>
         <source>Compiler</source>
-        <translation>Compile</translation>
+        <translation>Bildumaratu</translation>
     </message>
     <message>
         <location filename="widgets/JsmWidget.cpp" line="79"/>
         <location filename="widgets/JsmWidget.cpp" line="80"/>
         <source>Compiler (Ctrl+B)</source>
-        <translation>Compile (Ctrl+B)</translation>
+        <translation>Bildumaratu (Ctrl+B)</translation>
     </message>
     <message>
         <location filename="widgets/JsmWidget.cpp" line="113"/>
         <source>Ligne %1 -&gt; %2</source>
-        <translation>Line %1 -&gt; %2</translation>
+        <translation>Lerro %1 -&gt; %2</translation>
     </message>
     <message>
         <location filename="widgets/JsmWidget.cpp" line="118"/>
         <source>Compilé avec succès</source>
-        <translation>Successfully compiled</translation>
+        <translation>Bildumaratua arrakastaz</translation>
     </message>
     <message>
         <location filename="widgets/JsmWidget.h" line="41"/>
         <source>Scripts</source>
-        <translation>Scripts</translation>
+        <translation>Gidoiak</translation>
     </message>
 </context>
 <context>
@@ -2316,77 +2339,77 @@ Dollet Harbor</translation>
     <message>
         <location filename="MainWindow.cpp" line="42"/>
         <source>&amp;Fichier</source>
-        <translation>&amp;File</translation>
+        <translation>&amp;Fitxa</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="44"/>
         <source>&amp;Ouvrir...</source>
-        <translation>&amp;Open...</translation>
+        <translation>&amp;Ireki...</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="45"/>
         <source>Enregi&amp;strer</source>
-        <translation>&amp;Save</translation>
+        <translation>&amp;Gorde</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="46"/>
         <source>Enre&amp;gistrer Sous...</source>
-        <translation>Sa&amp;ve As...</translation>
+        <translation>Gor&amp;de honela...</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="47"/>
         <source>Exporter...</source>
-        <translation>Export...</translation>
+        <translation>Exportatu...</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="48"/>
         <source>Importer...</source>
-        <translation>Import...</translation>
+        <translation>Inportatu...</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="49"/>
         <source>Optimiser l&apos;archive...</source>
-        <translation>Optimize the archive...</translation>
+        <translation>Agiritegia optimizatu...</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="51"/>
         <source>Plein écran</source>
-        <translation>Fullscreen</translation>
+        <translation>Paintaila osoa</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="52"/>
         <source>Fe&amp;rmer</source>
-        <translation>C&amp;lose</translation>
+        <translation>I&amp;txi</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="53"/>
         <source>&amp;Quitter</source>
-        <translation>&amp;Quit</translation>
+        <translation>&amp;Utzi</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="55"/>
         <source>&amp;Outils</source>
-        <translation>T&amp;ools</translation>
+        <translation>T&amp;resnak</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="56"/>
         <source>Rec&amp;hercher...</source>
-        <translation>Fi&amp;nd...</translation>
+        <translation>Aur&amp;kitu...</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="57"/>
         <source>&amp;Var manager...</source>
-        <translation>&amp;Var manager...</translation>
+        <translation>&amp;Var zuzendaria...</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="59"/>
         <source>&amp;Lancer FF8...</source>
-        <translation>&amp;Launch FF8...</translation>
+        <translation>Ha&amp;si FF8...</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="63"/>
         <source>Op&amp;tions</source>
-        <translation>Op&amp;tions</translation>
+        <translation>A&amp;ukerak</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="65"/>
@@ -2396,7 +2419,7 @@ Dollet Harbor</translation>
     <message>
         <location filename="MainWindow.cpp" line="69"/>
         <source>Barre d&apos;outils &amp;principale</source>
-        <translation>&amp;Main Toolbar</translation>
+        <translation>Tres&amp;na-barra nagusia</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="78"/>
@@ -2406,43 +2429,48 @@ Dollet Harbor</translation>
     <message>
         <location filename="MainWindow.cpp" line="78"/>
         <source>Fichier</source>
-        <translation>File</translation>
+        <translation>Fitxa</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="78"/>
         <source>Description</source>
-        <translation>Description</translation>
+        <translation>Deskripzioa</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="92"/>
         <source>Recherche rapide</source>
-        <translation>Quick Search</translation>
+        <translation>Bila lasterra</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="523"/>
+        <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="610"/>
         <source>Une erreur s&apos;est produite lors de l&apos;enregistrement.</source>
-        <translation>An error occurred when saving.</translation>
+        <translation>Hutsa gertatu da gorde egiterakoan.</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="653"/>
         <source>Fichier nom des scripts écran PC (*.sym)</source>
-        <translation>Script names field PC file (*.sym)</translation>
+        <translation>Gidoi-izenak gunea PC fitxa (*.sym)</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="109"/>
         <source>Français</source>
         <comment>Your translation language</comment>
-        <translation>English</translation>
+        <translation>Euskara</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="140"/>
         <source>Paramètres modifiés</source>
-        <translation>Settings changed</translation>
+        <translation>Ezarpenak aldatuak</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="141"/>
         <source>Relancez le programme pour que les paramètres prennent effet.</source>
-        <translation>Restart the program for the settings to take effect.</translation>
+        <translation>Hasi berriz programa ondorioa ekartzeko.</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="610"/>
@@ -2453,27 +2481,27 @@ Dollet Harbor</translation>
         <location filename="MainWindow.cpp" line="723"/>
         <location filename="MainWindow.cpp" line="777"/>
         <source>Erreur</source>
-        <translation>Error</translation>
+        <translation>Hutsa</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="458"/>
         <source>Sauvegarder</source>
-        <translation>Save</translation>
+        <translation>Gorde</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="458"/>
         <source>Voulez-vous enregistrer les changements de %1 ?</source>
-        <translation>Would you like to save changes of %1?</translation>
+        <translation>%1-(e)ko aldaketak gorde egin nahiko zenituzke?</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="458"/>
         <source>Oui</source>
-        <translation>Yes</translation>
+        <translation>Bai</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="458"/>
         <source>Non</source>
-        <translation>No</translation>
+        <translation>Ez</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="218"/>
@@ -2482,66 +2510,65 @@ Dollet Harbor</translation>
         <location filename="MainWindow.cpp" line="731"/>
         <location filename="MainWindow.cpp" line="734"/>
         <source>Annuler</source>
-        <translation>Cancel</translation>
+        <translation>Ezeztatu</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="111"/>
         <source>Import/Export</source>
-        <translation>Import/Export</translation>
+        <translation>Inportatu/Exportatu</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="218"/>
         <source>Ouverture...</source>
-        <translation>Opening...</translation>
+        <translation>Irekitzen...</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="279"/>
         <source>Erreur d&apos;ouverture</source>
-        <translation>Opening error</translation>
+        <translation>Irekitze-hutsa</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="523"/>
         <source>Ouvrir un fichier</source>
-        <translation>Open a file</translation>
+        <translation>Fitxa ireki</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="523"/>
-        <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)</source>
-        <translation>Compatible File (*.fs *.iso *.bin);;FS Archive (*.fs);;Image Disk File (*.iso *.bin)</translation>
+        <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers image Disque (*.iso *.bin)</source>
+        <translation type="obsolete">Ongi ibiliko fitxak (*.fs *.iso *.bin);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin)</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="583"/>
         <source>Enregistrer Sous</source>
-        <translation>Save As</translation>
+        <translation>Gorde honela</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="583"/>
         <source>Archive FS (*.fs)</source>
-        <translation>FS Archive (*.fs)</translation>
+        <translation>FS Artxiboa (*.fs)</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="593"/>
         <source>Enregistrement...</source>
-        <translation>Save...</translation>
+        <translation>Gorde...</translation>
     </message>
     <message>
         <source>Une erreur s&apos;est produite lors de l&apos;enregistrement de l&apos;archive.</source>
-        <translation type="obsolete">An error occurred when saving the archive.</translation>
+        <translation type="obsolete">Hutsa gertatu da artxiboa gorde egiterakoan.</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="673"/>
         <source>Cet écran ne contient pas assez d&apos;éléments pour être exporté.</source>
-        <translation>This field does not contains enough information to be exported.</translation>
+        <translation>Gune honek ez du nahiko informazioa exportatzeko eduki.</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="678"/>
         <source>Exporter</source>
-        <translation>Export</translation>
+        <translation>Exportatu</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="714"/>
         <source>Cet écran ne contient pas assez d&apos;éléments pour être importé.</source>
-        <translation>This field does not contains enough information to be imported.</translation>
+        <translation>Gune honek ez du nahiko informazioa inportatzeko eduki.</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="719"/>
@@ -2551,42 +2578,42 @@ Dollet Harbor</translation>
     <message>
         <location filename="MainWindow.cpp" line="729"/>
         <source>À propos de l&apos;optimisation</source>
-        <translation>About optimization</translation>
+        <translation>Optimizatzeari buruz</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="730"/>
         <source>L&apos;optimiseur d&apos;archive va modifier l&apos;ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.
 Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de continuer.</source>
-        <translation>The optimizer will modify the archive file order to allow an opening much faster with Deling.
-It is strongly recommended to save the archive (fs, fi and fl) before continuing.</translation>
+        <translation>Optimizagailuak artxibo-fitxa aldatuko du Deling-ek askoz lasterrago fitxa ireki dezala.
+Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino lehen.</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="731"/>
         <source>Lancer l&apos;optimisation !</source>
-        <translation>Start optimizing!</translation>
+        <translation>Optimizatzen hasi!</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="734"/>
         <source>Optimisation...</source>
-        <translation>Optimization...</translation>
+        <translation>Optimizatzen...</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="777"/>
         <source>Final Fantasy VIII n&apos;a pas pu être lancé.
 %1</source>
-        <translation>Final Fantasy VIII could not be launched.
+        <translation>Final Fantasy VIII ezin du hasten.
 %1</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="896"/>
         <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</source>
         <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;br/&gt; - Aali&lt;br/&gt; - Aladore384&lt;br/&gt;</oldsource>
-        <translation>By myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation>Myst6re-k&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="910"/>
         <source>Fermer</source>
-        <translation>Close</translation>
+        <translation>Itxi</translation>
     </message>
 </context>
 <context>
@@ -2594,7 +2621,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="MiscSearch.cpp" line="23"/>
         <source>Rechercher tout</source>
-        <translation>Find All</translation>
+        <translation>Aurkitu guztia</translation>
     </message>
 </context>
 <context>
@@ -2602,7 +2629,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="widgets/MiscWidget.cpp" line="29"/>
         <source>Nom :</source>
-        <translation>Name:</translation>
+        <translation>Izena:</translation>
     </message>
     <message>
         <location filename="widgets/MiscWidget.cpp" line="32"/>
@@ -2628,17 +2655,17 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="widgets/MiscWidget.cpp" line="44"/>
         <source>PMP : données particules</source>
-        <translation>PMP: particles data</translation>
+        <translation>PMP: partikula-datuak</translation>
     </message>
     <message>
         <location filename="widgets/MiscWidget.cpp" line="49"/>
         <source>Palette %1</source>
-        <translation>Palette %1</translation>
+        <translation>Paleta %1</translation>
     </message>
     <message>
         <location filename="widgets/MiscWidget.h" line="33"/>
         <source>Divers</source>
-        <translation>Miscellaneous</translation>
+        <translation>Askotakoa(k)</translation>
     </message>
 </context>
 <context>
@@ -2646,97 +2673,97 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="widgets/MsdWidget.cpp" line="86"/>
         <source>Nouvelle page</source>
-        <translation>New page</translation>
+        <translation>Orri berria</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="89"/>
         <source>Pause</source>
-        <translation>Pause</translation>
+        <translation>Pausatu</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="93"/>
         <source>Gris foncé</source>
-        <translation>Dark grey</translation>
+        <translation>Gris iluna</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="96"/>
         <source>Gris</source>
-        <translation>Grey</translation>
+        <translation>Grisa</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="99"/>
         <source>Jaune</source>
-        <translation>Yellow</translation>
+        <translation>Haria</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="102"/>
         <source>Rouge</source>
-        <translation>Red</translation>
+        <translation>Gorria</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="105"/>
         <source>Vert</source>
-        <translation>Green</translation>
+        <translation>Berdea</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="108"/>
         <source>Bleu</source>
-        <translation>Blue</translation>
+        <translation>Urdina</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="111"/>
         <source>Violet</source>
-        <translation>Purple</translation>
+        <translation>Purpura</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="114"/>
         <source>Blanc</source>
-        <translation>White</translation>
+        <translation>Zuria</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="118"/>
         <source>Gris foncé clignotant</source>
-        <translation>Dark grey blink</translation>
+        <translation>Gris iluna kliskatzen</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="121"/>
         <source>Gris clignotant</source>
-        <translation>Grey blink</translation>
+        <translation>Grisa kliskatzen</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="124"/>
         <source>Jaune clignotant</source>
-        <translation>Yellow blink</translation>
+        <translation>Haria kliskatzen</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="127"/>
         <source>Rouge clignotant</source>
-        <translation>Red blink</translation>
+        <translation>Gorria kliskatzen</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="130"/>
         <source>Vert clignotant</source>
-        <translation>Green blink</translation>
+        <translation>Berdea kliskatzen</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="133"/>
         <source>Bleu clignotant</source>
-        <translation>Blue blink</translation>
+        <translation>Urdina kliskatzen</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="136"/>
         <source>Violet clignotant</source>
-        <translation>Purple blink</translation>
+        <translation>Purpura kliskatzen</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="139"/>
         <source>Blanc clignotant</source>
-        <translation>White blink</translation>
+        <translation>Zuria kliskatzen</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="161"/>
         <source>Lieux</source>
-        <translation>Locations</translation>
+        <translation>Lekuak</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="145"/>
@@ -2746,12 +2773,12 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="widgets/MsdWidget.cpp" line="34"/>
         <source>Insérer un texte au-dessus</source>
-        <translation>Insert text above</translation>
+        <translation>Tartekatu testua goian</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="35"/>
         <source>Insérer un texte en dessous</source>
-        <translation>Insert text below</translation>
+        <translation>Tartekatu testua behean</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="147"/>
@@ -2786,7 +2813,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="widgets/MsdWidget.cpp" line="159"/>
         <source>Horizon</source>
-        <translation>F. Horizon</translation>
+        <translation>AZ</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="171"/>
@@ -2811,7 +2838,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="widgets/MsdWidget.cpp" line="203"/>
         <source>Touches</source>
-        <translation>Keys</translation>
+        <translation>Giltzak</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="175"/>
@@ -2820,12 +2847,12 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     </message>
     <message>
         <source>Ajouter un texte</source>
-        <translation type="obsolete">Add text</translation>
+        <translation type="obsolete">Testua gehitu</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="36"/>
         <source>Supprimer un texte</source>
-        <translation>Remove text</translation>
+        <translation>Testua kendu</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="177"/>
@@ -2845,57 +2872,57 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="widgets/MsdWidget.cpp" line="183"/>
         <source>Triangle</source>
-        <translation>Triangle</translation>
+        <translation>Hirukia</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="185"/>
         <source>Rond</source>
-        <translation>Circle</translation>
+        <translation>Biribila</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="187"/>
         <source>Croix</source>
-        <translation>Cross</translation>
+        <translation>Gurutzea</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="189"/>
         <source>Carré</source>
-        <translation>Square</translation>
+        <translation>Laukia</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="191"/>
         <source>Select</source>
-        <translation>Select</translation>
+        <translation>Aukeratu</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="193"/>
         <source>Start</source>
-        <translation>Start</translation>
+        <translation>Hasi</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="195"/>
         <source>Haut</source>
-        <translation>Up</translation>
+        <translation>Gora</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="197"/>
         <source>Droite</source>
-        <translation>Right</translation>
+        <translation>Eskuinera</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="199"/>
         <source>Bas</source>
-        <translation>Down</translation>
+        <translation>Behera</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="201"/>
         <source>Gauche</source>
-        <translation>left</translation>
+        <translation>Ezkerrera</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="208"/>
         <source>Caractères spéciaux</source>
-        <translation>Special Characters</translation>
+        <translation>Karakter bereziak</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="249"/>
@@ -2910,22 +2937,22 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="widgets/MsdWidget.cpp" line="355"/>
         <source>Texte %1</source>
-        <translation>Text %1</translation>
+        <translation>Testua %1</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="430"/>
         <source>Page %1/%2</source>
-        <translation>Page %1/%2</translation>
+        <translation>Orria %1/%2</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="452"/>
         <source>Fenêtre %1/%2</source>
-        <translation>Window %1/%2</translation>
+        <translation>Leihoa %1/%2</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.h" line="41"/>
         <source>Textes</source>
-        <translation>Texts</translation>
+        <translation>Testuak</translation>
     </message>
 </context>
 <context>
@@ -2934,7 +2961,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <location filename="OrientationWidget.cpp" line="95"/>
         <location filename="OrientationWidget.cpp" line="97"/>
         <source>Droite</source>
-        <translation>Right</translation>
+        <translation>Eskuina</translation>
     </message>
 </context>
 <context>
@@ -2944,227 +2971,227 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <location filename="files/MsdFile.cpp" line="39"/>
         <location filename="files/MsdFile.cpp" line="47"/>
         <source>Format de fichier invalide</source>
-        <translation>Invalid file format</translation>
+        <translation>Fitxa-formatu irekiezina</translation>
     </message>
     <message>
         <location filename="files/File.cpp" line="51"/>
         <source>Erreur inconnue</source>
-        <translation>Unknown error</translation>
+        <translation>Huts ezezaguna</translation>
     </message>
     <message>
         <location filename="FF8Image.cpp" line="166"/>
         <source>Erreur</source>
-        <translation>Error</translation>
+        <translation>Hutsa</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1065"/>
         <source>Opération réalisée avec succès !</source>
-        <translation>Operation successfully completed!</translation>
+        <translation>Jarduera bukatua arrakastaz!</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1067"/>
         <source>L&apos;archive Fs ne peut pas être modifiée, vérifiez vos droits en écriture.</source>
-        <translation>The Fs archive can not be modified, check your rights in writing.</translation>
+        <translation>Ezin du Fs artxiboa aldatzen, zuzendu zure eskubideak idazketan.</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1069"/>
         <source>Le fichier source ne peut pas être ouvert%1.</source>
-        <translation>The source file cannot be opened%1.</translation>
+        <translation>Ezin du fitxa iturria irekitzen%1.</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1071"/>
         <source>Le fichier temp ne peut pas être ouvert%1.</source>
-        <translation>The temps file cannont be opened%1.</translation>
+        <translation>Ezin du behineko fitxa irekitzen%1.</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1073"/>
         <source>Le fichier cible ne peut pas être ouvert%1.</source>
-        <translation>The target file cannot be opened%1.</translation>
+        <translation>Ezin du zuriko fitxa irekitzen%1.</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1077"/>
         <source>Erreur lors de la création des fichiers &apos;*.fi&apos; et &apos;*.fl&apos;.</source>
-        <translation>Error while creating files &apos;*.fi&apos; and &apos;*.fl&apos;.</translation>
+        <translation>Hutsa sortzerakoan fitxak &apos;*.fi&apos; and &apos;*.fl&apos;.</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1079"/>
         <source>Erreur lors de la sauvegarde de l&apos;archive Fs%1.</source>
-        <translation>Error while saving the archive Fs%1.</translation>
+        <translation>Hutsa gorde egiterakoan artxiboa Fs%1.</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1081"/>
         <source>Ce fichier existe déjà dans l&apos;archive%1.</source>
-        <translation>This file already exists in the archive%1.</translation>
+        <translation>Artxiboak fitxa hau jadanik edukitzen du%1.</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1083"/>
         <source>Ce fichier n&apos;existe pas dans l&apos;archive%1.</source>
-        <translation>This file does not exists in the archive%1.</translation>
+        <translation>Artxiboak ez du fitxa hau edukitzen%1.</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1085"/>
         <source>Ce fichier est vide%1.</source>
-        <translation>This file is empty%1.</translation>
+        <translation>Fitxa hau hutsa da%1.</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1075"/>
         <source>Opération annulée.</source>
-        <translation>Operation canceled.</translation>
+        <translation>Jarduera ezeztatua.</translation>
     </message>
     <message>
         <location filename="FsArchive.cpp" line="1087"/>
         <source>Erreur inconnue.</source>
-        <translation>Unknown error.</translation>
+        <translation>Huts ezezaguna.</translation>
     </message>
     <message>
         <location filename="files/JsmFile.cpp" line="779"/>
         <source>Trop d&apos;arguments</source>
-        <translation>Too many arguments</translation>
+        <translation>Gehiegi argumentuak</translation>
     </message>
     <message>
         <location filename="files/JsmFile.cpp" line="788"/>
         <location filename="files/JsmFile.cpp" line="822"/>
         <source>Conversion en entier impossible après &apos;LABEL&apos; : %1</source>
-        <translation>Unable to convert to integer after &apos;LABEL&apos;: %1</translation>
+        <translation>Ezin du zenbaki oso bihurtzen &apos;LABELA&apos;: %1 ondoren</translation>
     </message>
     <message>
         <location filename="files/JsmFile.cpp" line="792"/>
         <source>&apos;LABEL%1&apos; déjà déclaré précédemment.</source>
-        <translation>&apos;LABEL %1&apos; already declared.</translation>
+        <translation>&apos;LABELA %1&apos; jadanik deklaratua.</translation>
     </message>
     <message>
         <location filename="files/JsmFile.cpp" line="801"/>
         <source>Opcode non reconnu : %1</source>
-        <translation>Unknown opcode: %1</translation>
+        <translation>Opcode ezezaguna: %1</translation>
     </message>
     <message>
         <location filename="files/JsmFile.cpp" line="809"/>
         <source>Cet opcode ne peut pas avoir de paramètre : %1</source>
-        <translation>This opcode can not have parameters: %1</translation>
+        <translation>Opcode honek ezin du parametroak edukitzen: %1</translation>
     </message>
     <message>
         <location filename="files/JsmFile.cpp" line="815"/>
         <source>Opération non reconnue : %1</source>
-        <translation>Unknown operation: %1</translation>
+        <translation>Jarduera ezezaguna: %1</translation>
     </message>
     <message>
         <location filename="files/JsmFile.cpp" line="835"/>
         <location filename="files/JsmFile.cpp" line="842"/>
         <source>Conversion en entier impossible : %1</source>
-        <translation>Unable to convert to integer: %1</translation>
+        <translation>Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
         <location filename="files/JsmFile.cpp" line="866"/>
         <source>&apos;LABEL%1&apos; indéfini.</source>
-        <translation>&apos;LABEL %1&apos; undefined.</translation>
+        <translation>&apos;LABELA %1&apos; zehaztugabea.</translation>
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="57"/>
         <source>Impossible d&apos;ouvrir l&apos;archive.</source>
-        <translation>Unable to open the archive.</translation>
+        <translation>Artxiboa ezin du irekitzen.</translation>
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="99"/>
         <location filename="FieldArchivePS.cpp" line="85"/>
         <source>Ouverture annulée.</source>
-        <translation>Opening canceled.</translation>
+        <translation>Irekitzea ezeztatua.</translation>
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="145"/>
         <location filename="FieldArchivePS.cpp" line="119"/>
         <source>Aucun écran trouvé.</source>
-        <translation>No field found.</translation>
+        <translation>Ezin du gunerik aurkitu.</translation>
     </message>
     <message>
         <location filename="FieldArchivePS.cpp" line="55"/>
         <source>Impossible d&apos;ouvrir le fichier image disque. (%1)</source>
-        <translation>Can not open the disk image file. (%1)</translation>
+        <translation>Ezin du disko-irudia fitxa irekitzen. (%1)</translation>
     </message>
     <message>
         <location filename="FieldArchivePS.cpp" line="60"/>
         <source>Fichier FF8DISC?.IMG introuvable.</source>
-        <translation>FF8DISC?.IMG File not found.</translation>
+        <translation>FF8DISC?.IMG aurkituezina.</translation>
     </message>
     <message>
         <location filename="FieldArchivePS.cpp" line="68"/>
         <source>Impossible d&apos;ouvrir le dossier field.</source>
-        <translation>Unable to open the field dir.</translation>
+        <translation>Ezin du gune-bidea irekitzen.</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="190"/>
         <source>Enregistrement des données</source>
-        <translation>Saving data</translation>
+        <translation>Datuak gorde egiten</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="190"/>
         <source>Les polices de caractères n&apos;ont pas pu être enregistrées !</source>
-        <translation>Fonts could not be saved!</translation>
+        <translation>Ezin ditu fontak gorde!</translation>
     </message>
     <message>
         <location filename="files/CaFile.h" line="43"/>
         <source>Fichier caméra écran PC (*.ca)</source>
-        <translation>Field camera PC File (*.ca)</translation>
+        <translation>Gune kamera PC fitxa (*.ca)</translation>
     </message>
     <message>
         <location filename="files/IdFile.h" line="43"/>
         <source>Fichier walkmesh écran PC (*.id)</source>
-        <translation>Field walkmesh PC File (*.id)</translation>
+        <translation>Gune walkmesh PC fitxa (*.id)</translation>
     </message>
     <message>
         <location filename="files/InfFile.h" line="64"/>
         <source>Fichier passages et portes écran PC (*.inf)</source>
-        <translation>Field gate and doors PC File (*.inf)</translation>
+        <translation>Gune ateak PC fitxa (*.inf)</translation>
     </message>
     <message>
         <location filename="files/JsmFile.h" line="65"/>
         <source>Fichier scripts écran PC (*.jsm)</source>
-        <translation>Field Script PC file (*.jsm)</translation>
+        <translation>Gune Gidoia PC fitxa (*.jsm)</translation>
     </message>
     <message>
         <location filename="files/MchFile.h" line="31"/>
         <source>Fichier modèle 3D écran (*.mch)</source>
-        <translation>Field 3D model file (*.mch)</translation>
+        <translation>Gune modelo 3D fitxa (*.mch)</translation>
     </message>
     <message>
         <location filename="files/MrtFile.h" line="30"/>
         <source>Fichier formations combat écran PC (*.mrt)</source>
-        <translation>Field battle formation PC file (*.mrt)</translation>
+        <translation>Gune gudu-formatze PC fitxa (*.mrt)</translation>
     </message>
     <message>
         <location filename="files/MsdFile.h" line="32"/>
         <source>Fichier dialogues écran PC (*.msd)</source>
-        <translation>Field dialogs PC file (*.msd)</translation>
+        <translation>Gune solasak PC fitxa (*.msd)</translation>
     </message>
     <message>
         <location filename="files/MskFile.h" line="32"/>
         <source>Fichier caméra cinématique écran PC (*.msk)</source>
-        <translation>Field movie camera PC file (*.msk)</translation>
+        <translation>Gune filmagailua PC fitxa (*.msk)</translation>
     </message>
     <message>
         <location filename="files/PmdFile.h" line="30"/>
         <source>Fichier informations particules écran PC (*.pmd)</source>
-        <translation>Field particles infos PC file (*.pmd)</translation>
+        <translation>Gune partikula infoa PC fitxa (*.pmd)</translation>
     </message>
     <message>
         <location filename="files/PmpFile.h" line="32"/>
         <source>Fichier données particules écran PC (*.pmp)</source>
-        <translation>Field particles data PC file (*.pmp)</translation>
+        <translation>Gune partikula datuak PC fitxa (*.pmp)</translation>
     </message>
     <message>
         <location filename="files/PvpFile.h" line="30"/>
         <source>Fichier inconnu écran PC (*.pvp)</source>
-        <translation>Field unknown PC file (*.pvp)</translation>
+        <translation>Gune PC fitxa ezezaguna (*.pvp)</translation>
     </message>
     <message>
         <location filename="files/RatFile.h" line="30"/>
         <source>Fichier fréquence combat écran PC (*.rat)</source>
         <oldsource>Fichier inconnu combat écran PC (*.rat)</oldsource>
-        <translation>Field battle rate PC file (*.rat)</translation>
+        <translation>Gune gudu-heina PC fitxa (*.rat)</translation>
     </message>
     <message>
         <location filename="files/SfxFile.h" line="30"/>
         <source>Fichier sons écran PC (*.sfx)</source>
-        <translation>Field sounds PC file (*.sfx)</translation>
+        <translation>Gune soinuak PC fitxa (*.sfx)</translation>
     </message>
     <message>
         <location filename="files/TdwFile.h" line="38"/>
@@ -3174,12 +3201,12 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="main.cpp" line="51"/>
         <source>Chargement des données</source>
-        <translation>Loading data</translation>
+        <translation>Datuak kargatzen</translation>
     </message>
     <message>
         <location filename="main.cpp" line="51"/>
         <source>Les polices de caractères n&apos;ont pas pu être chargées !</source>
-        <translation>Fonts could not be loaded!</translation>
+        <translation>Ezin ditu fontak kargatzen!</translation>
     </message>
 </context>
 <context>
@@ -3187,43 +3214,43 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="Search.cpp" line="25"/>
         <source>Rechercher</source>
-        <translation>Find</translation>
+        <translation>Bilatu</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="30"/>
         <source>Textes</source>
-        <translation>Texts</translation>
+        <translation>Testuak</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="31"/>
         <source>Scripts</source>
-        <translation>Scripts</translation>
+        <translation>Gidoiak</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="33"/>
         <source>Chercher le suivant</source>
-        <translation>Find next</translation>
+        <translation>Hurrengoa aurkitu</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="34"/>
         <source>Chercher le précédent</source>
-        <translation>Find previous</translation>
+        <translation>Aurrekoa aurkitu</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="93"/>
         <location filename="Search.cpp" line="139"/>
         <source>Sensible à la casse</source>
-        <translation>Case sensitive</translation>
+        <translation>Kaxa-sentibera</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="94"/>
         <source>Expression régulière</source>
-        <translation>Regular Expression</translation>
+        <translation>Regex</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="110"/>
         <source>Texte</source>
-        <translation>Text</translation>
+        <translation>Testua</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="111"/>
@@ -3238,39 +3265,39 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <location filename="Search.cpp" line="113"/>
         <source>Exécution</source>
-        <translation>Execution</translation>
+        <translation>Exekuzioa</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="164"/>
         <source>Paramètre :</source>
-        <translation>Parameter:</translation>
+        <translation>Parametroa:</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="179"/>
         <source>Pop uniquement</source>
-        <translation>Pop only</translation>
+        <translation>Pop bakarrik</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="198"/>
         <source>Groupe id</source>
-        <translation>Entity id</translation>
+        <translation>Erakundea id</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="199"/>
         <source>Label</source>
-        <translation>Label</translation>
+        <translation>Labela</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="291"/>
         <source>Dernier fichier,
 poursuite de la recherche dans le premier fichier.</source>
-        <translation>Last file.</translation>
+        <translation>Azkeneko fitxa.</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="316"/>
         <source>Premier fichier,
 poursuite de la recherche dans le dernier fichier.</source>
-        <translation>First file.</translation>
+        <translation>Lehenbiziko fitxa.</translation>
     </message>
 </context>
 <context>
@@ -3279,12 +3306,12 @@ poursuite de la recherche dans le dernier fichier.</source>
         <location filename="widgets/SoundWidget.cpp" line="30"/>
         <location filename="widgets/SoundWidget.cpp" line="155"/>
         <source>Ajouter son</source>
-        <translation>Add sound</translation>
+        <translation>Soinua gehitu</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="31"/>
         <source>Supprimer son</source>
-        <translation>Remove sound</translation>
+        <translation>Soinua kendu</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="46"/>
@@ -3294,12 +3321,12 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="56"/>
         <source>Exporter</source>
-        <translation>Export</translation>
+        <translation>Exportati</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="57"/>
         <source>Importer</source>
-        <translation>Import</translation>
+        <translation>Inportatu</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="125"/>
@@ -3307,14 +3334,14 @@ poursuite de la recherche dans le dernier fichier.</source>
         <location filename="widgets/SoundWidget.cpp" line="178"/>
         <location filename="widgets/SoundWidget.cpp" line="216"/>
         <source>Son %1</source>
-        <translation>Sound %1</translation>
+        <translation>Soinua %1</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="155"/>
         <location filename="widgets/SoundWidget.cpp" line="241"/>
         <location filename="widgets/SoundWidget.cpp" line="261"/>
         <source>Fichier AKAO (*.akao)</source>
-        <translation>AKAO file (*.akao)</translation>
+        <translation>AKAO fitxa (*.akao)</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="165"/>
@@ -3323,48 +3350,48 @@ poursuite de la recherche dans le dernier fichier.</source>
         <location filename="widgets/SoundWidget.cpp" line="267"/>
         <location filename="widgets/SoundWidget.cpp" line="271"/>
         <source>Erreur</source>
-        <translation>Error</translation>
+        <translation>Hutsa</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="165"/>
         <location filename="widgets/SoundWidget.cpp" line="267"/>
         <source>Fichier invalide.</source>
-        <translation>Invalid file.</translation>
+        <translation>Fitxa irekiezina.</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="171"/>
         <source>Impossible d&apos;ajouter le son (%1).</source>
-        <translation>Unable to add sound (%1).</translation>
+        <translation>Ezin du soinua gehitzen (%1).</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="241"/>
         <source>Exporter son</source>
-        <translation>Export sound</translation>
+        <translation>Soinua exportatu</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="241"/>
         <source>son%1</source>
-        <translation>sound%1</translation>
+        <translation>soinua%1</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="249"/>
         <source>Impossible d&apos;exporter le son (%1).</source>
-        <translation>Unable to export sound (%1).</translation>
+        <translation>Ezin du soinua exportatu (%1).</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="261"/>
         <source>Importer son</source>
-        <translation>Import sound</translation>
+        <translation>Soinua inportatu</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="271"/>
         <source>Impossible d&apos;importer le son (%1).</source>
-        <translation>Unable to import sound (%1).</translation>
+        <translation>Ezin du soinua inportatu (%1).</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.h" line="32"/>
         <source>Sons</source>
-        <translation>Sounds</translation>
+        <translation>Soinuak</translation>
     </message>
 </context>
 <context>
@@ -3372,22 +3399,22 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="SpecialCharactersDialog.cpp" line="6"/>
         <source>Caractères spéciaux</source>
-        <translation>Special Characters</translation>
+        <translation>Karakter bereziak</translation>
     </message>
     <message>
         <location filename="SpecialCharactersDialog.cpp" line="14"/>
         <source>Table %1</source>
-        <translation>Table %1</translation>
+        <translation>Taula %1</translation>
     </message>
     <message>
         <location filename="SpecialCharactersDialog.cpp" line="21"/>
         <source>Insérer</source>
-        <translation>Insert</translation>
+        <translation>Tartekatu</translation>
     </message>
     <message>
         <location filename="SpecialCharactersDialog.cpp" line="29"/>
         <source>Table</source>
-        <translation>Table</translation>
+        <translation>Taula</translation>
     </message>
 </context>
 <context>
@@ -3395,27 +3422,27 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="TdwManagerDialog.cpp" line="23"/>
         <source>Gestionnaire de police</source>
-        <translation>Font manager</translation>
+        <translation>Font-zuzendaria</translation>
     </message>
     <message>
         <location filename="TdwManagerDialog.cpp" line="27"/>
         <source>Copier</source>
-        <translation>Copy</translation>
+        <translation>Kopiatu</translation>
     </message>
     <message>
         <location filename="TdwManagerDialog.cpp" line="28"/>
         <source>Effacer</source>
-        <translation>Remove</translation>
+        <translation>Kendu</translation>
     </message>
     <message>
         <location filename="TdwManagerDialog.cpp" line="52"/>
         <source>Latin</source>
-        <translation>Latin</translation>
+        <translation>Latina</translation>
     </message>
     <message>
         <location filename="TdwManagerDialog.cpp" line="52"/>
         <source>Japonais</source>
-        <translation>Japanese</translation>
+        <translation>Japoniera</translation>
     </message>
     <message>
         <location filename="TdwManagerDialog.cpp" line="112"/>
@@ -3425,32 +3452,32 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="TdwManagerDialog.cpp" line="116"/>
         <source>Nom &amp;affiché :</source>
-        <translation>N&amp;ame displayed:</translation>
+        <translation>I&amp;zena erakutsia:</translation>
     </message>
     <message>
         <location filename="TdwManagerDialog.cpp" line="117"/>
         <source>Nom du &amp;fichier :</source>
-        <translation>&amp;File name:</translation>
+        <translation>&amp;Fitxa-izena:</translation>
     </message>
     <message>
         <location filename="TdwManagerDialog.cpp" line="133"/>
         <source>Choisissez un autre nom</source>
-        <translation>Choose another name</translation>
+        <translation>Beste izena bat aukeratu</translation>
     </message>
     <message>
         <location filename="TdwManagerDialog.cpp" line="133"/>
         <source>Ce nom existe déjà ou est invalide, veuillez en choisir un autre.</source>
-        <translation>That name already exists or is invalid, please choose another.</translation>
+        <translation>Izen hori jadanik jardunean dago, edo irekiezina da. Beste bat aukeratu, mesedez.</translation>
     </message>
     <message>
         <location filename="TdwManagerDialog.cpp" line="149"/>
         <source>Supprimer une police</source>
-        <translation>Remove a font</translation>
+        <translation>Fonta bat kendu</translation>
     </message>
     <message>
         <location filename="TdwManagerDialog.cpp" line="149"/>
         <source>Voulez-vous vraiment supprimer la police sélectionnée ?</source>
-        <translation>Do you really want to delete the selected font?</translation>
+        <translation>Benetan aukeratutako fonta kentzen nahi duzu?</translation>
     </message>
 </context>
 <context>
@@ -3458,7 +3485,7 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/TdwWidget.h" line="33"/>
         <source>Caractères additionnels</source>
-        <translation>Additional characters</translation>
+        <translation>Gainerako karatkerrak</translation>
     </message>
 </context>
 <context>
@@ -3466,104 +3493,108 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="28"/>
         <source>Gris foncé</source>
-        <translation>Dark grey</translation>
+        <translation>Gris iluna</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="28"/>
         <source>Gris</source>
-        <translation>Grey</translation>
+        <translation>Grisa</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="28"/>
         <source>Jaune</source>
-        <translation>Yellow</translation>
+        <translation>Haria</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="28"/>
         <source>Rouge</source>
-        <translation>Red</translation>
+        <translation>Gorria</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="28"/>
         <source>Vert</source>
-        <translation>Green</translation>
+        <translation>Berdea</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="28"/>
         <source>Bleu</source>
-        <translation>Blue</translation>
+        <translation>Urdina</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="28"/>
         <source>Violet</source>
-        <translation>Purple</translation>
+        <translation>Purpura</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="28"/>
         <source>Blanc</source>
-        <translation>White</translation>
+        <translation>Zuria</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="34"/>
         <location filename="widgets/TdwWidget2.cpp" line="36"/>
         <source>À partir d&apos;une image...</source>
-        <translation>From an image...</translation>
+        <oldsource>À partir d&apos;une irudia...</oldsource>
+        <translation type="unfinished">Irudi batetik...</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="41"/>
         <source>Exporter...</source>
-        <translation>Export...</translation>
+        <translation>Exportatu...</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="42"/>
         <source>Importer...</source>
-        <translation>Import...</translation>
+        <translation>Inportatu...</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="43"/>
         <source>Annuler les modifications</source>
-        <translation>Cancel Changes</translation>
+        <translation>Aukerak ezeztatu</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="100"/>
         <source>Table %1</source>
-        <translation>Table %1</translation>
+        <translation>Taula %1</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="173"/>
         <source>Fichier texture FF8 (*.tex)</source>
-        <translation>FF8 Texture File (*.tex)</translation>
+        <translation>FF8 fitxa egitura (*.tex)</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="174"/>
         <location filename="widgets/TdwWidget2.cpp" line="249"/>
         <source>Fichier police FF8 (*.tdw)</source>
-        <translation>FF8 Font File (*.tdw)</translation>
+        <translation>FF8 fitxa fonta (*.tdw)</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="175"/>
         <source>Fichier image PNG (*.png)</source>
-        <translation>PNG image File (*.png)</translation>
+        <oldsource>Fichier irudia PNG (*.png)</oldsource>
+        <translation type="unfinished">PNG fitxa irudia (*.png)</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="176"/>
         <source>Fichier image JPG (*.jpg)</source>
-        <translation>JPG image File (*.jpg)</translation>
+        <oldsource>Fichier irudia JPG (*.jpg)</oldsource>
+        <translation type="unfinished">JPG fitxa irudia (*.jpg)</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="177"/>
         <source>Fichier image BMP (*.bmp)</source>
-        <translation>BMP image File (*.bmp)</translation>
+        <oldsource>Fichier irudia BMP (*.bmp)</oldsource>
+        <translation type="unfinished">BMP fitxa irudia (*.bmp)</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="181"/>
         <source>Fichier traduction Deling (*.txt)</source>
-        <translation>Deling translation File (*.txt)</translation>
+        <translation>Deling fitxa itzulpena (*.txt)</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="184"/>
         <source>Exporter police de caractère</source>
-        <translation>Export font</translation>
+        <translation>Exportatu fonta</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="197"/>
@@ -3574,7 +3605,7 @@ poursuite de la recherche dans le dernier fichier.</source>
         <location filename="widgets/TdwWidget2.cpp" line="266"/>
         <location filename="widgets/TdwWidget2.cpp" line="270"/>
         <source>Erreur</source>
-        <translation>Error</translation>
+        <translation>Hutsa</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="197"/>
@@ -3582,33 +3613,33 @@ poursuite de la recherche dans le dernier fichier.</source>
         <location filename="widgets/TdwWidget2.cpp" line="225"/>
         <location filename="widgets/TdwWidget2.cpp" line="270"/>
         <source>Erreur d&apos;ouverture du fichier. (%1)</source>
-        <translation>Error when opening file. (%1)</translation>
+        <translation>Hutsa fitxa irekiterakoan. (%1)</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="200"/>
         <location filename="widgets/TdwWidget2.cpp" line="216"/>
         <source>Erreur lors de l&apos;enregistrement.</source>
-        <translation>Error when saving.</translation>
+        <translation>Hutsa gorde egiterakoan.</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="203"/>
         <source>Information</source>
-        <translation>Information</translation>
+        <translation>Informazioa</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="203"/>
         <source>Format de police de caractère inexportable.</source>
-        <translation>Font format unexportable.</translation>
+        <translation>Fonta-formatua exportatuezina.</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="253"/>
         <source>Importer police de caractère</source>
-        <translation>Import font</translation>
+        <translation>Fonta inportatu</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="266"/>
         <source>Fichier invalide</source>
-        <translation>Invalid File</translation>
+        <translation>Fitxa irekiezina</translation>
     </message>
 </context>
 <context>
@@ -3619,7 +3650,7 @@ poursuite de la recherche dans le dernier fichier.</source>
         <location filename="TextPreview.cpp" line="615"/>
         <source>false</source>
         <comment>Use Japanese Encoding</comment>
-        <translation>false</translation>
+        <translation>okerra</translation>
     </message>
     <message>
         <location filename="TextPreview.cpp" line="60"/>
@@ -3659,7 +3690,7 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="TextPreview.cpp" line="63"/>
         <source>Horizon</source>
-        <translation>F. Horizon</translation>
+        <translation>AZ</translation>
     </message>
 </context>
 <context>
@@ -3667,7 +3698,7 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="VarManager.cpp" line="23"/>
         <source>Gestionnaire de variables</source>
-        <translation>Var manager</translation>
+        <translation>Var zuzendaria</translation>
     </message>
     <message>
         <location filename="VarManager.cpp" line="33"/>
@@ -3678,7 +3709,7 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="VarManager.cpp" line="33"/>
         <source>Écran</source>
-        <translation>Field</translation>
+        <translation>Gunea</translation>
     </message>
     <message>
         <location filename="VarManager.cpp" line="33"/>
@@ -3693,28 +3724,28 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="VarManager.cpp" line="33"/>
         <source>Type</source>
-        <translation>Type</translation>
+        <translation>Mota</translation>
     </message>
     <message>
         <location filename="VarManager.cpp" line="40"/>
         <source>Adresses utilisées</source>
-        <translation>Adresses used</translation>
+        <translation>Helbideak erabiliak</translation>
     </message>
     <message>
         <location filename="VarManager.cpp" line="41"/>
         <source>Sauver</source>
-        <translation>Save</translation>
+        <translation>Gorde</translation>
     </message>
     <message>
         <location filename="VarManager.cpp" line="155"/>
         <source>Vars utilisés : %1/1536</source>
-        <translation>Used vars: %1/1536</translation>
+        <translation>Var-ak erabiliak: %1/1536</translation>
     </message>
     <message>
         <location filename="VarManager.cpp" line="33"/>
         <location filename="VarManager.cpp" line="47"/>
         <source>Nom</source>
-        <translation>Name</translation>
+        <translation>Izena</translation>
     </message>
 </context>
 <context>
@@ -3750,7 +3781,7 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="50"/>
         <source>Caméra</source>
-        <translation>Camera</translation>
+        <translation>Kamera</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="51"/>
@@ -3761,37 +3792,37 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="52"/>
         <source>Sorties</source>
-        <translation>Exits</translation>
+        <translation>Irteerak</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="53"/>
         <source>Portes</source>
-        <translation>Doors</translation>
+        <translation>Ateak</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="54"/>
         <source>Limites caméra</source>
-        <translation>Camera Ranges</translation>
+        <translation>Kamera-irismenak</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="55"/>
         <source>Caméra cinématique</source>
-        <translation>Movie Camera</translation>
+        <translation>Filmagailua</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="56"/>
         <source>Divers</source>
-        <translation>Miscellaneous</translation>
+        <translation>Askotakoa(k)</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="96"/>
         <source>Ajouter caméra</source>
-        <translation>Add camera</translation>
+        <translation>Kamera gehitu</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="97"/>
         <source>Supprimer caméra</source>
-        <translation>Remove camera</translation>
+        <translation>Kamera kendu</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="122"/>
@@ -3826,27 +3857,27 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="160"/>
         <source>Ajouter triangle</source>
-        <translation>Add triangle</translation>
+        <translation>Hirukia gehitu</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="161"/>
         <source>Supprimer triangle</source>
-        <translation>Remove triangle</translation>
+        <translation>Hirukia kendu</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="179"/>
         <source>Triangle accessible via la ligne 1-2 :</source>
-        <translation>Triangle accessible via the line 1-2:</translation>
+        <translation>Hirukia aurkitzen ahal du 1-2 lerroaz:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="183"/>
         <source>Triangle accessible via la ligne 2-3 :</source>
-        <translation>Triangle accessible via la ligne 2-3:</translation>
+        <translation>Hirukia aurkitzen ahal du 2-3 lerroaz:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="187"/>
         <source>Triangle accessible via la ligne 3-1 :</source>
-        <translation>Triangle accessible via la ligne 3-1:</translation>
+        <translation>Hirukia aurkitzen ahal du 3-1 lerroaz:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="192"/>
@@ -3856,116 +3887,116 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="194"/>
         <source>Point 2 :</source>
-        <translation>Point 2:</translation>
+        <translation>Puntu 2:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="196"/>
         <source>Point 3 :</source>
-        <translation>Point 3:</translation>
+        <translation>Puntu 3:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="235"/>
         <source>Id écran :</source>
-        <translation>Field ID:</translation>
+        <translation>Gune ID:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="237"/>
         <source>Inconnu 1 :</source>
-        <translation>Unknown 1:</translation>
+        <translation>Ezezagun 1:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="242"/>
         <source>Inconnu 2 :</source>
-        <translation>Unknown 2:</translation>
+        <translation>Ezezagun 2:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="247"/>
         <source>Ligne de sortie :</source>
-        <translation>Exit Line:</translation>
+        <translation>Irteera-lerroa:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="250"/>
         <source>Point de destination :</source>
-        <translation>Destination point:</translation>
+        <translation>Irismenaren helburua:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="278"/>
         <source>Utilisé</source>
-        <translation>Used</translation>
+        <translation>Erabilia(k)</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="285"/>
         <source>Id porte :</source>
-        <translation>Door ID:</translation>
+        <translation>Ate ID:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="290"/>
         <source>Ligne déclench. porte :</source>
-        <translation>Trigger Line Door:</translation>
+        <translation>Ate lerro katua:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="313"/>
         <source>Limite caméra %1</source>
-        <translation>Camera Range %1</translation>
+        <translation>Kamera-irismena %1</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="320"/>
         <source>Limite écran %1</source>
-        <translation>Screen Range %1</translation>
+        <translation>Pantaila-irismena %1</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="333"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="341"/>
         <source>Haut</source>
-        <translation>Top</translation>
+        <translation>Goia</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="335"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="343"/>
         <source>Bas</source>
-        <translation>Bottom</translation>
+        <translation>Behea</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="337"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="345"/>
         <source>Droite</source>
-        <translation>Right</translation>
+        <translation>Eskuina</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="339"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="347"/>
         <source>Gauche</source>
-        <translation>Left</translation>
+        <translation>Ezkerra</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="371"/>
         <source>Ajouter</source>
-        <translation>Add</translation>
+        <translation>Gehitu</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="372"/>
         <source>Effacer</source>
-        <translation>Remove</translation>
+        <translation>Kendu</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="411"/>
         <source>Orientation des mouvements :</source>
-        <translation>Movements orientation:</translation>
+        <translation>Mugimenduak orientazioa:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="414"/>
         <source>Inconnu :</source>
-        <translation>Unknown:</translation>
+        <translation>Ezezaguna:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="416"/>
         <source>Hauteur focus caméra sur le personnage :</source>
-        <translation>Camera Focus Height on the playable character:</translation>
+        <translation>Kamera Foku Garaiera ahaljokatu karaketerran.:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="514"/>
         <source>Caméra %1</source>
-        <translation>Camera %1</translation>
+        <translation>Kamera %1</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="530"/>
@@ -3973,7 +4004,7 @@ poursuite de la recherche dans le dernier fichier.</source>
         <location filename="widgets/WalkmeshWidget.cpp" line="787"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="804"/>
         <source>Triangle %1</source>
-        <translation>Triangle %1</translation>
+        <translation>Hiruki %1</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="545"/>
@@ -3981,20 +4012,20 @@ poursuite de la recherche dans le dernier fichier.</source>
         <location filename="widgets/WalkmeshWidget.cpp" line="1017"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="1044"/>
         <source>Inutilisé</source>
-        <translation>Unused</translation>
+        <translation>Ez erabilia(k)</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="554"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="1042"/>
         <source>Porte %1</source>
-        <translation>Door %1</translation>
+        <translation>Ate %1</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="659"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="661"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="680"/>
         <source>Camera %1</source>
-        <translation>Camera %1</translation>
+        <translation>Kamera %1</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="581"/>
@@ -4002,7 +4033,7 @@ poursuite de la recherche dans le dernier fichier.</source>
         <location filename="widgets/WalkmeshWidget.cpp" line="1197"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="1218"/>
         <source>Position %1</source>
-        <translation>Position %1</translation>
+        <translation>Maila %1</translation>
     </message>
 </context>
 </TS>
