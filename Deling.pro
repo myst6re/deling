@@ -192,7 +192,7 @@ OTHER_FILES += Deling.rc \
 
 #only on linux/unix (for package creation and other deploys)
 unix:!macx:!symbian {
-	LIBS = -lGLU
+	LIBS += -lGLU
 
 	system(lrelease Deling.pro)
 
