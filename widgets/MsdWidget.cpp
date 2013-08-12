@@ -33,7 +33,7 @@ void MsdWidget::build()
 	ListWidget *listWidget = new ListWidget(this);
 	listWidget->addAction(ListWidget::Invisible, tr("Insérer un texte au-dessus"), this, SLOT(insertTextAbove()));
 	listWidget->addAction(ListWidget::Add, tr("Insérer un texte en dessous"), this, SLOT(insertText()));
-	listWidget->addAction(ListWidget::Rem, tr("Supprimer un texte"), this, SLOT(removeText()));
+	actionRemoveText = listWidget->addAction(ListWidget::Rem, tr("Supprimer un texte"), this, SLOT(removeText()));
 
 	toolBar0 = listWidget->toolBar();
 	textList = listWidget->listWidget();
@@ -216,7 +216,7 @@ void MsdWidget::build()
 	textEdit = new QPlainTextEdit(this);
 	new MsdHighlighter(textEdit->document());
 
-	QWidget *groupTextPreview = new QWidget(this);
+	groupTextPreview = new QWidget(this);
 
 	prevPage = new QToolButton(groupTextPreview);
 	prevPage->setArrowType(Qt::UpArrow);
@@ -313,6 +313,17 @@ void MsdWidget::setReadOnly(bool readOnly)
 	PageWidget::setReadOnly(readOnly);
 }
 
+void MsdWidget::setEditTextEnabled(bool enabled)
+{
+	if(!isBuilded())	return;
+
+	textEdit->setEnabled(enabled);
+	toolBar->setEnabled(enabled);
+	toolBar2->setEnabled(enabled);
+	actionRemoveText->setEnabled(enabled);
+	groupTextPreview->setEnabled(enabled);
+}
+
 QString MsdWidget::selectedText() const
 {
 	if(!isBuilded())	return QString();
@@ -329,6 +340,8 @@ void MsdWidget::fill()
 
 	if(data()->hasTdwFile())
 		textPreview->setFontImageAdd(data()->getTdwFile());
+
+	bool hasTexts = false;
 
 	if(data()->hasMsdFile()) {
 
@@ -349,7 +362,16 @@ void MsdWidget::fill()
 			}
 
 			textList->setCurrentRow(0);
+			hasTexts = true;
 		}
+	}
+
+	setEditTextEnabled(hasTexts);
+	if(!hasTexts) {
+		textPreview->clearWin();
+		textPreview->setText(QByteArray());
+		changeTextPreviewPage();
+		changeTextPreviewWin();
 	}
 
 	PageWidget::fill();
@@ -367,6 +389,7 @@ void MsdWidget::fillTextEdit(QListWidgetItem *item)
 	dontUpdateCurrentText = true;
 	textEdit->setPlainText(text);
 	dontUpdateCurrentText = false;
+	setEditTextEnabled(true);
 
 	if(hasData() && data()->hasJsmFile()) {
 		textPreview->resetCurrentWin();
@@ -559,6 +582,7 @@ void MsdWidget::removeText()
 	data()->getMsdFile()->removeText(row);
 	fill();
 	textList->setCurrentRow(qMax(row-1, 0));
+	setEditTextEnabled(!textList->selectedItems().isEmpty());
 	emit modified();
 }
 

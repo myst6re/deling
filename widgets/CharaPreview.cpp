@@ -18,21 +18,27 @@
 #include "CharaPreview.h"
 
 CharaPreview::CharaPreview(QWidget *parent) :
-	BGPreview(parent), mainModels(0)
+	BGPreview2(parent), mainModels(0)
 {
-	createContents();
+	setAutoFillBackground(true);
+	setAlignment(Qt::AlignCenter);
+	QPalette pal = palette();
+	pal.setColor(QPalette::Active, QPalette::Window, Qt::black);
+	pal.setColor(QPalette::Inactive, QPalette::Window, Qt::black);
+	pal.setColor(QPalette::Disabled, QPalette::Window, pal.color(QPalette::Disabled, QPalette::WindowText));
+	setPalette(pal);
 }
 
-void CharaPreview::createContents()
+void CharaPreview::fill(const QPixmap &background)
 {
-	label = new BGPreview2();
-}
-
-void CharaPreview::clear()
-{
-	mainModels = 0;
-
-	BGPreview::clear();
+	if(background.width()>width() || background.height()>height()) {
+		if(background.height()==height())
+			setPixmap(background.scaled(background.width()*width()/background.height(), height(), Qt::KeepAspectRatio));
+		else
+			setPixmap(background.scaled(width(), height(), Qt::KeepAspectRatio));
+	}
+	else
+		setPixmap(background);
 }
 
 void CharaPreview::setMainModels(QHash<int, CharaModel *> *mainModels)
@@ -51,10 +57,8 @@ void CharaPreview::setModel(const CharaModel &model)
 	}
 
 	if(!m->isEmpty()) {
-		createContents();
-		((BGPreview2 *)label)->setName(QString("tex%1").arg(m->id()));
-		label->setPixmap(QPixmap::fromImage(m->texture(0).image()));
-		setWidget(label);
+		setName(QString("tex%1").arg(m->id()));
+		setPixmap(QPixmap::fromImage(m->texture(0).image()));
 	} else {
 		clear();
 	}

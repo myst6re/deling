@@ -39,6 +39,7 @@
 #include "MiscSearch.h"
 #include "FsDialog.h"
 #include "ConfigDialog.h"
+#include "QTaskBarButton.h"
 
 class MainWindow : public QMainWindow
 {
@@ -116,10 +117,10 @@ private:
 	QStackedWidget *mainStackedWidget, *stackedWidget;
 	FsDialog *fsDialog;
 	VarManager *_varManager;
-	bool firstShow;
+    bool firstShow;
 protected:
-	void showEvent(QShowEvent *);
-	void closeEvent(QCloseEvent *);
+    void showEvent(QShowEvent *);
+    void closeEvent(QCloseEvent *);
 };
 
 #endif // MAINWINDOW_H

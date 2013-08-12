@@ -16,7 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "GZIP.h"
-#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
 #include "zlib-1.2.7/zlib.h"
 #else
 #include <zlib.h>
@@ -50,7 +50,7 @@ QByteArray GZIP::compress(const QByteArray &ungzip)
 {
 	QString tempPath = QDir::tempPath()+"/qt_temp.gz";
 
-	gzFile file2 = gzopen(tempPath.toLatin1(), "wb");
+	gzFile file2 = gzopen(tempPath.toLatin1(), "wb9");
 	if(!file2) {
 		return QByteArray();
 	}

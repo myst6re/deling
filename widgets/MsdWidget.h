@@ -64,11 +64,14 @@ signals:
 	void textIdChanged(int);
 	void fromChanged(int);
 private:
+	void setEditTextEnabled(bool enabled);
 	void updateWindowCoord();
 
     QListWidget *textList;
     QToolBar *toolBar0, *toolBar, *toolBar2;
+	QAction *actionRemoveText;
 	QPlainTextEdit *textEdit;
+	QWidget *groupTextPreview;
 	TextPreview *textPreview;
 	QToolButton *prevPage, *prevWin;
 	QToolButton *nextPage, *nextWin;

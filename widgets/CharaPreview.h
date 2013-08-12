@@ -20,21 +20,16 @@
 
 #include <QtGui>
 #include "CharaModel.h"
-#include "BGPreview.h"
+#include "BGPreview2.h"
 
-class CharaPreview : public BGPreview
+class CharaPreview : public BGPreview2
 {
 	Q_OBJECT
 public:
 	explicit CharaPreview(QWidget *parent = 0);
-	virtual void clear();
+	void fill(const QPixmap &background);
 	void setMainModels(QHash<int, CharaModel *> *mainModels);
 	void setModel(const CharaModel &model);
-signals:
-	
-public slots:
-protected:
-	virtual void createContents();
 private:
 	QHash<int, CharaModel *> *mainModels;
 };

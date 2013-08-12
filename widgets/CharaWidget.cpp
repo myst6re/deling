@@ -32,8 +32,9 @@ void CharaWidget::build()
 	modelPreview->setMainModels(mainModels);
 
 	QGridLayout *layout = new QGridLayout(this);
-	layout->addWidget(modelList, 0, 0, Qt::AlignLeft);
+	layout->addWidget(modelList, 0, 0);
 	layout->addWidget(modelPreview, 0, 1);
+	layout->setColumnStretch(1, 1);
 	layout->setContentsMargins(QMargins());
 
 	connect(modelList, SIGNAL(currentRowChanged(int)), SLOT(setModel(int)));

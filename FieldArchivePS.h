@@ -30,7 +30,7 @@ public:
 	QString archivePath() const;
 	FieldPS *getField(int id) const;
 	FF8DiscArchive *getFF8DiscArchive() const;
-	int open(const QString &, QProgressDialog *progress);
+	int open(const QString &, QProgressDialog *progress, QTaskBarButton *taskBarButton);
 	bool openModels();
 	bool openBG(Field *field) const;
 private:

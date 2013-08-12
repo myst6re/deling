@@ -212,14 +212,18 @@ bool MainWindow::openArchive(const QString &path)
 	if(_varManager != NULL)
 		_varManager->setFieldArchive(fieldArchive);
 
+	QTaskBarButton *taskBarButton = new QTaskBarButton(this);
+	taskBarButton->setState(QTaskBarButton::Indeterminate);
+
 	QProgressDialog progress(tr("Ouverture..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
 	progress.setWindowModality(Qt::WindowModal);
 	progress.show();
 
 	QTime t;t.start();
-	int error = fieldArchive->open(path, &progress);
+	int error = fieldArchive->open(path, &progress, taskBarButton);
 
 	qDebug() << "openTime" << t.elapsed() << "ms";
+	taskBarButton->setState(QTaskBarButton::Invisible);
 
 	TextPreview::reloadFont();
 
@@ -583,11 +587,16 @@ void MainWindow::saveAs(QString path)
 	bool ok = true;
 
 	if(fieldArchive != NULL) {
+		QTaskBarButton *taskBarButton = new QTaskBarButton(this);
+		taskBarButton->setState(QTaskBarButton::Indeterminate);
+
 		QProgressDialog progress(tr("Enregistrement..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
 		progress.setWindowModality(Qt::WindowModal);
 		progress.show();
 
-		ok = ((FieldArchivePC *)fieldArchive)->save(&progress, path);
+		ok = ((FieldArchivePC *)fieldArchive)->save(&progress, taskBarButton, path);
+
+		taskBarButton->setState(QTaskBarButton::Invisible);
 	} else {
 		ok = field->save(path);
 		field->setModified(false);

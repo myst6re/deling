@@ -17,51 +17,36 @@
  ****************************************************************************/
 #include "BGPreview.h"
 
-BGPreview::BGPreview(QWidget *parent)
-	: QScrollArea(parent), label(0)
+BGPreview::BGPreview(QWidget *parent) :
+	QLabel(parent)
 {
+	setAutoFillBackground(true);
 	setAlignment(Qt::AlignCenter);
-	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	QPalette pal = palette();
 	pal.setColor(QPalette::Active, QPalette::Window, Qt::black);
 	pal.setColor(QPalette::Inactive, QPalette::Window, Qt::black);
-	pal.setColor(QPalette::Disabled, QPalette::Window, pal.color(QPalette::Disabled, QPalette::Text));
+	pal.setColor(QPalette::Disabled, QPalette::Window, pal.color(QPalette::Disabled, QPalette::WindowText));
 	setPalette(pal);
-	setFrameShape(QFrame::NoFrame);
-
-	createContents();
-}
-
-void BGPreview::createContents()
-{
-	if(label)	label->deleteLater();
-	label = new QLabel();
 }
 
 void BGPreview::fill(const QPixmap &background)
 {
-	createContents();
-
-	setCursor(QCursor(Qt::PointingHandCursor));
+	setCursor(Qt::PointingHandCursor);
 
 	if(background.width()>width() || background.height()>height()) {
 		if(background.height()==height())
-			label->setPixmap(background.scaled(background.width()*width()/background.height(), height(), Qt::KeepAspectRatio));
+			setPixmap(background.scaled(background.width()*width()/background.height(), height(), Qt::KeepAspectRatio));
 		else
-			label->setPixmap(background.scaled(width(), height(), Qt::KeepAspectRatio));
+			setPixmap(background.scaled(width(), height(), Qt::KeepAspectRatio));
 	}
 	else
-		label->setPixmap(background);
-
-	setWidget(label);
+		setPixmap(background);
 }
 
 void BGPreview::clear()
 {
-	createContents();
-	setWidget(label);
-	setCursor(QCursor(Qt::ArrowCursor));
+	setCursor(Qt::ArrowCursor);
+	QLabel::clear();
 }
 
 void BGPreview::mouseReleaseEvent(QMouseEvent *event)

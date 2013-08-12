@@ -19,9 +19,8 @@
 #define DEF_BGPREVIEW
 
 #include <QtGui>
-#include "BGPreview2.h"
 
-class BGPreview : public QScrollArea
+class BGPreview : public QLabel
 {
 	Q_OBJECT
 public:
@@ -33,8 +32,6 @@ public slots:
 signals:
 	void triggered();
 protected:
-	virtual void createContents();
-	QLabel *label;
 	void mouseReleaseEvent(QMouseEvent *);
 };
 

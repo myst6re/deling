@@ -20,6 +20,7 @@
 
 #include <QtCore>
 #include <QtGui/QProgressDialog>
+#include "QTaskBarButton.h"
 #include "Field.h"
 #include "files/MchFile.h"
 
@@ -41,7 +42,7 @@ public:
 	CharaModel *getModel(int id) const;
 	QHash<int, CharaModel *> *getModels();
 	bool isReadOnly() const;
-	virtual int open(const QString &, QProgressDialog *progress)=0;
+	virtual int open(const QString &, QProgressDialog *progress, QTaskBarButton *taskBarButton)=0;
 	virtual bool openModels()=0;
 	virtual bool openBG(Field *field) const=0;
 	bool compileScripts(int &errorFieldID, int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);

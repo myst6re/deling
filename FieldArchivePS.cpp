@@ -43,7 +43,7 @@ FF8DiscArchive *FieldArchivePS::getFF8DiscArchive() const
 	return iso;
 }
 
-int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
+int FieldArchivePS::open(const QString &path, QProgressDialog *progress, QTaskBarButton *taskBarButton)
 {
 	Field *field;
 	QString desc;
@@ -74,7 +74,14 @@ int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 	int indexOf;
 
 	quint32 freq = ((tocSize - 77) / 3)/100;
+
+	if(freq == 0) {
+		freq = 1;
+	}
+
 	progress->setRange(0, (tocSize - 77) / 3);
+	taskBarButton->setRange(0, (tocSize - 77) / 3);
+	taskBarButton->setState(QTaskBarButton::Normal);
 
 	for(i=77 ; i<tocSize ; i += 3) {
 		QCoreApplication::processEvents();
@@ -83,8 +90,9 @@ int FieldArchivePS::open(const QString &path, QProgressDialog *progress)
 			errorMsg = QObject::tr("Ouverture annulée.");
 			return 2;
 		}
-		if(currentMap%freq == 0) {
+		if(currentMap % freq == 0) {
 			progress->setValue(currentMap);
+			taskBarButton->setValue(currentMap);
 		}
 
 		QByteArray fieldData = iso->fileLZS(fieldFiles.at(i));

@@ -42,7 +42,7 @@ FsArchive *FieldArchivePC::getFsArchive() const
 	return archive;
 }
 
-int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
+int FieldArchivePC::open(const QString &path, QProgressDialog *progress, QTaskBarButton *taskBarButton)
 {
 	//qDebug() << QString("open(%1)").arg(path);
 	QString archivePath = path;
@@ -88,6 +88,8 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 	quint32 freq = fsList.size()>100 ? fsList.size()/100 : 1;
 
 	progress->setRange(0, fsList.size());
+	taskBarButton->setRange(0, fsList.size());
+	taskBarButton->setState(QTaskBarButton::Normal);
 	// Ouverture des écrans listés
 	foreach(const QString &entry, fsList) {
 		QCoreApplication::processEvents();
@@ -100,6 +102,7 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress)
 
 		if(currentMap%freq == 0) {
 			progress->setValue(currentMap);
+			taskBarButton->setValue(currentMap);
 		}
 		currentMap++;
 
@@ -196,7 +199,7 @@ void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHea
 	}
 }
 
-bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
+bool FieldArchivePC::save(QProgressDialog *progress, QTaskBarButton *taskBarButton, QString save_path)
 {
 	if(!archive)	return false;
 
@@ -227,7 +230,9 @@ bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
 	}
 
 	archiveSize = archive->size();
-	progress->setMaximum(archiveSize);
+	progress->setRange(0, archiveSize);
+	taskBarButton->setRange(0, archiveSize);
+	taskBarButton->setState(QTaskBarButton::Normal);
 
 	/*QDir dd("debug");
 	foreach(QString machin, dd.entryList(QStringList() << "*")) {
@@ -320,6 +325,7 @@ bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
 //			}
 
 			progress->setValue(pos);
+			taskBarButton->setValue(pos);
 		}
 	}
 
@@ -339,6 +345,7 @@ bool FieldArchivePC::save(QProgressDialog *progress, QString save_path)
 		archive->setFilePosition(entry, pos);
 
 		progress->setValue(pos);
+		taskBarButton->setValue(pos);
 	}
 	temp.close();
 
