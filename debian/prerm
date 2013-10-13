@@ -1,5 +1,0 @@
-#!/bin/sh
-if [ -f /usr/bin/deling ];then
-  rm /usr/bin/deling 
-else exit 0
-fi

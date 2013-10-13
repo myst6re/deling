@@ -193,27 +193,5 @@ OTHER_FILES += Deling.rc \
 #only on linux/unix (for package creation and other deploys)
 unix:!macx:!symbian {
 	LIBS += -lGLU
-
 	system(lrelease Deling.pro)
-
-	target.path = /opt/deling
-	INSTALLS += target
-
-	lang.path = /opt/deling
-	lang.files = *.qm
-	INSTALLS += lang
-
-	icon.path = /usr/share/pixmaps/
-	icon.files = images/deling.png
-	INSTALLS += icon
-
-	desktop.path =/usr/share/applications
-	desktop.files = Deling.desktop
-	INSTALLS += desktop
 }
-
-
-
-
-
-

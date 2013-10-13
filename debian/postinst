@@ -1,5 +1,0 @@
-#!/bin/sh
-if [ -f /usr/bin/deling ];then
-  exit 0
-  else ln -s /opt/deling/Deling /usr/bin/deling
-fi

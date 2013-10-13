@@ -1,0 +1,4 @@
+Deling /usr/share/deling 
+*.qm /usr/share/deling
+images/deling.png /usr/share/pixmaps
+Deling.desktop /usr/share/applications
