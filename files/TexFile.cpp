@@ -69,6 +69,7 @@ bool TexFile::open(const QByteArray &data)
 	{
 		quint32 index, imageStart = headerSize + paletteSectionSize;
 
+		_colorTables.clear();
 		for(quint32 palID=0 ; palID < header.nbPalettes ; ++palID) {
 			quint32 paletteStart = headerSize+header.nbColorsPerPalette1*4*palID;
 
@@ -91,6 +92,7 @@ bool TexFile::open(const QByteArray &data)
 			_image.setPixel(i % w, i / w, (quint8)data.at(imageStart+i));
 		}
 
+		colorKeyArray.clear();
 		if(header.hasColorKeyArray) {
 			quint32 colorKeyStart = imageStart + imageSectionSize;
 
@@ -120,8 +122,23 @@ bool TexFile::open(const QByteArray &data)
     return true;
 }
 
+void TexFile::setVersion(Version version)
+{
+	header.version = int(version);
+}
+
+void TexFile::updateHeader()
+{
+	header.nbPalettes = _colorTables.size();
+	header.hasPal = !_colorTables.isEmpty();
+	header.imageWidth = _image.width();
+	header.imageHeight = _image.height();
+	header.hasColorKeyArray = !colorKeyArray.isEmpty();
+}
+
 bool TexFile::save(QByteArray &data)
 {
+	updateHeader();
 	data.append((char *)&header, header.version==2 ? sizeof(TexStruct) : sizeof(TexStruct) - 4);
 
 	qDebug() << "texSize header" << data.size();
@@ -129,7 +146,7 @@ bool TexFile::save(QByteArray &data)
 	if(isPaletted()) {
 		quint32 palID;
 
-		for(palID=0 ; palID < header.nbPalettes && palID < (quint32)_colorTables.size() ; ++palID) {
+		for(palID=0 ; palID < header.nbPalettes ; ++palID) {
 			const QVector<QRgb> &palette = _colorTables.at(palID);
 			quint32 colorID;
 			for(colorID=0 ; colorID < header.nbColorsPerPalette1 && colorID < (quint32)palette.size() ; ++colorID) {
@@ -140,13 +157,6 @@ bool TexFile::save(QByteArray &data)
 				data.append((char)qAlpha(color));
 			}
 			for( ; colorID < header.nbColorsPerPalette1 ; ++colorID) {
-				const QRgb color = qRgba(0, 0, 0, 0);
-				data.append((char *)&color, 4);
-			}
-		}
-
-		for( ; palID < header.nbPalettes ; ++palID) {
-			for(quint32 colorID=0 ; colorID < header.nbColorsPerPalette1 ; ++colorID) {
 				const QRgb color = qRgba(0, 0, 0, 0);
 				data.append((char *)&color, 4);
 			}
@@ -176,6 +186,11 @@ bool TexFile::save(QByteArray &data)
 	}
 
 	return true;
+}
+
+TexFile TexFile::scaled(const QSize &size) const
+{
+	return TexFile(TextureFile(_image.scaled(size), _colorTables), header, colorKeyArray);
 }
 
 void TexFile::debug()
