@@ -203,7 +203,7 @@ QWidget *WalkmeshWidget::buildWalkmeshPage()
 	connect(idList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentId(int)));
 	connect(idVertices[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
 	connect(idVertices[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
-	connect(idVertices[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
+	connect(idVertices[2], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
 	connect(idAccess[0], SIGNAL(valueChanged(int)), SLOT(editIdAccess(int)));
 	connect(idAccess[1], SIGNAL(valueChanged(int)), SLOT(editIdAccess(int)));
 	connect(idAccess[2], SIGNAL(valueChanged(int)), SLOT(editIdAccess(int)));
