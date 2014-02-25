@@ -113,7 +113,7 @@ QByteArray FF8DiscArchive::fileLZS(const FF8DiscFile &file, bool strict)
 	if(readIso((char *)&lzsSize, 4) != 4)	return QByteArray();
 
 	// strict = same size as specified | !strict = same sector count as specified
-	if((strict && file.getSize() != lzsSize+4) || (!strict && (lzsSize + 4)/2048 + (int)(lzsSize%2048 != 0) != file.getSize()/2048 + (int)(file.getSize()%2048 != 0)))
+	if((strict && file.getSize() != lzsSize+4) || (!strict && (lzsSize + 4)/SECTOR_SIZE_DATA + (int)(lzsSize%SECTOR_SIZE_DATA != 0) != file.getSize()/SECTOR_SIZE_DATA + (int)(file.getSize()%SECTOR_SIZE_DATA != 0)))
 		return QByteArray();
 
 	return LZS::decompressAll(readIso(lzsSize).constData(), lzsSize);
@@ -173,12 +173,12 @@ const QList<FF8DiscFile> &FF8DiscArchive::rootDirectory()
 	readIso((char *)&position, 4);
 	readIso((char *)&size, 4);
 
-	if(position >= numSectors || size == 0 || position + size/2048 >= numSectors) {
-		seekIso(posIMG + 5 * 2048); // PAL hack
+	if(position >= numSectors || size == 0 || position + size/SECTOR_SIZE_DATA >= numSectors) {
+		seekIso(posIMG + 5 * SECTOR_SIZE_DATA); // PAL hack
 		readIso((char *)&position, 4);
 		readIso((char *)&size, 4);
 
-		if(position >= numSectors || size == 0 || position + size/2048 >= numSectors) {
+		if(position >= numSectors || size == 0 || position + size/SECTOR_SIZE_DATA >= numSectors) {
 			return rootFiles;
 		}
 
@@ -187,13 +187,13 @@ const QList<FF8DiscFile> &FF8DiscArchive::rootDirectory()
 
 	rootFiles.append(FF8DiscFile(position, size));
 
-	maxPos = posIso() + 2048;
+	maxPos = posIso() + SECTOR_SIZE_DATA;
 
 	while(posIso() < maxPos) {
 		readIso((char *)&position, 4);
 		readIso((char *)&size, 4);
 
-		if(position < numSectors && size != 0 && position + size/2048 < numSectors)
+		if(position < numSectors && size != 0 && position + size/SECTOR_SIZE_DATA < numSectors)
 			rootFiles.append(FF8DiscFile(position, size));
 		else
 			break;
@@ -221,7 +221,7 @@ const QList<FF8DiscFile> &FF8DiscArchive::fieldDirectory()
 	const FF8DiscFile &fieldbinFile = rootFile(2);
 
 //	// nbSectorsLzs != nbSectors
-//	if((lzsSize + 4)/2048 + (int)(lzsSize%2048 != 0) != fieldbinFile.getSize()/2048 + (int)(fieldbinFile.getSize()%2048 != 0))
+//	if((lzsSize + 4)/SECTOR_SIZE_DATA + (int)(lzsSize%SECTOR_SIZE_DATA != 0) != fieldbinFile.getSize()/SECTOR_SIZE_DATA + (int)(fieldbinFile.getSize()%SECTOR_SIZE_DATA != 0))
 //		return fieldFiles;
 
 	const QByteArray fieldBin = fileLZS(fieldbinFile, false);
@@ -248,10 +248,10 @@ const QList<FF8DiscFile> &FF8DiscArchive::fieldDirectory()
 	}
 
 	for(int i=0 ; i<tocSize ; ++i) {
-		memcpy(&position, &fieldBinData[index + i*8], 4);
-		memcpy(&size, &fieldBinData[index + i*8 + 4], 4);
+		memcpy(&position, fieldBinData + index + i*8, 4);
+		memcpy(&size, fieldBinData + index + i*8 + 4, 4);
 
-		if(position < numSectors && size != 0 && position + size/2048 < numSectors)
+		if(position < numSectors && size != 0 && position + size/SECTOR_SIZE_DATA < numSectors)
 			fieldFiles.append(FF8DiscFile(position, size));
 		else
 			break;
