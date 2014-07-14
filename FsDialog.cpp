@@ -28,8 +28,9 @@ FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	extractAction->setShortcut(QKeySequence(tr("Ctrl+E", "Extract")));
 	replaceAction = toolBar->addAction(tr("Remplacer"), this, SLOT(replace()));
 	replaceAction->setShortcut(QKeySequence(tr("Ctrl+R", "Replace")));
-	_addAction = toolBar->addAction(tr("Ajouter"), this, SLOT(add()));
-	_addAction->setShortcut(QKeySequence::New);
+	_addFileAction = toolBar->addAction(tr("Ajouter fichier"), this, SLOT(addFile()));
+	_addFileAction->setShortcut(QKeySequence::New);
+	_addDirAction = toolBar->addAction(tr("Ajouter dossier"), this, SLOT(addDirectory()));
 	removeAction = toolBar->addAction(tr("Supprimer"), this, SLOT(remove()));
 	removeAction->setShortcut(QKeySequence::Delete);
 	renameAction = toolBar->addAction(tr("Renommer"), this, SLOT(rename()));
@@ -57,7 +58,7 @@ FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 
 	connect(list, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), SLOT(doubleClicked(QTreeWidgetItem*)));
 	connect(list, SIGNAL(itemChanged(QTreeWidgetItem*,int)), SLOT(renameOK(QTreeWidgetItem*,int)));
-	connect(list, SIGNAL(fileDropped(QStringList)), SLOT(add(QStringList)));
+	connect(list, SIGNAL(fileDropped(QStringList)), SLOT(addFile(QStringList)));
 	connect(list, SIGNAL(itemSelectionChanged()), SLOT(setButtonsEnabled()));
 	connect(list, SIGNAL(itemSelectionChanged()), SLOT(generatePreview()));
 	connect(up, SIGNAL(released()), SLOT(parentDir()));
@@ -92,7 +93,8 @@ void FsDialog::setButtonsEnabled()
 	{
 		extractAction->setEnabled(false);
 		replaceAction->setEnabled(false);
-		_addAction->setEnabled(true);
+		_addFileAction->setEnabled(true);
+		_addDirAction->setEnabled(true);
 		removeAction->setEnabled(false);
 		renameAction->setEnabled(false);
 	}
@@ -100,7 +102,8 @@ void FsDialog::setButtonsEnabled()
 	{
 		extractAction->setEnabled(true);
 		replaceAction->setEnabled(true);
-		_addAction->setEnabled(true);
+		_addFileAction->setEnabled(true);
+		_addDirAction->setEnabled(true);
 		removeAction->setEnabled(true);
 		renameAction->setEnabled(true);
 	}
@@ -108,14 +111,16 @@ void FsDialog::setButtonsEnabled()
 	{
 		extractAction->setEnabled(true);
 		replaceAction->setEnabled(false);
-		_addAction->setEnabled(true);
+		_addFileAction->setEnabled(true);
+		_addDirAction->setEnabled(true);
 		removeAction->setEnabled(true);
 		renameAction->setEnabled(false);
 	}
 
 	if(fsArchive && !fsArchive->isWritable()) {
 		replaceAction->setEnabled(false);
-		_addAction->setEnabled(false);
+		_addFileAction->setEnabled(false);
+		_addDirAction->setEnabled(false);
 		removeAction->setEnabled(false);
 		renameAction->setEnabled(false);
 	}
@@ -393,7 +398,12 @@ void FsDialog::replace(QString source, QString destination)
 	FsArchive::Error error;
 
 	if (isDir) {
-		error = fsArchive->replaceDir(source, destination, true, &archiveObserver);
+		QList<FsArchive::Error> errors = fsArchive->replaceDir(source, destination, true, &archiveObserver);
+		if (errors.isEmpty()) {
+			error = FsArchive::Ok;
+		} else {
+			error = errors.first(); // FIXME: other errors?
+		}
 	} else {
 		error = fsArchive->replaceFile(source, destination, &archiveObserver);
 	}
@@ -407,17 +417,32 @@ void FsDialog::replace(QString source, QString destination)
 	Config::setValue("replacePath", source.left(source.lastIndexOf('/')));
 }
 
-void FsDialog::add(QStringList sources)
+void FsDialog::addFile(QStringList sources)
+{
+	if(sources.isEmpty()) {
+		sources = QFileDialog::getOpenFileNames(this, tr("Ajouter"), Config::value("addPath").toString());
+		if(sources.isEmpty())	return;
+	}
+
+	add(sources);
+}
+
+void FsDialog::addDirectory(QString source)
+{
+	if(source.isEmpty()) {
+		source = QFileDialog::getExistingDirectory(this, tr("Ajouter"), Config::value("addPath").toString());
+		if(source.isEmpty())	return;
+	}
+
+	add(QStringList(source), true);
+}
+
+void FsDialog::add(QStringList sources, bool fromDir)
 {
 	QStringList destinations;
 	QString source, destination;
 	bool compress;
 	int i, nbFiles;
-
-	if(sources.isEmpty()) {
-		sources = QFileDialog::getOpenFileNames(this, tr("Ajouter"), Config::value("addPath").toString());
-		if(sources.isEmpty())	return;
-	}
 
 	nbFiles = sources.size();
 	for(i=0 ; i<nbFiles ; ++i) {
@@ -426,14 +451,20 @@ void FsDialog::add(QStringList sources)
 		destinations.append(currentPath % source.mid(source.lastIndexOf('/')+1));
 	}
 
-	compress = QMessageBox::question(this, tr("Compression"), tr("Voulez-vous compresser le fichier ?"), tr("Oui"), tr("Non")) == 0;
+	compress = QMessageBox::question(this, tr("Compression"), tr("Voulez-vous compresser le(s) fichier(s) ?"), tr("Oui"), tr("Non")) == 0;
 
 	QProgressDialog progress(tr("Ajout..."), tr("Arrêter"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
 	progress.setWindowModality(Qt::WindowModal);
 	progress.show();
 	ArchiveObserverProgressDialog archiveObserver(&progress);
 
-	QList<FsArchive::Error> errors = fsArchive->append(sources, destinations, compress, &archiveObserver);
+	QList<FsArchive::Error> errors;
+
+	if (fromDir) {
+		errors = fsArchive->appendDir(sources.first(), destinations.first(), compress, &archiveObserver);
+	} else {
+		errors = fsArchive->appendFiles(sources, destinations, compress, &archiveObserver);
+	}
 
 	if(errors.contains(FsArchive::NonWritable)) {
 		QMessageBox::warning(this, tr("Erreur d'ajout"), FsArchive::errorString(FsArchive::NonWritable));

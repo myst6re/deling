@@ -84,8 +84,9 @@ public:
 	bool extractFile(const QString &fileName, const QString &filePath, bool uncompress=true);
 	FsArchive::Error extractFiles(const QStringList &fileNames, const QString &baseFileName, const QString &fileDir, ArchiveObserver *progress, bool uncompress=true);
 	Error replaceFile(const QString &source, const QString &destination, ArchiveObserver *progress);
-	Error replaceDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress);
-	QList<FsArchive::Error> append(const QStringList &sources, const QStringList &destinations, bool compress, ArchiveObserver *progress);
+	QList<FsArchive::Error> replaceDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress);
+	QList<FsArchive::Error> appendFiles(const QStringList &sources, const QStringList &destinations, bool compress, ArchiveObserver *progress);
+	QList<FsArchive::Error> appendDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress);
 	Error remove(QStringList destinations, ArchiveObserver *progress);
 	Error rename(const QStringList &destinations, const QStringList &newDestinations);
 	QMap<QString, FsHeader *> fileList(QString dir) const;

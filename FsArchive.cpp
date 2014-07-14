@@ -601,31 +601,16 @@ FsArchive::Error FsArchive::replaceFile(const QString &source, const QString &de
 	return Ok;
 }
 
-FsArchive::Error FsArchive::replaceDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress)
+QList<FsArchive::Error> FsArchive::replaceDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress)
 {
-	QTime t;t.start();
-
-	QStringList sources, destinations;
-	QDir sourceDir;
-
-	if(!isWritable())	return NonWritable;
-
-	sourceDir = QDir(source);
-
 	// TODO progress
-	remove(fileList(destination).keys(), progress);
-
-	foreach (const QString &relativePath, listDirsRec(&sourceDir)) {
-		sources << sourceDir.absoluteFilePath(relativePath);
-		destinations << destination + "\\" + relativePath;
-		qDebug() << destinations.last();
+	Error err = remove(tocInDirectory(destination), progress);
+	if (err != Ok) {
+		return QList<FsArchive::Error>() << err;
 	}
 
 	// TODO progress
-	append(sources, destinations, compress, progress);
-
-
-	return Ok;
+	return appendDir(source, destination, compress, progress);
 }
 
 QStringList FsArchive::listDirsRec(QDir *sourceDir)
@@ -647,7 +632,7 @@ QStringList FsArchive::listDirsRec(QDir *sourceDir)
 	return paths;
 }
 
-QList<FsArchive::Error> FsArchive::append(const QStringList &sources, const QStringList &destinations, bool compress, ArchiveObserver *progress)
+QList<FsArchive::Error> FsArchive::appendFiles(const QStringList &sources, const QStringList &destinations, bool compress, ArchiveObserver *progress)
 {
 	QTime t;t.start();
 
@@ -714,6 +699,19 @@ QList<FsArchive::Error> FsArchive::append(const QStringList &sources, const QStr
 	qDebug() << "save time" << t.elapsed();
 
 	return errors;
+}
+
+QList<FsArchive::Error> FsArchive::appendDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress)
+{
+	QStringList sources, destinations;
+	QDir sourceDir(source);
+
+	foreach (const QString &relativePath, listDirsRec(&sourceDir)) {
+		sources << sourceDir.absoluteFilePath(relativePath);
+		destinations << destination + "\\" + relativePath;
+	}
+
+	return appendFiles(sources, destinations, compress, progress);
 }
 
 FsArchive::Error FsArchive::remove(QStringList destinations, ArchiveObserver *progress)
