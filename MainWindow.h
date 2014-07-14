@@ -39,7 +39,6 @@
 #include "MiscSearch.h"
 #include "FsDialog.h"
 #include "ConfigDialog.h"
-#include "QTaskBarButton.h"
 
 class MainWindow : public QMainWindow
 {

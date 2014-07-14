@@ -30,8 +30,8 @@ public:
 	QString archivePath() const;
 	FieldPC *getField(int id) const;
 	FsArchive *getFsArchive() const;
-	int open(const QString &, ArchiveObserver *progress, QTaskBarButton *taskBarButton);
-	bool save(ArchiveObserver *progress, QTaskBarButton *taskBarButton, QString save_path=QString());
+	int open(const QString &, ArchiveObserver *progress);
+	bool save(ArchiveObserver *progress, QString save_path=QString());
 	bool openModels();
 	bool openBG(Field *field) const;
 	void restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHeader> > &oldFields) const;

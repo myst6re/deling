@@ -3,6 +3,7 @@
 
 #include <QProgressDialog>
 #include "ArchiveObserverProgressDialog.h"
+#include "QTaskBarButton.h"
 
 class ProgressWidget : public QObject, public ArchiveObserverProgressDialog
 {
@@ -14,12 +15,12 @@ public:
 	};
 
 	ProgressWidget(const QString &labelText, ButtonLabel buttonLabel, QWidget *parent);
-	virtual bool observerWasCanceled() const;
-	virtual void setObserverCanCancel(bool canCancel) const;
+	virtual ~ProgressWidget();
 	virtual void setObserverMaximum(unsigned int max);
 	virtual void setObserverValue(int value);
 private:
 	QProgressDialog _progress;
+	QTaskBarButton _taskBarButton;
 };
 
 #endif // PROGRESSWIDGET_H

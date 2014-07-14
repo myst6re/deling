@@ -42,7 +42,7 @@ FsArchive *FieldArchivePC::getFsArchive() const
 	return archive;
 }
 
-int FieldArchivePC::open(const QString &path, ArchiveObserver *progress, QTaskBarButton *taskBarButton)
+int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 {
 	//qDebug() << QString("open(%1)").arg(path);
 	QString archivePath = path;
@@ -88,8 +88,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress, QTaskBa
 	quint32 freq = fsList.size()>100 ? fsList.size()/100 : 1;
 
 	progress->setObserverMaximum(fsList.size());
-	taskBarButton->setRange(0, fsList.size());
-	taskBarButton->setState(QTaskBarButton::Normal);
+
 	// Ouverture des écrans listés
 	foreach(const QString &entry, fsList) {
 		QCoreApplication::processEvents();
@@ -102,7 +101,6 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress, QTaskBa
 
 		if(currentMap%freq == 0) {
 			progress->setObserverValue(currentMap);
-			taskBarButton->setValue(currentMap);
 		}
 		currentMap++;
 
@@ -199,7 +197,7 @@ void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHea
 	}
 }
 
-bool FieldArchivePC::save(ArchiveObserver *progress, QTaskBarButton *taskBarButton, QString save_path)
+bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 {
 	if(!archive)	return false;
 
@@ -231,8 +229,6 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QTaskBarButton *taskBarButt
 
 	archiveSize = archive->size();
 	progress->setObserverMaximum(archiveSize);
-	taskBarButton->setRange(0, archiveSize);
-	taskBarButton->setState(QTaskBarButton::Normal);
 
 	/*QDir dd("debug");
 	foreach(QString machin, dd.entryList(QStringList() << "*")) {
@@ -325,7 +321,6 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QTaskBarButton *taskBarButt
 //			}
 
 			progress->setObserverValue(pos);
-			taskBarButton->setValue(pos);
 		}
 	}
 
@@ -345,7 +340,6 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QTaskBarButton *taskBarButt
 		archive->setFilePosition(entry, pos);
 
 		progress->setObserverValue(pos);
-		taskBarButton->setValue(pos);
 	}
 	temp.close();
 

@@ -19,7 +19,6 @@
 #define FSARCHIVE_H
 
 #include <QtCore>
-#include "QTaskBarButton.h"
 #include "ArchiveObserver.h"
 #include "Field.h"
 #include "files/MchFile.h"
@@ -42,7 +41,7 @@ public:
 	CharaModel *getModel(int id) const;
 	QHash<int, CharaModel *> *getModels();
 	bool isReadOnly() const;
-	virtual int open(const QString &, ArchiveObserver *progress, QTaskBarButton *taskBarButton)=0;
+	virtual int open(const QString &, ArchiveObserver *progress)=0;
 	virtual bool openModels()=0;
 	virtual bool openBG(Field *field) const=0;
 	bool compileScripts(int &errorFieldID, int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);

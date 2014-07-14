@@ -43,7 +43,7 @@ FF8DiscArchive *FieldArchivePS::getFF8DiscArchive() const
 	return iso;
 }
 
-int FieldArchivePS::open(const QString &path, ArchiveObserver *progress, QTaskBarButton *taskBarButton)
+int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 {
 	Field *field;
 	QString desc;
@@ -80,8 +80,6 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress, QTaskBa
 	}
 
 	progress->setObserverMaximum((tocSize - 77) / 3);
-	taskBarButton->setRange(0, (tocSize - 77) / 3);
-	taskBarButton->setState(QTaskBarButton::Normal);
 
 	for(i=77 ; i<tocSize ; i += 3) {
 		QCoreApplication::processEvents();
@@ -92,7 +90,6 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress, QTaskBa
 		}
 		if(currentMap % freq == 0) {
 			progress->setObserverValue(currentMap);
-			taskBarButton->setValue(currentMap);
 		}
 
 		QByteArray fieldData = iso->fileLZS(fieldFiles.at(i));
