@@ -19,8 +19,8 @@
 #define FSARCHIVE_H
 
 #include <QtCore>
-#include <QtGui/QProgressDialog>
 #include "QTaskBarButton.h"
+#include "ArchiveObserver.h"
 #include "Field.h"
 #include "files/MchFile.h"
 
@@ -42,7 +42,7 @@ public:
 	CharaModel *getModel(int id) const;
 	QHash<int, CharaModel *> *getModels();
 	bool isReadOnly() const;
-	virtual int open(const QString &, QProgressDialog *progress, QTaskBarButton *taskBarButton)=0;
+	virtual int open(const QString &, ArchiveObserver *progress, QTaskBarButton *taskBarButton)=0;
 	virtual bool openModels()=0;
 	virtual bool openBG(Field *field) const=0;
 	bool compileScripts(int &errorFieldID, int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
@@ -54,9 +54,11 @@ public:
 	bool searchScriptTextReverse(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
 	QMultiMap<int, QString> searchAllVars() const;
 	QList<int> searchAllSpells(int fieldID) const;
+	QList<int> searchAllCards(int fieldID) const;
 	QMap<Field *, QList<int> > searchAllBattles() const;
 	QMultiMap<int, Field *> searchAllMoments() const;
 	QMap<int, int> searchAllOpcodeTypes() const;
+	QList<Vertex_s> searchAllSavePoints() const;
 	QStringList fieldList() const;
 	const QStringList &mapList() const;
 	void setMapList(const QStringList &mapList);

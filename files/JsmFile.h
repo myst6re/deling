@@ -76,6 +76,7 @@ public:
 	bool searchReverse(int type, quint64 value, int &groupID, int &methodID, int &opcodeID) const;
 	QList<int> searchAllVars() const;
 	QList<int> searchAllSpells(const QString &fieldName) const;
+	QList<int> searchAllCards(const QString &fieldName) const;
 	QList<int> searchAllMoments() const;
 	void searchAllOpcodeTypes(QMap<int, int> &ret) const;
 	void searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const;

@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "FsDialog.h"
+#include "ArchiveObserverProgressDialog.h"
 
 FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	QWidget(parent), fsArchive(fsArchive), currentPal(0)
@@ -348,8 +349,9 @@ void FsDialog::extract(QStringList sources)
 		QProgressDialog progress(tr("Extraction..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
 		progress.setWindowModality(Qt::WindowModal);
 		progress.show();
+		ArchiveObserverProgressDialog archiveObserver(&progress);
 
-		if(fsArchive->extractFiles(sources, currentPath, destination, &progress) != FsArchive::Ok)
+		if(fsArchive->extractFiles(sources, currentPath, destination, &archiveObserver) != FsArchive::Ok)
 			QMessageBox::warning(this, tr("Erreur"), tr("Les fichiers n'ont pas été extraits !"));
 
 		Config::setValue("extractPath", destination);
@@ -361,24 +363,40 @@ void FsDialog::replace(QString source, QString destination)
 //	bool compress;
 	QTreeWidgetItem *item = list->currentItem();
 
-	if(item==NULL || item->data(0, FILE_TYPE_ROLE).toInt() == DIR)	return;
+	if(item == NULL)	return;
 
-	if(destination.isEmpty())
+	bool isDir = item->data(0, FILE_TYPE_ROLE).toInt() == DIR;
+
+	if(destination.isEmpty()) {
 		destination = currentPath % item->text(0);
+	}
 
 	if(source.isEmpty()) {
 		source = QDir::cleanPath(Config::value("replacePath").toString()) % "/" % item->text(0);
-		source = QFileDialog::getOpenFileName(this, tr("Remplacer"), source);
+		if (isDir) {
+			if (!QFile::exists(source)) {
+				source = QDir::cleanPath(Config::value("replacePath").toString());
+			}
+			source = QFileDialog::getExistingDirectory(this, tr("Remplacer"), source);
+		} else {
+			source = QFileDialog::getOpenFileName(this, tr("Remplacer"), source);
+		}
 		if(source.isEmpty())	return;
 	}
 
 	QProgressDialog progress(tr("Remplacement..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
 	progress.setWindowModality(Qt::WindowModal);
 	progress.show();
+	ArchiveObserverProgressDialog archiveObserver(&progress);
 
 //	compress = fsArchive->fileIsCompressed(destination) && QMessageBox::question(this, tr("Compression"), tr("Voulez-vous compresser le fichier ?"), tr("Oui"), tr("Non")) == 0;
+	FsArchive::Error error;
 
-	FsArchive::Error error = fsArchive->replace(source, destination, &progress);
+	if (isDir) {
+		error = fsArchive->replaceDir(source, destination, true, &archiveObserver);
+	} else {
+		error = fsArchive->replaceFile(source, destination, &archiveObserver);
+	}
 
 	if(error != FsArchive::Ok) {
 		QMessageBox::warning(this, tr("Erreur de remplacement"), FsArchive::errorString(error));
@@ -413,8 +431,9 @@ void FsDialog::add(QStringList sources)
 	QProgressDialog progress(tr("Ajout..."), tr("Arrêter"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
 	progress.setWindowModality(Qt::WindowModal);
 	progress.show();
+	ArchiveObserverProgressDialog archiveObserver(&progress);
 
-	QList<FsArchive::Error> errors = fsArchive->append(sources, destinations, compress, &progress);
+	QList<FsArchive::Error> errors = fsArchive->append(sources, destinations, compress, &archiveObserver);
 
 	if(errors.contains(FsArchive::NonWritable)) {
 		QMessageBox::warning(this, tr("Erreur d'ajout"), FsArchive::errorString(FsArchive::NonWritable));
@@ -466,8 +485,9 @@ void FsDialog::remove(QStringList destinations)
 	QProgressDialog progress(tr("Suppression..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
 	progress.setWindowModality(Qt::WindowModal);
 	progress.show();
+	ArchiveObserverProgressDialog archiveObserver(&progress);
 
-	FsArchive::Error error = fsArchive->remove(destinations, &progress);
+	FsArchive::Error error = fsArchive->remove(destinations, &archiveObserver);
 
 	if(error != FsArchive::Ok) {
 		QMessageBox::warning(this, tr("Erreur de suppression"), FsArchive::errorString(error));

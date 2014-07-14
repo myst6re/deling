@@ -87,7 +87,10 @@ HEADERS += MainWindow.h \
 	Listwidget.h \
     SpecialCharactersDialog.h \
     GZIP.h \
-	QTaskBarButton.h
+	QTaskBarButton.h \
+    ArchiveObserver.h \
+    ArchiveObserverProgressDialog.h \
+    ArchiveObservers.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -168,7 +171,9 @@ SOURCES += MainWindow.cpp \
 	Listwidget.cpp \
     SpecialCharactersDialog.cpp \
     GZIP.cpp \
-    QTaskBarButton.cpp
+    QTaskBarButton.cpp \
+    ArchiveObserverProgressDialog.cpp \
+    ArchiveObservers.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

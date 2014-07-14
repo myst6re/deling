@@ -1044,6 +1044,32 @@ QList<int> JsmFile::searchAllSpells(const QString &fieldName) const
 	return ret;
 }
 
+QList<int> JsmFile::searchAllCards(const QString &fieldName) const
+{
+	int nbOpcode = scripts.data().nbOpcode();
+	unsigned int key;
+	int param;
+	QList<int> ret;
+
+	for(int i=0 ; i<nbOpcode ; ++i)
+	{
+		JsmOpcode op = scripts.opcode(i);
+		key = op.key();
+		param = op.param();
+
+		if(key == JsmOpcode::GETCARD && i > 0) {
+			if(scripts.key(i - 1) == JsmOpcode::PSHN_L) {
+				param = scripts.param(i - 1);
+				ret.append(param);
+			} else {
+				qWarning() << fieldName << "GETCARD without PSHN_L!" << QString::number(scripts.key(i - 1), 16);
+			}
+		}
+	}
+
+	return ret;
+}
+
 QList<int> JsmFile::searchAllMoments() const
 {
 	int nbOpcode = scripts.data().nbOpcode();
@@ -1137,6 +1163,28 @@ void JsmFile::searchAllOpcodeTypes(QMap<int, int> &ret/*, QMap<int, QString> &st
 //		}
 	}
 }
+/*
+void JsmFile::searchAllSavePoints(QList<Vertex_s> &ret)
+{
+	int nbOpcode = scripts.data().nbOpcode();
+	quint32 key;
+	qint32 param;
+
+	for(int i=0 ; i<nbOpcode ; ++i) {
+		JsmOpcode op = scripts.opcode(i);
+		key = op.key();
+		param = op.param();
+
+		switch(key) {
+		case JsmOpcode::SETLINE:
+			// TODO
+			break;
+		case JsmOpcode::SAVEENABLE:
+			// TODO
+			break;
+		}
+	}
+}*/
 
 bool JsmFile::hasSym() const
 {

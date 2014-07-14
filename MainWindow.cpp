@@ -19,6 +19,7 @@
 #include "parameters.h"
 #include "Config.h"
 #include "Data.h"
+#include "ArchiveObserverProgressDialog.h"
 
 MainWindow::MainWindow()
 	: fieldArchive(NULL), field(NULL), currentField(0),
@@ -218,9 +219,10 @@ bool MainWindow::openArchive(const QString &path)
 	QProgressDialog progress(tr("Ouverture..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
 	progress.setWindowModality(Qt::WindowModal);
 	progress.show();
+	ArchiveObserverProgressDialog archiveObserver(&progress);
 
 	QTime t;t.start();
-	int error = fieldArchive->open(path, &progress, taskBarButton);
+	int error = fieldArchive->open(path, &archiveObserver, taskBarButton);
 
 	qDebug() << "openTime" << t.elapsed() << "ms";
 	taskBarButton->setState(QTaskBarButton::Invisible);
@@ -593,8 +595,9 @@ void MainWindow::saveAs(QString path)
 		QProgressDialog progress(tr("Enregistrement..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
 		progress.setWindowModality(Qt::WindowModal);
 		progress.show();
+		ArchiveObserverProgressDialog archiveObserver(&progress);
 
-		ok = ((FieldArchivePC *)fieldArchive)->save(&progress, taskBarButton, path);
+		ok = ((FieldArchivePC *)fieldArchive)->save(&archiveObserver, taskBarButton, path);
 
 		taskBarButton->setState(QTaskBarButton::Invisible);
 	} else {
@@ -734,8 +737,9 @@ void MainWindow::optimizeArchive()
 	QProgressDialog progress(tr("Optimisation..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
 	progress.setWindowModality(Qt::WindowModal);
 	progress.show();
+	ArchiveObserverProgressDialog archiveObserver(&progress);
 
-	((FieldArchivePC *)fieldArchive)->optimiseArchive(&progress);
+	((FieldArchivePC *)fieldArchive)->optimiseArchive(&archiveObserver);
 }
 
 void MainWindow::manageArchive()

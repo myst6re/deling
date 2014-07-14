@@ -42,7 +42,7 @@ FsArchive *FieldArchivePC::getFsArchive() const
 	return archive;
 }
 
-int FieldArchivePC::open(const QString &path, QProgressDialog *progress, QTaskBarButton *taskBarButton)
+int FieldArchivePC::open(const QString &path, ArchiveObserver *progress, QTaskBarButton *taskBarButton)
 {
 	//qDebug() << QString("open(%1)").arg(path);
 	QString archivePath = path;
@@ -87,21 +87,21 @@ int FieldArchivePC::open(const QString &path, QProgressDialog *progress, QTaskBa
 
 	quint32 freq = fsList.size()>100 ? fsList.size()/100 : 1;
 
-	progress->setRange(0, fsList.size());
+	progress->setObserverMaximum(fsList.size());
 	taskBarButton->setRange(0, fsList.size());
 	taskBarButton->setState(QTaskBarButton::Normal);
 	// Ouverture des écrans listés
 	foreach(const QString &entry, fsList) {
 		QCoreApplication::processEvents();
 
-		if(progress->wasCanceled()) {
+		if(progress->observerWasCanceled()) {
 			clearFields();
 			errorMsg = QObject::tr("Ouverture annulée.");
 			return 2;
 		}
 
 		if(currentMap%freq == 0) {
-			progress->setValue(currentMap);
+			progress->setObserverValue(currentMap);
 			taskBarButton->setValue(currentMap);
 		}
 		currentMap++;
@@ -199,7 +199,7 @@ void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHea
 	}
 }
 
-bool FieldArchivePC::save(QProgressDialog *progress, QTaskBarButton *taskBarButton, QString save_path)
+bool FieldArchivePC::save(ArchiveObserver *progress, QTaskBarButton *taskBarButton, QString save_path)
 {
 	if(!archive)	return false;
 
@@ -230,7 +230,7 @@ bool FieldArchivePC::save(QProgressDialog *progress, QTaskBarButton *taskBarButt
 	}
 
 	archiveSize = archive->size();
-	progress->setRange(0, archiveSize);
+	progress->setObserverMaximum(archiveSize);
 	taskBarButton->setRange(0, archiveSize);
 	taskBarButton->setState(QTaskBarButton::Normal);
 
@@ -244,7 +244,7 @@ bool FieldArchivePC::save(QProgressDialog *progress, QTaskBarButton *taskBarButt
 	foreach(Field *field, fields) {
 		if(field->isModified()) {
 			QCoreApplication::processEvents();
-			if(progress->wasCanceled()) {
+			if(progress->observerWasCanceled()) {
 				temp.remove();
 				restoreFieldHeaders(oldFields);
 				archive->setHeader(oldValues);
@@ -324,14 +324,14 @@ bool FieldArchivePC::save(QProgressDialog *progress, QTaskBarButton *taskBarButt
 //				savfi2.close();
 //			}
 
-			progress->setValue(pos);
+			progress->setObserverValue(pos);
 			taskBarButton->setValue(pos);
 		}
 	}
 
 	foreach(const QString &entry, toc) {
 		QCoreApplication::processEvents();
-		if(progress->wasCanceled()) {
+		if(progress->observerWasCanceled()) {
 			temp.remove();
 			restoreFieldHeaders(oldFields);
 			archive->setHeader(oldValues);
@@ -344,13 +344,13 @@ bool FieldArchivePC::save(QProgressDialog *progress, QTaskBarButton *taskBarButt
 //		qDebug() << "laisse2";
 		archive->setFilePosition(entry, pos);
 
-		progress->setValue(pos);
+		progress->setObserverValue(pos);
 		taskBarButton->setValue(pos);
 	}
 	temp.close();
 
-	progress->setEnabled(false);
-	if(progress->wasCanceled()) {
+	progress->setObserverCanCancel(false);
+	if(progress->observerWasCanceled()) {
 		temp.remove();
 		restoreFieldHeaders(oldFields);
 		archive->setHeader(oldValues);
@@ -395,7 +395,7 @@ bool FieldArchivePC::save(QProgressDialog *progress, QTaskBarButton *taskBarButt
 	return true;
 }
 
-bool FieldArchivePC::optimiseArchive(QProgressDialog *progress)
+bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 {
 	if(!archive)	return false;
 
@@ -414,14 +414,14 @@ bool FieldArchivePC::optimiseArchive(QProgressDialog *progress)
 	if(!temp.open(QIODevice::WriteOnly | QIODevice::Truncate))
 		return false;
 
-	progress->setMaximum(archive->size());
+	progress->setObserverMaximum(archive->size());
 	QMap<QString, FsHeader> oldValues = archive->getHeader();
 	QMap<Field *, QMap<QString, FsHeader> > oldFields;
 
 	foreach(Field *field, fields) {
 		QCoreApplication::processEvents();
 
-		if(progress->wasCanceled()) {
+		if(progress->observerWasCanceled()) {
 			temp.remove();
 			restoreFieldHeaders(oldFields);
 			archive->setHeader(oldValues);
@@ -471,13 +471,13 @@ bool FieldArchivePC::optimiseArchive(QProgressDialog *progress)
 		temp.write(fi_data);
 		toc.removeOne(file);
 
-		progress->setValue(pos);
+		progress->setObserverValue(pos);
 	}
 
 	foreach(const QString &entry, toc) {
 		QCoreApplication::processEvents();
 
-		if(progress->wasCanceled()) {
+		if(progress->observerWasCanceled()) {
 			temp.remove();
 			restoreFieldHeaders(oldFields);
 			archive->setHeader(oldValues);
@@ -488,11 +488,11 @@ bool FieldArchivePC::optimiseArchive(QProgressDialog *progress)
 		temp.write(archive->fileData(entry, false));
 		archive->setFilePosition(entry, pos);
 
-		progress->setValue(pos);
+		progress->setObserverValue(pos);
 	}
 
-	progress->setEnabled(false);
-	if(progress->wasCanceled()) {
+	progress->setObserverCanCancel(false);
+	if(progress->observerWasCanceled()) {
 		temp.remove();
 		restoreFieldHeaders(oldFields);
 		archive->setHeader(oldValues);

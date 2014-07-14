@@ -389,6 +389,17 @@ QList<int> FieldArchive::searchAllSpells(int fieldID) const
 	return QList<int>();
 }
 
+QList<int> FieldArchive::searchAllCards(int fieldID) const
+{
+	Field *field = getField(fieldID);
+
+	if(field && field->hasJsmFile()) {
+		return field->getJsmFile()->searchAllCards(field->name());
+	}
+
+	return QList<int>();
+}
+
 QMap<Field *, QList<int> > FieldArchive::searchAllBattles() const
 {
 	QMap<Field *, QList<int> > battles;
@@ -426,6 +437,19 @@ QMap<int, int> FieldArchive::searchAllOpcodeTypes() const
 	foreach(Field *field, fields) {
 		if(field->hasJsmFile()) {
 			field->getJsmFile()->searchAllOpcodeTypes(ret);
+		}
+	}
+
+	return ret;
+}
+
+QList<Vertex_s> FieldArchive::searchAllSavePoints() const
+{
+	QList<Vertex_s> ret;
+
+	foreach(Field *field, fields) {
+		if(field->hasJsmFile()) {
+			//field->getJsmFile()->searchAllSavePoints(ret);
 		}
 	}
 

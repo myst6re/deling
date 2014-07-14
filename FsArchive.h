@@ -21,6 +21,7 @@
 #include <QtGui>
 #include "Data.h"
 #include "LZS.h"
+#include "ArchiveObserver.h"
 
 typedef struct {
 	quint32 size;
@@ -60,7 +61,7 @@ public:
 
 //	FsArchive();
 	FsArchive(const QByteArray &fl_data, const QByteArray &fi_data);
-	FsArchive(const QString &);
+	FsArchive(const QString &path);
 	virtual ~FsArchive();
 
 	void addFile(const QString &path, bool isCompressed);
@@ -69,7 +70,7 @@ public:
 	void rebuildInfos();
 
 	bool fileExists(const QString &path) const;
-	bool dirExists(QString) const;
+	bool dirExists(QString dir) const;
 
 	void setFilePosition(const QString &path, quint32);
 	bool fileIsCompressed(const QString &path) const;
@@ -81,10 +82,11 @@ public:
 	QStringList dirs() const;
 	bool extractFile(const QString &fileName, const QByteArray &fs_data, const QString &filePath, bool uncompress=true);
 	bool extractFile(const QString &fileName, const QString &filePath, bool uncompress=true);
-	FsArchive::Error extractFiles(const QStringList &fileNames, const QString &baseFileName, const QString &fileDir, QProgressDialog *progress, bool uncompress=true);
-	Error replace(const QString &source, const QString &destination, QProgressDialog *progress);
-	QList<FsArchive::Error> append(const QStringList &sources, const QStringList &destinations, bool compress, QProgressDialog *progress);
-	Error remove(QStringList destinations, QProgressDialog *progress);
+	FsArchive::Error extractFiles(const QStringList &fileNames, const QString &baseFileName, const QString &fileDir, ArchiveObserver *progress, bool uncompress=true);
+	Error replaceFile(const QString &source, const QString &destination, ArchiveObserver *progress);
+	Error replaceDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress);
+	QList<FsArchive::Error> append(const QStringList &sources, const QStringList &destinations, bool compress, ArchiveObserver *progress);
+	Error remove(QStringList destinations, ArchiveObserver *progress);
 	Error rename(const QStringList &destinations, const QStringList &newDestinations);
 	QMap<QString, FsHeader *> fileList(QString dir) const;
 	QStringList tocInDirectory(QString dir) const;
@@ -115,6 +117,7 @@ private:
 	quint32 uncompressedFileSize(const QString &path) const;
 	quint32 filePosition(const QString &path) const;
 	void changePositions(FsHeader *start, int diff);
+	static QStringList listDirsRec(QDir *sourceDir);
 
 	bool load(const QString &fl_data, const QByteArray &fi_data);
 	bool load(const QString &path);

@@ -490,13 +490,13 @@ bool FsArchive::extractFile(const QString &fileName, const QString &filePath, bo
 	return true;
 }
 
-FsArchive::Error FsArchive::extractFiles(const QStringList &fileNames, const QString &baseFileName, const QString &fileDir, QProgressDialog *progress, bool uncompress)
+FsArchive::Error FsArchive::extractFiles(const QStringList &fileNames, const QString &baseFileName, const QString &fileDir, ArchiveObserver *progress, bool uncompress)
 {
 	if(!fromFile || !_isOpen)	return SourceCantBeOpened;
 
 	// qDebug() << "extractFiles" << fileNames << fileDir << uncompress;
 
-	progress->setMaximum(fileNames.size());
+	progress->setObserverMaximum(fileNames.size());
 
 	QDir dir(fileDir);
 	int i=0, sizeOfBaseFileName = baseFileName.size();
@@ -504,7 +504,7 @@ FsArchive::Error FsArchive::extractFiles(const QStringList &fileNames, const QSt
 	foreach(QString fileName, fileNames) {
 		QCoreApplication::processEvents();
 
-		if(progress->wasCanceled()) {
+		if(progress->observerWasCanceled()) {
 			return Canceled;
 		}
 
@@ -522,17 +522,17 @@ FsArchive::Error FsArchive::extractFiles(const QStringList &fileNames, const QSt
 		fic.write(fileData(fileName, uncompress));
 		fic.close();
 
-		progress->setValue(i++);
+		progress->setObserverValue(i++);
 	}
 
 	return Ok;
 }
 
-FsArchive::Error FsArchive::replace(const QString &source, const QString &destination, QProgressDialog *progress)
+FsArchive::Error FsArchive::replaceFile(const QString &source, const QString &destination, ArchiveObserver *progress)
 {
 	QTime t;t.start();
 
-	QStringList toc = this->toc();
+	QStringList toc;
 	int pos, i=0;
 	QString save_path = path(), temp_path;
 	QByteArray sourceData;
@@ -552,11 +552,13 @@ FsArchive::Error FsArchive::replace(const QString &source, const QString &destin
 	if(!temp.open(QIODevice::WriteOnly | QIODevice::Truncate))
 		return TempCantBeOpened;
 
-	progress->setMaximum(toc.size());
+	toc = this->toc();
+
+	progress->setObserverMaximum(toc.size());
 
 	foreach(const QString &entry, toc) {
 		QCoreApplication::processEvents();
-		if(progress->wasCanceled()) {
+		if(progress->observerWasCanceled()) {
 			temp.remove();
 			return Canceled;
 		}
@@ -572,7 +574,7 @@ FsArchive::Error FsArchive::replace(const QString &source, const QString &destin
 		}
 
 		setFilePosition(entry, pos);
-		progress->setValue(i++);
+		progress->setObserverValue(i++);
 	}
 
 	if(!saveAs(temp_path)) {
@@ -599,7 +601,53 @@ FsArchive::Error FsArchive::replace(const QString &source, const QString &destin
 	return Ok;
 }
 
-QList<FsArchive::Error> FsArchive::append(const QStringList &sources, const QStringList &destinations, bool compress, QProgressDialog *progress)
+FsArchive::Error FsArchive::replaceDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress)
+{
+	QTime t;t.start();
+
+	QStringList sources, destinations;
+	QDir sourceDir;
+
+	if(!isWritable())	return NonWritable;
+
+	sourceDir = QDir(source);
+
+	// TODO progress
+	remove(fileList(destination).keys(), progress);
+
+	foreach (const QString &relativePath, listDirsRec(&sourceDir)) {
+		sources << sourceDir.absoluteFilePath(relativePath);
+		destinations << destination + "\\" + relativePath;
+		qDebug() << destinations.last();
+	}
+
+	// TODO progress
+	append(sources, destinations, compress, progress);
+
+
+	return Ok;
+}
+
+QStringList FsArchive::listDirsRec(QDir *sourceDir)
+{
+	QStringList paths;
+
+	foreach (const QFileInfo &fileInfo, sourceDir->entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Readable)) {
+		if (fileInfo.isDir()) {
+			sourceDir->cd(fileInfo.fileName());
+			foreach (const QString &subPath, listDirsRec(sourceDir)) {
+				paths << fileInfo.fileName() + "/" + subPath;
+			}
+			sourceDir->cdUp();
+		} else {
+			paths << fileInfo.fileName();
+		}
+	}
+
+	return paths;
+}
+
+QList<FsArchive::Error> FsArchive::append(const QStringList &sources, const QStringList &destinations, bool compress, ArchiveObserver *progress)
 {
 	QTime t;t.start();
 
@@ -614,11 +662,11 @@ QList<FsArchive::Error> FsArchive::append(const QStringList &sources, const QStr
 
 	fs.seek(fs.size());
 
-	progress->setMaximum(nbFiles);
+	progress->setObserverMaximum(nbFiles);
 
 	for(i=0 ; i<nbFiles ; ++i) {
 		QCoreApplication::processEvents();
-		if(progress->wasCanceled())				break;// Stop, don't canceling
+		if(progress->observerWasCanceled())				break;// Stop, don't canceling
 
 		if(fileExists(destinations.at(i))) {
 //			qDebug() << destinations.at(i);
@@ -649,7 +697,7 @@ QList<FsArchive::Error> FsArchive::append(const QStringList &sources, const QStr
 		}
 
 		fs.write(data);
-		progress->setValue(i);
+		progress->setObserverValue(i);
 		errors.append(Ok);
 	}
 
@@ -668,7 +716,7 @@ QList<FsArchive::Error> FsArchive::append(const QStringList &sources, const QStr
 	return errors;
 }
 
-FsArchive::Error FsArchive::remove(QStringList destinations, QProgressDialog *progress)
+FsArchive::Error FsArchive::remove(QStringList destinations, ArchiveObserver *progress)
 {
 	QTime t;t.start();
 
@@ -686,11 +734,11 @@ FsArchive::Error FsArchive::remove(QStringList destinations, QProgressDialog *pr
 	if(!temp.open(QIODevice::WriteOnly | QIODevice::Truncate))
 		return TempCantBeOpened;
 
-	progress->setMaximum(toc.size());
+	progress->setObserverMaximum(toc.size());
 
 	foreach(const QString &entry, toc) {
 		QCoreApplication::processEvents();
-		if(progress->wasCanceled()) {
+		if(progress->observerWasCanceled()) {
 			temp.remove();
 			return Canceled;
 		}
@@ -706,7 +754,7 @@ FsArchive::Error FsArchive::remove(QStringList destinations, QProgressDialog *pr
 		}
 
 		setFilePosition(entry, pos);
-		progress->setValue(i++);
+		progress->setObserverValue(i++);
 	}
 
 	rebuildInfos();
