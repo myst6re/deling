@@ -85,9 +85,9 @@ QByteArray FsHeader::data(const QByteArray &fs_data, bool uncompress, int maxUnc
 		const char *fs_data_const = fs_data.constData();
 		quint32 size=0;
 
-		if(fs_data.size()<=4)	return QByteArray();
+		if(fs_data.size() <= 4)	return QByteArray();
 
-		memcpy(&size, &fs_data_const[_position], 4);
+		memcpy(&size, fs_data_const + _position, 4);
 
 		// fucking size
 		if(size > _uncompressed_size*2)
@@ -96,7 +96,7 @@ QByteArray FsHeader::data(const QByteArray &fs_data, bool uncompress, int maxUnc
 		if(!uncompress)
 			return fs_data.mid(_position, size+4);
 
-		return LZS::decompress(&fs_data_const[_position+4], size, maxUncompress<=0 ? _uncompressed_size : maxUncompress);
+		return LZS::decompress(fs_data_const + _position + 4, size, maxUncompress<=0 ? _uncompressed_size : maxUncompress);
 	}
 
 	return fs_data.mid(_position, _uncompressed_size);

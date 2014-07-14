@@ -61,7 +61,7 @@ bool TexFile::open(const QByteArray &data)
 		return false;
 	}
 
-	debug();
+	//debug();
 
 	quint32 i;
 
@@ -117,7 +117,7 @@ bool TexFile::open(const QByteArray &data)
         }
     }
 
-	debug();
+	//debug();
 
     return true;
 }
@@ -141,7 +141,7 @@ bool TexFile::save(QByteArray &data)
 	updateHeader();
 	data.append((char *)&header, header.version==2 ? sizeof(TexStruct) : sizeof(TexStruct) - 4);
 
-	qDebug() << "texSize header" << data.size();
+	//qDebug() << "texSize header" << data.size();
 
 	if(isPaletted()) {
 		quint32 palID;
@@ -162,7 +162,7 @@ bool TexFile::save(QByteArray &data)
 			}
 		}
 
-		qDebug() << "texSize palettes" << data.size() << _image.height() << _image.width();
+		//qDebug() << "texSize palettes" << data.size() << _image.height() << _image.width();
 
 		for(int y=0 ; y<_image.height() ; ++y) {
 			for(int x=0 ; x<_image.width() ; ++x) {
@@ -170,11 +170,11 @@ bool TexFile::save(QByteArray &data)
 			}
 		}
 
-		qDebug() << "texSize data" << data.size();
+		//qDebug() << "texSize data" << data.size();
 
 		data.append((char *)colorKeyArray.data(), colorKeyArray.size());
 
-		qDebug() << "texSize colorKey" << data.size();
+		//qDebug() << "texSize colorKey" << data.size();
 	} else {
 		QRgb *pixels = (QRgb *)_image.bits();
 		for(int i=0 ; i<_image.width()*_image.height() ; ++i) {
@@ -182,7 +182,7 @@ bool TexFile::save(QByteArray &data)
 			data.append((char *)&color, 2);
 		}
 
-		qDebug() << "texSize data" << data.size();
+		//qDebug() << "texSize data" << data.size();
 	}
 
 	return true;
