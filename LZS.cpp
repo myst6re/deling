@@ -46,7 +46,8 @@ const QByteArray &LZS::decompress(const char *data, int fileSize, int max)
 	const quint8 *endFileData = fileData + fileSize;
 
 	// Impossible case
-	if(sizeAlloc > 2000 * fileSize) {
+	if(quint64(sizeAlloc) > 2000 * quint64(fileSize)) {
+		qWarning() << "LZS::decompress impossible ratio case" << sizeAlloc << 2000 * quint64(fileSize);
 		result.clear();
 		return result;
 	}
