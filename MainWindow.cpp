@@ -19,7 +19,7 @@
 #include "parameters.h"
 #include "Config.h"
 #include "Data.h"
-#include "ArchiveObserverProgressDialog.h"
+#include "ProgressWidget.h"
 
 MainWindow::MainWindow()
 	: fieldArchive(NULL), field(NULL), currentField(0),
@@ -216,13 +216,10 @@ bool MainWindow::openArchive(const QString &path)
 	QTaskBarButton *taskBarButton = new QTaskBarButton(this);
 	taskBarButton->setState(QTaskBarButton::Indeterminate);
 
-	QProgressDialog progress(tr("Ouverture..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
-	progress.setWindowModality(Qt::WindowModal);
-	progress.show();
-	ArchiveObserverProgressDialog archiveObserver(&progress);
+	ProgressWidget progress(tr("Ouverture..."), ProgressWidget::Cancel, this);
 
 	QTime t;t.start();
-	int error = fieldArchive->open(path, &archiveObserver, taskBarButton);
+	int error = fieldArchive->open(path, &progress, taskBarButton);
 
 	qDebug() << "openTime" << t.elapsed() << "ms";
 	taskBarButton->setState(QTaskBarButton::Invisible);
@@ -592,12 +589,9 @@ void MainWindow::saveAs(QString path)
 		QTaskBarButton *taskBarButton = new QTaskBarButton(this);
 		taskBarButton->setState(QTaskBarButton::Indeterminate);
 
-		QProgressDialog progress(tr("Enregistrement..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
-		progress.setWindowModality(Qt::WindowModal);
-		progress.show();
-		ArchiveObserverProgressDialog archiveObserver(&progress);
+		ProgressWidget progress(tr("Enregistrement..."), ProgressWidget::Cancel, this);
 
-		ok = ((FieldArchivePC *)fieldArchive)->save(&archiveObserver, taskBarButton, path);
+		ok = ((FieldArchivePC *)fieldArchive)->save(&progress, taskBarButton, path);
 
 		taskBarButton->setState(QTaskBarButton::Invisible);
 	} else {
@@ -734,12 +728,9 @@ void MainWindow::optimizeArchive()
 							 tr("Lancer l'optimisation !"), tr("Annuler"));
 	if(reponse!=0)	return;
 
-	QProgressDialog progress(tr("Optimisation..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
-	progress.setWindowModality(Qt::WindowModal);
-	progress.show();
-	ArchiveObserverProgressDialog archiveObserver(&progress);
+	ProgressWidget progress(tr("Optimisation..."), ProgressWidget::Cancel, this);
 
-	((FieldArchivePC *)fieldArchive)->optimiseArchive(&archiveObserver);
+	((FieldArchivePC *)fieldArchive)->optimiseArchive(&progress);
 }
 
 void MainWindow::manageArchive()

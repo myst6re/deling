@@ -90,7 +90,8 @@ HEADERS += MainWindow.h \
 	QTaskBarButton.h \
     ArchiveObserver.h \
     ArchiveObserverProgressDialog.h \
-    ArchiveObservers.h
+    ArchiveObservers.h \
+    ProgressWidget.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -173,7 +174,8 @@ SOURCES += MainWindow.cpp \
     GZIP.cpp \
     QTaskBarButton.cpp \
     ArchiveObserverProgressDialog.cpp \
-    ArchiveObservers.cpp
+    ArchiveObservers.cpp \
+    ProgressWidget.cpp
 RESOURCES += Deling.qrc
 QT += opengl
 TRANSLATIONS += deling_en.ts \

@@ -16,7 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "FsDialog.h"
-#include "ArchiveObserverProgressDialog.h"
+#include "ProgressWidget.h"
 
 FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	QWidget(parent), fsArchive(fsArchive), currentPal(0)
@@ -351,12 +351,9 @@ void FsDialog::extract(QStringList sources)
 	}
 	else
 	{
-		QProgressDialog progress(tr("Extraction..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
-		progress.setWindowModality(Qt::WindowModal);
-		progress.show();
-		ArchiveObserverProgressDialog archiveObserver(&progress);
+		ProgressWidget progress(tr("Extraction..."), ProgressWidget::Cancel, this);
 
-		if(fsArchive->extractFiles(sources, currentPath, destination, &archiveObserver) != FsArchive::Ok)
+		if(fsArchive->extractFiles(sources, currentPath, destination, &progress) != FsArchive::Ok)
 			QMessageBox::warning(this, tr("Erreur"), tr("Les fichiers n'ont pas été extraits !"));
 
 		Config::setValue("extractPath", destination);
@@ -389,23 +386,20 @@ void FsDialog::replace(QString source, QString destination)
 		if(source.isEmpty())	return;
 	}
 
-	QProgressDialog progress(tr("Remplacement..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
-	progress.setWindowModality(Qt::WindowModal);
-	progress.show();
-	ArchiveObserverProgressDialog archiveObserver(&progress);
+	ProgressWidget progress(tr("Remplacement..."), ProgressWidget::Cancel, this);
 
 //	compress = fsArchive->fileIsCompressed(destination) && QMessageBox::question(this, tr("Compression"), tr("Voulez-vous compresser le fichier ?"), tr("Oui"), tr("Non")) == 0;
 	FsArchive::Error error;
 
 	if (isDir) {
-		QList<FsArchive::Error> errors = fsArchive->replaceDir(source, destination, true, &archiveObserver);
+		QList<FsArchive::Error> errors = fsArchive->replaceDir(source, destination, true, &progress);
 		if (errors.isEmpty()) {
 			error = FsArchive::Ok;
 		} else {
 			error = errors.first(); // FIXME: other errors?
 		}
 	} else {
-		error = fsArchive->replaceFile(source, destination, &archiveObserver);
+		error = fsArchive->replaceFile(source, destination, &progress);
 	}
 
 	if(error != FsArchive::Ok) {
@@ -453,17 +447,13 @@ void FsDialog::add(QStringList sources, bool fromDir)
 
 	compress = QMessageBox::question(this, tr("Compression"), tr("Voulez-vous compresser le(s) fichier(s) ?"), tr("Oui"), tr("Non")) == 0;
 
-	QProgressDialog progress(tr("Ajout..."), tr("Arrêter"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
-	progress.setWindowModality(Qt::WindowModal);
-	progress.show();
-	ArchiveObserverProgressDialog archiveObserver(&progress);
-
+	ProgressWidget progress(tr("Ajout..."), ProgressWidget::Stop, this);
 	QList<FsArchive::Error> errors;
 
 	if (fromDir) {
-		errors = fsArchive->appendDir(sources.first(), destinations.first(), compress, &archiveObserver);
+		errors = fsArchive->appendDir(sources.first(), destinations.first(), compress, &progress);
 	} else {
-		errors = fsArchive->appendFiles(sources, destinations, compress, &archiveObserver);
+		errors = fsArchive->appendFiles(sources, destinations, compress, &progress);
 	}
 
 	if(errors.contains(FsArchive::NonWritable)) {
@@ -513,12 +503,9 @@ void FsDialog::remove(QStringList destinations)
 	if(QMessageBox::question(this, tr("Supprimer"), tr("Voulez-vous supprimer les éléments sélectionnés ?"), tr("Oui"), tr("Non")) != 0)
 		return;
 
-	QProgressDialog progress(tr("Suppression..."), tr("Annuler"), 0, 0, this, Qt::Dialog | Qt::WindowCloseButtonHint);
-	progress.setWindowModality(Qt::WindowModal);
-	progress.show();
-	ArchiveObserverProgressDialog archiveObserver(&progress);
+	ProgressWidget progress(tr("Suppression..."), ProgressWidget::Cancel, this);
 
-	FsArchive::Error error = fsArchive->remove(destinations, &archiveObserver);
+	FsArchive::Error error = fsArchive->remove(destinations, &progress);
 
 	if(error != FsArchive::Ok) {
 		QMessageBox::warning(this, tr("Erreur de suppression"), FsArchive::errorString(error));
