@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<TS version="2.1" language="en_US">
 <context>
     <name>BGPreview2</name>
     <message>
@@ -2053,179 +2053,194 @@ Dollet Harbor</translation>
 <context>
     <name>FsDialog</name>
     <message>
-        <location filename="FsDialog.cpp" line="26"/>
-        <location filename="FsDialog.cpp" line="330"/>
-        <location filename="FsDialog.cpp" line="334"/>
+        <location filename="FsDialog.cpp" line="27"/>
+        <location filename="FsDialog.cpp" line="336"/>
+        <location filename="FsDialog.cpp" line="340"/>
         <source>Extraire</source>
         <translation>Extract</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="27"/>
+        <location filename="FsDialog.cpp" line="28"/>
         <source>Ctrl+E</source>
         <comment>Extract</comment>
         <translation>Ctrl+E</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="28"/>
-        <location filename="FsDialog.cpp" line="371"/>
+        <location filename="FsDialog.cpp" line="29"/>
+        <location filename="FsDialog.cpp" line="385"/>
+        <location filename="FsDialog.cpp" line="387"/>
         <source>Remplacer</source>
         <translation>Replace</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="29"/>
+        <location filename="FsDialog.cpp" line="30"/>
         <source>Ctrl+R</source>
         <comment>Replace</comment>
         <translation>Ctrl+R</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="30"/>
-        <location filename="FsDialog.cpp" line="400"/>
+        <location filename="FsDialog.cpp" line="423"/>
+        <location filename="FsDialog.cpp" line="433"/>
         <source>Ajouter</source>
         <translation>Add</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="32"/>
-        <location filename="FsDialog.cpp" line="463"/>
+        <location filename="FsDialog.cpp" line="34"/>
+        <location filename="FsDialog.cpp" line="513"/>
         <source>Supprimer</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="34"/>
+        <location filename="FsDialog.cpp" line="31"/>
+        <source>Ajouter fichier</source>
+        <translation>Add File</translation>
+    </message>
+    <message>
+        <location filename="FsDialog.cpp" line="33"/>
+        <source>Ajouter dossier</source>
+        <translation>Add Directory</translation>
+    </message>
+    <message>
+        <location filename="FsDialog.cpp" line="36"/>
         <source>Renommer</source>
         <translation>Rename</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="35"/>
+        <location filename="FsDialog.cpp" line="37"/>
         <source>F2</source>
         <comment>Rename</comment>
         <translation>F2</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="38"/>
+        <location filename="FsDialog.cpp" line="40"/>
         <source>Parent</source>
         <translation>Parent</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="237"/>
-        <location filename="FsDialog.cpp" line="411"/>
-        <location filename="FsDialog.cpp" line="425"/>
-        <location filename="FsDialog.cpp" line="463"/>
+        <location filename="FsDialog.cpp" line="243"/>
+        <location filename="FsDialog.cpp" line="454"/>
+        <location filename="FsDialog.cpp" line="475"/>
+        <location filename="FsDialog.cpp" line="513"/>
         <source>Oui</source>
         <oldsource>oui</oldsource>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="237"/>
-        <location filename="FsDialog.cpp" line="411"/>
-        <location filename="FsDialog.cpp" line="425"/>
-        <location filename="FsDialog.cpp" line="463"/>
+        <location filename="FsDialog.cpp" line="243"/>
+        <location filename="FsDialog.cpp" line="454"/>
+        <location filename="FsDialog.cpp" line="475"/>
+        <location filename="FsDialog.cpp" line="513"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="342"/>
-        <location filename="FsDialog.cpp" line="353"/>
+        <location filename="FsDialog.cpp" line="348"/>
+        <location filename="FsDialog.cpp" line="360"/>
         <source>Erreur</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="342"/>
+        <location filename="FsDialog.cpp" line="348"/>
         <source>Le fichier n&apos;a pas été extrait !</source>
         <translation>The file was not extracted!</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="353"/>
+        <location filename="FsDialog.cpp" line="360"/>
         <source>Les fichiers n&apos;ont pas été extraits !</source>
         <translation>The files were not extracted!</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="348"/>
-        <location filename="FsDialog.cpp" line="375"/>
-        <location filename="FsDialog.cpp" line="466"/>
+        <location filename="FsDialog.cpp" line="454"/>
+        <source>Voulez-vous compresser le(s) fichier(s) ?</source>
+        <translation>Would you compress file(s)?</translation>
+    </message>
+    <message>
+        <location filename="FsDialog.cpp" line="354"/>
+        <location filename="FsDialog.cpp" line="392"/>
+        <location filename="FsDialog.cpp" line="516"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="348"/>
+        <location filename="FsDialog.cpp" line="354"/>
         <source>Extraction...</source>
         <translation>Extract...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="375"/>
+        <location filename="FsDialog.cpp" line="392"/>
         <source>Remplacement...</source>
         <translation>Replace...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="384"/>
+        <location filename="FsDialog.cpp" line="412"/>
         <source>Erreur de remplacement</source>
         <translation>Replacement error</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="411"/>
+        <location filename="FsDialog.cpp" line="454"/>
         <source>Compression</source>
         <translation>Compression</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="411"/>
         <source>Voulez-vous compresser le fichier ?</source>
-        <translation>Would you compress the file?</translation>
+        <translation type="obsolete">Would you compress the file?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="413"/>
+        <location filename="FsDialog.cpp" line="456"/>
         <source>Ajout...</source>
         <translation>Add...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="413"/>
+        <location filename="FsDialog.cpp" line="456"/>
         <source>Arrêter</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="420"/>
-        <location filename="FsDialog.cpp" line="434"/>
+        <location filename="FsDialog.cpp" line="470"/>
+        <location filename="FsDialog.cpp" line="484"/>
         <source>Erreur d&apos;ajout</source>
         <translation>Add error</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="425"/>
+        <location filename="FsDialog.cpp" line="475"/>
         <source>Le fichier existe déjà</source>
         <translation>The file already exists</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="425"/>
+        <location filename="FsDialog.cpp" line="475"/>
         <source>Le fichier existe déjà, voulez-vous le remplacer ?</source>
         <translation>The file already exists, do you want to replace it?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="434"/>
+        <location filename="FsDialog.cpp" line="484"/>
         <source>Un problème est survenu pour un ou plusieurs des fichiers à ajouter :
  - %1</source>
         <translation>There was a problem for one or more files to add:
  - %1</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="463"/>
+        <location filename="FsDialog.cpp" line="513"/>
         <source>Voulez-vous supprimer les éléments sélectionnés ?</source>
         <translation>Do you want to delete the selected items?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="466"/>
+        <location filename="FsDialog.cpp" line="516"/>
         <source>Suppression...</source>
         <translation>Deleting...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="473"/>
+        <location filename="FsDialog.cpp" line="524"/>
         <source>Erreur de suppression</source>
         <translation>Deleting error</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="505"/>
-        <location filename="FsDialog.cpp" line="529"/>
+        <location filename="FsDialog.cpp" line="556"/>
+        <location filename="FsDialog.cpp" line="580"/>
         <source>Erreur de renommage</source>
         <translation>Rename error</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="505"/>
+        <location filename="FsDialog.cpp" line="556"/>
         <source>Caractères interdits utilisés (par exemple : &apos;\&apos; ou &apos;/&apos;)</source>
         <translation>Illegal characters used (eg &apos;\&apos; or &apos;/&apos;)</translation>
     </message>
@@ -2235,7 +2250,7 @@ Dollet Harbor</translation>
     <message>
         <location filename="FsPreviewWidget.cpp" line="75"/>
         <source>Palette %1</source>
-        <translation type="unfinished">Palette %1</translation>
+        <translation>Palette %1</translation>
     </message>
 </context>
 <context>
@@ -2314,117 +2329,117 @@ Dollet Harbor</translation>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="42"/>
+        <location filename="MainWindow.cpp" line="43"/>
         <source>&amp;Fichier</source>
         <translation>&amp;File</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="44"/>
+        <location filename="MainWindow.cpp" line="45"/>
         <source>&amp;Ouvrir...</source>
         <translation>&amp;Open...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="45"/>
+        <location filename="MainWindow.cpp" line="46"/>
         <source>Enregi&amp;strer</source>
         <translation>&amp;Save</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="46"/>
+        <location filename="MainWindow.cpp" line="47"/>
         <source>Enre&amp;gistrer Sous...</source>
         <translation>Sa&amp;ve As...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="47"/>
+        <location filename="MainWindow.cpp" line="48"/>
         <source>Exporter...</source>
         <translation>Export...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="48"/>
+        <location filename="MainWindow.cpp" line="49"/>
         <source>Importer...</source>
         <translation>Import...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="49"/>
+        <location filename="MainWindow.cpp" line="50"/>
         <source>Optimiser l&apos;archive...</source>
         <translation>Optimize the archive...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="51"/>
+        <location filename="MainWindow.cpp" line="52"/>
         <source>Plein écran</source>
         <translation>Fullscreen</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="52"/>
+        <location filename="MainWindow.cpp" line="53"/>
         <source>Fe&amp;rmer</source>
         <translation>C&amp;lose</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="53"/>
+        <location filename="MainWindow.cpp" line="54"/>
         <source>&amp;Quitter</source>
         <translation>&amp;Quit</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="55"/>
+        <location filename="MainWindow.cpp" line="56"/>
         <source>&amp;Outils</source>
         <translation>T&amp;ools</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="56"/>
+        <location filename="MainWindow.cpp" line="57"/>
         <source>Rec&amp;hercher...</source>
         <translation>Fi&amp;nd...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="57"/>
+        <location filename="MainWindow.cpp" line="58"/>
         <source>&amp;Var manager...</source>
         <translation>&amp;Var manager...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="59"/>
+        <location filename="MainWindow.cpp" line="60"/>
         <source>&amp;Lancer FF8...</source>
         <translation>&amp;Launch FF8...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="63"/>
+        <location filename="MainWindow.cpp" line="64"/>
         <source>Op&amp;tions</source>
         <translation>Op&amp;tions</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="65"/>
+        <location filename="MainWindow.cpp" line="66"/>
         <source>?</source>
         <translation>?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="69"/>
+        <location filename="MainWindow.cpp" line="70"/>
         <source>Barre d&apos;outils &amp;principale</source>
         <translation>&amp;Main Toolbar</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="78"/>
+        <location filename="MainWindow.cpp" line="79"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="78"/>
+        <location filename="MainWindow.cpp" line="79"/>
         <source>Fichier</source>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="78"/>
+        <location filename="MainWindow.cpp" line="79"/>
         <source>Description</source>
         <translation>Description</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="92"/>
+        <location filename="MainWindow.cpp" line="93"/>
         <source>Recherche rapide</source>
         <translation>Quick Search</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="610"/>
+        <location filename="MainWindow.cpp" line="613"/>
         <source>Une erreur s&apos;est produite lors de l&apos;enregistrement.</source>
         <translation>An error occurred when saving.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="653"/>
+        <location filename="MainWindow.cpp" line="656"/>
         <source>Fichier nom des scripts écran PC (*.sym)</source>
         <translation>Script names field PC file (*.sym)</translation>
     </message>
@@ -2445,82 +2460,82 @@ Dollet Harbor</translation>
         <translation>Restart the program for the settings to take effect.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="610"/>
-        <location filename="MainWindow.cpp" line="673"/>
-        <location filename="MainWindow.cpp" line="686"/>
-        <location filename="MainWindow.cpp" line="691"/>
-        <location filename="MainWindow.cpp" line="714"/>
-        <location filename="MainWindow.cpp" line="723"/>
-        <location filename="MainWindow.cpp" line="777"/>
+        <location filename="MainWindow.cpp" line="613"/>
+        <location filename="MainWindow.cpp" line="676"/>
+        <location filename="MainWindow.cpp" line="689"/>
+        <location filename="MainWindow.cpp" line="694"/>
+        <location filename="MainWindow.cpp" line="717"/>
+        <location filename="MainWindow.cpp" line="726"/>
+        <location filename="MainWindow.cpp" line="781"/>
         <source>Erreur</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="458"/>
+        <location filename="MainWindow.cpp" line="460"/>
         <source>Sauvegarder</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="458"/>
+        <location filename="MainWindow.cpp" line="460"/>
         <source>Voulez-vous enregistrer les changements de %1 ?</source>
         <translation>Would you like to save changes of %1?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="458"/>
+        <location filename="MainWindow.cpp" line="460"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="458"/>
+        <location filename="MainWindow.cpp" line="460"/>
         <source>Non</source>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="218"/>
-        <location filename="MainWindow.cpp" line="458"/>
-        <location filename="MainWindow.cpp" line="593"/>
-        <location filename="MainWindow.cpp" line="731"/>
+        <location filename="MainWindow.cpp" line="219"/>
+        <location filename="MainWindow.cpp" line="460"/>
+        <location filename="MainWindow.cpp" line="595"/>
         <location filename="MainWindow.cpp" line="734"/>
+        <location filename="MainWindow.cpp" line="737"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="111"/>
+        <location filename="MainWindow.cpp" line="112"/>
         <source>Import/Export</source>
         <translation>Import/Export</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="218"/>
+        <location filename="MainWindow.cpp" line="219"/>
         <source>Ouverture...</source>
         <translation>Opening...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="279"/>
+        <location filename="MainWindow.cpp" line="281"/>
         <source>Erreur d&apos;ouverture</source>
         <translation>Opening error</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="523"/>
+        <location filename="MainWindow.cpp" line="525"/>
         <source>Ouvrir un fichier</source>
         <translation>Open a file</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="523"/>
+        <location filename="MainWindow.cpp" line="525"/>
         <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)</source>
         <translation>Compatible File (*.fs *.iso *.bin);;FS Archive (*.fs);;Image Disk File (*.iso *.bin)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="583"/>
+        <location filename="MainWindow.cpp" line="585"/>
         <source>Enregistrer Sous</source>
         <translation>Save As</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="583"/>
+        <location filename="MainWindow.cpp" line="585"/>
         <source>Archive FS (*.fs)</source>
         <translation>FS Archive (*.fs)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="593"/>
+        <location filename="MainWindow.cpp" line="595"/>
         <source>Enregistrement...</source>
         <translation>Save...</translation>
     </message>
@@ -2529,62 +2544,62 @@ Dollet Harbor</translation>
         <translation type="obsolete">An error occurred when saving the archive.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="673"/>
+        <location filename="MainWindow.cpp" line="676"/>
         <source>Cet écran ne contient pas assez d&apos;éléments pour être exporté.</source>
         <translation>This field does not contains enough information to be exported.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="678"/>
+        <location filename="MainWindow.cpp" line="681"/>
         <source>Exporter</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="714"/>
+        <location filename="MainWindow.cpp" line="717"/>
         <source>Cet écran ne contient pas assez d&apos;éléments pour être importé.</source>
         <translation>This field does not contains enough information to be imported.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="719"/>
+        <location filename="MainWindow.cpp" line="722"/>
         <source>Importer</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="729"/>
+        <location filename="MainWindow.cpp" line="732"/>
         <source>À propos de l&apos;optimisation</source>
         <translation>About optimization</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="730"/>
+        <location filename="MainWindow.cpp" line="733"/>
         <source>L&apos;optimiseur d&apos;archive va modifier l&apos;ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.
 Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de continuer.</source>
         <translation>The optimizer will modify the archive file order to allow an opening much faster with Deling.
 It is strongly recommended to save the archive (fs, fi and fl) before continuing.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="731"/>
+        <location filename="MainWindow.cpp" line="734"/>
         <source>Lancer l&apos;optimisation !</source>
         <translation>Start optimizing!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="734"/>
+        <location filename="MainWindow.cpp" line="737"/>
         <source>Optimisation...</source>
         <translation>Optimization...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="777"/>
+        <location filename="MainWindow.cpp" line="781"/>
         <source>Final Fantasy VIII n&apos;a pas pu être lancé.
 %1</source>
         <translation>Final Fantasy VIII could not be launched.
 %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="896"/>
+        <location filename="MainWindow.cpp" line="900"/>
         <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</source>
         <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;br/&gt; - Aali&lt;br/&gt; - Aladore384&lt;br/&gt;</oldsource>
         <translation>By myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="910"/>
+        <location filename="MainWindow.cpp" line="914"/>
         <source>Fermer</source>
         <translation>Close</translation>
     </message>
@@ -2957,62 +2972,62 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1065"/>
+        <location filename="FsArchive.cpp" line="1111"/>
         <source>Opération réalisée avec succès !</source>
         <translation>Operation successfully completed!</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1067"/>
+        <location filename="FsArchive.cpp" line="1113"/>
         <source>L&apos;archive Fs ne peut pas être modifiée, vérifiez vos droits en écriture.</source>
         <translation>The Fs archive can not be modified, check your rights in writing.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1069"/>
+        <location filename="FsArchive.cpp" line="1115"/>
         <source>Le fichier source ne peut pas être ouvert%1.</source>
         <translation>The source file cannot be opened%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1071"/>
+        <location filename="FsArchive.cpp" line="1117"/>
         <source>Le fichier temp ne peut pas être ouvert%1.</source>
         <translation>The temps file cannont be opened%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1073"/>
+        <location filename="FsArchive.cpp" line="1119"/>
         <source>Le fichier cible ne peut pas être ouvert%1.</source>
         <translation>The target file cannot be opened%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1077"/>
+        <location filename="FsArchive.cpp" line="1123"/>
         <source>Erreur lors de la création des fichiers &apos;*.fi&apos; et &apos;*.fl&apos;.</source>
         <translation>Error while creating files &apos;*.fi&apos; and &apos;*.fl&apos;.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1079"/>
+        <location filename="FsArchive.cpp" line="1125"/>
         <source>Erreur lors de la sauvegarde de l&apos;archive Fs%1.</source>
         <translation>Error while saving the archive Fs%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1081"/>
+        <location filename="FsArchive.cpp" line="1127"/>
         <source>Ce fichier existe déjà dans l&apos;archive%1.</source>
         <translation>This file already exists in the archive%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1083"/>
+        <location filename="FsArchive.cpp" line="1129"/>
         <source>Ce fichier n&apos;existe pas dans l&apos;archive%1.</source>
         <translation>This file does not exists in the archive%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1085"/>
+        <location filename="FsArchive.cpp" line="1131"/>
         <source>Ce fichier est vide%1.</source>
         <translation>This file is empty%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1075"/>
+        <location filename="FsArchive.cpp" line="1121"/>
         <source>Opération annulée.</source>
         <translation>Operation canceled.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1087"/>
+        <location filename="FsArchive.cpp" line="1133"/>
         <source>Erreur inconnue.</source>
         <translation>Unknown error.</translation>
     </message>
@@ -3065,13 +3080,13 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="99"/>
-        <location filename="FieldArchivePS.cpp" line="85"/>
+        <location filename="FieldArchivePS.cpp" line="90"/>
         <source>Ouverture annulée.</source>
         <translation>Opening canceled.</translation>
     </message>
     <message>
-        <location filename="FieldArchivePC.cpp" line="145"/>
-        <location filename="FieldArchivePS.cpp" line="119"/>
+        <location filename="FieldArchivePC.cpp" line="140"/>
+        <location filename="FieldArchivePS.cpp" line="124"/>
         <source>Aucun écran trouvé.</source>
         <translation>No field found.</translation>
     </message>
@@ -3091,12 +3106,12 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation>Unable to open the field dir.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="190"/>
+        <location filename="MainWindow.cpp" line="191"/>
         <source>Enregistrement des données</source>
         <translation>Saving data</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="190"/>
+        <location filename="MainWindow.cpp" line="191"/>
         <source>Les polices de caractères n&apos;ont pas pu être enregistrées !</source>
         <translation>Fonts could not be saved!</translation>
     </message>
@@ -3172,12 +3187,12 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation>Field additionnal fonts PC file (*.tdw)</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="51"/>
+        <location filename="main.cpp" line="75"/>
         <source>Chargement des données</source>
         <translation>Loading data</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="51"/>
+        <location filename="main.cpp" line="75"/>
         <source>Les polices de caractères n&apos;ont pas pu être chargées !</source>
         <translation>Fonts could not be loaded!</translation>
     </message>
@@ -3740,12 +3755,12 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="43"/>
         <source>Utilisez les touches directionnelles pour déplacer la caméra.</source>
-        <translation type="unfinished"></translation>
+        <translation>Use the arrow keys to move the camera.</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="47"/>
         <source>Remettre à 0</source>
-        <translation type="unfinished"></translation>
+        <translation>Reset</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="50"/>
