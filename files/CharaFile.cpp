@@ -31,7 +31,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 	models.clear();
 
 	if(one.size() < 0x800) {
-		qWarning() << "chara file too short" << one.size();
+		qWarning() << "CharaFile::open chara file too short" << one.size();
 		return false;
 	}
 
@@ -66,23 +66,31 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 		}
 
 		if(modelID >> 24 == 0xd0) {
-//			qDebug() << "modelID" << (modelID & 0xFFFF);
+//			qDebug() << "modelID" << (modelID & 0xFFFF) << QString::number(modelID, 16);
 			memcpy(&modelID, constData, 4);
 			constData += 4;
+//			qDebug() << "modelID²" << QString::number(modelID, 16);
 			if(modelID == 0) {
-				QString name(one.mid(constData - startData, 8));
-//				qDebug() << name;
-				constData += 8;
-				memcpy(&modelID, constData, 4);
-				constData += 4;
-				if(modelID != 0xEEEEEEEE) {
-					qWarning() << "Unknown format (3)!" << i << QString::number(modelID, 16);
-					return false;
+				QString name;
+				quint32 nextOffset;
+
+				memcpy(&nextOffset, constData, 4);
+
+				if (nextOffset != 0 && nextOffset != offset + size) { // Not testno format
+					name = one.mid(constData - startData, 8);
+//					qDebug() << name;
+					constData += 8;
+					memcpy(&modelID, constData, 4);
+					constData += 4;
+					if(modelID != 0xEEEEEEEE) {
+						qWarning() << "CharaFile::open Unknown format (3)!" << i << QString::number(modelID, 16);
+						return false;
+					}
 				}
 
 				models.append(CharaModel(name));
 			} else {
-				qWarning() << "Unknown format (2)!" << i << QString::number(modelID, 16);
+				qWarning() << "CharaFile::open Unknown format (2)!" << i << QString::number(modelID, 16);
 				return false;
 			}
 		} else {
@@ -91,9 +99,10 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 			if((modelID & 0xFFFFFF) == 0) {
 				toc.append(0);
 			}
-			if(modelID >> 24 != 0) {
-				qWarning() << "Unknown format (4)!" << i << QString::number(modelID, 16);
-			}
+
+			/*if(modelID >> 24 != 0 && modelID >> 24 != 0x10 && modelID >> 24 != 0x20) {
+				qWarning() << "CharaFile::open Unknown format (4)!" << i << QString::number(modelID, 16);
+			}*/
 //			qDebug() << "tim offset" << QString::number(modelID & 0xFFFFFF, 16) << QString::number((modelID >> 24) & 0xFF, 16);
 			do {
 				memcpy(&timOffset, constData, 4);
@@ -114,24 +123,34 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 
 				toc.append(size);
 
-				QString name(one.mid(constData - startData, 8));
-//				qDebug() << name;
-				constData += 8;
-				memcpy(&modelID, constData, 4);
-				constData += 4;
-				if(modelID != 0xEEEEEEEE) {
-					qWarning() << "Unknown format (6)!" << i << QString::number(modelID, 16) << name << offset << toc;
-//					return false;
+				QString name;
+				quint32 nextOffset;
+
+				memcpy(&nextOffset, constData, 4);
+
+				if (nextOffset != 0 && nextOffset != offset + size) { // Not testno format
+					name = one.mid(constData - startData, 8);
+	//				qDebug() << name;
+					constData += 8;
+					memcpy(&modelID, constData, 4);
+					constData += 4;
+					if(modelID != 0xEEEEEEEE) {
+						//qWarning() << "CharaFile::open Unknown format (6)!" << i << QString::number(modelID, 16) << name << offset << toc;
+	//					return false;
+					}
 				}
+
 				if(!ps) {
 					offset += 4;
 				}
+
 				QByteArray data = one.mid(offset, size);
+
 				if(ps) {
 					quint32 lzsSize=0;
 					memcpy(&lzsSize, data.constData(), 4);
 					if((quint32)data.size() < lzsSize + 4) {
-						qWarning() << "Compression error" << i << lzsSize << data.size();
+						qWarning() << "CharaFile::open Compression error" << i << lzsSize << data.size();
 						return false;
 					}
 					data = LZS::decompressAll(data.constData() + 4, lzsSize);
@@ -139,7 +158,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 				models.append(CharaModel(name, toc, data));
 //				qDebug() << "Tim ajouté" << name;
 			} else {
-				qWarning() << "Unknown format (5)!" << i << QString::number(timOffset, 16);
+				qWarning() << "CharaFile::open Unknown format (5)!" << i << QString::number(timOffset, 16);
 				return false;
 			}
 		}

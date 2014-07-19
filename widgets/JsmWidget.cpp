@@ -384,7 +384,7 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 		items.append(item);
 	}
 
-	qDebug() << data()->getJsmFile()->printCount();
+	// qDebug() << data()->getJsmFile()->printCount();
 
 	return items;
 }

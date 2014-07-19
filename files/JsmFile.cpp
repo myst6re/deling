@@ -88,12 +88,12 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data)
 	}
 
 	if(groupCount != jsm_header.count0 + jsm_header.count1 + jsm_header.count2 + jsm_header.count3) {
-		qWarning() << "JsmFile::open invalid group count!" << groupCount << jsm_header.count0 << jsm_header.count1 << jsm_header.count2 << jsm_header.count3;
 		if(jsm_header.count0 >= 50) 	jsm_header.count0 = 0;
 		if(jsm_header.count1 >= 50) 	jsm_header.count1 = 0;
 		if(jsm_header.count2 >= 50) 	jsm_header.count2 = 0;
 		if(jsm_header.count3 >= 50) 	jsm_header.count3 = 0;
 		if(groupCount != jsm_header.count0 + jsm_header.count1 + jsm_header.count2 + jsm_header.count3) {
+			qWarning() << "JsmFile::open invalid group count!" << groupCount << jsm_header.count0 << jsm_header.count1 << jsm_header.count2 << jsm_header.count3;
 			return false;
 		}
 	}

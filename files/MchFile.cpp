@@ -28,7 +28,7 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 
 	if(mch.size() < 0x100) {
 		if(mch.size() != 33) { // "This is dummy file. Kazuo Suzuki{0a}"
-			qWarning() << "mch file too short" << name << mch.size();
+			qWarning() << "MchFile::open mch file too short" << name << mch.size();
 		}
 		return false;
 	}
@@ -64,7 +64,7 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 //			qDebug() << "No tim";
 //		}
 	} else {
-		qWarning() << "Unknown format (5)!" << QString::number(timOffset, 16);
+		qWarning() << "MchFile::open Unknown format (5)!" << QString::number(timOffset, 16);
 		return false;
 	}
 
