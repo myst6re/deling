@@ -405,6 +405,7 @@ public:
 	JsmOpcode();
 	JsmOpcode(quint32 op);
 	JsmOpcode(unsigned int key, int param);
+	virtual ~JsmOpcode() {}
 	unsigned int key() const;
 	int param() const;
 	quint32 opcode() const;

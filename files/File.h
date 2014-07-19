@@ -24,17 +24,18 @@ class File
 {
 public:
 	File();
-    virtual bool open(const QByteArray &);
-    virtual bool save(QByteArray &);
+	virtual ~File() {}
+	virtual bool open(const QByteArray &);
+	virtual bool save(QByteArray &);
 	bool fromFile(const QString &path);
 	bool toFile(const QString &path);
 	virtual QString filterText() const=0;
 	bool isModified() const;
 	void setModified(bool modified);
-    const QString &errorString() const;
+	const QString &errorString() const;
 protected:
 	bool modified;
-    static QString lastError;
+	static QString lastError;
 };
 
 #endif // FILE_H
