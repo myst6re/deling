@@ -64,15 +64,26 @@ Search::Search(QTreeWidget *fieldList, QWidget *parent)
 	connect(searchScriptTextField, SIGNAL(textEdited(QString)), searchTextField, SLOT(setText(QString)));
 }
 
-Qt::CaseSensitivity Search::sensitivity()
+Qt::CaseSensitivity Search::sensitivity() const
 {
+	QCheckBox *checkBox = currentIndex() == Text
+						  ? this->checkBox
+						  : this->scriptCheckBox;
 	if(checkBox->isChecked())
 		return Qt::CaseSensitive;
 	else
 		return Qt::CaseInsensitive;
 }
 
-FieldArchive::Sorting Search::sorting()
+QString Search::text() const
+{
+	QLineEdit *lineEdit = currentIndex() == Text
+						  ? this->searchTextField
+						  : this->searchScriptTextField;
+	return lineEdit->text();
+}
+
+FieldArchive::Sorting Search::sorting() const
 {
 	switch(fieldList->sortColumn()) {
 	case 1:
@@ -82,6 +93,18 @@ FieldArchive::Sorting Search::sorting()
 	default:
 		return FieldArchive::SortByName;
 	}
+}
+
+QRegExp Search::regexp() const
+{
+	QCheckBox *checkBox = currentIndex() == Text
+						  ? this->checkBox2
+						  : this->scriptCheckBox2;
+
+	if(checkBox->isChecked()) {
+		return QRegExp(text(), sensitivity());
+	}
+	return QRegExp(QRegExp::escape(text()), sensitivity());
 }
 
 QWidget *Search::textPageWidget()
@@ -137,10 +160,12 @@ QWidget *Search::scriptPageWidget1()
 	searchScriptTextField = new QLineEdit(ret);
 	searchScriptTextField->setFocus();
 	scriptCheckBox = new QCheckBox(tr("Sensible à la casse"), ret);
+	scriptCheckBox2 = new QCheckBox(tr("Expression régulière"), ret);
 
 	QVBoxLayout *layout = new QVBoxLayout(ret);
 	layout->addWidget(searchScriptTextField);
 	layout->addWidget(scriptCheckBox);
+	layout->addWidget(scriptCheckBox2);
 	layout->addStretch(1);
 
 	return ret;
@@ -203,6 +228,11 @@ QWidget *Search::scriptPageWidget4()
 	return ret;
 }
 
+Search::Tabs Search::currentIndex() const
+{
+	return Tabs(tabWidget->currentIndex());
+}
+
 void Search::setCurrentIndex(int index)
 {
 	if(index < 2) {
@@ -212,10 +242,10 @@ void Search::setCurrentIndex(int index)
 
 void Search::focusInEvent(QFocusEvent *)
 {
-	if(tabWidget->currentIndex() == 0) {
+	if(currentIndex() == Text) {
 		searchTextField->setFocus();
 		searchTextField->selectAll();
-	} else {
+	} else if (currentIndex() == Script) {
 		searchScriptTextField->setFocus();
 		searchScriptTextField->selectAll();
 	}
@@ -277,11 +307,11 @@ void Search::findNext()
 	buttonNext->setEnabled(false);
 	buttonNext->setDefault(true);
 
-	if(tabWidget->currentIndex() == 0)
+	if(currentIndex() == Text)
 	{
 		found = findNextText();
 	}
-	else if(tabWidget->currentIndex() == 1)
+	else if(currentIndex() == Script)
 	{
 		found = findNextScript();
 	}
@@ -302,11 +332,11 @@ void Search::findPrev()
 	buttonPrev->setEnabled(false);
 	buttonPrev->setDefault(true);
 
-	if(tabWidget->currentIndex() == 0)
+	if(currentIndex() == Text)
 	{
 		found = findPrevText();
 	}
-	else if(tabWidget->currentIndex() == 1)
+	else if(currentIndex() == Script)
 	{
 		found = findPrevScript();
 	}
@@ -322,21 +352,11 @@ void Search::findPrev()
 bool Search::findNextText()
 {
 	int size;
-	QString text = searchTextField->text();
-	Qt::CaseSensitivity sensiti = sensitivity();
 	FieldArchive::Sorting sort = sorting();
-	bool regexp = checkBox2->isChecked();
-
-	QRegExp re;
-	if(regexp) {
-		re = QRegExp(text, sensiti);
-	} else {
-		re = QRegExp(QRegExp::escape(text), sensiti);
-	}
 
 	++from;
 
-	if(fieldArchive->searchText(re, fieldID, textID, from, size, sort))
+	if(fieldArchive->searchText(regexp(), fieldID, textID, from, size, sort))
 	{
 //		qDebug() << "from=" << from << "(MsdFile::findNextText::from=index)";
 		emit foundText(fieldID, textID, from, size);
@@ -356,21 +376,11 @@ bool Search::findNextText()
 bool Search::findPrevText()
 {
 	int index, size;
-	QString text = searchTextField->text();
-	Qt::CaseSensitivity sensiti = sensitivity();
 	FieldArchive::Sorting sort = sorting();
-	bool regexp = checkBox2->isChecked();
-
-	QRegExp re;
-	if(regexp) {
-		re = QRegExp(text, sensiti);
-	} else {
-		re = QRegExp(QRegExp::escape(text), sensiti);
-	}
 
 	--from;
 
-	if(fieldArchive->searchTextReverse(re, fieldID, textID, from, index, size, sort))
+	if(fieldArchive->searchTextReverse(regexp(), fieldID, textID, from, index, size, sort))
 	{
 //		qDebug() << "from=" << from << "(Search::findPrevText::from=index)";
 		emit foundText(fieldID, textID, index, size);
@@ -393,8 +403,7 @@ bool Search::findNextScript()
 	FieldArchive::Sorting sort = sorting();
 
 	if(typeScriptChoice->currentIndex() == 0) {
-		QRegExp re(QRegExp::escape(searchScriptTextField->text()), sensitivity());
-		found = fieldArchive->searchScriptText(re, fieldID, groupID, methodID, opcodeID, sort);
+		found = fieldArchive->searchScriptText(regexp(), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 1) {
 		found = fieldArchive->searchScript(1, searchOpcode->currentIndex() | (searchOpcodeValue->value() << 16), fieldID, groupID, methodID, opcodeID, sort);
@@ -435,8 +444,7 @@ bool Search::findPrevScript()
 	FieldArchive::Sorting sort = sorting();
 
 	if(typeScriptChoice->currentIndex() == 0) {
-		QRegExp re(QRegExp::escape(searchScriptTextField->text()), sensitivity());
-		found = fieldArchive->searchScriptTextReverse(re, fieldID, groupID, methodID, opcodeID, sort);
+		found = fieldArchive->searchScriptTextReverse(regexp(), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 1) {
 		found = fieldArchive->searchScriptReverse(1, searchOpcode->currentIndex(), fieldID, groupID, methodID, opcodeID, sort);

@@ -25,11 +25,16 @@ class Search : public QDialog
 {
     Q_OBJECT
 public:
+	enum Tabs {
+		Text=0, Script
+	};
+
 	explicit Search(QTreeWidget *fieldList, QWidget *parent=0);
 	void setFieldArchive(FieldArchive *);
 	void setSearchText(const QString &text);
 	void setSearchOpcode(int opcode);
 	void setCurrentIndex(int index);
+	Tabs currentIndex() const;
 public slots:
 	void setFieldId(int);
 	void setTextId(int);
@@ -43,8 +48,10 @@ private slots:
 protected:
 	void focusInEvent(QFocusEvent *);
 private:
-	Qt::CaseSensitivity sensitivity();
-	FieldArchive::Sorting sorting();
+	QString text() const;
+	Qt::CaseSensitivity sensitivity() const;
+	FieldArchive::Sorting sorting() const;
+	QRegExp regexp() const;
 	bool findNextText();
 	bool findPrevText();
 	bool findNextScript();
@@ -57,7 +64,7 @@ private:
 	QWidget *scriptPageWidget4();
 	QTabWidget *tabWidget;
 	QLineEdit *searchTextField, *searchScriptTextField;
-	QCheckBox *checkBox, *checkBox2, *scriptCheckBox;
+	QCheckBox *checkBox, *checkBox2, *scriptCheckBox, *scriptCheckBox2;
 	QComboBox *typeScriptChoice, *searchOpcode;
 	QSpinBox *searchOpcodeValue;
 	QComboBox *selectScriptVar;
