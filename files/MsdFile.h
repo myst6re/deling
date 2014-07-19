@@ -37,7 +37,8 @@ public:
 	void insertText(int);
 	void removeText(int);
 	int nbText() const;
-	bool hasText(const QRegExp &txt, int &textID) const;
+	bool hasText(const QRegExp &txt) const;
+	int indexOfText(const QRegExp &txt, int from = 0) const;
 	bool searchText(const QRegExp &txt, int &textID, int &from, int &size) const;
 	bool searchTextReverse(const QRegExp &txt, int &textID, int &from, int &index, int &size) const;
 	bool isJp() const;
