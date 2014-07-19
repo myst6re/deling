@@ -192,7 +192,8 @@ win32 {
 }
 
 OTHER_FILES += Deling.rc \
-	Deling.desktop
+	Deling.desktop \
+	README.md
 
 # Only for static compilation
 # QTPLUGIN     += qjpcodecs
