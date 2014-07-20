@@ -875,7 +875,7 @@ void MainWindow::about()
 
 	font.setPointSize(8);
 
-	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci ? :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li><li>Shard</li></ul>"), &about);
+	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci à :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li><li>Shard</li></ul>"), &about);
 	desc2.setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
 	desc2.setTextFormat(Qt::RichText);
 	desc2.setOpenExternalLinks(true);
