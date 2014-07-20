@@ -863,14 +863,10 @@ void MainWindow::gotoScript(int fieldID, int groupID, int methodID, int opcodeID
 void MainWindow::about()
 {
 	QDialog about(this, Qt::Dialog | Qt::CustomizeWindowHint);
-	about.setFixedSize(200,270);
+	about.setFixedSize(200, 270);
 
 	QFont font;
 	font.setPointSize(12);
-
-	QLabel image(&about);
-	image.setPixmap(QPixmap(":/images/deling_city.png"));
-	image.move(-5, about.height() - 128);
 
 	QLabel desc1(PROG_FULLNAME, &about);
 	desc1.setFont(font);
@@ -879,12 +875,19 @@ void MainWindow::about()
 
 	font.setPointSize(8);
 
-	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci à :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li></ul>"), &about);
+	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci ? :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li><li>Shard</li></ul>"), &about);
 	desc2.setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
 	desc2.setTextFormat(Qt::RichText);
 	desc2.setOpenExternalLinks(true);
-	desc2.move(9,40);
+	desc2.move(9, 40);
 	desc2.setFont(font);
+
+	QFontMetrics fontMetrics(font);
+	about.setFixedHeight(40 + fontMetrics.lineSpacing() * 9 + 128);
+
+	QLabel image(&about);
+	image.setPixmap(QPixmap(":/images/deling_city.png"));
+	image.move(-5, about.height() - 128);
 
 	QLabel desc3(QString("Qt %1").arg(QT_VERSION_STR), &about);
 	QPalette pal = desc3.palette();
