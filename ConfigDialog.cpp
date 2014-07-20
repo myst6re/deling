@@ -97,7 +97,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 
 void ConfigDialog::fillMenuLang()
 {
-	QDir dir(qApp->applicationDirPath());
+	QDir dir(Config::programResourceDir());
 	QStringList stringList = dir.entryList(QStringList("deling_*.qm"), QDir::Files, QDir::Name);
 	langComboBox->addItem("Français");
 	langComboBox->setItemData(0, "fr");
@@ -105,7 +105,7 @@ void ConfigDialog::fillMenuLang()
 	QTranslator translator;
 	int i=1;
 	foreach(const QString &str, stringList) {
-		translator.load(qApp->applicationDirPath()+"/"+str);
+		translator.load(Config::programResourceDir()+"/"+str);
 		langComboBox->addItem(translator.translate("MainWindow", "Français", "Your translation language"));
 		langComboBox->setItemData(i++, str.right(5).left(2));
 	}
@@ -136,7 +136,7 @@ void ConfigDialog::restartNow()
 {
 	QString str_title, str_text;
 	QTranslator translator;
-	if(translator.load(qApp->applicationDirPath() % "/deling_" % Config::value("lang").toString())) {
+	if(translator.load(Config::programResourceDir() % "/deling_" % Config::value("lang").toString())) {
 		str_title = translator.translate("MainWindow", "Paramètres modifiés");
 		str_text = translator.translate("MainWindow", "Relancez le programme pour que les paramètres prennent effet.");
 	}

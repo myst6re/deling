@@ -42,11 +42,14 @@ int main(int argc, char *argv[])
 		app.installTranslator(&qtTranslator);
 
 	QTranslator translator;
-	if(translator.load(qApp->applicationDirPath() % "/deling_" % lang))
+	if(translator.load("deling_" % lang, Config::programResourceDir())){
 		app.installTranslator(&translator);
-	else
+		Config::setValue("lang", lang);
+	}
+		
+	else{
 		Config::setValue("lang", "fr");
-	
+	}
 	if(!FF8Font::listFonts()) {
 		QMessageBox::critical(0, QObject::tr("Chargement des données"), QObject::tr("Les polices de caractères n'ont pas pu être chargées !"));
 		return -1;

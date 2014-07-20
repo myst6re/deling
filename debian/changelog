@@ -1,3 +1,24 @@
+deling (0.8b) saucy; urgency=low
+
+  * Open scripts (JSM file) with peculiar header format
+  * testno's chara.one file is now opened correctly
+  * Disabling text editor when there is no text in the field
+  * Camera Focus Height may be a signed value (Walkmesh -> Misc.)
+  * Walkmesh navigation with mouse and keyboard
+  * Fixing bug in walkmesh editor: third vector doesn't work
+  * Missing files automatically added if edited
+  * Palette can be selected in Import/Export preview
+  * Adding ability to import a directory to the FS archive
+  * BUG fixed: main model textures disappear in script Editor
+  * BUG fixed: search previous text doesn't work
+  * Adding regexp for text script search
+  * Fixing case sensitivity bug, wich not work correctly for text script search
+  * Show Qt version in about window
+  * Adding task bar button effects (Window 7+)
+  * Improvements + optimizations(LZS,tex,disc image,background preview...)
+
+ -- Chris Rizzitello <sithlord48@gmail.com>  Sun, 20 Jul 2014 10:26:13 -0400
+
 deling (0.7b) precise; urgency=low
 
   * Initial packaging 

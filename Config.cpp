@@ -20,6 +20,17 @@
 
 QSettings *Config::settings = 0;
 
+QString Config::programResourceDir()
+{
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+	return qApp->applicationDirPath().startsWith("/usr/bin")
+	       ? "/usr/share/deling"
+	       : qApp->applicationDirPath();
+#else
+	return qApp->applicationDirPath();
+#endif
+}
+
 void Config::set() {
 	if(!settings) {
 #ifdef Q_OS_WIN
