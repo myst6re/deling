@@ -1,6 +1,8 @@
 Deling
 ======
 
+![Deling](images/deling.png)
+
 Dependencies
 ------------
 
