@@ -21,6 +21,5 @@
 *.app
 
 # Qt files
-
 *.pro.user
 *.pro.user.*

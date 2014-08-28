@@ -38,6 +38,7 @@ FsWidget::FsWidget(QWidget *parent) :
 	sortByColumn(0, Qt::AscendingOrder);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
 	setAllColumnsShowFocus(true);
+	setAlternatingRowColors(true);
 }
 
 FsWidget::~FsWidget()
