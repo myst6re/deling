@@ -285,6 +285,7 @@ public:
 	bool seekToFile(IsoFileOrDirectory *isoFile);
 	qint32 diffCountSectors(const QString &path, quint32 newSize) const;
 	
+	IsoFile *fileInfos(const QString &path);
 	IsoDirectory *rootDirectory() const;
 //	const QList<PathTable> &getPathTables1a() const;
 //	const QList<PathTable> &getPathTables1b() const;

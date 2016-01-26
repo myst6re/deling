@@ -42,6 +42,7 @@ public:
 	bool findIMG();
 	bool IMGFound() const;
 	quint8 discNumber() const;
+	bool isJpDemo() const;
 	bool isJp() const;
 	bool isPAL() const;
 	QByteArray file(const FF8DiscFile &file);
@@ -53,6 +54,7 @@ public:
 	const QList<FF8DiscFile> &rootDirectory();
 	int rootCount();
 	const FF8DiscFile &rootFile(int id);
+	const FF8DiscFile &fieldBinFile();
 //	QList<FF8DiscFile> worldmapDirectory();
 //	FF8DiscFile worldmapFile(int id);
 	const QList<FF8DiscFile> &fieldDirectory();
@@ -62,9 +64,10 @@ public:
 //	FF8DiscFile menuFile(int id);
 //	QList<FF8DiscFile> battleDirectory();
 //	FF8DiscFile battleFile(int id);
+	void searchFiles();
 private:
 	quint8 disc;
-	qint64 posIMG;
+	qint64 posIMG, sizeIMG;
 	QList<FF8DiscFile> rootFiles, fieldFiles;
 	bool PAL;
 };

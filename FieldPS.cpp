@@ -17,23 +17,40 @@
  ****************************************************************************/
 #include "FieldPS.h"
 
-FieldDatHeader::FieldDatHeader(const QByteArray &dat)
+HeaderPS::HeaderPS(const QByteArray &data, int count) :
+    sectionCount(count)
 {
-	memcpy(posSections, dat.constData(), 48);// 12 * 4
+	const int size = count * 4;
+	posSections = new quint32[count + 1];
+	memcpy(posSections, data.constData(), size);
 
-	memoryPos = posSections[Inf] - 48;
+	memoryPos = posSections[0] - size;
 
-	for(int i=Inf ; i<=Last ; ++i)
+	for(int i=0 ; i<sectionCount ; ++i) {
 		posSections[i] -= memoryPos;
+	}
+	posSections[count] = data.size();
 }
 
-bool FieldDatHeader::isValid(int datSize) const
+HeaderPS::HeaderPS(const HeaderPS &other) :
+    memoryPos(other.memoryPos), sectionCount(other.sectionCount)
 {
-	if((int)posSections[Last] != datSize) {
+	posSections = new quint32[other.sectionCount + 1];
+	memcpy(posSections, other.posSections, (other.sectionCount + 1) * 4);
+}
+
+HeaderPS::~HeaderPS()
+{
+	delete posSections;
+}
+
+bool HeaderPS::isValid(int size) const
+{
+	if (posSections[sectionCount - 1] != quint32(size)) {
 		return false;
 	}
 
-	for(int i=Inf ; i<Last ; ++i) {
+	for(int i=0 ; i<sectionCount ; ++i) {
 		if(posSections[i] > posSections[i+1]) {
 			return false;
 		}
@@ -42,38 +59,35 @@ bool FieldDatHeader::isValid(int datSize) const
 	return true;
 }
 
-quint32 FieldDatHeader::position(DatSections section) const
+quint32 HeaderPS::position(int section) const
 {
 	return posSections[section];
 }
 
-quint32 FieldDatHeader::size(DatSections section) const
+quint32 HeaderPS::size(int section) const
 {
-	if(section == Last) {
-		return 0;
-	}
-
 	return posSections[section+1] - posSections[section];
 }
 
-void FieldDatHeader::setSize(DatSections section, quint32 newSize)
+QByteArray HeaderPS::sectionData(int section, const QByteArray &data) const
 {
-	if(section == Last) {
-		return;
-	}
+	return data.mid(position(section), size(section));
+}
 
+void HeaderPS::setSize(int section, quint32 newSize)
+{
 	int diff = newSize - size(section);
 
-	for(int i=section+1 ; i<=Last ; ++i) {
+	for(int i=section+1 ; i<sectionCount ; ++i) {
 		posSections[i] += diff;
 	}
 }
 
-QByteArray FieldDatHeader::save() const
+QByteArray HeaderPS::save() const
 {
 	QByteArray header;
 
-	for(int i=Inf ; i<=Last ; ++i) {
+	for(int i=0 ; i<sectionCount ; ++i) {
 		quint32 posSection = posSections[i] + memoryPos;
 		header.append((char *)&posSection, 4);
 	}
@@ -81,10 +95,19 @@ QByteArray FieldDatHeader::save() const
 	return header;
 }
 
-FieldPS::FieldPS(const QByteArray &dat, quint32 isoFieldID)
+FieldDatHeader::FieldDatHeader(const QByteArray &data) :
+    HeaderPS(data, 12)
+{
+}
+
+FieldDatJpDemoHeader::FieldDatJpDemoHeader(const QByteArray &data) :
+    HeaderPS(data, 9)
+{
+}
+
+FieldPS::FieldPS(quint32 isoFieldID)
 	: Field(QString()), _isoFieldID(isoFieldID)
 {
-	open(dat);
 }
 
 FieldPS::~FieldPS()
@@ -119,41 +142,41 @@ bool FieldPS::open(const QByteArray &dat)
 	FieldDatHeader header(dat);
 
 	if(!header.isValid(dat.size())) {
-		qWarning() << "Bad dat header" << dat.size();
+		qWarning() << "FieldPS::open Bad dat header" << dat.size();
 		return false;
 	}
 
 	setName(dat.mid(48, 8));
 
 	/* INF */
-	openFile(Field::Inf, dat.mid(header.position(FieldDatHeader::Inf), header.size(FieldDatHeader::Inf)));
+	openFile(Field::Inf, header.sectionData(FieldDatHeader::Inf, dat));
 
 	/* CA */
-	openFile(Field::Ca, dat.mid(header.position(FieldDatHeader::Ca), header.size(FieldDatHeader::Ca)));
+	openFile(Field::Ca, header.sectionData(FieldDatHeader::Ca, dat));
 
 	/* ID */
-	openFile(Field::Id, dat.mid(header.position(FieldDatHeader::Id), header.size(FieldDatHeader::Id)));
+	openFile(Field::Id, header.sectionData(FieldDatHeader::Id, dat));
 
 	/* MSK */
-	openFile(Field::Msk, dat.mid(header.position(FieldDatHeader::Msk), header.size(FieldDatHeader::Msk)));
+	openFile(Field::Msk, header.sectionData(FieldDatHeader::Msk, dat));
 
 	/* RAT */
-	openFile(Field::Rat, dat.mid(header.position(FieldDatHeader::Rat), header.size(FieldDatHeader::Rat)));
+	openFile(Field::Rat, header.sectionData(FieldDatHeader::Rat, dat));
 
 	/* MRT */
-	openFile(Field::Mrt, dat.mid(header.position(FieldDatHeader::Mrt), header.size(FieldDatHeader::Mrt)));
+	openFile(Field::Mrt, header.sectionData(FieldDatHeader::Mrt, dat));
 
 	/* AKAO */
-	openFile(Field::AkaoList, dat.mid(header.position(FieldDatHeader::AKAO), header.size(FieldDatHeader::AKAO)));
+	openFile(Field::AkaoList, header.sectionData(FieldDatHeader::AKAO, dat));
 
 	/* MSD */
-	openFile(Field::Msd, dat.mid(header.position(FieldDatHeader::Msd), header.size(FieldDatHeader::Msd)));
+	openFile(Field::Msd, header.sectionData(FieldDatHeader::Msd, dat));
 
 	/* PMD */
-	openFile(Field::Pmd, dat.mid(header.position(FieldDatHeader::Pmd), header.size(FieldDatHeader::Pmd)));
+	openFile(Field::Pmd, header.sectionData(FieldDatHeader::Pmd, dat));
 
 	/* JSM */
-	openJsmFile(dat.mid(header.position(FieldDatHeader::Jsm), header.size(FieldDatHeader::Jsm)));
+	openJsmFile(header.sectionData(FieldDatHeader::Jsm, dat));
 
 	setOpen(true);
 	return true;
@@ -293,6 +316,77 @@ bool FieldPS::save(QByteArray &dat, QByteArray &mim)
 	}
 
 	dat.replace(0, 48, header.save());
+
+	return true;
+}
+
+FieldJpDemoPS::FieldJpDemoPS(quint32 isoFieldID)
+	: FieldPS(isoFieldID)
+{
+}
+
+bool FieldJpDemoPS::open(const QByteArray &dat)
+{
+	setOpen(false);
+	// pvp + mim + tdw + pmp (MIM)
+	// inf + ca + id + map + msk + rat + mrt + AKAO + msd + pmd + jsm (DAT)
+	FieldDatJpDemoHeader header(dat);
+
+	if(!header.isValid(dat.size())) {
+		qWarning() << "FieldJpDemoPS::open Bad dat header" << dat.size();
+		return false;
+	}
+
+	setName(dat.mid(36, 8));
+
+	/* INF */
+	openFile(Field::Inf, header.sectionData(FieldDatJpDemoHeader::Inf, dat));
+
+	/* CA */
+	openFile(Field::Ca, header.sectionData(FieldDatJpDemoHeader::Ca, dat));
+
+	/* ID */
+	openFile(Field::Id, header.sectionData(FieldDatJpDemoHeader::Id, dat));
+
+	/* MSK */
+	// openFile(Field::Msk, header.sectionData(FieldDatJpDemoHeader::Msk, dat));
+
+	/* RAT */
+	// openFile(Field::Rat, header.sectionData(FieldDatJpDemoHeader::Rat, dat));
+
+	/* MRT */
+	// openFile(Field::Mrt, header.sectionData(FieldDatJpDemoHeader::Mrt, dat));
+
+	/* AKAO */
+	openFile(Field::AkaoList, header.sectionData(FieldDatJpDemoHeader::AKAO, dat));
+
+	/* MSD */
+	openFile(Field::Msd, header.sectionData(FieldDatJpDemoHeader::Msd, dat));
+
+	/* PMD */
+	// openFile(Field::Pmd, header.sectionData(FieldDatJpDemoHeader::Pmd, dat));
+
+	/* JSM */
+	openJsmFile(header.sectionData(FieldDatJpDemoHeader::Jsm, dat), QByteArray(), true);
+
+	setOpen(true);
+	return true;
+}
+
+bool FieldJpDemoPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk)
+{
+	const char *constData = dat.constData();
+	quint32 posSectionInf, posSectionMap, posSectionMsk, memoryPos;
+
+	memcpy(&posSectionInf, constData, 4);
+	memcpy(&posSectionMap, constData + 12, 4);
+	memcpy(&posSectionMsk, constData + 16, 4);
+
+	memoryPos = posSectionInf - 36;
+
+	openBackgroundFile(dat.mid(posSectionMap - memoryPos, posSectionMsk-posSectionMap), mim);
+
+	openCharaFile(lzk);
 
 	return true;
 }

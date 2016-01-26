@@ -62,7 +62,7 @@ bool JsmFile::open(QString path)
 	return open(jsm_file.readAll());
 }
 
-bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data)
+bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data, bool old_format)
 {
 	const char *jsm_data = jsm.constData();
 	int jsm_data_size = jsm.size();
@@ -98,18 +98,36 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data)
 		}
 	}
 
-	for(int i=0 ; i<groupCount ; ++i) {
-		memcpy(&group, &jsm_data[8+i*2], 2);
-		label = group >> 7;
-		count = group & 0x7F;
+	if (!old_format) {
+		for(int i=0 ; i<groupCount ; ++i) {
+			memcpy(&group, &jsm_data[8+i*2], 2);
+			label = group >> 7;
+			count = group & 0x7F;
 
-		if(label+count+1 >= scriptCount) {
-			qWarning() << "JsmFile::open error (3)" << label << count << scriptCount;
-			return false;
+			if(label+count+1 >= scriptCount) {
+				old_format = true; // Retry in old format mode
+				break;
+			}
+
+			linkGroupList.insert(label, JsmGroup(i, label, count));
 		}
-
-		linkGroupList.insert(label, JsmGroup(i, label, count));
 	}
+
+	if (old_format) {
+		for(int i=0 ; i<groupCount ; ++i) {
+			memcpy(&group, &jsm_data[8+i*2], 2);
+			label = group & 0xFF;
+			count = group >> 8;
+
+			if(label+count+1 >= scriptCount) {
+				qWarning() << "JsmFile::open error (3)" << label << count << scriptCount;
+				return false;
+			}
+
+			linkGroupList.insert(label, JsmGroup(i, label, count));
+		}
+	}
+
 	QList<JsmGroup> groupList = linkGroupList.values();
 	QList<JsmScript> scriptList;
 

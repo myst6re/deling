@@ -27,27 +27,72 @@ class HeaderPS
 	int sectionCount;
 public:
 	explicit HeaderPS(const QByteArray &data, int count);
+	HeaderPS(const HeaderPS &other);
+	virtual ~HeaderPS();
 	bool isValid(int size) const;
 	quint32 position(int section) const;
 	quint32 size(int section) const;
+	QByteArray sectionData(int section, const QByteArray &data) const;
 	void setSize(int section, quint32 newSize);
 	QByteArray save() const;
 };
 
-class FieldDatHeader
+class FieldDatHeader : public HeaderPS
 {
-	quint32 posSections[12];
-	int memoryPos;
 public:
 	enum DatSections {
 		Inf, Ca, Id, Map, Msk, Rat, Mrt, AKAO, Msd, Pmd, Jsm, Last
 	};
-	explicit FieldDatHeader(const QByteArray &dat);
-	bool isValid(int datSize) const;
-	quint32 position(DatSections section) const;
-	quint32 size(DatSections section) const;
-	void setSize(DatSections section, quint32 newSize);
-	QByteArray save() const;
+	explicit FieldDatHeader(const QByteArray &data);
+	virtual ~FieldDatHeader() {}
+	inline quint32 position(DatSections section) const {
+		return HeaderPS::position(section);
+	}
+	inline quint32 size(DatSections section) const {
+		return HeaderPS::size(section);
+	}
+	inline void setSize(DatSections section, quint32 newSize) {
+		HeaderPS::setSize(section, newSize);
+	}
+private:
+	inline quint32 position(int section) const {
+		return HeaderPS::position(section);
+	}
+	inline quint32 size(int section) const {
+		return HeaderPS::size(section);
+	}
+	inline void setSize(int section, quint32 newSize) {
+		HeaderPS::setSize(section, newSize);
+	}
+};
+
+class FieldDatJpDemoHeader : public HeaderPS
+{
+public:
+	enum DatSections {
+		Inf, Ca, Id, Map, InfPartial, Msd, AKAO, Jsm, Last
+	};
+	explicit FieldDatJpDemoHeader(const QByteArray &data);
+	virtual ~FieldDatJpDemoHeader() {}
+	inline quint32 position(DatSections section) const {
+		return HeaderPS::position(section);
+	}
+	inline quint32 size(DatSections section) const {
+		return HeaderPS::size(section);
+	}
+	inline void setSize(DatSections section, quint32 newSize) {
+		HeaderPS::setSize(section, newSize);
+	}
+private:
+	inline quint32 position(int section) const {
+		return HeaderPS::position(section);
+	}
+	inline quint32 size(int section) const {
+		return HeaderPS::size(section);
+	}
+	inline void setSize(int section, quint32 newSize) {
+		HeaderPS::setSize(section, newSize);
+	}
 };
 
 class FieldPS : public Field
@@ -58,19 +103,29 @@ public:
 	};
 
 
-	FieldPS(const QByteArray &dat, quint32 isoFieldID);
+	FieldPS(quint32 isoFieldID);
 	virtual ~FieldPS();
 
 	bool isPc() const;
 	bool hasFiles2() const;
 //	void setIsoFieldID(quint32 isoFieldID);
 	quint32 isoFieldID() const;
-	bool open(const QByteArray &dat);
-	bool open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
+	virtual bool open(const QByteArray &dat);
+	virtual bool open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
 	bool save(QByteArray &dat, QByteArray &mim);
 
 private:
 	quint32 _isoFieldID;
+};
+
+class FieldJpDemoPS : public FieldPS
+{
+public:
+	FieldJpDemoPS(quint32 isoFieldID);
+	virtual ~FieldJpDemoPS() {}
+
+	bool open(const QByteArray &dat);
+	bool open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
 };
 
 #endif // FIELDPS_H

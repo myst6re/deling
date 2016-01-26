@@ -108,7 +108,7 @@ protected:
 	void setName(const QString &name);
 
 	void openFile(FileType fileType, const QByteArray &data);
-	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray());
+	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray(), bool oldFormat = false);
 	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
 	void openCharaFile(const QByteArray &one);
 	virtual void setFile(FileType fileType);

@@ -61,12 +61,12 @@ void Field::openFile(FileType fileType, const QByteArray &data)
 	}
 }
 
-void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym)
+void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym, bool oldFormat)
 {
 	deleteFile(Jsm);
 	JsmFile *f = (JsmFile *)newFile(Jsm);
 
-	if(!f->open(jsm, sym)) {
+	if(!f->open(jsm, sym, oldFormat)) {
 		qWarning() << "Field::openJsmFile error" << _name;
 		deleteFile(Jsm);
 	}

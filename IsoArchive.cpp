@@ -986,6 +986,11 @@ bool IsoArchive::seekToFile(IsoFileOrDirectory *isoFile)
 	return seekToSector(isoFile->location());
 }
 
+IsoFile *IsoArchive::fileInfos(const QString &path)
+{
+	return _rootDirectory->file(path);
+}
+
 qint32 IsoArchive::diffCountSectors(const QString &path, quint32 newSize) const
 {
 	IsoFileOrDirectory *isoFile = _rootDirectory->fileOrDirectory(path);

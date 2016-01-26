@@ -45,7 +45,7 @@ FF8DiscArchive *FieldArchivePS::getFF8DiscArchive() const
 
 int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 {
-	Field *field;
+	FieldPS *field;
 	QString desc;
 	int i, currentMap=0, fieldID=0;
 
@@ -63,6 +63,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 
 	const QList<FF8DiscFile> &fieldFiles = iso->fieldDirectory();
 	int tocSize = fieldFiles.size();
+	const int tocStart = iso->isJpDemo() ? 0 : 77;
 
 	if(tocSize == 0) {
 		errorMsg = QObject::tr("Impossible d'ouvrir le dossier field.");
@@ -73,15 +74,15 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 	setMapList(QStringList());
 	int indexOf;
 
-	quint32 freq = ((tocSize - 77) / 3)/100;
+	quint32 freq = ((tocSize - tocStart) / 3)/100;
 
 	if(freq == 0) {
 		freq = 1;
 	}
 
-	progress->setObserverMaximum((tocSize - 77) / 3);
+	progress->setObserverMaximum((tocSize - tocStart) / 3);
 
-	for(i=77 ; i<tocSize ; i += 3) {
+	for(i=tocStart ; i<tocSize ; i += 3) {
 		QCoreApplication::processEvents();
 		if(progress->observerWasCanceled()) {
 			clearFields();
@@ -95,8 +96,12 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 		QByteArray fieldData = iso->fileLZS(fieldFiles.at(i));
 
 		if(!fieldData.isEmpty()) {
-			field = new FieldPS(fieldData, i);
-			if(field->isOpen()) {
+			if (iso->isJpDemo()) {
+				field = new FieldJpDemoPS(i);
+			} else {
+				field = new FieldPS(i);
+			}
+			if(field->open(fieldData)) {
 				if(field->hasJsmFile())
 					desc = Data::location(field->getJsmFile()->mapID());
 				else
@@ -165,17 +170,33 @@ bool FieldArchivePS::openBG(Field *field) const
 	if(isoFieldID < 1 || (int)isoFieldID+1 >= iso->fieldCount())
 		return false;
 
-	QByteArray mim = iso->fileLZS(iso->fieldFile(isoFieldID-1));
-	if(mim.isEmpty())
-		return false;
+	QByteArray dat, mim, lzk;
 
-	QByteArray dat = iso->fileLZS(iso->fieldFile(isoFieldID));
-	if(dat.isEmpty())
-		return false;
+	if (iso->isJpDemo()) {
+		lzk = iso->fileLZS(iso->fieldFile(isoFieldID-1));
+		if(lzk.isEmpty())
+			return false;
 
-	QByteArray lzk = iso->file(iso->fieldFile(isoFieldID+1));
-	if(lzk.isEmpty())
-		return false;
+		dat = iso->fileLZS(iso->fieldFile(isoFieldID));
+		if(dat.isEmpty())
+			return false;
+
+		mim = iso->fileLZS(iso->fieldFile(isoFieldID+1));
+		if(mim.isEmpty())
+			return false;
+	} else {
+		mim = iso->fileLZS(iso->fieldFile(isoFieldID-1));
+		if(mim.isEmpty())
+			return false;
+	
+		dat = iso->fileLZS(iso->fieldFile(isoFieldID));
+		if(dat.isEmpty())
+			return false;
+	
+		lzk = iso->file(iso->fieldFile(isoFieldID+1));
+		if(lzk.isEmpty())
+			return false;
+	}
 
 	return fieldPS->open2(dat, mim, lzk);
 }

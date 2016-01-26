@@ -49,19 +49,23 @@ FF8DiscArchive::FF8DiscArchive(const QString &name) :
 
 bool FF8DiscArchive::findIMG()
 {
-	if(seekToFile("FF8DISC1.IMG")) {
+	IsoFile *file;
+	if((file = fileInfos("FF8DISC1.IMG"))) {
 		disc = 1;
-	} else if(seekToFile("FF8DISC2.IMG")) {
+	} else if((file = fileInfos("FF8DISC2.IMG"))) {
 		disc = 2;
-	} else if(seekToFile("FF8DISC3.IMG")) {
+	} else if((file = fileInfos("FF8DISC3.IMG"))) {
 		disc = 3;
-	} else if(seekToFile("FF8DISC4.IMG")) {
+	} else if((file = fileInfos("FF8DISC4.IMG"))) {
 		disc = 4;
+	} else if((file = fileInfos("FF8TRY.IMG"))) { // JP Demo disc
+		disc = 10;
 	} else {
 		return false;
 	}
 
-	posIMG = posIso();
+	posIMG = file->location() * SECTOR_SIZE_DATA;
+	sizeIMG = file->size();
 
 	return true;
 }
@@ -85,6 +89,11 @@ bool FF8DiscArchive::isJp() const
 	}
 
 	return false;
+}
+
+bool FF8DiscArchive::isJpDemo() const
+{
+	return disc == 10;
 }
 
 bool FF8DiscArchive::isPAL() const
@@ -166,23 +175,29 @@ const QList<FF8DiscFile> &FF8DiscArchive::rootDirectory()
 {
 	if(!rootFiles.isEmpty() || !IMGFound())		return rootFiles;
 
-	quint32 position, size, numSectors = sectorCount();
+	quint32 position, size, numSectors = sizeIMG / SECTOR_SIZE_DATA;
 	qint64 maxPos;
 
-	seekIso(posIMG);
-	readIso((char *)&position, 4);
-	readIso((char *)&size, 4);
-
-	if(position >= numSectors || size == 0 || position + size/SECTOR_SIZE_DATA >= numSectors) {
-		seekIso(posIMG + 5 * SECTOR_SIZE_DATA); // PAL hack
+	if (!isJpDemo()) {
+		seekIso(posIMG);
 		readIso((char *)&position, 4);
 		readIso((char *)&size, 4);
-
+	
 		if(position >= numSectors || size == 0 || position + size/SECTOR_SIZE_DATA >= numSectors) {
-			return rootFiles;
+			seekIso(posIMG + 5 * SECTOR_SIZE_DATA); // PAL hack
+			readIso((char *)&position, 4);
+			readIso((char *)&size, 4);
+			PAL = true;
 		}
+	} else {
+		seekToFile("FF8.EXE");
+		seekIso(posIso() + 0x33510);
+		readIso((char *)&position, 4);
+		readIso((char *)&size, 4);
+	}
 
-		PAL = true;
+	if(position >= numSectors || size == 0 || position + size/SECTOR_SIZE_DATA >= numSectors) {
+		return rootFiles;
 	}
 
 	rootFiles.append(FF8DiscFile(position, size));
@@ -212,39 +227,69 @@ const FF8DiscFile &FF8DiscArchive::rootFile(int id)
 	return rootDirectory().at(id);
 }
 
+const FF8DiscFile &FF8DiscArchive::fieldBinFile()
+{
+	if (!isJpDemo()) {
+		return rootFile(2);
+	}
+	return rootFile(1);
+}
+
 const QList<FF8DiscFile> &FF8DiscArchive::fieldDirectory()
 {
-	if(!fieldFiles.isEmpty())		return fieldFiles;
+	if(!fieldFiles.isEmpty() || 2 >= rootCount())		return fieldFiles;
 
-	quint32 position, size, numSectors = sectorCount();
-	if(2 >= rootCount())		return fieldFiles;
-	const FF8DiscFile &fieldbinFile = rootFile(2);
+	quint32 position, size, numSectors = sizeIMG / SECTOR_SIZE_DATA;
+	const FF8DiscFile &fieldbinFile = fieldBinFile();
 
 //	// nbSectorsLzs != nbSectors
 //	if((lzsSize + 4)/SECTOR_SIZE_DATA + (int)(lzsSize%SECTOR_SIZE_DATA != 0) != fieldbinFile.getSize()/SECTOR_SIZE_DATA + (int)(fieldbinFile.getSize()%SECTOR_SIZE_DATA != 0))
 //		return fieldFiles;
 
-	const QByteArray fieldBin = fileLZS(fieldbinFile, false);
+	const QByteArray fieldBin = !isJpDemo() ? fileLZS(fieldbinFile, false) : file(fieldbinFile);
 	if(fieldBin.isEmpty())
 		return fieldFiles;
+
 	const char *fieldBinData = fieldBin.constData();
 	int index, lastIndex, tocSize;
-	if((index = fieldBin.indexOf(QByteArray("\x04\x00\x05\x24\x18\x00\xbf\x8f\x14\x00\xb1\x8f\x10\x00\xb0\x8f\x20\x00\xbd\x27\x08\x00\xe0\x03\x00\x00\x00\x00", 28))) != -1) {
-		index += 28;// with main field models
-	} else {
-		qWarning() << "bin invalide : index introuvable !";
-		return fieldFiles;
-//		index = jap ? 0x28668 : 0x286a0;// with main field models
-	}
-	if((lastIndex = fieldBin.indexOf(QByteArray("\x00\x00\x01\x00\x02\x00\x03\x00", 8), index)) != -1) {
-		if((lastIndex - index) % 8 != 0) {
-			qWarning() << "bin invalide : lastIndex invalide !" << index << lastIndex;
+	if(isJpDemo()) {
+		if((index = fieldBin.indexOf(QByteArray("\x76\xDF\x32\x6F\x34\xA8\xD0\xB8\x63\xC8\xC0\xEC\x4B\xE8\x17\xF8", 16))) != -1) {
+			index += 16;// with main field models
+		} else {
+			qWarning() << "bin invalide : index introuvable !";
+			return fieldFiles;
+//			index = jap ? 0x28668 : 0x286a0;// with main field models
+		}
+
+		if((lastIndex = fieldBin.indexOf(QByteArray(16, '\0') + QByteArray("\x00\x10\x00\x10", 4), index)) != -1) {
+			if((lastIndex - index) % 8 != 0) {
+				qWarning() << "bin invalide : lastIndex invalide !" << index << lastIndex;
+				return fieldFiles;
+			}
+			tocSize = (lastIndex - index) / 8;
+		} else {
+			qWarning() << "bin invalide : lastIndex introuvable !" << index;
 			return fieldFiles;
 		}
-		tocSize = (lastIndex - index) / 8;
 	} else {
-		qWarning() << "bin invalide : lastIndex introuvable !" << index;
-		return fieldFiles;
+		if((index = fieldBin.indexOf(QByteArray("\x04\x00\x05\x24\x18\x00\xbf\x8f\x14\x00\xb1\x8f\x10\x00\xb0\x8f\x20\x00\xbd\x27\x08\x00\xe0\x03\x00\x00\x00\x00", 28))) != -1) {
+			index += 28;// with main field models
+		} else {
+			qWarning() << "bin invalide : index introuvable !";
+			return fieldFiles;
+//			index = jap ? 0x28668 : 0x286a0;// with main field models
+		}
+
+		if((lastIndex = fieldBin.indexOf(QByteArray("\x00\x00\x01\x00\x02\x00\x03\x00", 8), index)) != -1) {
+			if((lastIndex - index) % 8 != 0) {
+				qWarning() << "bin invalide : lastIndex invalide !" << index << lastIndex;
+				return fieldFiles;
+			}
+			tocSize = (lastIndex - index) / 8;
+		} else {
+			qWarning() << "bin invalide : lastIndex introuvable !" << index;
+			return fieldFiles;
+		}
 	}
 
 	for(int i=0 ; i<tocSize ; ++i) {
@@ -268,4 +313,83 @@ int FF8DiscArchive::fieldCount()
 const FF8DiscFile &FF8DiscArchive::fieldFile(int id)
 {
 	return fieldDirectory().at(id);
+}
+
+void FF8DiscArchive::searchFiles()
+{
+	if(!IMGFound())		return;
+
+	QList<qint64> sectors;
+
+	quint32 firstSector = posIMG / SECTOR_SIZE_DATA,
+	        numSectors = sizeIMG / SECTOR_SIZE_DATA;
+	for (qint64 sector = firstSector; sector < numSectors; ++sector) {
+		bool emptyBefore = false, filledAfter = false;
+		if (sector > 0) {
+			if (sector == firstSector) {
+				emptyBefore = true;
+			} else {
+				seekToSector(sector);
+				seekIso(posIso() - 64);
+				if (readIso(64) == QByteArray(64, '\0')) {
+					emptyBefore = true;
+				}
+			}
+		}
+
+		seekToSector(sector);
+		if (readIso(64) != QByteArray(64, '\0')) {
+			filledAfter = true;
+		}
+
+		if (emptyBefore && filledAfter) {
+			sectors << sector;
+		}
+	}
+
+	sectors << numSectors;
+
+	for (qint64 i = 0; i < sectors.size() - 1; ++i) {
+		qint64 sector = sectors.at(i),
+		       sectorCount = sectors.at(i + 1) - sector;
+
+		seekToSector(sector);
+		QByteArray data = readIso(64);
+		QString type;
+		quint32 fileSize = 0;
+		if (data.startsWith("AKAO")) {
+			type = "AKAO";
+		} else if (data.startsWith("SMN")) {
+			type = "SMN -> AKAO ?";
+		} else if (data.startsWith("SMJ")) {
+			type = "SMJ";
+		} else if (data.startsWith("SMR")) {
+			type = "SMR";
+		} else {
+			quint32 firstBytes;
+			memcpy(&firstBytes, data.constData(), 4);
+			if (firstBytes == 16) {
+				type = "TIM";
+			} else {
+				quint32 fileSize = firstBytes + 4,
+				        fileSectorSize = sectorCount * SECTOR_SIZE_DATA;
+				if (fileSize < fileSectorSize && fileSize > (sectorCount - 1) * SECTOR_SIZE_DATA) {
+					seekToSector(sector + sectorCount - 1);
+					QByteArray lastSectorData = readIso(SECTOR_SIZE_DATA);
+					int firstData = -1;
+					for (int i = lastSectorData.size() - 1; i >= 0; i--) {
+						if (lastSectorData.at(i) != '\0') {
+							firstData = i + 1;
+							break;
+						}
+					}
+					if (firstData >= 0 && quint32(firstData) == fileSize % SECTOR_SIZE_DATA) {
+						type = "LZS";
+					}
+				}
+			}
+		}
+
+		qDebug() << "FF8DiscArchive::searchFiles sector" << sector << "sector count" << sectorCount << type << "file size (0 if undetected)" << fileSize;
+	}
 }
