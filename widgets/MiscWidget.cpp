@@ -136,6 +136,7 @@ void MiscWidget::fill()
 		updatePmpView();
     }
 	pmpEdit->setEnabled(data()->hasPmpFile());
+	pmpGroup->setEnabled(data()->hasPmpFile());
 
 	if(data()->hasPmdFile()) {
 		pmdEdit->setText(data()->getPmdFile()->getPmdData().toHex());
@@ -145,6 +146,7 @@ void MiscWidget::fill()
 	if(data()->hasPvpFile()) {
 		pvpEdit->setValue(data()->getPvpFile()->value());
 	}
+	pvpEdit->setEnabled(data()->hasPvpFile());
 
 	PageWidget::fill();
 }
@@ -207,5 +209,5 @@ void MiscWidget::updatePmpView()
 
 		pmpView->setPixmap(QPixmap::fromImage(data()->getPmpFile()->image(deph, palID)));
 	}
-	pmpGroup->setEnabled(!pmpView->pixmap()->isNull());
+	pmpGroup->setEnabled(pmpView->pixmap() && !pmpView->pixmap()->isNull());
 }
