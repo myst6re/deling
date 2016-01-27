@@ -164,38 +164,27 @@ bool FieldArchivePS::openBG(Field *field) const
 	if(!iso)	return false;
 
 	FieldPS *fieldPS = (FieldPS *)field;
-
 	quint32 isoFieldID = fieldPS->isoFieldID();
-
-	if(isoFieldID < 1 || (int)isoFieldID+1 >= iso->fieldCount())
-		return false;
-
 	QByteArray dat, mim, lzk;
 
 	if (iso->isJpDemo()) {
-		lzk = iso->fileLZS(iso->fieldFile(isoFieldID-1));
-		if(lzk.isEmpty())
+		if((int)isoFieldID+2 >= iso->fieldCount()) {
+			qWarning() << "FieldArchivePS::openBG field ID out of range" << isoFieldID << iso->fieldCount();
 			return false;
+		}
 
 		dat = iso->fileLZS(iso->fieldFile(isoFieldID));
-		if(dat.isEmpty())
-			return false;
-
 		mim = iso->fileLZS(iso->fieldFile(isoFieldID+1));
-		if(mim.isEmpty())
-			return false;
+		lzk = iso->fileLZS(iso->fieldFile(isoFieldID+2));
 	} else {
+		if(isoFieldID < 1 || (int)isoFieldID+1 >= iso->fieldCount()) {
+			qWarning() << "FieldArchivePS::openBG field ID out of range" << isoFieldID << iso->fieldCount();
+			return false;
+		}
+
 		mim = iso->fileLZS(iso->fieldFile(isoFieldID-1));
-		if(mim.isEmpty())
-			return false;
-	
 		dat = iso->fileLZS(iso->fieldFile(isoFieldID));
-		if(dat.isEmpty())
-			return false;
-	
 		lzk = iso->file(iso->fieldFile(isoFieldID+1));
-		if(lzk.isEmpty())
-			return false;
 	}
 
 	return fieldPS->open2(dat, mim, lzk);

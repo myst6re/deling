@@ -189,6 +189,10 @@ bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArr
 	quint32 posSectionPvp = 8, posSectionMim = posSectionPvp + 4;
 
 	if(!hasTdwFile()) {
+		if (mim.size() < 8) {
+			return false;
+		}
+
 		quint32 posSectionTdwRam, posSectionTdw, posSectionPmpRam, posSectionPmp;
 
 		memcpy(&posSectionTdwRam, constData, 4);
@@ -202,6 +206,10 @@ bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArr
 		openFile(Field::Tdw, mim.mid(posSectionTdw, posSectionPmpRam-posSectionTdwRam));
 		/* PMP */
 		openFile(Field::Pmp, mim.mid(posSectionPmp));
+	}
+
+	if (dat.size() < 48) {
+		return false;
 	}
 
 	constData = dat.constData();
@@ -375,6 +383,10 @@ bool FieldJpDemoPS::open(const QByteArray &dat)
 
 bool FieldJpDemoPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk)
 {
+	if (dat.size() < 48 || mim.size() < 8) {
+		return false;
+	}
+
 	const char *constData = dat.constData();
 	quint32 posSectionInf, posSectionMap, posSectionMsk, memoryPos;
 
