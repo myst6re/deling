@@ -92,6 +92,7 @@ void SoundWidget::setReadOnly(bool ro)
 	if(isBuilded()) {
 		toolBar->setDisabled(ro);
 		sfxValue->setReadOnly(ro);
+		exportButton->setDisabled(ro);
 		importButton->setDisabled(ro);
 	}
 
