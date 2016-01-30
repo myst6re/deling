@@ -130,13 +130,13 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 
 				if (nextOffset != 0 && nextOffset != offset + size) { // Not testno format
 					name = one.mid(constData - startData, 8);
-	//				qDebug() << name;
+//					qDebug() << name;
 					constData += 8;
 					memcpy(&modelID, constData, 4);
 					constData += 4;
 					if(modelID != 0xEEEEEEEE) {
 						//qWarning() << "CharaFile::open Unknown format (6)!" << i << QString::number(modelID, 16) << name << offset << toc;
-	//					return false;
+//						return false;
 					}
 				}
 
@@ -156,7 +156,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 					data = LZS::decompressAll(data.constData() + 4, lzsSize);
 				}
 				models.append(CharaModel(name, toc, data));
-//				qDebug() << "Tim ajouté" << name;
+//				qDebug() << "Tim added" << name;
 			} else {
 				qWarning() << "CharaFile::open Unknown format (5)!" << i << QString::number(timOffset, 16);
 				return false;
