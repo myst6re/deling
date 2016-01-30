@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en_US">
+<TS version="2.0" language="en_US">
 <context>
     <name>BGPreview2</name>
     <message>
@@ -2275,49 +2275,54 @@ Dollet Harbor</translation>
 <context>
     <name>JsmWidget</name>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="33"/>
-        <location filename="widgets/JsmWidget.cpp" line="50"/>
+        <location filename="widgets/JsmWidget.cpp" line="32"/>
+        <source>Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n&apos;aura peut-être aucun sens.</source>
+        <translation>Warning: On this field scripts are in an old poorly recognized format. What you will read here may did not make sense.</translation>
+    </message>
+    <message>
+        <location filename="widgets/JsmWidget.cpp" line="38"/>
+        <location filename="widgets/JsmWidget.cpp" line="55"/>
         <source>Id</source>
         <translation>Id</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="33"/>
+        <location filename="widgets/JsmWidget.cpp" line="38"/>
         <source>Groupe</source>
         <translation>Entity</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="33"/>
+        <location filename="widgets/JsmWidget.cpp" line="38"/>
         <source>Exec</source>
         <translation>Exec</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="50"/>
+        <location filename="widgets/JsmWidget.cpp" line="55"/>
         <source>Script</source>
         <translation>Script</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="50"/>
+        <location filename="widgets/JsmWidget.cpp" line="55"/>
         <source>Script label</source>
         <translation>Script label</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="78"/>
+        <location filename="widgets/JsmWidget.cpp" line="86"/>
         <source>Compiler</source>
         <translation>Compile</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="79"/>
-        <location filename="widgets/JsmWidget.cpp" line="80"/>
+        <location filename="widgets/JsmWidget.cpp" line="87"/>
+        <location filename="widgets/JsmWidget.cpp" line="88"/>
         <source>Compiler (Ctrl+B)</source>
         <translation>Compile (Ctrl+B)</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="113"/>
+        <location filename="widgets/JsmWidget.cpp" line="122"/>
         <source>Ligne %1 -&gt; %2</source>
         <translation>Line %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="118"/>
+        <location filename="widgets/JsmWidget.cpp" line="127"/>
         <source>Compilé avec succès</source>
         <translation>Successfully compiled</translation>
     </message>
@@ -3047,44 +3052,44 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation>Unknown error.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="779"/>
+        <location filename="files/JsmFile.cpp" line="804"/>
         <source>Trop d&apos;arguments</source>
         <translation>Too many arguments</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="788"/>
-        <location filename="files/JsmFile.cpp" line="822"/>
+        <location filename="files/JsmFile.cpp" line="813"/>
+        <location filename="files/JsmFile.cpp" line="847"/>
         <source>Conversion en entier impossible après &apos;LABEL&apos; : %1</source>
         <translation>Unable to convert to integer after &apos;LABEL&apos;: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="792"/>
+        <location filename="files/JsmFile.cpp" line="817"/>
         <source>&apos;LABEL%1&apos; déjà déclaré précédemment.</source>
         <translation>&apos;LABEL %1&apos; already declared.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="801"/>
+        <location filename="files/JsmFile.cpp" line="826"/>
         <source>Opcode non reconnu : %1</source>
         <translation>Unknown opcode: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="809"/>
+        <location filename="files/JsmFile.cpp" line="834"/>
         <source>Cet opcode ne peut pas avoir de paramètre : %1</source>
         <translation>This opcode can not have parameters: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="815"/>
+        <location filename="files/JsmFile.cpp" line="840"/>
         <source>Opération non reconnue : %1</source>
         <translation>Unknown operation: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="835"/>
-        <location filename="files/JsmFile.cpp" line="842"/>
+        <location filename="files/JsmFile.cpp" line="860"/>
+        <location filename="files/JsmFile.cpp" line="867"/>
         <source>Conversion en entier impossible : %1</source>
         <translation>Unable to convert to integer: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="866"/>
+        <location filename="files/JsmFile.cpp" line="891"/>
         <source>&apos;LABEL%1&apos; indéfini.</source>
         <translation>&apos;LABEL %1&apos; undefined.</translation>
     </message>
@@ -3095,13 +3100,13 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="98"/>
-        <location filename="FieldArchivePS.cpp" line="88"/>
+        <location filename="FieldArchivePS.cpp" line="89"/>
         <source>Ouverture annulée.</source>
         <translation>Opening canceled.</translation>
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="138"/>
-        <location filename="FieldArchivePS.cpp" line="121"/>
+        <location filename="FieldArchivePS.cpp" line="126"/>
         <source>Aucun écran trouvé.</source>
         <translation>No field found.</translation>
     </message>
@@ -3116,7 +3121,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation>FF8DISC?.IMG File not found.</translation>
     </message>
     <message>
-        <location filename="FieldArchivePS.cpp" line="68"/>
+        <location filename="FieldArchivePS.cpp" line="69"/>
         <source>Impossible d&apos;ouvrir le dossier field.</source>
         <translation>Unable to open the field dir.</translation>
     </message>
@@ -3202,12 +3207,12 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation>Field additionnal fonts PC file (*.tdw)</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="75"/>
+        <location filename="main.cpp" line="51"/>
         <source>Chargement des données</source>
         <translation>Loading data</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="75"/>
+        <location filename="main.cpp" line="51"/>
         <source>Les polices de caractères n&apos;ont pas pu être chargées !</source>
         <translation>Fonts could not be loaded!</translation>
     </message>
@@ -3308,7 +3313,7 @@ poursuite de la recherche dans le dernier fichier.</source>
     <name>SoundWidget</name>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="30"/>
-        <location filename="widgets/SoundWidget.cpp" line="155"/>
+        <location filename="widgets/SoundWidget.cpp" line="156"/>
         <source>Ajouter son</source>
         <translation>Add sound</translation>
     </message>
@@ -3333,62 +3338,62 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="125"/>
-        <location filename="widgets/SoundWidget.cpp" line="176"/>
-        <location filename="widgets/SoundWidget.cpp" line="178"/>
-        <location filename="widgets/SoundWidget.cpp" line="216"/>
+        <location filename="widgets/SoundWidget.cpp" line="126"/>
+        <location filename="widgets/SoundWidget.cpp" line="177"/>
+        <location filename="widgets/SoundWidget.cpp" line="179"/>
+        <location filename="widgets/SoundWidget.cpp" line="217"/>
         <source>Son %1</source>
         <translation>Sound %1</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="155"/>
-        <location filename="widgets/SoundWidget.cpp" line="241"/>
-        <location filename="widgets/SoundWidget.cpp" line="261"/>
+        <location filename="widgets/SoundWidget.cpp" line="156"/>
+        <location filename="widgets/SoundWidget.cpp" line="242"/>
+        <location filename="widgets/SoundWidget.cpp" line="262"/>
         <source>Fichier AKAO (*.akao)</source>
         <translation>AKAO file (*.akao)</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="165"/>
-        <location filename="widgets/SoundWidget.cpp" line="171"/>
-        <location filename="widgets/SoundWidget.cpp" line="249"/>
-        <location filename="widgets/SoundWidget.cpp" line="267"/>
-        <location filename="widgets/SoundWidget.cpp" line="271"/>
+        <location filename="widgets/SoundWidget.cpp" line="166"/>
+        <location filename="widgets/SoundWidget.cpp" line="172"/>
+        <location filename="widgets/SoundWidget.cpp" line="250"/>
+        <location filename="widgets/SoundWidget.cpp" line="268"/>
+        <location filename="widgets/SoundWidget.cpp" line="272"/>
         <source>Erreur</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="165"/>
-        <location filename="widgets/SoundWidget.cpp" line="267"/>
+        <location filename="widgets/SoundWidget.cpp" line="166"/>
+        <location filename="widgets/SoundWidget.cpp" line="268"/>
         <source>Fichier invalide.</source>
         <translation>Invalid file.</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="171"/>
+        <location filename="widgets/SoundWidget.cpp" line="172"/>
         <source>Impossible d&apos;ajouter le son (%1).</source>
         <translation>Unable to add sound (%1).</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="241"/>
+        <location filename="widgets/SoundWidget.cpp" line="242"/>
         <source>Exporter son</source>
         <translation>Export sound</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="241"/>
+        <location filename="widgets/SoundWidget.cpp" line="242"/>
         <source>son%1</source>
         <translation>sound%1</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="249"/>
+        <location filename="widgets/SoundWidget.cpp" line="250"/>
         <source>Impossible d&apos;exporter le son (%1).</source>
         <translation>Unable to export sound (%1).</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="261"/>
+        <location filename="widgets/SoundWidget.cpp" line="262"/>
         <source>Importer son</source>
         <translation>Import sound</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="271"/>
+        <location filename="widgets/SoundWidget.cpp" line="272"/>
         <source>Impossible d&apos;importer le son (%1).</source>
         <translation>Unable to import sound (%1).</translation>
     </message>

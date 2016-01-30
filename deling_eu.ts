@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="eu_ES">
+<TS version="2.0" language="eu_ES">
 <context>
     <name>BGPreview2</name>
     <message>
@@ -2298,49 +2298,54 @@
 <context>
     <name>JsmWidget</name>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="33"/>
-        <location filename="widgets/JsmWidget.cpp" line="50"/>
+        <location filename="widgets/JsmWidget.cpp" line="32"/>
+        <source>Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n&apos;aura peut-être aucun sens.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/JsmWidget.cpp" line="38"/>
+        <location filename="widgets/JsmWidget.cpp" line="55"/>
         <source>Id</source>
         <translation>Id</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="33"/>
+        <location filename="widgets/JsmWidget.cpp" line="38"/>
         <source>Groupe</source>
         <translation>Erakundea</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="33"/>
+        <location filename="widgets/JsmWidget.cpp" line="38"/>
         <source>Exec</source>
         <translation>Exek</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="50"/>
+        <location filename="widgets/JsmWidget.cpp" line="55"/>
         <source>Script</source>
         <translation>Gidoia</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="50"/>
+        <location filename="widgets/JsmWidget.cpp" line="55"/>
         <source>Script label</source>
         <translation>Gidoi-labela</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="78"/>
+        <location filename="widgets/JsmWidget.cpp" line="86"/>
         <source>Compiler</source>
         <translation>Bildumaratu</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="79"/>
-        <location filename="widgets/JsmWidget.cpp" line="80"/>
+        <location filename="widgets/JsmWidget.cpp" line="87"/>
+        <location filename="widgets/JsmWidget.cpp" line="88"/>
         <source>Compiler (Ctrl+B)</source>
         <translation>Bildumaratu (Ctrl+B)</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="113"/>
+        <location filename="widgets/JsmWidget.cpp" line="122"/>
         <source>Ligne %1 -&gt; %2</source>
         <translation>Lerro %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="118"/>
+        <location filename="widgets/JsmWidget.cpp" line="127"/>
         <source>Compilé avec succès</source>
         <translation>Bildumaratua arrakastaz</translation>
     </message>
@@ -3074,44 +3079,44 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>Huts ezezaguna.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="779"/>
+        <location filename="files/JsmFile.cpp" line="804"/>
         <source>Trop d&apos;arguments</source>
         <translation>Gehiegi argumentuak</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="788"/>
-        <location filename="files/JsmFile.cpp" line="822"/>
+        <location filename="files/JsmFile.cpp" line="813"/>
+        <location filename="files/JsmFile.cpp" line="847"/>
         <source>Conversion en entier impossible après &apos;LABEL&apos; : %1</source>
         <translation>Ezin du zenbaki oso bihurtzen &apos;LABELA&apos;: %1 ondoren</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="792"/>
+        <location filename="files/JsmFile.cpp" line="817"/>
         <source>&apos;LABEL%1&apos; déjà déclaré précédemment.</source>
         <translation>&apos;LABELA %1&apos; jadanik deklaratua.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="801"/>
+        <location filename="files/JsmFile.cpp" line="826"/>
         <source>Opcode non reconnu : %1</source>
         <translation>Opcode ezezaguna: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="809"/>
+        <location filename="files/JsmFile.cpp" line="834"/>
         <source>Cet opcode ne peut pas avoir de paramètre : %1</source>
         <translation>Opcode honek ezin du parametroak edukitzen: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="815"/>
+        <location filename="files/JsmFile.cpp" line="840"/>
         <source>Opération non reconnue : %1</source>
         <translation>Jarduera ezezaguna: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="835"/>
-        <location filename="files/JsmFile.cpp" line="842"/>
+        <location filename="files/JsmFile.cpp" line="860"/>
+        <location filename="files/JsmFile.cpp" line="867"/>
         <source>Conversion en entier impossible : %1</source>
         <translation>Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="866"/>
+        <location filename="files/JsmFile.cpp" line="891"/>
         <source>&apos;LABEL%1&apos; indéfini.</source>
         <translation>&apos;LABELA %1&apos; zehaztugabea.</translation>
     </message>
@@ -3122,13 +3127,13 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="98"/>
-        <location filename="FieldArchivePS.cpp" line="88"/>
+        <location filename="FieldArchivePS.cpp" line="89"/>
         <source>Ouverture annulée.</source>
         <translation>Irekitzea ezeztatua.</translation>
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="138"/>
-        <location filename="FieldArchivePS.cpp" line="121"/>
+        <location filename="FieldArchivePS.cpp" line="126"/>
         <source>Aucun écran trouvé.</source>
         <translation>Ezin du gunerik aurkitu.</translation>
     </message>
@@ -3143,7 +3148,7 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>FF8DISC?.IMG aurkituezina.</translation>
     </message>
     <message>
-        <location filename="FieldArchivePS.cpp" line="68"/>
+        <location filename="FieldArchivePS.cpp" line="69"/>
         <source>Impossible d&apos;ouvrir le dossier field.</source>
         <translation>Ezin du gune-bidea irekitzen.</translation>
     </message>
@@ -3229,12 +3234,12 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>Field additionnal fonts PC file (*.tdw)</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="75"/>
+        <location filename="main.cpp" line="51"/>
         <source>Chargement des données</source>
         <translation>Datuak kargatzen</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="75"/>
+        <location filename="main.cpp" line="51"/>
         <source>Les polices de caractères n&apos;ont pas pu être chargées !</source>
         <translation>Ezin ditu fontak kargatzen!</translation>
     </message>
@@ -3335,7 +3340,7 @@ poursuite de la recherche dans le dernier fichier.</source>
     <name>SoundWidget</name>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="30"/>
-        <location filename="widgets/SoundWidget.cpp" line="155"/>
+        <location filename="widgets/SoundWidget.cpp" line="156"/>
         <source>Ajouter son</source>
         <translation>Soinua gehitu</translation>
     </message>
@@ -3360,62 +3365,62 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Inportatu</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="125"/>
-        <location filename="widgets/SoundWidget.cpp" line="176"/>
-        <location filename="widgets/SoundWidget.cpp" line="178"/>
-        <location filename="widgets/SoundWidget.cpp" line="216"/>
+        <location filename="widgets/SoundWidget.cpp" line="126"/>
+        <location filename="widgets/SoundWidget.cpp" line="177"/>
+        <location filename="widgets/SoundWidget.cpp" line="179"/>
+        <location filename="widgets/SoundWidget.cpp" line="217"/>
         <source>Son %1</source>
         <translation>Soinua %1</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="155"/>
-        <location filename="widgets/SoundWidget.cpp" line="241"/>
-        <location filename="widgets/SoundWidget.cpp" line="261"/>
+        <location filename="widgets/SoundWidget.cpp" line="156"/>
+        <location filename="widgets/SoundWidget.cpp" line="242"/>
+        <location filename="widgets/SoundWidget.cpp" line="262"/>
         <source>Fichier AKAO (*.akao)</source>
         <translation>AKAO fitxa (*.akao)</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="165"/>
-        <location filename="widgets/SoundWidget.cpp" line="171"/>
-        <location filename="widgets/SoundWidget.cpp" line="249"/>
-        <location filename="widgets/SoundWidget.cpp" line="267"/>
-        <location filename="widgets/SoundWidget.cpp" line="271"/>
+        <location filename="widgets/SoundWidget.cpp" line="166"/>
+        <location filename="widgets/SoundWidget.cpp" line="172"/>
+        <location filename="widgets/SoundWidget.cpp" line="250"/>
+        <location filename="widgets/SoundWidget.cpp" line="268"/>
+        <location filename="widgets/SoundWidget.cpp" line="272"/>
         <source>Erreur</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="165"/>
-        <location filename="widgets/SoundWidget.cpp" line="267"/>
+        <location filename="widgets/SoundWidget.cpp" line="166"/>
+        <location filename="widgets/SoundWidget.cpp" line="268"/>
         <source>Fichier invalide.</source>
         <translation>Fitxa irekiezina.</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="171"/>
+        <location filename="widgets/SoundWidget.cpp" line="172"/>
         <source>Impossible d&apos;ajouter le son (%1).</source>
         <translation>Ezin du soinua gehitzen (%1).</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="241"/>
+        <location filename="widgets/SoundWidget.cpp" line="242"/>
         <source>Exporter son</source>
         <translation>Soinua exportatu</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="241"/>
+        <location filename="widgets/SoundWidget.cpp" line="242"/>
         <source>son%1</source>
         <translation>soinua%1</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="249"/>
+        <location filename="widgets/SoundWidget.cpp" line="250"/>
         <source>Impossible d&apos;exporter le son (%1).</source>
         <translation>Ezin du soinua exportatu (%1).</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="261"/>
+        <location filename="widgets/SoundWidget.cpp" line="262"/>
         <source>Importer son</source>
         <translation>Soinua inportatu</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="271"/>
+        <location filename="widgets/SoundWidget.cpp" line="272"/>
         <source>Impossible d&apos;importer le son (%1).</source>
         <translation>Ezin du soinua inportatu (%1).</translation>
     </message>
