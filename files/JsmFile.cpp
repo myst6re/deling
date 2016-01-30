@@ -21,7 +21,8 @@ QStringList JsmFile::opcodeNameCalc;
 QStringList JsmFile::opcodeName;
 
 JsmFile::JsmFile() :
-	File(), _hasSym(false), needUpdate(true), groupItem(0)
+	File(), _hasSym(false), needUpdate(true), groupItem(0),
+    _oldFormat(false)
 {
 	if(opcodeNameCalc.isEmpty()) {
 		for(int i=0 ; i<15 ; ++i)
@@ -126,6 +127,8 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data, bool old_f
 
 			linkGroupList.insert(label, JsmGroup(i, label, count));
 		}
+
+		_oldFormat = old_format;
 	}
 
 	QList<JsmGroup> groupList = linkGroupList.values();
@@ -311,7 +314,11 @@ bool JsmFile::save(QByteArray &jsm)
 	}
 
 	foreach(const JsmScript &script, scripts.getScriptList()) {
-		data = (script.flag() << 15) | (script.pos() & 0x7FFF);
+		if (_oldFormat) {
+			data = (script.pos() << 16) | (script.flag() & 0xFFFF);
+		} else {
+			data = (script.flag() << 15) | (script.pos() & 0x7FFF);
+		}
 		section1.append((char *)&data, 2);
 	}
 	section1.append(QByteArray(section1_padding, '\x00'));

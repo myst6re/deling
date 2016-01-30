@@ -50,6 +50,7 @@ private:
 	QPlainTextEdit *textEdit;
 	QToolBar *toolBar;
 	QLabel *errorLabel;
+	QLabel *warningWidget;
 	static int currentItem(QTreeWidget *);
 //	void gotoScriptLabel(int groupID, int labelID);
 	int groupID, methodID;

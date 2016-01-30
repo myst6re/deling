@@ -29,6 +29,11 @@ void JsmWidget::build()
 	QFont font;
 	font.setPointSize(8);
 
+	warningWidget = new QLabel(tr("Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n'aura peut-être aucun sens."), this);
+	warningWidget->hide();
+	warningWidget->setWordWrap(true);
+	warningWidget->setTextFormat(Qt::PlainText);
+
 	list1 = new QTreeWidget(this);
 	list1->setHeaderLabels(QStringList() << tr("Id") << tr("Groupe") << tr("Exec"));
 	list1->setFixedWidth(180);
@@ -68,6 +73,9 @@ void JsmWidget::build()
 	textEdit->setPalette(pal);
 
 	errorLabel = new QLabel(this);
+	errorLabel->setWordWrap(true);
+	errorLabel->setTextFormat(Qt::PlainText);
+
 	QWidget *errorWidget = new QWidget(this);
 
 	QHBoxLayout *errorLayout = new QHBoxLayout(errorWidget);
@@ -84,11 +92,12 @@ void JsmWidget::build()
 	toolBar->setEnabled(false);
 
 	QGridLayout *mainLayout = new QGridLayout(this);
-	mainLayout->addLayout(list1Layout, 0, 0, 2, 1);
-	mainLayout->addWidget(list2, 0, 1, 2, 1);
-	mainLayout->addWidget(te, 0, 2);
-	mainLayout->addWidget(textEdit, 0, 3);
-	mainLayout->addWidget(toolBar, 1, 2, 1, 2);
+	mainLayout->addWidget(warningWidget, 0, 0, 1, 4);
+	mainLayout->addLayout(list1Layout, 1, 0, 2, 1);
+	mainLayout->addWidget(list2, 1, 1, 2, 1);
+	mainLayout->addWidget(te, 1, 2);
+	mainLayout->addWidget(textEdit, 1, 3);
+	mainLayout->addWidget(toolBar, 2, 2, 1, 2);
 	mainLayout->setContentsMargins(QMargins());
 
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillList2()));
@@ -134,6 +143,7 @@ void JsmWidget::clear()
 	list2->clear();
 	textEdit->clear();
 	errorLabel->clear();
+	warningWidget->hide();
 
 	list1->blockSignals(false);
 	list2->blockSignals(false);
@@ -196,6 +206,10 @@ void JsmWidget::fill()
 	list1->resizeColumnToContents(0);
 	list1->resizeColumnToContents(1);
 	list1->resizeColumnToContents(2);
+
+	if(data()->getJsmFile()->oldFormat()) {
+		warningWidget->show();
+	}
 
 	QTreeWidgetItem *item = list1->topLevelItem(groupID);
 	if(item) 	list1->setCurrentItem(item);

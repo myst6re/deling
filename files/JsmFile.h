@@ -83,6 +83,12 @@ public:
 
 	bool hasSym() const;
 	int mapID() const;
+	inline bool oldFormat() const {
+		return _oldFormat;
+	}
+	inline void setOldFormat(bool oldFormat) {
+		_oldFormat = oldFormat;
+	}
 
 	int nbWindows(quint8 textID) const;
 	QList<FF8Window> windows(quint8 textID) const;
@@ -115,6 +121,7 @@ private:
 	QMap<quint64, quint64> textCursors;
 	QMap<int, int> methodItem;
 	int groupItem;
+	bool _oldFormat;
 };
 
 #endif // JSMFILE_H
