@@ -91,7 +91,7 @@ bool FF8DiscArchive::isJp() const
 	return false;
 }
 
-bool FF8DiscArchive::isJpDemo() const
+bool FF8DiscArchive::isDemo() const
 {
 	return disc == 10;
 }
@@ -174,11 +174,12 @@ bool FF8DiscArchive::extractGZ(const FF8DiscFile &file, const QString &destinati
 const QList<FF8DiscFile> &FF8DiscArchive::rootDirectory()
 {
 	if(!rootFiles.isEmpty() || !IMGFound())		return rootFiles;
+	searchFiles();
 
 	quint32 position, size, numSectors = sizeIMG / SECTOR_SIZE_DATA;
 	qint64 maxPos;
 
-	if (!isJpDemo()) {
+	if(!isDemo()) {
 		seekIso(posIMG);
 		readIso((char *)&position, 4);
 		readIso((char *)&size, 4);
@@ -191,7 +192,11 @@ const QList<FF8DiscFile> &FF8DiscArchive::rootDirectory()
 		}
 	} else {
 		seekToFile("FF8.EXE");
-		seekIso(posIso() + 0x33510);
+		if (isJp()) {
+			seekIso(posIso() + 0x33510);
+		} else {
+			seekIso(posIso() + 0x33584);
+		}
 		readIso((char *)&position, 4);
 		readIso((char *)&size, 4);
 	}
@@ -229,10 +234,10 @@ const FF8DiscFile &FF8DiscArchive::rootFile(int id)
 
 const FF8DiscFile &FF8DiscArchive::fieldBinFile()
 {
-	if (!isJpDemo()) {
-		return rootFile(2);
+	if (isDemo()) {
+		return rootFile(isJp() ? 1 : 0);
 	}
-	return rootFile(1);
+	return rootFile(2);
 }
 
 const QList<FF8DiscFile> &FF8DiscArchive::fieldDirectory()
@@ -246,13 +251,13 @@ const QList<FF8DiscFile> &FF8DiscArchive::fieldDirectory()
 //	if((lzsSize + 4)/SECTOR_SIZE_DATA + (int)(lzsSize%SECTOR_SIZE_DATA != 0) != fieldbinFile.getSize()/SECTOR_SIZE_DATA + (int)(fieldbinFile.getSize()%SECTOR_SIZE_DATA != 0))
 //		return fieldFiles;
 
-	const QByteArray fieldBin = !isJpDemo() ? fileLZS(fieldbinFile, false) : file(fieldbinFile);
+	const QByteArray fieldBin = !isDemo() ? fileLZS(fieldbinFile, false) : file(fieldbinFile);
 	if(fieldBin.isEmpty())
 		return fieldFiles;
 
 	const char *fieldBinData = fieldBin.constData();
 	int index, lastIndex, tocSize;
-	if(isJpDemo()) {
+	if(isDemo()) {
 		if((index = fieldBin.indexOf(QByteArray("\x76\xDF\x32\x6F\x34\xA8\xD0\xB8\x63\xC8\xC0\xEC\x4B\xE8\x17\xF8", 16))) != -1) {
 			index += 16;// with main field models
 		} else {
@@ -371,9 +376,9 @@ void FF8DiscArchive::searchFiles()
 			if (firstBytes == 16) {
 				type = "TIM";
 			} else {
-				quint32 fileSize = firstBytes + 4,
+				quint32 estFileSize = firstBytes + 4,
 				        fileSectorSize = sectorCount * SECTOR_SIZE_DATA;
-				if (fileSize < fileSectorSize && fileSize > (sectorCount - 1) * SECTOR_SIZE_DATA) {
+				if (estFileSize < fileSectorSize && estFileSize > (sectorCount - 1) * SECTOR_SIZE_DATA) {
 					seekToSector(sector + sectorCount - 1);
 					QByteArray lastSectorData = readIso(SECTOR_SIZE_DATA);
 					int firstData = -1;
@@ -383,7 +388,8 @@ void FF8DiscArchive::searchFiles()
 							break;
 						}
 					}
-					if (firstData >= 0 && quint32(firstData) == fileSize % SECTOR_SIZE_DATA) {
+					if (firstData >= 0 && quint32(firstData) == estFileSize % SECTOR_SIZE_DATA) {
+						fileSize = estFileSize;
 						type = "LZS";
 					}
 				}

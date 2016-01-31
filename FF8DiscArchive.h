@@ -42,7 +42,7 @@ public:
 	bool findIMG();
 	bool IMGFound() const;
 	quint8 discNumber() const;
-	bool isJpDemo() const;
+	bool isDemo() const;
 	bool isJp() const;
 	bool isPAL() const;
 	QByteArray file(const FF8DiscFile &file);

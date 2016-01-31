@@ -63,7 +63,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 
 	const QList<FF8DiscFile> &fieldFiles = iso->fieldDirectory();
 	int tocSize = fieldFiles.size();
-	const int tocStart = iso->isJpDemo() ? 0 : 77;
+	const int tocStart = iso->isDemo() ? 0 : 77;
 
 	if(tocSize == 0) {
 		errorMsg = QObject::tr("Impossible d'ouvrir le dossier field.");
@@ -96,7 +96,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 		QByteArray fieldData = iso->fileLZS(fieldFiles.at(i));
 
 		if(!fieldData.isEmpty()) {
-			if (iso->isJpDemo()) {
+			if (iso->isDemo()) {
 				field = new FieldJpDemoPS(i);
 			} else {
 				field = new FieldPS(i);
@@ -167,7 +167,7 @@ bool FieldArchivePS::openBG(Field *field) const
 	quint32 isoFieldID = fieldPS->isoFieldID();
 	QByteArray dat, mim, lzk;
 
-	if (iso->isJpDemo()) {
+	if (iso->isDemo()) {
 		if((int)isoFieldID+2 >= iso->fieldCount()) {
 			qWarning() << "FieldArchivePS::openBG field ID out of range" << isoFieldID << iso->fieldCount();
 			return false;
