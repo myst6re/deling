@@ -31,6 +31,9 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	app.setWindowIcon(QIcon(":/images/deling.png"));
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+#endif
 
 	Config::set();
 
@@ -45,11 +48,10 @@ int main(int argc, char *argv[])
 	if(translator.load("deling_" % lang, Config::programResourceDir())){
 		app.installTranslator(&translator);
 		Config::setValue("lang", lang);
-	}
-		
-	else{
+	} else{
 		Config::setValue("lang", "fr");
 	}
+
 	if(!FF8Font::listFonts()) {
 		QMessageBox::critical(0, QObject::tr("Chargement des données"), QObject::tr("Les polices de caractères n'ont pas pu être chargées !"));
 		return -1;

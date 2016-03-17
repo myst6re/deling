@@ -105,7 +105,7 @@ void ConfigDialog::fillMenuLang()
 	QTranslator translator;
 	int i=1;
 	foreach(const QString &str, stringList) {
-		translator.load(Config::programResourceDir()+"/"+str);
+		translator.load(dir.filePath(str));
 		langComboBox->addItem(translator.translate("MainWindow", "Français", "Your translation language"));
 		langComboBox->setItemData(i++, str.right(5).left(2));
 	}
@@ -134,17 +134,18 @@ void ConfigDialog::manageEncoding()
 
 void ConfigDialog::restartNow()
 {
-	QString str_title, str_text;
+	QString title, text;
 	QTranslator translator;
-	if(translator.load(Config::programResourceDir() % "/deling_" % Config::value("lang").toString())) {
-		str_title = translator.translate("MainWindow", "Paramètres modifiés");
-		str_text = translator.translate("MainWindow", "Relancez le programme pour que les paramètres prennent effet.");
+	if(translator.load(QString("deling_%1")
+	                   .arg(Config::value("lang").toString()),
+	                   Config::programResourceDir())) {
+		title = translator.translate("MainWindow", "Paramètres modifiés");
+		text = translator.translate("MainWindow", "Relancez le programme pour que les paramètres prennent effet.");
+	} else {
+		title = "Paramètres modifiés";
+		text = "Relancez le programme pour que les paramètres prennent effet.";
 	}
-	else {
-		str_title = "Paramètres modifiés";
-		str_text = "Relancez le programme pour que les paramètres prennent effet.";
-	}
-	QMessageBox::information(this, str_title, str_text);
+	QMessageBox::information(this, title, text);
 }
 
 void ConfigDialog::saveConfig()

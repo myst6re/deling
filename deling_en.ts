@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en_US">
+<TS version="2.0" language="en_US" sourcelanguage="fr_FR">
+<defaultcodec>UTF-8</defaultcodec>
 <context>
     <name>BGPreview2</name>
     <message>
@@ -2445,9 +2446,8 @@ Dollet Harbor</translation>
         <translation>Script names field PC file (*.sym)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="878"/>
         <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;/ul&gt;</source>
-        <translation>By myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation type="obsolete">By myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
         <location filename="ConfigDialog.cpp" line="109"/>
@@ -2456,12 +2456,12 @@ Dollet Harbor</translation>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="ConfigDialog.cpp" line="140"/>
+        <location filename="ConfigDialog.cpp" line="142"/>
         <source>Paramètres modifiés</source>
         <translation>Settings changed</translation>
     </message>
     <message>
-        <location filename="ConfigDialog.cpp" line="141"/>
+        <location filename="ConfigDialog.cpp" line="143"/>
         <source>Relancez le programme pour que les paramètres prennent effet.</source>
         <translation>Restart the program for the settings to take effect.</translation>
     </message>
@@ -2596,12 +2596,13 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
 %1</translation>
     </message>
     <message>
+        <location filename="MainWindow.cpp" line="882"/>
         <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</source>
         <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;br/&gt; - Aali&lt;br/&gt; - Aladore384&lt;br/&gt;</oldsource>
-        <translation type="obsolete">By myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation>By myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="899"/>
+        <location filename="MainWindow.cpp" line="896"/>
         <source>Fermer</source>
         <translation>Close</translation>
     </message>
@@ -3202,12 +3203,12 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation>Field additionnal fonts PC file (*.tdw)</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="75"/>
+        <location filename="main.cpp" line="56"/>
         <source>Chargement des données</source>
         <translation>Loading data</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="75"/>
+        <location filename="main.cpp" line="56"/>
         <source>Les polices de caractères n&apos;ont pas pu être chargées !</source>
         <translation>Fonts could not be loaded!</translation>
     </message>
