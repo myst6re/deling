@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ public:
 	MchFile();
 	bool open(const QByteArray &mch, const QString &name);
 	inline QString filterText() const {
-		return QObject::tr("Fichier modèle 3D écran (*.mch)");
+		return QObject::tr("Fichier modÃ¨le 3D Ã©cran (*.mch)");
 	}
 	bool hasModel() const;
 	CharaModel *model() const;

@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ Search::Search(QTreeWidget *fieldList, QWidget *parent)
 	tabWidget->addTab(scriptPageWidget(), tr("Scripts"));
 
 	buttonNext = new QPushButton(tr("Chercher le suivant"), this);
-	buttonPrev = new QPushButton(tr("Chercher le précédent"), this);
+	buttonPrev = new QPushButton(tr("Chercher le prÃ©cÃ©dent"), this);
 	buttonPrev->setAutoDefault(false);
 	buttonNext->setAutoDefault(false);
 	buttonNext->setEnabled(false);
@@ -113,8 +113,8 @@ QWidget *Search::textPageWidget()
 
 	searchTextField = new QLineEdit(ret);
 	searchTextField->setFocus();
-	checkBox = new QCheckBox(tr("Sensible à la casse"), ret);
-	checkBox2 = new QCheckBox(tr("Expression régulière"), ret);
+	checkBox = new QCheckBox(tr("Sensible Ã  la casse"), ret);
+	checkBox2 = new QCheckBox(tr("Expression rÃ©guliÃ¨re"), ret);
 
 	QVBoxLayout *layout = new QVBoxLayout(ret);
 	layout->addWidget(searchTextField);
@@ -133,7 +133,7 @@ QWidget *Search::scriptPageWidget()
 	typeScriptChoice->addItem(tr("Texte"));
 	typeScriptChoice->addItem(tr("Opcode"));
 	typeScriptChoice->addItem(tr("Variable"));
-	typeScriptChoice->addItem(tr("Exécution"));
+	typeScriptChoice->addItem(tr("ExÃ©cution"));
 
 	scriptStacked = new QStackedWidget(ret);
 	scriptStacked->addWidget(scriptPageWidget1());
@@ -159,8 +159,8 @@ QWidget *Search::scriptPageWidget1()
 
 	searchScriptTextField = new QLineEdit(ret);
 	searchScriptTextField->setFocus();
-	scriptCheckBox = new QCheckBox(tr("Sensible à la casse"), ret);
-	scriptCheckBox2 = new QCheckBox(tr("Expression régulière"), ret);
+	scriptCheckBox = new QCheckBox(tr("Sensible Ã  la casse"), ret);
+	scriptCheckBox2 = new QCheckBox(tr("Expression rÃ©guliÃ¨re"), ret);
 
 	QVBoxLayout *layout = new QVBoxLayout(ret);
 	layout->addWidget(searchScriptTextField);
@@ -186,7 +186,7 @@ QWidget *Search::scriptPageWidget2()
 
 	QGridLayout *layout = new QGridLayout(ret);
 	layout->addWidget(searchOpcode, 0, 0, 1, 2);
-	layout->addWidget(new QLabel(tr("Paramètre :"), ret), 1, 0);
+	layout->addWidget(new QLabel(tr("ParamÃ¨tre :"), ret), 1, 0);
 	layout->addWidget(searchOpcodeValue, 1, 1);
 	layout->setRowStretch(2, 1);
 	layout->setColumnStretch(1, 1);

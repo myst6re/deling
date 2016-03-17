@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ public:
 	bool open(const QByteArray &rat);
 	bool save(QByteArray &rat);
 	inline QString filterText() const {
-		return QObject::tr("Fichier fréquence combat écran PC (*.rat)");
+		return QObject::tr("Fichier frÃ©quence combat Ã©cran PC (*.rat)");
 	}
 	quint8 rate() const;
 	void setRate(quint8 rate);

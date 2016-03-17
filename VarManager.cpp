@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel JÈrÙme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel J√©r√¥me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -30,14 +30,14 @@ VarManager::VarManager(FieldArchive *fieldArchive, QWidget *parent)
 	name = new QLineEdit(this);
 	list = new QTreeWidget(this);
 	list->setFont(font);
-	list->setHeaderLabels(QStringList() << tr("Var") << tr("Type") << tr("Nom") << tr("…cran") << tr("MEM fr") << tr("MEM us"));
+	list->setHeaderLabels(QStringList() << tr("Var") << tr("Type") << tr("Nom") << tr("√âcran") << tr("MEM fr") << tr("MEM us"));
 	list->setAutoScroll(false);
 	list->setIndentation(0);
 	list->setUniformRowHeights(true);
 
 	countLabel = new QLabel(this);
 
-	searchButton = new QPushButton(tr("Adresses utilisÈes"), this);
+	searchButton = new QPushButton(tr("Adresses utilis√©es"), this);
 	QPushButton *saveButton = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton), tr("Sauver"), this);
 	saveButton->setShortcut(QKeySequence::Save);
 	
@@ -152,7 +152,7 @@ void VarManager::search()
 	list->resizeColumnToContents(1);
 
 	setEnabled(true);
-	countLabel->setText(tr("Vars utilisÈs : %1/1536").arg(count.size()));
+	countLabel->setText(tr("Vars utilis√©s : %1/1536").arg(count.size()));
 }
 
 void VarManager::save()

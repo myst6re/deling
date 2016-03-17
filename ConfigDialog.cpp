@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -39,13 +39,13 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 	encodingComboBox = new QComboBox(this);
 	encodingComboBox->addItem(tr("Latin"), "00");
 	encodingComboBox->addItem(tr("Japonais"), "01");
-	QPushButton *encodingManage = new QPushButton(tr("Gérer"), this);
+	QPushButton *encodingManage = new QPushButton(tr("GÃ©rer"), this);
 	QHBoxLayout *encodingLayout = new QHBoxLayout();
 	encodingLayout->addWidget(encodingComboBox, 1);
 	encodingLayout->addWidget(encodingManage);
 	encodingLayout->setContentsMargins(QMargins());
 
-//	hideUnusedTexts = new QCheckBox(tr("Cacher les textes inutilisés"), this);
+//	hideUnusedTexts = new QCheckBox(tr("Cacher les textes inutilisÃ©s"), this);
 
 	QPushButton *okButton = new QPushButton(tr("Enregistrer"), this);
 	okButton->setDefault(true);
@@ -99,14 +99,14 @@ void ConfigDialog::fillMenuLang()
 {
 	QDir dir(Config::programResourceDir());
 	QStringList stringList = dir.entryList(QStringList("deling_*.qm"), QDir::Files, QDir::Name);
-	langComboBox->addItem("Français");
+	langComboBox->addItem("FranÃ§ais");
 	langComboBox->setItemData(0, "fr");
 
 	QTranslator translator;
 	int i=1;
 	foreach(const QString &str, stringList) {
 		translator.load(Config::programResourceDir()+"/"+str);
-		langComboBox->addItem(translator.translate("MainWindow", "Français", "Your translation language"));
+		langComboBox->addItem(translator.translate("MainWindow", "FranÃ§ais", "Your translation language"));
 		langComboBox->setItemData(i++, str.right(5).left(2));
 	}
 
@@ -137,12 +137,12 @@ void ConfigDialog::restartNow()
 	QString str_title, str_text;
 	QTranslator translator;
 	if(translator.load(Config::programResourceDir() % "/deling_" % Config::value("lang").toString())) {
-		str_title = translator.translate("MainWindow", "Paramètres modifiés");
-		str_text = translator.translate("MainWindow", "Relancez le programme pour que les paramètres prennent effet.");
+		str_title = translator.translate("MainWindow", "ParamÃ¨tres modifiÃ©s");
+		str_text = translator.translate("MainWindow", "Relancez le programme pour que les paramÃ¨tres prennent effet.");
 	}
 	else {
-		str_title = "Paramètres modifiés";
-		str_text = "Relancez le programme pour que les paramètres prennent effet.";
+		str_title = "ParamÃ¨tres modifiÃ©s";
+		str_text = "Relancez le programme pour que les paramÃ¨tres prennent effet.";
 	}
 	QMessageBox::information(this, str_title, str_text);
 }

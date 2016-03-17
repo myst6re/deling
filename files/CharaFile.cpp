@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 //			qDebug() << "modelID" << (modelID & 0xFFFF) << QString::number(modelID, 16);
 			memcpy(&modelID, constData, 4);
 			constData += 4;
-//			qDebug() << "modelID²" << QString::number(modelID, 16);
+//			qDebug() << "modelIDÂ²" << QString::number(modelID, 16);
 			if(modelID == 0) {
 				QString name;
 				quint32 nextOffset;
@@ -156,7 +156,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 					data = LZS::decompressAll(data.constData() + 4, lzsSize);
 				}
 				models.append(CharaModel(name, toc, data));
-//				qDebug() << "Tim ajouté" << name;
+//				qDebug() << "Tim ajoutÃ©" << name;
 			} else {
 				qWarning() << "CharaFile::open Unknown format (5)!" << i << QString::number(timOffset, 16);
 				return false;

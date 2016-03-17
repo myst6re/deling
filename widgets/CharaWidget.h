@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ public:
 	CharaWidget(QWidget *parent=0);
 	void clear();
 	void fill();
-	inline QString tabName() const { return tr("Modèles 3D"); }
+	inline QString tabName() const { return tr("ModÃ¨les 3D"); }
 	void setMainModels(QHash<int, CharaModel *> *mainModels);
 public slots:
 	void setModel(int modelID);

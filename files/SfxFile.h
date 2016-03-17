@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ public:
 	bool open(const QByteArray &sfx);
 	bool save(QByteArray &sfx);
 	inline QString filterText() const {
-		return QObject::tr("Fichier sons écran PC (*.sfx)");
+		return QObject::tr("Fichier sons Ã©cran PC (*.sfx)");
 	}
 	int valueCount() const;
 	quint32 value(int id) const;

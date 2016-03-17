@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ public:
 	bool toFileSym(const QString &path);
 	QString saveSym();
 	inline QString filterText() const {
-		return QObject::tr("Fichier scripts écran PC (*.jsm)");
+		return QObject::tr("Fichier scripts Ã©cran PC (*.jsm)");
     }
 
 	bool compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);

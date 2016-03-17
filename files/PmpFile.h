@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ public:
 	bool open(const QByteArray &pmp);
 	bool save(QByteArray &pmp);
 	inline QString filterText() const {
-		return QObject::tr("Fichier données particules écran PC (*.pmp)");
+		return QObject::tr("Fichier donnÃ©es particules Ã©cran PC (*.pmp)");
 	}
 	QByteArray getPmpData() const;
 	void setPmpData(const QByteArray &pmp);

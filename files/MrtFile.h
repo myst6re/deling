@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ public:
 	bool open(const QByteArray &mrt);
 	bool save(QByteArray &mrt);
 	inline QString filterText() const {
-		return QObject::tr("Fichier formations combat écran PC (*.mrt)");
+		return QObject::tr("Fichier formations combat Ã©cran PC (*.mrt)");
 	}
 	quint16 formation(int index) const;
 	void setFormation(int index, quint16 formation);

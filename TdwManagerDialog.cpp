@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel JÈrÙme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel J√©r√¥me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -113,7 +113,7 @@ bool TdwManagerDialog::newNameDialog(QString &name, QString &nameId)
 	ok->setDefault(true);
 
 	QFormLayout *formLayout = new QFormLayout;
-	formLayout->addRow(tr("Nom &affichÈ :"), nameEdit);
+	formLayout->addRow(tr("Nom &affich√© :"), nameEdit);
 	formLayout->addRow(tr("Nom du &fichier :"), fileNameEdit);
 
 	QVBoxLayout *layout = new QVBoxLayout(&dialog);
@@ -130,7 +130,7 @@ bool TdwManagerDialog::newNameDialog(QString &name, QString &nameId)
 		if(name1.isEmpty() || name2.isEmpty()
 				|| fontList.contains(name1)
 				|| QFile::exists(FF8Font::fontDirPath()+"/"+name2)) {
-			QMessageBox::warning(this, tr("Choisissez un autre nom"), tr("Ce nom existe dÈj‡ ou est invalide, veuillez en choisir un autre."));
+			QMessageBox::warning(this, tr("Choisissez un autre nom"), tr("Ce nom existe d√©j√† ou est invalide, veuillez en choisir un autre."));
 			return false;
 		}
 
@@ -146,7 +146,7 @@ void TdwManagerDialog::removeFont()
 	QList<QListWidgetItem *> items = list1->selectedItems();
 	if(items.isEmpty())		return;
 
-	if(QMessageBox::Yes != QMessageBox::question(this, tr("Supprimer une police"), tr("Voulez-vous vraiment supprimer la police sÈlectionnÈe ?"), QMessageBox::Yes | QMessageBox::Cancel)) {
+	if(QMessageBox::Yes != QMessageBox::question(this, tr("Supprimer une police"), tr("Voulez-vous vraiment supprimer la police s√©lectionn√©e ?"), QMessageBox::Yes | QMessageBox::Cancel)) {
 		return;
 	}
 

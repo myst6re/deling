@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 
 	clearFields();
 
-	// Ouverture de la liste des écrans (facultatif)
+	// Ouverture de la liste des Ã©crans (facultatif)
 	FsArchive mapData(archive->fileData("*field\\mapdata.fl"), archive->fileData("*field\\mapdata.fi"));
 	if(mapData.isOpen()) {
 		QByteArray mapdata_fs = archive->fileData("*field\\mapdata.fs");
@@ -73,7 +73,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 	}
 
 	int currentMap=0;
-	// Ajout des écrans non-listés
+	// Ajout des Ã©crans non-listÃ©s
 	QStringList toc = archive->toc();
 	foreach(const QString &entry, toc) {
 		if(entry.endsWith(".fs", Qt::CaseInsensitive) && !entry.endsWith("mapdata.fs", Qt::CaseInsensitive)
@@ -89,13 +89,13 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 
 	progress->setObserverMaximum(fsList.size());
 
-	// Ouverture des écrans listés
+	// Ouverture des Ã©crans listÃ©s
 	foreach(const QString &entry, fsList) {
 		QCoreApplication::processEvents();
 
 		if(progress->observerWasCanceled()) {
 			clearFields();
-			errorMsg = QObject::tr("Ouverture annulée.");
+			errorMsg = QObject::tr("Ouverture annulÃ©e.");
 			return 2;
 		}
 
@@ -135,7 +135,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 	}
 
 	if(fields.isEmpty()) {
-		errorMsg = QObject::tr("Aucun écran trouvé.");
+		errorMsg = QObject::tr("Aucun Ã©cran trouvÃ©.");
 		return 3;
 	}
 

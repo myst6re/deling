@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel JÈrÙme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel J√©r√¥me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -115,7 +115,7 @@ void JsmWidget::compile()
 		pal.setColor(QPalette::Active, QPalette::ButtonText, Qt::darkGreen);
 		pal.setColor(QPalette::Inactive, QPalette::ButtonText, Qt::darkGreen);
 		errorLabel->setPalette(pal);
-		errorLabel->setText(tr("CompilÈ avec succËs"));
+		errorLabel->setText(tr("Compil√© avec succ√®s"));
 		emit modified();
 	}
 }

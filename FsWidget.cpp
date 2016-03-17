@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ FsWidget::FsWidget(QWidget *parent) :
 	setAcceptDrops(true);
 	setIndentation(0);
 	setUniformRowHeights(true);
-	setHeaderLabels(QStringList() << tr("Fichiers") << tr("Taille") << tr("Compressé ?"));
+	setHeaderLabels(QStringList() << tr("Fichiers") << tr("Taille") << tr("CompressÃ© ?"));
 	setSortingEnabled(true);
 	sortByColumn(0, Qt::AscendingOrder);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
