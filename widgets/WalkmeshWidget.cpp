@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -40,19 +40,19 @@ void WalkmeshWidget::build()
 	slider2->setValue(0);
 	slider3->setValue(0);
 
-	QLabel *keyInfos = new QLabel(tr("Utilisez les touches directionnelles pour déplacer la caméra."));
+	QLabel *keyInfos = new QLabel(tr("Utilisez les touches directionnelles pour dÃ©placer la camÃ©ra."));
 	keyInfos->setTextFormat(Qt::PlainText);
 	keyInfos->setWordWrap(true);
 
-	QPushButton *resetCamera = new QPushButton(tr("Remettre à 0"));
+	QPushButton *resetCamera = new QPushButton(tr("Remettre Ã  0"));
 
 	tabWidget = new QTabWidget(this);
-	tabWidget->addTab(buildCameraPage(), tr("Caméra"));
+	tabWidget->addTab(buildCameraPage(), tr("CamÃ©ra"));
 	tabWidget->addTab(buildWalkmeshPage(), tr("Walkmesh"));
 	tabWidget->addTab(buildGatewaysPage(), tr("Sorties"));
 	tabWidget->addTab(buildDoorsPage(), tr("Portes"));
-	tabWidget->addTab(buildCameraRangePage(), tr("Limites caméra"));
-	tabWidget->addTab(buildMovieCameraPage(), tr("Caméra cinématique"));
+	tabWidget->addTab(buildCameraRangePage(), tr("Limites camÃ©ra"));
+	tabWidget->addTab(buildMovieCameraPage(), tr("CamÃ©ra cinÃ©matique"));
 	tabWidget->addTab(buildMiscPage(), tr("Divers"));
 	tabWidget->setFixedHeight(250);
 
@@ -93,8 +93,8 @@ QWidget *WalkmeshWidget::buildCameraPage()
 	QWidget *ret = new QWidget(this);
 
 	ListWidget *listWidget = new ListWidget(ret);
-	listWidget->addAction(ListWidget::Add, tr("Ajouter caméra"), this, SLOT(addCamera()));
-	listWidget->addAction(ListWidget::Rem, tr("Supprimer caméra"), this, SLOT(removeCamera()));
+	listWidget->addAction(ListWidget::Add, tr("Ajouter camÃ©ra"), this, SLOT(addCamera()));
+	listWidget->addAction(ListWidget::Rem, tr("Supprimer camÃ©ra"), this, SLOT(removeCamera()));
 
 	caToolbar = listWidget->toolBar();
 	camList = listWidget->listWidget();
@@ -121,11 +121,11 @@ QWidget *WalkmeshWidget::buildCameraPage()
 	caLayout->addWidget(listWidget, 0, 0, 8, 1);
 	caLayout->addWidget(new QLabel(tr("Distance (zoom) :")), 0, 1, 1, 3);
 	caLayout->addWidget(caZoomEdit, 0, 4, 1, 2);
-	caLayout->addWidget(new QLabel(tr("Axes de la caméra :")), 1, 1, 1, 6);
+	caLayout->addWidget(new QLabel(tr("Axes de la camÃ©ra :")), 1, 1, 1, 6);
 	caLayout->addWidget(caVectorXEdit, 2, 1, 1, 6);
 	caLayout->addWidget(caVectorYEdit, 3, 1, 1, 6);
 	caLayout->addWidget(caVectorZEdit, 4, 1, 1, 6);
-	caLayout->addWidget(new QLabel(tr("Position de la caméra :")), 5, 1, 1, 6);
+	caLayout->addWidget(new QLabel(tr("Position de la camÃ©ra :")), 5, 1, 1, 6);
 	caLayout->addWidget(new QLabel(tr("X")), 6, 1);
 	caLayout->addWidget(caSpaceXEdit, 6, 2);
 	caLayout->addWidget(new QLabel(tr("Y")), 6, 3);
@@ -232,7 +232,7 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	unknownGate2 = new HexLineEdit(ret);
 
 	QGridLayout *idsLayout = new QGridLayout;
-	idsLayout->addWidget(new QLabel(tr("Id écran :")), 0, 0);
+	idsLayout->addWidget(new QLabel(tr("Id Ã©cran :")), 0, 0);
 	idsLayout->addWidget(fieldId, 0, 1, 1, 4);
 	idsLayout->addWidget(new QLabel(tr("Inconnu 1 :")), 1, 0);
 	idsLayout->addWidget(unknownGate1[0], 1, 1);
@@ -275,7 +275,7 @@ QWidget *WalkmeshWidget::buildDoorsPage()
 	doorPosition[0] = new VertexWidget(ret);
 	doorPosition[1] = new VertexWidget(ret);
 
-	doorUsed = new QCheckBox(tr("Utilisé"));
+	doorUsed = new QCheckBox(tr("UtilisÃ©"));
 
 	doorId = new QSpinBox(ret);
 	doorId->setRange(0, 254);
@@ -287,7 +287,7 @@ QWidget *WalkmeshWidget::buildDoorsPage()
 
 	QGridLayout *layout = new QGridLayout(ret);
 	layout->addWidget(doorList, 0, 0, 4, 1, Qt::AlignLeft);
-	layout->addWidget(new QLabel(tr("Ligne déclench. porte :")), 0, 1);
+	layout->addWidget(new QLabel(tr("Ligne dÃ©clench. porte :")), 0, 1);
 	layout->addWidget(doorPosition[0], 0, 2);
 	layout->addWidget(doorPosition[1], 1, 2);
 	layout->addLayout(idsLayout, 2, 1, 1, 2);
@@ -310,14 +310,14 @@ QWidget *WalkmeshWidget::buildCameraRangePage()
 	rangeList1->setFixedWidth(125);
 
 	for(int i=0 ; i<8 ; ++i) {
-		rangeList1->addItem(tr("Limite caméra %1").arg(i+1));
+		rangeList1->addItem(tr("Limite camÃ©ra %1").arg(i+1));
 	}
 
 	rangeList2 = new QListWidget(ret);
 	rangeList2->setFixedWidth(125);
 
 	for(int i=0 ; i<2 ; ++i) {
-		rangeList2->addItem(tr("Limite écran %1").arg(i+1));
+		rangeList2->addItem(tr("Limite Ã©cran %1").arg(i+1));
 	}
 
 	for(int i=0 ; i<4 ; ++i) {
@@ -413,7 +413,7 @@ QWidget *WalkmeshWidget::buildMiscPage()
 	layout->addWidget(navigation2, 0, 2);
 	layout->addWidget(new QLabel(tr("Inconnu :")), 1, 0);
 	layout->addWidget(unknown, 1, 1, 1, 2);
-	layout->addWidget(new QLabel(tr("Hauteur focus caméra sur le personnage :")), 2, 0);
+	layout->addWidget(new QLabel(tr("Hauteur focus camÃ©ra sur le personnage :")), 2, 0);
 	layout->addWidget(cameraFocus, 2, 1, 1, 2);
 	layout->setRowStretch(4, 1);
 
@@ -511,7 +511,7 @@ void WalkmeshWidget::fill()
 			camList->blockSignals(true);
 			camList->clear();
 			for(int i=0 ; i<camCount ; ++i) {
-				camList->addItem(tr("Caméra %1").arg(i));
+				camList->addItem(tr("CamÃ©ra %1").arg(i));
 			}
 			camList->blockSignals(false);
 		}
@@ -542,7 +542,7 @@ void WalkmeshWidget::fill()
 			if(gateway.fieldId != 0x7FFF) {
 				gateList->addItem(QString("%1 (%2)").arg(Data::maplist().value(gateway.fieldId)).arg(gateway.fieldId));
 			} else {
-				gateList->addItem(tr("Inutilisé"));
+				gateList->addItem(tr("InutilisÃ©"));
 			}
 		}
 		gateList->setCurrentRow(0);
@@ -553,7 +553,7 @@ void WalkmeshWidget::fill()
 			if(trigger.doorID != 0xFF) {
 				doorList->addItem(tr("Porte %1").arg(trigger.doorID));
 			} else {
-				doorList->addItem(tr("Inutilisé"));
+				doorList->addItem(tr("InutilisÃ©"));
 			}
 		}
 		doorList->setCurrentRow(0);
@@ -1014,7 +1014,7 @@ void WalkmeshWidget::editFieldId(int v)
 			if(v != 0x7FFF) {
 				gateList->currentItem()->setText(QString("%1 (%2)").arg(Data::maplist().value(v)).arg(v));
 			} else {
-				gateList->currentItem()->setText(tr("Inutilisé"));
+				gateList->currentItem()->setText(tr("InutilisÃ©"));
 			}
 
 			emit modified();
@@ -1041,7 +1041,7 @@ void WalkmeshWidget::editDoorId(int v)
 			if(v != 0xFF) {
 				doorList->currentItem()->setText(tr("Porte %1").arg(v));
 			} else {
-				doorList->currentItem()->setText(tr("Inutilisé"));
+				doorList->currentItem()->setText(tr("InutilisÃ©"));
 			}
 
 			walkmeshGL->updateGL();

@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -318,7 +318,7 @@ qint64 IsoArchiveIO::readIso(char *data, qint64 maxSize)
 		readTotal += read;
 		seqLen = qMin((qint64)SECTOR_SIZE_DATA, maxSize);
 //		qDebug() << "seqLen" << seqLen << maxSize << pos();
-		// Si on est à la fin du secteur
+		// Si on est Ã  la fin du secteur
 		if(pos() % SECTOR_SIZE >= 2072) {
 			if(!seek(pos() + 304))	break;
 //			qDebug() << "seek >> 304" << pos();
@@ -355,7 +355,7 @@ qint64 IsoArchiveIO::writeIso(const char *data, qint64 maxSize)
 		writeTotal += write;
 		seqLen = qMin((qint64)2048, maxSize);
 //		qDebug() << "seqLen" << seqLen << maxSize << pos();
-		// Si on est à la fin du secteur
+		// Si on est Ã  la fin du secteur
 		if(pos() % SECTOR_SIZE >= 2072) {
 			if(!seek(pos() + 304))	break;
 //			qDebug() << "seek >> 304" << pos();
@@ -465,13 +465,13 @@ int IsoArchiveIO::copyBytes(QIODevice *out, int size, int last_esti, IsoControl 
 {
 	int count = size/READ_MAX, i;
 
-//	qDebug() << "écriture de" << size << "octets (" << (size/SECTOR_SIZE) << "secteurs) dans isoTemp";
+//	qDebug() << "Ã©criture de" << size << "octets (" << (size/SECTOR_SIZE) << "secteurs) dans isoTemp";
 
 	for(i=0 ; i<count ; ++i) {
 		if(control->wasCanceled())	return -1;
 		out->write(read(READ_MAX));
 
-		// Envoi de la position courante à l'output
+		// Envoi de la position courante Ã  l'output
 		if(last_esti != (int)(control->baseEstimation + (out->pos()/SECTOR_SIZE)*control->estimation)) {
 			last_esti = control->baseEstimation + (out->pos()/SECTOR_SIZE)*control->estimation;
 			control->setIsoOut(last_esti);
@@ -557,7 +557,7 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 	}
 
 	foreach(IsoFile *isoFile, getModifiedFiles(directory)) {
-		// Est-ce que les nouvelles données sont plus grandes que les anciennes ? Est-ce qu'on est pas à la fin de l'archive ?
+		// Est-ce que les nouvelles donnÃ©es sont plus grandes que les anciennes ? Est-ce qu'on est pas Ã  la fin de l'archive ?
 		if(isoFile->newSectorCount() > isoFile->sectorCount() + isoFile->paddingAfter()
 				&& isoFile->location() + isoFile->sectorCount() < sectorCount()) {
 			if((index = findPadding(orderedFileList, isoFile->newSectorCount())) != -1) {
@@ -567,7 +567,7 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 				fileWithPaddingAfter->setPaddingAfter(0);
 				orderedFileList.replace(index, isoFile);
 				writeToTheMain.insert(isoFile->newLocation(), isoFile);
-//				qDebug() << "Trouvé un espace suffisant à" << fileWithPaddingAfter->name() << (fileWithPaddingAfter->location() + fileWithPaddingAfter->sectorCount()) << "pour" << isoFile->name();
+//				qDebug() << "TrouvÃ© un espace suffisant Ã " << fileWithPaddingAfter->name() << (fileWithPaddingAfter->location() + fileWithPaddingAfter->sectorCount()) << "pour" << isoFile->name();
 			} else {
 				writeToTheEnd.append(isoFile);
 				isoFile->setLocation(endOfIso);
@@ -581,7 +581,7 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 		}
 	}
 
-//	qDebug() << "décompression...";
+//	qDebug() << "dÃ©compression...";
 
 	control->estimation /= (double)endOfIso;
 
@@ -592,7 +592,7 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 
 		secteur = isoFile->newLocation();
 
-		// Données avant le fichier
+		// DonnÃ©es avant le fichier
 		last_esti = copyBytes(destination, SECTOR_SIZE*secteur - pos(), last_esti, control);
 		if(last_esti == -1)			return false;
 
@@ -601,8 +601,8 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 		if(destination->pos()/SECTOR_SIZE != secteur)	qWarning() << "destination error 1b" << (destination->pos()/SECTOR_SIZE) << secteur << isoFile->name();
 		if(destination->pos() != pos())					qWarning() << "destination error 1c" << destination->pos() << pos() << isoFile->name();
 
-		// On écrit le même nombre de secteurs que le fichier d'origine
-//		qDebug() << "écriture de" << isoFile->name() << "(" << isoFile->sectorCount() << "+" << isoFile->paddingAfter() << "secteurs) dans isoTemp au secteur" << secteur;
+		// On Ã©crit le mÃªme nombre de secteurs que le fichier d'origine
+//		qDebug() << "Ã©criture de" << isoFile->name() << "(" << isoFile->sectorCount() << "+" << isoFile->paddingAfter() << "secteurs) dans isoTemp au secteur" << secteur;
 		secteur = writeSectors(isoFile->newData(), destination, secteur, control, isoFile->sectorCount() + isoFile->paddingAfter());
 		if(secteur == -1)			return false;
 		seek(destination->pos());
@@ -612,14 +612,14 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 		if(destination->pos()/SECTOR_SIZE != secteur)	qWarning() << "destination error 2b" << (destination->pos()/SECTOR_SIZE) << secteur << isoFile->name();
 		if(destination->pos() != pos())					qWarning() << "destination error 2c" << destination->pos() << pos() << isoFile->name();
 
-		// Envoi de la position courante à l'output
+		// Envoi de la position courante Ã  l'output
 		if(last_esti != (int)(control->baseEstimation + (destination->pos()/SECTOR_SIZE)*control->estimation)) {
 			last_esti = control->baseEstimation + (destination->pos()/SECTOR_SIZE)*control->estimation;
 			control->setIsoOut(last_esti);
 		}
 	}
 
-	// Données après les fichiers patchés
+	// DonnÃ©es aprÃ¨s les fichiers patchÃ©s
 
 	if(-1 == copyBytes(destination, size() - pos(), last_esti, control))
 		return false;
@@ -631,22 +631,22 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 
 	// A la fin de l'ISO
 
-	// Fichiers trop gros mis à la fin de l'ISO
+	// Fichiers trop gros mis Ã  la fin de l'ISO
 	secteur = destination->pos()/SECTOR_SIZE;
 
 	foreach(const IsoFile *isoFile, writeToTheEnd) {
-//		qDebug() << "écriture de" << isoFile->name() << "(" << isoFile->sectorCount() << "secteurs) dans isoTemp (à la fin) au secteur" << secteur;
+//		qDebug() << "Ã©criture de" << isoFile->name() << "(" << isoFile->sectorCount() << "secteurs) dans isoTemp (Ã  la fin) au secteur" << secteur;
 		secteur = writeSectors(isoFile->newData(), destination, secteur, control);
 		if(secteur == -1)	return false;
 
-		// Envoi de la position courante à l'output
+		// Envoi de la position courante Ã  l'output
 		if(last_esti != (int)(control->baseEstimation + (destination->pos()/SECTOR_SIZE)*control->estimation)) {
 			last_esti = control->baseEstimation + (destination->pos()/SECTOR_SIZE)*control->estimation;
 			control->setIsoOut(last_esti);
 		}
 	}
 
-	// Modifications données
+	// Modifications donnÃ©es
 
 	if(destination->size() != size()) {
 		// volume_space_size (taille totale de l'ISO)
@@ -661,7 +661,7 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 
 	//Debug
 
-//	qDebug() << "vérification headers";
+//	qDebug() << "vÃ©rification headers";
 //	int newSectorCount = destination->size()/SECTOR_SIZE;
 //	for(int i=0 ; i<newSectorCount ; ++i) {
 //		if(control->wasCanceled())	return false;
@@ -672,10 +672,10 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 //			break;
 //		}
 //	}
-//	qDebug() << "vérification done";
+//	qDebug() << "vÃ©rification done";
 
 	if(destination->size()%SECTOR_SIZE != 0)	qWarning() << "Invalid size" << destination->size();
-//	if(destination->size() != size())			qWarning() << "Taille différente" << (destination->size()/SECTOR_SIZE) << (size()/SECTOR_SIZE);
+//	if(destination->size() != size())			qWarning() << "Taille diffÃ©rente" << (destination->size()/SECTOR_SIZE) << (size()/SECTOR_SIZE);
 
 	return true;
 }

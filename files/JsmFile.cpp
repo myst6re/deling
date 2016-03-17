@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -191,12 +191,12 @@ bool JsmFile::openSym(const QByteArray &sym_data)
 			}
 			else if(validName.exactMatch(line.mid(index+2))) {
 				if(groupID == -1) {
-					qWarning() << "JsmFile::openSym constructeur indéfini" << line;
+					qWarning() << "JsmFile::openSym constructeur indÃ©fini" << line;
 					break;
 				}
 
 				if(!line.startsWith(scripts.group(groupID).name())) {
-					qWarning() << "JsmFile::openSym la méthode ne commence pas par le nom du groupe" << line << scripts.group(groupID).name();
+					qWarning() << "JsmFile::openSym la mÃ©thode ne commence pas par le nom du groupe" << line << scripts.group(groupID).name();
 					break;
 				}
 
@@ -785,11 +785,11 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 		if(first.startsWith("LABEL", Qt::CaseInsensitive)) {
 			lbl = first.mid(5).toInt(&ok);
 			if(!ok) {
-				errorStr = QObject::tr("Conversion en entier impossible après 'LABEL' : %1").arg(first.mid(5));
+				errorStr = QObject::tr("Conversion en entier impossible aprÃ¨s 'LABEL' : %1").arg(first.mid(5));
 				return l;
 			}
 			if(labelsPos.contains(lbl)) {
-				errorStr = QObject::tr("'LABEL%1' déjà déclaré précédemment.").arg(lbl);
+				errorStr = QObject::tr("'LABEL%1' dÃ©jÃ  dÃ©clarÃ© prÃ©cÃ©demment.").arg(lbl);
 				return l;
 			}
 			labelsPos.insert(lbl, res.nbOpcode());
@@ -806,20 +806,20 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 			const QString &second = rows.at(1);
 
 			if(key > 0x38) {
-				errorStr = QObject::tr("Cet opcode ne peut pas avoir de paramètre : %1").arg(first);
+				errorStr = QObject::tr("Cet opcode ne peut pas avoir de paramÃ¨tre : %1").arg(first);
 				return l;
 			}
 
 			if(key == JsmOpcode::CAL) {
 				if((param = opcodeNameCalc.indexOf(second.toUpper())) == -1) {
-					errorStr = QObject::tr("Opération non reconnue : %1").arg(second);
+					errorStr = QObject::tr("OpÃ©ration non reconnue : %1").arg(second);
 					return l;
 				}
 			} else if(key>=JsmOpcode::JMP && key<=JsmOpcode::GJMP) {
 				if(second.startsWith("LABEL", Qt::CaseInsensitive)) {
 					lbl = second.mid(5).toInt(&ok);
 					if(!ok) {
-						errorStr = QObject::tr("Conversion en entier impossible après 'LABEL' : %1").arg(second.mid(5));
+						errorStr = QObject::tr("Conversion en entier impossible aprÃ¨s 'LABEL' : %1").arg(second.mid(5));
 						return l;
 					}
 					if((posLbl = labelsPos.value(lbl, -1)) != -1) {
@@ -863,7 +863,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 			op.setParam(param);
 			res.setOpcode(it.value(), op);
 		} else {
-			errorStr = QObject::tr("'LABEL%1' indéfini.").arg(lbl);
+			errorStr = QObject::tr("'LABEL%1' indÃ©fini.").arg(lbl);
 			return -1;
 		}
 	}
