@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ void MiscWidget::build()
 	pvpEdit2 = new QSpinBox(this);
 	pvpEdit2->setRange(0, (quint16)-1);
 
-	pmpGroup = new QGroupBox(tr("PMP : données particules"), this);
+	pmpGroup = new QGroupBox(tr("PMP : donnÃ©es particules"), this);
 	pmpView = new QLabel(pmpGroup);
 	pmpPaletteView = new QLabel(pmpGroup);
 	pmpPaletteBox = new QComboBox(pmpGroup);

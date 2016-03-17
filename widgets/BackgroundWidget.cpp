@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel JÈrÙme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel J√©r√¥me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -92,7 +92,7 @@ void BackgroundWidget::parameterChanged(int index)
 	statesWidget->clear();
 	foreach(quint8 state, states)
 	{
-		item = new QListWidgetItem(tr("…tat %1").arg(state));
+		item = new QListWidgetItem(tr("√âtat %1").arg(state));
 		item->setData(Qt::UserRole, state);
 		item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
 		item->setCheckState(data()->getBackgroundFile()->params.contains(parameter, state) ? Qt::Checked : Qt::Unchecked);
@@ -157,7 +157,7 @@ void BackgroundWidget::fill()
 	parametersWidget->clear();
 	QList<quint8> parameters = data()->getBackgroundFile()->allparams.uniqueKeys();
 	foreach(quint8 parameter, parameters)
-		parametersWidget->addItem(tr("ParamËtre %1").arg(parameter), parameter);
+		parametersWidget->addItem(tr("Param√®tre %1").arg(parameter), parameter);
 
 	QList<quint8> layerIDs = data()->getBackgroundFile()->layers.keys();
 	QListWidgetItem *item;

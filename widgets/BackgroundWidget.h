@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ public:
 	BackgroundWidget(QWidget *parent=0);
 	void clear();
 	void fill();
-	inline QString tabName() const { return tr("Décors"); }
+	inline QString tabName() const { return tr("DÃ©cors"); }
 private slots:
 	void parameterChanged(int index);
 	void enableState(QListWidgetItem *item);

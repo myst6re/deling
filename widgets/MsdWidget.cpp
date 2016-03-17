@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@ void MsdWidget::build()
 	QAction *action;
 
 	ListWidget *listWidget = new ListWidget(this);
-	listWidget->addAction(ListWidget::Invisible, tr("Insérer un texte au-dessus"), this, SLOT(insertTextAbove()));
-	listWidget->addAction(ListWidget::Add, tr("Insérer un texte en dessous"), this, SLOT(insertText()));
+	listWidget->addAction(ListWidget::Invisible, tr("InsÃ©rer un texte au-dessus"), this, SLOT(insertTextAbove()));
+	listWidget->addAction(ListWidget::Add, tr("InsÃ©rer un texte en dessous"), this, SLOT(insertText()));
 	actionRemoveText = listWidget->addAction(ListWidget::Rem, tr("Supprimer un texte"), this, SLOT(removeText()));
 
 	toolBar0 = listWidget->toolBar();
@@ -90,7 +90,7 @@ void MsdWidget::build()
 	action->setStatusTip(action->text());
 	action->setData("{Wait000}");
 	toolBar->addSeparator();
-	action = toolBar->addAction(QIcon(":/images/icon-darkgrey.png"), tr("Gris foncé"));
+	action = toolBar->addAction(QIcon(":/images/icon-darkgrey.png"), tr("Gris foncÃ©"));
 	action->setStatusTip(action->text());
 	action->setData("{Darkgrey}");
 	action = toolBar->addAction(QIcon(":/images/icon-grey.png"), tr("Gris"));
@@ -115,7 +115,7 @@ void MsdWidget::build()
 	action->setStatusTip(action->text());
 	action->setData("{White}");
 	toolBar->addSeparator();
-	action = toolBar->addAction(QIcon(":/images/icon-darkgreyblink.png"), tr("Gris foncé clignotant"));
+	action = toolBar->addAction(QIcon(":/images/icon-darkgreyblink.png"), tr("Gris foncÃ© clignotant"));
 	action->setStatusTip(action->text());
 	action->setData("{DarkgreyBlink}");
 	action = toolBar->addAction(QIcon(":/images/icon-greyblink.png"), tr("Gris clignotant"));
@@ -186,7 +186,7 @@ void MsdWidget::build()
 	action->setData("{x0525}");
 	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x06)), tr("Croix"));
 	action->setData("{x0526}");
-	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x07)), tr("Carré"));
+	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x07)), tr("CarrÃ©"));
 	action->setData("{x0527}");
 	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x08)), tr("Select"));
 	action->setData("{x0528}");
@@ -205,7 +205,7 @@ void MsdWidget::build()
 
 	toolBar2 = new QToolBar(this);
 	toolBar2->setIconSize(QSize(16, 16));
-	toolBar2->addAction(tr("Caractères spéciaux"), this, SLOT(specialCharactersDialog()));
+	toolBar2->addAction(tr("CaractÃ¨res spÃ©ciaux"), this, SLOT(specialCharactersDialog()));
 
 	QVBoxLayout *toolBars = new QVBoxLayout();
 	toolBars->addWidget(toolBar);
@@ -449,7 +449,7 @@ void MsdWidget::changeTextPreviewWin()
 {
 	int currentWin = textPreview->getCurrentWin(), nbWin = textPreview->getNbWin();
 
-	textWin->setText(tr("Fenêtre %1/%2").arg(currentWin).arg(nbWin));
+	textWin->setText(tr("FenÃªtre %1/%2").arg(currentWin).arg(nbWin));
 	prevWin->setEnabled(currentWin > 1);
 	nextWin->setEnabled(currentWin < nbWin);
 	textWin->setEnabled(nbWin > 0);

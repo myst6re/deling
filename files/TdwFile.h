@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ public:
 	void close();
 	bool save(QByteArray &tdw);
 	inline QString filterText() const {
-		return QObject::tr("Fichier caractères additionnels écran PC (*.tdw)");
+		return QObject::tr("Fichier caractÃ¨res additionnels Ã©cran PC (*.tdw)");
 	}
 	bool isNull() const;
 	QImage image(Color color=White);

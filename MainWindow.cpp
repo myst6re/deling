@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ MainWindow::MainWindow()
 	actionImport = menu->addAction(tr("Importer..."), this, SLOT(importCurrent()));
 	actionOpti = menu->addAction(tr("Optimiser l'archive..."), this, SLOT(optimizeArchive()));
 	menu->addSeparator();
-	menu->addAction(tr("Plein écran"), this, SLOT(fullScreen()), Qt::Key_F11);
+	menu->addAction(tr("Plein Ã©cran"), this, SLOT(fullScreen()), Qt::Key_F11);
 	actionClose = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Fe&rmer"), this, SLOT(closeFiles()));
 	menu->addAction(tr("&Quitter"), this, SLOT(close()));
 
@@ -188,7 +188,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		Config::setValue("list1ColumnSort", list1->sortColumn());
 		Config::setValue("currentPage", stackedWidget->currentIndex());
 		if(!FF8Font::saveFonts()) {
-			QMessageBox::critical(0, QObject::tr("Enregistrement des données"), QObject::tr("Les polices de caractères n'ont pas pu être enregistrées !"));
+			QMessageBox::critical(0, QObject::tr("Enregistrement des donnÃ©es"), QObject::tr("Les polices de caractÃ¨res n'ont pas pu Ãªtre enregistrÃ©es !"));
 		}
 		event->accept();
 	}
@@ -561,7 +561,7 @@ void MainWindow::saveAs(QString path)
 	QString errorStr;
 
 	if(!fieldArchive->compileScripts(errorFieldID, errorGroupID, errorMethodID, errorLine, errorStr)) {
-		QMessageBox::warning(this, tr("Erreur de compilation"), tr("Écran %1 (%2), groupe %3, méthode %4, ligne %5 :\n%6.")
+		QMessageBox::warning(this, tr("Erreur de compilation"), tr("Ã‰cran %1 (%2), groupe %3, mÃ©thode %4, ligne %5 :\n%6.")
 							 .arg(fieldArchive->getField(errorFieldID)->name())
 							 .arg(errorFieldID)
 							 .arg(errorGroupID)
@@ -610,26 +610,26 @@ void MainWindow::exportCurrent()
 	/*if(currentField->hasPvpFile()
 			&& currentField->hasBackgroundFile()
 			&& currentField->hasTdwFile()) {
-		filter.append(tr("Fichier données écran PlayStation (*.MIM)"));
+		filter.append(tr("Fichier donnÃ©es Ã©cran PlayStation (*.MIM)"));
 		typeList.append(MIM);
 	}
 	if(currentField->hasInfFile()
 			&& currentField->hasCaFile()
 			&& currentField->hasIdFile()
 			&& currentField->hasBackgroundFile()) {
-		filter.append(tr("Fichier informations écran PlayStation (*.MAP)"));
+		filter.append(tr("Fichier informations Ã©cran PlayStation (*.MAP)"));
 		typeList.append(MAP);
 	}
 	if(currentField->hasCharaFile()) {
-		filter.append(tr("Fichier modèles 3D écran PlayStation (*.LZK)"));
+		filter.append(tr("Fichier modÃ¨les 3D Ã©cran PlayStation (*.LZK)"));
 		typeList.append(LZK);
-		filter.append(tr("Fichier modèles 3D écran PC (*.one)"));
+		filter.append(tr("Fichier modÃ¨les 3D Ã©cran PC (*.one)"));
 		typeList.append(one);
 	}
 	if(currentField->hasBackgroundFile()) {
-		filter.append(tr("Fichier données décors écran PC (*.mim)"));
+		filter.append(tr("Fichier donnÃ©es dÃ©cors Ã©cran PC (*.mim)"));
 		typeList.append(mim);
-		filter.append(tr("Fichier informations décors écran PC (*.map)"));
+		filter.append(tr("Fichier informations dÃ©cors Ã©cran PC (*.map)"));
 		typeList.append(map);
 	}*/
 	for(int i=0 ; i<FILE_COUNT ; ++i) {
@@ -638,7 +638,7 @@ void MainWindow::exportCurrent()
 				filter.append(currentField->getJsmFile()->filterText());
 				typeList.append(i);
 				if(currentField->getJsmFile()->hasSym()) {
-					filter.append(tr("Fichier nom des scripts écran PC (*.sym)"));
+					filter.append(tr("Fichier nom des scripts Ã©cran PC (*.sym)"));
 					typeList.append(FILE_COUNT);
 				}
 			}
@@ -658,7 +658,7 @@ void MainWindow::exportCurrent()
 	}
 
 	if(filter.isEmpty()) {
-		QMessageBox::warning(this, tr("Erreur"), tr("Cet écran ne contient pas assez d'éléments pour être exporté."));
+		QMessageBox::warning(this, tr("Erreur"), tr("Cet Ã©cran ne contient pas assez d'Ã©lÃ©ments pour Ãªtre exportÃ©."));
 		return;
 	}
 
@@ -699,7 +699,7 @@ void MainWindow::importCurrent()
     }
 
     if(filter.isEmpty()) {
-        QMessageBox::warning(this, tr("Erreur"), tr("Cet écran ne contient pas assez d'éléments pour être importé."));
+        QMessageBox::warning(this, tr("Erreur"), tr("Cet Ã©cran ne contient pas assez d'Ã©lÃ©ments pour Ãªtre importÃ©."));
         return;
     }
 
@@ -714,8 +714,8 @@ void MainWindow::importCurrent()
 
 void MainWindow::optimizeArchive()
 {
-	int reponse = QMessageBox::information(this, tr("À propos de l'optimisation"),
-							 tr("L'optimiseur d'archive va modifier l'ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.\nIl est vivement conseillé de sauvegarder l'archive (fs, fi et fl) avant de continuer."),
+	int reponse = QMessageBox::information(this, tr("Ã€ propos de l'optimisation"),
+							 tr("L'optimiseur d'archive va modifier l'ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.\nIl est vivement conseillÃ© de sauvegarder l'archive (fs, fi et fl) avant de continuer."),
 							 tr("Lancer l'optimisation !"), tr("Annuler"));
 	if(reponse!=0)	return;
 
@@ -760,7 +760,7 @@ void MainWindow::configDialog()
 void MainWindow::runFF8()
 {
 	if(!QProcess::startDetached("\"" % Data::AppPath() % "/FF8.exe\"", QStringList(), Data::AppPath())) {
-		QMessageBox::warning(this, tr("Erreur"), tr("Final Fantasy VIII n'a pas pu être lancé.\n%1").arg(Data::AppPath() % "/FF8.exe"));
+		QMessageBox::warning(this, tr("Erreur"), tr("Final Fantasy VIII n'a pas pu Ãªtre lancÃ©.\n%1").arg(Data::AppPath() % "/FF8.exe"));
 	}
 }
 
@@ -863,10 +863,14 @@ void MainWindow::gotoScript(int fieldID, int groupID, int methodID, int opcodeID
 void MainWindow::about()
 {
 	QDialog about(this, Qt::Dialog | Qt::CustomizeWindowHint);
-	about.setFixedSize(200, 270);
+	about.setFixedSize(200,270);
 
 	QFont font;
 	font.setPointSize(12);
+
+	QLabel image(&about);
+	image.setPixmap(QPixmap(":/images/deling_city.png"));
+	image.move(-5, about.height() - 128);
 
 	QLabel desc1(PROG_FULLNAME, &about);
 	desc1.setFont(font);
@@ -875,19 +879,12 @@ void MainWindow::about()
 
 	font.setPointSize(8);
 
-	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci à :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li><li>Shard</li><li>MaKiPL</li></ul>"), &about);
+	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci Ã  :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li></ul>"), &about);
 	desc2.setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
 	desc2.setTextFormat(Qt::RichText);
 	desc2.setOpenExternalLinks(true);
-	desc2.move(9, 40);
+	desc2.move(9,40);
 	desc2.setFont(font);
-
-	QFontMetrics fontMetrics(font);
-	about.setFixedHeight(40 + fontMetrics.lineSpacing() * 10 + 128);
-
-	QLabel image(&about);
-	image.setPixmap(QPixmap(":/images/deling_city.png"));
-	image.move(-5, about.height() - 128);
 
 	QLabel desc3(QString("Qt %1").arg(QT_VERSION_STR), &about);
 	QPalette pal = desc3.palette();

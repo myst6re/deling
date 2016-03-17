@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 		QCoreApplication::processEvents();
 		if(progress->observerWasCanceled()) {
 			clearFields();
-			errorMsg = QObject::tr("Ouverture annulée.");
+			errorMsg = QObject::tr("Ouverture annulÃ©e.");
 			return 2;
 		}
 		if(currentMap % freq == 0) {
@@ -123,7 +123,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 	}
 
 	if(fields.isEmpty()) {
-		errorMsg = QObject::tr("Aucun écran trouvé.");
+		errorMsg = QObject::tr("Aucun Ã©cran trouvÃ©.");
 		return 4;
 	}
 

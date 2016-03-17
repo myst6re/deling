@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -345,7 +345,7 @@ void FsDialog::extract(QStringList sources)
 	if(sources.size()==1)
 	{
 		if(!fsArchive->extractFile(sources.first(), destination))
-			QMessageBox::warning(this, tr("Erreur"), tr("Le fichier n'a pas été extrait !"));
+			QMessageBox::warning(this, tr("Erreur"), tr("Le fichier n'a pas Ã©tÃ© extrait !"));
 
 		Config::setValue("extractPath", destination.left(destination.lastIndexOf('/')));
 	}
@@ -354,7 +354,7 @@ void FsDialog::extract(QStringList sources)
 		ProgressWidget progress(tr("Extraction..."), ProgressWidget::Cancel, this);
 
 		if(fsArchive->extractFiles(sources, currentPath, destination, &progress) != FsArchive::Ok)
-			QMessageBox::warning(this, tr("Erreur"), tr("Les fichiers n'ont pas été extraits !"));
+			QMessageBox::warning(this, tr("Erreur"), tr("Les fichiers n'ont pas Ã©tÃ© extraits !"));
 
 		Config::setValue("extractPath", destination);
 	}
@@ -462,7 +462,7 @@ void FsDialog::add(QStringList sources, bool fromDir)
 	QStringList errorOut;
 	for(i=0 ; i<errors.size() && errorOut.size() < 20 ; ++i) {
 		if(errors.at(i) == FsArchive::FileExists) {
-			if(QMessageBox::question(this, tr("Le fichier existe déjà"), tr("Le fichier existe déjà, voulez-vous le remplacer ?"), tr("Oui"), tr("Non")) == 0) {
+			if(QMessageBox::question(this, tr("Le fichier existe dÃ©jÃ "), tr("Le fichier existe dÃ©jÃ , voulez-vous le remplacer ?"), tr("Oui"), tr("Non")) == 0) {
 				replace(sources.at(i), destinations.at(i));
 				continue;
 			}
@@ -471,7 +471,7 @@ void FsDialog::add(QStringList sources, bool fromDir)
 			errorOut.append(FsArchive::errorString(errors.at(i), sources.at(i)));
 	}
 	if(!errorOut.isEmpty()) {
-		QMessageBox::warning(this, tr("Erreur d'ajout"), tr("Un problème est survenu pour un ou plusieurs des fichiers à ajouter :\n - %1").arg(errorOut.join("\n - ")));
+		QMessageBox::warning(this, tr("Erreur d'ajout"), tr("Un problÃ¨me est survenu pour un ou plusieurs des fichiers Ã  ajouter :\n - %1").arg(errorOut.join("\n - ")));
 	}
 
 	if(errors.contains(FsArchive::Ok)) {
@@ -500,7 +500,7 @@ void FsDialog::remove(QStringList destinations)
 		if(destinations.isEmpty())	return;
 	}
 
-	if(QMessageBox::question(this, tr("Supprimer"), tr("Voulez-vous supprimer les éléments sélectionnés ?"), tr("Oui"), tr("Non")) != 0)
+	if(QMessageBox::question(this, tr("Supprimer"), tr("Voulez-vous supprimer les Ã©lÃ©ments sÃ©lectionnÃ©s ?"), tr("Oui"), tr("Non")) != 0)
 		return;
 
 	ProgressWidget progress(tr("Suppression..."), ProgressWidget::Cancel, this);
@@ -540,7 +540,7 @@ void FsDialog::renameOK(QTreeWidgetItem *item, int column)
 	}
 
 	if(newName.contains('\\') || newName.contains('/') || newName.contains('\n') || newName.contains('\r')) {
-		QMessageBox::warning(this, tr("Erreur de renommage"), tr("Caractères interdits utilisés (par exemple : '\\' ou '/')"));
+		QMessageBox::warning(this, tr("Erreur de renommage"), tr("CaractÃ¨res interdits utilisÃ©s (par exemple : '\\' ou '/')"));
 		item->setText(0, oldName);
 		list->blockSignals(false);
 		return;

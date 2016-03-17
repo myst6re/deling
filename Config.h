@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 class Config
 {
 public:
+	static QString programResourceDir();
 	static void set();
 	static void remove();
 	static QVariant value(const QString &key, const QVariant &defaultValue = QVariant());

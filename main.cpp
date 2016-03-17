@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -31,6 +31,9 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	app.setWindowIcon(QIcon(":/images/deling.png"));
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+#endif
 
 	Config::set();
 
@@ -42,13 +45,15 @@ int main(int argc, char *argv[])
 		app.installTranslator(&qtTranslator);
 
 	QTranslator translator;
-	if(translator.load(qApp->applicationDirPath() % "/deling_" % lang))
+	if(translator.load("deling_" % lang, Config::programResourceDir())){
 		app.installTranslator(&translator);
-	else
+		Config::setValue("lang", lang);
+	} else{
 		Config::setValue("lang", "fr");
-	
+	}
+
 	if(!FF8Font::listFonts()) {
-		QMessageBox::critical(0, QObject::tr("Chargement des données"), QObject::tr("Les polices de caractères n'ont pas pu être chargées !"));
+		QMessageBox::critical(0, QObject::tr("Chargement des donnÃ©es"), QObject::tr("Les polices de caractÃ¨res n'ont pas pu Ãªtre chargÃ©es !"));
 		return -1;
 	}
 

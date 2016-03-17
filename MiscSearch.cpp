@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -153,13 +153,13 @@ void MiscSearch::fillList()
 
 		switch(i.value()) {
 		case JUST_KEY:
-			type = "Aucun paramètre";
+			type = "Aucun paramÃ¨tre";
 			break;
 		case KEY_AND_UPARAM:
-			type = "Un paramètre";
+			type = "Un paramÃ¨tre";
 			break;
 		case KEY_AND_SPARAM:
-			type = "Un paramètre (Signé ?)";
+			type = "Un paramÃ¨tre (SignÃ© ?)";
 			break;
 		}
 

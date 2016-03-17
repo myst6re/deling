@@ -6,7 +6,7 @@ ProgressWidget::ProgressWidget(const QString &labelText, ButtonLabel buttonLabel
 	_taskBarButton(parent)
 {
 	_progress.setLabelText(labelText);
-	_progress.setCancelButtonText(buttonLabel == Cancel ? tr("Annuler") : tr("Arrêter"));
+	_progress.setCancelButtonText(buttonLabel == Cancel ? tr("Annuler") : tr("ArrÃªter"));
 	_progress.setRange(0, 0);
 	_progress.setWindowModality(Qt::WindowModal);
 	_progress.show();

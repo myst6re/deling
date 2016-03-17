@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -19,6 +19,17 @@
 #include "parameters.h"
 
 QSettings *Config::settings = 0;
+
+QString Config::programResourceDir()
+{
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+	return qApp->applicationDirPath().startsWith("/usr/bin")
+	       ? "/usr/share/deling"
+	       : qApp->applicationDirPath();
+#else
+	return qApp->applicationDirPath();
+#endif
+}
 
 void Config::set() {
 	if(!settings) {

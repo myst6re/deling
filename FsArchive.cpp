@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -276,7 +276,7 @@ FsHeader *FsArchive::getFile(const QString &path) const
         return toc_access.value(path.toLower(), NULL);
 	}
 
-	//	qDebug() << path << "non trouvé";
+	//	qDebug() << path << "non trouvÃ©";
 
 	return NULL;
 }
@@ -387,7 +387,7 @@ void FsArchive::changePositions(FsHeader *start, int diff)
 
 	FsHeader *header;
 
-	// décalage des positions des fichiers qui suivent
+	// dÃ©calage des positions des fichiers qui suivent
     QMap<quint32, FsHeader *>::iterator i = sortedByPosition.find(sortedByPosition.key(start), start);
     if(i != sortedByPosition.end())
 	{
@@ -1108,23 +1108,23 @@ QString FsArchive::errorString(Error error, const QString &fileName)
 {
 	switch(error) {
 	case Ok:
-		return QObject::tr("Opération réalisée avec succès !");
+		return QObject::tr("OpÃ©ration rÃ©alisÃ©e avec succÃ¨s !");
 	case NonWritable:
-		return QObject::tr("L'archive Fs ne peut pas être modifiée, vérifiez vos droits en écriture.");
+		return QObject::tr("L'archive Fs ne peut pas Ãªtre modifiÃ©e, vÃ©rifiez vos droits en Ã©criture.");
 	case SourceCantBeOpened:
-		return QObject::tr("Le fichier source ne peut pas être ouvert%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
+		return QObject::tr("Le fichier source ne peut pas Ãªtre ouvert%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case TempCantBeOpened:
-		return QObject::tr("Le fichier temp ne peut pas être ouvert%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
+		return QObject::tr("Le fichier temp ne peut pas Ãªtre ouvert%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case TargetCantBeOpened:
-		return QObject::tr("Le fichier cible ne peut pas être ouvert%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
+		return QObject::tr("Le fichier cible ne peut pas Ãªtre ouvert%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case Canceled:
-		return QObject::tr("Opération annulée.");
+		return QObject::tr("OpÃ©ration annulÃ©e.");
 	case SaveHeaderError:
-		return QObject::tr("Erreur lors de la création des fichiers '*.fi' et '*.fl'.");
+		return QObject::tr("Erreur lors de la crÃ©ation des fichiers '*.fi' et '*.fl'.");
 	case ReplaceArchiveError:
 		return QObject::tr("Erreur lors de la sauvegarde de l'archive Fs%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case FileExists:
-		return QObject::tr("Ce fichier existe déjà dans l'archive%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
+		return QObject::tr("Ce fichier existe dÃ©jÃ  dans l'archive%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case FileDontExists:
 		return QObject::tr("Ce fichier n'existe pas dans l'archive%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case EmptyFile:

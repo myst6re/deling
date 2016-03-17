@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2012 Arzel JÃ©rÃ´me <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -25,15 +25,15 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 	tdwPalette = new TdwPalette(this);
 	selectPal = new QComboBox(this);
 	QStringList colors;
-	colors << tr("Gris foncé") << tr("Gris") << tr("Jaune") << tr("Rouge") << tr("Vert") << tr("Bleu") << tr("Violet") << tr("Blanc");
+	colors << tr("Gris foncÃ©") << tr("Gris") << tr("Jaune") << tr("Rouge") << tr("Vert") << tr("Bleu") << tr("Violet") << tr("Blanc");
 	selectPal->addItems(colors);
 	selectPal->setCurrentIndex(7);
 
 	selectTable = new QComboBox(this);
 
-	fromImage1 = new QPushButton(tr("À partir d'une image..."), this);
+	fromImage1 = new QPushButton(tr("Ã€ partir d'une image..."), this);
 	fromImage1->setVisible(false);//TODO
-	fromImage2 = new QPushButton(tr("À partir d'une image..."), this);
+	fromImage2 = new QPushButton(tr("Ã€ partir d'une image..."), this);
 	fromImage2->setVisible(false);//TODO
 //	QPushButton *resetButton1 = new QPushButton(tr("Annuler les modifications"), this);//TODO
 	textLetter = new QLineEdit(this);
@@ -181,7 +181,7 @@ void TdwWidget2::exportFont()
 		filter.append(txtF = tr("Fichier traduction Deling (*.txt)"));
 	QString selectedFilter;
 
-	QString path = QFileDialog::getSaveFileName(this, tr("Exporter police de caractère"), "sysfnt", filter.join(";;"), &selectedFilter);
+	QString path = QFileDialog::getSaveFileName(this, tr("Exporter police de caractÃ¨re"), "sysfnt", filter.join(";;"), &selectedFilter);
 	if(path.isNull())		return;
 
 	if(selectedFilter == texF) {
@@ -200,7 +200,7 @@ void TdwWidget2::exportFont()
 				QMessageBox::warning(this, tr("Erreur"), tr("Erreur lors de l'enregistrement."));
 			}
 		} else {
-			QMessageBox::information(this, tr("Information"), tr("Format de police de caractère inexportable."));
+			QMessageBox::information(this, tr("Information"), tr("Format de police de caractÃ¨re inexportable."));
 		}
 	} else if(selectedFilter == tdwF) {
 		QByteArray data;
@@ -250,7 +250,7 @@ void TdwWidget2::importFont()
 	}
 	QString selectedFilter;
 
-	QString path = QFileDialog::getOpenFileName(this, tr("Importer police de caractère"), "sysfnt", filter.join(";;"), &selectedFilter);
+	QString path = QFileDialog::getOpenFileName(this, tr("Importer police de caractÃ¨re"), "sysfnt", filter.join(";;"), &selectedFilter);
 	if(path.isNull())		return;
 
 	if(selectedFilter == tdwF) {
