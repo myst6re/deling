@@ -16,11 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "GZIP.h"
-#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
-#include "zlib/zlib.h"
-#else
 #include <zlib.h>
-#endif
+#undef compress // conflict with GZIP::compress
 
 QByteArray GZIP::decompress(const QByteArray &data)
 {
