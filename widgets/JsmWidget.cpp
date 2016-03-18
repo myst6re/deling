@@ -29,7 +29,7 @@ void JsmWidget::build()
 	QFont font;
 	font.setPointSize(8);
 
-	warningWidget = new QLabel(tr("Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n'aura peut-être aucun sens."), this);
+	warningWidget = new QLabel(tr("Attention : Les scripts de cet Ã©cran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n'aura peut-Ãªtre aucun sens."), this);
 	warningWidget->hide();
 	warningWidget->setWordWrap(true);
 	warningWidget->setTextFormat(Qt::PlainText);
