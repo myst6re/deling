@@ -18,7 +18,7 @@
 #ifndef DEF_BGPREVIEW
 #define DEF_BGPREVIEW
 
-#include <QtGui>
+#include <QtWidgets>
 
 class BGPreview : public QLabel
 {

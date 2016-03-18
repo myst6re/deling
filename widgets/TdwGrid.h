@@ -18,7 +18,7 @@
 #ifndef TDWGRID_H
 #define TDWGRID_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/TdwDisplay.h"
 
 class TdwGrid : public TdwDisplay

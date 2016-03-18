@@ -18,7 +18,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "files/MsdFile.h"
 #include "FieldArchivePC.h"
 #include "FieldArchivePS.h"

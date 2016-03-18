@@ -18,7 +18,7 @@
 #ifndef DEF_CONFIGDIALOG
 #define DEF_CONFIGDIALOG
 
-#include <QtGui>
+#include <QtWidgets>
 #include "Config.h"
 #include "Data.h"
 #include "TdwManagerDialog.h"

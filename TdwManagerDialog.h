@@ -18,7 +18,7 @@
 #ifndef TDWMANAGERDIALOG_H
 #define TDWMANAGERDIALOG_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/TdwWidget2.h"
 #include "Listwidget.h"
 

@@ -18,7 +18,7 @@
 #ifndef TDWDISPLAY_H
 #define TDWDISPLAY_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "files/TdwFile.h"
 
 class TdwDisplay : public QWidget

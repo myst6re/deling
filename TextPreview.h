@@ -18,7 +18,7 @@
 #ifndef TEXTPREVIEW_H
 #define TEXTPREVIEW_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "FF8Text.h"
 #include "files/JsmFile.h"
 #include "files/TdwFile.h"

@@ -18,7 +18,7 @@
 #ifndef PAGEWIDGET_H
 #define PAGEWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "Field.h"
 
 class PageWidget : public QWidget

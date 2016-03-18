@@ -18,7 +18,7 @@
 #ifndef MSDHIGHLIGHTER_H
 #define MSDHIGHLIGHTER_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "FF8Text.h"
 
 class MsdHighlighter : public QSyntaxHighlighter

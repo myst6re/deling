@@ -1,7 +1,7 @@
 #ifndef SPECIALCHARACTERSDIALOG_H
 #define SPECIALCHARACTERSDIALOG_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/TdwGrid.h"
 #include "FF8Font.h"
 #include "FF8Text.h"

@@ -18,7 +18,7 @@
 #ifndef TDWWIDGET_H
 #define TDWWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/PageWidget.h"
 #include "widgets/TdwWidget2.h"
 

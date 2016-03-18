@@ -18,7 +18,7 @@
 #ifndef FSWIDGET_H
 #define FSWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 
 #define FILE_TYPE_ROLE		Qt::UserRole
 #define FILE_NAME_ROLE		Qt::UserRole + 1

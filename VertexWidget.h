@@ -18,7 +18,7 @@
 #ifndef VERTEXWIDGET_H
 #define VERTEXWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "files/CaFile.h"
 
 class VertexWidget : public QWidget

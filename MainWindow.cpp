@@ -85,8 +85,8 @@ MainWindow::MainWindow()
 	list1->sortByColumn(Config::value("list1ColumnSort",2).toInt(), Qt::AscendingOrder);
 	list1->setUniformRowHeights(true);
 	list1->header()->setStretchLastSection(false);
-	list1->header()->setResizeMode(1, QHeaderView::Stretch);
-	list1->header()->setResizeMode(2, QHeaderView::ResizeToContents);
+	list1->header()->setSectionResizeMode(1, QHeaderView::Stretch);
+	list1->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
 	lineSearch = new QLineEdit();
 	lineSearch->setFixedWidth(320);

@@ -18,7 +18,7 @@
 #ifndef JSMWIDGET_H
 #define JSMWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/PageWidget.h"
 #include "widgets/CharaPreview.h"
 #include "JsmHighlighter.h"

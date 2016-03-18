@@ -18,7 +18,7 @@
 #ifndef CHARAWIDGET_H
 #define CHARAWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/PageWidget.h"
 #include "CharaPreview.h"
 

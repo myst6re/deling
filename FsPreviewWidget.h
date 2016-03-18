@@ -18,7 +18,7 @@
 #ifndef FSPREVIEWWIDGET_H
 #define FSPREVIEWWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "BGPreview2.h"
 
 class FsPreviewWidget : public QStackedWidget

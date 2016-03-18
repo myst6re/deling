@@ -18,7 +18,7 @@
 #ifndef MISCWIDGET_H
 #define MISCWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/PageWidget.h"
 
 class MiscWidget : public PageWidget

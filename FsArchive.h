@@ -18,7 +18,7 @@
 #ifndef FSHEADER_H
 #define FSHEADER_H
 
-#include <QtGui>
+#include <QtCore>
 #include "Data.h"
 #include "LZS.h"
 #include "ArchiveObserver.h"

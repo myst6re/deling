@@ -18,7 +18,7 @@
 #ifndef TDWPALETTE_H
 #define TDWPALETTE_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "files/TdwFile.h"
 
 #define CELL_SIZE		16

@@ -18,7 +18,7 @@
 #ifndef PLAINTEXTEDIT_H
 #define PLAINTEXTEDIT_H
 
-#include <QtGui>
+#include <QtWidgets>
 
 class PlainTextEdit : public QWidget
 {

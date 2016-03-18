@@ -18,7 +18,7 @@
 #ifndef BACKGROUNDWIDGET_H
 #define BACKGROUNDWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/PageWidget.h"
 #include "BGPreview.h"
 #include "BGPreview2.h"

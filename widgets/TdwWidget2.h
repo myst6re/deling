@@ -18,7 +18,7 @@
 #ifndef TDWWIDGET2_H
 #define TDWWIDGET2_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/TdwGrid.h"
 #include "widgets/TdwLetter.h"
 #include "widgets/TdwPalette.h"

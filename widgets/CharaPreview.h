@@ -18,7 +18,7 @@
 #ifndef CHARAPREVIEW_H
 #define CHARAPREVIEW_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "CharaModel.h"
 #include "BGPreview2.h"
 

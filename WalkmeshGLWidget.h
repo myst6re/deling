@@ -18,7 +18,7 @@
 #ifndef WALKMESHGLWIDGET_H
 #define WALKMESHGLWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QGLWidget>
 #include <GL/glu.h>
 #include "Field.h"

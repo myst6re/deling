@@ -18,7 +18,7 @@
 #ifndef MSDWIDGET_H
 #define MSDWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/PageWidget.h"
 #include "BGPreview.h"
 #include "TextPreview.h"

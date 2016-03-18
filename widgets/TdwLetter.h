@@ -18,7 +18,7 @@
 #ifndef TDWLETTER_H
 #define TDWLETTER_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/TdwDisplay.h"
 #include "widgets/TdwGrid.h"
 

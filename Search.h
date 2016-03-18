@@ -18,7 +18,7 @@
 #ifndef DEF_SEARCH
 #define DEF_SEARCH
 
-#include <QtGui>
+#include <QtWidgets>
 #include "FieldArchive.h"
 
 class Search : public QDialog

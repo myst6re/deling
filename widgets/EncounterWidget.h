@@ -18,7 +18,7 @@
 #ifndef ENCOUNTERWIDGET_H
 #define ENCOUNTERWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include "widgets/PageWidget.h"
 
 class EncounterWidget : public PageWidget

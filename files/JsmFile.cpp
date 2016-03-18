@@ -411,52 +411,52 @@ void JsmFile::searchWindows()
 		case JsmOpcode::AMES:
 		case JsmOpcode::RAMESW:
 		{
-			JsmOpcode psh1=scripts.opcode(i-4);
-			JsmOpcode psh2=scripts.opcode(i-3);
-			JsmOpcode psh3=scripts.opcode(i-2);
-			JsmOpcode psh4=scripts.opcode(i-1);
-			if(psh1.key() == JsmOpcode::PSHN_L
-					&& psh2.key() == JsmOpcode::PSHN_L
-					&& psh3.key() == JsmOpcode::PSHN_L
-					&& psh4.key() == JsmOpcode::PSHN_L) {
+			JsmOpcode _psh1=scripts.opcode(i-4);
+			JsmOpcode _psh2=scripts.opcode(i-3);
+			JsmOpcode _psh3=scripts.opcode(i-2);
+			JsmOpcode _psh4=scripts.opcode(i-1);
+			if(_psh1.key() == JsmOpcode::PSHN_L
+					&& _psh2.key() == JsmOpcode::PSHN_L
+					&& _psh3.key() == JsmOpcode::PSHN_L
+					&& _psh4.key() == JsmOpcode::PSHN_L) {
 				window.type = key;
-				window.x = psh3.param();
-				window.y = psh4.param();
-				window.u1 = psh1.param();
+				window.x = _psh3.param();
+				window.y = _psh4.param();
+				window.u1 = _psh1.param();
 				window.script_pos = i;
-				ff8Windows.insert(psh2.param(), window);
+				ff8Windows.insert(_psh2.param(), window);
 			}
 			break;
 		}
 		case JsmOpcode::AASK:
 			if(i>=8) {
-				JsmOpcode psh1=scripts.opcode(i-8);
-				JsmOpcode psh2=scripts.opcode(i-7);
-				JsmOpcode psh3=scripts.opcode(i-6);
-				JsmOpcode psh4=scripts.opcode(i-5);
-				JsmOpcode psh5=scripts.opcode(i-4);
-				JsmOpcode psh6=scripts.opcode(i-3);
-				JsmOpcode psh7=scripts.opcode(i-2);
-				JsmOpcode psh8=scripts.opcode(i-1);
+				JsmOpcode _psh1=scripts.opcode(i-8);
+				JsmOpcode _psh2=scripts.opcode(i-7);
+				JsmOpcode _psh3=scripts.opcode(i-6);
+				JsmOpcode _psh4=scripts.opcode(i-5);
+				JsmOpcode _psh5=scripts.opcode(i-4);
+				JsmOpcode _psh6=scripts.opcode(i-3);
+				JsmOpcode _psh7=scripts.opcode(i-2);
+				JsmOpcode _psh8=scripts.opcode(i-1);
 				if(i>=8
-						&& psh1.key() == JsmOpcode::PSHN_L
-						&& psh2.key() == JsmOpcode::PSHN_L
-						&& psh3.key() == JsmOpcode::PSHN_L
-						&& psh4.key() == JsmOpcode::PSHN_L
-						&& psh5.key() == JsmOpcode::PSHN_L
-						&& psh6.key() == JsmOpcode::PSHN_L
-						&& psh7.key() == JsmOpcode::PSHN_L
-						&& psh8.key() == JsmOpcode::PSHN_L) {
+						&& _psh1.key() == JsmOpcode::PSHN_L
+						&& _psh2.key() == JsmOpcode::PSHN_L
+						&& _psh3.key() == JsmOpcode::PSHN_L
+						&& _psh4.key() == JsmOpcode::PSHN_L
+						&& _psh5.key() == JsmOpcode::PSHN_L
+						&& _psh6.key() == JsmOpcode::PSHN_L
+						&& _psh7.key() == JsmOpcode::PSHN_L
+						&& _psh8.key() == JsmOpcode::PSHN_L) {
 					window.type = key;
-					window.x = psh7.param();
-					window.y = psh8.param();
-					window.ask_first = psh3.param();
-					window.ask_last = psh4.param();
-					window.ask_first2 = psh5.param();
-					window.ask_last2 = psh6.param();
-					window.u1 = psh1.param();
+					window.x = _psh7.param();
+					window.y = _psh8.param();
+					window.ask_first = _psh3.param();
+					window.ask_last = _psh4.param();
+					window.ask_first2 = _psh5.param();
+					window.ask_last2 = _psh6.param();
+					window.u1 = _psh1.param();
 					window.script_pos = i;
-					ff8Windows.insert(psh2.param(), window);
+					ff8Windows.insert(_psh2.param(), window);
 				}
 			}
 			break;
