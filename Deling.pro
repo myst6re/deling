@@ -233,7 +233,8 @@ win32 {
 
 OTHER_FILES += Deling.rc \
     README.md \
-    compat/QtWidgets
+    compat/QtWidgets \
+    deploy.bat
 DISTFILES += Deling.desktop
 
 # call lrelease to make the qm files.
