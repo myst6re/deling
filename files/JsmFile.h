@@ -53,9 +53,13 @@ public:
 
 	QString printCount();
 
-	bool open(QString);
-	bool open(const QByteArray &jsm, const QByteArray &sym_data=QByteArray(), bool old_format = false);
-	bool save(const QString &);
+	bool open(const QString &path);
+	// Ensure File::open is overloaded
+	inline bool open(const QByteArray &jsm) {
+		return open(jsm, QByteArray());
+	}
+	bool open(const QByteArray &jsm, const QByteArray &sym_data, bool old_format = false);
+	bool save(const QString &path);
 	bool save(QByteArray &jsm);
 	bool save(QByteArray &jsm, QByteArray &sym);
 	bool openSym(const QByteArray &sym_data);

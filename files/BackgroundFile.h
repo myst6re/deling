@@ -72,6 +72,7 @@ public:
 	QMultiMap<quint8, quint8> allparams;
 	QMap<quint8, bool> layers;
 private:
+	using File::open;
 	QImage type1() const;
 	QImage type2(bool hideBG=false) const;
 	static QRgb BGcolor(int value, quint8 blendType=4, QRgb color0=0);

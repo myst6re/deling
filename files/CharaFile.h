@@ -34,6 +34,7 @@ public:
 	void setModel(int id, const CharaModel &model);
 	int modelCount() const;
 private:
+	using File::open;
 	QList<CharaModel> models;
 };
 

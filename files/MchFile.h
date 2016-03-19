@@ -34,6 +34,7 @@ public:
 	CharaModel *model() const;
 	void setModel(CharaModel *model);
 private:
+	using File::open;
 	CharaModel *_model;
 };
 

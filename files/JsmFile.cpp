@@ -34,7 +34,7 @@ JsmFile::JsmFile() :
 }
 
 JsmFile::~JsmFile()
-{	
+{
 }
 
 QString JsmFile::printCount()
@@ -42,17 +42,17 @@ QString JsmFile::printCount()
 	return QString("doors = %1, lines = %2, bgs = %3, other = %4").arg(scripts.countDoors()).arg(scripts.countLines()).arg(scripts.countBackgrounds()).arg(scripts.countOthers());
 }
 
-bool JsmFile::open(QString path)
+bool JsmFile::open(const QString &path)
 {
 	QFile jsm_file(path);
 	if(!jsm_file.open(QIODevice::ReadOnly)) {
 		lastError = jsm_file.errorString();
 		return false;
 	}
-	//	this->path = jsm_file.fileName();
-	path.chop(3);
-	if(QFile::exists(path%"sym")) {
-		QFile sym_file(path%"sym");
+	QString symPath = path;
+	symPath.replace(QRegExp("\\..+$"), ".sym");
+	if(QFile::exists(symPath)) {
+		QFile sym_file(symPath);
 		if(!sym_file.open(QIODevice::ReadOnly)) {
 			lastError = sym_file.errorString();
 			return false;
