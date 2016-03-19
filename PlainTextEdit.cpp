@@ -37,8 +37,9 @@ bool PlainTextEdit::eventFilter(QObject *obj, QEvent *event)
 	return QObject::eventFilter(obj, event);
 }
 
-void PlainTextEdit::paintEvent(QPaintEvent */*event*/)
+void PlainTextEdit::paintEvent(QPaintEvent *event)
 {
+	Q_UNUSED(event)
 	QPainter painter(this);
 
 	QFontMetrics fontMetrics = _textEdit->fontMetrics();

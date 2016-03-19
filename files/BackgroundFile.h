@@ -22,6 +22,7 @@
 #include <QPixmap>
 #include "FF8Image.h"
 
+// FIXME: no bitfields
 typedef struct{
 	qint16 X, Y;
 	quint16 srcX, srcY;

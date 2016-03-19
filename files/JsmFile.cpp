@@ -293,7 +293,11 @@ bool JsmFile::save(QByteArray &jsm)
 			break;
 		}
 
-		data = (group.label() << 7) | ((group.scriptCount()-1) & 0x7F);
+		if (_oldFormat) {
+			data = ((group.scriptCount()-1) << 8) | (group.label() & 0xFF);
+		} else {
+			data = (group.label() << 7) | ((group.scriptCount()-1) & 0x7F);
+		}
 		section0.replace(group.execOrder()*2, 2, (char *)&data, 2);
 	}
 
@@ -314,11 +318,7 @@ bool JsmFile::save(QByteArray &jsm)
 	}
 
 	foreach(const JsmScript &script, scripts.getScriptList()) {
-		if (_oldFormat) {
-			data = (script.pos() << 16) | (script.flag() & 0xFFFF);
-		} else {
-			data = (script.flag() << 15) | (script.pos() & 0x7FFF);
-		}
+		data = (script.flag() << 15) | (script.pos() & 0x7FFF);
 		section1.append((char *)&data, 2);
 	}
 	section1.append(QByteArray(section1_padding, '\x00'));

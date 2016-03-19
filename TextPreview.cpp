@@ -499,8 +499,9 @@ void TextPreview::drawTextArea(QPainter *painter)
 	}
 }
 
-void TextPreview::paintEvent(QPaintEvent */* event */)
+void TextPreview::paintEvent(QPaintEvent *event)
 {
+	Q_UNUSED(event)
 	QPixmap pix(320, 224);
 	QPainter painter(&pix);
 
