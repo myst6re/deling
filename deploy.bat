@@ -1,7 +1,7 @@
 @echo off
 
 set OUTPUT_DIR=deploy
-set EXE_PATH=release\Makou_Reactor.exe
+set EXE_PATH=release\Deling.exe
 set LIB_DIR=%QTDIR%\bin
 set QT_TR_DIR=%QTDIR%\translations
 set LANGUAGES=fr ja
