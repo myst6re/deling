@@ -21,28 +21,28 @@
 #include "files/File.h"
 #include "files/CaFile.h"
 
-typedef struct {
+struct Range {
 	qint16 top;
 	qint16 bottom;
 	qint16 right;
 	qint16 left;
-} Range;
+};
 
-typedef struct {
-    Vertex_s exitLine[2];
-    Vertex_s destinationPoint;
-    quint16 fieldId;
+struct Gateway {
+	Vertex_s exitLine[2];
+	Vertex_s destinationPoint;
+	quint16 fieldId;
 	quint16 unknown1[4];
 	quint32 unknown2;
-} Gateway;
+};
 
-typedef struct {
+struct Trigger {
 	Vertex_s trigger_line[2];
 	quint8 doorID;
 	quint8 _blank[3];
-} Trigger;
+};
 
-typedef struct {
+struct InfStruct {
 	char name[9];
 	quint8 control;
 	quint8 unknown[6];
@@ -50,15 +50,15 @@ typedef struct {
 	qint16 cameraFocusHeight;
 	Range cameraRange[8];
 	Range screenRange[2];
-    Gateway gateways[12];
+	Gateway gateways[12];
 	Trigger triggers[12];
-} InfStruct;
+};
 
 class InfFile : public File
 {
 public:
-    InfFile();
-    bool open(const QByteArray &inf);
+	InfFile();
+	bool open(const QByteArray &inf);
 	bool save(QByteArray &inf);
 	inline QString filterText() const {
 		return QObject::tr("Fichier passages et portes écran PC (*.inf)");

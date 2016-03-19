@@ -30,20 +30,20 @@
 #define UNKNOWN_CHARACTER	254
 #define DRAWPOINT_CHARACTER	255
 
-typedef struct {
+struct FF8Window {
 	unsigned int type;
 	int x, y, u1, ask_first, ask_last, ask_first2, ask_last2;
 	int script_pos;
-} FF8Window;
+};
 
-typedef struct {
+struct JsmHeader {
 	quint8 count0;
 	quint8 count1;
 	quint8 count2;
 	quint8 count3;
 	quint16 section1;
 	quint16 section2;
-} JsmHeader;
+};
 
 class JsmFile : public File
 {

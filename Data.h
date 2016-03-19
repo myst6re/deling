@@ -27,7 +27,10 @@
 #define MAG_COUNT	57
 #define MAP_COUNT	982
 
-typedef struct { const char *source; const char *comment; } TranslateChar;
+struct TranslateChar {
+	const char *source;
+	const char *comment;
+};
 
 class Data : public QObject
 {

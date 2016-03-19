@@ -20,18 +20,18 @@
 
 #include "files/File.h"
 
-typedef struct {
+struct Vertex_s {
 	qint16 x, y, z;
-} Vertex_s;
+};
 
-typedef struct {
+struct Camera {
 	Vertex_s camera_axis[3];
 	qint16 camera_axis2z;// copy (padding)
 	qint32 camera_position[3];
 	qint32 blank;
 	quint16 camera_zoom;
 	quint16 camera_zoom2;// copy (padding)
-} Camera;
+};
 
 class CaFile : public File
 {

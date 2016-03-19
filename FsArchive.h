@@ -23,11 +23,11 @@
 #include "LZS.h"
 #include "ArchiveObserver.h"
 
-typedef struct {
+struct Fi_infos {
 	quint32 size;
 	quint32 pos;
 	quint32 isCompressed;
-} Fi_infos;
+};
 
 class FsHeader
 {

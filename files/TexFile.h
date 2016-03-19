@@ -23,7 +23,7 @@
 #include "FF8Image.h"
 #include "files/TextureFile.h"
 
-typedef struct {
+struct TexStruct {
 	// Header
 	quint32 version; // 1=FF7 | 2=FF8
 	quint32 unknown1; // 0
@@ -87,7 +87,7 @@ typedef struct {
 	quint32 unknown9;
 	quint32 unknown10;
 	quint32 unknown11; // only on ff8!
-} TexStruct;
+};
 
 class TexFile : public TextureFile
 {
