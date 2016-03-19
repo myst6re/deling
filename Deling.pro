@@ -234,7 +234,9 @@ win32 {
 OTHER_FILES += Deling.rc \
     README.md \
     compat/QtWidgets \
-    deploy.bat
+    deploy.bat \
+    .travis.yml \
+    appveyor.yml
 DISTFILES += Deling.desktop
 
 # call lrelease to make the qm files.

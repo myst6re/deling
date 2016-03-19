@@ -1,5 +1,8 @@
 # Deling
 
+[![Build Status Linux/OSX](https://travis-ci.org/myst6re/deling.svg?branch=develop)](https://travis-ci.org/myst6re/deling)
+[![Build status Win32](https://ci.appveyor.com/api/projects/status/74gm0u6ya9nqxw9u/branch/develop?svg=true)](https://ci.appveyor.com/project/myst6re/deling/branch/develop)
+
 ![Deling](images/deling.png)
 
 Final Fantasy VIII field archive editor.
