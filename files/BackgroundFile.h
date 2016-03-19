@@ -22,39 +22,48 @@
 #include <QPixmap>
 #include "FF8Image.h"
 
-// FIXME: no bitfields
-typedef struct{
+// Please do not use bitfields here
+
+struct Tile1 {
 	qint16 X, Y;
 	quint16 srcX, srcY;
 	quint16 Z;
-	unsigned texID:4;
-	unsigned blend1:1;//ending
-	unsigned blend2:3;
-	quint8 ZZ1;//ending
-	unsigned unused1:6;
-	unsigned palID:4;
-	unsigned unused2:6;
+	quint8 texID; // 3 bits = blend2 | 1 bit = blend1 | 4 bits = textID
+	quint8 ZZ1; // ending
+	quint16 palID; // 6 bits = Always 30 | 4 bits = PaletteID | 6 bits = Always 0
 	quint8 parameter;
 	quint8 state;
-} Tile1;
+};
 
-typedef struct{
+struct Tile2 {
 	qint16 X, Y;
 	quint16 Z;
-	unsigned texID:4;
-	unsigned blend1:1;//ending
-	unsigned blend2:3;
-	quint8 ZZ1;//ending
-	unsigned unused1:6;//always 0
-	unsigned palID:4;
-	unsigned unused2:6;//always 15
+	quint8 texID; // 3 bits = blend2 | 1 bit = blend1 | 4 bits = textID
+	quint8 ZZ1; // ending
+	quint16 palID; // 6 bits = Always 30 | 4 bits = PaletteID | 6 bits = Always 0
 	quint8 srcX, srcY;
-	unsigned unused3:1;//always 0
-	unsigned layerID:7;//0-7
-	quint8 blendType;//0-4
+	quint8 layerID; // 0-7
+	quint8 blendType; // 0-4
 	quint8 parameter;
 	quint8 state;
-} Tile2;
+};
+
+struct Tile {
+	qint16 X, Y;
+	quint16 Z;
+	quint8 texID;
+	quint8 blend1; // ending
+	quint8 blend2;
+	quint8 ZZ1; // ending
+	quint8 palID;
+	quint8 srcX, srcY;
+	quint8 layerID; // 0-7
+	quint8 blendType; // 0-4
+	quint8 parameter;
+	quint8 state;
+	static Tile fromTile1(const Tile1 &tile);
+	static Tile fromTile2(const Tile2 &tile);
+};
 
 class BackgroundFile : public File
 {
