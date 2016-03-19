@@ -99,7 +99,7 @@ void ConfigDialog::fillMenuLang()
 {
 	QDir dir(Config::programResourceDir());
 	QStringList stringList = dir.entryList(QStringList("deling_*.qm"), QDir::Files, QDir::Name);
-	langComboBox->addItem("Français");
+	langComboBox->addItem(QString::fromUtf8("Français"));
 	langComboBox->setItemData(0, "fr");
 
 	QTranslator translator;

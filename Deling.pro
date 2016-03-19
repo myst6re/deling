@@ -207,7 +207,9 @@ RESOURCES += Deling.qrc
         INCLUDEPATH += $$[QT_INSTALL_PREFIX]/include/QtZlib
     } else {
         INCLUDEPATH += zlib
-        LIBS += -lz
+        greaterThan(QT_MAJOR_VERSION, 4) {
+            LIBS += -lz
+        }
     }
 }
 
