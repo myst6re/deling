@@ -24,6 +24,14 @@ PlainTextEdit::PlainTextEdit(QWidget *parent) :
 	_textEdit->viewport()->installEventFilter(this);
 }
 
+QSize PlainTextEdit::sizeHint() const
+{
+	return QSize(_textEdit->fontMetrics()
+	             .width(QString::number(_textEdit->document()->blockCount()))
+	             + 4,
+	             _textEdit->height());
+}
+
 QPlainTextEdit *PlainTextEdit::textEdit()
 {
 	return _textEdit;

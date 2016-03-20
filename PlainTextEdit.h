@@ -26,6 +26,10 @@ class PlainTextEdit : public QWidget
 public:
 	explicit PlainTextEdit(QWidget *parent = 0);
 	QPlainTextEdit *textEdit();
+	QSize sizeHint() const;
+	inline QSize minimumSizeHint() const {
+		return sizeHint();
+	}
 signals:
 	
 public slots:
