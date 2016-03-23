@@ -98,13 +98,37 @@ QString JsmOpcode::desc() const
 	return QString();
 }
 
-JsmOpcodeCal::JsmOpcodeCal(quint32 op) : JsmOpcode(op) {}
-JsmOpcodeCal::JsmOpcodeCal(unsigned int key, int param) : JsmOpcode(key, param) {}
-bool JsmOpcodeCal::hasParam() const {	return true; }
-int JsmOpcodeCal::popCount() const {	return 2; }
-int JsmOpcodeCal::pushCount() const {	return 1; }
-QString JsmOpcodeCal::paramStr() const {
-	int p = param();
+JsmOpcodeCal::JsmOpcodeCal(quint32 op) :
+    JsmOpcode(op)
+{
+}
+
+JsmOpcodeCal::JsmOpcodeCal(unsigned int key, int param) :
+    JsmOpcode(key, param)
+{
+}
+
+bool JsmOpcodeCal::hasParam() const
+{
+	return true;
+}
+
+int JsmOpcodeCal::popCount() const
+{
+	if(param() == 5) { // MIN unary
+		return 1;
+	}
+	return 2;
+}
+
+int JsmOpcodeCal::pushCount() const
+{
+	return 1;
+}
+
+QString JsmOpcodeCal::paramStr() const
+{
+	const int p = param();
 	return p<15 ? cal_table[p] : JsmOpcode::paramStr();
 }
 
@@ -126,17 +150,181 @@ const char *JsmOpcodeCal::cal_table[15] = {
 	"EOR",
 };
 
-JsmOpcodePsh::JsmOpcodePsh(quint32 op) : JsmOpcode(op) {}
-JsmOpcodePsh::JsmOpcodePsh(unsigned int key, int param) : JsmOpcode(key, param) {}
-bool JsmOpcodePsh::hasParam() const {	return true; }
-int JsmOpcodePsh::popCount() const {	return 0; }
-int JsmOpcodePsh::pushCount() const {	return 1; }
+JsmOpcodePsh::JsmOpcodePsh(quint32 op) :
+    JsmOpcode(op)
+{
+}
 
-JsmOpcodePop::JsmOpcodePop(quint32 op) : JsmOpcode(op) {}
-JsmOpcodePop::JsmOpcodePop(unsigned int key, int param) : JsmOpcode(key, param) {}
-bool JsmOpcodePop::hasParam() const {	return true; }
-int JsmOpcodePop::popCount() const {	return 1; }
-int JsmOpcodePop::pushCount() const {	return 0; }
+JsmOpcodePsh::JsmOpcodePsh(unsigned int key, int param) :
+    JsmOpcode(key, param)
+{
+}
+
+bool JsmOpcodePsh::hasParam() const
+{
+	return true;
+}
+
+int JsmOpcodePsh::popCount() const
+{
+	return 0;
+}
+
+int JsmOpcodePsh::pushCount() const
+{
+	return 1;
+}
+
+JsmOpcodePsh::PushType JsmOpcodePsh::pushType() const
+{
+	switch(key()) {
+	case PSHN_L:
+		return Int;
+	case PSHI_L:
+		return Temp;
+	case PSHAC:
+		return Model;
+	default:
+		return Var;
+	}
+}
+
+QString JsmOpcodePsh::paramStr() const
+{
+	switch(pushType()) {
+	case Int:
+		return JsmOpcode::paramStr();
+	case Temp:
+		return QString("TEMP%1").arg(param());
+	case Var:
+		return QString("VAR%1").arg(param());
+	case Model:
+		return QString("MODEL%1").arg(param());
+	}
+
+	return QString();
+}
+
+JsmOpcodePop::JsmOpcodePop(quint32 op) :
+    JsmOpcode(op)
+{
+}
+
+JsmOpcodePop::JsmOpcodePop(unsigned int key, int param) :
+    JsmOpcode(key, param)
+{
+}
+
+bool JsmOpcodePop::hasParam() const
+{
+	return true;
+}
+
+int JsmOpcodePop::popCount() const
+{
+	return 1;
+}
+
+int JsmOpcodePop::pushCount() const
+{
+	return 0;
+}
+
+JsmOpcodePop::PopType JsmOpcodePop::popType() const
+{
+	if (key() == POPI_L) {
+		return Temp;
+	}
+	return Var;
+}
+
+QString JsmOpcodePop::paramStr() const
+{
+	switch(popType()) {
+	case Temp:
+		return QString("TEMP%1").arg(param());
+	case Var:
+		return QString("VAR%1").arg(param());
+	}
+
+	return QString();
+}
+
+JsmOpcodeLabel::JsmOpcodeLabel(int label) :
+    JsmOpcode()
+{
+	setParam(label);
+}
+
+JsmOpcodeLabel::JsmOpcodeLabel(const JsmOpcode &other) :
+    JsmOpcode(other)
+{
+}
+
+QString JsmOpcodeLabel::name() const
+{
+	return QString("LABEL%1").arg(param());
+}
+
+JsmOpcodeGoto::JsmOpcodeGoto(int label) :
+    JsmOpcode()
+{
+	setParam(label);
+}
+
+QString JsmOpcodeGoto::name() const
+{
+	return "JMP";
+}
+
+QString JsmOpcodeGoto::paramStr() const
+{
+	return QString("LABEL%1").arg(param());
+}
+
+JsmOpcodeIf::JsmOpcodeIf(const QList<JsmOpcode *> &stack,
+                         JsmOpcode *cal, JsmOpcode *jump) :
+    JsmOpcode(), _stack(stack),
+    _cal(cal), _jump(jump)
+{
+}
+
+QString JsmOpcodeIf::name() const
+{
+	const int p = _cal->param();
+	return QString("if %1 %2 %3")
+	        .arg(_stack.first()->paramStr(),
+	             p < 15 ? cal_table[p] : _cal->paramStr(),
+	             _stack.last()->paramStr());
+}
+
+const char *JsmOpcodeIf::cal_table[15] = {
+	"+",
+	"-",
+	"*",
+	"%",
+	"/",
+	"-",
+	"==",
+	">",
+	">=",
+	"<",
+	"<=",
+	"!=",
+	"&",
+	"|",
+	"^",
+};
+
+JsmOpcodeEnd::JsmOpcodeEnd(JsmOpcode *label) :
+    JsmOpcodeLabel(*label)
+{
+}
+
+QString JsmOpcodeEnd::name() const
+{
+	return "";
+}
 
 /*
 CAL: Un paramètre
@@ -144,18 +332,18 @@ JMP: Un paramètre (Signé ?)
 JPF: Un paramètre (Signé ?)
 LBL: Un paramètre
 RET: Un paramètre
-PSHN_L: Un paramètre (Signé ?)
-PSHI_L: Un paramètre
-POPI_L: Un paramètre
-PSHM_B: Un paramètre
-POPM_B: Un paramètre
-PSHM_W: Un paramètre
-POPM_W: Un paramètre
-PSHM_L: Un paramètre
-POPM_L: Un paramètre
-PSHSM_B: Un paramètre
-PSHSM_W: Un paramètre
-PSHSM_L: Un paramètre
+PSHN_L: PUSH_L XX: Un paramètre (Signé ?)
+PSHI_L: PUSH_L tempXX: Un paramètre
+POPI_L: POP_L tempXX: Un paramètre
+PSHM_B: PUSH_B varXX: Un paramètre
+POPM_B: POP_B varXX: Un paramètre
+PSHM_W: PUSH_W varXX: Un paramètre
+POPM_W: POP_W varXX: Un paramètre
+PSHM_L: PUSH_L varXX: Un paramètre
+POPM_L: POP_L varXX: Un paramètre
+PSHSM_B: PUSH_SB varXX: Un paramètre
+PSHSM_W: PUSH_SW varXX: Un paramètre
+PSHSM_L: PUSH_SL varXX: Un paramètre
 PSHAC: Un paramètre
 REQ: Un paramètre
 REQSW: Un paramètre

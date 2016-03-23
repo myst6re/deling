@@ -31,6 +31,7 @@ public:
 	JsmData &append(const JsmData &jsmData);
 	JsmOpcode opcode(int opcodeID) const;
 	JsmOpcode *opcodep(int opcodeID) const;
+	QList<JsmOpcode *> opcodesp(int opcodeID=0, int nbOpcode=-1) const;
 	JsmData &setOpcode(int opcodeID, const JsmOpcode &opcode);
 	JsmData &insertOpcode(int opcodeID, const JsmOpcode &opcode);
 	JsmData &insert(int opcodeID, const JsmData &data);

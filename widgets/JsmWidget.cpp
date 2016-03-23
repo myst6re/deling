@@ -59,6 +59,10 @@ void JsmWidget::build()
 	list2->setFont(font);
 	list2->setUniformRowHeights(true);
 
+	tabBar = new QTabBar(this);
+	tabBar->addTab(tr("Instructions"));
+	tabBar->addTab(tr("Pseudo-code"));
+
 	PlainTextEdit *te = new PlainTextEdit(this);
 	textEdit = te->textEdit();
 	QFont font2 = textEdit->document()->defaultFont();
@@ -93,15 +97,17 @@ void JsmWidget::build()
 
 	QGridLayout *mainLayout = new QGridLayout(this);
 	mainLayout->addWidget(warningWidget, 0, 0, 1, 4);
-	mainLayout->addLayout(list1Layout, 1, 0, 2, 1);
-	mainLayout->addWidget(list2, 1, 1, 2, 1);
-	mainLayout->addWidget(te, 1, 2);
-	mainLayout->addWidget(textEdit, 1, 3);
-	mainLayout->addWidget(toolBar, 2, 2, 1, 2);
+	mainLayout->addLayout(list1Layout, 1, 0, 3, 1);
+	mainLayout->addWidget(list2, 1, 1, 3, 1);
+	mainLayout->addWidget(tabBar, 1, 2, 1, 2);
+	mainLayout->addWidget(te, 2, 2);
+	mainLayout->addWidget(textEdit, 2, 3);
+	mainLayout->addWidget(toolBar, 3, 2, 1, 2);
 	mainLayout->setContentsMargins(QMargins());
 
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillList2()));
 	connect(list2, SIGNAL(itemSelectionChanged()), SLOT(fillTextEdit()));
+	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(fillTextEdit()));
 
 	PageWidget::build();
 }
@@ -157,7 +163,10 @@ void JsmWidget::saveSession()
 
 	data()->getJsmFile()->setCurrentOpcodeScroll(this->groupID, this->methodID, textEdit->verticalScrollBar()->value(), textEdit->textCursor());
 	if(textEdit->document()->isModified())
-		data()->getJsmFile()->setDecompiledScript(this->groupID, this->methodID, textEdit->toPlainText());
+		data()->getJsmFile()->setDecompiledScript(this->groupID,
+		                                          this->methodID,
+		                                          textEdit->toPlainText(),
+		                                          tabBar->currentIndex() > 0);
 }
 
 void JsmWidget::setReadOnly(bool readOnly)
@@ -272,8 +281,13 @@ void JsmWidget::fillTextEdit()
 	int anchor;
 	int position = data()->getJsmFile()->currentTextCursor(groupID, methodID, anchor);
 
-	textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID));
-	if(!isReadOnly())	toolBar->setEnabled(true);
+	if(tabBar->currentIndex() > 0) {
+		toolBar->setEnabled(false);
+		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, true));
+	} else {
+		toolBar->setEnabled(!isReadOnly());
+		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, false));
+	}
 
 	if(position >= 0) {
 		QTextCursor newCursor = textEdit->textCursor();

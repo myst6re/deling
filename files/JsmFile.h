@@ -70,7 +70,7 @@ public:
     }
 
 	bool compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
-	QString toString(int groupID, int methodID);
+	QString toString(int groupID, int methodID, bool moreDecompiled);
 	int opcodePositionInText(int groupID, int methodID, int opcodeID) const;
 	int fromString(int groupID, int methodID, const QString &text, QString &errorStr);
 
@@ -98,7 +98,7 @@ public:
 	QList<FF8Window> windows(quint8 textID) const;
 	void setWindow(quint8 textID, int winID, const FF8Window &value);
 
-	void setDecompiledScript(int groupID, int methodID, const QString &text);
+	void setDecompiledScript(int groupID, int methodID, const QString &text, bool moreDecompiled);
 	void setCurrentOpcodeScroll(int groupID, int methodID, int scrollValue, const QTextCursor &textCursor);
 	int currentGroupItem() const;
 	int currentMethodItem(int groupID) const;
@@ -109,10 +109,9 @@ public:
 	static QStringList opcodeNameCalc;
 private:
 	bool search(int type, quint64 value, quint16 pos, int opcodeID) const;
-	QString _toString(int position, int nbOpcode) const;
+	QString _toString(int position, int nbOpcode, bool moreDecompiled) const;
 
 	void searchWindows();
-	QList<qint32> searchJumps(int groupID, int methodID) const;
 	void searchGroupTypes();
 
 	JsmScripts scripts;

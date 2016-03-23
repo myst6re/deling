@@ -31,40 +31,56 @@ JsmScript::JsmScript(quint16 pos, const QString &name) :
 
 }
 
-void JsmScript::setName(const QString &name) {
+void JsmScript::setName(const QString &name)
+{
 	_name = name;
 }
 
-//void JsmScript::setPos(quint16 pos) {
+//void JsmScript::setPos(quint16 pos)
+//{
 //	_pos = pos;
 //}
 
-void JsmScript::incPos(int inc) {
+void JsmScript::incPos(int inc)
+{
 	_pos += inc;
 //	qDebug() << name() << "incPos" << inc << "=>" << _pos;
 }
 
-void JsmScript::setFlag(bool flag) {
+void JsmScript::setFlag(bool flag)
+{
 	_flag = flag;
 }
 
-void JsmScript::setDecompiledScript(const QString &text) {
-	_decompiledScript = text;
+void JsmScript::setDecompiledScript(const QString &text, bool moreDecompiled)
+{
+	if(moreDecompiled) {
+		_decompiledScriptMore = text;
+	} else {
+		_decompiledScript = text;
+	}
 }
 
-const QString &JsmScript::name() const {
+const QString &JsmScript::name() const
+{
 	return _name;
 }
 
-quint16 JsmScript::pos() const {
+quint16 JsmScript::pos() const
+{
 	return _pos;
 }
 
-bool JsmScript::flag() const {
+bool JsmScript::flag() const
+{
 	return _flag;
 }
 
-const QString &JsmScript::decompiledScript() const {
+const QString &JsmScript::decompiledScript(bool moreDecompiled) const
+{
+	if(moreDecompiled) {
+		return _decompiledScriptMore;
+	}
 	return _decompiledScript;
 }
 
@@ -274,6 +290,143 @@ int JsmScripts::posOpcode(int groupID, int methodID, int opcodeID) const
 	return posScript(groupID, methodID) + opcodeID;
 }
 
+QList<int> JsmScripts::searchJumps(const QList<JsmOpcode *> &opcodes) const
+{
+	QMap<int, bool> labels;
+	int i = 0, nbOpcode = opcodes.size();
+
+	foreach(JsmOpcode *op, opcodes) {
+		quint32 key = op->key();
+
+		if(key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
+			int jumpTo = i + op->param();
+			if(jumpTo >= 0 && jumpTo < nbOpcode) {
+				labels.insert(jumpTo, true);
+			}
+		}
+		++i;
+	}
+
+	// Sort labels by jumpTo
+	return labels.keys();
+}
+
+QList<JsmOpcode *> JsmScripts::opcodesp(int groupID, int methodID,
+                                        bool withLabels, bool reducePushes) const
+{
+	int nbOpcode, position;
+
+	position = posScript(groupID, methodID, &nbOpcode);
+
+	QList<JsmOpcode *> opcodes = scriptData.opcodesp(position, nbOpcode);
+
+	if(withLabels) {
+		QList<int> labels = searchJumps(opcodes);
+		QMap<int, int> gotos;
+		QMutableListIterator<JsmOpcode *> it(opcodes);
+		int i = 0;
+		while(it.hasNext()) {
+			JsmOpcode *op = it.next();
+			int lbl = labels.indexOf(i);
+			if(lbl != -1) {
+				// Add label lbl
+				it.previous();
+				it.insert(new JsmOpcodeLabel(lbl));
+				it.next();
+			}
+
+			unsigned int key = op->key();
+			if(key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
+				int param = op->param(),
+				    lbl = labels.indexOf(i + param);
+				if(lbl != -1) {
+					it.setValue(new JsmOpcodeGoto(lbl));
+					delete op;
+					gotos[lbl] += 1;
+				}
+			}
+
+			++i;
+		}
+
+		if(reducePushes) {
+			QStack<JsmOpcode *> stack;
+			QMutableListIterator<JsmOpcode *> it(opcodes);
+			QHash<int, int> pastLabels;
+			int furtherStructGoto = -1, pos = 0;
+			while(it.hasNext()) {
+				JsmOpcode *op = it.next();
+				if(op->isLabel()) {
+					pastLabels.insert(op->param(), pos);
+					qDebug() << "Label" << op->param();
+
+					if(gotos[op->param()] <= 0) {
+						it.setValue(new JsmOpcodeEnd(op)); // Remove label
+						continue;
+					}
+				}
+
+				if(op->popCount() > 0) {
+					QList<JsmOpcode *> pops;
+					for(int i = 0 ; i < op->popCount() && !stack.isEmpty() ; ++i) {
+						pops.prepend(stack.pop());
+						qDebug() << "pop" << pops.last()->paramStr();
+					}
+
+					// Assume it is a "if test" from pop/push properties
+					if(pops.size() == 2
+					        && op->pushCount() == 1
+					        && it.hasNext()) {
+						qDebug() << "Hmmm it is a test, no?";
+						// Followed by a jump
+						JsmOpcode *nextOp = it.next();
+						qDebug() << nextOp->name() << nextOp->paramStr() << nextOp->isGoto() << pastLabels;
+						// Goto forward
+						if(nextOp->isGoto()
+								&& !pastLabels.contains(nextOp->param())
+								/* && furtherStructGoto < labels.at(nextOp->param())*/) {
+							qDebug() << "With a goto after?";
+							it.previous();
+							it.previous();
+							it.previous();
+							it.previous();
+							qDebug() << "Remove" << it.value()->name() << it.value()->paramStr();
+							it.remove(); // Remove push
+							it.next();
+							qDebug() << "Remove" << it.value()->name() << it.value()->paramStr();
+							it.remove(); // Remove push
+							it.next();
+							qDebug() << "Remove" << it.value()->name() << it.value()->paramStr();
+							it.remove(); // Remove calc
+							it.next();
+							qDebug() << "Set value" << it.value()->name() << it.value()->paramStr();
+							it.setValue(new JsmOpcodeIf(pops, op, nextOp));
+							gotos[nextOp->param()] -= 1;
+						} else {
+							it.previous();
+						}
+					}
+				}
+
+				if(op->pushCount() > 0) {
+					stack.push(op);
+					qDebug() << "push" << op->paramStr();
+				}
+
+				// Watchdog
+				if(op->popCount() <= 0 && op->pushCount() <= 0) {
+					stack.clear();
+					qDebug() << "clear" << op->key();
+				}
+
+				++pos;
+			}
+		}
+	}
+
+	return opcodes;
+}
+
 unsigned int JsmScripts::key(int groupID, int methodID, int opcodeID) const
 {
 	return key(posOpcode(groupID, methodID, opcodeID));
@@ -423,7 +576,7 @@ void JsmScripts::shiftScriptsAfter(int groupID, int methodID, int shift)
 		scriptList[i].incPos(shift);
 }
 
-void JsmScripts::setDecompiledScript(int groupID, int methodID, const QString &text)
+void JsmScripts::setDecompiledScript(int groupID, int methodID, const QString &text, bool moreDecompiled)
 {
-	scriptList[absoluteMethodID(groupID, methodID)].setDecompiledScript(text);
+	scriptList[absoluteMethodID(groupID, methodID)].setDecompiledScript(text, moreDecompiled);
 }

@@ -85,6 +85,21 @@ JsmOpcode *JsmData::opcodep(int opcodeID) const
 	}
 }
 
+QList<JsmOpcode *> JsmData::opcodesp(int opcodeID, int nbOpcode) const
+{
+	QList<JsmOpcode *> ret;
+	int count;
+	if(nbOpcode >= 0) {
+		count = nbOpcode;
+	} else {
+		count = this->nbOpcode() - opcodeID;
+	}
+	for(int i = 0 ; i < count ; ++i) {
+		ret.append(opcodep(opcodeID + i));
+	}
+	return ret;
+}
+
 JsmData &JsmData::setOpcode(int opcodeID, const JsmOpcode &opcode)
 {
 	quint32 op = opcode.opcode();

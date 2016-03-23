@@ -67,12 +67,31 @@ void JsmHighlighter::highlightBlock(const QString &text)
 
 	QString param=rows.at(1);
 
-	if(opcode==JsmOpcode::CAL && JsmFile::opcodeNameCalc.contains(param.toUpper())) {
+	if(opcode == JsmOpcode::CAL && JsmFile::opcodeNameCalc.contains(param.toUpper())) {
 		setFormat(text.indexOf(param), param.size(), QColor(0x00,0x66,0xcc));
-	} else if(opcode>1 && opcode<5 && param.startsWith("LABEL", Qt::CaseInsensitive)) {
+	} else if(opcode >= JsmOpcode::JMP && opcode <= JsmOpcode::GJMP
+	          && param.startsWith("LABEL", Qt::CaseInsensitive)) {
 		param.mid(5).toInt(&ok);
 		if(ok) {
 			setFormat(text.indexOf(param), param.size(), QColor(0x66,0xcc,0x00));
+		}
+	} else if(opcode >= JsmOpcode::PSHI_L && opcode <= JsmOpcode::POPI_L
+	          && param.startsWith("TEMP", Qt::CaseInsensitive)) {
+		param.mid(4).toInt(&ok);
+		if(ok) {
+			setFormat(text.indexOf(param), param.size(), QColor(0x66,0x00,0xcc));
+		}
+	} else if(opcode >= JsmOpcode::PSHM_B && opcode <= JsmOpcode::PSHSM_L
+	          && param.startsWith("VAR", Qt::CaseInsensitive)) {
+		param.mid(3).toInt(&ok);
+		if(ok) {
+			setFormat(text.indexOf(param), param.size(), QColor(0x66,0x00,0xcc));
+		}
+	} else if(opcode == JsmOpcode::PSHAC
+	          && param.startsWith("MODEL", Qt::CaseInsensitive)) {
+		param.mid(5).toInt(&ok);
+		if(ok) {
+			setFormat(text.indexOf(param), param.size(), QColor(0x66,0x00,0xcc));
 		}
 	} else {
 //		param.toInt(&ok);

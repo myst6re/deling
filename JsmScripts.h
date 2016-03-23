@@ -27,17 +27,17 @@ public:
 	JsmScript();
 	JsmScript(quint16 pos, bool flag);
 	JsmScript(quint16 pos, const QString &name);
-	void setName(const QString &);
+	void setName(const QString &name);
 //	void setPos(quint16);
 	void incPos(int=1);
 	void setFlag(bool);
-	void setDecompiledScript(const QString &);
+	void setDecompiledScript(const QString &script, bool moreDecompiled);
 	const QString &name() const;
 	quint16 pos() const;
 	bool flag() const;
-	const QString &decompiledScript() const;
+	const QString &decompiledScript(bool moreDecompiled) const;
 private:
-	QString _name, _decompiledScript;
+	QString _name, _decompiledScript, _decompiledScriptMore;
 	quint16 _pos;
 	bool _flag;
 };
@@ -51,13 +51,13 @@ public:
 
 	JsmGroup();
 	JsmGroup(quint16 exec_order, quint16 label, quint8 script_count);
-	void setType(Type);
-	void setCharacter(int);
-	void setModelId(int);
-	void setBackgroundParamId(int);
-	void setName(const QString &);
-	void incLabel(int=1);
-	void incScriptCount(int=1);
+	void setType(Type type);
+	void setCharacter(int character);
+	void setModelId(int modelId);
+	void setBackgroundParamId(int paramId);
+	void setName(const QString &name);
+	void incLabel(int inc = 1);
+	void incScriptCount(int inc = 1);
 	Type type() const;
 	int character() const;
 	int modelId() const;
@@ -107,6 +107,8 @@ public:
 	int posScript(int groupID, int methodID) const;
 	int posScript(int groupID, int methodID, int *nbOpcode) const;
 	int posOpcode(int groupID, int methodID, int opcodeID) const;
+	QList<JsmOpcode *> opcodesp(int groupID, int methodID,
+	                            bool withLabels, bool reducePushes) const;
 	// Data
 	const JsmData &data() const;
 	unsigned int key(int groupID, int methodID, int opcodeID) const;
@@ -131,12 +133,13 @@ public:
 //	void insertGroup(int groupID);
 //	void removeGroup(int groupID);
 	// Decompiled data
-	void setDecompiledScript(int groupID, int methodID, const QString &text);
+	void setDecompiledScript(int groupID, int methodID, const QString &text, bool moreDecompiled);
 private:
 	/* methodID can not be valid */
 	int absoluteMethodID(int groupID, int methodID) const;
 	void shiftGroupsAfter(int groupID, int methodID, int shiftGroup, int shiftScript);
 	void shiftScriptsAfter(int groupID, int methodID, int shift);
+	QList<int> searchJumps(const QList<JsmOpcode *> &opcodes) const;
 
 	QList<JsmGroup> groupList;
 	QList<JsmScript> scriptList;

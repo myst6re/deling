@@ -47,6 +47,7 @@ private:
 	QTreeWidget *list1;
 	CharaPreview *modelPreview;
 	QTreeWidget *list2;
+	QTabBar *tabBar;
 	QPlainTextEdit *textEdit;
 	QToolBar *toolBar;
 	QLabel *errorLabel;

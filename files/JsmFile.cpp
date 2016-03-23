@@ -464,27 +464,6 @@ void JsmFile::searchWindows()
 	}
 }
 
-QList<qint32> JsmFile::searchJumps(int position, int nbOpcode) const
-{
-	quint32 key;
-	qint32 param;
-	QList<qint32> labels;
-
-	for(int i=0 ; i<nbOpcode ; ++i)
-	{
-		JsmOpcode op = scripts.opcode(position+i);
-		key = op.key();
-		param = op.param();
-
-		if(key>1 && key<5 && i + param >= 0 && i + param < nbOpcode) {
-			labels.append(i + param);
-		}
-	}
-	qSort(labels);
-
-	return labels;
-}
-
 void JsmFile::searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const
 {
 //	qDebug() << "JsmFile::searchDefaultBGStates";
@@ -693,53 +672,58 @@ void JsmFile::setWindow(quint8 textID, int winID, const FF8Window &window)
 	searchWindows();
 }
 
-QString JsmFile::toString(int groupID, int methodID)
+QString JsmFile::toString(int groupID, int methodID, bool moreDecompiled)
 {
-	if(!scripts.script(groupID, methodID).decompiledScript().isEmpty() && !needUpdate) {
-		return scripts.script(groupID, methodID).decompiledScript();
+	if(!scripts.script(groupID, methodID).decompiledScript(moreDecompiled).isEmpty() && !needUpdate) {
+		return scripts.script(groupID, methodID).decompiledScript(moreDecompiled);
 	}
-	int position, nbOpcode;
-	position = scripts.posScript(groupID, methodID, &nbOpcode);
 	needUpdate = false;
-	return _toString(position, nbOpcode);
+	return _toString(groupID, methodID, moreDecompiled);
 }
 
-QString JsmFile::_toString(int position, int nbOpcode) const
+QString JsmFile::_toString(int groupID, int methodID, bool moreDecompiled) const
 {
 	QString ret;
-	int lbl;
-	unsigned int key;
-	int param;
-	QList<qint32> labels = searchJumps(position, nbOpcode);
+	QList<JsmOpcode *> opcodes = scripts.opcodesp(groupID, methodID, true, moreDecompiled);
+	QStack<JsmOpcode *> blocks;
 
-	for(int i=0 ; i<nbOpcode ; ++i) {
-		JsmOpcode *op = scripts.opcodep(position + i);
-		key = op->key();
-
-		if((lbl = labels.indexOf(i)) != -1) {
-			ret.append(QString("LABEL%1\n").arg(lbl));
+	foreach(JsmOpcode *op, opcodes) {
+		// Unindent
+		if(!blocks.isEmpty() && op->isLabel()
+				&& blocks.top()->param() == op->param()) {
+			blocks.pop();
+			// Print indentations for the new line
+			if(!blocks.isEmpty()) {
+				ret.append(QByteArray(blocks.size(), '\t'));
+			}
+			ret.append("end\n");
 		}
 
-		if(!op->hasParam())
-			ret.append(op->name());
-		else {
-			param = op->param();
-			ret.append(QString("%1 ").arg(op->name(), -11));
+		// Print indentations
+		if(!blocks.isEmpty()) {
+			ret.append(QByteArray(blocks.size(), '\t'));
+		}
 
-			if(key>=JsmOpcode::JMP && key<=JsmOpcode::GJMP) {
-				if((lbl = labels.indexOf(i + param)) != -1) {
-					ret.append(QString("LABEL%1").arg(lbl));
-				} else {
-					ret.append(QString("%1").arg(param));
-				}
-			} else {
-				ret.append(op->paramStr());
-			}
+		if(!op->hasParam()) {
+			ret.append(op->name());
+		} else {
+			ret.append(QString("%1 %2")
+			           .arg(op->name(), -11)
+			           .arg(op->paramStr()));
+		}
+
+		if(op->isControlStruct()) {
+			// Indent
+			blocks.push(op->controlStructJump());
 		}
 
 		delete op;
 
 		ret.append("\n");
+	}
+
+	if(!blocks.isEmpty()) {
+		qWarning() << "JsmFile::_toString indentation error" << blocks.size();
 	}
 
 	return ret;
@@ -748,11 +732,11 @@ QString JsmFile::_toString(int position, int nbOpcode) const
 int JsmFile::opcodePositionInText(int groupID, int methodID, int opcodeID) const
 {
 	int line=opcodeID, nbOpcode, position=scripts.posScript(groupID, methodID, &nbOpcode);
-	QList<qint32> labels = searchJumps(position, nbOpcode);
+	/* QList<qint32> labels = searchJumps(position, nbOpcode);
 
 	for(int i=0 ; i<=opcodeID ; ++i) {
 		if(labels.contains(i))	++line;
-	}
+	} */ // FIXME
 
 	return line;
 }
@@ -765,9 +749,11 @@ bool JsmFile::compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, 
 		const JsmGroup &group = scripts.group(errorGroupID);
 		for(errorMethodID=0 ; errorMethodID < group.scriptCount() ; ++errorMethodID) {
 			const JsmScript &script = scripts.script(errorGroupID, errorMethodID);
-			if(!script.decompiledScript().isEmpty()) {
+			if(!script.decompiledScript(false).isEmpty()) {
 				qDebug() << "compile" << group.name() << script.name();
-				if(0 != (errorLine = fromString(errorGroupID, errorMethodID, script.decompiledScript(), errorStr))) {
+				if(0 != (errorLine = fromString(errorGroupID, errorMethodID,
+				                                script.decompiledScript(false),
+				                                errorStr))) {
 					return false;
 				}
 			}
@@ -1216,12 +1202,12 @@ bool JsmFile::hasSym() const
 	return _hasSym;
 }
 
-void JsmFile::setDecompiledScript(int groupID, int methodID, const QString &text)
+void JsmFile::setDecompiledScript(int groupID, int methodID, const QString &text, bool moreDecompiled)
 {
 //	qDebug() << "JsmFile::setDecompiledScript" << groupID << methodID;
 	if(groupID == -1 || methodID == -1)		return;
 
-	scripts.setDecompiledScript(groupID, methodID, text);
+	scripts.setDecompiledScript(groupID, methodID, text, moreDecompiled);
 }
 
 void JsmFile::setCurrentOpcodeScroll(int groupID, int methodID, int scrollValue, const QTextCursor &textCursor)

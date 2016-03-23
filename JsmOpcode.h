@@ -403,7 +403,7 @@ public:
 	};
 
 	JsmOpcode();
-	JsmOpcode(quint32 op);
+	explicit JsmOpcode(quint32 op);
 	JsmOpcode(unsigned int key, int param);
 	virtual ~JsmOpcode() {}
 	unsigned int key() const;
@@ -412,6 +412,21 @@ public:
 	void setOpcode(quint32 op);
 	void setKey(unsigned int key);
 	void setParam(int param);
+	virtual inline bool isControlStruct() const {
+		return false;
+	}
+	virtual inline JsmOpcode *controlStructJump() const {
+		return 0;
+	}
+	virtual inline bool isVirtual() const {
+		return false;
+	}
+	virtual inline bool isLabel() const {
+		return false;
+	}
+	virtual inline bool isGoto() const {
+		return false;
+	}
 	virtual bool hasParam() const;
 	virtual int popCount() const;
 	virtual int pushCount() const;
@@ -427,7 +442,7 @@ private:
 class JsmOpcodeCal : public JsmOpcode
 {
 public:
-	JsmOpcodeCal(quint32 op);
+	explicit JsmOpcodeCal(quint32 op);
 	JsmOpcodeCal(unsigned int key, int param);
 	virtual bool hasParam() const;
 	virtual int popCount() const;
@@ -439,21 +454,114 @@ public:
 class JsmOpcodePsh : public JsmOpcode
 {
 public:
-	JsmOpcodePsh(quint32 op);
+	enum PushType {
+		Int,
+		Temp,
+		Var,
+		Model
+	};
+
+	explicit JsmOpcodePsh(quint32 op);
 	JsmOpcodePsh(unsigned int key, int param);
 	virtual bool hasParam() const;
 	virtual int popCount() const;
 	virtual int pushCount() const;
+	PushType pushType() const;
+	virtual QString paramStr() const;
 };
 
 class JsmOpcodePop : public JsmOpcode
 {
 public:
-	JsmOpcodePop(quint32 op);
+	enum PopType {
+		Temp,
+		Var
+	};
+
+	explicit JsmOpcodePop(quint32 op);
 	JsmOpcodePop(unsigned int key, int param);
 	virtual bool hasParam() const;
 	virtual int popCount() const;
 	virtual int pushCount() const;
+	PopType popType() const;
+	virtual QString paramStr() const;
+};
+
+class JsmOpcodeLabel : public JsmOpcode
+{
+public:
+	explicit JsmOpcodeLabel(int label);
+	JsmOpcodeLabel(const JsmOpcode &other);
+	virtual inline bool isVirtual() const {
+		return true;
+	}
+	virtual inline bool isLabel() const {
+		return true;
+	}
+	virtual bool hasParam() const {
+		return false;
+	}
+	virtual int popCount() const {
+		return 0;
+	}
+	virtual int pushCount() const {
+		return 0;
+	}
+	virtual QString name() const;
+};
+
+class JsmOpcodeGoto : public JsmOpcode
+{
+public:
+	explicit JsmOpcodeGoto(int label);
+	virtual inline bool isGoto() const {
+		return true;
+	}
+	virtual bool hasParam() const {
+		return true;
+	}
+	virtual int popCount() const {
+		return 0;
+	}
+	virtual int pushCount() const {
+		return 0;
+	}
+	virtual QString name() const;
+	virtual QString paramStr() const;
+};
+
+class JsmOpcodeIf : public JsmOpcode
+{
+public:
+	JsmOpcodeIf(const QList<JsmOpcode *> &stack,
+	            JsmOpcode *cal, JsmOpcode *jump);
+	virtual inline bool isControlStruct() const {
+		return true;
+	}
+	virtual inline JsmOpcode *controlStructJump() const {
+		return _jump;
+	}
+	virtual bool hasParam() const {
+		return false;
+	}
+	virtual int popCount() const {
+		return 0;
+	}
+	virtual int pushCount() const {
+		return 0;
+	}
+	virtual QString name() const;
+private:
+	QList<JsmOpcode *> _stack;
+	JsmOpcode *_cal, *_jump;
+	static const char *cal_table[15];
+};
+
+class JsmOpcodeEnd : public JsmOpcodeLabel
+{
+public:
+	JsmOpcodeEnd(JsmOpcode *label);
+	virtual QString name() const;
 };
 
 #endif // JSMOPCODE_H
