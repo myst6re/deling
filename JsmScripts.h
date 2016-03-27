@@ -20,6 +20,7 @@
 
 #include <QtCore>
 #include "JsmData.h"
+#include "JsmExpression.h"
 
 class JsmScript
 {
@@ -108,7 +109,8 @@ public:
 	int posScript(int groupID, int methodID, int *nbOpcode) const;
 	int posOpcode(int groupID, int methodID, int opcodeID) const;
 	QList<JsmOpcode *> opcodesp(int groupID, int methodID,
-	                            bool withLabels, bool reducePushes) const;
+	                            bool withLabels) const;
+	JsmProgram program(int groupID, int methodID) const;
 	// Data
 	const JsmData &data() const;
 	unsigned int key(int groupID, int methodID, int opcodeID) const;
@@ -140,6 +142,8 @@ private:
 	void shiftGroupsAfter(int groupID, int methodID, int shiftGroup, int shiftScript);
 	void shiftScriptsAfter(int groupID, int methodID, int shift);
 	QList<int> searchJumps(const QList<JsmOpcode *> &opcodes) const;
+	static JsmProgram program(QList<JsmOpcode *>::const_iterator it,
+	                          QList<JsmOpcode *>::const_iterator end);
 
 	QList<JsmGroup> groupList;
 	QList<JsmScript> scriptList;

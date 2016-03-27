@@ -109,7 +109,8 @@ public:
 	static QStringList opcodeNameCalc;
 private:
 	bool search(int type, quint64 value, quint16 pos, int opcodeID) const;
-	QString _toString(int position, int nbOpcode, bool moreDecompiled) const;
+	QString _toString(int position, int nbOpcode) const;
+	QString _toStringMore(int position, int nbOpcode) const;
 
 	void searchWindows();
 	void searchGroupTypes();

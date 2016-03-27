@@ -103,7 +103,8 @@ HEADERS += MainWindow.h \
     ArchiveObserver.h \
     ArchiveObserverProgressDialog.h \
     ArchiveObservers.h \
-    ProgressWidget.h
+    ProgressWidget.h \
+    JsmExpression.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -187,7 +188,8 @@ SOURCES += MainWindow.cpp \
     QTaskBarButton.cpp \
     ArchiveObserverProgressDialog.cpp \
     ArchiveObservers.cpp \
-    ProgressWidget.cpp
+    ProgressWidget.cpp \
+    JsmExpression.cpp
 
 TRANSLATIONS += deling_en.ts \
     deling_ja.ts \

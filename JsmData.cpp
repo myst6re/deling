@@ -53,7 +53,7 @@ JsmOpcode JsmData::opcode(int opcodeID) const
 	const char *constData = scriptData.constData();
 	quint32 op=0;
 
-	memcpy(&op, &constData[opcodeID * 4], 4);
+	memcpy(&op, constData + opcodeID * 4, 4);
 
 	return JsmOpcode(op);
 }
@@ -64,7 +64,7 @@ JsmOpcode *JsmData::opcodep(int opcodeID) const
 
 	switch(op.key()) {
 	case JsmOpcode::CAL:
-		return new JsmOpcodeCal(op.opcode());
+		return new JsmOpcodeCal(op);
 	case JsmOpcode::PSHN_L:
 	case JsmOpcode::PSHI_L:
 	case JsmOpcode::PSHM_B:
@@ -74,14 +74,14 @@ JsmOpcode *JsmData::opcodep(int opcodeID) const
 	case JsmOpcode::PSHSM_W:
 	case JsmOpcode::PSHSM_L:
 	case JsmOpcode::PSHAC:
-		return new JsmOpcodePsh(op.opcode());
+		return new JsmOpcodePsh(op);
 	case JsmOpcode::POPI_L:
 	case JsmOpcode::POPM_B:
 	case JsmOpcode::POPM_W:
 	case JsmOpcode::POPM_L:
-		return new JsmOpcodePop(op.opcode());
+		return new JsmOpcodePop(op);
 	default:
-		return new JsmOpcode(op.opcode());
+		return new JsmOpcode(op);
 	}
 }
 

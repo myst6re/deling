@@ -298,7 +298,7 @@ QList<int> JsmScripts::searchJumps(const QList<JsmOpcode *> &opcodes) const
 	foreach(JsmOpcode *op, opcodes) {
 		quint32 key = op->key();
 
-		if(key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
+		if(key >= JsmOpcode::JMP && key <= JsmOpcode::JPF) {
 			int jumpTo = i + op->param();
 			if(jumpTo >= 0 && jumpTo < nbOpcode) {
 				labels.insert(jumpTo, true);
@@ -312,7 +312,7 @@ QList<int> JsmScripts::searchJumps(const QList<JsmOpcode *> &opcodes) const
 }
 
 QList<JsmOpcode *> JsmScripts::opcodesp(int groupID, int methodID,
-                                        bool withLabels, bool reducePushes) const
+                                        bool withLabels) const
 {
 	int nbOpcode, position;
 
@@ -336,7 +336,7 @@ QList<JsmOpcode *> JsmScripts::opcodesp(int groupID, int methodID,
 			}
 
 			unsigned int key = op->key();
-			if(key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
+			if(key >= JsmOpcode::JMP && key <= JsmOpcode::JPF) {
 				int param = op->param(),
 				    lbl = labels.indexOf(i + param);
 				if(lbl != -1) {
@@ -348,83 +348,90 @@ QList<JsmOpcode *> JsmScripts::opcodesp(int groupID, int methodID,
 
 			++i;
 		}
+	}
 
-		if(reducePushes) {
-			QStack<JsmOpcode *> stack;
-			QMutableListIterator<JsmOpcode *> it(opcodes);
-			QHash<int, int> pastLabels;
-			int furtherStructGoto = -1, pos = 0;
-			while(it.hasNext()) {
-				JsmOpcode *op = it.next();
-				if(op->isLabel()) {
-					pastLabels.insert(op->param(), pos);
-					qDebug() << "Label" << op->param();
+	return opcodes;
+}
 
-					if(gotos[op->param()] <= 0) {
-						it.setValue(new JsmOpcodeEnd(op)); // Remove label
-						continue;
+JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
+                               QList<JsmOpcode *>::const_iterator end)
+{
+	JsmProgram ret;
+	QStack<JsmExpression *> stack;
+	qDebug() << "program" << (end - it);
+
+	while(it < end) {
+		JsmOpcode *op = *it;
+		++it;
+
+		// Compute expressions from PUSH and CAL
+		JsmExpression *expression = JsmExpression::factory(op, stack);
+
+		if(!expression) {
+			bool instructionAppended = false;
+			// Use the stack
+			if(!stack.isEmpty()) {
+				if(op->key() == JsmOpcode::JPF
+				        && op->param() > 0 && it - 1 + op->param() <= end) {
+					JsmControlIfElse *ifElse = new JsmControlIfElse(
+					                               stack.pop(),
+					                               program(it,
+					                                       it - 1 + op->param()));
+					it += op->param() - 1;
+					ret.append(JsmInstruction(ifElse));
+					instructionAppended = true;
+					JsmOpcode *lastOpOfBlock = *(it - 1);
+					qDebug() << "JsmScripts::program lastOpOfBlock"
+					         << lastOpOfBlock->toString();
+					if(lastOpOfBlock->key() == JsmOpcode::JMP
+					        && lastOpOfBlock->param() > 0
+					        && it - 1 + lastOpOfBlock->param() <= end) {
+						ifElse->blockRemoveLast(); // Remove JMP
+						ifElse->setBlockElse(
+						            program(it,
+						                    it - 1 + lastOpOfBlock->param()));
+						it += lastOpOfBlock->param() - 1;
+						qDebug() << "JsmScripts::program Else";
 					}
-				}
+					qDebug() << "JsmScripts::program IfElse"
+					         << ret.last().toString(0);
+				} else if(op->key() == JsmOpcode::POPI_L
+				          || op->key() == JsmOpcode::POPM_B
+				          || op->key() == JsmOpcode::POPM_W
+				          || op->key() == JsmOpcode::POPM_L) {
+					JsmApplication *application = new JsmApplicationAssignment(
+					                                  stack.pop(), op);
+					ret.append(JsmInstruction(application));
+					instructionAppended = true;
+				} 
+			}
 
-				if(op->popCount() > 0) {
-					QList<JsmOpcode *> pops;
-					for(int i = 0 ; i < op->popCount() && !stack.isEmpty() ; ++i) {
-						pops.prepend(stack.pop());
-						qDebug() << "pop" << pops.last()->paramStr();
-					}
+			if(!instructionAppended && op->key() >= JsmOpcode::REQ) {
+				JsmApplication *application = new JsmApplication(stack, op);
+				stack.clear();
+				ret.append(JsmInstruction(application));
+				instructionAppended = true;
+			}
 
-					// Assume it is a "if test" from pop/push properties
-					if(pops.size() == 2
-					        && op->pushCount() == 1
-					        && it.hasNext()) {
-						qDebug() << "Hmmm it is a test, no?";
-						// Followed by a jump
-						JsmOpcode *nextOp = it.next();
-						qDebug() << nextOp->name() << nextOp->paramStr() << nextOp->isGoto() << pastLabels;
-						// Goto forward
-						if(nextOp->isGoto()
-								&& !pastLabels.contains(nextOp->param())
-								/* && furtherStructGoto < labels.at(nextOp->param())*/) {
-							qDebug() << "With a goto after?";
-							it.previous();
-							it.previous();
-							it.previous();
-							it.previous();
-							qDebug() << "Remove" << it.value()->name() << it.value()->paramStr();
-							it.remove(); // Remove push
-							it.next();
-							qDebug() << "Remove" << it.value()->name() << it.value()->paramStr();
-							it.remove(); // Remove push
-							it.next();
-							qDebug() << "Remove" << it.value()->name() << it.value()->paramStr();
-							it.remove(); // Remove calc
-							it.next();
-							qDebug() << "Set value" << it.value()->name() << it.value()->paramStr();
-							it.setValue(new JsmOpcodeIf(pops, op, nextOp));
-							gotos[nextOp->param()] -= 1;
-						} else {
-							it.previous();
-						}
-					}
-				}
+			// Show remaining elements of the stack
+			while(!stack.isEmpty()) {
+				ret.append(JsmInstruction(stack.pop())); // TODO: back to Opcode
+			}
 
-				if(op->pushCount() > 0) {
-					stack.push(op);
-					qDebug() << "push" << op->paramStr();
-				}
-
-				// Watchdog
-				if(op->popCount() <= 0 && op->pushCount() <= 0) {
-					stack.clear();
-					qDebug() << "clear" << op->key();
-				}
-
-				++pos;
+			if(!instructionAppended) {
+				ret.append(JsmInstruction(op));
 			}
 		}
 	}
 
-	return opcodes;
+	return ret;
+}
+
+
+JsmProgram JsmScripts::program(int groupID, int methodID) const
+{
+	QList<JsmOpcode *> opcodes = opcodesp(groupID, methodID, false);
+	return program(opcodes.constBegin(), opcodes.constEnd());
 }
 
 unsigned int JsmScripts::key(int groupID, int methodID, int opcodeID) const

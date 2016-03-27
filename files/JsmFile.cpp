@@ -678,52 +678,34 @@ QString JsmFile::toString(int groupID, int methodID, bool moreDecompiled)
 		return scripts.script(groupID, methodID).decompiledScript(moreDecompiled);
 	}
 	needUpdate = false;
-	return _toString(groupID, methodID, moreDecompiled);
+	if(moreDecompiled) {
+		return _toStringMore(groupID, methodID);
+	}
+	return _toString(groupID, methodID);
 }
 
-QString JsmFile::_toString(int groupID, int methodID, bool moreDecompiled) const
+QString JsmFile::_toString(int groupID, int methodID) const
 {
 	QString ret;
-	QList<JsmOpcode *> opcodes = scripts.opcodesp(groupID, methodID, true, moreDecompiled);
-	QStack<JsmOpcode *> blocks;
+	QList<JsmOpcode *> opcodes = scripts.opcodesp(groupID, methodID, true);
 
 	foreach(JsmOpcode *op, opcodes) {
-		// Unindent
-		if(!blocks.isEmpty() && op->isLabel()
-				&& blocks.top()->param() == op->param()) {
-			blocks.pop();
-			// Print indentations for the new line
-			if(!blocks.isEmpty()) {
-				ret.append(QByteArray(blocks.size(), '\t'));
-			}
-			ret.append("end\n");
-		}
-
-		// Print indentations
-		if(!blocks.isEmpty()) {
-			ret.append(QByteArray(blocks.size(), '\t'));
-		}
-
-		if(!op->hasParam()) {
-			ret.append(op->name());
-		} else {
-			ret.append(QString("%1 %2")
-			           .arg(op->name(), -11)
-			           .arg(op->paramStr()));
-		}
-
-		if(op->isControlStruct()) {
-			// Indent
-			blocks.push(op->controlStructJump());
-		}
-
-		delete op;
-
+		ret.append(op->toString());
 		ret.append("\n");
+		delete op;
 	}
 
-	if(!blocks.isEmpty()) {
-		qWarning() << "JsmFile::_toString indentation error" << blocks.size();
+	return ret;
+}
+
+QString JsmFile::_toStringMore(int groupID, int methodID) const
+{
+	QString ret;
+	JsmProgram program = scripts.program(groupID, methodID);
+
+	foreach(const JsmInstruction &instr, program) {
+		ret.append(instr.toString(0));
+		ret.append("\n");
 	}
 
 	return ret;
@@ -826,7 +808,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 					errorStr = QObject::tr("Opération non reconnue : %1").arg(second);
 					return l;
 				}
-			} else if(key>=JsmOpcode::JMP && key<=JsmOpcode::GJMP) {
+			} else if(key>=JsmOpcode::JMP && key<=JsmOpcode::JPF) {
 				if(second.startsWith("LABEL", Qt::CaseInsensitive)) {
 					lbl = second.mid(5).toInt(&ok);
 					if(!ok) {

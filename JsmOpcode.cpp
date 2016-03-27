@@ -98,13 +98,19 @@ QString JsmOpcode::desc() const
 	return QString();
 }
 
-JsmOpcodeCal::JsmOpcodeCal(quint32 op) :
-    JsmOpcode(op)
+QString JsmOpcode::toString() const
 {
+	if(!hasParam()) {
+		return name();
+	} else {
+		return QString("%1 %2")
+		        .arg(name(), -11)
+		        .arg(paramStr());
+	}
 }
 
-JsmOpcodeCal::JsmOpcodeCal(unsigned int key, int param) :
-    JsmOpcode(key, param)
+JsmOpcodeCal::JsmOpcodeCal(const JsmOpcode &other) :
+    JsmOpcode(other)
 {
 }
 
@@ -150,13 +156,8 @@ const char *JsmOpcodeCal::cal_table[15] = {
 	"EOR",
 };
 
-JsmOpcodePsh::JsmOpcodePsh(quint32 op) :
-    JsmOpcode(op)
-{
-}
-
-JsmOpcodePsh::JsmOpcodePsh(unsigned int key, int param) :
-    JsmOpcode(key, param)
+JsmOpcodePsh::JsmOpcodePsh(const JsmOpcode &other) :
+    JsmOpcode(other)
 {
 }
 
@@ -205,13 +206,8 @@ QString JsmOpcodePsh::paramStr() const
 	return QString();
 }
 
-JsmOpcodePop::JsmOpcodePop(quint32 op) :
-    JsmOpcode(op)
-{
-}
-
-JsmOpcodePop::JsmOpcodePop(unsigned int key, int param) :
-    JsmOpcode(key, param)
+JsmOpcodePop::JsmOpcodePop(const JsmOpcode &other) :
+    JsmOpcode(other)
 {
 }
 
@@ -280,50 +276,6 @@ QString JsmOpcodeGoto::name() const
 QString JsmOpcodeGoto::paramStr() const
 {
 	return QString("LABEL%1").arg(param());
-}
-
-JsmOpcodeIf::JsmOpcodeIf(const QList<JsmOpcode *> &stack,
-                         JsmOpcode *cal, JsmOpcode *jump) :
-    JsmOpcode(), _stack(stack),
-    _cal(cal), _jump(jump)
-{
-}
-
-QString JsmOpcodeIf::name() const
-{
-	const int p = _cal->param();
-	return QString("if %1 %2 %3")
-	        .arg(_stack.first()->paramStr(),
-	             p < 15 ? cal_table[p] : _cal->paramStr(),
-	             _stack.last()->paramStr());
-}
-
-const char *JsmOpcodeIf::cal_table[15] = {
-	"+",
-	"-",
-	"*",
-	"%",
-	"/",
-	"-",
-	"==",
-	">",
-	">=",
-	"<",
-	"<=",
-	"!=",
-	"&",
-	"|",
-	"^",
-};
-
-JsmOpcodeEnd::JsmOpcodeEnd(JsmOpcode *label) :
-    JsmOpcodeLabel(*label)
-{
-}
-
-QString JsmOpcodeEnd::name() const
-{
-	return "";
 }
 
 /*
