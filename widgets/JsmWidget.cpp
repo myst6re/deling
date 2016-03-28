@@ -285,12 +285,12 @@ void JsmWidget::fillTextEdit()
 		toolBar->setEnabled(false);
 		textEdit->setReadOnly(true);
 		highlighter->setPseudoCode(true);
-		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, true));
+		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, true, data()));
 	} else {
 		toolBar->setEnabled(!isReadOnly());
 		textEdit->setReadOnly(isReadOnly());
 		highlighter->setPseudoCode(false);
-		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, false));
+		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, false, data()));
 	}
 
 	if(position >= 0) {
@@ -307,9 +307,9 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 	QList<QTreeWidgetItem *> items;
 	QTreeWidgetItem *item;
 	int nbGroup = data()->getJsmFile()->getScripts().nbGroup();
-	int directorCount=0, squallCount=0, zellCount=0, irvineCount=0, quistisCount=0;
-	int rinoaCount=0, selphieCount=0, seiferCount=0, edeaCount=0, lagunaCount=0, kirosCount=0;
-	int wardCount=0, drawPointCount=0, eventLineCount=0, doorCount=0;
+	int directorCount=1, squallCount=1, zellCount=1, irvineCount=1, quistisCount=1;
+	int rinoaCount=1, selphieCount=1, seiferCount=1, edeaCount=1, lagunaCount=1, kirosCount=1;
+	int wardCount=1, drawPointCount=1, eventLineCount=1, doorCount=1;
 
 	for(int groupID=0 ; groupID<nbGroup ; ++groupID) {
 		const JsmGroup &grp = data()->getJsmFile()->getScripts().group(groupID);

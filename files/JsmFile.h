@@ -70,7 +70,8 @@ public:
     }
 
 	bool compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
-	QString toString(int groupID, int methodID, bool moreDecompiled);
+	QString toString(int groupID, int methodID, bool moreDecompiled,
+	                 const Field *field);
 	int opcodePositionInText(int groupID, int methodID, int opcodeID) const;
 	int fromString(int groupID, int methodID, const QString &text, QString &errorStr);
 
@@ -110,7 +111,7 @@ public:
 private:
 	bool search(int type, quint64 value, quint16 pos, int opcodeID) const;
 	QString _toString(int position, int nbOpcode) const;
-	QString _toStringMore(int position, int nbOpcode) const;
+	QString _toStringMore(int position, int nbOpcode, const Field *field) const;
 
 	void searchWindows();
 	void searchGroupTypes();

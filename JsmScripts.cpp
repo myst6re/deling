@@ -248,6 +248,11 @@ const QList<JsmScript> &JsmScripts::getScriptList() const
 	return scriptList;
 }
 
+const JsmScript &JsmScripts::script(int absoluteMethodID) const
+{
+	return scriptList.at(absoluteMethodID);
+}
+
 const JsmScript &JsmScripts::script(int groupID, int methodID) const
 {
 	return scriptList.at(absoluteMethodID(groupID, methodID));
@@ -409,7 +414,14 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 					                                  stack.pop(), op);
 					ret.append(JsmInstruction(application));
 					instructionAppended = true;
-				} 
+				} else if(stack.size() >= 2
+				          && op->key() >= JsmOpcode::REQ
+				          && op->key() <= JsmOpcode::REQEW) {
+					JsmApplication *exec = new JsmApplicationExec(stack, op);
+					ret.append(JsmInstruction(exec));
+					instructionAppended = true;
+					stack.clear();
+				}
 			}
 
 			if(!instructionAppended) {

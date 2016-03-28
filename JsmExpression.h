@@ -7,6 +7,7 @@
 class JsmControl;
 class JsmExpression;
 class JsmApplication;
+class Field;
 
 class JsmInstruction
 {
@@ -48,7 +49,7 @@ public:
 	inline InstructionType type() const {
 		return _type;
 	}
-	QString toString(int indent) const;
+	QString toString(const Field *field, int indent) const;
 private:
 	Instruction _instr;
 	InstructionType _type;
@@ -59,10 +60,20 @@ typedef QList<JsmInstruction> JsmProgram;
 class JsmExpression
 {
 public:
+	enum ExpressionType {
+		Val,
+		Var,
+		Char,
+		Temp,
+		Unary,
+		Binary
+	};
+
 	JsmExpression() {}
-	virtual QString toString() const=0;
+	virtual QString toString(const Field *field) const=0;
 	virtual int opcodeCount() const=0;
 	virtual int eval(bool *ok) const;
+	virtual ExpressionType type() const=0;
 	static JsmExpression *factory(const JsmOpcode *op,
 	                              QStack<JsmExpression *> &stack);
 };
@@ -71,11 +82,14 @@ class JsmExpressionVal : public JsmExpression
 {
 public:
 	explicit JsmExpressionVal(int val) : _val(val) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 	virtual inline int opcodeCount() const {
 		return 1;
 	}
 	virtual int eval(bool *ok) const;
+	inline ExpressionType type() const {
+		return Val;
+	}
 private:
 	int _val;
 };
@@ -87,6 +101,9 @@ public:
 	virtual inline int opcodeCount() const {
 		return 1;
 	}
+	inline ExpressionType type() const {
+		return Var;
+	}
 protected:
 	int _var;
 };
@@ -95,51 +112,54 @@ class JsmExpressionVarUByte : public JsmExpressionVar
 {
 public:
 	explicit JsmExpressionVarUByte(int var) : JsmExpressionVar(var) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 };
 
 class JsmExpressionVarUWord : public JsmExpressionVar
 {
 public:
 	explicit JsmExpressionVarUWord(int var) : JsmExpressionVar(var) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 };
 
 class JsmExpressionVarULong : public JsmExpressionVar
 {
 public:
 	explicit JsmExpressionVarULong(int var) : JsmExpressionVar(var) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 };
 
 class JsmExpressionVarSByte : public JsmExpressionVar
 {
 public:
 	explicit JsmExpressionVarSByte(int var) : JsmExpressionVar(var) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 };
 
 class JsmExpressionVarSWord : public JsmExpressionVar
 {
 public:
 	explicit JsmExpressionVarSWord(int var) : JsmExpressionVar(var) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 };
 
 class JsmExpressionVarSLong : public JsmExpressionVar
 {
 public:
 	explicit JsmExpressionVarSLong(int var) : JsmExpressionVar(var) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 };
 
 class JsmExpressionChar : public JsmExpression
 {
 public:
 	explicit JsmExpressionChar(int c) : _char(c) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 	virtual inline int opcodeCount() const {
 		return 1;
+	}
+	inline ExpressionType type() const {
+		return Char;
 	}
 private:
 	int _char;
@@ -149,9 +169,12 @@ class JsmExpressionTemp : public JsmExpression
 {
 public:
 	explicit JsmExpressionTemp(int temp) : _temp(temp) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 	virtual inline int opcodeCount() const {
 		return 1;
+	}
+	inline ExpressionType type() const {
+		return Temp;
 	}
 private:
 	int _temp;
@@ -165,9 +188,15 @@ public:
 	};
 	JsmExpressionUnary(Operation op, JsmExpression *first) :
 	    _op(op), _first(first) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 	virtual int opcodeCount() const;
 	virtual int eval(bool *ok) const;
+	inline ExpressionType type() const {
+		return Unary;
+	}
+	inline JsmExpression *leftOperand() const {
+		return _first;
+	}
 private:
 	Operation _op;
 	JsmExpression *_first;
@@ -196,9 +225,18 @@ public:
 	JsmExpressionBinary(Operation op, JsmExpression *first,
 	                    JsmExpression *second) :
 	    _op(op), _first(first), _second(second) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 	virtual int opcodeCount() const;
 	virtual int eval(bool *ok) const;
+	inline ExpressionType type() const {
+		return Binary;
+	}
+	inline JsmExpression *leftOperand() const {
+		return _first;
+	}
+	inline JsmExpression *rightOperand() const {
+		return _second;
+	}
 	inline QString operationToString() const {
 		return operationToString(_op);
 	}
@@ -211,9 +249,16 @@ private:
 class JsmControl
 {
 public:
+	enum ControlType {
+		IfElse,
+		While,
+		RepeatUntil
+	};
+
 	JsmControl(JsmExpression *condition, const JsmProgram &block) :
 	    _condition(condition), _block(block) {}
-	virtual QString toString(int indent) const=0;
+	virtual QString toString(const Field *field, int indent) const=0;
+	virtual ControlType type() const=0;
 	inline JsmExpression *condition() const {
 		return _condition;
 	}
@@ -241,7 +286,13 @@ public:
 	JsmControlIfElse(const JsmControl &other,
 	                 const JsmProgram &blockElse = JsmProgram()) :
 	    JsmControl(other), _blockElse(blockElse) {}
-	virtual QString toString(int indent) const;
+	QString toString(const Field *field, int indent, bool elseIf) const;
+	inline virtual QString toString(const Field *field, int indent) const {
+		return toString(field, indent, false);
+	}
+	inline ControlType type() const {
+		return IfElse;
+	}
 	inline const JsmProgram &blockElse() const {
 		return _blockElse;
 	}
@@ -260,7 +311,10 @@ public:
 	    JsmControl(condition, block) {}
 	JsmControlWhile(const JsmControl &other) :
 	    JsmControl(other) {}
-	virtual QString toString(int indent) const;
+	virtual QString toString(const Field *field, int indent) const;
+	inline ControlType type() const {
+		return While;
+	}
 };
 
 class JsmControlRepeatUntil : public JsmControl
@@ -271,7 +325,10 @@ public:
 	    JsmControl(condition, block) {}
 	JsmControlRepeatUntil(const JsmControl &other) :
 	    JsmControl(other) {}
-	virtual QString toString(int indent) const;
+	virtual QString toString(const Field *field, int indent) const;
+	inline ControlType type() const {
+		return RepeatUntil;
+	}
 };
 
 class JsmApplication
@@ -279,8 +336,10 @@ class JsmApplication
 public:
 	JsmApplication(const QStack<JsmExpression *> &stack, JsmOpcode *opcode) :
 	    _stack(stack), _opcode(opcode) {}
-	virtual QString toString() const;
+	virtual QString toString(const Field *field) const;
 protected:
+	QStringList stackToStringList(const Field *field) const;
+	QString paramsToString(const Field *field) const;
 	QStack<JsmExpression *> _stack;
 	JsmOpcode *_opcode;
 };
@@ -293,9 +352,20 @@ public:
 	    JsmApplication(QStack<JsmExpression *>(), opcode) {
 		_stack.push(expression);
 	}
-	QString toString() const;
+	QString toString(const Field *field) const;
 private:
-	QString opcodeToString() const;
+	JsmExpression *opcodeExpression() const;
+};
+
+class JsmApplicationExec : public JsmApplication
+{
+public:
+	JsmApplicationExec(const QStack<JsmExpression *> &stack,
+	                   JsmOpcode *opcode) :
+	    JsmApplication(stack, opcode) {}
+	QString toString(const Field *field) const;
+private:
+	QString execType() const;
 };
 
 #endif // JSMEXPRESSION_H

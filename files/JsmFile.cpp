@@ -672,14 +672,15 @@ void JsmFile::setWindow(quint8 textID, int winID, const FF8Window &window)
 	searchWindows();
 }
 
-QString JsmFile::toString(int groupID, int methodID, bool moreDecompiled)
+QString JsmFile::toString(int groupID, int methodID, bool moreDecompiled,
+                          const Field *field)
 {
 	if(!scripts.script(groupID, methodID).decompiledScript(moreDecompiled).isEmpty() && !needUpdate) {
 		return scripts.script(groupID, methodID).decompiledScript(moreDecompiled);
 	}
 	needUpdate = false;
 	if(moreDecompiled) {
-		return _toStringMore(groupID, methodID);
+		return _toStringMore(groupID, methodID, field);
 	}
 	return _toString(groupID, methodID);
 }
@@ -698,13 +699,13 @@ QString JsmFile::_toString(int groupID, int methodID) const
 	return ret;
 }
 
-QString JsmFile::_toStringMore(int groupID, int methodID) const
+QString JsmFile::_toStringMore(int groupID, int methodID, const Field *field) const
 {
 	QString ret;
 	JsmProgram program = scripts.program(groupID, methodID);
 
 	foreach(const JsmInstruction &instr, program) {
-		ret.append(instr.toString(0));
+		ret.append(instr.toString(field, 0));
 		ret.append("\n");
 	}
 

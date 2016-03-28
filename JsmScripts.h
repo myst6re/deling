@@ -101,6 +101,7 @@ public:
 	int firstMethodID(int groupID) const;
 	// Scripts
 	const QList<JsmScript> &getScriptList() const;
+	const JsmScript &script(int absoluteMethodID) const;
 	const JsmScript &script(int groupID, int methodID) const;
 	int nbScript() const;
 	int nbScript(int groupID) const;
