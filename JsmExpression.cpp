@@ -192,7 +192,7 @@ QString JsmControlIfElse::toString(int indent) const
 	}
 	// TODO: if block is empty, then blockElse will be executed unless condition
 
-	QStringList lines(indentString("if %1 then", indent)
+	QStringList lines(indentString("if %1 begin", indent)
 	                  .arg(_condition->toString()));
 
 	foreach(const JsmInstruction &instr, _block) {

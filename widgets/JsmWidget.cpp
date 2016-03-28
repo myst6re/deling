@@ -69,7 +69,7 @@ void JsmWidget::build()
 	font2.setStyleHint(QFont::TypeWriter);
 	font2.setFamily("Courrier");
 	textEdit->document()->setDefaultFont(font2);
-	new JsmHighlighter(textEdit->document());
+	highlighter = new JsmHighlighter(textEdit->document());
 	// continue highlight when window is inactive
 	QPalette pal = textEdit->palette();
 	pal.setColor(QPalette::Inactive, QPalette::Highlight, pal.color(QPalette::Active, QPalette::Highlight));
@@ -283,9 +283,13 @@ void JsmWidget::fillTextEdit()
 
 	if(tabBar->currentIndex() > 0) {
 		toolBar->setEnabled(false);
+		textEdit->setReadOnly(true);
+		highlighter->setPseudoCode(true);
 		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, true));
 	} else {
 		toolBar->setEnabled(!isReadOnly());
+		textEdit->setReadOnly(isReadOnly());
+		highlighter->setPseudoCode(false);
 		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, false));
 	}
 
@@ -439,8 +443,7 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 		return items;
 	}
 
-	for(int methodID=0 ; methodID<count ; ++methodID)
-	{
+	for(int methodID=0 ; methodID<count ; ++methodID) {
 		const JsmScript &script = data()->getJsmFile()->getScripts().script(groupID, methodID);
 		if(methodID==0) {
 			name = QString();

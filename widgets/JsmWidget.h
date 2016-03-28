@@ -49,6 +49,7 @@ private:
 	QTreeWidget *list2;
 	QTabBar *tabBar;
 	QPlainTextEdit *textEdit;
+	JsmHighlighter *highlighter;
 	QToolBar *toolBar;
 	QLabel *errorLabel;
 	QLabel *warningWidget;

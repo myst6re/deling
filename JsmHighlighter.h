@@ -26,11 +26,26 @@ class JsmHighlighter : public QSyntaxHighlighter
 	Q_OBJECT
 public:
 	JsmHighlighter(QTextDocument *parent = 0);
-
+	inline void setPseudoCode(bool pseudoCode) {
+		_pseudoCode = pseudoCode;
+		rehighlight();
+	}
+	inline bool isPseudoCode() const {
+		return _pseudoCode;
+	}
 protected:
 	void highlightBlock(const QString &text);
 
 private:
+	void highlightBlockPseudoCode(const QString &text);
+	void highlightBlockOpcodes(const QString &text);
+	void applyReg(const QString &text, const QRegExp &regExp,
+	              const QTextCharFormat &format);
+	void applyReg(const QString &text, const QRegExp &regExp,
+	              const QColor &color);
+
+	bool _pseudoCode;
+	QRegExp _regKeywords, _regNumeric;
 };
 
 #endif // JSMHIGHLIGHTER_H
