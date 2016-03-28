@@ -72,16 +72,6 @@ bool JsmOpcode::hasParam() const
 	return (op & 0xFF000000) != 0;
 }
 
-int JsmOpcode::popCount() const
-{
-	return -1;
-}
-
-int JsmOpcode::pushCount() const
-{
-	return -1;
-}
-
 QString JsmOpcode::name() const
 {
 	unsigned int k = key();
@@ -119,19 +109,6 @@ bool JsmOpcodeCal::hasParam() const
 	return true;
 }
 
-int JsmOpcodeCal::popCount() const
-{
-	if(param() == 5) { // MIN unary
-		return 1;
-	}
-	return 2;
-}
-
-int JsmOpcodeCal::pushCount() const
-{
-	return 1;
-}
-
 QString JsmOpcodeCal::paramStr() const
 {
 	const int p = param();
@@ -164,16 +141,6 @@ JsmOpcodePsh::JsmOpcodePsh(const JsmOpcode &other) :
 bool JsmOpcodePsh::hasParam() const
 {
 	return true;
-}
-
-int JsmOpcodePsh::popCount() const
-{
-	return 0;
-}
-
-int JsmOpcodePsh::pushCount() const
-{
-	return 1;
 }
 
 JsmOpcodePsh::PushType JsmOpcodePsh::pushType() const
@@ -214,16 +181,6 @@ JsmOpcodePop::JsmOpcodePop(const JsmOpcode &other) :
 bool JsmOpcodePop::hasParam() const
 {
 	return true;
-}
-
-int JsmOpcodePop::popCount() const
-{
-	return 1;
-}
-
-int JsmOpcodePop::pushCount() const
-{
-	return 0;
 }
 
 JsmOpcodePop::PopType JsmOpcodePop::popType() const

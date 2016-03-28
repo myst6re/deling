@@ -428,8 +428,6 @@ public:
 		return false;
 	}
 	virtual bool hasParam() const;
-	virtual int popCount() const;
-	virtual int pushCount() const;
 	virtual QString name() const;
 	virtual QString paramStr() const;
 	virtual QString desc() const;
@@ -445,8 +443,6 @@ class JsmOpcodeCal : public JsmOpcode
 public:
 	JsmOpcodeCal(const JsmOpcode &other);
 	virtual bool hasParam() const;
-	virtual int popCount() const;
-	virtual int pushCount() const;
 	virtual QString paramStr() const;
 	static const char *cal_table[15];
 };
@@ -463,8 +459,6 @@ public:
 
 	JsmOpcodePsh(const JsmOpcode &other);
 	virtual bool hasParam() const;
-	virtual int popCount() const;
-	virtual int pushCount() const;
 	PushType pushType() const;
 	virtual QString paramStr() const;
 };
@@ -479,8 +473,6 @@ public:
 
 	JsmOpcodePop(const JsmOpcode &other);
 	virtual bool hasParam() const;
-	virtual int popCount() const;
-	virtual int pushCount() const;
 	PopType popType() const;
 	virtual QString paramStr() const;
 };
@@ -499,12 +491,6 @@ public:
 	virtual inline bool hasParam() const {
 		return false;
 	}
-	virtual inline int popCount() const {
-		return 0;
-	}
-	virtual inline int pushCount() const {
-		return 0;
-	}
 	virtual QString name() const;
 };
 
@@ -517,12 +503,6 @@ public:
 	}
 	virtual inline bool hasParam() const {
 		return true;
-	}
-	virtual inline int popCount() const {
-		return 0;
-	}
-	virtual inline int pushCount() const {
-		return 0;
 	}
 	virtual QString name() const;
 	virtual QString paramStr() const;
