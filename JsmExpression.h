@@ -268,6 +268,8 @@ public:
 		_stack.push(expression);
 	}
 	QString toString() const;
+private:
+	QString opcodeToString() const;
 };
 
 #endif // JSMEXPRESSION_H

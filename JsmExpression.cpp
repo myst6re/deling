@@ -256,8 +256,25 @@ QString JsmApplication::toString() const
 	                             params.join(", "));
 }
 
+QString JsmApplicationAssignment::opcodeToString() const
+{
+	switch(_opcode->key()) {
+	case JsmOpcode::POPI_L:
+		return JsmExpressionTemp(_opcode->param()).toString();
+	case JsmOpcode::POPM_B:
+		return JsmExpressionVarUByte(_opcode->param()).toString();
+	case JsmOpcode::POPM_W:
+		return JsmExpressionVarUWord(_opcode->param()).toString();
+	case JsmOpcode::POPM_L:
+		return JsmExpressionVarULong(_opcode->param()).toString();
+	default:
+		break;
+	}
+	return QString();
+}
+
 QString JsmApplicationAssignment::toString() const
 {
-	return QString("%1 <- %2").arg(_opcode->paramStr(),
+	return QString("%1 = %2").arg(opcodeToString(),
 	                               _stack.first()->toString());
 }

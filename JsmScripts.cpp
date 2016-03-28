@@ -371,30 +371,33 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 			bool instructionAppended = false;
 			// Use the stack
 			if(!stack.isEmpty()) {
-				if(op->key() == JsmOpcode::JPF
-				        && op->param() > 0 && it - 1 + op->param() <= end) {
-					JsmControlIfElse *ifElse = new JsmControlIfElse(
-					                               stack.pop(),
-					                               program(it,
-					                                       it - 1 + op->param()));
-					it += op->param() - 1;
-					ret.append(JsmInstruction(ifElse));
-					instructionAppended = true;
-					JsmOpcode *lastOpOfBlock = *(it - 1);
-					qDebug() << "JsmScripts::program lastOpOfBlock"
-					         << lastOpOfBlock->toString();
-					if(lastOpOfBlock->key() == JsmOpcode::JMP
-					        && lastOpOfBlock->param() > 0
-					        && it - 1 + lastOpOfBlock->param() <= end) {
-						ifElse->blockRemoveLast(); // Remove JMP
-						ifElse->setBlockElse(
-						            program(it,
-						                    it - 1 + lastOpOfBlock->param()));
-						it += lastOpOfBlock->param() - 1;
-						qDebug() << "JsmScripts::program Else";
+				if(op->key() == JsmOpcode::JPF) {
+					if(op->param() > 0 && it - 1 + op->param() <= end) {
+						JsmControlIfElse *ifElse = new JsmControlIfElse(
+													   stack.pop(),
+													   program(it,
+															   it - 1 + op->param()));
+						it += op->param() - 1;
+						ret.append(JsmInstruction(ifElse));
+						instructionAppended = true;
+						JsmOpcode *lastOpOfBlock = *(it - 1);
+						qDebug() << "JsmScripts::program lastOpOfBlock"
+								 << lastOpOfBlock->toString();
+						if(lastOpOfBlock->key() == JsmOpcode::JMP
+								&& lastOpOfBlock->param() > 0
+								&& it - 1 + lastOpOfBlock->param() <= end) {
+							ifElse->blockRemoveLast(); // Remove JMP
+							ifElse->setBlockElse(
+										program(it,
+												it - 1 + lastOpOfBlock->param()));
+							it += lastOpOfBlock->param() - 1;
+							qDebug() << "JsmScripts::program Else";
+						}
+						qDebug() << "JsmScripts::program IfElse"
+								 << ret.last().toString(0);
+					} else {
+						
 					}
-					qDebug() << "JsmScripts::program IfElse"
-					         << ret.last().toString(0);
 				} else if(op->key() == JsmOpcode::POPI_L
 				          || op->key() == JsmOpcode::POPM_B
 				          || op->key() == JsmOpcode::POPM_W
@@ -406,7 +409,7 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 				} 
 			}
 
-			if(!instructionAppended && op->key() >= JsmOpcode::REQ) {
+			if(!instructionAppended) {
 				JsmApplication *application = new JsmApplication(stack, op);
 				stack.clear();
 				ret.append(JsmInstruction(application));
