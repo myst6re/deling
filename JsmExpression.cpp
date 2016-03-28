@@ -182,7 +182,7 @@ QString &JsmControl::indentString(QString &str, int indent)
 QString JsmControl::indentString(const char *str, int indent)
 {
 	QString s(str);
-	return indentString(QString(s), indent);
+	return indentString(s, indent);
 }
 
 QString JsmControlIfElse::toString(int indent) const
