@@ -22,11 +22,12 @@ JsmHighlighter::JsmHighlighter(QTextDocument *parent) :
 {
 	QStringList keywords;
 	keywords << "if" << "begin" << "else" << "end"
-	         << "while" << "repeat" << "until";
+	         << "while" << "forever" << "repeat" << "until";
 	// Don't forget to escape strings if necessary
 	_regKeywords = QRegExp(QString("\\b(%1)\\b")
 	                       .arg(keywords.join("|")));
 	_regNumeric = QRegExp("\\b-?\\d+\\b");
+	_regVar = QRegExp("\\b(char|var|temp)_\\d+_u?(byte|word|long)\\b");
 }
 
 void JsmHighlighter::applyReg(const QString &text, const QRegExp &regExp,
@@ -62,14 +63,12 @@ void JsmHighlighter::highlightBlock(const QString &text)
 
 void JsmHighlighter::highlightBlockPseudoCode(const QString &text)
 {
-	qDebug() << "JsmHighlighter::highlightBlock" << text << _regKeywords;
 	// Keywords
 	applyReg(text, _regKeywords, QColor(0x80, 0x80, 0x00)); // Yellow
 
-	// Applications
-
 	// Types
 	applyReg(text, _regNumeric, QColor(0x00, 0x00, 0x80)); // blue
+	applyReg(text, _regVar, QColor(0x80, 0x00, 0x00)); // red
 }
 
 void JsmHighlighter::highlightBlockOpcodes(const QString &text)

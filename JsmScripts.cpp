@@ -354,11 +354,10 @@ QList<JsmOpcode *> JsmScripts::opcodesp(int groupID, int methodID,
 }
 
 JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
-                               QList<JsmOpcode *>::const_iterator end)
+                               const QList<JsmOpcode *>::const_iterator &end)
 {
 	JsmProgram ret;
 	QStack<JsmExpression *> stack;
-	qDebug() << "program" << (end - it);
 
 	while(it < end) {
 		JsmOpcode *op = *it;
@@ -373,30 +372,34 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 			if(!stack.isEmpty()) {
 				if(op->key() == JsmOpcode::JPF) {
 					if(op->param() > 0 && it - 1 + op->param() <= end) {
+						QList<JsmOpcode *>::const_iterator ifElsePos = it;
 						JsmControlIfElse *ifElse = new JsmControlIfElse(
 													   stack.pop(),
 													   program(it,
 															   it - 1 + op->param()));
+						JsmControl *toAppend = ifElse;
 						it += op->param() - 1;
-						ret.append(JsmInstruction(ifElse));
-						instructionAppended = true;
 						JsmOpcode *lastOpOfBlock = *(it - 1);
-						qDebug() << "JsmScripts::program lastOpOfBlock"
-								 << lastOpOfBlock->toString();
-						if(lastOpOfBlock->key() == JsmOpcode::JMP
-								&& lastOpOfBlock->param() > 0
-								&& it - 1 + lastOpOfBlock->param() <= end) {
-							ifElse->blockRemoveLast(); // Remove JMP
-							ifElse->setBlockElse(
-										program(it,
-												it - 1 + lastOpOfBlock->param()));
-							it += lastOpOfBlock->param() - 1;
-							qDebug() << "JsmScripts::program Else";
+						if(lastOpOfBlock->key() == JsmOpcode::JMP) {
+							if(lastOpOfBlock->param() > 0
+							        && it - 1 + lastOpOfBlock->param() <= end) {
+								ifElse->blockRemoveLast(); // Remove JMP
+								// Block Else
+								ifElse->setBlockElse(
+											program(it,
+													it - 1 + lastOpOfBlock->param()));
+								it += lastOpOfBlock->param() - 1;
+							} else if(lastOpOfBlock->param() < 0
+							          && it + lastOpOfBlock->param() ==
+							          ifElsePos - ifElse->condition()->opcodeCount()) {
+								ifElse->blockRemoveLast(); // Remove JMP
+								// While
+								toAppend = new JsmControlWhile(*ifElse);
+								delete ifElse;
+							}
 						}
-						qDebug() << "JsmScripts::program IfElse"
-								 << ret.last().toString(0);
-					} else {
-						
+						ret.append(JsmInstruction(toAppend));
+						instructionAppended = true;
 					}
 				} else if(op->key() == JsmOpcode::POPI_L
 				          || op->key() == JsmOpcode::POPM_B

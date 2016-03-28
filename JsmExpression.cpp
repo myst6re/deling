@@ -21,6 +21,14 @@ QString JsmInstruction::toString(int indent) const
 	return QString(); // Never happen
 }
 
+int JsmExpression::eval(bool *ok) const
+{
+	if(ok) {
+		*ok = false;
+	}
+	return 0;
+}
+
 JsmExpression *JsmExpression::factory(const JsmOpcode *op,
                                       QStack<JsmExpression *> &stack)
 {
@@ -86,6 +94,14 @@ QString JsmExpressionVal::toString() const
 	return QString::number(_val);
 }
 
+int JsmExpressionVal::eval(bool *ok) const
+{
+	if(ok) {
+		*ok = true;
+	}
+	return _val;
+}
+
 QString JsmExpressionVarUByte::toString() const
 {
 	return QString("var_%1_ubyte").arg(_var);
@@ -131,12 +147,67 @@ QString JsmExpressionUnary::toString() const
 	return QString("-%1").arg(_first->toString());
 }
 
+int JsmExpressionUnary::opcodeCount() const
+{
+	return 1 + _first->opcodeCount();
+}
+
+int JsmExpressionUnary::eval(bool *ok) const
+{
+	int v = _first->eval(ok);
+	if(ok && *ok) {
+		return -v;
+	}
+	return JsmExpression::eval(ok);
+}
+
 QString JsmExpressionBinary::toString() const
 {
 	return QString("%1 %2 %3")
 	        .arg(_first->toString())
 	        .arg(operationToString())
 	        .arg(_second->toString());
+}
+
+int JsmExpressionBinary::eval(bool *ok) const
+{
+	int v1 = _first->eval(ok);
+	if(ok && *ok) {
+		int v2 = _second->eval(ok);
+		if(ok && *ok) {
+			switch (_op) {
+			case Add:
+				return v1 + v2;
+			case Sub:
+				return v1 - v2;
+			case Mul:
+				return v1 * v2;
+			case Mod:
+				return v1 % v2;
+			case Div:
+				return v1 / v2;
+			case Eq:
+				return v1 == v2;
+			case Gt:
+				return v1 > v2;
+			case Ge:
+				return v1 >= v2;
+			case Ls:
+				return v1 < v2;
+			case Le:
+				return v1 <= v2;
+			case Nt:
+				return v1 != v2;
+			case And:
+				return v1 & v2;
+			case Or:
+				return v1 | v2;
+			case Eor:
+				return v1 ^ v2;
+			}
+		}
+	}
+	return JsmExpression::eval(ok);
 }
 
 QString JsmExpressionBinary::operationToString(Operation op)
@@ -172,6 +243,11 @@ QString JsmExpressionBinary::operationToString(Operation op)
 		return "^";
 	}
 	return QString();
+}
+
+int JsmExpressionBinary::opcodeCount() const
+{
+	return 1 + _first->opcodeCount() + _second->opcodeCount();
 }
 
 QString &JsmControl::indentString(QString &str, int indent)
@@ -213,8 +289,18 @@ QString JsmControlIfElse::toString(int indent) const
 
 QString JsmControlWhile::toString(int indent) const
 {
-	QStringList lines(indentString("while %1 begin", indent)
-	                  .arg(_condition->toString()));
+	QString firstLine;
+	bool ok;
+	int value = condition()->eval(&ok);
+	if(ok && value == 1) {
+		// Forever
+		firstLine = indentString("forever", indent);
+	} else {
+		// While
+		firstLine = indentString("while %1 begin", indent)
+		            .arg(_condition->toString());
+	}
+	QStringList lines(firstLine);
 
 	foreach(const JsmInstruction &instr, _block) {
 		lines.append(instr.toString(indent + 1));

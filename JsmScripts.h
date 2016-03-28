@@ -143,7 +143,7 @@ private:
 	void shiftScriptsAfter(int groupID, int methodID, int shift);
 	QList<int> searchJumps(const QList<JsmOpcode *> &opcodes) const;
 	static JsmProgram program(QList<JsmOpcode *>::const_iterator it,
-	                          QList<JsmOpcode *>::const_iterator end);
+	                          const QList<JsmOpcode *>::const_iterator &end);
 
 	QList<JsmGroup> groupList;
 	QList<JsmScript> scriptList;

@@ -61,6 +61,8 @@ class JsmExpression
 public:
 	JsmExpression() {}
 	virtual QString toString() const=0;
+	virtual int opcodeCount() const=0;
+	virtual int eval(bool *ok) const;
 	static JsmExpression *factory(const JsmOpcode *op,
 	                              QStack<JsmExpression *> &stack);
 };
@@ -70,6 +72,10 @@ class JsmExpressionVal : public JsmExpression
 public:
 	explicit JsmExpressionVal(int val) : _val(val) {}
 	virtual QString toString() const;
+	virtual inline int opcodeCount() const {
+		return 1;
+	}
+	virtual int eval(bool *ok) const;
 private:
 	int _val;
 };
@@ -78,6 +84,9 @@ class JsmExpressionVar : public JsmExpression
 {
 public:
 	explicit JsmExpressionVar(int var) : _var(var) {}
+	virtual inline int opcodeCount() const {
+		return 1;
+	}
 protected:
 	int _var;
 };
@@ -129,6 +138,9 @@ class JsmExpressionChar : public JsmExpression
 public:
 	explicit JsmExpressionChar(int c) : _char(c) {}
 	virtual QString toString() const;
+	virtual inline int opcodeCount() const {
+		return 1;
+	}
 private:
 	int _char;
 };
@@ -138,6 +150,9 @@ class JsmExpressionTemp : public JsmExpression
 public:
 	explicit JsmExpressionTemp(int temp) : _temp(temp) {}
 	virtual QString toString() const;
+	virtual inline int opcodeCount() const {
+		return 1;
+	}
 private:
 	int _temp;
 };
@@ -151,6 +166,8 @@ public:
 	JsmExpressionUnary(Operation op, JsmExpression *first) :
 	    _op(op), _first(first) {}
 	virtual QString toString() const;
+	virtual int opcodeCount() const;
+	virtual int eval(bool *ok) const;
 private:
 	Operation _op;
 	JsmExpression *_first;
@@ -180,6 +197,8 @@ public:
 	                    JsmExpression *second) :
 	    _op(op), _first(first), _second(second) {}
 	virtual QString toString() const;
+	virtual int opcodeCount() const;
+	virtual int eval(bool *ok) const;
 	inline QString operationToString() const {
 		return operationToString(_op);
 	}
@@ -219,6 +238,9 @@ public:
 	                 const JsmProgram &block,
 	                 const JsmProgram &blockElse = JsmProgram()) :
 	    JsmControl(condition, block), _blockElse(blockElse) {}
+	JsmControlIfElse(const JsmControl &other,
+	                 const JsmProgram &blockElse = JsmProgram()) :
+	    JsmControl(other), _blockElse(blockElse) {}
 	virtual QString toString(int indent) const;
 	inline const JsmProgram &blockElse() const {
 		return _blockElse;
@@ -236,6 +258,8 @@ public:
 	JsmControlWhile(JsmExpression *condition,
 	                const JsmProgram &block) :
 	    JsmControl(condition, block) {}
+	JsmControlWhile(const JsmControl &other) :
+	    JsmControl(other) {}
 	virtual QString toString(int indent) const;
 };
 
@@ -245,6 +269,8 @@ public:
 	JsmControlRepeatUntil(JsmExpression *condition,
 	                      const JsmProgram &block) :
 	    JsmControl(condition, block) {}
+	JsmControlRepeatUntil(const JsmControl &other) :
+	    JsmControl(other) {}
 	virtual QString toString(int indent) const;
 };
 

@@ -45,7 +45,7 @@ private:
 	              const QColor &color);
 
 	bool _pseudoCode;
-	QRegExp _regKeywords, _regNumeric;
+	QRegExp _regKeywords, _regNumeric, _regVar;
 };
 
 #endif // JSMHIGHLIGHTER_H
