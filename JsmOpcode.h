@@ -428,6 +428,7 @@ public:
 		return false;
 	}
 	virtual bool hasParam() const;
+	virtual int popCount() const;
 	virtual QString name() const;
 	virtual QString paramStr() const;
 	virtual QString desc() const;
@@ -435,6 +436,7 @@ public:
 
 	static const char *opcodes[376];
 private:
+	static int pops[376];
 	quint32 op;
 };
 
@@ -443,8 +445,9 @@ class JsmOpcodeCal : public JsmOpcode
 public:
 	JsmOpcodeCal(const JsmOpcode &other);
 	virtual bool hasParam() const;
+	virtual int popCount() const;
 	virtual QString paramStr() const;
-	static const char *cal_table[15];
+	static const char *cal_table[16];
 };
 
 class JsmOpcodePsh : public JsmOpcode
@@ -497,14 +500,13 @@ public:
 class JsmOpcodeGoto : public JsmOpcode
 {
 public:
-	explicit JsmOpcodeGoto(int label);
+	explicit JsmOpcodeGoto(const JsmOpcode &other, int label);
 	virtual inline bool isGoto() const {
 		return true;
 	}
 	virtual inline bool hasParam() const {
 		return true;
 	}
-	virtual QString name() const;
 	virtual QString paramStr() const;
 };
 

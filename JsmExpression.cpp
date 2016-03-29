@@ -37,7 +37,8 @@ JsmExpression *JsmExpression::factory(const JsmOpcode *op,
 
 	switch(op->key()) {
 	case JsmOpcode::CAL:
-		if(op->param() == JsmExpressionUnary::Min) {
+		if(op->param() == JsmExpressionUnary::Min
+		        || op->param() == JsmExpressionUnary::Not) {
 			if(!stack.isEmpty()) {
 				ret = new JsmExpressionUnary(
 				            JsmExpressionUnary::Operation(op->param()),
@@ -154,7 +155,8 @@ QString JsmExpressionTemp::toString(const Field *field) const
 
 QString JsmExpressionUnary::toString(const Field *field) const
 {
-	return QString("-%1").arg(_first->toString(field));
+	return QString("%1%2").arg(operationToString(),
+	                           _first->toString(field));
 }
 
 int JsmExpressionUnary::opcodeCount() const
@@ -166,17 +168,33 @@ int JsmExpressionUnary::eval(bool *ok) const
 {
 	int v = _first->eval(ok);
 	if(ok && *ok) {
-		return -v;
+		switch (_op) {
+		case Min:
+			return -v;
+		case Not:
+			return ~v;
+		}
 	}
 	return JsmExpression::eval(ok);
+}
+
+QString JsmExpressionUnary::operationToString(Operation op)
+{
+	switch (op) {
+	case Min:
+		return "+";
+	case Not:
+		return "~";
+	}
+	return QString();
 }
 
 QString JsmExpressionBinary::toString(const Field *field) const
 {
 	return QString("(%1 %2 %3)")
-	        .arg(_first->toString(field))
-	        .arg(operationToString())
-	        .arg(_second->toString(field));
+	        .arg(_first->toString(field),
+	             operationToString(),
+	             _second->toString(field));
 }
 
 int JsmExpressionBinary::eval(bool *ok) const

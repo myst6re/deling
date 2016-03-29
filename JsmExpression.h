@@ -184,7 +184,8 @@ class JsmExpressionUnary : public JsmExpression
 {
 public:
 	enum Operation {
-		Min = 5
+		Min = 5,
+		Not = 15
 	};
 	JsmExpressionUnary(Operation op, JsmExpression *first) :
 	    _op(op), _first(first) {}
@@ -197,6 +198,10 @@ public:
 	inline JsmExpression *leftOperand() const {
 		return _first;
 	}
+	inline QString operationToString() const {
+		return operationToString(_op);
+	}
+	static QString operationToString(Operation op);
 private:
 	Operation _op;
 	JsmExpression *_first;

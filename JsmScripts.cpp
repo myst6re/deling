@@ -303,7 +303,7 @@ QList<int> JsmScripts::searchJumps(const QList<JsmOpcode *> &opcodes) const
 	foreach(JsmOpcode *op, opcodes) {
 		quint32 key = op->key();
 
-		if(key >= JsmOpcode::JMP && key <= JsmOpcode::JPF) {
+		if(key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
 			int jumpTo = i + op->param();
 			if(jumpTo >= 0 && jumpTo < nbOpcode) {
 				labels.insert(jumpTo, true);
@@ -327,7 +327,6 @@ QList<JsmOpcode *> JsmScripts::opcodesp(int groupID, int methodID,
 
 	if(withLabels) {
 		QList<int> labels = searchJumps(opcodes);
-		QMap<int, int> gotos;
 		QMutableListIterator<JsmOpcode *> it(opcodes);
 		int i = 0;
 		while(it.hasNext()) {
@@ -341,13 +340,12 @@ QList<JsmOpcode *> JsmScripts::opcodesp(int groupID, int methodID,
 			}
 
 			unsigned int key = op->key();
-			if(key >= JsmOpcode::JMP && key <= JsmOpcode::JPF) {
+			if(key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
 				int param = op->param(),
 				    lbl = labels.indexOf(i + param);
 				if(lbl != -1) {
-					it.setValue(new JsmOpcodeGoto(lbl));
+					it.setValue(new JsmOpcodeGoto(*op, lbl));
 					delete op;
-					gotos[lbl] += 1;
 				}
 			}
 
@@ -375,6 +373,14 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 			bool instructionAppended = false;
 			// Use the stack
 			if(!stack.isEmpty()) {
+				if(op->popCount() >= 0) {
+					// Show elements of the stack directly
+					while(stack.size() > op->popCount()) {
+						// FIXME: back to Opcode
+						ret.append(JsmInstruction(stack.pop()));
+					}
+				}
+
 				if(op->key() == JsmOpcode::JPF) {
 					if(op->param() > 0 && it - 1 + op->param() <= end) {
 						QList<JsmOpcode *>::const_iterator ifElsePos = it;
@@ -405,7 +411,13 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 						}
 						ret.append(JsmInstruction(toAppend));
 						instructionAppended = true;
-					}
+					} // else if(op->param() < 0 && it - 1 + op->param() >= 0) {
+						// TODO: repeatUntil: remove appended opcodes from ret
+						// toAppend = new JsmControlRepeatUntil(
+						//							stack.pop(),
+						//							program(it - 1 + op->param(),
+						//									it - 1));
+					// }
 				} else if(op->key() == JsmOpcode::POPI_L
 				          || op->key() == JsmOpcode::POPM_B
 				          || op->key() == JsmOpcode::POPM_W
@@ -426,14 +438,10 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 
 			if(!instructionAppended) {
 				JsmApplication *application = new JsmApplication(stack, op);
+				// FIXME: only pop what will be used by the game for this application
 				stack.clear();
 				ret.append(JsmInstruction(application));
 				instructionAppended = true;
-			}
-
-			// Show remaining elements of the stack
-			while(!stack.isEmpty()) {
-				ret.append(JsmInstruction(stack.pop())); // TODO: back to Opcode
 			}
 
 			if(!instructionAppended) {

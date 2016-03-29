@@ -72,10 +72,16 @@ bool JsmOpcode::hasParam() const
 	return (op & 0xFF000000) != 0;
 }
 
+int JsmOpcode::popCount() const
+{
+	const unsigned int k = key();
+	return k < 376 ? pops[k] : -1;
+}
+
 QString JsmOpcode::name() const
 {
-	unsigned int k = key();
-	return k<358 ? opcodes[k] : QString("UNKNOWN%1").arg(k-358+1);
+	const unsigned int k = key();
+	return k < 358 ? opcodes[k] : QString("UNKNOWN%1").arg(k - 358 + 1);
 }
 
 QString JsmOpcode::paramStr() const
@@ -109,13 +115,24 @@ bool JsmOpcodeCal::hasParam() const
 	return true;
 }
 
+int JsmOpcodeCal::popCount() const
+{
+	if(param() == 5 || param() == 15) {
+		return 1;
+	}
+	if(param() < 15) {
+		return 2;
+	}
+	return -1;
+}
+
 QString JsmOpcodeCal::paramStr() const
 {
 	const int p = param();
-	return p<15 ? cal_table[p] : JsmOpcode::paramStr();
+	return p < 16 ? cal_table[p] : JsmOpcode::paramStr();
 }
 
-const char *JsmOpcodeCal::cal_table[15] = {
+const char *JsmOpcodeCal::cal_table[16] = {
 	"ADD",
 	"SUB",
 	"MUL",
@@ -131,6 +148,7 @@ const char *JsmOpcodeCal::cal_table[15] = {
 	"AND",
 	"OR",
 	"EOR",
+    "NOT"
 };
 
 JsmOpcodePsh::JsmOpcodePsh(const JsmOpcode &other) :
@@ -219,15 +237,10 @@ QString JsmOpcodeLabel::name() const
 	return QString("LABEL%1").arg(param());
 }
 
-JsmOpcodeGoto::JsmOpcodeGoto(int label) :
-    JsmOpcode()
+JsmOpcodeGoto::JsmOpcodeGoto(const JsmOpcode &other, int label) :
+    JsmOpcode(other)
 {
 	setParam(label);
-}
-
-QString JsmOpcodeGoto::name() const
-{
-	return "JMP";
 }
 
 QString JsmOpcodeGoto::paramStr() const
@@ -965,4 +978,383 @@ const char *JsmOpcode::opcodes[376] = {
 	"UNKNOWN16",
 	"UNKNOWN17",
 	"UNKNOWN18"
+};
+
+int JsmOpcode::pops[376] = {
+	0,  // NOP
+	-1, // CAL (1 or 2)
+	0,  // JMP
+	1,  // JPF
+	-1, // GJMP
+	0,  // LBL
+	0,  // RET
+	0,  // PSHN_L
+	0,  // PSHI_L
+	1,  // POPI_L
+	0,  // PSHM_B
+	1,  // POPM_B
+	0,  // PSHM_W
+	1,  // POPM_W
+	0,  // PSHM_L
+	1,  // POPM_L
+	0,  // PSHSM_B
+	0,  // PSHSM_W
+	0,  // PSHSM_L
+	0,  // PSHAC
+	2,  // REQ
+	2,  // REQSW
+	2,  // REQEW
+	2,  // PREQ
+	2,  // PREQSW
+	2,  // PREQEW
+	0,  // UNUSE
+	-1, // DEBUG
+	0,  // HALT
+	2,  // SET
+	3,  // SET3
+	0,  // IDLOCK
+	0,  // IDUNLOCK
+	3,  // EFFECTPLAY2
+	1,  // FOOTSTEP
+	3,  // JUMP
+	4,  // JUMP3
+	4,  // LADDERUP
+	4,  // LADDERDOWN
+	9,  // LADDERUP2
+	9,  // LADDERDOWN2
+	4,  // MAPJUMP
+	5,  // MAPJUMP3
+	0,  // SETMODEL
+	2,  // BASEANIME
+	0,  // ANIME
+	0,  // ANIMEKEEP
+	2,  // CANIME
+	2,  // CANIMEKEEP
+	0,  // RANIME
+	0,  // RANIMEKEEP
+	2,  // RCANIME
+	2,  // RCANIMEKEEP
+	0,  // RANIMELOOP
+	2,  // RCANIMELOOP
+	2,  // LADDERANIME
+	5,  // DISCJUMP
+	6,  // SETLINE
+	0,  // LINEON
+	0,  // LINEOFF
+	1,  // WAIT
+	1,  // MSPEED
+	4,  // MOVE
+	2,  // MOVEA
+	2,  // PMOVEA
+	4,  // CMOVE
+	4,  // FMOVE
+	2,  // PJUMPA
+	0,  // ANIMESYNC
+	0,  // ANIMESTOP
+	-1, // MESW
+	2,  // MES
+	1,  // MESSYNC
+	2,  // MESVAR
+	6,  // ASK
+	5,  // WINSIZE
+	1,  // WINCLOSE
+	0,  // UCON
+	0,  // UCOFF
+	0,  // MOVIE
+	0,  // MOVIESYNC
+	1,  // SETPC
+	1,  // DIR
+	3,  // DIRP
+	1,  // DIRA
+	1,  // PDIRA
+	1,  // SPUREADY
+	0,  // TALKON
+	0,  // TALKOFF
+	0,  // PUSHON
+	0,  // PUSHOFF
+	1,  // ISTOUCH
+	2,  // MAPJUMPO
+	0,  // MAPJUMPON
+	0,  // MAPJUMPOFF
+	2,  // SETMESSPEED
+	0,  // SHOW
+	0,  // HIDE
+	1,  // TALKRADIUS
+	1,  // PUSHRADIUS
+	4,  // AMESW
+	-1, // AMES
+	-1, // GETINFO
+	-1, // THROUGHON
+	-1, // THROUGHOFF
+	-1, // BATTLE
+	-1, // BATTLERESULT
+	-1, // BATTLEON
+	-1, // BATTLEOFF
+	-1, // KEYSCAN
+	-1, // KEYON
+	-1, // AASK
+	-1, // PGETINFO
+	-1, // DSCROLL
+	-1, // LSCROLL
+	-1, // CSCROLL
+	-1, // DSCROLLA
+	-1, // LSCROLLA
+	-1, // CSCROLLA
+	-1, // SCROLLSYNC
+	-1, // RMOVE
+	-1, // RMOVEA
+	-1, // RPMOVEA
+	-1, // RCMOVE
+	-1, // RFMOVE
+	-1, // MOVESYNC
+	-1, // CLEAR
+	-1, // DSCROLLP
+	-1, // LSCROLLP
+	-1, // CSCROLLP
+	-1, // LTURNR
+	-1, // LTURNL
+	-1, // CTURNR
+	-1, // CTURNL
+	-1, // ADDPARTY
+	-1, // SUBPARTY
+	-1, // CHANGEPARTY
+	-1, // REFRESHPARTY
+	-1, // SETPARTY
+	-1, // ISPARTY
+	-1, // ADDMEMBER
+	-1, // SUBMEMBER
+	-1, // ISMEMBER
+	-1, // LTURN
+	-1, // CTURN
+	-1, // PLTURN
+	-1, // PCTURN
+	-1, // JOIN
+	-1, // MESFORCUS
+	-1, // BGANIME
+	-1, // RBGANIME
+	-1, // RBGANIMELOOP
+	-1, // BGANIMESYNC
+	-1, // BGDRAW
+	-1, // BGOFF
+	-1, // BGANIMESPEED
+	-1, // SETTIMER
+	-1, // DISPTIMER
+	-1, // SHADETIMER
+	-1, // SETGETA
+	-1, // SETROOTTRANS
+	-1, // SETVIBRATE
+	-1, // STOPVIBRATE
+	-1, // MOVIEREADY
+	-1, // GETTIMER
+	-1, // FADEIN
+	-1, // FADEOUT
+	-1, // FADESYNC
+	-1, // SHAKE
+	-1, // SHAKEOFF
+	-1, // FADEBLACK
+	-1, // FOLLOWOFF
+	-1, // FOLLOWON
+	-1, // GAMEOVER
+	-1, // ENDING
+	-1, // SHADELEVEL
+	-1, // SHADEFORM
+	-1, // FMOVEA
+	-1, // FMOVEP
+	-1, // SHADESET
+	-1, // MUSICCHANGE
+	-1, // MUSICLOAD
+	-1, // FADENONE
+	-1, // POLYCOLOR
+	-1, // POLYCOLORALL
+	-1, // KILLTIMER
+	-1, // CROSSMUSIC
+	-1, // DUALMUSIC
+	-1, // EFFECTPLAY
+	-1, // EFFECTLOAD
+	-1, // LOADSYNC
+	-1, // MUSICSTOP
+	-1, // MUSICVOL
+	-1, // MUSICVOLTRANS
+	-1, // MUSICVOLFADE
+	-1, // ALLSEVOL
+	-1, // ALLSEVOLTRANS
+	-1, // ALLSEPOS
+	-1, // ALLSEPOSTRANS
+	-1, // SEVOL
+	-1, // SEVOLTRANS
+	-1, // SEPOS
+	-1, // SEPOSTRANS
+	-1, // SETBATTLEMUSIC
+	-1, // BATTLEMODE
+	-1, // SESTOP
+	-1, // BGANIMEFLAG
+	-1, // INITSOUND
+	-1, // BGSHADE
+	-1, // BGSHADESTOP
+	-1, // RBGSHADELOOP
+	-1, // DSCROLL2
+	-1, // LSCROLL2
+	-1, // CSCROLL2
+	-1, // DSCROLLA2
+	-1, // LSCROLLA2
+	-1, // CSCROLLA2
+	-1, // DSCROLLP2
+	-1, // LSCROLLP2
+	-1, // CSCROLLP2
+	-1, // SCROLLSYNC2
+	-1, // SCROLLMODE2
+	-1, // MENUENABLE
+	-1, // MENUDISABLE
+	-1, // FOOTSTEPON
+	-1, // FOOTSTEPOFF
+	-1, // FOOTSTEPOFFALL
+	-1, // FOOTSTEPCUT
+	-1, // PREMAPJUMP
+	-1, // USE
+	-1, // SPLIT
+	-1, // ANIMESPEED
+	-1, // RND
+	-1, // DCOLADD
+	-1, // DCOLSUB
+	-1, // TCOLADD
+	-1, // TCOLSUB
+	-1, // FCOLADD
+	-1, // FCOLSUB
+	-1, // COLSYNC
+	-1, // DOFFSET
+	-1, // LOFFSETS
+	-1, // COFFSETS
+	-1, // LOFFSET
+	-1, // COFFSET
+	-1, // OFFSETSYNC
+	-1, // RUNENABLE
+	-1, // RUNDISABLE
+	-1, // MAPFADEOFF
+	-1, // MAPFADEON
+	-1, // INITTRACE
+	-1, // SETDRESS
+	-1, // GETDRESS
+	-1, // FACEDIR
+	-1, // FACEDIRA
+	-1, // FACEDIRP
+	-1, // FACEDIRLIMIT
+	-1, // FACEDIROFF
+	-1, // SARALYOFF
+	-1, // SARALYON
+	-1, // SARALYDISPOFF
+	-1, // SARALYDISPON
+	-1, // MESMODE
+	-1, // FACEDIRINIT
+	-1, // FACEDIRI
+	-1, // JUNCTION
+	-1, // SETCAMERA
+	-1, // BATTLECUT
+	-1, // FOOTSTEPCOPY
+	-1, // WORLDMAPJUMP
+	-1, // RFACEDIRI
+	-1, // RFACEDIR
+	-1, // RFACEDIRA
+	-1, // RFACEDIRP
+	-1, // RFACEDIROFF
+	-1, // FACEDIRSYNC
+	-1, // COPYINFO
+	-1, // PCOPYINFO
+	-1, // RAMESW
+	-1, // BGSHADEOFF
+	-1, // AXIS
+	-1, // AXISSYNC
+	-1, // MENUNORMAL
+	-1, // MENUPHS
+	-1, // BGCLEAR
+	-1, // GETPARTY
+	-1, // MENUSHOP
+	-1, // DISC
+	-1, // DSCROLL3
+	-1, // LSCROLL3
+	-1, // CSCROLL3
+	-1, // MACCEL
+	-1, // MLIMIT
+	-1, // ADDITEM
+	-1, // SETWITCH
+	-1, // SETODIN
+	-1, // RESETGF
+	-1, // MENUNAME
+	-1, // REST
+	-1, // MOVECANCEL
+	-1, // PMOVECANCEL
+	-1, // ACTORMODE
+	-1, // MENUSAVE
+	-1, // SAVEENABLE
+	-1, // PHSENABLE
+	-1, // HOLD
+	-1, // MOVIECUT
+	-1, // SETPLACE
+	-1, // SETDCAMERA
+	-1, // CHOICEMUSIC
+	-1, // GETCARD
+	-1, // DRAWPOINT
+	-1, // PHSPOWER
+	-1, // KEY
+	-1, // CARDGAME
+	-1, // SETBAR
+	-1, // DISPBAR
+	-1, // KILLBAR
+	-1, // SCROLLRATIO2
+	-1, // WHOAMI
+	-1, // MUSICSTATUS
+	-1, // MUSICREPLAY
+	-1, // DOORLINEOFF
+	-1, // DOORLINEON
+	-1, // MUSICSKIP
+	-1, // DYING
+	-1, // SETHP
+	-1, // GETHP
+	-1, // MOVEFLUSH
+	-1, // MUSICVOLSYNC
+	-1, // PUSHANIME
+	-1, // POPANIME
+	-1, // KEYSCAN2
+	-1, // KEYON2
+	-1, // PARTICLEON
+	-1, // PARTICLEOFF
+	-1, // KEYSIGHNCHANGE
+	-1, // ADDGIL
+	-1, // ADDPASTGIL
+	-1, // ADDSEEDLEVEL
+	-1, // PARTICLESET
+	-1, // SETDRAWPOINT
+	-1, // MENUTIPS
+	-1, // LASTIN
+	-1, // LASTOUT
+	-1, // SEALEDOFF
+	-1, // MENUTUTO
+	-1, // OPENEYES
+	-1, // CLOSEEYES
+	-1, // BLINKEYES
+	-1, // SETCARD
+	-1, // HOWMANYCARD
+	-1, // WHERECARD
+	-1, // ADDMAGIC
+	-1, // SWAP
+	-1, // SETPARTY2
+	-1, // SPUSYNC
+	-1, // BROKEN
+	-1, // UNKNOWN1
+	-1, // UNKNOWN2
+	-1, // UNKNOWN3
+	-1, // UNKNOWN4
+	-1, // UNKNOWN5
+	-1, // UNKNOWN6
+	-1, // UNKNOWN7
+	-1, // UNKNOWN8
+	-1, // UNKNOWN9
+	-1, // UNKNOWN10
+	-1, // UNKNOWN11
+	-1, // UNKNOWN12
+	-1, // UNKNOWN13
+	-1, // UNKNOWN14
+	-1, // UNKNOWN15
+	-1, // UNKNOWN16
+	-1, // UNKNOWN17
+	-1, // UNKNOWN18
 };

@@ -117,7 +117,7 @@ void JsmHighlighter::highlightBlockOpcodes(const QString &text)
 
 	if(opcode == JsmOpcode::CAL && JsmFile::opcodeNameCalc.contains(param.toUpper())) {
 		setFormat(text.indexOf(param), param.size(), QColor(0x00,0x66,0xcc));
-	} else if(opcode >= JsmOpcode::JMP && opcode <= JsmOpcode::JPF
+	} else if(opcode >= JsmOpcode::JMP && opcode <= JsmOpcode::GJMP
 	          && param.startsWith("LABEL", Qt::CaseInsensitive)) {
 		param.mid(5).toInt(&ok);
 		if(ok) {

@@ -25,7 +25,7 @@ JsmFile::JsmFile() :
     _oldFormat(false)
 {
 	if(opcodeNameCalc.isEmpty()) {
-		for(int i=0 ; i<15 ; ++i)
+		for(int i=0 ; i<16 ; ++i)
 			opcodeNameCalc.append(JsmOpcodeCal::cal_table[i]);
 
 		for(int i=0 ; i<376 ; ++i)
@@ -806,10 +806,14 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 
 			if(key == JsmOpcode::CAL) {
 				if((param = opcodeNameCalc.indexOf(second.toUpper())) == -1) {
-					errorStr = QObject::tr("Opération non reconnue : %1").arg(second);
-					return l;
+					param = second.toInt(&ok);
+					if(!ok) {
+						errorStr = QObject::tr("Opération non reconnue : %1")
+						           .arg(second);
+						return l;
+					}
 				}
-			} else if(key>=JsmOpcode::JMP && key<=JsmOpcode::JPF) {
+			} else if(key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
 				if(second.startsWith("LABEL", Qt::CaseInsensitive)) {
 					lbl = second.mid(5).toInt(&ok);
 					if(!ok) {
@@ -822,6 +826,56 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 					} else {
 						param = -1;
 						gotosPos.insert(lbl, res.nbOpcode());
+					}
+				} else {
+					param = second.toInt(&ok);
+					if(!ok) {
+						errorStr = QObject::tr("Conversion en entier impossible : %1").arg(second);
+						return l;
+					}
+				}
+			} else if(key == JsmOpcode::PSHM_B ||
+			          key == JsmOpcode::PSHM_W ||
+			          key == JsmOpcode::PSHM_L ||
+			          key == JsmOpcode::PSHSM_B ||
+			          key == JsmOpcode::PSHSM_W ||
+			          key == JsmOpcode::PSHSM_L) {
+				if(second.startsWith("VAR", Qt::CaseInsensitive)) {
+					lbl = second.mid(3).toInt(&ok);
+					if(!ok) {
+						errorStr = QObject::tr("Conversion en entier impossible après 'VAR' : %1")
+						           .arg(second.mid(3));
+						return l;
+					}
+				} else {
+					param = second.toInt(&ok);
+					if(!ok) {
+						errorStr = QObject::tr("Conversion en entier impossible : %1").arg(second);
+						return l;
+					}
+				}
+			} else if(key == JsmOpcode::PSHI_L) {
+				if(second.startsWith("TEMP", Qt::CaseInsensitive)) {
+					lbl = second.mid(4).toInt(&ok);
+					if(!ok) {
+						errorStr = QObject::tr("Conversion en entier impossible après 'TEMP' : %1")
+						           .arg(second.mid(4));
+						return l;
+					}
+				} else {
+					param = second.toInt(&ok);
+					if(!ok) {
+						errorStr = QObject::tr("Conversion en entier impossible : %1").arg(second);
+						return l;
+					}
+				}
+			} else if(key == JsmOpcode::PSHAC) {
+				if(second.startsWith("CHAR", Qt::CaseInsensitive)) {
+					lbl = second.mid(4).toInt(&ok);
+					if(!ok) {
+						errorStr = QObject::tr("Conversion en entier impossible après 'CHAR' : %1")
+						           .arg(second.mid(4));
+						return l;
 					}
 				} else {
 					param = second.toInt(&ok);
