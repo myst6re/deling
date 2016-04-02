@@ -816,7 +816,8 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 			}
 
 			if(key == JsmOpcode::CAL) {
-				if((param = opcodeNameCalc.indexOf(second.toUpper())) == -1) {
+				param = opcodeNameCalc.indexOf(second.toUpper());
+				if(param == -1) {
 					param = second.toInt(&ok);
 					if(!ok) {
 						errorStr = QObject::tr("Opération non reconnue : %1")
@@ -851,7 +852,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 			          key == JsmOpcode::PSHSM_W ||
 			          key == JsmOpcode::PSHSM_L) {
 				if(second.startsWith("VAR", Qt::CaseInsensitive)) {
-					lbl = second.mid(3).toInt(&ok);
+					param = second.mid(3).toInt(&ok);
 					if(!ok) {
 						errorStr = QObject::tr("Conversion en entier impossible après 'VAR' : %1")
 						           .arg(second.mid(3));
@@ -866,7 +867,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 				}
 			} else if(key == JsmOpcode::PSHI_L) {
 				if(second.startsWith("TEMP", Qt::CaseInsensitive)) {
-					lbl = second.mid(4).toInt(&ok);
+					param = second.mid(4).toInt(&ok);
 					if(!ok) {
 						errorStr = QObject::tr("Conversion en entier impossible après 'TEMP' : %1")
 						           .arg(second.mid(4));
@@ -881,7 +882,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 				}
 			} else if(key == JsmOpcode::PSHAC) {
 				if(second.startsWith("CHAR", Qt::CaseInsensitive)) {
-					lbl = second.mid(4).toInt(&ok);
+					param = second.mid(4).toInt(&ok);
 					if(!ok) {
 						errorStr = QObject::tr("Conversion en entier impossible après 'CHAR' : %1")
 						           .arg(second.mid(4));
