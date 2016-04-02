@@ -52,3 +52,12 @@ before_deploy:
       ;
     fi
   - tar -czf "$DEPLOY_ARCHIVE" "$DEPLOY_DIR"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: BfRrMQnsLEn66poeALh/SfDkJf792r7RQ/fy+Zcagl2IFpGd3fsdpPtHtyNUJk0dWmJHdgyexSTgSrlfSmRAHt5ZP7fPfqwwvqi7M89l+jz5UsbvXOQX9iKuKa3ksrMXw0hoDyfLrSkwMLaMfCSNZ3prJhnswZl1zL1BH/nK4O8=
+  file: "$DEPLOY_ARCHIVE"
+  skip_cleanup: true
+  on:
+    tags: true
