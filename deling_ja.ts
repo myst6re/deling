@@ -2353,26 +2353,36 @@
         <translation>スクリプト ラベル</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="86"/>
+        <location filename="widgets/JsmWidget.cpp" line="63"/>
+        <source>Instructions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/JsmWidget.cpp" line="64"/>
+        <source>Pseudo-code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="widgets/JsmWidget.cpp" line="90"/>
         <source>Compiler</source>
         <translatorcomment>Compile</translatorcomment>
         <translation>コンパイル</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="87"/>
-        <location filename="widgets/JsmWidget.cpp" line="88"/>
+        <location filename="widgets/JsmWidget.cpp" line="91"/>
+        <location filename="widgets/JsmWidget.cpp" line="92"/>
         <source>Compiler (Ctrl+B)</source>
         <translatorcomment>Compile (Ctrl+B)</translatorcomment>
         <translation>コンパイル (Ctrl+B)</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="122"/>
+        <location filename="widgets/JsmWidget.cpp" line="128"/>
         <source>Ligne %1 -&gt; %2</source>
         <translatorcomment>Line %1 -&gt; %2</translatorcomment>
         <translation>行 %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="127"/>
+        <location filename="widgets/JsmWidget.cpp" line="133"/>
         <source>Compilé avec succès</source>
         <translatorcomment>Successfully compiled</translatorcomment>
         <translation>コンパイルを完了しました</translation>
@@ -3223,51 +3233,69 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation>不明なエラー。</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="804"/>
+        <location filename="files/JsmFile.cpp" line="781"/>
         <source>Trop d&apos;arguments</source>
         <translatorcomment>Too many arguments</translatorcomment>
         <translation>引数が多すぎます</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="813"/>
-        <location filename="files/JsmFile.cpp" line="847"/>
+        <location filename="files/JsmFile.cpp" line="790"/>
+        <location filename="files/JsmFile.cpp" line="828"/>
         <source>Conversion en entier impossible après &apos;LABEL&apos; : %1</source>
         <translatorcomment>Unable to convert to integer after &apos;LABEL&apos;: %1</translatorcomment>
         <translation>&apos;LABEL&apos; のあとに整数への変換はできません : %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="817"/>
+        <location filename="files/JsmFile.cpp" line="794"/>
         <source>&apos;LABEL%1&apos; déjà déclaré précédemment.</source>
         <translatorcomment>&apos;LABEL %1&apos; already declared.</translatorcomment>
         <translation>&apos;LABEL %1&apos; はすでに宣言されています。</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="826"/>
+        <location filename="files/JsmFile.cpp" line="803"/>
         <source>Opcode non reconnu : %1</source>
         <translatorcomment>Unknown opcode: %1</translatorcomment>
         <translation>不明なオプコード: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="834"/>
+        <location filename="files/JsmFile.cpp" line="811"/>
         <source>Cet opcode ne peut pas avoir de paramètre : %1</source>
         <translatorcomment>This opcode can not have parameters: %1</translatorcomment>
         <translation>このオプコードにはパラメータを渡せません: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="840"/>
+        <location filename="files/JsmFile.cpp" line="819"/>
         <source>Opération non reconnue : %1</source>
         <translatorcomment>Unknown operation: %1</translatorcomment>
         <translation>不明なオペレーション: %1</translation>
     </message>
     <message>
+        <location filename="files/JsmFile.cpp" line="840"/>
         <location filename="files/JsmFile.cpp" line="860"/>
-        <location filename="files/JsmFile.cpp" line="867"/>
+        <location filename="files/JsmFile.cpp" line="875"/>
+        <location filename="files/JsmFile.cpp" line="890"/>
+        <location filename="files/JsmFile.cpp" line="897"/>
         <source>Conversion en entier impossible : %1</source>
         <translatorcomment>Unable to convert to integer: %1</translatorcomment>
         <translation>整数に変換できません: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="891"/>
+        <location filename="files/JsmFile.cpp" line="853"/>
+        <source>Conversion en entier impossible après &apos;VAR&apos; : %1</source>
+        <translation type="unfinished">整数に変換できません: %1</translation>
+    </message>
+    <message>
+        <location filename="files/JsmFile.cpp" line="868"/>
+        <source>Conversion en entier impossible après &apos;TEMP&apos; : %1</source>
+        <translation type="unfinished">整数に変換できません: %1</translation>
+    </message>
+    <message>
+        <location filename="files/JsmFile.cpp" line="883"/>
+        <source>Conversion en entier impossible après &apos;CHAR&apos; : %1</source>
+        <translation type="unfinished">整数に変換できません: %1</translation>
+    </message>
+    <message>
+        <location filename="files/JsmFile.cpp" line="920"/>
         <source>&apos;LABEL%1&apos; indéfini.</source>
         <translatorcomment>&apos;LABEL %1&apos; undefined.</translatorcomment>
         <translation>&apos;LABEL %1&apos; が未定義です。</translation>
@@ -3330,7 +3358,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation type="unfinished">Field gate and doors PC File (*.inf)</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.h" line="65"/>
+        <location filename="files/JsmFile.h" line="69"/>
         <source>Fichier scripts écran PC (*.jsm)</source>
         <translation type="unfinished">Field Script PC file (*.jsm)</translation>
     </message>
@@ -3849,8 +3877,8 @@ poursuite de la recherche dans le dernier fichier.</source>
     <name>TextPreview</name>
     <message>
         <location filename="TextPreview.cpp" line="36"/>
-        <location filename="TextPreview.cpp" line="600"/>
-        <location filename="TextPreview.cpp" line="615"/>
+        <location filename="TextPreview.cpp" line="601"/>
+        <location filename="TextPreview.cpp" line="616"/>
         <source>false</source>
         <comment>Use Japanese Encoding</comment>
         <translation>true</translation>

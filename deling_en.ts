@@ -2306,23 +2306,33 @@ Dollet Harbor</translation>
         <translation>Script label</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="86"/>
+        <location filename="widgets/JsmWidget.cpp" line="63"/>
+        <source>Instructions</source>
+        <translation>Instructions</translation>
+    </message>
+    <message>
+        <location filename="widgets/JsmWidget.cpp" line="64"/>
+        <source>Pseudo-code</source>
+        <translation>Pseudo-code</translation>
+    </message>
+    <message>
+        <location filename="widgets/JsmWidget.cpp" line="90"/>
         <source>Compiler</source>
         <translation>Compile</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="87"/>
-        <location filename="widgets/JsmWidget.cpp" line="88"/>
+        <location filename="widgets/JsmWidget.cpp" line="91"/>
+        <location filename="widgets/JsmWidget.cpp" line="92"/>
         <source>Compiler (Ctrl+B)</source>
         <translation>Compile (Ctrl+B)</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="122"/>
+        <location filename="widgets/JsmWidget.cpp" line="128"/>
         <source>Ligne %1 -&gt; %2</source>
         <translation>Line %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="127"/>
+        <location filename="widgets/JsmWidget.cpp" line="133"/>
         <source>Compilé avec succès</source>
         <translation>Successfully compiled</translation>
     </message>
@@ -3053,44 +3063,62 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation>Unknown error.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="804"/>
+        <location filename="files/JsmFile.cpp" line="781"/>
         <source>Trop d&apos;arguments</source>
         <translation>Too many arguments</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="813"/>
-        <location filename="files/JsmFile.cpp" line="847"/>
+        <location filename="files/JsmFile.cpp" line="790"/>
+        <location filename="files/JsmFile.cpp" line="828"/>
         <source>Conversion en entier impossible après &apos;LABEL&apos; : %1</source>
         <translation>Unable to convert to integer after &apos;LABEL&apos;: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="817"/>
+        <location filename="files/JsmFile.cpp" line="794"/>
         <source>&apos;LABEL%1&apos; déjà déclaré précédemment.</source>
         <translation>&apos;LABEL %1&apos; already declared.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="826"/>
+        <location filename="files/JsmFile.cpp" line="803"/>
         <source>Opcode non reconnu : %1</source>
         <translation>Unknown opcode: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="834"/>
+        <location filename="files/JsmFile.cpp" line="811"/>
         <source>Cet opcode ne peut pas avoir de paramètre : %1</source>
         <translation>This opcode can not have parameters: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="840"/>
+        <location filename="files/JsmFile.cpp" line="819"/>
         <source>Opération non reconnue : %1</source>
         <translation>Unknown operation: %1</translation>
     </message>
     <message>
+        <location filename="files/JsmFile.cpp" line="840"/>
         <location filename="files/JsmFile.cpp" line="860"/>
-        <location filename="files/JsmFile.cpp" line="867"/>
+        <location filename="files/JsmFile.cpp" line="875"/>
+        <location filename="files/JsmFile.cpp" line="890"/>
+        <location filename="files/JsmFile.cpp" line="897"/>
         <source>Conversion en entier impossible : %1</source>
         <translation>Unable to convert to integer: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="891"/>
+        <location filename="files/JsmFile.cpp" line="853"/>
+        <source>Conversion en entier impossible après &apos;VAR&apos; : %1</source>
+        <translation>Unable to convert to integer after &apos;VAR&apos;: %1</translation>
+    </message>
+    <message>
+        <location filename="files/JsmFile.cpp" line="868"/>
+        <source>Conversion en entier impossible après &apos;TEMP&apos; : %1</source>
+        <translation>Unable to convert to integer after &apos;TEMP&apos;: %1</translation>
+    </message>
+    <message>
+        <location filename="files/JsmFile.cpp" line="883"/>
+        <source>Conversion en entier impossible après &apos;CHAR&apos; : %1</source>
+        <translation>Unable to convert to integer after &apos;CHAR&apos;: %1</translation>
+    </message>
+    <message>
+        <location filename="files/JsmFile.cpp" line="920"/>
         <source>&apos;LABEL%1&apos; indéfini.</source>
         <translation>&apos;LABEL %1&apos; undefined.</translation>
     </message>
@@ -3152,7 +3180,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translation>Field gate and doors PC File (*.inf)</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.h" line="65"/>
+        <location filename="files/JsmFile.h" line="69"/>
         <source>Fichier scripts écran PC (*.jsm)</source>
         <translation>Field Script PC file (*.jsm)</translation>
     </message>
@@ -3652,8 +3680,8 @@ poursuite de la recherche dans le dernier fichier.</source>
     <name>TextPreview</name>
     <message>
         <location filename="TextPreview.cpp" line="36"/>
-        <location filename="TextPreview.cpp" line="600"/>
-        <location filename="TextPreview.cpp" line="615"/>
+        <location filename="TextPreview.cpp" line="601"/>
+        <location filename="TextPreview.cpp" line="616"/>
         <source>false</source>
         <comment>Use Japanese Encoding</comment>
         <translation>false</translation>
