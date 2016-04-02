@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "widgets/JsmWidget.h"
+#include "Config.h"
 
 JsmWidget::JsmWidget(QWidget *parent)
 	: PageWidget(parent), mainModels(0), groupID(-1), methodID(-1)
@@ -60,6 +61,7 @@ void JsmWidget::build()
 	list2->setUniformRowHeights(true);
 
 	tabBar = new QTabBar(this);
+	tabBar->setDrawBase(false);
 	tabBar->addTab(tr("Instructions"));
 	tabBar->addTab(tr("Pseudo-code"));
 
@@ -104,6 +106,8 @@ void JsmWidget::build()
 	mainLayout->addWidget(textEdit, 2, 3);
 	mainLayout->addWidget(toolBar, 3, 2, 1, 2);
 	mainLayout->setContentsMargins(QMargins());
+
+	tabBar->setCurrentIndex(Config::value("scriptType").toInt());
 
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillList2()));
 	connect(list2, SIGNAL(itemSelectionChanged()), SLOT(fillTextEdit()));
@@ -267,6 +271,7 @@ void JsmWidget::fillTextEdit()
 //	qDebug() << QString("JsmWidget::fillTextEdit(%1, %2)").arg(currentItem(list1)).arg(currentItem(list2));
 
 	saveSession();
+	Config::setValue("scriptType", tabBar->currentIndex());
 	textEdit->clear();
 	groupID = currentItem(list1);
 	methodID = currentItem(list2);
