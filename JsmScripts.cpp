@@ -454,9 +454,12 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 			}
 
 			if(!instructionAppended) {
-				JsmApplication *application = new JsmApplication(stack, op);
-				// FIXME: only pop what will be used by the game for this application
-				stack.clear();
+				QStack<JsmExpression *> invertedStack;
+				while(!stack.isEmpty()) {
+					// FIXME: only pop what will be used by the game for this application
+					invertedStack.push(stack.pop());
+				}
+				JsmApplication *application = new JsmApplication(invertedStack, op);
 				ret.append(JsmInstruction(application));
 				instructionAppended = true;
 				collectPointers.insert(application);

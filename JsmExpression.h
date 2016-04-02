@@ -384,12 +384,12 @@ private:
 class JsmApplicationExec : public JsmApplication
 {
 public:
-	JsmApplicationExec(JsmExpression *stackFirst,
-	                   JsmExpression *stackSecond,
+	JsmApplicationExec(JsmExpression *stackSecond,
+	                   JsmExpression *stackLast,
 	                   JsmOpcode *opcode) :
 	    JsmApplication(QStack<JsmExpression *>(), opcode) {
 		_stack.push(stackSecond);
-		_stack.push(stackFirst);
+		_stack.push(stackLast);
 	}
 	virtual ~JsmApplicationExec() {}
 	QString toString(const Field *field) const;
