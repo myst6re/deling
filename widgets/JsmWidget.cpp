@@ -548,6 +548,9 @@ void JsmWidget::gotoScript(int groupID, int methodID, int opcodeID)
 {
 	if(!isBuilded())	build();
 
+	// Force opcode list
+	tabBar->setCurrentIndex(0);
+
 	QList<QTreeWidgetItem *> items = list1->findItems(QString("%1").arg(groupID, 3), Qt::MatchExactly);
 	QTreeWidgetItem *item;
 	if(items.isEmpty())	return;

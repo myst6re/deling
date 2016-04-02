@@ -70,6 +70,7 @@ public:
 	};
 
 	JsmExpression() {}
+	virtual ~JsmExpression() {}
 	virtual QString toString(const Field *field) const=0;
 	virtual int opcodeCount() const=0;
 	virtual int eval(bool *ok) const;

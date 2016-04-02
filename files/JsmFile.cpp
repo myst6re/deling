@@ -724,12 +724,15 @@ QString JsmFile::_toStringMore(int groupID, int methodID, const Field *field) co
 
 int JsmFile::opcodePositionInText(int groupID, int methodID, int opcodeID) const
 {
-	int line=opcodeID, nbOpcode, position=scripts.posScript(groupID, methodID, &nbOpcode);
-	/* QList<qint32> labels = searchJumps(position, nbOpcode);
+	QList<JsmOpcode *> opcodes = scripts.opcodesp(groupID, methodID, false);
+	int line = opcodeID;
+	QList<qint32> labels = scripts.searchJumps(opcodes);
 
-	for(int i=0 ; i<=opcodeID ; ++i) {
+	for(int i=0 ; i <= opcodeID ; ++i) {
 		if(labels.contains(i))	++line;
-	} */ // FIXME
+	}
+
+	qDeleteAll(opcodes);
 
 	return line;
 }
