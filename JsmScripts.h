@@ -111,7 +111,8 @@ public:
 	int posOpcode(int groupID, int methodID, int opcodeID) const;
 	QList<JsmOpcode *> opcodesp(int groupID, int methodID,
 	                            bool withLabels) const;
-	JsmProgram program(int groupID, int methodID) const;
+	JsmProgram program(int groupID, int methodID,
+	                   QSet<void *> &collectPointers) const;
 	// Data
 	const JsmData &data() const;
 	unsigned int key(int groupID, int methodID, int opcodeID) const;
@@ -144,7 +145,8 @@ private:
 	void shiftScriptsAfter(int groupID, int methodID, int shift);
 	QList<int> searchJumps(const QList<JsmOpcode *> &opcodes) const;
 	static JsmProgram program(QList<JsmOpcode *>::const_iterator it,
-	                          const QList<JsmOpcode *>::const_iterator &end);
+	                          const QList<JsmOpcode *>::const_iterator &end,
+	                          QSet<void *> &collectPointers);
 
 	QList<JsmGroup> groupList;
 	QList<JsmScript> scriptList;

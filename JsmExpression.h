@@ -270,8 +270,8 @@ public:
 	inline const JsmProgram &block() const {
 		return _block;
 	}
-	inline void blockRemoveLast() {
-		_block.removeLast();
+	inline JsmInstruction blockTakeLast() {
+		return _block.takeLast();
 	}
 protected:
 	// FIXME: move this in a QString extension (if possible)
@@ -365,9 +365,13 @@ private:
 class JsmApplicationExec : public JsmApplication
 {
 public:
-	JsmApplicationExec(const QStack<JsmExpression *> &stack,
+	JsmApplicationExec(JsmExpression *stackFirst,
+	                   JsmExpression *stackSecond,
 	                   JsmOpcode *opcode) :
-	    JsmApplication(stack, opcode) {}
+	    JsmApplication(QStack<JsmExpression *>(), opcode) {
+		_stack.push(stackSecond);
+		_stack.push(stackFirst);
+	}
 	QString toString(const Field *field) const;
 private:
 	QString execType() const;

@@ -702,12 +702,15 @@ QString JsmFile::_toString(int groupID, int methodID) const
 QString JsmFile::_toStringMore(int groupID, int methodID, const Field *field) const
 {
 	QString ret;
-	JsmProgram program = scripts.program(groupID, methodID);
+	QSet<void *> collectPointers;
+	JsmProgram program = scripts.program(groupID, methodID, collectPointers);
 
 	foreach(const JsmInstruction &instr, program) {
 		ret.append(instr.toString(field, 0));
 		ret.append("\n");
 	}
+
+	qDeleteAll(collectPointers);
 
 	return ret;
 }

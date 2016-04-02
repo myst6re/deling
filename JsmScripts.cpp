@@ -357,7 +357,8 @@ QList<JsmOpcode *> JsmScripts::opcodesp(int groupID, int methodID,
 }
 
 JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
-                               const QList<JsmOpcode *>::const_iterator &end)
+                               const QList<JsmOpcode *>::const_iterator &end,
+                               QSet<void *> &collectPointers)
 {
 	JsmProgram ret;
 	QStack<JsmExpression *> stack;
@@ -369,7 +370,10 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 		// Compute expressions from PUSH and CAL
 		JsmExpression *expression = JsmExpression::factory(op, stack);
 
-		if(!expression) {
+		if(expression) {
+			collectPointers.insert(expression);
+			delete op; // Delete push/cal
+		} else {
 			bool instructionAppended = false;
 			// Use the stack
 			if(!stack.isEmpty()) {
@@ -385,25 +389,29 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 					if(op->param() > 0 && it - 1 + op->param() <= end) {
 						QList<JsmOpcode *>::const_iterator ifElsePos = it;
 						JsmControlIfElse *ifElse = new JsmControlIfElse(
-													   stack.pop(),
-													   program(it,
-															   it - 1 + op->param()));
+						                               stack.pop(),
+						                               program(it,
+						                                       it - 1 + op->param(),
+						                                       collectPointers));
 						JsmControl *toAppend = ifElse;
 						it += op->param() - 1;
 						JsmOpcode *lastOpOfBlock = *(it - 1);
 						if(lastOpOfBlock->key() == JsmOpcode::JMP) {
 							if(lastOpOfBlock->param() > 0
 							        && it - 1 + lastOpOfBlock->param() <= end) {
-								ifElse->blockRemoveLast(); // Remove JMP
+								// Remove JMP
+								ifElse->blockTakeLast();
 								// Block Else
 								ifElse->setBlockElse(
-											program(it,
-													it - 1 + lastOpOfBlock->param()));
+								            program(it,
+								                    it - 1 + lastOpOfBlock->param(),
+								                    collectPointers));
 								it += lastOpOfBlock->param() - 1;
 							} else if(lastOpOfBlock->param() < 0
 							          && it + lastOpOfBlock->param() ==
 							          ifElsePos - ifElse->condition()->opcodeCount()) {
-								ifElse->blockRemoveLast(); // Remove JMP
+								// Remove JMP
+								ifElse->blockTakeLast();
 								// While
 								toAppend = new JsmControlWhile(*ifElse);
 								delete ifElse;
@@ -411,12 +419,15 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 						}
 						ret.append(JsmInstruction(toAppend));
 						instructionAppended = true;
+						collectPointers.insert(toAppend);
+						delete op; // Remove JPF
 					} // else if(op->param() < 0 && it - 1 + op->param() >= 0) {
 						// TODO: repeatUntil: remove appended opcodes from ret
 						// toAppend = new JsmControlRepeatUntil(
 						//							stack.pop(),
 						//							program(it - 1 + op->param(),
-						//									it - 1));
+						//									it - 1,
+						//									collectPointers));
 					// }
 				} else if(op->key() == JsmOpcode::POPI_L
 				          || op->key() == JsmOpcode::POPM_B
@@ -426,13 +437,19 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 					                                  stack.pop(), op);
 					ret.append(JsmInstruction(application));
 					instructionAppended = true;
+					collectPointers.insert(application);
+					collectPointers.insert(op);
 				} else if(stack.size() >= 2
 				          && op->key() >= JsmOpcode::REQ
 				          && op->key() <= JsmOpcode::REQEW) {
-					JsmApplication *exec = new JsmApplicationExec(stack, op);
+					JsmApplication *exec = new JsmApplicationExec(
+					                           stack.pop(),
+					                           stack.pop(),
+					                           op);
 					ret.append(JsmInstruction(exec));
 					instructionAppended = true;
-					stack.clear();
+					collectPointers.insert(exec);
+					collectPointers.insert(op);
 				}
 			}
 
@@ -442,10 +459,13 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 				stack.clear();
 				ret.append(JsmInstruction(application));
 				instructionAppended = true;
+				collectPointers.insert(application);
+				collectPointers.insert(op);
 			}
 
 			if(!instructionAppended) {
 				ret.append(JsmInstruction(op));
+				collectPointers.insert(op);
 			}
 		}
 	}
@@ -453,11 +473,10 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 	return ret;
 }
 
-
-JsmProgram JsmScripts::program(int groupID, int methodID) const
+JsmProgram JsmScripts::program(int groupID, int methodID, QSet<void *> &collectPointers) const
 {
 	QList<JsmOpcode *> opcodes = opcodesp(groupID, methodID, false);
-	return program(opcodes.constBegin(), opcodes.constEnd());
+	return program(opcodes.constBegin(), opcodes.constEnd(), collectPointers);
 }
 
 unsigned int JsmScripts::key(int groupID, int methodID, int opcodeID) const

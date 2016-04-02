@@ -182,7 +182,7 @@ QString JsmExpressionUnary::operationToString(Operation op)
 {
 	switch (op) {
 	case Min:
-		return "+";
+		return "-";
 	case Not:
 		return "~";
 	}
@@ -439,7 +439,7 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 		ret = QString("%1 = %2").arg(opExpr->toString(field),
 		                             expr->toString(field));
 	}
-	delete expr;
+	delete opExpr;
 	return ret;
 }
 
