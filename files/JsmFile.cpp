@@ -21,8 +21,8 @@ QStringList JsmFile::opcodeNameCalc;
 QStringList JsmFile::opcodeName;
 
 JsmFile::JsmFile() :
-	File(), _hasSym(false), needUpdate(true), groupItem(0),
-    _oldFormat(false)
+	File(), _hasSym(false), needUpdate(true),
+    groupItem(0), _oldFormat(false)
 {
 	if(opcodeNameCalc.isEmpty()) {
 		for(int i=0 ; i<16 ; ++i)
@@ -675,14 +675,21 @@ void JsmFile::setWindow(quint8 textID, int winID, const FF8Window &window)
 QString JsmFile::toString(int groupID, int methodID, bool moreDecompiled,
                           const Field *field)
 {
-	if(!scripts.script(groupID, methodID).decompiledScript(moreDecompiled).isEmpty() && !needUpdate) {
+	if(!scripts.script(groupID, methodID).decompiledScript(moreDecompiled).isEmpty() &&
+	        !needUpdate) {
 		return scripts.script(groupID, methodID).decompiledScript(moreDecompiled);
 	}
 	needUpdate = false;
+	QString ret;
 	if(moreDecompiled) {
-		return _toStringMore(groupID, methodID, field);
+		ret = _toStringMore(groupID, methodID, field);
+	} else {
+		ret = _toString(groupID, methodID);
 	}
-	return _toString(groupID, methodID);
+
+	setDecompiledScript(groupID, methodID, ret, moreDecompiled);
+
+	return ret;
 }
 
 QString JsmFile::_toString(int groupID, int methodID) const
@@ -736,7 +743,6 @@ bool JsmFile::compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, 
 		for(errorMethodID=0 ; errorMethodID < group.scriptCount() ; ++errorMethodID) {
 			const JsmScript &script = scripts.script(errorGroupID, errorMethodID);
 			if(!script.decompiledScript(false).isEmpty()) {
-				qDebug() << "compile" << group.name() << script.name();
 				if(0 != (errorLine = fromString(errorGroupID, errorMethodID,
 				                                script.decompiledScript(false),
 				                                errorStr))) {
@@ -751,7 +757,6 @@ bool JsmFile::compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, 
 
 int JsmFile::fromString(int groupID, int methodID, const QString &text, QString &errorStr)
 {
-//	qDebug() << "JsmFile::fromString";
 	QRegExp endLine("(\\r\\n|\\n|\\r)");
 	QRegExp spaces("[\\t ]+");
 	QStringList lines = text.split(endLine);
@@ -825,7 +830,6 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 					}
 					if((posLbl = labelsPos.value(lbl, -1)) != -1) {
 						param = posLbl - res.nbOpcode();
-//						qDebug() << "jump - LABEL" << lbl << "param" << param << "posLbl" << posLbl << "posCurrent" << res.nbOpcode();
 					} else {
 						param = -1;
 						gotosPos.insert(lbl, res.nbOpcode());
@@ -909,7 +913,6 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 		lbl = it.key();
 		if((posLbl = labelsPos.value(lbl, -1)) != -1) {
 			param = posLbl - it.value();
-//			qDebug() << "jump - LABEL" << lbl << "param" << param << "posLbl" << posLbl << "posCurrent" << it.value();
 			JsmOpcode op = res.opcode(it.value());
 			op.setParam(param);
 			res.setOpcode(it.value(), op);
@@ -1244,7 +1247,6 @@ bool JsmFile::hasSym() const
 
 void JsmFile::setDecompiledScript(int groupID, int methodID, const QString &text, bool moreDecompiled)
 {
-//	qDebug() << "JsmFile::setDecompiledScript" << groupID << methodID;
 	if(groupID == -1 || methodID == -1)		return;
 
 	scripts.setDecompiledScript(groupID, methodID, text, moreDecompiled);
@@ -1252,9 +1254,7 @@ void JsmFile::setDecompiledScript(int groupID, int methodID, const QString &text
 
 void JsmFile::setCurrentOpcodeScroll(int groupID, int methodID, int scrollValue, const QTextCursor &textCursor)
 {
-//	qDebug() << "JsmFile::setCurrentOpcodeScroll";
 	if(groupID == -1)		return;
-//	qDebug() << groupID << methodID << scrollValue << "mapid" << _mapID;
 	groupItem = groupID;
 	if(methodID == -1)		return;
 	methodItem.insert(groupID, methodID);

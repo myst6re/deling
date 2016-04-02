@@ -473,7 +473,8 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 	return ret;
 }
 
-JsmProgram JsmScripts::program(int groupID, int methodID, QSet<void *> &collectPointers) const
+JsmProgram JsmScripts::program(int groupID, int methodID,
+                               QSet<void *> &collectPointers) const
 {
 	QList<JsmOpcode *> opcodes = opcodesp(groupID, methodID, false);
 	return program(opcodes.constBegin(), opcodes.constEnd(), collectPointers);
