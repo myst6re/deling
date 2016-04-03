@@ -1,3 +1,12 @@
+deling (0.9b) trusty; urgency=low
+
+  * Adding partial support for FFVIII Demo
+  * Adding new script viewer, which is more readable (but not editable/searchable yet)
+  * Some bug fixes
+  * Migrate Qt from 4.8 to 5.6
+
+ -- Jérôme Arzel <myst6re@gmail.com>  Sun, 03 Apr 2016 13:17:11 +0200
+
 deling (0.8b) saucy; urgency=low
 
   * Open scripts (JSM file) with peculiar header format
