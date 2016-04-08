@@ -29,6 +29,7 @@ JsmHighlighter::JsmHighlighter(QTextDocument *parent) :
 	                       .arg(keywords.join("|")));
 	_regNumeric = QRegExp("\\b-?(b[01]+|0x[\\da-fA-F]+|\\d+)\\b");
 	_regVar = QRegExp("\\b((char|temp)_\\d+|\\w+_[us](byte|word|long))\\b");
+	_regExec = QRegExp("\\b\\w+\\.\\w+\\b");
 }
 
 void JsmHighlighter::applyReg(const QString &text, const QRegExp &regExp,
@@ -70,6 +71,9 @@ void JsmHighlighter::highlightBlockPseudoCode(const QString &text)
 	// Types
 	applyReg(text, _regNumeric, QColor(0x00, 0x00, 0x80)); // blue
 	applyReg(text, _regVar, QColor(0x80, 0x00, 0x00)); // red
+
+	// Methods
+	applyReg(text, _regExec, QColor(0x80, 0x00, 0x80)); // purple
 }
 
 void JsmHighlighter::highlightBlockOpcodes(const QString &text)
