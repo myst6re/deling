@@ -1,5 +1,6 @@
 #include "JsmExpression.h"
 #include "Field.h"
+#include "Config.h"
 
 QString JsmInstruction::toString(const Field *field, int indent) const
 {
@@ -22,12 +23,35 @@ QString JsmInstruction::toString(const Field *field, int indent) const
 	return QString(); // Never happen
 }
 
+QStringList JsmProgram::toStringList(const Field *field, int indent) const
+{
+	QStringList ret;
+
+	foreach(const JsmInstruction &instr, *this) {
+		QString instrStr = instr.toString(field, indent);
+		if(!instrStr.isEmpty()) {
+			ret.append(instrStr);
+		}
+	}
+
+	return ret;
+}
+
 int JsmExpression::eval(bool *ok) const
 {
 	if(ok) {
 		*ok = false;
 	}
 	return 0;
+}
+
+QString JsmExpression::stripParenthesis(const QString &exprStr)
+{
+	if (exprStr.startsWith('(')
+	        && exprStr.endsWith(')')) {
+		return exprStr.mid(1, exprStr.size() - 2);
+	}
+	return exprStr;
 }
 
 JsmExpression *JsmExpression::factory(const JsmOpcode *op,
@@ -91,10 +115,18 @@ JsmExpression *JsmExpression::factory(const JsmOpcode *op,
 	return ret;
 }
 
-QString JsmExpressionVal::toString(const Field *field) const
+QString JsmExpressionVal::toString(const Field *field, int base) const
 {
 	Q_UNUSED(field)
-	return QString::number(_val);
+	switch(base) {
+	case 2:
+		return QString("b%1").arg(quint32(_val), 0, base);
+	case 16:
+		return QString("0x%1").arg(QString::number(quint32(_val), base)
+		                           .toUpper());
+	default:
+		return QString::number(_val, base);
+	}
 }
 
 int JsmExpressionVal::eval(bool *ok) const
@@ -105,58 +137,80 @@ int JsmExpressionVal::eval(bool *ok) const
 	return _val;
 }
 
-QString JsmExpressionVarUByte::toString(const Field *field) const
+QString JsmExpressionVar::varName() const
 {
-	Q_UNUSED(field)
-	return QString("var_%1_ubyte").arg(_var);
+	QString name = Config::value(QString("var%1").arg(_var)).toString();
+	if(!name.isEmpty() && _var < 1024) {
+		return QString("%1_%2").arg(_var).arg(name
+		                                      .replace(QRegExp("\\W"), "_")
+		                                      .replace(QRegExp("_+"), "_"));
+	}
+	return QString::number(_var);
 }
 
-QString JsmExpressionVarUWord::toString(const Field *field) const
+QString JsmExpressionVarUByte::toString(const Field *field, int base) const
 {
 	Q_UNUSED(field)
-	return QString("var_%1_uword").arg(_var);
+	Q_UNUSED(base)
+	return QString("%1_ubyte").arg(varName());
 }
 
-QString JsmExpressionVarULong::toString(const Field *field) const
+QString JsmExpressionVarUWord::toString(const Field *field, int base) const
 {
 	Q_UNUSED(field)
-	return QString("var_%1_ulong").arg(_var);
+	Q_UNUSED(base)
+	return QString("%1_uword").arg(varName());
 }
 
-QString JsmExpressionVarSByte::toString(const Field *field) const
+QString JsmExpressionVarULong::toString(const Field *field, int base) const
 {
 	Q_UNUSED(field)
-	return QString("var_%1_sbyte").arg(_var);
+	Q_UNUSED(base)
+	return QString("%1_ulong").arg(varName());
 }
 
-QString JsmExpressionVarSWord::toString(const Field *field) const
+QString JsmExpressionVarSByte::toString(const Field *field, int base) const
 {
 	Q_UNUSED(field)
-	return QString("var_%1_sword").arg(_var);
+	Q_UNUSED(base)
+	return QString("%1_sbyte").arg(varName());
 }
 
-QString JsmExpressionVarSLong::toString(const Field *field) const
+QString JsmExpressionVarSWord::toString(const Field *field, int base) const
 {
 	Q_UNUSED(field)
-	return QString("var_%1_slong").arg(_var);
+	Q_UNUSED(base)
+	return QString("%1_sword").arg(varName());
 }
 
-QString JsmExpressionChar::toString(const Field *field) const
+QString JsmExpressionVarSLong::toString(const Field *field, int base) const
 {
 	Q_UNUSED(field)
+	Q_UNUSED(base)
+	return QString("%1_slong").arg(varName());
+}
+
+QString JsmExpressionChar::toString(const Field *field, int base) const
+{
+	Q_UNUSED(field)
+	Q_UNUSED(base)
 	return QString("char_%1").arg(_char);
 }
 
-QString JsmExpressionTemp::toString(const Field *field) const
+QString JsmExpressionTemp::toString(const Field *field, int base) const
 {
 	Q_UNUSED(field)
+	Q_UNUSED(base)
 	return QString("temp_%1").arg(_temp);
 }
 
-QString JsmExpressionUnary::toString(const Field *field) const
+QString JsmExpressionUnary::toString(const Field *field, int base) const
 {
+	if(_op == Not) {
+		base = 16;
+	}
 	return QString("%1%2").arg(operationToString(),
-	                           _first->toString(field));
+	                           _first->toString(field, base));
 }
 
 int JsmExpressionUnary::opcodeCount() const
@@ -189,12 +243,17 @@ QString JsmExpressionUnary::operationToString(Operation op)
 	return QString();
 }
 
-QString JsmExpressionBinary::toString(const Field *field) const
+QString JsmExpressionBinary::toString(const Field *field, int base) const
 {
+	if(_op == And
+	        || _op == Or
+	        || _op == Eor) {
+		base = 16;
+	}
 	return QString("(%1 %2 %3)")
-	        .arg(_first->toString(field),
+	        .arg(_first->toString(field, base),
 	             operationToString(),
-	             _second->toString(field));
+	             _second->toString(field, base));
 }
 
 int JsmExpressionBinary::eval(bool *ok) const
@@ -296,13 +355,12 @@ QString JsmControlIfElse::toString(const Field *field, int indent,
 		return QString();
 	}
 	// TODO: if block is empty, then blockElse will be executed unless condition
-
+	QString condStr = JsmExpression::stripParenthesis(
+	                      _condition->toString(field));
 	QStringList lines(indentString("if %1 begin", elseIf ? 0 : indent)
-	                  .arg(_condition->toString(field)));
+	                  .arg(condStr));
 
-	foreach(const JsmInstruction &instr, _block) {
-		lines.append(instr.toString(field, indent + 1));
-	}
+	lines.append(_block.toStringList(field, indent + 1));
 
 	if(!_blockElse.isEmpty()) {
 		if(_blockElse.size() == 1) {
@@ -320,9 +378,7 @@ QString JsmControlIfElse::toString(const Field *field, int indent,
 		}
 
 		lines.append(indentString("else", indent));
-		foreach(const JsmInstruction &instr, _blockElse) {
-			lines.append(instr.toString(field, indent + 1));
-		}
+		lines.append(_blockElse.toStringList(field, indent + 1));
 	}
 
 JsmControlIfElse_toString_end:
@@ -335,24 +391,32 @@ JsmControlIfElse_toString_end:
 
 QString JsmControlWhile::toString(const Field *field, int indent) const
 {
-	QString firstLine;
-	bool ok;
+	QString prefix, firstLine;
+	bool ok, noBlock = _block.isEmpty();
+
+	if(noBlock) {
+		prefix = "wait ";
+	}
+
 	int value = condition()->eval(&ok);
 	if(ok && value == 1) {
 		// Forever
-		firstLine = indentString("forever", indent);
+		firstLine = "forever";
 	} else {
 		// While
-		firstLine = indentString("while %1 begin", indent)
-		            .arg(_condition->toString(field));
+		QString condStr = JsmExpression::stripParenthesis(
+		                      _condition->toString(field));
+		firstLine = QString("while %1").arg(condStr);
+		if(!noBlock) {
+			firstLine.append(" begin");
+		}
 	}
-	QStringList lines(firstLine);
+	QStringList lines(indentString(prefix.append(firstLine), indent));
 
-	foreach(const JsmInstruction &instr, _block) {
-		lines.append(instr.toString(field, indent + 1));
+	if(!noBlock) {
+		lines.append(_block.toStringList(field, indent + 1));
+		lines.append(indentString("end", indent));
 	}
-
-	lines.append(indentString("end", indent));
 
 	return lines.join("\n");
 }
@@ -360,13 +424,12 @@ QString JsmControlWhile::toString(const Field *field, int indent) const
 QString JsmControlRepeatUntil::toString(const Field *field, int indent) const
 {
 	QStringList lines(indentString("repeat", indent));
+	lines.append(_block.toStringList(field, indent + 1));
 
-	foreach(const JsmInstruction &instr, _block) {
-		lines.append(instr.toString(field, indent + 1));
-	}
-
+	QString condStr = JsmExpression::stripParenthesis(
+	                      _condition->toString(field));
 	lines.append(indentString("until %1 end", indent)
-	             .arg(_condition->toString(field)));
+	             .arg(condStr));
 
 	return lines.join("\n");
 }
@@ -429,15 +492,23 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 		        = static_cast<JsmExpressionBinary *>(expr);
 		if(opExpr->toString(field) ==
 		        binaryExpr->leftOperand()->toString(field)) {
+			int base = 10;
+			if(binaryExpr->operation() == JsmExpressionBinary::And
+			        || binaryExpr->operation() == JsmExpressionBinary::Or
+			        || binaryExpr->operation() == JsmExpressionBinary::Eor) {
+				base = 16;
+			}
 			ret = QString("%1 %2= %3")
 			      .arg(opExpr->toString(field),
 			           binaryExpr->operationToString(),
-			           binaryExpr->rightOperand()->toString(field));
+			           JsmExpression::stripParenthesis(
+			               binaryExpr->rightOperand()->toString(field, base)));
 		}
 	}
 	if(ret.isEmpty()) {
 		ret = QString("%1 = %2").arg(opExpr->toString(field),
-		                             expr->toString(field));
+		                             JsmExpression::stripParenthesis(
+		                                 expr->toString(field)));
 	}
 	delete opExpr;
 	return ret;

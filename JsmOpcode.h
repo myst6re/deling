@@ -20,6 +20,8 @@
 
 #include <QtCore>
 
+#define JSM_OPCODE_COUNT 376
+
 class JsmOpcode
 {
 public:
@@ -399,7 +401,7 @@ public:
 		Unknown15,
 		Unknown16,
 		Unknown17,
-		Unknown18
+		TUTO
 	};
 
 	JsmOpcode();
@@ -434,7 +436,7 @@ public:
 	virtual QString desc() const;
 	virtual QString toString() const;
 
-	static const char *opcodes[376];
+	static const char *opcodes[JSM_OPCODE_COUNT];
 private:
 	static int pops[376];
 	quint32 op;

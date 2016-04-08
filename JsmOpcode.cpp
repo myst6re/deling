@@ -75,13 +75,14 @@ bool JsmOpcode::hasParam() const
 int JsmOpcode::popCount() const
 {
 	const unsigned int k = key();
-	return k < 376 ? pops[k] : -1;
+	return k < JSM_OPCODE_COUNT ? pops[k] : -1;
 }
 
 QString JsmOpcode::name() const
 {
 	const unsigned int k = key();
-	return k < 358 ? opcodes[k] : QString("UNKNOWN%1").arg(k - 358 + 1);
+	return k < JSM_OPCODE_COUNT ? opcodes[k] : QString("UNKNOWN%1")
+	                              .arg(k - JSM_OPCODE_COUNT + 1);
 }
 
 QString JsmOpcode::paramStr() const
@@ -598,10 +599,10 @@ Unknown14: Aucun paramètre
 Unknown15: Aucun paramètre
 Unknown16: Aucun paramètre
 Unknown17: Aucun paramètre
-Unknown18: Aucun paramètre
+TUTO: Aucun paramètre
 */
 
-const char *JsmOpcode::opcodes[376] = {
+const char *JsmOpcode::opcodes[JSM_OPCODE_COUNT] = {
 	"NOP",
 	"CAL",
 	"JMP",
@@ -977,10 +978,10 @@ const char *JsmOpcode::opcodes[376] = {
 	"UNKNOWN15",
 	"UNKNOWN16",
 	"UNKNOWN17",
-	"UNKNOWN18"
+	"TUTO"
 };
 
-int JsmOpcode::pops[376] = {
+int JsmOpcode::pops[JSM_OPCODE_COUNT] = {
 	0,  // NOP
 	-1, // CAL (1 or 2)
 	0,  // JMP
@@ -1356,5 +1357,5 @@ int JsmOpcode::pops[376] = {
 	-1, // UNKNOWN15
 	-1, // UNKNOWN16
 	-1, // UNKNOWN17
-	-1, // UNKNOWN18
+	1,  // TUTO
 };

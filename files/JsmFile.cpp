@@ -28,7 +28,7 @@ JsmFile::JsmFile() :
 		for(int i=0 ; i<16 ; ++i)
 			opcodeNameCalc.append(JsmOpcodeCal::cal_table[i]);
 
-		for(int i=0 ; i<376 ; ++i)
+		for(int i=0 ; i<JSM_OPCODE_COUNT ; ++i)
 			opcodeName.append(JsmOpcode::opcodes[i]);
 	}
 }
@@ -708,18 +708,13 @@ QString JsmFile::_toString(int groupID, int methodID) const
 
 QString JsmFile::_toStringMore(int groupID, int methodID, const Field *field) const
 {
-	QString ret;
 	QSet<void *> collectPointers;
 	JsmProgram program = scripts.program(groupID, methodID, collectPointers);
-
-	foreach(const JsmInstruction &instr, program) {
-		ret.append(instr.toString(field, 0));
-		ret.append("\n");
-	}
+	QStringList ret = program.toStringList(field, 0);
 
 	qDeleteAll(collectPointers);
 
-	return ret;
+	return ret.join("\n");
 }
 
 int JsmFile::opcodePositionInText(int groupID, int methodID, int opcodeID) const

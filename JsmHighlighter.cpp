@@ -22,12 +22,13 @@ JsmHighlighter::JsmHighlighter(QTextDocument *parent) :
 {
 	QStringList keywords;
 	keywords << "if" << "begin" << "else" << "end"
-	         << "while" << "forever" << "repeat" << "until";
+	         << "while" << "wait while" << "forever"
+	         << "wait forever" << "repeat" << "until";
 	// Don't forget to escape strings if necessary
 	_regKeywords = QRegExp(QString("\\b(%1)\\b")
 	                       .arg(keywords.join("|")));
-	_regNumeric = QRegExp("\\b-?\\d+\\b");
-	_regVar = QRegExp("\\b((char|temp)_\\d+|var_\\d+_[us](byte|word|long))\\b");
+	_regNumeric = QRegExp("\\b-?(b[01]+|0x[\\da-fA-F]+|\\d+)\\b");
+	_regVar = QRegExp("\\b((char|temp)_\\d+|\\w+_[us](byte|word|long))\\b");
 }
 
 void JsmHighlighter::applyReg(const QString &text, const QRegExp &regExp,

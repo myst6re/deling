@@ -140,7 +140,7 @@ void MiscSearch::fillList()
 //	text.append("\");\n");
 
 	QMap<int, int> opcodeTypes = fieldArchive->searchAllOpcodeTypes();
-	for(int j=0 ; j<376 ; ++j) {
+	for(int j=0 ; j<JSM_OPCODE_COUNT ; ++j) {
 		if(!opcodeTypes.contains(j)) {
 			qWarning() << QString::number(j, 16) << JsmFile::opcodeName.value(j, "???") << "introuvable";
 		}
