@@ -480,7 +480,17 @@ JsmProgram JsmScripts::program(int groupID, int methodID,
                                QSet<void *> &collectPointers) const
 {
 	QList<JsmOpcode *> opcodes = opcodesp(groupID, methodID, false);
-	return program(opcodes.constBegin(), opcodes.constEnd(), collectPointers);
+	if(opcodes.isEmpty()) {
+		return JsmProgram();
+	}
+	JsmOpcode *firstOp = opcodes.first();
+	QList<JsmOpcode *>::const_iterator begin = opcodes.constBegin();
+	// Ignore label if correct at the beginning
+	if(firstOp->key() == JsmOpcode::LBL
+	        && firstOp->param() == absoluteMethodID(groupID, methodID)) {
+		begin += 1;
+	}
+	return program(begin, opcodes.constEnd(), collectPointers);
 }
 
 unsigned int JsmScripts::key(int groupID, int methodID, int opcodeID) const

@@ -23,7 +23,7 @@ JsmHighlighter::JsmHighlighter(QTextDocument *parent) :
 	QStringList keywords;
 	keywords << "if" << "begin" << "else" << "end"
 	         << "while" << "wait while" << "forever"
-	         << "wait forever" << "repeat" << "until";
+	         << "wait forever" << "repeat" << "until" << "ret";
 	// Don't forget to escape strings if necessary
 	_regKeywords = QRegExp(QString("\\b(%1)\\b")
 	                       .arg(keywords.join("|")));
