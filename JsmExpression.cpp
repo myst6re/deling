@@ -8,17 +8,17 @@ QString JsmInstruction::toString(const Field *field, int indent) const
 	case Opcode:
 		return QString("%1%2")
 		        .arg(QString(indent, QChar('\t')),
-		             instruction().opcode->toString());
+		             opcode()->toString());
 	case Expression:
 		return QString("%1%2")
 		        .arg(QString(indent, QChar('\t')),
-		             instruction().expression->toString(field));
+		             expression()->toString(field));
 	case Control:
-		return instruction().control->toString(field, indent);
+		return control()->toString(field, indent);
 	case Application:
 		return QString("%1%2")
 		        .arg(QString(indent, QChar('\t')),
-		             instruction().application->toString(field));
+		             application()->toString(field));
 	}
 	return QString(); // Never happen
 }
@@ -220,13 +220,19 @@ int JsmExpressionUnary::opcodeCount() const
 
 int JsmExpressionUnary::eval(bool *ok) const
 {
-	int v = _first->eval(ok);
-	if(ok && *ok) {
+	bool ok2;
+	int v = _first->eval(&ok2);
+	if(ok2) {
+		if(ok) {
+			*ok = true;
+		}
 		switch (_op) {
 		case Min:
 			return -v;
 		case Not:
 			return ~v;
+		case LogNot:
+			return int(!v);
 		}
 	}
 	return JsmExpression::eval(ok);
@@ -239,6 +245,8 @@ QString JsmExpressionUnary::operationToString(Operation op)
 		return "-";
 	case Not:
 		return "~";
+	case LogNot:
+		return "!";
 	}
 	return QString();
 }
@@ -274,27 +282,67 @@ int JsmExpressionBinary::eval(bool *ok) const
 			case Div:
 				return v1 / v2;
 			case Eq:
-				return v1 == v2;
+				return int(v1 == v2);
 			case Gt:
-				return v1 > v2;
+				return int(v1 > v2);
 			case Ge:
-				return v1 >= v2;
+				return int(v1 >= v2);
 			case Ls:
-				return v1 < v2;
+				return int(v1 < v2);
 			case Le:
-				return v1 <= v2;
+				return int(v1 <= v2);
 			case Nt:
-				return v1 != v2;
+				return int(v1 != v2);
 			case And:
 				return v1 & v2;
 			case Or:
 				return v1 | v2;
 			case Eor:
 				return v1 ^ v2;
+			case LogAnd:
+				return int(v1 && v2);
+			case LogOr:
+				return int(v1 || v2);
 			}
 		}
 	}
 	return JsmExpression::eval(ok);
+}
+
+JsmExpressionBinary::Operation JsmExpressionBinary::logicalNot(bool *ok) const
+{
+	if(ok) {
+		*ok = true;
+	}
+	switch (_op) {
+	case Eq:
+		return Nt;
+	case Gt:
+		return Le;
+	case Ge:
+		return Ls;
+	case Ls:
+		return Ge;
+	case Le:
+		return Gt;
+	case Nt:
+		return Eq;
+	case LogAnd:
+		return LogOr;
+	case LogOr:
+		return LogAnd;
+	}
+	if(ok) {
+		*ok = false;
+	}
+	return _op;
+}
+
+bool JsmExpressionBinary::logicalNot()
+{
+	bool ok;
+	_op = logicalNot(&ok);
+	return ok;
 }
 
 QString JsmExpressionBinary::operationToString(Operation op)
@@ -328,6 +376,10 @@ QString JsmExpressionBinary::operationToString(Operation op)
 		return "|";
 	case Eor:
 		return "^";
+	case LogAnd:
+		return "and";
+	case LogOr:
+		return "or";
 	}
 	return QString();
 }
@@ -366,11 +418,10 @@ QString JsmControlIfElse::toString(const Field *field, int indent,
 		if(_blockElse.size() == 1) {
 			const JsmInstruction &instr = _blockElse.first();
 			if (instr.type() == JsmInstruction::Control
-			        && instr.instruction().control->type() ==
+			        && instr.control()->type() ==
 			        JsmControl::IfElse) {
 				JsmControlIfElse *ifElse =
-				        static_cast<JsmControlIfElse *>(instr.instruction()
-				                                        .control);
+				        static_cast<JsmControlIfElse *>(instr.control());
 				lines.append(indentString("else %1", indent)
 				             .arg(ifElse->toString(field, indent, true)));
 				goto JsmControlIfElse_toString_end;

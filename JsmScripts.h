@@ -147,6 +147,8 @@ private:
 	static JsmProgram program(QList<JsmOpcode *>::const_iterator it,
 	                          const QList<JsmOpcode *>::const_iterator &end,
 	                          QSet<void *> &collectPointers);
+	static JsmProgram &program2ndPass(JsmProgram &program,
+	                                  QSet<void *> &collectPointers);
 
 	QList<JsmGroup> groupList;
 	QList<JsmScript> scriptList;

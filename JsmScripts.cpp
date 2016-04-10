@@ -476,6 +476,72 @@ JsmProgram JsmScripts::program(QList<JsmOpcode *>::const_iterator it,
 	return ret;
 }
 
+JsmProgram &JsmScripts::program2ndPass(JsmProgram &program,
+                                       QSet<void *> &collectPointers)
+{
+	QMutableListIterator<JsmInstruction> it(program);
+	const int size = program.size();
+	while(it.hasNext()) {
+		it.next();
+		JsmInstruction &instr = it.value();
+
+		if(instr.type() == JsmInstruction::Control) {
+			JsmControl *control = instr.control();
+			program2ndPass(control->block(), collectPointers);
+			if(control->type() == JsmControl::IfElse) {
+				JsmControlIfElse *ifElse =
+				        static_cast<JsmControlIfElse *>(control);
+				program2ndPass(ifElse->blockElse(), collectPointers);
+				if(ifElse->block().isEmpty()) {
+					if(ifElse->blockElse().isEmpty()) { // Useless if/Else
+						
+					} else { // Not
+						JsmExpression *cond = ifElse->condition();
+						if(cond->type() != JsmExpression::Binary
+						        || !static_cast<JsmExpressionBinary *>(cond)->
+						        logicalNot()) {
+							// Explicit Not
+							JsmExpression *newCondition =
+							        new JsmExpressionUnary(
+							            JsmExpressionUnary::LogNot,
+							            cond);
+							// It is unecessary to delete old pointers here
+							collectPointers.insert(newCondition);
+							ifElse->setCondition(newCondition);
+						}
+						// Else invert binary expression
+
+						ifElse->setBlock(ifElse->blockElse());
+						ifElse->setBlockElse(JsmProgram());
+					}
+				} else if(ifElse->block().size() == 1) {
+					const JsmInstruction &subInstr = ifElse->block().first();
+					if(subInstr.type() == JsmInstruction::Control) {
+						JsmControl *subControl = subInstr.control();
+						if(subControl->type() == JsmControl::IfElse) {
+							JsmControlIfElse *subIfElse =
+							        static_cast<JsmControlIfElse *>(subControl);
+							if(subIfElse->blockElse().isEmpty()) { // And
+								JsmExpression *newCondition =
+								        new JsmExpressionBinary(
+								            JsmExpressionBinary::LogAnd,
+								            ifElse->condition(),
+								            subIfElse->condition());
+								// It is unecessary to delete old pointers here
+								collectPointers.insert(newCondition);
+								ifElse->setCondition(newCondition);
+								ifElse->setBlock(subIfElse->block());
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return program;
+}
+
 JsmProgram JsmScripts::program(int groupID, int methodID,
                                QSet<void *> &collectPointers) const
 {
@@ -489,8 +555,10 @@ JsmProgram JsmScripts::program(int groupID, int methodID,
 	if(firstOp->key() == JsmOpcode::LBL
 	        && firstOp->param() == absoluteMethodID(groupID, methodID)) {
 		begin += 1;
+		delete firstOp;
 	}
-	return program(begin, opcodes.constEnd(), collectPointers);
+	JsmProgram p = program(begin, opcodes.constEnd(), collectPointers);
+	return program2ndPass(p, collectPointers);
 }
 
 unsigned int JsmScripts::key(int groupID, int methodID, int opcodeID) const

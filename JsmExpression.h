@@ -43,14 +43,26 @@ public:
 	    _type(Application) {
 		_instr.application = application;
 	}
-	inline Instruction instruction() const {
-		return _instr;
+	inline JsmOpcode *opcode() const {
+		return _instr.opcode;
+	}
+	inline JsmExpression *expression() const {
+		return _instr.expression;
+	}
+	inline JsmControl *control() const {
+		return _instr.control;
+	}
+	inline JsmApplication *application() const {
+		return _instr.application;
 	}
 	inline InstructionType type() const {
 		return _type;
 	}
 	QString toString(const Field *field, int indent) const;
 private:
+	inline Instruction instruction() const {
+		return _instr;
+	}
 	Instruction _instr;
 	InstructionType _type;
 };
@@ -207,7 +219,8 @@ class JsmExpressionUnary : public JsmExpression
 public:
 	enum Operation {
 		Min = 5,
-		Not = 15
+		Not = 15,
+		LogNot = 0x1000002
 	};
 	JsmExpressionUnary(Operation op, JsmExpression *first) :
 	    _op(op), _first(first) {}
@@ -248,7 +261,11 @@ public:
 		Nt = 11,
 		And = 12,
 		Or = 13,
-		Eor = 14
+		Eor = 14,
+		// Not
+		LogAnd = 0x1000000,
+		LogOr = 0x1000001
+		// LogNot
 	};
 	JsmExpressionBinary(Operation op, JsmExpression *first,
 	                    JsmExpression *second) :
@@ -257,6 +274,8 @@ public:
 	virtual QString toString(const Field *field, int base = 10) const;
 	virtual int opcodeCount() const;
 	virtual int eval(bool *ok) const;
+	Operation logicalNot(bool *ok) const;
+	bool logicalNot();
 	inline ExpressionType type() const {
 		return Binary;
 	}
@@ -295,8 +314,17 @@ public:
 	inline JsmExpression *condition() const {
 		return _condition;
 	}
+	inline void setCondition(JsmExpression *condition) {
+		_condition = condition;
+	}
 	inline const JsmProgram &block() const {
 		return _block;
+	}
+	inline JsmProgram &block() {
+		return _block;
+	}
+	inline void setBlock(const JsmProgram &block) {
+		_block = block;
 	}
 	inline JsmInstruction blockTakeLast() {
 		return _block.takeLast();
@@ -326,6 +354,9 @@ public:
 	}
 	inline ControlType type() const {
 		return IfElse;
+	}
+	inline JsmProgram &blockElse() {
+		return _blockElse;
 	}
 	inline const JsmProgram &blockElse() const {
 		return _blockElse;
