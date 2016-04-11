@@ -23,6 +23,7 @@ PlainTextEdit::PlainTextEdit(QWidget *parent) :
 	_textEdit = new QPlainTextEdit(parent);
 	_textEdit->viewport()->installEventFilter(this);
 	_textEdit->setTabStopWidth(30);
+	_textEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
 }
 
 QSize PlainTextEdit::sizeHint() const
