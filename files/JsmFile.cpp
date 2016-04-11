@@ -399,7 +399,7 @@ void JsmFile::searchWindows()
 	int nbOpcode = scripts.data().nbOpcode();
 	quint32 key;
 	FF8Window window;
-	window.ask_last = window.ask_first = window.ask_last2 = window.ask_first2 = 0;
+	window.ask_last = window.ask_first = window.ask_first2 = 0;
 	ff8Windows.clear();
 
 	for(int i=4 ; i<nbOpcode ; ++i) {
@@ -435,7 +435,7 @@ void JsmFile::searchWindows()
 				JsmOpcode _psh3=scripts.opcode(i-6);
 				JsmOpcode _psh4=scripts.opcode(i-5);
 				JsmOpcode _psh5=scripts.opcode(i-4);
-				JsmOpcode _psh6=scripts.opcode(i-3);
+				// ask_mem
 				JsmOpcode _psh7=scripts.opcode(i-2);
 				JsmOpcode _psh8=scripts.opcode(i-1);
 				if(i>=8
@@ -444,7 +444,6 @@ void JsmFile::searchWindows()
 						&& _psh3.key() == JsmOpcode::PSHN_L
 						&& _psh4.key() == JsmOpcode::PSHN_L
 						&& _psh5.key() == JsmOpcode::PSHN_L
-						&& _psh6.key() == JsmOpcode::PSHN_L
 						&& _psh7.key() == JsmOpcode::PSHN_L
 						&& _psh8.key() == JsmOpcode::PSHN_L) {
 					window.type = key;
@@ -453,7 +452,6 @@ void JsmFile::searchWindows()
 					window.ask_first = _psh3.param();
 					window.ask_last = _psh4.param();
 					window.ask_first2 = _psh5.param();
-					window.ask_last2 = _psh6.param();
 					window.u1 = _psh1.param();
 					window.script_pos = i;
 					ff8Windows.insert(_psh2.param(), window);
@@ -659,7 +657,7 @@ void JsmFile::setWindow(quint8 textID, int winID, const FF8Window &window)
 		scripts.setParam(window.script_pos-6, window.ask_first);
 		scripts.setParam(window.script_pos-5, window.ask_last);
 		scripts.setParam(window.script_pos-4, window.ask_first2);
-		scripts.setParam(window.script_pos-3, window.ask_last2);
+		// ask_mem
 		scripts.setParam(window.script_pos-2, window.x);
 		scripts.setParam(window.script_pos-1, window.y);
 		break;

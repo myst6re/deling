@@ -32,7 +32,7 @@
 
 struct FF8Window {
 	unsigned int type;
-	int x, y, u1, ask_first, ask_last, ask_first2, ask_last2;
+	int x, y, u1, ask_first, ask_last, ask_first2;
 	int script_pos;
 };
 
