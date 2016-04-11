@@ -226,7 +226,7 @@ void TextPreview::calcSize()
 	if(!ff8Windows.isEmpty()) {
 		FF8Window ff8Window = ff8Windows.at(currentWin);
 
-		if(ff8Window.type==0x6f) {
+		if(ff8Window.type == JsmOpcode::AASK) {
 			ask_first = ff8Window.ask_first;
 			ask_last = ff8Window.ask_last;
 		}
@@ -357,7 +357,7 @@ void TextPreview::drawTextArea(QPainter *painter)
 
 	/* Window Background */
 
-	if(ff8Window.type!=NOWIN) {
+	if(ff8Window.type != NOWIN) {
 		painter->translate(realPos(ff8Window));
 	}
 
@@ -387,7 +387,7 @@ void TextPreview::drawTextArea(QPainter *painter)
 
 	int ask_first=-1, ask_last=-1;
 
-	if(ff8Window.type==0x6f) {
+	if(ff8Window.type == JsmOpcode::AASK) {
 		ask_first = ff8Window.ask_first;
 		ask_last = ff8Window.ask_last;
 		if(ask_last >= ask_first)
@@ -542,7 +542,7 @@ void TextPreview::mousePressEvent(QMouseEvent *event)
 {
 	if(!readOnly && event->button() == Qt::LeftButton) {
 		FF8Window ff8Window = getWindow();
-		if(ff8Window.type!=NOWIN) {
+		if(ff8Window.type != NOWIN) {
 			QPoint real = realPos(ff8Window);
 
 			acceptMove = event->x() >= real.x() && event->x() < real.x()+maxW
@@ -565,7 +565,7 @@ void TextPreview::mouseMoveEvent(QMouseEvent *event)
 
 	FF8Window ff8Window = getWindow();
 
-	if(ff8Window.type==NOWIN)	return;
+	if(ff8Window.type == NOWIN)	return;
 
 	int x = ff8Window.x + event->x() - moveStartPosition.x();
 	int y = ff8Window.y + event->y() - moveStartPosition.y();
