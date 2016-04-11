@@ -224,7 +224,7 @@ void TextPreview::calcSize()
 	quint8 caract;
 	bool jp = font->tableCount() == 4;
 	if(!ff8Windows.isEmpty()) {
-		FF8Window ff8Window = ff8Windows.at(currentWin);
+		const FF8Window &ff8Window = ff8Windows.at(currentWin);
 
 		if(ff8Window.type == JsmOpcode::AASK) {
 			ask_first = ff8Window.ask_first;
