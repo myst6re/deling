@@ -91,6 +91,7 @@ HEADERS += MainWindow.h \
     files/SfxFile.h \
     files/AkaoListFile.h \
     files/File.h \
+    files/IO.h \
     widgets/SoundWidget.h \
     HexLineEdit.h \
     files/PvpFile.h \
@@ -104,7 +105,17 @@ HEADERS += MainWindow.h \
     ArchiveObserverProgressDialog.h \
     ArchiveObservers.h \
     ProgressWidget.h \
-    JsmExpression.h
+    JsmExpression.h \
+    files/DatFile.h \
+    game/battle/BattleModel.h \
+    game/battle/BattleSkeleton.h \
+    game/battle/BattleAnimation.h \
+    game/battle/BattleBone.h \
+    game/battle/BattlePart.h \
+    game/battle/BattleTriangle.h \
+    game/battle/BattleQuad.h \
+    game/battle/BattleVertex.h \
+    game/battle/BattlePoly.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -177,6 +188,7 @@ SOURCES += MainWindow.cpp \
     files/SfxFile.cpp \
     files/AkaoListFile.cpp \
     files/File.cpp \
+    files/IO.cpp \
     widgets/SoundWidget.cpp \
     HexLineEdit.cpp \
     files/PvpFile.cpp \
@@ -189,7 +201,16 @@ SOURCES += MainWindow.cpp \
     ArchiveObserverProgressDialog.cpp \
     ArchiveObservers.cpp \
     ProgressWidget.cpp \
-    JsmExpression.cpp
+    JsmExpression.cpp \
+    files/DatFile.cpp \
+    game/battle/BattleModel.cpp \
+    game/battle/BattleSkeleton.cpp \
+    game/battle/BattleAnimation.cpp \
+    game/battle/BattleBone.cpp \
+    game/battle/BattlePart.cpp \
+    game/battle/BattleTriangle.cpp \
+    game/battle/BattleQuad.cpp \
+    game/battle/BattlePoly.cpp
 
 TRANSLATIONS += deling_en.ts \
     deling_ja.ts \
