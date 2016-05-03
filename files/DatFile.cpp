@@ -66,7 +66,7 @@ bool DatFile::readSkeleton(BattleSkeleton &skeleton)
 		}
 		const char *boneData = bone.constData();
 
-		quint16 parent, size;
+		qint16 parent, size;
 
 		memcpy(&parent, boneData, 2);
 		memcpy(&size, boneData + 2, 2);
@@ -98,7 +98,7 @@ bool DatFile::readParts(QList<BattlePart> &parts)
 
 	const quint32 headerSize = count * 4;
 	QVector<quint32> positions;
-	positions.reserve(count + 1);
+	positions.resize(count + 1);
 
 	if(device()->read((char *)positions.data(), headerSize) != headerSize) {
 		return false;
@@ -142,7 +142,7 @@ bool DatFile::readParts(QList<BattlePart> &parts)
 			memcpy(&countVertices, verticesHeader.constData() + 2, 2);
 
 			QVector<BattleVertex> vertexList;
-			vertexList.reserve(countVertices);
+			vertexList.resize(countVertices);
 			if(device()->read((char *)vertexList.data(),
 			                  sizeof(BattleVertex) * countVertices)
 			        != sizeof(BattleVertex) * countVertices) {
@@ -153,9 +153,9 @@ bool DatFile::readParts(QList<BattlePart> &parts)
 			vertices.append(vertexList.toList());
 		}
 
+		// 4-bytes alignment
 		if(device()->pos() % 4 != 0) {
-			qWarning() << "Padding" << device()->pos() << (device()->pos() % 4);
-			if(!device()->seek(4 - (device()->pos() % 4))) {
+			if(!device()->seek(device()->pos() + 4 - (device()->pos() % 4))) {
 				return false;
 			}
 		}
@@ -175,7 +175,7 @@ bool DatFile::readParts(QList<BattlePart> &parts)
 		memcpy(&countQuads, polyHeader.constData() + 2, 2);
 
 		QVector<DatFileTriangle> triangleList;
-		triangleList.reserve(countTriangles);
+		triangleList.resize(countTriangles);
 		if(device()->read((char *)triangleList.data(),
 		                  sizeof(DatFileTriangle) * countTriangles)
 		        != sizeof(DatFileTriangle) * countTriangles) {
@@ -184,29 +184,36 @@ bool DatFile::readParts(QList<BattlePart> &parts)
 
 		QList<BattleTriangle> triangleList2;
 		foreach(const DatFileTriangle &tri, triangleList) {
-			bool ok;
-			BattleTriangle bt = toBattleTriangle(tri, vertices, &ok);
-			if(!ok) {
-				qWarning() << "DatFile::readParts wrong battle triangle";
+			BattleTriangle bt = toBattleTriangle(tri, vertices);
+			if(bt.isEmpty()) {
+				qWarning() << "DatFile::readParts wrong battle triangle"
+				           << tri.vertexIndexes[0]
+				           << tri.vertexIndexes[1]
+				           << tri.vertexIndexes[2]
+				           << vertices.size();
 			} else {
 				triangleList2.append(bt);
 			}
 		}
 
 		QVector<DatFileQuad> quadList;
-		quadList.reserve(countQuads);
+		quadList.resize(countQuads);
 		if(device()->read((char *)quadList.data(),
-		                  sizeof(DatFileTriangle) * countQuads)
-		        != sizeof(DatFileTriangle) * countQuads) {
+		                  sizeof(DatFileQuad) * countQuads)
+		        != sizeof(DatFileQuad) * countQuads) {
 			return false;
 		}
 
 		QList<BattleQuad> quadList2;
 		foreach(const DatFileQuad &quad, quadList) {
-			bool ok;
-			BattleQuad bq = toBattleQuad(quad, vertices, &ok);
-			if(!ok) {
-				qWarning() << "DatFile::readParts wrong battle quad";
+			BattleQuad bq = toBattleQuad(quad, vertices);
+			if(bq.isEmpty()) {
+				qWarning() << "DatFile::readParts wrong battle quad"
+				           << quad.vertexIndexes[0]
+				           << quad.vertexIndexes[1]
+				           << quad.vertexIndexes[2]
+				           << quad.vertexIndexes[3]
+				           << vertices.size();
 			} else {
 				quadList2.append(bq);
 			}
@@ -214,6 +221,12 @@ bool DatFile::readParts(QList<BattlePart> &parts)
 
 		parts.append(BattlePart(verticesByBone, triangleList2, quadList2));
 	}
+
+	quint32 vertexCountTotal;
+	if(device()->read((char *)&vertexCountTotal, 4) != 4) {
+		return false;
+	}
+	qDebug() << "vertexCount" << vertexCountTotal;
 
 	if(device()->pos() != position(Parts) + positions[count]) {
 		qWarning() << "DatFile::readParts wrong position (2)"
@@ -248,8 +261,49 @@ bool DatFile::readTextures(QList<TimFile> &textures)
 		return false;
 	}
 
-	Q_UNUSED(textures);
-	// TODO
+	quint32 count;
+	if(!device()->read((char *)&count, 4)) {
+		return false;
+	}
+
+	const quint32 headerSize = (count + 1) * 4;
+	QVector<quint32> positions;
+	positions.resize(count + 1);
+
+	if(device()->read((char *)positions.data(), headerSize) != headerSize) {
+		return false;
+	}
+
+	if(positions[count] != size(Textures)) {
+		qWarning() << "DatFile::readTextures invalid end of file indicator"
+		           << positions[count];
+		positions[count] = size(Textures);
+	}
+
+	textures.clear();
+	for(quint64 i = 0 ; i < count ; ++i) {
+		if(positions[i] > positions[i + 1]) {
+			qWarning() << "DatFile::readTextures invalid position order"
+			           << i << positions[i] << positions[i + 1];
+			return false;
+		}
+
+		if(device()->pos() != position(Textures) + positions[i]) {
+			qWarning() << "DatFile::readTextures wrong position"
+			           << i
+			           << (device()->pos() - position(Textures)) << positions[i];
+			if(!device()->seek(position(Textures) + positions[i])) {
+				return false;
+			}
+		}
+
+		TimFile tim;
+		if(!tim.open(device()->read(positions[i + 1] - positions[i]))) {
+			return false;
+		}
+		textures.append(tim);
+	}
+
 	return true;
 }
 
@@ -277,7 +331,7 @@ bool DatFile::readPositions()
 		return false;
 	}
 
-	_positions.reserve(DAT_FILE_SECTION_COUNT + 1);
+	_positions.resize(DAT_FILE_SECTION_COUNT + 1);
 	memcpy(_positions.data(), data + 4, DAT_FILE_SECTION_COUNT * 4);
 	_positions[DAT_FILE_SECTION_COUNT] = device()->size();
 
@@ -295,21 +349,20 @@ bool DatFile::readPositions()
 }
 
 BattleTriangle toBattleTriangle(const DatFileTriangle &triangle,
-                                const QList<BattleVertex> &vertices,
-                                bool *ok)
+                                const QList<BattleVertex> &vertices)
 {
 	QVector<BattleVertex> retVertices;
 	QVector<TexCoord> retTexCoords;
-	retVertices.reserve(3);
-	retTexCoords.reserve(3);
+	retVertices.resize(3);
+	retTexCoords.resize(3);
 
-	if(ok) {
-		*ok = triangle.vertexIndexes[0] < vertices.size()
-		      && triangle.vertexIndexes[1] < vertices.size()
-		      && triangle.vertexIndexes[2] < vertices.size();
+	if((triangle.vertexIndexes[0] & 0x0FFF) >= vertices.size()
+	        || triangle.vertexIndexes[1] >= vertices.size()
+	        || triangle.vertexIndexes[2] >= vertices.size()) {
+		return BattleTriangle();
 	}
 
-	retVertices.append(vertices.at(triangle.vertexIndexes[0]));
+	retVertices.append(vertices.at(triangle.vertexIndexes[0] & 0x0FFF));
 	retVertices.append(vertices.at(triangle.vertexIndexes[1]));
 	retVertices.append(vertices.at(triangle.vertexIndexes[2]));
 
@@ -318,26 +371,26 @@ BattleTriangle toBattleTriangle(const DatFileTriangle &triangle,
 	retTexCoords.append(triangle.texCoords3);
 
 	return BattleTriangle(retVertices, retTexCoords,
-	                      triangle.unknown1, triangle.unknown2);
+	                      triangle.unknown1, triangle.unknown2,
+	                      triangle.vertexIndexes[0] >> 12);
 }
 
 BattleQuad toBattleQuad(const DatFileQuad &quad,
-                        const QList<BattleVertex> &vertices,
-                        bool *ok)
+                        const QList<BattleVertex> &vertices)
 {
 	QVector<BattleVertex> retVertices;
 	QVector<TexCoord> retTexCoords;
-	retVertices.reserve(4);
-	retTexCoords.reserve(4);
+	retVertices.resize(4);
+	retTexCoords.resize(4);
 
-	if(ok) {
-		*ok = quad.vertexIndexes[0] < vertices.size()
-		      && quad.vertexIndexes[1] < vertices.size()
-		      && quad.vertexIndexes[2] < vertices.size()
-		      && quad.vertexIndexes[3] < vertices.size();
+	if((quad.vertexIndexes[0] & 0x0FFF) >= vertices.size()
+	        || quad.vertexIndexes[1] >= vertices.size()
+	        || quad.vertexIndexes[2] >= vertices.size()
+	        || quad.vertexIndexes[3] >= vertices.size()) {
+		return BattleQuad();
 	}
 
-	retVertices.append(vertices.at(quad.vertexIndexes[0]));
+	retVertices.append(vertices.at(quad.vertexIndexes[0] & 0x0FFF));
 	retVertices.append(vertices.at(quad.vertexIndexes[1]));
 	retVertices.append(vertices.at(quad.vertexIndexes[2]));
 	retVertices.append(vertices.at(quad.vertexIndexes[3]));
@@ -348,5 +401,6 @@ BattleQuad toBattleQuad(const DatFileQuad &quad,
 	retTexCoords.append(quad.texCoords4);
 
 	return BattleQuad(retVertices, retTexCoords,
-	                  quad.unknown1, quad.unknown2);
+	                  quad.unknown1, quad.unknown2,
+	                  quad.vertexIndexes[0] >> 12);
 }

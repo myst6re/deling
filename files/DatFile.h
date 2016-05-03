@@ -17,8 +17,7 @@ struct DatFileTriangle
 };
 
 BattleTriangle toBattleTriangle(const DatFileTriangle &triangle,
-                                const QList<BattleVertex> &vertices,
-                                bool *ok);
+                                const QList<BattleVertex> &vertices);
 
 struct DatFileQuad
 {
@@ -32,8 +31,7 @@ struct DatFileQuad
 };
 
 BattleQuad toBattleQuad(const DatFileQuad &quad,
-                        const QList<BattleVertex> &vertices,
-                        bool *ok);
+                        const QList<BattleVertex> &vertices);
 
 class DatFile : public IO
 {
