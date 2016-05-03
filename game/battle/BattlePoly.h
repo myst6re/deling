@@ -11,11 +11,16 @@ struct TexCoord {
 class BattlePoly
 {
 public:
+	BattlePoly();
 	BattlePoly(const QVector<BattleVertex> &vertices,
 	           const QVector<TexCoord> &texCoords,
 	           quint16 unknown1,
-	           quint16 unknown2);
+	           quint16 unknown2,
+	           quint8 flags);
 	virtual ~BattlePoly() {}
+	inline bool isEmpty() const {
+		return _vertices.isEmpty();
+	}
 	void setVertices(const QVector<BattleVertex> &vertices,
 	                 const QVector<TexCoord> &texCoords);
 	inline int count() const {
@@ -41,6 +46,7 @@ protected:
 	QVector<BattleVertex> _vertices;
 	QVector<TexCoord> _texCoords;
 	quint16 _unknown1, _unknown2;
+	quint8 _flags;
 };
 
 #endif // BATTLEPOLY_H

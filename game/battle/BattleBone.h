@@ -6,9 +6,16 @@
 class BattleBone
 {
 public:
-	BattleBone(quint16 parent, quint16 size, const QByteArray &unknown);
+	BattleBone(qint16 parent, qint16 size, const QByteArray &unknown);
+	inline qint16 parent() const {
+		return _parent;
+	}
+	inline qint16 size() const {
+		return _size;
+	}
+
 private:
-	quint16 _parent, _size;
+	qint16 _parent, _size;
 	QByteArray _unknown;
 };
 
