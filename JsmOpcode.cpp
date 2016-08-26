@@ -598,7 +598,7 @@ Unknown13: Aucun paramètre
 Unknown14: Aucun paramètre
 Unknown15: Aucun paramètre
 Unknown16: Aucun paramètre
-Unknown17: Aucun paramètre
+PREMAPJUMP2: Aucun paramètre
 TUTO: Aucun paramètre
 */
 
@@ -977,7 +977,7 @@ const char *JsmOpcode::opcodes[JSM_OPCODE_COUNT] = {
 	"UNKNOWN14",
 	"UNKNOWN15",
 	"UNKNOWN16",
-	"UNKNOWN17",
+	"PREMAPJUMP2",
 	"TUTO"
 };
 
@@ -1356,6 +1356,6 @@ int JsmOpcode::pops[JSM_OPCODE_COUNT] = {
 	-1, // UNKNOWN14
 	-1, // UNKNOWN15
 	-1, // UNKNOWN16
-	-1, // UNKNOWN17
+	1,  // PREMAPJUMP2
 	1,  // TUTO
 };

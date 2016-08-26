@@ -844,7 +844,10 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 			          key == JsmOpcode::PSHM_L ||
 			          key == JsmOpcode::PSHSM_B ||
 			          key == JsmOpcode::PSHSM_W ||
-			          key == JsmOpcode::PSHSM_L) {
+			          key == JsmOpcode::PSHSM_L ||
+			          key == JsmOpcode::POPM_B ||
+			          key == JsmOpcode::POPM_W ||
+			          key == JsmOpcode::POPM_L) {
 				if(second.startsWith("VAR", Qt::CaseInsensitive)) {
 					param = second.mid(3).toInt(&ok);
 					if(!ok) {
