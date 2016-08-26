@@ -400,7 +400,7 @@ public:
 		Unknown14,
 		Unknown15,
 		Unknown16,
-		Unknown17,
+		PREMAPJUMP2,
 		TUTO
 	};
 
