@@ -71,11 +71,11 @@ void PlainTextEdit::paintEvent(QPaintEvent *event)
 	}
 
 	QTextBlock currentBlock = _textEdit->textCursor().block();
-	QTextBlock block = _textEdit->document()->findBlockByNumber(line);
+	QTextBlock block = _textEdit->document()->findBlockByNumber(line - 1);
 
 	while(block.isValid() && y <= height()) {
 
-		if(block.previous() == currentBlock) {
+		if(block == currentBlock) {
 			QFont font = painter.font();
 			font.setBold(true);
 			painter.setFont(font);
@@ -84,7 +84,7 @@ void PlainTextEdit::paintEvent(QPaintEvent *event)
 		painter.drawText(width() - fontMetrics.width(QString::number(line)) - 3, y, QString::number(line));
 		y += _textEdit->document()->documentLayout()->blockBoundingRect(block).height();
 
-		if(block.previous() == currentBlock) {
+		if(block == currentBlock) {
 			QFont font = painter.font();
 			font.setBold(false);
 			painter.setFont(font);
