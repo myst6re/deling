@@ -21,7 +21,7 @@ QStringList JsmFile::opcodeNameCalc;
 QStringList JsmFile::opcodeName;
 
 JsmFile::JsmFile() :
-	File(), _hasSym(false), needUpdate(true),
+	File(), _hasSym(false), needUpdate(true), needUpdateMore(true),
     groupItem(0), _oldFormat(false)
 {
 	if(opcodeNameCalc.isEmpty()) {
@@ -674,11 +674,12 @@ void JsmFile::setWindow(quint8 textID, int winID, const FF8Window &window)
 QString JsmFile::toString(int groupID, int methodID, bool moreDecompiled,
                           const Field *field)
 {
-	if(!scripts.script(groupID, methodID).decompiledScript(moreDecompiled).isEmpty() &&
-	        !needUpdate) {
-		return scripts.script(groupID, methodID).decompiledScript(moreDecompiled);
+	const QString &cache = scripts.script(groupID, methodID).decompiledScript(moreDecompiled);
+	if(!cache.isEmpty() && !needUpdate && !(needUpdateMore && moreDecompiled)) {
+		return cache;
 	}
 	needUpdate = false;
+	needUpdateMore = false;
 	QString ret;
 	if(moreDecompiled) {
 		ret = _toStringMore(groupID, methodID, field);
@@ -739,10 +740,11 @@ bool JsmFile::compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, 
 		const JsmGroup &group = scripts.group(errorGroupID);
 		for(errorMethodID=0 ; errorMethodID < group.scriptCount() ; ++errorMethodID) {
 			const JsmScript &script = scripts.script(errorGroupID, errorMethodID);
-			if(!script.decompiledScript(false).isEmpty()) {
-				if(0 != (errorLine = fromString(errorGroupID, errorMethodID,
-				                                script.decompiledScript(false),
-				                                errorStr))) {
+			const QString &cache = script.decompiledScript(false);
+			if(!cache.isEmpty()) {
+				errorLine = fromString(errorGroupID, errorMethodID,
+				                       cache, errorStr);
+				if(0 != errorLine) {
 					return false;
 				}
 			}
@@ -936,6 +938,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 	scripts.replaceScript(groupID, methodID, res);
 
 	modified = true;
+	needUpdateMore = true;
 
 	return 0;
 }

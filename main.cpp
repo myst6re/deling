@@ -22,7 +22,6 @@
 #include <QApplication>
 #include "Config.h"
 #include "MainWindow.h"
-#include "IsoArchive.h"
 
 // Only for static compilation
 //Q_IMPORT_PLUGIN(qjpcodecs) // jp encoding

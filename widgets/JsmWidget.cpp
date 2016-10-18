@@ -166,11 +166,12 @@ void JsmWidget::saveSession()
 	if(!hasData() || !data()->hasJsmFile() || !isBuilded())	return;
 
 	data()->getJsmFile()->setCurrentOpcodeScroll(this->groupID, this->methodID, textEdit->verticalScrollBar()->value(), textEdit->textCursor());
-	if(textEdit->document()->isModified())
+	if(textEdit->document()->isModified()) {
 		data()->getJsmFile()->setDecompiledScript(this->groupID,
 		                                          this->methodID,
 		                                          textEdit->toPlainText(),
-		                                          tabBar->currentIndex() > 0);
+		                                          false);
+	}
 }
 
 void JsmWidget::setReadOnly(bool readOnly)
@@ -272,19 +273,15 @@ void JsmWidget::fillTextEdit()
 
 	saveSession();
 	Config::setValue("scriptType", tabBar->currentIndex());
-	textEdit->clear();
 	groupID = currentItem(list1);
 	methodID = currentItem(list2);
 	if(groupID==-1 || methodID==-1) {
+		textEdit->clear();
 		toolBar->setEnabled(false);
 		return;
 	}
 
 	list2->scrollToItem(list2->currentItem());
-
-	int scroll = data()->getJsmFile()->currentOpcodeScroll(groupID, methodID);
-	int anchor;
-	int position = data()->getJsmFile()->currentTextCursor(groupID, methodID, anchor);
 
 	if(tabBar->currentIndex() > 0) {
 		toolBar->setEnabled(false);
@@ -296,15 +293,20 @@ void JsmWidget::fillTextEdit()
 		textEdit->setReadOnly(isReadOnly());
 		highlighter->setPseudoCode(false);
 		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, false, data()));
-	}
 
-	if(position >= 0) {
-		QTextCursor newCursor = textEdit->textCursor();
-		newCursor.setPosition(anchor);
-		newCursor.setPosition(position, QTextCursor::KeepAnchor);
-		textEdit->setTextCursor(newCursor);
+		int scroll = data()->getJsmFile()->currentOpcodeScroll(groupID, methodID);
+		int anchor;
+		int position = data()->getJsmFile()->currentTextCursor(groupID, methodID, anchor);
+
+		if(position >= 0) {
+			QTextCursor newCursor = textEdit->textCursor();
+			newCursor.setPosition(anchor);
+			newCursor.setPosition(position, QTextCursor::KeepAnchor);
+			textEdit->setTextCursor(newCursor);
+		}
+
+		textEdit->verticalScrollBar()->setValue(scroll);
 	}
-	textEdit->verticalScrollBar()->setValue(scroll);
 }
 
 QList<QTreeWidgetItem *> JsmWidget::nameList() const

@@ -118,7 +118,7 @@ private:
 
 	JsmScripts scripts;
 	bool _hasSym;
-	bool needUpdate;
+	bool needUpdate, needUpdateMore;
 	int section1_padding;
 	int _mapID;
 	QMultiMap<quint8, FF8Window> ff8Windows;
