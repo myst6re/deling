@@ -20,6 +20,7 @@
 #include "Config.h"
 #include "Data.h"
 #include "ProgressWidget.h"
+#include "widgets/BattleModelWidget.h"
 
 MainWindow::MainWindow()
 	: fieldArchive(NULL), field(NULL), currentField(0),
@@ -248,6 +249,18 @@ bool MainWindow::openArchive(const QString &path)
 			items.append(item);
 		}
 
+		QHashIterator<int, BattleModel *> itBModel(fieldArchive->getBattleModels());
+		while(itBModel.hasNext()) {
+			itBModel.next();
+			const int monsterId = itBModel.key();
+
+			QTreeWidgetItem *item = new QTreeWidgetItem(QStringList() << tr("Modèle %1").arg(monsterId));
+			item->setData(0, Qt::UserRole, monsterId);
+			item->setData(0, Qt::UserRole + 1, 1);
+
+			items.append(item);
+		}
+
 		list1->setEnabled(true);
 		lineSearch->setEnabled(true);
 		bgPreview->setEnabled(true);
@@ -284,7 +297,7 @@ bool MainWindow::openFsArchive(const QString &path)
 	fieldArchive = new FieldArchivePC();
 	openArchive(path);
 
-	if(fieldArchive->nbFields() > 0) {
+	if(fieldArchive->hasFields()) {
 		actionOpti->setEnabled(true);
 		actionSaveAs->setEnabled(true);
 	} else {
@@ -376,7 +389,7 @@ void MainWindow::fillPage()
 
 	bgPreview->clear();
 
-	QTime t;t.start();
+	// QTime t;t.start();
 
 	if(this->field != NULL) {
 		currentField = this->field;
@@ -388,21 +401,32 @@ void MainWindow::fillPage()
 		list1->scrollToItem(item);
 		if(fieldArchive==NULL)	return;
 
-		int fieldID = item->data(0, Qt::UserRole).toInt();
-		currentField = fieldArchive->getField(fieldID);
-		if(currentField == NULL)	return;
+		if(item->data(0, Qt::UserRole + 1).toInt() == 1) {
+			int modelID = item->data(0, Qt::UserRole).toInt();
+			BattleModel *model = fieldArchive->getBattleModels().value(modelID);
+			BattleModelWidget *win = new BattleModelWidget(this);
+			win->setWindowFlags(Qt::Dialog);
+			win->battleModelView()->setBattleModel(model);
+			win->resize(640, 480);
+			win->show();
+			return;
+		} else {
+			int fieldID = item->data(0, Qt::UserRole).toInt();
+			currentField = fieldArchive->getField(fieldID);
+			if(currentField == NULL)	return;
 
-		emit fieldIdChanged(fieldID);
+			emit fieldIdChanged(fieldID);
 
-		fieldArchive->openBG(currentField);
-		/*if(fieldThread->isRunning()) {
-			qDebug() << "exit thread";
-			fieldThread->exit(0);
+			fieldArchive->openBG(currentField);
+			/*if(fieldThread->isRunning()) {
+				qDebug() << "exit thread";
+				fieldThread->exit(0);
+			}
+			qDebug() << "setData thread";
+			fieldThread->setData(fieldArchive, currentField);
+			qDebug() << "start thread";
+			fieldThread->start();*/
 		}
-		qDebug() << "setData thread";
-		fieldThread->setData(fieldArchive, currentField);
-		qDebug() << "start thread";
-		fieldThread->start();*/
 	}
 
 	foreach(PageWidget *pageWidget, pageWidgets)

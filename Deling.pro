@@ -115,7 +115,9 @@ HEADERS += MainWindow.h \
     game/battle/BattleTriangle.h \
     game/battle/BattleQuad.h \
     game/battle/BattleVertex.h \
-    game/battle/BattlePoly.h
+    game/battle/BattlePoly.h \
+    widgets/BattleModelWidget.h \
+    widgets/BattleModelView.h
 SOURCES += MainWindow.cpp \
     main.cpp \
     Data.cpp \
@@ -210,7 +212,9 @@ SOURCES += MainWindow.cpp \
     game/battle/BattlePart.cpp \
     game/battle/BattleTriangle.cpp \
     game/battle/BattleQuad.cpp \
-    game/battle/BattlePoly.cpp
+    game/battle/BattlePoly.cpp \
+    widgets/BattleModelWidget.cpp \
+    widgets/BattleModelView.cpp
 
 TRANSLATIONS += deling_en.ts \
     deling_ja.ts \

@@ -26,24 +26,26 @@ FieldArchive::FieldArchive()
 
 FieldArchive::~FieldArchive()
 {
-	foreach(Field *field, fields)		delete field;
-	foreach(CharaModel *model, models)	delete model;
+	qDeleteAll(fields);
+	qDeleteAll(models);
+	qDeleteAll(battleModels);
 }
 
 void FieldArchive::clearFields()
 {
-	foreach(Field *field, fields)	delete field;
+	qDeleteAll(fields);
 	fields.clear();
-	foreach(CharaModel *model, models)	delete model;
+	qDeleteAll(models);
 	models.clear();
 	fieldsSortByName.clear();
 	fieldsSortByDesc.clear();
 	fieldsSortByMapId.clear();
 }
 
-const QString &FieldArchive::errorMessage() const
+void FieldArchive::clearBattleModels()
 {
-	return errorMsg;
+	qDeleteAll(battleModels);
+	battleModels.clear();
 }
 
 Field *FieldArchive::getField(int id) const
@@ -56,31 +58,6 @@ Field *FieldArchive::getField(int id) const
 //	if(!field->isOpen())	return NULL;
 
 	return fields.value(id, NULL);
-}
-
-const QList<Field *> &FieldArchive::getFields() const
-{
-	return fields;
-}
-
-int FieldArchive::nbFields() const
-{
-	return fields.size();
-}
-
-CharaModel *FieldArchive::getModel(int id) const
-{
-	return models.value(id, NULL);
-}
-
-QHash<int, CharaModel *> *FieldArchive::getModels()
-{
-	return &models;
-}
-
-bool FieldArchive::isReadOnly() const
-{
-	return readOnly;
 }
 
 bool FieldArchive::compileScripts(int &errorFieldID, int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr)
@@ -366,11 +343,6 @@ QStringList FieldArchive::fieldList() const
 	}
 
 	return list;
-}
-
-const QStringList &FieldArchive::mapList() const
-{
-	return _mapList;
 }
 
 void FieldArchive::setMapList(const QStringList &mapList)

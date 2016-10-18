@@ -22,6 +22,7 @@
 #include "ArchiveObserver.h"
 #include "Field.h"
 #include "files/MchFile.h"
+#include "files/DatFile.h"
 
 class FieldArchive
 {
@@ -33,15 +34,34 @@ public:
 	FieldArchive();
 	virtual ~FieldArchive();
 	void clearFields();
-	const QString &errorMessage() const;
+	void clearBattleModels();
+	inline const QString &errorMessage() const {
+		return errorMsg;
+	}
 	virtual QString archivePath() const=0;
 	virtual Field *getField(int id) const;
-	const QList<Field *> &getFields() const;
-	int nbFields() const;
-	CharaModel *getModel(int id) const;
-	QHash<int, CharaModel *> *getModels();
-	bool isReadOnly() const;
-	virtual int open(const QString &, ArchiveObserver *progress)=0;
+	inline const QList<Field *> &getFields() const {
+		return fields;
+	}
+	inline int nbFields() const {
+		return fields.size();
+	}
+	inline bool hasFields() const {
+		return !fields.isEmpty();
+	}
+	inline CharaModel *getModel(int id) const {
+		return models.value(id, NULL);
+	}
+	inline QHash<int, CharaModel *> *getModels() {
+		return &models;
+	}
+	inline const QHash<int, BattleModel *> &getBattleModels() const {
+		return battleModels;
+	}
+	inline bool isReadOnly() const {
+		return readOnly;
+	}
+	virtual int open(const QString &path, ArchiveObserver *progress)=0;
 	virtual bool openModels()=0;
 	virtual bool openBG(Field *field) const=0;
 	bool compileScripts(int &errorFieldID, int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
@@ -59,12 +79,15 @@ public:
 	QMap<int, int> searchAllOpcodeTypes() const;
 	QList<Vertex_s> searchAllSavePoints() const;
 	QStringList fieldList() const;
-	const QStringList &mapList() const;
+	inline const QStringList &mapList() const {
+		return _mapList;
+	}
 	void setMapList(const QStringList &mapList);
 protected:
 	QString errorMsg;
 	QList<Field *> fields;
 	QHash<int, CharaModel *> models;
+	QHash<int, BattleModel *> battleModels;
 	QStringList _mapList;
 	QMultiMap<QString, int> fieldsSortByName;
 	QMultiMap<QString, int> fieldsSortByDesc;

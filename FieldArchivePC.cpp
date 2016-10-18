@@ -47,8 +47,8 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 	//qDebug() << QString("open(%1)").arg(path);
 	QString archivePath = path;
 	archivePath.chop(1);
-	QStringList fsList;
-	QString map, desc;
+	QStringList fsList, datList;
+	QString desc;
 	int index, fieldID=0;
 
 	if(archive)		delete archive;
@@ -72,23 +72,28 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 		setMapList(QStringList());
 	}
 
-	int currentMap=0;
 	// Ajout des écrans non-listés
 	QStringList toc = archive->toc();
+	QRegExp battleFiles("\\\\battle\\\\c0m\\d+\\.dat$", Qt::CaseInsensitive),
+	        fieldFiles("\\\\field\\\\mapdata\\\\\\w+\\\\.+\\.fs$", Qt::CaseInsensitive);
 	foreach(const QString &entry, toc) {
-		if(entry.endsWith(".fs", Qt::CaseInsensitive) && !entry.endsWith("mapdata.fs", Qt::CaseInsensitive)
-			&& !entry.endsWith("main_chr.fs", Qt::CaseInsensitive)
-			&& !entry.endsWith("ec.fs", Qt::CaseInsensitive) && !entry.endsWith("te.fs", Qt::CaseInsensitive))
+		if(entry.contains(fieldFiles))
 		{
 			if(!fsList.contains(entry, Qt::CaseInsensitive))
 				fsList.append(entry);
+		} else if(entry.contains(battleFiles))
+		{
+			if(!datList.contains(entry, Qt::CaseInsensitive))
+				datList.append(entry);
 		}
 	}
 
-	quint32 freq = fsList.size()>100 ? fsList.size()/100 : 1;
+	int fileCount = fsList.size() + datList.size();
+	quint32 freq = fileCount > 100 ? fileCount / 100 : 1;
 
-	progress->setObserverMaximum(fsList.size());
+	progress->setObserverMaximum(fileCount);
 
+	int currentFile = 0;
 	// Ouverture des écrans listés
 	foreach(const QString &entry, fsList) {
 		QCoreApplication::processEvents();
@@ -99,12 +104,12 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 			return 2;
 		}
 
-		if(currentMap%freq == 0) {
-			progress->setObserverValue(currentMap);
+		if(currentFile % freq == 0) {
+			progress->setObserverValue(currentFile);
 		}
-		currentMap++;
+		currentFile++;
 
-		map = entry;
+		QString map = entry;
 		map.chop(3);
 		if((index = map.lastIndexOf('\\')) != -1)
 			map = map.mid(index+1);
@@ -134,7 +139,44 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 		}
 	}
 
-	if(fields.isEmpty()) {
+	foreach(const QString &entry, datList) {
+		QCoreApplication::processEvents();
+
+		if(progress->observerWasCanceled()) {
+			clearBattleModels();
+			errorMsg = QObject::tr("Ouverture annulée.");
+			return 2;
+		}
+
+		if(currentFile % freq == 0) {
+			progress->setObserverValue(currentFile);
+		}
+		currentFile++;
+
+		qDebug() << "FieldArchivePC::open" << entry;
+		QBuffer buf;
+		buf.setData(archive->fileData(entry));
+		DatFile datFile(&buf);
+		BattleModel *battleModel = new BattleModel();
+		if(datFile.readModel(*battleModel)) {
+			QRegExp matchModelId("c0m(\\d+)\\.dat$", Qt::CaseInsensitive);
+			if(matchModelId.lastIndexIn(entry) >= 0) {
+				qDebug() << "FieldArchivePC::open" << matchModelId.capturedTexts().first();
+				battleModels.insert(matchModelId.capturedTexts().at(1).toInt(), battleModel);
+			} else {
+				qWarning() << "FieldArchivePC::open not a c0mXXX.dat file" << entry;
+			}
+		}
+	}
+	
+	/*
+	 * DatFile::readAnimations animation 0 "14 e0a977 c0 9bc1 01f80004 00c09b0100 009c1900 00c09b0100 00bc1900 00c09b0100 00bc1900 00c0990100 00bc1900 00c09b0100 00bc1900 00c09b0100 009c1900 00c09b0100 00bc1900 00c09b0100 00bc1900 00c0990100 00bc1900 00c09b0100"
+	 * DatFile::readAnimations animation 1 "14 e0a977 c0 67de 01f80004 00c0671e00 009ce601 00c0671e00 007ce601 00c0671e00 007ce601 00c0691e00 007ce601 00c0671e00 007ce601 00c0671e00 009ce601 00c0671e00 007ce601 00c0671e00 007ce601 00c0691e00 007ce601 00c0671e00"
+	 * DatFile::readAnimations animation 2 "1e e0a977 45 b961 5c b32fe507 e0031000fe0af024bfafbf5e00c051011a7a417f690300c9f94c1ccb6f160040519eedd7f3fe0200d1783d5cd35b0900ace165ff603f2f0080124df9b73fef0140a40e7fe0fb09003c6ef43bbe3b00c0d8aa74a0ef120050b4069ded27010037dbd4cadd0040cdf6f677380030b47eaf8d0180a8d5bb6e090050b5b17f88cd0040d6465c318602005d6bc8bb63340070b68a7c419601006d8 b3e216d01 00f236f1f3 310e0018 5cbdaf1a31 0010b9c1 f789c10040 e792abc2 6600a07533 ca341c00 e8dd8e2e6d 07009d66 74290500c1 56942906 00eda22e01"
+	 * DatFile::readAnimations animation 3 "1e e0a977 45 f972 fc 3c1e1607 e0031000fe0a70d73e47fcad01c051013a75b178980000c9792d7c32eee4004051ceefc78c630200108d1fc409a32400c01aeef3f78ab73d0028d1a1d344f90040a4563f20aa06003c6eee91a1cb00c0d88a7342e8290050b4ca54a5d200c0cd96747b320050b3b1ed5c01000c6de6cf7e180010b5cdbff97d0040d5763ce277010059dbf47a1f0200746dd5c57d370070b629b7f6a50040dba6bfda670200799b7b6edf0b000c6eeadd3d05002237f706bf0300e8dcf0a7fc1800a075f9a77e0c00d0bb153d1c02003aadf8ddaf0000c146fcee3300d02efadd03000000"
+	 */
+
+	if(fields.isEmpty() && battleModels.isEmpty()) {
 		errorMsg = QObject::tr("Aucun écran trouvé.");
 		return 3;
 	}

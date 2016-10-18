@@ -246,6 +246,30 @@ bool DatFile::readAnimations(QList<BattleAnimation> &animations)
 		return false;
 	}
 
+	quint32 count;
+	if(!device()->read((char *)&count, 4)) {
+		return false;
+	}
+
+	const quint32 headerSize = count * 4;
+	QVector<quint32> positions;
+	positions.resize(count + 1);
+
+	if(device()->read((char *)positions.data(), headerSize) != headerSize) {
+		return false;
+	}
+	positions[count] = size(Animations);
+
+	qDebug() << "DatFile::readAnimations positions" << positions;
+
+	for(quint64 i = 0 ; i < count ; ++i) {
+		QByteArray data = device()->read(positions[i + 1] - positions[i]);
+		if(data.size() != positions[i + 1] - positions[i]) {
+			return false;
+		}
+		qDebug() << "DatFile::readAnimations animation" << i << data.toHex();
+	}
+
 	Q_UNUSED(animations);
 	// TODO
 	return true;
