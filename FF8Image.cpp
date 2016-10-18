@@ -43,6 +43,11 @@ QPixmap FF8Image::lzs(const QByteArray &data)
 	uint x=0, y=0;
 	quint16 color;
 	const char *constData = decdata.constData();
+	
+	quint16 u1, u2;
+	memcpy(&u1, &constData[0], 2);
+	memcpy(&u2, &constData[2], 2);
+	qDebug() << "image" << u1 << u2;
 
 	memcpy(&l, &constData[4], 2);
 	memcpy(&h, &constData[6], 2);
@@ -71,6 +76,37 @@ QPixmap FF8Image::lzs(const QByteArray &data)
 
 	//qDebug() << t.elapsed();
 	return QPixmap::fromImage(image);
+}
+
+QByteArray FF8Image::toLzs(const QImage &image, quint16 u1, quint16 u2)
+{
+	QByteArray data;
+	int x = 0, y = 0;
+	quint16 w = image.width(), h = image.height();
+
+	data.append((char *)&u1, 2);
+	data.append((char *)&u2, 2);
+
+	data.append((char *)&w, 2);
+	data.append((char *)&h, 2);
+	
+	const QRgb *pixels = (QRgb *)image.constBits();
+
+	while(image.valid(x, y)) {
+		quint16 color = toPsColor(pixels[x + y * w]);
+		data.append((char *)&color, 2);
+
+		++x;
+		if(x == w) {
+			x = 0;
+			++y;
+		}
+	}
+
+	data = LZS::compress(data);
+	int lzs_size = data.size();
+
+	return data.prepend((char *)&lzs_size, 4);
 }
 
 int FF8Image::findFirstTim(const QByteArray &data)

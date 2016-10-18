@@ -29,6 +29,7 @@ public:
 	static quint16 toPsColor(const QRgb &color);
 	static QRgb fromPsColor(quint16 color, bool useAlpha=false);
 	static QPixmap lzs(const QByteArray &data);
+	static QByteArray toLzs(const QImage &image, quint16 u1, quint16 u2);
 
 	static int findFirstTim(const QByteArray &data);
 	static int findTims(const QByteArray &data);
