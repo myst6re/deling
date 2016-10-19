@@ -476,7 +476,7 @@ void JsmFile::searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const
 				int pos = scripts.posScript(groupID, methodID, &nbOpcode);
 
 				for(int opcodeID=0 ; opcodeID < nbOpcode ; ++opcodeID) {
-					qDebug() << groupID << methodID << scripts.key(pos + opcodeID);
+					// qDebug() << groupID << methodID << scripts.key(pos + opcodeID);
 					switch(scripts.key(pos + opcodeID)) {
 					case JsmOpcode::BGDRAW:
 						if(scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L)

@@ -1,3 +1,18 @@
+deling (0.9.1b) trusty; urgency=low
+
+  * [Better script viewer] Clean some parenthesis on conditions
+  * [Better script viewer] Display variable names
+  * [Better script viewer] Use hex values in logical operations
+  * [Better script viewer] Adding "wait forever" keyword (when there is a forever loop without block)
+  * [Better script viewer] Adding second pass of parsing to factorize output script
+  * [Script] Adding logical not operation
+  * Some fixes on the Better Script text viewer
+  * Fixing compilation bug when there is a POP with a VAR
+  * Fixing annoying bug that replace the Better Script text by the ugly standard script
+  * Fixing script selection bug when searching in scripts
+
+ -- Jérôme Arzel <myst6re@gmail.com>  Wed, 19 Oct 2016 22:32:26 +0200
+
 deling (0.9b) trusty; urgency=low
 
   * Adding partial support for FFVIII Demo

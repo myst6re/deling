@@ -43,11 +43,11 @@ QPixmap FF8Image::lzs(const QByteArray &data)
 	uint x=0, y=0;
 	quint16 color;
 	const char *constData = decdata.constData();
-	
-	quint16 u1, u2;
+
+	/* quint16 u1, u2;
 	memcpy(&u1, &constData[0], 2);
 	memcpy(&u2, &constData[2], 2);
-	qDebug() << "image" << u1 << u2;
+	qDebug() << "image" << u1 << u2; */
 
 	memcpy(&l, &constData[4], 2);
 	memcpy(&h, &constData[6], 2);
