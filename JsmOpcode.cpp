@@ -239,14 +239,18 @@ QString JsmOpcodeLabel::name() const
 }
 
 JsmOpcodeGoto::JsmOpcodeGoto(const JsmOpcode &other, int label) :
-    JsmOpcode(other)
+    JsmOpcode(other), _label(label)
 {
-	setParam(label);
+}
+
+JsmOpcodeGoto::JsmOpcodeGoto(const JsmOpcodeGoto &other) :
+    JsmOpcode(other), _label(other._label)
+{
 }
 
 QString JsmOpcodeGoto::paramStr() const
 {
-	return QString("LABEL%1").arg(param());
+	return QString("LABEL%1").arg(_label);
 }
 
 /*

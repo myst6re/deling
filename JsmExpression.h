@@ -59,7 +59,9 @@ public:
 		return _type;
 	}
 	QString toString(const Field *field, int indent) const;
+	int opcodeCount() const;
 private:
+	static QString opcodeToString(const JsmOpcode *opcode);
 	inline Instruction instruction() const {
 		return _instr;
 	}
@@ -76,6 +78,7 @@ public:
 	JsmProgram(QList<JsmInstruction> &&other) :
 	    QList<JsmInstruction>(other) {}
 	QStringList toStringList(const Field *field, int indent) const;
+	int opcodeCount() const;
 };
 
 class JsmExpression
@@ -311,6 +314,10 @@ public:
 	virtual ~JsmControl() {}
 	virtual QString toString(const Field *field, int indent) const=0;
 	virtual ControlType type() const=0;
+	virtual int opcodeCount() const {
+		return condition()->opcodeCount() +
+		       block().opcodeCount();
+	}
 	inline JsmExpression *condition() const {
 		return _condition;
 	}
@@ -325,9 +332,6 @@ public:
 	}
 	inline void setBlock(const JsmProgram &block) {
 		_block = block;
-	}
-	inline JsmInstruction blockTakeLast() {
-		return _block.takeLast();
 	}
 protected:
 	// FIXME: move this in a QString extension (if possible)
@@ -344,13 +348,17 @@ public:
 	                 const JsmProgram &block,
 	                 const JsmProgram &blockElse = JsmProgram()) :
 	    JsmControl(condition, block), _blockElse(blockElse) {}
-	JsmControlIfElse(const JsmControl &other,
+	explicit JsmControlIfElse(const JsmControl &other,
 	                 const JsmProgram &blockElse = JsmProgram()) :
 	    JsmControl(other), _blockElse(blockElse) {}
 	virtual ~JsmControlIfElse() {}
 	QString toString(const Field *field, int indent, bool elseIf) const;
 	inline virtual QString toString(const Field *field, int indent) const {
 		return toString(field, indent, false);
+	}
+	virtual int opcodeCount() const {
+		return JsmControl::opcodeCount() +
+		       blockElse().opcodeCount();
 	}
 	inline ControlType type() const {
 		return IfElse;
@@ -405,6 +413,7 @@ public:
 	    _stack(stack), _opcode(opcode) {}
 	virtual ~JsmApplication() {}
 	virtual QString toString(const Field *field) const;
+	virtual int opcodeCount() const;
 protected:
 	QStringList stackToStringList(const Field *field) const;
 	QString paramsToString(const Field *field) const;
