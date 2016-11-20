@@ -372,6 +372,8 @@ JsmExpressionBinary::Operation JsmExpressionBinary::logicalNot(bool *ok) const
 		return LogOr;
 	case LogOr:
 		return LogAnd;
+	default:
+		break;
 	}
 	if(ok) {
 		*ok = false;
