@@ -881,10 +881,10 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 				}
 			} else if(key == JsmOpcode::PSHAC) {
 				if(second.startsWith("MODEL", Qt::CaseInsensitive)) {
-					param = second.mid(4).toInt(&ok);
+					param = second.mid(5).toInt(&ok);
 					if(!ok) {
 						errorStr = QObject::tr("Conversion en entier impossible après 'MODEL' : %1")
-						           .arg(second.mid(4));
+						           .arg(second.mid(5));
 						return l;
 					}
 				} else {
