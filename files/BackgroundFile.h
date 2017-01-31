@@ -69,7 +69,7 @@ class BackgroundFile : public File
 {
 public:
 	BackgroundFile();
-	bool open(const QByteArray &map, const QByteArray &mim, QMultiMap<quint8, quint8> *defaultParams=0);
+	bool open(const QByteArray &map, const QByteArray &mim, const QMultiMap<quint8, quint8> *defaultParams = 0);
 	inline QString filterText() const {
 		return QString();
 	}

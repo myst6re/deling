@@ -82,12 +82,12 @@ void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 		f = getBackgroundFile();
 	}
 
-//	QMultiMap<quint8, quint8> params;
-//	if(hasJsmFile()) {
-//		getJsmFile()->searchDefaultBGStates(params);
-//	}
+	/* QMultiMap<quint8, quint8> params;
+	if(hasJsmFile()) {
+		getJsmFile()->searchDefaultBGStates(params);
+	} */
 
-	if(!f->open(map, mim/*, &params*/)) {
+	if(!f->open(map, mim/*, &params */)) {
 		qWarning() << "Field::openBackgroundFile error" << _name;
 		deleteFile(Background);
 	}
