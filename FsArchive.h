@@ -39,7 +39,12 @@ public:
 	QString dirName() const;
 	QString fileName() const;
 	quint32 uncompressed_size() const;
+	bool compressedSize(QFile *fs, quint32 *lzsSize) const;
+	bool compressedSize(const char *fs_data, int size, quint32 *lzsSize) const;
+	bool compressedSize(const QByteArray &fs_data, quint32 *lzsSize) const;
 	void setUncompressed_size(quint32);
+	bool physicalSize(QFile *fs, quint32 *size) const;
+	bool physicalSize(const QByteArray &fs_data, quint32 *size) const;
 	quint32 position() const;
 	void setPosition(quint32);
 	bool isCompressed() const;
@@ -107,6 +112,10 @@ public:
 	bool isOpen() const;
 	bool isWritable() const;
 //	QString toString();
+	// Check integrity of fi files according to LZS headers, output to qWarning
+	bool verify();
+	// Repair fi list pos, according to LZS header, this will not save archive on disk
+	bool repair();
 	static QString cleanPath(QString path);
 
 	static QString errorString(Error, const QString &fileName=QString());
