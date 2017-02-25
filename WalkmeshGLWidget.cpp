@@ -327,10 +327,12 @@ void WalkmeshGLWidget::mousePressEvent(QMouseEvent *event)
 
 void WalkmeshGLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	xTrans += (event->pos().x() - moveStart.x()) / 4096.0;
-	yTrans -= (event->pos().y() - moveStart.y()) / 4096.0;
-	moveStart = event->pos();
-	updateGL();
+	if(event->button() == Qt::LeftButton) {
+		xTrans += (event->pos().x() - moveStart.x()) / 4096.0;
+		yTrans -= (event->pos().y() - moveStart.y()) / 4096.0;
+		moveStart = event->pos();
+		updateGL();
+	}
 }
 
 void WalkmeshGLWidget::keyPressEvent(QKeyEvent *event)
