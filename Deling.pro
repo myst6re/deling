@@ -238,7 +238,10 @@ OTHER_FILES += Deling.rc \
     compat/QtWidgets \
     deploy.bat \
     .travis.yml \
-    appveyor.yml
+    appveyor.yml \
+    fonts/sysfnt.txt \
+    fonts/sysfnt_demo_jp.txt \
+    fonts/sysfnt_jp.txt
 DISTFILES += Deling.desktop
 
 # call lrelease to make the qm files.
