@@ -16,10 +16,14 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "widgets/JsmWidget.h"
+#include "WalkmeshGLWidget.h"
 #include "Config.h"
 
 JsmWidget::JsmWidget(QWidget *parent)
-	: PageWidget(parent), mainModels(0), groupID(-1), methodID(-1)
+    : PageWidget(parent), mainModels(nullptr), fieldArchive(nullptr),
+      _regText(QRegExp("\\btext_(\\d+)\\b")), _regMap(QRegExp("\\bmap_(\\d+)\\b")),
+      _regSetLine(QRegExp("setline\\(\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*\\)")),
+      groupID(-1), methodID(-1)
 {
 }
 
@@ -112,6 +116,7 @@ void JsmWidget::build()
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillList2()));
 	connect(list2, SIGNAL(itemSelectionChanged()), SLOT(fillTextEdit()));
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(fillTextEdit()));
+	connect(textEdit, SIGNAL(lineHovered(QString,QPoint)), SLOT(showPreview(QString,QPoint)));
 
 	PageWidget::build();
 }
@@ -201,6 +206,11 @@ void JsmWidget::setMainModels(QHash<int, CharaModel *> *mainModels)
 		modelPreview->setMainModels(mainModels);
 }
 
+void JsmWidget::setFieldArchive(FieldArchive *fieldArchive)
+{
+	this->fieldArchive = fieldArchive;
+}
+
 void JsmWidget::fill()
 {
 	if(!isBuilded())	build();
@@ -272,6 +282,7 @@ void JsmWidget::fillTextEdit()
 //	qDebug() << QString("JsmWidget::fillTextEdit(%1, %2)").arg(currentItem(list1)).arg(currentItem(list2));
 
 	saveSession();
+	textEdit->previewWidget()->hide();
 	Config::setValue("scriptType", tabBar->currentIndex());
 	groupID = currentItem(list1);
 	methodID = currentItem(list2);
@@ -307,6 +318,77 @@ void JsmWidget::fillTextEdit()
 
 		textEdit->verticalScrollBar()->setValue(scroll);
 	}
+}
+
+void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
+{
+	int posText = _regText.indexIn(line);
+	PreviewWidget *preview = textEdit->previewWidget();
+
+	if(posText >= 0) {
+		int textId = _regText.capturedTexts().last().toInt();
+		MsdFile *file = data()->getMsdFile();
+
+		if(file && textId < file->nbText()) {
+
+			FF8Window win = FF8Window();
+			win.type = NOWIN;
+
+			preview->show();
+			preview->showText(file->data(textId), win);
+			preview->move(cursorPos);
+
+			return;
+		}
+	}
+
+	int posMap = _regMap.indexIn(line);
+
+	if(posMap >= 0 && fieldArchive) {
+		int mapId = _regMap.capturedTexts().last().toInt();
+		Field *field = fieldArchive->getFieldFromMapId(mapId);
+
+		if(field != nullptr) {
+			if(fieldArchive->openBG(field)) {
+				BackgroundFile *file = field->getBackgroundFile();
+
+				if(file) {
+					preview->show();
+					preview->showBackground(QPixmap::fromImage(file->background()));
+					preview->move(cursorPos);
+
+					return;
+				}
+			}
+		}
+	}
+
+	int posLine = _regSetLine.indexIn(line);
+
+	if(posLine >= 0) {
+		QStringList texts = _regSetLine.capturedTexts();
+		Vertex_s vertex[2];
+		vertex[0].x = qint16(texts.at(1).toInt());
+		vertex[0].y = qint16(texts.at(2).toInt());
+		vertex[0].z = qint16(texts.at(3).toInt());
+		vertex[1].x = qint16(texts.at(4).toInt());
+		vertex[1].y = qint16(texts.at(5).toInt());
+		vertex[1].z = qint16(texts.at(6).toInt());
+
+		WalkmeshGLWidget walkmeshWidget;
+		walkmeshWidget.hide();
+		walkmeshWidget.fill(data());
+		walkmeshWidget.setLineToDraw(vertex);
+		QPixmap pixmap = walkmeshWidget.renderPixmap(320, 224);
+
+		preview->show();
+		preview->showBackground(pixmap);
+		preview->move(cursorPos);
+
+		return;
+	}
+
+	textEdit->previewWidget()->hide();
 }
 
 QList<QTreeWidgetItem *> JsmWidget::nameList() const

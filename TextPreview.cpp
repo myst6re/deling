@@ -333,6 +333,13 @@ void TextPreview::calcSize()
 QPoint TextPreview::realPos(const FF8Window &ff8Window)
 {
 	int windowX=ff8Window.x, windowY=ff8Window.y;
+	if(windowX < 0) {
+		windowX = 0;
+	}
+	if(windowY < 0) {
+		windowY = 0;
+	}
+
 	if(windowX+maxW>312) {
 		windowX = 312-maxW;
 	}
@@ -567,8 +574,10 @@ void TextPreview::mouseMoveEvent(QMouseEvent *event)
 
 	if(ff8Window.type == NOWIN)	return;
 
-	int x = ff8Window.x + event->x() - moveStartPosition.x();
-	int y = ff8Window.y + event->y() - moveStartPosition.y();
+	FF8Window originalWindow = ff8Window;
+
+	int x = qMax(0, ff8Window.x) + event->x() - moveStartPosition.x();
+	int y = qMax(0, ff8Window.y) + event->y() - moveStartPosition.y();
 
 	if(x<0)	x = 0;
 	if(y<0)	y = 0;
@@ -576,16 +585,26 @@ void TextPreview::mouseMoveEvent(QMouseEvent *event)
 	ff8Window.x = x;
 	ff8Window.y = y;
 	QPoint real = realPos(ff8Window);
-	ff8Window.x = real.x();
-	ff8Window.y = real.y();
 
-	emit positionChanged(real);
+	if(originalWindow.x < 0) {
+		real.setX(originalWindow.x);
+	}
+	if(originalWindow.y < 0) {
+		real.setY(originalWindow.y);
+	}
 
-	moveStartPosition = event->pos();
+	if(originalWindow.x != real.x() || originalWindow.y != real.y()) {
+		ff8Window.x = qMax(0, real.x());
+		ff8Window.y = qMax(0, real.y());
 
-	ff8Windows.replace(currentWin, ff8Window);
+		emit positionChanged(real);
 
-	update();
+		moveStartPosition = event->pos();
+
+		ff8Windows.replace(currentWin, ff8Window);
+
+		update();
+	}
 }
 
 void TextPreview::mouseReleaseEvent(QMouseEvent *)

@@ -20,6 +20,7 @@ lessThan(QT_MAJOR_VERSION, 5) {
 
 # Input
 HEADERS += MainWindow.h \
+    PreviewWidget.h \
     parameters.h \
     Data.h \
     Config.h \
@@ -105,7 +106,9 @@ HEADERS += MainWindow.h \
     ArchiveObservers.h \
     ProgressWidget.h \
     JsmExpression.h
+
 SOURCES += MainWindow.cpp \
+    PreviewWidget.cpp \
     main.cpp \
     Data.cpp \
     Config.cpp \

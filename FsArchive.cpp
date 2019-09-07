@@ -78,6 +78,11 @@ bool FsHeader::isCompressed() const
 	return _isCompressed;
 }
 
+void FsHeader::setIsCompressed(bool isCompressed)
+{
+	_isCompressed = isCompressed;
+}
+
 bool FsHeader::compressedSize(QFile *fs, quint32 *lzsSize) const
 {
 	return _isCompressed && fs->seek(_position) &&
@@ -889,6 +894,13 @@ bool FsArchive::load(const QString &fl_data, const QByteArray &fi_data)
 
 	_isOpen = true;
 
+	/* verify();
+	if(repair()) {
+		verify();
+	} else {
+		qDebug() << "cannot repair";
+	} */
+
 	return true;
 }
 
@@ -1208,12 +1220,19 @@ QString FsArchive::errorString(Error error, const QString &fileName)
 bool FsArchive::verify()
 {
 	quint64 guessPos = 0;
+	quint32 ss = 0;
 	foreach(FsHeader *info, sortedByPosition) {
+		ss = qMax(info->uncompressed_size(), ss);
 		quint32 size;
 		if(!info->physicalSize(&fs, &size)) {
 			qWarning() << "FsArchive::verify io error" << fs.errorString();
 			return false;
 		}
+
+		if(size > 4478885) {
+			qWarning() << "FsArchive::verify strange size" << size;
+		}
+
 		if(guessPos != info->position()) {
 			qWarning() << "FsArchive::verify ko" << info->position() << guessPos << size << info->uncompressed_size() << info->isCompressed();
 		} else {
@@ -1221,11 +1240,87 @@ bool FsArchive::verify()
 		}
 		guessPos += size;
 	}
+
 	return true;
 }
 
-bool FsArchive::repair()
+bool FsArchive::repair(FsArchive *other)
 {
+	quint32 size;
+	 // Copy
+	QMultiMap<quint32, FsHeader *> otherHeaders = other->sortedByPosition;
+	QMapIterator<quint32, FsHeader *> it(sortedByPosition);
+	fs.reset();
+	forever {
+		int decSize = 0;
+		qint64 pos = fs.pos();
+		if(pos >= fs.size()) {
+			break;
+		}
+		fs.read((char *)&size, 4);
+		bool compressed;
+		QByteArray d;
+		if(size <= 5000000) {
+			QByteArray data = fs.read(size);
+			d = LZS::decompressAll(data);
+			decSize = d.size();
+			qDebug() << "repair entry compressed" << pos << size << d.size();
+			compressed = true;
+		} else {
+			fs.seek(pos);
+			qDebug() << "uncompressed" << fs.peek(4).constData();
+			if(QString(fs.peek(3)) == "C:\\") {
+				forever {
+					qint64 oldPos = fs.pos();
+					QByteArray line = fs.readLine(150);
+					if(line.isEmpty()) {
+						fs.seek(oldPos);
+						break;
+					}
+					QString modLine = line;
+					if(modLine.size() < line.size()) {
+						fs.seek(oldPos);
+						break;
+					}
+					qDebug() << "repair entry read line" << line.toHex() << modLine << modLine.size();
+					decSize += modLine.size();
+				}
+
+				qDebug() << "repair entry uncompressed" << pos << decSize;
+				compressed = false;
+				d = fs.read(decSize);
+			} else {
+				qWarning() << "FsArchive::repair not an uncompressed .fl";
+				return false;
+			}
+		}
+
+		if(it.hasNext()) {
+			it.next();
+			it.value()->setPosition(pos);
+			it.value()->setUncompressed_size(decSize);
+			if(it.value()->isCompressed() != compressed) {
+				qWarning() << "repair compression change";
+			}
+			it.value()->setIsCompressed(compressed);
+			// Find path in correct archive
+			quint32 posOther;
+			if(searchData(otherHeaders, &(other->fs), d, posOther)) {
+				it.value()->setPath(otherHeaders.value(posOther)->path());
+				otherHeaders.remove(posOther);
+			} else {
+				qDebug() << "FsArchive::repair path diff" << it.value()->path();
+			}
+		} else {
+			qWarning() << "FsArchive::repair not enough files in .fi";
+			return false;
+		}
+	}
+	if(it.hasNext()) {
+		qWarning() << "FsArchive::repair not enough files in .fi 2";
+	}
+	return true;
+
 	quint64 guessPos = 0;
 	foreach(FsHeader *info, sortedByPosition) {
 		quint32 size;
@@ -1235,9 +1330,23 @@ bool FsArchive::repair()
 		}
 		if(guessPos != info->position()) {
 			info->setPosition(guessPos);
+
+			changePositions(info, guessPos - info->position());
 		}
 		guessPos += size;
 	}
 	rebuildInfos();
 	return true;
+}
+
+bool FsArchive::searchData(const QMultiMap<quint32, FsHeader *> &headers,
+                           QFile *fs, const QByteArray &data, quint32 &pos)
+{
+	foreach (const FsHeader *header, headers) {
+		if (header->data(fs) == data) {
+			pos = header->position();
+			return true;
+		}
+	}
+	return false;
 }

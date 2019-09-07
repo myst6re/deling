@@ -36,6 +36,7 @@ public:
 	const QString &errorMessage() const;
 	virtual QString archivePath() const=0;
 	virtual Field *getField(int id) const;
+	Field *getFieldFromMapId(int mapId) const;
 	const QList<Field *> &getFields() const;
 	int nbFields() const;
 	CharaModel *getModel(int id) const;
@@ -47,9 +48,9 @@ public:
 	bool compileScripts(int &errorFieldID, int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
 	bool searchText(const QRegExp &text, int &fieldID, int &textID, int &from, int &size, Sorting=SortByMapId) const;
 	bool searchTextReverse(const QRegExp &text, int &fieldID, int &textID, int &from, int &index, int &size, Sorting=SortByMapId) const;
-	bool searchScript(quint8 type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
+	bool searchScript(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
 	bool searchScriptText(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
-	bool searchScriptReverse(quint8 type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
+	bool searchScriptReverse(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
 	bool searchScriptTextReverse(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
 	QMultiMap<int, QString> searchAllVars() const;
 	QList<int> searchAllSpells(int fieldID) const;

@@ -50,6 +50,9 @@ public:
 	static void setFontImageAdd(TdwFile *tdwFile);
 	static QImage getIconImage(int charId);
 	void calcSize();
+	inline QSize windowSize() const {
+		return QSize(maxW, maxH);
+	}
 signals:
 	void positionChanged(const QPoint &);
 private:

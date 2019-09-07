@@ -260,6 +260,7 @@ bool MainWindow::openArchive(const QString &path)
 
 		((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(fieldArchive->getModels());
 		((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(fieldArchive->getModels());
+		((JsmWidget *)pageWidgets.at(ScriptPage))->setFieldArchive(fieldArchive);
 
 		QString previousSessionField = Config::value("currentField").toString();
 		if(!previousSessionField.isEmpty()) {

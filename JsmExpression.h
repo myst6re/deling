@@ -132,6 +132,9 @@ public:
 	inline ExpressionType type() const {
 		return Var;
 	}
+	inline int var() const {
+		return _var;
+	}
 	QString varName() const;
 protected:
 	int _var;
@@ -209,6 +212,9 @@ public:
 	virtual QString toString(const Field *field, int base = 10) const;
 	virtual inline int opcodeCount() const {
 		return 1;
+	}
+	inline int temp() const {
+		return _temp;
 	}
 	inline ExpressionType type() const {
 		return Temp;

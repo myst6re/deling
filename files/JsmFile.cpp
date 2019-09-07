@@ -411,18 +411,15 @@ void JsmFile::searchWindows()
 		case JsmOpcode::AMES:
 		case JsmOpcode::RAMESW:
 		{
-			JsmOpcode _psh1=scripts.opcode(i-4);
 			JsmOpcode _psh2=scripts.opcode(i-3);
-			JsmOpcode _psh3=scripts.opcode(i-2);
-			JsmOpcode _psh4=scripts.opcode(i-1);
-			if(_psh1.key() == JsmOpcode::PSHN_L
-					&& _psh2.key() == JsmOpcode::PSHN_L
-					&& _psh3.key() == JsmOpcode::PSHN_L
-					&& _psh4.key() == JsmOpcode::PSHN_L) {
+			if(_psh2.key() == JsmOpcode::PSHN_L) {
+				JsmOpcode _psh1=scripts.opcode(i-4);
+				JsmOpcode _psh3=scripts.opcode(i-2);
+				JsmOpcode _psh4=scripts.opcode(i-1);
 				window.type = key;
-				window.x = _psh3.param();
-				window.y = _psh4.param();
-				window.u1 = _psh1.param();
+				window.x = _psh3.key() == JsmOpcode::PSHN_L ? _psh3.param() : -1;
+				window.y = _psh4.key() == JsmOpcode::PSHN_L ? _psh4.param() : -1;
+				window.u1 = _psh1.key() == JsmOpcode::PSHN_L ? _psh1.param() : -1;
 				window.script_pos = i;
 				ff8Windows.insert(_psh2.param(), window);
 			}
@@ -712,6 +709,10 @@ QString JsmFile::_toStringMore(int groupID, int methodID, const Field *field) co
 	JsmProgram program = scripts.program(groupID, methodID, collectPointers);
 	QStringList ret = program.toStringList(field, 0);
 
+	if(!ret.isEmpty() && ret.last() == "ret(8)") {
+		ret.removeLast();
+	}
+
 	qDeleteAll(collectPointers);
 
 	return ret.join("\n");
@@ -948,7 +949,7 @@ const JsmScripts &JsmFile::getScripts() const
 	return scripts;
 }
 
-bool JsmFile::search(int type, quint64 value, int &groupID, int &methodID, int &opcodeID) const
+bool JsmFile::search(SearchType type, quint64 value, int &groupID, int &methodID, int &opcodeID) const
 {
 	int groupListSize = scripts.nbGroup(), nbOpcode, methodCount, pos;
 
@@ -977,7 +978,7 @@ bool JsmFile::search(int type, quint64 value, int &groupID, int &methodID, int &
 	return false;
 }
 
-bool JsmFile::searchReverse(int type, quint64 value, int &groupID, int &methodID, int &opcodeID) const
+bool JsmFile::searchReverse(SearchType type, quint64 value, int &groupID, int &methodID, int &opcodeID) const
 {
 	int nbOpcode;
 	quint16 pos;
@@ -1007,14 +1008,14 @@ bool JsmFile::searchReverse(int type, quint64 value, int &groupID, int &methodID
 	return false;
 }
 
-bool JsmFile::search(int type, quint64 value, quint16 pos, int opcodeID) const
+bool JsmFile::search(SearchType type, quint64 value, quint16 pos, int opcodeID) const
 {
 	JsmOpcode op = scripts.opcode(pos + opcodeID);
 	quint32 key = op.key();
 	qint32 param = op.param();
 
 	switch(type) {
-	case 0:// Text
+	case SearchText:
 		switch(key) {
 		case JsmOpcode::AMESW:
 		case JsmOpcode::AMES:
@@ -1032,17 +1033,26 @@ bool JsmFile::search(int type, quint64 value, quint16 pos, int opcodeID) const
 					&& value == (quint32)scripts.param(pos + opcodeID - 5);
 		}
 		return false;
-	case 1:// opcode
+	case SearchOpcode:
 		return key == (value & 0xFFFF) && ((int)(value >> 16) == -1 || param == (int)(value >> 16));
-	case 2:// Var
+	case SearchVar:
 		return (((value & 0x80000000) && (key==JsmOpcode::POPM_B || key == JsmOpcode::POPM_W || key == JsmOpcode::POPM_L))
 				|| (!(value & 0x80000000) && key >= 10 && key <= 18))
 				&& (value & 0x7FFFFFFF) == (quint32)param;
-	case 3:// Exec
+	case SearchExec:
 		if(opcodeID < 1 || key < 20 || key > 22) return false;
 
 		return ((value >> 16) & 0xFFFF) == (quint32)scripts.param(pos + opcodeID - 1) // label
 				&& (value & 0xFFFF) == (quint32)param; // group
+	case SearchMapJump:
+		switch(key) {
+		case JsmOpcode::MAPJUMP:
+		case JsmOpcode::MAPJUMP3:
+		case JsmOpcode::MAPJUMPO:
+			return opcodeID>=1 && scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L
+			        && value == (quint32)scripts.param(pos + opcodeID - 1);
+		}
+		return false;
 	}
 
 	return false;

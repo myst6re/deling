@@ -58,6 +58,13 @@ Field *FieldArchive::getField(int id) const
 	return fields.value(id, NULL);
 }
 
+Field *FieldArchive::getFieldFromMapId(int mapId) const
+{
+	int fieldId = fieldsSortByMapId.value(QString("%1").arg(mapId, 3, 10, QChar('0')), -1);
+
+	return getField(fieldId);
+}
+
 const QList<Field *> &FieldArchive::getFields() const
 {
 	return fields;
@@ -190,7 +197,7 @@ bool FieldArchive::searchTextReverse(const QRegExp &text, int &fieldID, int &tex
 	return false;
 }
 
-bool FieldArchive::searchScript(quint8 type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
+bool FieldArchive::searchScript(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
 	QMap<QString, int>::const_iterator i, end;
 	if(!searchIterators(i, end, fieldID, sorting))	return false;
@@ -216,7 +223,7 @@ bool FieldArchive::searchScriptText(const QRegExp &text, int &fieldID, int &grou
 			MsdFile *msd = field->getMsdFile();
 			int textID = -1;
 			while((textID = msd->indexOfText(text, textID + 1)) != -1) {
-				if(field->getJsmFile()->search(0, textID, groupID, methodID, opcodeID))
+				if(field->getJsmFile()->search(JsmFile::SearchText, textID, groupID, methodID, opcodeID))
 					return true;
 				++textID;
 			}
@@ -227,7 +234,7 @@ bool FieldArchive::searchScriptText(const QRegExp &text, int &fieldID, int &grou
 	return false;
 }
 
-bool FieldArchive::searchScriptReverse(quint8 type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
+bool FieldArchive::searchScriptReverse(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
 	QMap<QString, int>::const_iterator i, begin;
 	if(!searchIteratorsP(i, begin, fieldID, sorting))	return false;
@@ -253,7 +260,7 @@ bool FieldArchive::searchScriptTextReverse(const QRegExp &text, int &fieldID, in
 			MsdFile *msd = field->getMsdFile();
 			int textID = -1;
 			while((textID = msd->indexOfText(text, textID + 1)) != -1) {
-				if(field->getJsmFile()->searchReverse(0, textID, groupID, methodID, opcodeID))
+				if(field->getJsmFile()->searchReverse(JsmFile::SearchText, textID, groupID, methodID, opcodeID))
 					return true;
 				++textID;
 			}

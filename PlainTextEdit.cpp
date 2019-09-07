@@ -17,13 +17,45 @@
  ****************************************************************************/
 #include "PlainTextEdit.h"
 
+PlainTextEditPriv::PlainTextEditPriv(QWidget *parent) :
+    QPlainTextEdit(parent), _previousLineHovered(-1)
+{
+	setMouseTracking(true);
+
+	_overlay = new PreviewWidget(this);
+	_overlay->hide();
+}
+
+void PlainTextEditPriv::mouseMoveEvent(QMouseEvent *event)
+{
+	QTextBlock currentBlock = cursorForPosition(event->pos()).block();
+
+	if(_previousLineHovered != currentBlock.firstLineNumber()) {
+		_previousLineHovered = currentBlock.firstLineNumber();
+
+		int maxH = int(document()->documentLayout()->blockBoundingRect(currentBlock).height()),
+		    i = 0;
+
+		for(; i < maxH; ++i) {
+			if (cursorForPosition(event->pos() + QPoint(0, i)).block() != currentBlock) {
+				break;
+			}
+		}
+
+		int margin = maxH / 3;
+
+		emit lineHovered(currentBlock.text(), QPoint(margin, event->pos().y() + i + margin));
+	}
+}
+
 PlainTextEdit::PlainTextEdit(QWidget *parent) :
 	QWidget(parent)
 {
-	_textEdit = new QPlainTextEdit(parent);
+	_textEdit = new PlainTextEditPriv(parent);
 	_textEdit->viewport()->installEventFilter(this);
 	_textEdit->setTabStopWidth(30);
 	_textEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
+	_textEdit->setMouseTracking(true);
 }
 
 QSize PlainTextEdit::sizeHint() const
@@ -34,16 +66,19 @@ QSize PlainTextEdit::sizeHint() const
 	             _textEdit->height());
 }
 
-QPlainTextEdit *PlainTextEdit::textEdit()
+PlainTextEditPriv *PlainTextEdit::textEdit() const
 {
 	return _textEdit;
 }
 
 bool PlainTextEdit::eventFilter(QObject *obj, QEvent *event)
 {
-	setFixedHeight(_textEdit->height());
-	setFixedWidth(_textEdit->fontMetrics().width(QString::number(_textEdit->document()->blockCount())) + 4);
-	update();
+	if (event->type() == QEvent::Paint) {
+		setFixedHeight(_textEdit->height());
+		setFixedWidth(_textEdit->fontMetrics().width(QString::number(_textEdit->document()->blockCount())) + 4);
+		update();
+	}
+
 	return QObject::eventFilter(obj, event);
 }
 

@@ -19,11 +19,13 @@
 #define JSMWIDGET_H
 
 #include <QtWidgets>
+#include <QRegExp>
 #include "widgets/PageWidget.h"
 #include "widgets/CharaPreview.h"
 #include "JsmHighlighter.h"
 #include "PlainTextEdit.h"
 #include "CharaModel.h"
+#include "FieldArchive.h"
 
 class JsmWidget : public PageWidget
 {
@@ -35,6 +37,7 @@ public:
 	void setReadOnly(bool readOnly);
 	void setData(Field *field);
 	void setMainModels(QHash<int, CharaModel *> *mainModels);
+	void setFieldArchive(FieldArchive *fieldArchive);
 	void fill();
 	void gotoScript(int, int, int);
 	int selectedOpcode();
@@ -44,15 +47,18 @@ private:
 	QList<QTreeWidgetItem *> nameList() const;
 	QList<QTreeWidgetItem *> methodList(int groupID) const;
 	QHash<int, CharaModel *> *mainModels;
+	FieldArchive *fieldArchive;
 	QTreeWidget *list1;
 	CharaPreview *modelPreview;
 	QTreeWidget *list2;
 	QTabBar *tabBar;
-	QPlainTextEdit *textEdit;
+	PlainTextEditPriv *textEdit;
 	JsmHighlighter *highlighter;
 	QToolBar *toolBar;
 	QLabel *errorLabel;
 	QLabel *warningWidget;
+	QRegExp _regText, _regMap, _regSetLine;
+
 	static int currentItem(QTreeWidget *);
 //	void gotoScriptLabel(int groupID, int labelID);
 	int groupID, methodID;
@@ -60,6 +66,7 @@ private slots:
 	void compile();
 	void fillList2();
 	void fillTextEdit();
+	void showPreview(const QString &line, QPoint cursorPos);
 //	void jump(QTreeWidgetItem *);
 };
 

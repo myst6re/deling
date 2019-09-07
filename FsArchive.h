@@ -23,6 +23,10 @@
 #include "LZS.h"
 #include "ArchiveObserver.h"
 
+struct FsDiff {
+
+};
+
 struct Fi_infos {
 	quint32 size;
 	quint32 pos;
@@ -39,15 +43,16 @@ public:
 	QString dirName() const;
 	QString fileName() const;
 	quint32 uncompressed_size() const;
+	void setUncompressed_size(quint32);
 	bool compressedSize(QFile *fs, quint32 *lzsSize) const;
 	bool compressedSize(const char *fs_data, int size, quint32 *lzsSize) const;
 	bool compressedSize(const QByteArray &fs_data, quint32 *lzsSize) const;
-	void setUncompressed_size(quint32);
 	bool physicalSize(QFile *fs, quint32 *size) const;
 	bool physicalSize(const QByteArray &fs_data, quint32 *size) const;
 	quint32 position() const;
 	void setPosition(quint32);
 	bool isCompressed() const;
+	void setIsCompressed(bool isCompressed);
 	QByteArray data(const QByteArray &, bool uncompress=true, int maxUncompress=0) const;
 	QByteArray data(QFile *, bool uncompress=true, int maxUncompress=0) const;
 	int setData(QByteArray &, const QByteArray &);
@@ -115,7 +120,7 @@ public:
 	// Check integrity of fi files according to LZS headers, output to qWarning
 	bool verify();
 	// Repair fi list pos, according to LZS header, this will not save archive on disk
-	bool repair();
+	bool repair(FsArchive *other);
 	static QString cleanPath(QString path);
 
 	static QString errorString(Error, const QString &fileName=QString());
@@ -131,6 +136,12 @@ private:
 
 	bool load(const QString &fl_data, const QByteArray &fi_data);
 	bool load(const QString &path);
+
+	static bool searchData(const QMultiMap<quint32, FsHeader *> &headers,
+	                       QFile *fs, const QByteArray &data, quint32 &pos);
+	inline bool searchData(const QByteArray &data, quint32 &pos) {
+		return searchData(sortedByPosition, &fs, data, pos);
+	}
 
     QMultiMap<quint32, FsHeader *> sortedByPosition;// <order, headerData>
     QMap<QString, FsHeader *> toc_access;// <path, headerData>

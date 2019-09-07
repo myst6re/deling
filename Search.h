@@ -62,9 +62,11 @@ private:
 	QWidget *scriptPageWidget2();
 	QWidget *scriptPageWidget3();
 	QWidget *scriptPageWidget4();
+	QWidget *scriptPageWidget5();
 	QTabWidget *tabWidget;
 	QLineEdit *searchTextField, *searchScriptTextField;
 	QCheckBox *checkBox, *checkBox2, *scriptCheckBox, *scriptCheckBox2;
+	QSpinBox *selectMap;
 	QComboBox *typeScriptChoice, *searchOpcode;
 	QSpinBox *searchOpcodeValue;
 	QComboBox *selectScriptVar;

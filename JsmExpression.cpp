@@ -1,6 +1,7 @@
 #include "JsmExpression.h"
 #include "Field.h"
 #include "Config.h"
+#include "Data.h"
 
 QString JsmInstruction::toString(const Field *field, int indent) const
 {
@@ -530,10 +531,87 @@ QString JsmControlRepeatUntil::toString(const Field *field, int indent) const
 QStringList JsmApplication::stackToStringList(const Field *field) const
 {
 	QStringList params;
+	bool isText = false, isMap = false, isChara = false, isParty = false,
+	        isMagic = false;
 
+	switch(_opcode->key()) {
+	case JsmOpcode::AMESW:
+	case JsmOpcode::AMES:
+	case JsmOpcode::RAMESW:
+	case JsmOpcode::AASK:
+		isText = true;
+		break;
+	case JsmOpcode::MAPJUMP:
+	case JsmOpcode::MAPJUMP3:
+	case JsmOpcode::MAPJUMPO:
+	case JsmOpcode::PREMAPJUMP:
+	case JsmOpcode::PREMAPJUMP2:
+		isMap = true;
+		break;
+	case JsmOpcode::ADDPARTY:
+	case JsmOpcode::SUBPARTY:
+	case JsmOpcode::ISPARTY:
+	case JsmOpcode::ADDMEMBER:
+	case JsmOpcode::SUBMEMBER:
+	case JsmOpcode::ISMEMBER:
+	case JsmOpcode::SETDRESS:
+	case JsmOpcode::GETDRESS:
+	case JsmOpcode::SETPC:
+		isChara = true;
+		break;
+	case JsmOpcode::ADDMAGIC:
+		isMagic = isChara = true;
+		break;
+	case JsmOpcode::SETPARTY:
+		isParty = true;
+		break;
+	}
+
+	int i = 0;
 	QStack<JsmExpression *> stackCpy = _stack;
 	while(!stackCpy.isEmpty()) {
-		params.append(stackCpy.pop()->toString(field));
+		QString text;
+		JsmExpression *expr = stackCpy.pop();
+
+		if(isText || isMap || isChara || isParty) {
+			if(isText && i == 1) {
+				bool ok = false;
+				int id = expr->eval(&ok);
+
+				if (ok) {
+					text = QString("text_%1").arg(id);
+				}
+			} else if(isMap && i == 0) {
+				bool ok = false;
+				int id = expr->eval(&ok);
+
+				if (ok) {
+					text = QString("map_%1").arg(id);
+				}
+			} else if((isChara && i == 0) || isParty) {
+				bool ok = false;
+				int id = expr->eval(&ok);
+
+				if (ok) {
+					text = Data::name(id);
+				}
+			} else if(isMagic && i == 1) {
+				bool ok = false;
+				int id = expr->eval(&ok);
+
+				if (ok) {
+					text = Data::magic(id);
+				}
+			}
+
+			++i;
+		}
+
+		if (text.isEmpty()) {
+			text = expr->toString(field);
+		}
+
+		params.append(text);
 	}
 
 	return params;
@@ -597,19 +675,44 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 	if(expr->type() == JsmExpression::Binary) {
 		JsmExpressionBinary *binaryExpr
 		        = static_cast<JsmExpressionBinary *>(expr);
-		if(opExpr->toString(field) ==
-		        binaryExpr->leftOperand()->toString(field)) {
+		JsmExpression *leftOp = binaryExpr->leftOperand(),
+		        *rightOp = binaryExpr->rightOperand();
+		if(opExpr->type() == leftOp->type()
+		        && (opExpr->type() == JsmExpression::Var
+		        && ((JsmExpressionVar *)opExpr)->var() ==
+		            ((JsmExpressionVar *)leftOp)->var()
+		         || ((JsmExpressionTemp *)opExpr)->temp() ==
+		            ((JsmExpressionTemp *)leftOp)->temp())) {
 			int base = 10;
 			if(binaryExpr->operation() == JsmExpressionBinary::And
 			        || binaryExpr->operation() == JsmExpressionBinary::Or
 			        || binaryExpr->operation() == JsmExpressionBinary::Eor) {
 				base = 16;
 			}
+			delete opExpr;
+			opExpr = leftOp;
 			ret = QString("%1 %2= %3")
 			      .arg(opExpr->toString(field),
 			           binaryExpr->operationToString(),
 			           JsmExpression::stripParenthesis(
-			               binaryExpr->rightOperand()->toString(field, base)));
+			               rightOp->toString(field, base)));
+			opExpr = nullptr;
+		} else if((binaryExpr->operation() == JsmExpressionBinary::Add
+		          || binaryExpr->operation() == JsmExpressionBinary::Mul)
+		          && opExpr->type() == rightOp->type()
+		          && (opExpr->type() == JsmExpression::Var
+		          && ((JsmExpressionVar *)opExpr)->var() ==
+		              ((JsmExpressionVar *)rightOp)->var()
+		           || ((JsmExpressionTemp *)opExpr)->temp() ==
+		              ((JsmExpressionTemp *)rightOp)->temp())) {
+			delete opExpr;
+			opExpr = rightOp;
+			ret = QString("%1 %2= %3")
+			      .arg(opExpr->toString(field),
+			           binaryExpr->operationToString(),
+			           JsmExpression::stripParenthesis(
+			               leftOp->toString(field, 10)));
+			opExpr = nullptr;
 		}
 	}
 	if(ret.isEmpty()) {
@@ -617,7 +720,9 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 		                             JsmExpression::stripParenthesis(
 		                                 expr->toString(field)));
 	}
-	delete opExpr;
+	if(opExpr != nullptr) {
+		delete opExpr;
+	}
 	return ret;
 }
 
