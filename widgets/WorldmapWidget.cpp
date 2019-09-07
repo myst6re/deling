@@ -32,7 +32,7 @@ WorldmapWidget::WorldmapWidget(QWidget *parent, Qt::WindowFlags f) :
 
 	_xTransSlider->setValue((_scene->xTrans() + 1.0) * _xTransSlider->maximum() / 2.0);
 	_yTransSlider->setValue((_scene->yTrans() + 1.0) * _yTransSlider->maximum() / 2.0);
-	_zTransSlider->setValue((_scene->zTrans() + 100.0) * _zTransSlider->maximum() / 200.0);
+	_zTransSlider->setValue((_scene->zTrans() + 1.0) * _zTransSlider->maximum() / 2.0);
 
 	_xRotSlider->setValue(_scene->xRot());
 	_yRotSlider->setValue(_scene->yRot());
@@ -59,7 +59,7 @@ void WorldmapWidget::setYTrans(int value)
 
 void WorldmapWidget::setZTrans(int value)
 {
-	_scene->setZTrans((value * 200.0 / _zTransSlider->maximum()) - 100.0);
+	_scene->setZTrans((value * 2.0 / double(_zTransSlider->maximum())) - 1.0);
 }
 
 void WorldmapWidget::setXRot(int value)

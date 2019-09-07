@@ -15,16 +15,16 @@ public:
 		_blocks = blocks;
 	}
 
-	inline quint32 u1() const {
-		return _u1;
+	inline quint32 groupId() const {
+		return _groupId;
 	}
-	inline void setU1(quint32 u1) {
-		_u1 = u1;
+	inline void setGroupId(quint32 groupId) {
+		_groupId = groupId;
 	}
 
 private:
 	QList<MapBlock> _blocks;
-	quint32 _u1;
+	quint32 _groupId;
 };
 
 #endif // MAPSEGMENT_H

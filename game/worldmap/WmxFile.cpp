@@ -14,15 +14,45 @@ struct MapBlockPolygon
 	/* texi:
 	 *  unknown (5-bits) | clut id (3-bits)
 	 * Ground type:
-	 *  - < 6 : forests
-	 *  - < 10 : normal
-	 *  - 10 : water
+	 *  - 0 : galbadia forests
+	 *  - 1 : trabia forests
+	 *  - 2 : esthar forests
+	 *  - 3 : centra forests
+	 *  - 4 : balamb forests
+	 *  - 5 : trabia forests
+	 *  - 6 : normal grass galbadia, balamb
+	 *  - 7 : normal ground galbadia
+	 *  - 8 : normal desert galbadia
+	 *  - 9 : normal ice trabia
+	 *  - 10 : water steppable (waves)
+	 *  - 12 : esthar city roads
+	 *  - 14 : plateau
+	 *  - 15 : ground to mountain galbadia
+	 *  - 16 : ground to mountain galbadia, ethar, centra
+	 *  - 17 : ground to mountain trabia (1)
+	 *  - 18 : ground to mountain trabia (2)
+	 *  - 23 : ground to mountain trabia (3)
+	 *  - 24 : grass to mountain balamb
+	 *  - 25 : some borders in Esthar (?)
+	 *  - 27 : railroads
+	 *  - 28 : roads + FH + some towns
+	 *  - 29 : inaccessible locations
+	 *  - 31 : lakes
+	 *  - 32 : water coasts
+	 *  - 33 : water less close to coasts
+	 *  - 34 : water
 	 * u1:
-	 *  unknown (1-bit) | water tex affected (1-bit) | road tex affected (1-bit)
-	 * | unknown (1-bit) | enter city (1-bit) | unknown (1-bit)
-	 * | unknown (1-bit) | unknown (1-bit)
+	 *  on walking area (1-bit) | water tex affected + roads (1-bit)
+	 * | road/railroad tex affected (except esthar roads) + esthar fence (1-bit)
+	 * | lakes + esthar fence + esthar city roads (1-bit) | enter city (1-bit)
+	 * | unused (1-bit)
+	 * | trabia frozen lakes (below the surface), tunnels (2-bits)
 	 * u2:
-	 *  movability (1-bit) | unknown (7-bits)
+	 *  movability (1-bit) | walking area, except forests (1-bit)
+	 * | all, except mountains and rocks (?) (1-bit)
+	 * | most of continents, except northest galbadia peninsula (1-bit)
+	 * | unused (1-bit) | unknown (1-bit)
+	 * | unknown (1-bit) | on walking area, except half-galbadia and balamb (1-bit)
 	 */
 };
 
@@ -31,8 +61,8 @@ struct MapBlockVertex
 	qint16 x, y, z, padding;
 };
 
-WmxFile::WmxFile() :
-    _io(0)
+WmxFile::WmxFile(QIODevice *io) :
+    _io(io)
 {
 }
 
@@ -86,9 +116,9 @@ bool WmxFile::readSegment(MapSegment &segment)
 {
 	QList<quint16> toc;
 	qint64 initialPos = _io->pos();
-	quint32 u1;
+	quint32 groupId;
 
-	if (_io->read((char *)&u1, sizeof(quint32)) != sizeof(quint32)) {
+	if (_io->read((char *)&groupId, sizeof(quint32)) != sizeof(quint32)) {
 		return false;
 	}
 
@@ -136,7 +166,7 @@ bool WmxFile::readSegment(MapSegment &segment)
 	}
 
 	segment.setBlocks(blocks);
-	segment.setU1(u1);
+	segment.setGroupId(groupId);
 
 	return true;
 }
@@ -144,9 +174,9 @@ bool WmxFile::readSegment(MapSegment &segment)
 bool WmxFile::writeSegment(const MapSegment &segment)
 {
 	qint64 initialPos = _io->pos();
-	quint32 u1 = segment.u1();
+	quint32 groupId = segment.groupId();
 
-	if (_io->write((char *)&u1, sizeof(quint32)) != sizeof(quint32)) {
+	if (_io->write((char *)&groupId, sizeof(quint32)) != sizeof(quint32)) {
 		return false;
 	}
 
@@ -318,10 +348,12 @@ bool WmxFile::readBlock(MapBlock &block)
 		texCoords.append(poly.pos[1]);
 		texCoords.append(poly.pos[2]);
 
-		if(poly.groundType < 10) {
+		// _collect.insert(poly.groundType, 0);
+
+		/* if(poly.groundType < 10) {
 			_collect.insert(poly.texi, _collect.value(poly.texi) + 1);
 			coll.insert(poly.texi);
-		}
+		} */
 
 		polygons.append(MapPoly(pVertices, pNormals, texCoords,
 		                        poly.texi >> 4, poly.texi & 0xF,

@@ -14,7 +14,7 @@ struct MapBlockVertex;
 class WmxFile
 {
 public:
-	WmxFile();
+	explicit WmxFile(QIODevice *io = Q_NULLPTR);
 	inline void setDevice(QIODevice *device) {
 		_io = device;
 	}

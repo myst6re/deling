@@ -4,8 +4,8 @@ WorldmapGLWidget::WorldmapGLWidget(QWidget *parent,
                                    const QGLWidget *shareWidget,
                                    Qt::WindowFlags f) :
     QGLWidget(parent, shareWidget, f), _map(Q_NULLPTR),
-    _distance(-0.714248f), _xRot(-90.0f), _yRot(0.0f), _zRot(0.0f),
-    _xTrans(-0.5f), _yTrans(-0.5f), _transStep(360.0f), _lastKeyPressed(-1),
+    _distance(-0.714248f), _xRot(-90.0f), _yRot(180.0f), _zRot(180.0f),
+    _xTrans(-0.5f), _yTrans(0.5f), _transStep(360.0f), _lastKeyPressed(-1),
     _limits(QRect(0, 0, 32, 24))
 {
 }
@@ -15,8 +15,8 @@ WorldmapGLWidget::WorldmapGLWidget(QGLContext *context,
                                    const QGLWidget *shareWidget,
                                    Qt::WindowFlags f) :
     QGLWidget(context, parent, shareWidget, f), _map(Q_NULLPTR),
-    _distance(-0.714248f), _xRot(-90.0f), _yRot(0.0f), _zRot(0.0f),
-    _xTrans(-0.5f), _yTrans(-0.5f), _transStep(360.0f), _lastKeyPressed(-1),
+    _distance(-0.714248f), _xRot(-90.0f), _yRot(180.0f), _zRot(180.0f),
+    _xTrans(-0.5f), _yTrans(0.5f), _transStep(360.0f), _lastKeyPressed(-1),
     _limits(QRect(0, 0, 32, 24))
 {
 }
@@ -26,8 +26,8 @@ WorldmapGLWidget::WorldmapGLWidget(const QGLFormat &format,
                                    const QGLWidget *shareWidget,
                                    Qt::WindowFlags f) :
     QGLWidget(format, parent, shareWidget, f), _map(Q_NULLPTR),
-    _distance(-0.714248f), _xRot(-90.0f), _yRot(0.0f), _zRot(0.0f),
-    _xTrans(-0.5f), _yTrans(-0.5f), _transStep(360.0f), _lastKeyPressed(-1),
+    _distance(-0.714248f), _xRot(-90.0f), _yRot(180.0f), _zRot(180.0f),
+    _xTrans(-0.5f), _yTrans(0.5f), _transStep(360.0f), _lastKeyPressed(-1),
     _limits(QRect(0, 0, 32, 24))
 {
 }
@@ -106,7 +106,7 @@ void WorldmapGLWidget::setYTrans(float trans)
 	updateGL();
 }
 
-void WorldmapGLWidget::setZTrans(float trans)
+void WorldmapGLWidget::setZTrans(double trans)
 {
 	_distance = trans;
 	updateGL();
@@ -134,7 +134,7 @@ void WorldmapGLWidget::initializeGL()
 {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
-	glEnable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 	glDisable(GL_LIGHTING);
 }
 
@@ -169,10 +169,7 @@ void WorldmapGLWidget::resizeGL(int w, int h)
 
 static quint16 normalizeY(qint16 y)
 {
-	if (y < 0) {
-		return -y;
-	}
-	return y;
+	return -(y - 128);
 }
 
 void WorldmapGLWidget::paintGL()
@@ -212,15 +209,73 @@ void WorldmapGLWidget::paintGL()
 					             &v1 = poly.vertex(1),
 					             &v2 = poly.vertex(2);
 					const int x = xs * blocksPerLine + xb, z = ys * blocksPerLine + yb;
-					const quint8 grey = 55 + poly.groundType() * 200 / 34;
-					glColor3ub(grey, grey, grey);
+					switch(poly.groundType()) {
+					case 0:
+						glColor3ub(57, 71, 45);
+						break;
+					case 6:
+					case 15:
+					case 24:
+						glColor3ub(75, 80, 55);
+						break;
+					case 7:
+						glColor3ub(106, 78, 63);
+						break;
+					case 8:
+						glColor3ub(145, 124, 109);
+						break;
+					case 9:
+						glColor3ub(144, 157, 164);
+						break;
+					case 10:
+						glColor3ub(122, 143, 158);
+						break;
+					case 14:
+						glColor3ub(116, 100, 90);
+						break;
+					case 16:
+						glColor3ub(103, 85, 72);
+						break;
+					case 18:
+					case 23:
+						glColor3ub(57, 60, 53);
+						break;
+					case 27:
+						glColor3ub(112, 97, 86);
+						break;
+					case 28:
+						glColor3ub(69, 65, 64);
+						break;
+					case 29:
+						glColor3ub(133, 108, 91);
+						break;
+					case 31:
+						glColor3ub(53, 74, 75);
+						break;
+					case 32:
+						glColor3ub(56, 88, 99);
+						break;
+					case 33:
+						glColor3ub(40, 65, 81);
+						break;
+					case 34:
+						glColor3ub(35, 60, 75);
+						break;// 56, 88, 99
+					default:
+						const quint8 grey = 55 + poly.groundType() * 200 / 34;
+						glColor3ub(grey, grey, grey);
+						break;
+					}
 
-					/* glVertex3f(v0.x/2048.0f, v0.y/2048.0f, v0.z/2048.0f);
-					glVertex3f(v1.x/2048.0f, v1.y/2048.0f, v1.z/2048.0f);
-					glVertex3f(v2.x/2048.0f, v2.y/2048.0f, v2.z/2048.0f); */
-					glVertex3f((xShift + x + v0.x/scaleVect) / scale, normalizeY(v0.y)/scaleVect / scale, (zShift + z - v0.z/scaleVect) / scale);
-					glVertex3f((xShift + x + v1.x/scaleVect) / scale, normalizeY(v1.y)/scaleVect / scale, (zShift + z - v1.z/scaleVect) / scale);
-					glVertex3f((xShift + x + v2.x/scaleVect) / scale, normalizeY(v2.y)/scaleVect / scale, (zShift + z - v2.z/scaleVect) / scale);
+					glVertex3f((xShift + x + v0.x/scaleVect) / scale,
+					           normalizeY(v0.y)/scaleVect / scale,
+					           (zShift + z - v0.z/scaleVect) / scale);
+					glVertex3f((xShift + x + v1.x/scaleVect) / scale,
+					           normalizeY(v1.y)/scaleVect / scale,
+					           (zShift + z - v1.z/scaleVect) / scale);
+					glVertex3f((xShift + x + v2.x/scaleVect) / scale,
+					           normalizeY(v2.y)/scaleVect / scale,
+					           (zShift + z - v2.z/scaleVect) / scale);
 				}
 				xb += 1;
 				if (xb >= blocksPerLine) {
@@ -243,7 +298,7 @@ void WorldmapGLWidget::wheelEvent(QWheelEvent *event)
 {
 	setFocus();
 	qDebug() << event->delta();
-	_distance += event->delta() < 0 ? -0.0001 : 0.0001; // 4096.0;
+	_distance += event->delta() / 4096.0;
 	updateGL();
 }
 

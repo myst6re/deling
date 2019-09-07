@@ -34,7 +34,7 @@ public:
 	inline float yTrans() const {
 		return _yTrans;
 	}
-	void setZTrans(float trans);
+	void setZTrans(double trans);
 	inline float zTrans() const {
 		return _distance;
 	}
