@@ -23,6 +23,12 @@
 #include "Config.h"
 #include "MainWindow.h"
 
+#include "game/worldmap/WmsetFile.h"
+#include "FsArchive.h"
+#include "ProgressWidget.h"
+#include "widgets/WorldmapWidget.h"
+#include "game/worldmap/WmxFile.h"
+
 // Only for static compilation
 //Q_IMPORT_PLUGIN(qjpcodecs) // jp encoding
 
@@ -33,6 +39,14 @@ int main(int argc, char *argv[])
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 #endif
+
+	/* QFile objFile("E:/Documents/Deling-build-desktop/wm/game/wmsetfr.obj");
+	WmsetFile obj(&objFile);
+	if (objFile.open(QIODevice::ReadOnly)) {
+		obj.extract(objFile.fileName(), "E:/Documents/Deling-build-desktop/wm/wmsetfr");
+	} */
+	/* WmsetFile::build("E:/Documents/Deling-build-desktop/wm/wmsetfr",
+					 "E:/Documents/Deling-build-desktop/wm/wmsetfr.modified.obj"); */
 
 	Config::set();
 
@@ -60,6 +74,93 @@ int main(int argc, char *argv[])
 	window->show();
 	if(argc>1)
 		window->openFile(argv[1]);
+
+	/* Map map1, map2;
+	WmxFile wmx;
+	QFile file("E:/Documents/Deling-build-desktop/wm/game/wmx.obj");
+	file.open(QIODevice::ReadOnly);
+	wmx.setDevice(&file);
+	if(!wmx.readSegments(map1, 768)) {
+		qWarning() << "Cannot read segments 1";
+	} else {
+		WorldmapWidget *wmWidget = new WorldmapWidget();
+		wmWidget->resize(640, 480);
+		wmWidget->show();
+		wmWidget->setMap(&map1); */
+
+		// wmWidget->scene()->setLimits(QRect(10, 0, 1, 1));
+
+		// wmWidget->scene()->setZTrans(-0.714249f);
+
+		/* forever {
+			QImage pm = wmWidget->scene()->renderPixmap(4096, 4096).toImage();
+			if (qAlpha(pm.pixel(0, 0)) == 0 ||
+					qAlpha(pm.pixel(pm.width() - 1, pm.height() - 1)) == 0) {
+				if(wmWidget->scene()->zTrans() > 0.0 || wmWidget->scene()->zTrans() < -1.0) {
+					break;
+				}
+				wmWidget->scene()->setZTrans(wmWidget->scene()->zTrans() + 0.0000001f);
+				continue;
+			}
+			break;
+		}
+		qDebug() << wmWidget->scene()->zTrans();
+
+		wmWidget->scene()->renderPixmap(4096, 4096).save("E:/Documents/Deling-build-desktop/wm/render.png");
+		*/
+	/*
+		int scale = 128;
+		QPixmap pixmap(32 * scale,
+		               (map1.segments().size() / 32 + (map1.segments().size() % 32 && true)) * scale);
+		qDebug() << pixmap.size();
+		QPainter p(&pixmap);
+		int xs = 0, ys = 0;
+		foreach (const MapSegment &segment, map1.segments()) {
+			Q_UNUSED(segment)
+			wmWidget->scene()->setLimits(QRect(xs, ys, 1, 1));
+			QPixmap pix = wmWidget->scene()->renderPixmap(scale, scale);
+			p.drawPixmap(xs * scale, pixmap.height() - ys * scale, pix);
+			xs += 1;
+			if (xs >= 32) {
+				xs = 0;
+				ys += 1;
+			}
+		}
+		p.end();
+		pixmap.toImage().mirrored().save("E:/Documents/Deling-build-desktop/wm/render.png");
+
+		// wmWidget->scene()->renderPixmap(scale, scale)
+		*/
+	// }
+
+
+	/* if(!wmx.readSegments(map2)) {
+		qWarning() << "Cannot read segments 2";
+	}
+	QFile file2("E:/Documents/Deling-build-desktop/wm/wmx.custom.obj");
+	file2.open(QIODevice::WriteOnly | QIODevice::Truncate);
+	wmx.setDevice(&file2);
+	if(!wmx.writeSegments(map1)) {
+		qWarning() << "Cannot write segments 1";
+	}
+	if(!wmx.writeSegments(map2)) {
+		qWarning() << "Cannot write segments 2";
+	} */
+
+	/* FsArchive fsArchiveOk("E:/Downloads/field-patched-ok/field.f"),
+	          fsArchiveBroken("E:/Downloads/field.f");
+	fsArchiveBroken.repair(&fsArchiveOk); */
+
+
+
+	// ProgressWidget pw("toto", ProgressWidget::Stop, window);
+	// FsArchive fsArchive("E:/Programs (x86)/Steam/steamapps/common/FINAL FANTASY VIII/Data/lang-fr/world.f");
+	/* fsArchive.replaceFile("E:/Documents/Deling-build-desktop/wm/wmsetfr.modified.obj",
+	                      "C:\\ff8\\Data\\fre\\world\\dat\\wmsetfr.obj", &pw);
+	*/
+	/* fsArchive.replaceFile("E:/Documents/Deling-build-desktop/wm/wmx.custom.obj",
+	                      "C:\\ff8\\Data\\fre\\world\\dat\\wmx.obj", &pw);
+	*/
 
 	return app.exec();
 }

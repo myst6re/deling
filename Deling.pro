@@ -112,7 +112,6 @@ HEADERS += MainWindow.h \
     ArchiveObservers.h \
     ProgressWidget.h \
     JsmExpression.h \
-    game/worldmap/ObjFile.h \
     game/worldmap/WmxFile.h \
     game/worldmap/Map.h \
     game/worldmap/MapSegment.h \
@@ -120,7 +119,9 @@ HEADERS += MainWindow.h \
     Poly.h \
     widgets/WorldmapWidget.h \
     widgets/WorldmapGLWidget.h \
-    game/worldmap/MapPoly.h
+    game/worldmap/MapPoly.h \
+    game/worldmap/WmsetFile.h
+
 SOURCES += MainWindow.cpp \
     BackgroundExporter.cpp \
     EncounterExporter.cpp \
@@ -213,7 +214,6 @@ SOURCES += MainWindow.cpp \
     ArchiveObservers.cpp \
     ProgressWidget.cpp \
     JsmExpression.cpp \
-    game/worldmap/ObjFile.cpp \
     game/worldmap/WmxFile.cpp \
     game/worldmap/Map.cpp \
     game/worldmap/MapSegment.cpp \
@@ -221,7 +221,8 @@ SOURCES += MainWindow.cpp \
     Poly.cpp \
     widgets/WorldmapWidget.cpp \
     widgets/WorldmapGLWidget.cpp \
-    game/worldmap/MapPoly.cpp
+    game/worldmap/MapPoly.cpp \
+    game/worldmap/WmsetFile.cpp
 
 TRANSLATIONS += deling_en.ts \
     deling_ja.ts \
