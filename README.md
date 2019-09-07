@@ -14,6 +14,7 @@ Final Fantasy VIII field archive editor.
  - Qt 4.8 or Qt 5
  - GLUT
  - zlib
+ - lz4
 
 On Windows, you can either use mingw32 (g++) or msvc to compile.
 

@@ -218,6 +218,13 @@ RESOURCES += Deling.qrc
     }
 }
 
+# include lz4
+!win32 {
+    LIBS += -llz4
+} else {
+    INCLUDEPATH += lz4/lib
+}
+
 win32 {
     RC_FILE = Deling.rc
     LIBS += -lole32
