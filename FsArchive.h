@@ -23,9 +23,7 @@
 #include "LZS.h"
 #include "ArchiveObserver.h"
 
-struct FsDiff {
-
-};
+struct FsDiff {};
 
 struct Fi_infos {
 	quint32 size;
@@ -38,7 +36,7 @@ class FsHeader
 public:
 	FsHeader();
 	FsHeader(const QString &path, quint32 uncompressed_size, quint32 position, bool isCompressed);
-    const QString &path() const;
+	const QString &path() const;
 	void setPath(const QString &);
 	QString dirName() const;
 	QString fileName() const;
@@ -69,9 +67,9 @@ class FsArchive
 public:
 	enum Error{Ok, NonWritable, SourceCantBeOpened, TempCantBeOpened, TargetCantBeOpened, Canceled, SaveHeaderError, ReplaceArchiveError, FileExists, FileDontExists, EmptyFile};
 
-//	FsArchive();
+	//	FsArchive();
 	FsArchive(const QByteArray &fl_data, const QByteArray &fi_data);
-	FsArchive(const QString &path);
+	explicit FsArchive(const QString &path);
 	virtual ~FsArchive();
 
 	void addFile(const QString &path, bool isCompressed);
@@ -108,15 +106,15 @@ public:
 	void save(QByteArray &fl_data, QByteArray &fi_data) const;
 	bool saveAs(const QString &path) const;
 	int replaceArchive(QFile *newFile);
-    static QString fsPath(const QString &path);
-    static QString flPath(const QString &path);
-    static QString fiPath(const QString &path);
+	static QString fsPath(const QString &path);
+	static QString flPath(const QString &path);
+	static QString fiPath(const QString &path);
 	QString path() const;
 	bool setPath(const QString &path);
-	int size() const;
+	qint64 size() const;
 	bool isOpen() const;
 	bool isWritable() const;
-//	QString toString();
+	//	QString toString();
 	// Check integrity of fi files according to LZS headers, output to qWarning
 	bool verify();
 	// Repair fi list pos, according to LZS header, this will not save archive on disk
@@ -128,7 +126,7 @@ private:
 	void addFile(const QString &path, quint32 uncompressed_size, quint32 position, bool isCompressed);
 	bool removeFile(QString);
 	QString filePath(const QString &path) const;
-    bool setFilePath(QString path, const QString &newPath);
+	bool setFilePath(QString path, const QString &newPath);
 	quint32 uncompressedFileSize(const QString &path) const;
 	quint32 filePosition(const QString &path) const;
 	void changePositions(FsHeader *start, int diff);
@@ -143,8 +141,8 @@ private:
 		return searchData(sortedByPosition, &fs, data, pos);
 	}
 
-    QMultiMap<quint32, FsHeader *> sortedByPosition;// <order, headerData>
-    QMap<QString, FsHeader *> toc_access;// <path, headerData>
+	QMultiMap<quint32, FsHeader *> sortedByPosition;// <order, headerData>
+	QMap<QString, FsHeader *> toc_access;// <path, headerData>
 	QFile fs, fl, fi;
 	bool fromFile;
 	bool _isOpen;
