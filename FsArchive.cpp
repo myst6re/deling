@@ -16,14 +16,15 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "FsArchive.h"
+#include "QLZ4.h"
 
 FsHeader::FsHeader()
-    : _uncompressed_size(0), _position(quint32(-1)), _isCompressed(false)
+    : _uncompressed_size(0), _position(quint32(-1)), _compression(quint32(CompressionNone))
 {
 }
 
-FsHeader::FsHeader(const QString &path, quint32 uncompressed_size, quint32 position, bool isCompressed)
-    : _path(path), _uncompressed_size(uncompressed_size), _position(position), _isCompressed(isCompressed)
+FsHeader::FsHeader(const QString &path, quint32 uncompressed_size, quint32 position, quint32 compression)
+    : _path(path), _uncompressed_size(uncompressed_size), _position(position), _compression(compression)
 {
 }
 
@@ -73,25 +74,35 @@ void FsHeader::setPosition(quint32 position)
 	_position = position;
 }
 
-bool FsHeader::isCompressed() const
+FiCompression FsHeader::compression() const
 {
-	return _isCompressed;
+	switch(_compression) {
+	case 0:
+		return CompressionNone;
+	case 1:
+		return CompressionLzs;
+	case 2:
+		return CompressionLz4;
+	}
+
+	return CompressionUnknown;
 }
 
-void FsHeader::setIsCompressed(bool isCompressed)
+void FsHeader::setCompression(FiCompression compression)
 {
-	_isCompressed = isCompressed;
+	_compression = quint32(compression);
 }
 
 bool FsHeader::compressedSize(QFile *fs, quint32 *lzsSize) const
 {
-	return _isCompressed && fs->seek(_position) &&
-	        fs->read((char *)lzsSize, sizeof(quint32)) == sizeof(quint32);
+	return (compression() == CompressionLzs || compression() == CompressionLz4)
+	        && fs->seek(_position)
+	        && fs->read((char *)lzsSize, sizeof(quint32)) == sizeof(quint32);
 }
 
 bool FsHeader::compressedSize(const char *fs_data, int size, quint32 *lzsSize) const
 {
-	if(_isCompressed) {
+	if(compression() == CompressionLzs || compression() == CompressionLz4) {
 		if(size <= sizeof(quint32))	return false;
 
 		memcpy(&lzsSize, fs_data + _position, sizeof(quint32));
@@ -108,7 +119,7 @@ bool FsHeader::compressedSize(const QByteArray &fs_data, quint32 *lzsSize) const
 
 bool FsHeader::physicalSize(QFile *fs, quint32 *size) const
 {
-	if(_isCompressed) {
+	if(compression() == CompressionLzs || compression() == CompressionLz4) {
 		if(!compressedSize(fs, size)) {
 			return false;
 		}
@@ -121,7 +132,7 @@ bool FsHeader::physicalSize(QFile *fs, quint32 *size) const
 
 bool FsHeader::physicalSize(const QByteArray &fs_data, quint32 *size) const
 {
-	if(_isCompressed) {
+	if(compression() == CompressionLzs || compression() == CompressionLz4) {
 		if(!compressedSize(fs_data, size)) {
 			return false;
 		}
@@ -131,9 +142,29 @@ bool FsHeader::physicalSize(const QByteArray &fs_data, quint32 *size) const
 	return _uncompressed_size;
 }
 
+const QByteArray &FsHeader::decompress(const char *data, int size, int max) const
+{
+	if(compression() == CompressionLz4)
+	{
+		return QLZ4::decompress(data, size, max);
+	}
+
+	return LZS::decompress(data, size, max);
+}
+
+QByteArray FsHeader::compress(const QByteArray &data) const
+{
+	if(compression() == CompressionLz4)
+	{
+		return QLZ4::compress(data);
+	}
+
+	return LZS::compress(data);
+}
+
 QByteArray FsHeader::data(const QByteArray &fs_data, bool uncompress, int maxUncompress) const
 {
-	if(_isCompressed)
+	if(compression() == CompressionLzs || compression() == CompressionLz4)
 	{
 		quint32 size;
 
@@ -147,7 +178,7 @@ QByteArray FsHeader::data(const QByteArray &fs_data, bool uncompress, int maxUnc
 		if(!uncompress)
 			return fs_data.mid(_position, size+4);
 
-		return LZS::decompress(fs_data.constData() + _position + 4, size, maxUncompress<=0 ? _uncompressed_size : maxUncompress);
+		return decompress(fs_data.constData() + _position + 4, size, maxUncompress<=0 ? _uncompressed_size : maxUncompress);
 	}
 
 	return fs_data.mid(_position, _uncompressed_size);
@@ -157,7 +188,7 @@ QByteArray FsHeader::data(QFile *fs, bool uncompress, int maxUncompress) const
 {
 	if(!fs->seek(_position)) 	return QByteArray();
 
-	if(_isCompressed)
+	if(compression() == CompressionLzs || compression() == CompressionLz4)
 	{
 		quint32 size;
 
@@ -172,16 +203,18 @@ QByteArray FsHeader::data(QFile *fs, bool uncompress, int maxUncompress) const
 			fs->seek(_position);
 			return fs->read(size+4);
 		}
+
 		char *buff = new char[size];
 
 		if(fs->read(buff, size) != size)
 			return QByteArray();
 
-		const QByteArray &decData = LZS::decompress(buff, size, maxUncompress<=0 ? _uncompressed_size : maxUncompress);
-		delete buff;
+		const QByteArray &decData = decompress(buff, size, maxUncompress<=0 ? _uncompressed_size : maxUncompress);
+		delete[] buff;
 
 		return decData;
 	}
+
 	return fs->read(_uncompressed_size);
 }
 
@@ -189,7 +222,7 @@ int FsHeader::setData(QByteArray &fs_data, const QByteArray &new_data)
 {
 	int diff, real_size;
 
-	if(_isCompressed)
+	if(compression() == CompressionLzs || compression() == CompressionLz4)
 	{
 		const char *fs_data_const = fs_data.constData();
 		int size=0;
@@ -197,7 +230,7 @@ int FsHeader::setData(QByteArray &fs_data, const QByteArray &new_data)
 		memcpy(&size, &fs_data_const[_position], 4);
 
 		_uncompressed_size = new_data.size();
-		QByteArray new_data_lzsed = LZS::compress(new_data);
+		QByteArray new_data_lzsed = compress(new_data);
 		real_size = new_data_lzsed.size();
 
 		diff = real_size - size;
@@ -219,7 +252,7 @@ int FsHeader::setData(QFile *fs, QByteArray &new_data)
 {
 	int diff, real_size;
 
-	if(_isCompressed)
+	if(compression() == CompressionLzs || compression() == CompressionLz4)
 	{
 		if(!fs->seek(_position)) return 0;
 
@@ -228,7 +261,7 @@ int FsHeader::setData(QFile *fs, QByteArray &new_data)
 		fs->read((char *)&size, 4);
 
 		_uncompressed_size = new_data.size();
-		new_data = LZS::compress(new_data);
+		new_data = compress(new_data);
 		real_size = new_data.size();
 		new_data.prepend((char *)&real_size, 4);
 
@@ -271,24 +304,24 @@ FsArchive::~FsArchive()
 	foreach(FsHeader *header, toc_access) 	delete header;
 }
 
-void FsArchive::addFile(const QString &path, quint32 uncompressed_size, quint32 position, bool isCompressed)
+void FsArchive::addFile(const QString &path, quint32 uncompressed_size, quint32 position, quint32 compression)
 {
 	if(toc_access.contains(path.toLower())) {
-		qWarning() << "addFile error: file already exists" << path << uncompressed_size << position << isCompressed;
+		qWarning() << "addFile error: file already exists" << path << uncompressed_size << position << compression;
 		return;
 	}
-	FsHeader *header = new FsHeader(path, uncompressed_size, position, isCompressed);
+	FsHeader *header = new FsHeader(path, uncompressed_size, position, compression);
 	sortedByPosition.insert(position, header);
 	toc_access.insert(path.toLower(), header);
 }
 
-void FsArchive::addFile(const QString &path, bool isCompressed)
+void FsArchive::addFile(const QString &path, FiCompression compression)
 {
 	if(toc_access.contains(path.toLower())) {
-		qWarning() << "addFile error: file already exists" << path << isCompressed;
+		qWarning() << "addFile error: file already exists" << path << quint32(compression);
 		return;
 	}
-	FsHeader *header = new FsHeader(path, 0, 0, isCompressed);
+	FsHeader *header = new FsHeader(path, 0, 0, compression);
 	sortedByPosition.insert(0, header);
 	toc_access.insert(path.toLower(), header);
 }
@@ -398,17 +431,17 @@ void FsArchive::setFilePosition(const QString &path, quint32 position)
 	}
 }
 
-bool FsArchive::fileIsCompressed(const QString &path) const
+FiCompression FsArchive::fileCompression(const QString &path) const
 {
 	FsHeader *header = getFile(path);
-	return header!=NULL ? header->isCompressed() : false;
+	return header!=nullptr ? header->compression() : FiCompression::CompressionNone;
 }
 
 QByteArray FsArchive::fileData(const QString &path, const QByteArray &fs_data, bool uncompress, int uncompressed_size)
 {
 	FsHeader *header = getFile(path);
 	//	qDebug() << "fileData1" << path << fs_data.size() << uncompressed_size;
-	return header!=NULL ? header->data(fs_data, uncompress, uncompressed_size) : QByteArray();
+	return header!=nullptr ? header->data(fs_data, uncompress, uncompressed_size) : QByteArray();
 }
 
 QByteArray FsArchive::fileData(const QString &path, bool uncompress, int uncompressed_size)
@@ -654,7 +687,7 @@ FsArchive::Error FsArchive::replaceFile(const QString &source, const QString &de
 	return Ok;
 }
 
-QList<FsArchive::Error> FsArchive::replaceDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress)
+QList<FsArchive::Error> FsArchive::replaceDir(const QString &source, const QString &destination, FiCompression compression, ArchiveObserver *progress)
 {
 	// TODO progress
 	Error err = remove(tocInDirectory(destination), progress);
@@ -663,7 +696,7 @@ QList<FsArchive::Error> FsArchive::replaceDir(const QString &source, const QStri
 	}
 
 	// TODO progress
-	return appendDir(source, destination, compress, progress);
+	return appendDir(source, destination, compression, progress);
 }
 
 QStringList FsArchive::listDirsRec(QDir *sourceDir)
@@ -685,7 +718,7 @@ QStringList FsArchive::listDirsRec(QDir *sourceDir)
 	return paths;
 }
 
-QList<FsArchive::Error> FsArchive::appendFiles(const QStringList &sources, const QStringList &destinations, bool compress, ArchiveObserver *progress)
+QList<FsArchive::Error> FsArchive::appendFiles(const QStringList &sources, const QStringList &destinations, FiCompression compression, ArchiveObserver *progress)
 {
 	QTime t;t.start();
 
@@ -726,10 +759,14 @@ QList<FsArchive::Error> FsArchive::appendFiles(const QStringList &sources, const
 			errors.append(EmptyFile);
 			continue;
 		}
-		addFile(destinations.at(i), (quint32)data.size(), (quint32)fs.pos(), compress);
+		addFile(destinations.at(i), (quint32)data.size(), (quint32)fs.pos(), compression);
 
-		if(compress) {
+		if(compression == FiCompression::CompressionLzs) {
 			data = LZS::compress(data);
+			int size = data.size();
+			data.prepend((char *)&size, 4);
+		} else if(FiCompression::CompressionLz4) {
+			data = QLZ4::compress(data);
 			int size = data.size();
 			data.prepend((char *)&size, 4);
 		}
@@ -754,7 +791,7 @@ QList<FsArchive::Error> FsArchive::appendFiles(const QStringList &sources, const
 	return errors;
 }
 
-QList<FsArchive::Error> FsArchive::appendDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress)
+QList<FsArchive::Error> FsArchive::appendDir(const QString &source, const QString &destination, FiCompression compression, ArchiveObserver *progress)
 {
 	QStringList sources, destinations;
 	QDir sourceDir(source);
@@ -764,7 +801,7 @@ QList<FsArchive::Error> FsArchive::appendDir(const QString &source, const QStrin
 		destinations << destination + "\\" + relativePath;
 	}
 
-	return appendFiles(sources, destinations, compress, progress);
+	return appendFiles(sources, destinations, compression, progress);
 }
 
 FsArchive::Error FsArchive::remove(QStringList destinations, ArchiveObserver *progress)
@@ -868,19 +905,20 @@ FsArchive::Error FsArchive::rename(const QStringList &destinations, const QStrin
 	return Ok;
 }
 
-bool FsArchive::load(const QString &fl_data, const QByteArray &fi_data)
+bool FsArchive::load(const QByteArray &fl_data, const QByteArray &fi_data)
 {
 	if(_isOpen || fl_data.isEmpty() || fi_data.isEmpty()) {
 		qWarning() << "Error loading data" << fl_data.isEmpty() << fi_data.isEmpty();
 		return false;
 	}
 
-	QStringList fl = fl_data.split("\r\n", QString::SkipEmptyParts);
+	QStringList fl = QString(fl_data).split("\r\n", QString::SkipEmptyParts);
 	Fi_infos fi_infos;
 
 	const char *fi_constData = fi_data.constData();
 
 	if(fi_data.size()/12 != fl.size() || fi_data.size()%12 != 0) {
+		_isOpen = false;
 		qWarning() << "Invalid fl or fi" << (fi_data.size()/12.0) << (fl.size());
 		return false;
 	}
@@ -888,7 +926,7 @@ bool FsArchive::load(const QString &fl_data, const QByteArray &fi_data)
 	foreach(const QString &line, fl) {
 		memcpy(&fi_infos, fi_constData, 12);
 
-		addFile(line, fi_infos.size, fi_infos.pos, (fi_infos.isCompressed & 1));
+		addFile(line, fi_infos.size, fi_infos.pos, fi_infos.compression);
 		fi_constData += 12;
 	}
 
@@ -928,22 +966,22 @@ bool FsArchive::load(const QString &path)
 
 	fromFile = true;
 
-	return (_isOpen = load(QString(fl.readAll()), fi.readAll()));
+	return (_isOpen = load(fl.readAll(), fi.readAll()));
 }
 
 void FsArchive::save(QByteArray &fl_data, QByteArray &fi_data) const
 {
-	quint32 size, pos, isCompressed;
+	quint32 size, pos, compression;
 
 	foreach(FsHeader *header, sortedByPosition) {
 		fl_data.append(header->path().toLatin1());
 		fl_data.append("\r\n", 2);
 		size = header->uncompressed_size();
 		pos = header->position();
-		isCompressed = quint32(header->isCompressed());
+		compression = header->compression();
 		fi_data.append((char *)&size, 4);
 		fi_data.append((char *)&pos, 4);
-		fi_data.append((char *)&isCompressed, 4);
+		fi_data.append((char *)&compression, 4);
 	}
 }
 
@@ -1234,9 +1272,9 @@ bool FsArchive::verify()
 		}
 
 		if(guessPos != info->position()) {
-			qWarning() << "FsArchive::verify ko" << info->position() << guessPos << size << info->uncompressed_size() << info->isCompressed();
+			qWarning() << "FsArchive::verify ko" << info->position() << guessPos << size << info->uncompressed_size() << quint32(info->compression());
 		} else {
-			qWarning() << "FsArchive::verify ok" << info->position() << guessPos << size << info->uncompressed_size() << info->isCompressed();
+			qWarning() << "FsArchive::verify ok" << info->position() << guessPos << size << info->uncompressed_size() << quint32(info->compression());
 		}
 		guessPos += size;
 	}
@@ -1299,10 +1337,10 @@ bool FsArchive::repair(FsArchive *other)
 			it.next();
 			it.value()->setPosition(pos);
 			it.value()->setUncompressed_size(decSize);
-			if(it.value()->isCompressed() != compressed) {
+			if(compressed && it.value()->compression() != CompressionLzs) {
 				qWarning() << "repair compression change";
 			}
-			it.value()->setIsCompressed(compressed);
+			it.value()->setCompression(CompressionLzs);
 			// Find path in correct archive
 			quint32 posOther;
 			if(searchData(otherHeaders, &(other->fs), d, posOther)) {

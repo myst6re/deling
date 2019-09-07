@@ -25,17 +25,24 @@
 
 struct FsDiff {};
 
+enum FiCompression {
+	CompressionNone,
+	CompressionLzs,
+	CompressionLz4,
+	CompressionUnknown
+};
+
 struct Fi_infos {
 	quint32 size;
 	quint32 pos;
-	quint32 isCompressed;
+	quint32 compression;
 };
 
 class FsHeader
 {
 public:
 	FsHeader();
-	FsHeader(const QString &path, quint32 uncompressed_size, quint32 position, bool isCompressed);
+	FsHeader(const QString &path, quint32 uncompressed_size, quint32 position, quint32 compression);
 	const QString &path() const;
 	void setPath(const QString &);
 	QString dirName() const;
@@ -49,17 +56,19 @@ public:
 	bool physicalSize(const QByteArray &fs_data, quint32 *size) const;
 	quint32 position() const;
 	void setPosition(quint32);
-	bool isCompressed() const;
-	void setIsCompressed(bool isCompressed);
+	FiCompression compression() const;
+	void setCompression(FiCompression compression);
 	QByteArray data(const QByteArray &, bool uncompress=true, int maxUncompress=0) const;
 	QByteArray data(QFile *, bool uncompress=true, int maxUncompress=0) const;
 	int setData(QByteArray &, const QByteArray &);
 	int setData(QFile *, QByteArray &);
 private:
+	const QByteArray &decompress(const char *data, int size, int max) const;
+	QByteArray compress(const QByteArray &data) const;
 	QString _path;
 	quint32 _uncompressed_size;
 	quint32 _position;
-	bool _isCompressed;
+	quint32 _compression;
 };
 
 class FsArchive
@@ -72,7 +81,7 @@ public:
 	explicit FsArchive(const QString &path);
 	virtual ~FsArchive();
 
-	void addFile(const QString &path, bool isCompressed);
+	void addFile(const QString &path, FiCompression compression);
 	FsHeader *getFile(const QString &path) const;
 	void fileToTheEnd(const QString &path, QByteArray &fs_data);
 	void rebuildInfos();
@@ -81,7 +90,7 @@ public:
 	bool dirExists(QString dir) const;
 
 	void setFilePosition(const QString &path, quint32);
-	bool fileIsCompressed(const QString &path) const;
+	FiCompression fileCompression(const QString &path) const;
 	QByteArray fileData(const QString &, const QByteArray &fs_data, bool uncompress=true, int maxUncompress=0);
 	QByteArray fileData(const QString &, bool uncompress=true, int maxUncompress=0);
 	void setFileData(const QString &, QByteArray &, const QByteArray &);
@@ -92,9 +101,9 @@ public:
 	bool extractFile(const QString &fileName, const QString &filePath, bool uncompress=true);
 	FsArchive::Error extractFiles(const QStringList &fileNames, const QString &baseFileName, const QString &fileDir, ArchiveObserver *progress, bool uncompress=true);
 	Error replaceFile(const QString &source, const QString &destination, ArchiveObserver *progress);
-	QList<FsArchive::Error> replaceDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress);
-	QList<FsArchive::Error> appendFiles(const QStringList &sources, const QStringList &destinations, bool compress, ArchiveObserver *progress);
-	QList<FsArchive::Error> appendDir(const QString &source, const QString &destination, bool compress, ArchiveObserver *progress);
+	QList<FsArchive::Error> replaceDir(const QString &source, const QString &destination, FiCompression compression, ArchiveObserver *progress);
+	QList<FsArchive::Error> appendFiles(const QStringList &sources, const QStringList &destinations, FiCompression compression, ArchiveObserver *progress);
+	QList<FsArchive::Error> appendDir(const QString &source, const QString &destination, FiCompression compression, ArchiveObserver *progress);
 	Error remove(QStringList destinations, ArchiveObserver *progress);
 	Error rename(const QStringList &destinations, const QStringList &newDestinations);
 	QMap<QString, FsHeader *> fileList(QString dir) const;
@@ -123,7 +132,7 @@ public:
 
 	static QString errorString(Error, const QString &fileName=QString());
 private:
-	void addFile(const QString &path, quint32 uncompressed_size, quint32 position, bool isCompressed);
+	void addFile(const QString &path, quint32 uncompressed_size, quint32 position, quint32 compression);
 	bool removeFile(QString);
 	QString filePath(const QString &path) const;
 	bool setFilePath(QString path, const QString &newPath);
@@ -132,7 +141,7 @@ private:
 	void changePositions(FsHeader *start, int diff);
 	static QStringList listDirsRec(QDir *sourceDir);
 
-	bool load(const QString &fl_data, const QByteArray &fi_data);
+	bool load(const QByteArray &fl_data, const QByteArray &fi_data);
 	bool load(const QString &path);
 
 	static bool searchData(const QMultiMap<quint32, FsHeader *> &headers,

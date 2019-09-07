@@ -240,7 +240,22 @@ void FsDialog::openDir(const QString &name)
 			items.append(item);
 		}
 		else {
-			item = new TreeWidgetItem(QStringList() << file << QString::number(header->uncompressed_size()) << (header->isCompressed() ? tr("Oui") : tr("Non")));
+			QString compression;
+			switch(header->compression()) {
+			case FiCompression::CompressionLz4:
+				compression = tr("LZ4");
+				break;
+			case FiCompression::CompressionLzs:
+				compression = tr("LZ4");
+				break;
+			case FiCompression::CompressionUnknown:
+				compression = tr("Inconnu");
+				break;
+			case FiCompression::CompressionNone:
+				compression = tr("Non");
+				break;
+			}
+			item = new TreeWidgetItem(QStringList() << file << QString::number(header->uncompressed_size()) << compression);
 			item->setData(0, FILE_TYPE_ROLE, FILE);
 			item->setData(0, FILE_NAME_ROLE, file);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
@@ -392,7 +407,7 @@ void FsDialog::replace(QString source, QString destination)
 	FsArchive::Error error;
 
 	if (isDir) {
-		QList<FsArchive::Error> errors = fsArchive->replaceDir(source, destination, true, &progress);
+		QList<FsArchive::Error> errors = fsArchive->replaceDir(source, destination, FiCompression::CompressionLzs, &progress);
 		if (errors.isEmpty()) {
 			error = FsArchive::Ok;
 		} else {
@@ -451,9 +466,9 @@ void FsDialog::add(QStringList sources, bool fromDir)
 	QList<FsArchive::Error> errors;
 
 	if (fromDir) {
-		errors = fsArchive->appendDir(sources.first(), destinations.first(), compress, &progress);
+		errors = fsArchive->appendDir(sources.first(), destinations.first(), compress ? FiCompression::CompressionLzs : FiCompression::CompressionNone, &progress);
 	} else {
-		errors = fsArchive->appendFiles(sources, destinations, compress, &progress);
+		errors = fsArchive->appendFiles(sources, destinations, compress ? FiCompression::CompressionLzs : FiCompression::CompressionNone, &progress);
 	}
 
 	if(errors.contains(FsArchive::NonWritable)) {

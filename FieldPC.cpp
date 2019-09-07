@@ -554,7 +554,7 @@ void FieldPC::setFile(FileType fileType)
 	QString path = filePath(fileType);
 	if(!path.isEmpty()) {
 		if(!header->fileExists(path)) {
-			header->addFile(path, false);
+			header->addFile(path, FiCompression::CompressionNone);
 			Field::setFile(fileType);
 		}
 	}
