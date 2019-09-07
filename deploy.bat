@@ -21,6 +21,8 @@ for %%l in (%LANGUAGES%) do (
     echo "Create %QT_TR_DIR%\qtbase_%%l.qm"
 )
 
+xcopy /y %LIB_DIR%\liblz4.dll %OUTPUT_DIR%
+
 rem Deploy Exe
 xcopy /y %EXE_PATH% %OUTPUT_DIR%
 

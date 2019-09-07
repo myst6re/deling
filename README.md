@@ -17,6 +17,7 @@ Final Fantasy VIII field archive editor.
  - lz4
 
 On Windows, you can either use mingw32 (g++) or msvc to compile.
+You need liblz4.dll to run Deling on Windows.
 
 ### With Qt Creator
 

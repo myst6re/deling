@@ -21,6 +21,7 @@ lessThan(QT_MAJOR_VERSION, 5) {
 # Input
 HEADERS += MainWindow.h \
     PreviewWidget.h \
+    QLZ4.h \
     parameters.h \
     Data.h \
     Config.h \
@@ -109,6 +110,7 @@ HEADERS += MainWindow.h \
 
 SOURCES += MainWindow.cpp \
     PreviewWidget.cpp \
+    QLZ4.cpp \
     main.cpp \
     Data.cpp \
     Config.cpp \
@@ -222,7 +224,8 @@ RESOURCES += Deling.qrc
 !win32 {
     LIBS += -llz4
 } else {
-    INCLUDEPATH += lz4/lib
+    INCLUDEPATH += lz4
+    LIBS += $$_PRO_FILE_PWD_/lz4/liblz4.lib
 }
 
 win32 {
