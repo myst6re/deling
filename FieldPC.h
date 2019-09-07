@@ -40,6 +40,7 @@ public:
 	bool save(const QString &path);
 	void save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
 	void optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
+	bool isMultiLanguage() const;
 protected:
 	virtual void setFile(FileType fileType);
 private:

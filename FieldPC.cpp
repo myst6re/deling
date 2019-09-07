@@ -18,13 +18,13 @@
 #include "FieldPC.h"
 
 FieldPC::FieldPC(const QString &name, const QString &path, FsArchive *archive)
-	: Field(name), _path(path), header(0)
+    : Field(name), _path(path), header(nullptr)
 {
 	open(archive);
 }
 
 FieldPC::FieldPC(const QString &path)
-	: Field(QString()), _path(QString()), header(0)
+    : Field(QString()), _path(QString()), header(nullptr)
 {
 	open(path);
 }
@@ -74,7 +74,7 @@ bool FieldPC::open(const QString &path)
 	if(!header->isOpen() || !header->fileExists("*.inf")) {
 		qWarning() << "fieldData pas ouvert" << path;
 		delete header;
-		header = 0;
+		header = nullptr;
 		return false;
 	}
 
@@ -195,7 +195,7 @@ bool FieldPC::open(FsArchive *archive)
 	if(!header->isOpen()) {
 		qWarning() << "fieldData not opened" << name();
 		delete header;
-		header = 0;
+		header = nullptr;
 		return false;
 	}
 
@@ -219,31 +219,31 @@ bool FieldPC::open(FsArchive *archive)
 	sfx_infos = header->getFile(filePath(Sfx));
 
 	quint32 maxSize = 0;
-	if(msd_infos!=NULL)
+	if(msd_infos!=nullptr)
 		maxSize = msd_infos->position()+msd_infos->uncompressed_size();
-	if(jsm_infos!=NULL)
+	if(jsm_infos!=nullptr)
 		maxSize = qMax(maxSize, jsm_infos->position()+jsm_infos->uncompressed_size());
-	if(sym_infos!=NULL)
+	if(sym_infos!=nullptr)
 		maxSize = qMax(maxSize, sym_infos->position()+sym_infos->uncompressed_size());
-	if(id_infos!=NULL)
+	if(id_infos!=nullptr)
 		maxSize = qMax(maxSize, id_infos->position()+id_infos->uncompressed_size());
-	if(ca_infos!=NULL)
+	if(ca_infos!=nullptr)
 		maxSize = qMax(maxSize, ca_infos->position()+ca_infos->uncompressed_size());
-	if(msk_infos!=NULL)
+	if(msk_infos!=nullptr)
 		maxSize = qMax(maxSize, msk_infos->position()+msk_infos->uncompressed_size());
-	if(inf_infos!=NULL)
+	if(inf_infos!=nullptr)
 		maxSize = qMax(maxSize, inf_infos->position()+inf_infos->uncompressed_size());
-	if(rat_infos!=NULL)
+	if(rat_infos!=nullptr)
 		maxSize = qMax(maxSize, rat_infos->position()+rat_infos->uncompressed_size());
-	if(mrt_infos!=NULL)
+	if(mrt_infos!=nullptr)
 		maxSize = qMax(maxSize, mrt_infos->position()+mrt_infos->uncompressed_size());
-	if(pmp_infos!=NULL)
+	if(pmp_infos!=nullptr)
 		maxSize = qMax(maxSize, pmp_infos->position()+pmp_infos->uncompressed_size());
-	if(pmd_infos!=NULL)
+	if(pmd_infos!=nullptr)
 		maxSize = qMax(maxSize, pmd_infos->position()+pmd_infos->uncompressed_size());
-	if(pvp_infos!=NULL)
+	if(pvp_infos!=nullptr)
 		maxSize = qMax(maxSize, pvp_infos->position()+pvp_infos->uncompressed_size());
-	if(sfx_infos!=NULL)
+	if(sfx_infos!=nullptr)
 		maxSize = qMax(maxSize, sfx_infos->position()+sfx_infos->uncompressed_size());
 
 	if(maxSize==0) {
@@ -264,16 +264,16 @@ bool FieldPC::open(FsArchive *archive)
 
 	/* MSD */
 
-	if(msd_infos!=NULL)
+	if(msd_infos!=nullptr)
 	{
 		openFile(Msd, msd_infos->data(fs_data));
 	}
 
 	/* JSM & SYM */
 
-	if(jsm_infos!=NULL)
+	if(jsm_infos!=nullptr)
 	{
-		if(sym_infos!=NULL)
+		if(sym_infos!=nullptr)
 			openJsmFile(jsm_infos->data(fs_data), sym_infos->data(fs_data));
 		else
 			openJsmFile(jsm_infos->data(fs_data));
@@ -281,72 +281,72 @@ bool FieldPC::open(FsArchive *archive)
 
 	/* ID */
 
-	if(id_infos!=NULL)
+	if(id_infos!=nullptr)
 	{
 		openFile(Id, id_infos->data(fs_data));
 	}
 
 	/* CA */
 
-	if(ca_infos!=NULL)
+	if(ca_infos!=nullptr)
 	{
 		openFile(Ca, ca_infos->data(fs_data));
 	}
 
 	/* MSK */
 
-	if(msk_infos!=NULL)
+	if(msk_infos!=nullptr)
 	{
 		openFile(Msk, msk_infos->data(fs_data));
 	}
 
 	/* RAT */
 
-	if(rat_infos!=NULL)
+	if(rat_infos!=nullptr)
 	{
-		openFile(Rat, rat_infos!=NULL ? rat_infos->data(fs_data) : QByteArray());
+		openFile(Rat, rat_infos!=nullptr ? rat_infos->data(fs_data) : QByteArray());
 	}
 
 	/* MRT */
 
-	if(mrt_infos!=NULL)
+	if(mrt_infos!=nullptr)
 	{
-		openFile(Mrt, mrt_infos!=NULL ? mrt_infos->data(fs_data) : QByteArray());
+		openFile(Mrt, mrt_infos!=nullptr ? mrt_infos->data(fs_data) : QByteArray());
 	}
 
 	/* INF */
 
-	if(inf_infos!=NULL)
+	if(inf_infos!=nullptr)
 	{
-		openFile(Inf, inf_infos!=NULL ? inf_infos->data(fs_data) : QByteArray());
+		openFile(Inf, inf_infos!=nullptr ? inf_infos->data(fs_data) : QByteArray());
 	}
 
 	/* SFX */
 
-	if(sfx_infos!=NULL)
+	if(sfx_infos!=nullptr)
 	{
-		openFile(Sfx, sfx_infos!=NULL ? sfx_infos->data(fs_data) : QByteArray());
+		openFile(Sfx, sfx_infos!=nullptr ? sfx_infos->data(fs_data) : QByteArray());
 	}
 
 	/* PMP */
 
-	if(pmp_infos!=NULL)
+	if(pmp_infos!=nullptr)
 	{
-		openFile(Pmp, pmp_infos!=NULL ? pmp_infos->data(fs_data) : QByteArray());
+		openFile(Pmp, pmp_infos!=nullptr ? pmp_infos->data(fs_data) : QByteArray());
 	}
 
 	/* PMD */
 
-	if(pmd_infos!=NULL)
+	if(pmd_infos!=nullptr)
 	{
-		openFile(Pmd, pmd_infos!=NULL ? pmd_infos->data(fs_data) : QByteArray());
+		openFile(Pmd, pmd_infos!=nullptr ? pmd_infos->data(fs_data) : QByteArray());
 	}
 
 	/* PVP */
 
-	if(pvp_infos!=NULL)
+	if(pvp_infos!=nullptr)
 	{
-		openFile(Pvp, pvp_infos!=NULL ? pvp_infos->data(fs_data) : QByteArray());
+		openFile(Pvp, pvp_infos!=nullptr ? pvp_infos->data(fs_data) : QByteArray());
 	}
 
 	setOpen(true);
@@ -376,18 +376,18 @@ bool FieldPC::open2(FsArchive *archive)
 
 	FsHeader *fi_infos_mim = header->getFile(filePath(name() + ".mim"));
 	FsHeader *fi_infos_map = header->getFile(filePath(name() + ".map"));
-	FsHeader *fi_infos_tdw = !hasTdwFile() ? header->getFile(filePath(Tdw)) : NULL;
+	FsHeader *fi_infos_tdw = !hasTdwFile() ? header->getFile(filePath(Tdw)) : nullptr;
 	FsHeader *fi_infos_one = header->getFile(filePath("chara.one"));
 
-	if(fi_infos_mim==NULL || fi_infos_map==NULL)
+	if(fi_infos_mim==nullptr || fi_infos_map==nullptr)
 		return false;
 
 	quint32 maxPos = qMax(fi_infos_mim->position()+fi_infos_mim->uncompressed_size(),
 						  fi_infos_map->position()+fi_infos_map->uncompressed_size());
-	if(fi_infos_tdw!=NULL) {
+	if(fi_infos_tdw!=nullptr) {
 		maxPos = qMax(maxPos, fi_infos_tdw->position()+fi_infos_tdw->uncompressed_size());
 	}
-	if(fi_infos_one!=NULL) {
+	if(fi_infos_one!=nullptr) {
 		maxPos = qMax(maxPos, fi_infos_one->position()+fi_infos_one->uncompressed_size());
 	}
 
@@ -395,13 +395,13 @@ bool FieldPC::open2(FsArchive *archive)
 
 	if(fs_data.isEmpty())	 return false;
 
-	if(fi_infos_mim!=NULL && fi_infos_map!=NULL) {
+	if(fi_infos_mim!=nullptr && fi_infos_map!=nullptr) {
 		openBackgroundFile(fi_infos_map->data(fs_data), fi_infos_mim->data(fs_data));
 	}
-	if(fi_infos_tdw!=NULL && !hasTdwFile()) {
+	if(fi_infos_tdw!=nullptr && !hasTdwFile()) {
 		openFile(Tdw, fi_infos_tdw->data(fs_data));
 	}
-	if(fi_infos_one!=NULL) {
+	if(fi_infos_one!=nullptr) {
 		openCharaFile(fi_infos_one->data(fs_data));
 	}
 
@@ -582,7 +582,13 @@ QString FieldPC::filePath(FileType fileType) const
 	return QString();
 }
 
+bool FieldPC::isMultiLanguage() const
+{
+	return _lang.compare("x", Qt::CaseInsensitive) == 0;
+}
+
 QString FieldPC::filePath(const QString &fileName) const
 {
-	return "C:\\ff8\\Data\\" + _lang + "\\FIELD\\mapdata\\" + _subDir + "\\" + name() + "\\" + fileName;
+	return QString("C:\\ff8\\Data\\%1\\FIELD\\mapdata\\%2\\%3\\%4")
+	        .arg(_lang, _subDir, name(), fileName);
 }

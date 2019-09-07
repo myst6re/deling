@@ -21,14 +21,14 @@ Field::Field(const QString &name)
 	: _isOpen(false), _name(name)
 {
 	for(int i=0 ; i<FILE_COUNT ; ++i) {
-		files.append(0);
+		files.append(nullptr);
 	}
 }
 
 Field::~Field()
 {
 	for(int i=0 ; i<files.size() ; ++i) {
-		deleteFile((FileType)i);
+		deleteFile(FileType(i));
 	}
 
 	deleteCharaFile();
@@ -93,7 +93,7 @@ void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 	}
 }
 
-CharaFile *Field::charaFile = 0;
+CharaFile *Field::charaFile = nullptr;
 
 void Field::openCharaFile(const QByteArray &one)
 {
@@ -140,30 +140,30 @@ File *Field::newFile(FileType fileType)
 	case AkaoList:
 		return files[fileType] = new AkaoListFile();
 	}
-	return 0;
+	return nullptr;
 }
 
 void Field::deleteFile(FileType fileType)
 {
 	File *f = getFile(fileType);
 
-	if(f != 0) {
+	if(f != nullptr) {
 		delete f;
-		files[fileType] = 0;
+		files[fileType] = nullptr;
 	}
 }
 
 void Field::deleteCharaFile()
 {
-	if(charaFile != 0) {
+	if(charaFile != nullptr) {
 		delete charaFile;
-		charaFile = 0;
+		charaFile = nullptr;
 	}
 }
 
 bool Field::hasFile(FileType fileType) const
 {
-	return getFile(fileType) != 0;
+	return getFile(fileType) != nullptr;
 }
 
 bool Field::hasMsdFile() const
@@ -228,7 +228,7 @@ bool Field::hasTdwFile() const
 
 bool Field::hasCharaFile() const
 {
-	return charaFile != 0;
+	return charaFile != nullptr;
 }
 
 bool Field::hasMskFile() const
@@ -249,7 +249,7 @@ bool Field::hasAkaoListFile() const
 bool Field::hasFiles() const
 {
 	for(int i=0 ; i<files.size() ; ++i) {
-		if(hasFile((FileType)i)) {
+		if(hasFile(FileType(i))) {
 			return true;
 		}
 	}

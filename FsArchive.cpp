@@ -448,13 +448,13 @@ QByteArray FsArchive::fileData(const QString &path, bool uncompress, int uncompr
 {
 	FsHeader *header = getFile(path);
 	//	qDebug() << "fileData2" << path << uncompressed_size << fromFile << _isOpen;
-	return header!=NULL && fromFile && _isOpen ? header->data(&fs, uncompress, uncompressed_size) : QByteArray();
+	return header!=nullptr && fromFile && _isOpen ? header->data(&fs, uncompress, uncompressed_size) : QByteArray();
 }
 
 void FsArchive::setFileData(const QString &path, QByteArray &fs_data, const QByteArray &new_data)
 {
 	FsHeader *header = getFile(path);
-	if(header!=NULL) {
+	if(header!=nullptr) {
 		changePositions(header, header->setData(fs_data, new_data));
 	}
 }
