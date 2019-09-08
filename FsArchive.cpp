@@ -414,13 +414,13 @@ bool FsArchive::setFilePath(QString path, const QString &newPath)
 quint32 FsArchive::uncompressedFileSize(const QString &path) const
 {
 	FsHeader *header = getFile(path);
-	return header!=nullptr ? header->uncompressed_size() : -1;
+	return header!=nullptr ? header->uncompressed_size() : quint32(-1);
 }
 
 quint32 FsArchive::filePosition(const QString &path) const
 {
 	FsHeader *header = getFile(path);
-	return header!=nullptr ? header->position() : -1;
+	return header!=nullptr ? header->position() : quint32(-1);
 }
 
 void FsArchive::setFilePosition(const QString &path, quint32 position)

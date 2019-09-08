@@ -50,7 +50,7 @@ bool MskFile::open(const QByteArray &msk)
 
 	memcpy(&count, mskData, 4);
 
-	if((quint32)msk.size() != 4 + count * 24) {
+	if(quint32(msk.size()) != 4 + count * 24) {
 		qWarning() << "msk invalid size" << count << msk.size();
 		return false;
 	}
@@ -68,7 +68,7 @@ bool MskFile::open(const QByteArray &msk)
 
 bool MskFile::save(QByteArray &msk)
 {
-	quint32 count = vertices.size();
+	qint32 count = vertices.size();
 	msk.append((char *)&count, 4);
 
 	foreach(Vertex_s *vertex, vertices) {
@@ -85,7 +85,7 @@ int MskFile::cameraPositionCount() const
 
 Vertex_s *MskFile::cameraPosition(int frame) const
 {
-	return vertices.value(frame, NULL);
+	return vertices.value(frame, nullptr);
 }
 
 void MskFile::setCameraPosition(int frame, Vertex_s camPos[4])

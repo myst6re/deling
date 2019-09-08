@@ -55,7 +55,7 @@ Field *FieldArchive::getField(int id) const
 //	}
 //	if(!field->isOpen())	return NULL;
 
-	return fields.value(id, NULL);
+	return fields.value(id, nullptr);
 }
 
 Field *FieldArchive::getFieldFromMapId(int mapId) const
@@ -77,7 +77,7 @@ int FieldArchive::nbFields() const
 
 CharaModel *FieldArchive::getModel(int id) const
 {
-	return models.value(id, NULL);
+	return models.value(id, nullptr);
 }
 
 QHash<int, CharaModel *> *FieldArchive::getModels()

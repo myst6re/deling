@@ -79,6 +79,7 @@ private slots:
 	void bgPage();
 	void setCurrentPage(int index);
 	void fullScreen();
+	void setGameLang(QAction *action);
 signals:
 	void fieldIdChanged(int);
 private:
@@ -88,6 +89,7 @@ private:
 	bool openJsmFile(const QString &);
 	bool openIsoArchive(const QString &);
 	void setReadOnly(bool);
+	void buildGameLangMenu(const QStringList &langs);
 
 	FieldArchive *fieldArchive;
 	FieldPC *field;
@@ -105,7 +107,8 @@ private:
 	QAction *actionClose;
 	QAction *actionFind;
 	QAction *actionRun;
-	QMenu *menuLang;
+	QAction *actionGameLang;
+	QMenu *menuGameLang;
 	QAction *actionEncode;
 	QToolBar *toolBar;
 	QList<PageWidget *> pageWidgets;

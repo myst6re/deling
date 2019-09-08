@@ -65,7 +65,7 @@ FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	connect(pathWidget, SIGNAL(returnPressed()), SLOT(openDir()));
 	connect(preview, SIGNAL(currentPaletteChanged(int)), SLOT(changeImagePaletteInPreview(int)));
 
-	if(fsArchive!=NULL && fsArchive->dirExists("c:\\ff8\\data\\"))
+	if(fsArchive!=nullptr && fsArchive->dirExists("c:\\ff8\\data\\"))
 		openDir("c:\\ff8\\data\\");
 	else
 		openDir(QString());
@@ -159,7 +159,7 @@ void FsDialog::generatePreview()
 	}
 	else if(fileType == "tdw")
 	{
-		preview->imagePreview(QPixmap::fromImage(TdwFile::image(data, (TdwFile::Color)currentPal)), fileName, currentPal, 8);
+		preview->imagePreview(QPixmap::fromImage(TdwFile::image(data, TdwFile::Color(currentPal))), fileName, currentPal, 8);
 	}
 	else if(fileType == "map" || fileType == "mim")
 	{
@@ -208,7 +208,7 @@ void FsDialog::changeImagePaletteInPreview(int palID)
 
 void FsDialog::openDir(const QString &name)
 {
-	if(fsArchive==NULL)	return;
+	if(fsArchive==nullptr)	return;
 
 	QMap<QString, FsHeader *> files = fsArchive->fileList(name);
 	QList<QTreeWidgetItem *> items;
@@ -231,7 +231,7 @@ void FsDialog::openDir(const QString &name)
 		QString file = i.key();
 		FsHeader *header = i.value();
 
-		if(header == NULL) {
+		if(header == nullptr) {
 			item = new TreeWidgetItem(QStringList() << file);
 			item->setData(0, FILE_TYPE_ROLE, DIR);
 			item->setData(0, FILE_NAME_ROLE, file);
@@ -246,7 +246,7 @@ void FsDialog::openDir(const QString &name)
 				compression = tr("LZ4");
 				break;
 			case FiCompression::CompressionLzs:
-				compression = tr("LZ4");
+				compression = tr("LZS");
 				break;
 			case FiCompression::CompressionUnknown:
 				compression = tr("Inconnu");
@@ -273,7 +273,7 @@ void FsDialog::openDir(const QString &name)
 	for(int j=0 ; j<list->topLevelItemCount() ; ++j) {
 		QCoreApplication::processEvents();
 		QTreeWidgetItem *item = list->topLevelItem(j);
-		if(item == NULL)	break;
+		if(item == nullptr)	break;
 
 		if(item->data(0, FILE_TYPE_ROLE).toInt()==FILE) {
 			item->setIcon(0, list->getFileIcon(item->text(0)));
@@ -314,7 +314,7 @@ QStringList FsDialog::listFilesInDir(QString dirPath)
 		QString file = i.key();
 		FsHeader *header = i.value();
 
-		if(header == NULL) {
+		if(header == nullptr) {
 			filesInDir.append(listFilesInDir(dirPath + file));
 		}
 		else {
@@ -380,7 +380,7 @@ void FsDialog::replace(QString source, QString destination)
 //	bool compress;
 	QTreeWidgetItem *item = list->currentItem();
 
-	if(item == NULL)	return;
+	if(item == nullptr)	return;
 
 	bool isDir = item->data(0, FILE_TYPE_ROLE).toInt() == DIR;
 
@@ -532,7 +532,7 @@ void FsDialog::remove(QStringList destinations)
 void FsDialog::rename()
 {
 	QTreeWidgetItem *item = list->currentItem();
-	if(item==NULL)	return;
+	if(item==nullptr)	return;
 
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable);
 	list->editItem(item, 0);

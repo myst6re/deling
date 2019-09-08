@@ -334,7 +334,7 @@ QByteArray IsoArchiveIO::readIso(qint64 maxSize)
 
 	QByteArray baData(data, readIso(data, maxSize));
 
-	delete data;
+	delete[] data;
 
 	return baData;
 }

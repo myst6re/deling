@@ -41,7 +41,7 @@ HeaderPS::HeaderPS(const HeaderPS &other) :
 
 HeaderPS::~HeaderPS()
 {
-	delete posSections;
+	delete[] posSections;
 }
 
 bool HeaderPS::isValid(int size) const
