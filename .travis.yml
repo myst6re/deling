@@ -8,9 +8,9 @@ install:
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
          lsb_release -a
       && sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
-      && sudo apt-add-repository -y ppa:beineri/opt-qt-5.11.3-xenial
+      && sudo apt-add-repository -y ppa:beineri/opt-qt-5.10.1-xenial
       && sudo apt-get -qq update
-      && sudo apt-get -qq install -y --force-yes g++-4.9 libc6-i386 freeglut3-dev liblz4-dev qt511tools qt511base qt511translations qt511imageformats
+      && sudo apt-get -qq install -y --force-yes g++-4.9 libc6-i386 freeglut3-dev liblz4-dev qt510tools qt510base qt510translations qt510imageformats
       && export CXX="g++-4.9"
       && export CC="gcc-4.9"
       ;
