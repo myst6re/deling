@@ -19,7 +19,6 @@ install:
       && export HOMEBREW_NO_INSTALL_CLEANUP=1
       && brew install freeglut qt5 lz4
       && chmod -R 755 /usr/local/opt/qt5/*
-      && export CXX="clang++"
       ;
     fi
 
@@ -28,10 +27,8 @@ before_script:
       QTDIR="/opt/qt511";
     else
       QTDIR="/usr/local/opt/qt5";
-      echo "$LIBRARY_PATH";
-      echo "$CPATH";
-      export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix lz4)/lib";
-      export CPATH="$CPATH:$(brew --prefix lz4)/include";
+      export LIBRARY_PATH="$(brew --prefix lz4)/lib";
+      export CPATH="$(brew --prefix lz4)/include";
     fi
   - export PATH="$QTDIR/bin:$PATH"
   - mkdir -p build
