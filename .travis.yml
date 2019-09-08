@@ -8,15 +8,15 @@ install:
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
          lsb_release -a
       && sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
-      && sudo apt-add-repository -y ppa:beineri/opt-qt562
+      && sudo apt-add-repository -y ppa:beineri/opt-qt-5.11.3-xenial
       && sudo apt-get -qq update
-      && sudo apt-get -qq install -y --force-yes g++-4.9 libc6-i386 freeglut3-dev liblz4-dev qt56tools qt56base qt56translations qt56imageformats
+      && sudo apt-get -qq install -y --force-yes g++-4.9 libc6-i386 freeglut3-dev liblz4-dev qt511tools qt511base qt511translations qt511imageformats
       && export CXX="g++-4.9"
       && export CC="gcc-4.9"
       ;
     else
          brew update > /dev/null
-      && brew install homebrew/x11/freeglut
+      && brew install freeglut
       && brew install qt5
       && brew install lz4
       && chmod -R 755 /usr/local/opt/qt5/*
