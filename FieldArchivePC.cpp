@@ -18,7 +18,7 @@
 #include "FieldArchivePC.h"
 
 FieldArchivePC::FieldArchivePC()
-	: FieldArchive(), archive(0)
+    : FieldArchive(), archive(nullptr)
 {
 }
 
@@ -248,7 +248,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 			}
 
 			FsArchive *fieldHeader = ((FieldPC *)field)->getArchiveHeader();
-			if(fieldHeader != NULL) {
+			if(fieldHeader != nullptr) {
 				oldFields.insert(field, fieldHeader->getHeader());
 			}
 

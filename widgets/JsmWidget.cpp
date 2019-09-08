@@ -66,8 +66,8 @@ void JsmWidget::build()
 
 	tabBar = new QTabBar(this);
 	tabBar->setDrawBase(false);
-	tabBar->addTab(tr("Instructions"));
 	tabBar->addTab(tr("Pseudo-code"));
+	tabBar->addTab(tr("Instructions"));
 
 	PlainTextEdit *te = new PlainTextEdit(this);
 	textEdit = te->textEdit();
@@ -294,7 +294,7 @@ void JsmWidget::fillTextEdit()
 
 	list2->scrollToItem(list2->currentItem());
 
-	if(tabBar->currentIndex() > 0) {
+	if(tabBar->currentIndex() <= 0) {
 		toolBar->setEnabled(false);
 		textEdit->setReadOnly(true);
 		highlighter->setPseudoCode(true);
@@ -638,7 +638,7 @@ void JsmWidget::gotoScript(int groupID, int methodID, int opcodeID)
 	if(!isBuilded())	build();
 
 	// Force opcode list
-	tabBar->setCurrentIndex(0);
+	tabBar->setCurrentIndex(1);
 
 	QList<QTreeWidgetItem *> items = list1->findItems(QString("%1").arg(groupID, 3), Qt::MatchExactly);
 	QTreeWidgetItem *item;

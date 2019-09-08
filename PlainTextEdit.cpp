@@ -46,6 +46,8 @@ void PlainTextEditPriv::mouseMoveEvent(QMouseEvent *event)
 
 		emit lineHovered(currentBlock.text(), QPoint(margin, event->pos().y() + i + margin));
 	}
+
+	QPlainTextEdit::mouseMoveEvent(event);
 }
 
 PlainTextEdit::PlainTextEdit(QWidget *parent) :

@@ -79,11 +79,17 @@ bool FieldPC::open(const QString &path)
 	}
 
 	QRegExp pathReg("^" + QRegExp::escape("C:\\ff8\\Data\\") + "(\\w+)" + QRegExp::escape("\\FIELD\\mapdata\\") + "(\\w+)" + QRegExp::escape("\\") + "(\\w+)" + QRegExp::escape("\\"), Qt::CaseInsensitive);
-	FsHeader *inf_infos = header->getFile("*.inf");
-	if(!inf_infos || pathReg.indexIn(inf_infos->path()) == -1) {
-		qWarning() << "fieldData not opened wrong path" << inf_infos->path();
+	FsHeader *infInfos = header->getFile("*.inf");
+
+	if(!infInfos || pathReg.indexIn(infInfos->path()) == -1) {
+		if(infInfos) {
+			qWarning() << "fieldData not opened wrong path" << infInfos->path();
+		} else {
+			qWarning() << "fieldData not opened" << path;
+		}
 		return false;
 	}
+
 	_lang = pathReg.capturedTexts().at(1);
 	_subDir = pathReg.capturedTexts().at(2);
 	setName(pathReg.capturedTexts().at(3));
@@ -213,15 +219,19 @@ bool FieldPC::open(FsArchive *archive)
 	if(header)	delete header;
 
 	QRegExp pathReg("^" + QRegExp::escape("C:\\ff8\\Data\\") + "(\\w+)" + QRegExp::escape("\\FIELD\\mapdata\\") + "(\\w+)" + QRegExp::escape("\\"), Qt::CaseInsensitive);
-	FsHeader *fl_infos = archive->getFile("*"%name()%".fl");
-	if(!fl_infos || pathReg.indexIn(fl_infos->path()) == -1) {
-		qWarning() << "fieldData not opened" << name() << "wrong path" << fl_infos->path();
+	FsHeader *flInfos = archive->getFile("*"%name()%".fl");
+	if(!flInfos || pathReg.indexIn(flInfos->path()) == -1) {
+		if(flInfos) {
+			qWarning() << "fieldData not opened" << name() << "wrong path" << flInfos->path();
+		} else {
+			qWarning() << "fieldData not opened" << name() << archive->path();
+		}
 		return false;
 	}
 	_lang = pathReg.capturedTexts().at(1);
 	_subDir = pathReg.capturedTexts().at(2);
 
-	header = new FsArchive(archive->fileData(fl_infos->path()), archive->fileData("*"%name()%".fi"));
+	header = new FsArchive(archive->fileData(flInfos->path()), archive->fileData("*"%name()%".fi"));
 	if(!header->isOpen()) {
 		qWarning() << "fieldData not opened" << name();
 		delete header;
