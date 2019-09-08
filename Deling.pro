@@ -220,11 +220,12 @@ RESOURCES += Deling.qrc
     }
 }
 
+INCLUDEPATH += lz4
+
 # include lz4
 !win32 {
     LIBS += -llz4
 } else {
-    INCLUDEPATH += lz4
     LIBS += $$_PRO_FILE_PWD_/lz4/liblz4.lib
 }
 
