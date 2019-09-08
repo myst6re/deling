@@ -16,13 +16,12 @@ install:
       ;
     else
          export HOMEBREW_NO_INSTALL_CLEANUP=1
-      && brew update > /dev/null
       && brew install freeglut
       && brew install qt5
       && brew install lz4
+      && brew install tree
       && chmod -R 755 /usr/local/opt/qt5/*
-      && ls "$(brew --prefix lz4)"
-      && (tree "$(brew --prefix lz4)" || true)
+      && tree "$(brew --prefix lz4)"
       ;
     fi
 
@@ -33,6 +32,10 @@ before_script:
       QTDIR="/usr/local/opt/qt5";
     fi
   - export PATH="$QTDIR/bin:$PATH"
+  - if [ "${TRAVIS_OS_NAME}" != "linux" ]; then
+         export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix lz4)/lib"
+      && export CPATH="$CPATH:$(brew --prefix lz4)/include"
+    fi
   - mkdir -p build
   - cd build
   - qmake -config release ..
