@@ -33,7 +33,7 @@ FsWidget::FsWidget(QWidget *parent) :
 	setAcceptDrops(true);
 	setIndentation(0);
 	setUniformRowHeights(true);
-	setHeaderLabels(QStringList() << tr("Fichiers") << tr("Taille") << tr("Compressé ?"));
+	setHeaderLabels(QStringList() << tr("Fichiers") << tr("Taille") << tr("Compression"));
 	setSortingEnabled(true);
 	sortByColumn(0, Qt::AscendingOrder);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);

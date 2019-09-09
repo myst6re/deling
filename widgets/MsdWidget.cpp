@@ -472,7 +472,7 @@ void MsdWidget::changeXCoord(int x)
 	int textID = textList->currentItem()->data(Qt::UserRole).toInt();
 	int winID = textPreview->getCurrentWin()-1;
 	FF8Window ff8Window = textPreview->getWindow();
-	if(ff8Window.x != x) {
+	if(ff8Window.x >= 0 && ff8Window.x != x) {
 		ff8Window.x = x;
 
 		//		qDebug() << "changeXCoord()" << x << textID << winID;
@@ -490,7 +490,7 @@ void MsdWidget::changeYCoord(int y)
 	int textID = textList->currentItem()->data(Qt::UserRole).toInt();
 	int winID = textPreview->getCurrentWin()-1;
 	FF8Window ff8Window = textPreview->getWindow();
-	if(ff8Window.y != y) {
+	if(ff8Window.y >= 0 && ff8Window.y != y) {
 		ff8Window.y = y;
 
 		//		qDebug() << "changeYCoord()" << y << textID << winID;
@@ -527,8 +527,21 @@ void MsdWidget::updateCurrentText()
 void MsdWidget::updateWindowCoord()
 {
 	FF8Window ff8Win = textPreview->getWindow();
-	xCoord->setValue(ff8Win.x);
-	yCoord->setValue(ff8Win.y);
+	if(ff8Win.x < 0) {
+		xCoord->setEnabled(false);
+		xCoord->setValue(0);
+	} else {
+		xCoord->setEnabled(true);
+		xCoord->setValue(ff8Win.x);
+	}
+
+	if(ff8Win.y < 0) {
+		yCoord->setEnabled(false);
+		yCoord->setValue(0);
+	} else {
+		yCoord->setEnabled(true);
+		yCoord->setValue(ff8Win.y);
+	}
 }
 
 void MsdWidget::updateText()

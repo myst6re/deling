@@ -27,12 +27,17 @@ public:
 	BGPreview(QWidget *parent=0);
 
 	virtual void clear();
+	void setWithClick(bool enabled) {
+		_withClick = enabled;
+	}
 public slots:
 	void fill(const QPixmap &background);
 signals:
 	void triggered();
 protected:
 	void mouseReleaseEvent(QMouseEvent *);
+private:
+	bool _withClick;
 };
 
 #endif

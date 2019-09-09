@@ -144,11 +144,18 @@ private:
 	int absoluteMethodID(int groupID, int methodID) const;
 	void shiftGroupsAfter(int groupID, int methodID, int shiftGroup, int shiftScript);
 	void shiftScriptsAfter(int groupID, int methodID, int shift);
-	static JsmProgram program(QList<JsmOpcode *>::const_iterator it,
+	static void mergeAndConditions(JsmControl *control, int pos, int posEnd,
+	                               QSet<void *> &collectPointers,
+	                               QSet<int> &usedLabels);
+	static JsmProgram program(const QList<JsmOpcode *>::const_iterator &constBegin, 
+	                          QList<JsmOpcode *>::const_iterator it,
 	                          const QList<JsmOpcode *>::const_iterator &end,
-	                          QSet<void *> &collectPointers);
+	                          const QList<int> &labels,
+	                          QSet<void *> &collectPointers,
+	                          QSet<int> &usedLabels);
 	static JsmProgram &program2ndPass(JsmProgram &program,
-	                                  QSet<void *> &collectPointers);
+	                                  QSet<void *> &collectPointers,
+	                                  const QSet<int> &usedLabels);
 
 	QList<JsmGroup> groupList;
 	QList<JsmScript> scriptList;

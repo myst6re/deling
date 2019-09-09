@@ -134,12 +134,14 @@ QWidget *Search::scriptPageWidget()
 	typeScriptChoice->addItem(tr("Opcode"));
 	typeScriptChoice->addItem(tr("Variable"));
 	typeScriptChoice->addItem(tr("Exécution"));
+	typeScriptChoice->addItem(tr("Saut d'écran"));
 
 	scriptStacked = new QStackedWidget(ret);
 	scriptStacked->addWidget(scriptPageWidget1());
 	scriptStacked->addWidget(scriptPageWidget2());
 	scriptStacked->addWidget(scriptPageWidget3());
 	scriptStacked->addWidget(scriptPageWidget4());
+	scriptStacked->addWidget(scriptPageWidget5());
 
 	QVBoxLayout *layout = new QVBoxLayout(ret);
 	layout->addWidget(typeScriptChoice);
@@ -224,6 +226,20 @@ QWidget *Search::scriptPageWidget4()
 	layout->addWidget(new QLabel(tr("Label"),ret), 0, 1);
 	layout->addWidget(selectScriptGroup, 1, 0);
 	layout->addWidget(selectScriptLabel, 1, 1);
+
+	return ret;
+}
+
+QWidget *Search::scriptPageWidget5()
+{
+	QWidget *ret = new QWidget(this);
+
+	selectMap = new QSpinBox(ret);
+	selectMap->setRange(0, 65535);
+
+	QHBoxLayout *layout = new QHBoxLayout(ret);
+	layout->addWidget(new QLabel(tr("Écran id"),ret));
+	layout->addWidget(selectMap);
 
 	return ret;
 }
@@ -406,15 +422,25 @@ bool Search::findNextScript()
 		found = fieldArchive->searchScriptText(regexp(), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 1) {
-		found = fieldArchive->searchScript(1, searchOpcode->currentIndex() | (searchOpcodeValue->value() << 16), fieldID, groupID, methodID, opcodeID, sort);
+		found = fieldArchive->searchScript(JsmFile::SearchOpcode, searchOpcode->currentIndex() | (searchOpcodeValue->value() << 16), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 2) {
-		found = fieldArchive->searchScript(2, (popScriptVar->isChecked() << 31) | (selectScriptVar->currentIndex() & 0x7FFFFFFF), fieldID, groupID, methodID, opcodeID, sort);
+		found = fieldArchive->searchScript(JsmFile::SearchVar, (popScriptVar->isChecked() << 31) | (selectScriptVar->currentIndex() & 0x7FFFFFFF), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 3) {
 		Field *field = fieldArchive->getField(fieldID);
 		if(field != NULL && field->hasJsmFile()) {
-			found = field->getJsmFile()->search(3, (selectScriptGroup->value() & 0xFFFF) | ((selectScriptLabel->value() & 0xFFFF) << 16), groupID, methodID, opcodeID);
+			found = field->getJsmFile()->search(JsmFile::SearchExec, (selectScriptGroup->value() & 0xFFFF) | ((selectScriptLabel->value() & 0xFFFF) << 16), groupID, methodID, opcodeID);
+		}
+		if(!found) {
+			groupID = methodID = opcodeID = 0;
+			return false;
+		}
+	}
+	else if(typeScriptChoice->currentIndex() == 4) {
+		Field *field = fieldArchive->getField(fieldID);
+		if(field != NULL && field->hasJsmFile()) {
+			found = field->getJsmFile()->search(JsmFile::SearchMapJump, (selectScriptGroup->value() & 0xFFFF) | ((selectScriptLabel->value() & 0xFFFF) << 16), groupID, methodID, opcodeID);
 		}
 		if(!found) {
 			groupID = methodID = opcodeID = 0;
@@ -447,13 +473,16 @@ bool Search::findPrevScript()
 		found = fieldArchive->searchScriptTextReverse(regexp(), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 1) {
-		found = fieldArchive->searchScriptReverse(1, searchOpcode->currentIndex(), fieldID, groupID, methodID, opcodeID, sort);
+		found = fieldArchive->searchScriptReverse(JsmFile::SearchOpcode, searchOpcode->currentIndex(), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 2) {
-		found = fieldArchive->searchScriptReverse(2, (popScriptVar->isChecked() << 31) | (selectScriptVar->currentIndex() & 0x7FFFFFFF), fieldID, groupID, methodID, opcodeID, sort);
+		found = fieldArchive->searchScriptReverse(JsmFile::SearchVar, (popScriptVar->isChecked() << 31) | (selectScriptVar->currentIndex() & 0x7FFFFFFF), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 3) {
-		found = fieldArchive->searchScriptReverse(3, selectScriptGroup->value() | (selectScriptLabel->value() << 16), fieldID, groupID, methodID, opcodeID, sort);
+		found = fieldArchive->searchScriptReverse(JsmFile::SearchExec, selectScriptGroup->value() | (selectScriptLabel->value() << 16), fieldID, groupID, methodID, opcodeID, sort);
+	}
+	else if(typeScriptChoice->currentIndex() == 4) {
+		found = fieldArchive->searchScriptReverse(JsmFile::SearchMapJump, selectScriptGroup->value() | (selectScriptLabel->value() << 16), fieldID, groupID, methodID, opcodeID, sort);
 	}
 
 	if(found)

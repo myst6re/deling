@@ -65,7 +65,7 @@ FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	connect(pathWidget, SIGNAL(returnPressed()), SLOT(openDir()));
 	connect(preview, SIGNAL(currentPaletteChanged(int)), SLOT(changeImagePaletteInPreview(int)));
 
-	if(fsArchive!=NULL && fsArchive->dirExists("c:\\ff8\\data\\"))
+	if(fsArchive!=nullptr && fsArchive->dirExists("c:\\ff8\\data\\"))
 		openDir("c:\\ff8\\data\\");
 	else
 		openDir(QString());
@@ -159,14 +159,14 @@ void FsDialog::generatePreview()
 	}
 	else if(fileType == "tdw")
 	{
-		preview->imagePreview(QPixmap::fromImage(TdwFile::image(data, (TdwFile::Color)currentPal)), fileName, currentPal, 8);
+		preview->imagePreview(QPixmap::fromImage(TdwFile::image(data, TdwFile::Color(currentPal))), fileName, currentPal, 8);
 	}
 	else if(fileType == "map" || fileType == "mim")
 	{
 		QString filePathWithoutExt = filePath.left(filePath.size()-3);
 		BackgroundFile backgroundFile;
 		backgroundFile.open(fileType == "map" ? data : fsArchive->fileData(filePathWithoutExt+"map"),
-					 fileType == "mim" ? data : fsArchive->fileData(filePathWithoutExt+"mim"));
+		             fileType == "mim" ? data : fsArchive->fileData(filePathWithoutExt+"mim"));
 		preview->imagePreview(QPixmap::fromImage(backgroundFile.background()), fileName);
 	}
 	else if(fileType == "cnf")
@@ -208,7 +208,7 @@ void FsDialog::changeImagePaletteInPreview(int palID)
 
 void FsDialog::openDir(const QString &name)
 {
-	if(fsArchive==NULL)	return;
+	if(fsArchive==nullptr)	return;
 
 	QMap<QString, FsHeader *> files = fsArchive->fileList(name);
 	QList<QTreeWidgetItem *> items;
@@ -231,7 +231,7 @@ void FsDialog::openDir(const QString &name)
 		QString file = i.key();
 		FsHeader *header = i.value();
 
-		if(header == NULL) {
+		if(header == nullptr) {
 			item = new TreeWidgetItem(QStringList() << file);
 			item->setData(0, FILE_TYPE_ROLE, DIR);
 			item->setData(0, FILE_NAME_ROLE, file);
@@ -240,7 +240,22 @@ void FsDialog::openDir(const QString &name)
 			items.append(item);
 		}
 		else {
-			item = new TreeWidgetItem(QStringList() << file << QString::number(header->uncompressed_size()) << (header->isCompressed() ? tr("Oui") : tr("Non")));
+			QString compression;
+			switch(header->compression()) {
+			case FiCompression::CompressionLz4:
+				compression = tr("LZ4");
+				break;
+			case FiCompression::CompressionLzs:
+				compression = tr("LZS");
+				break;
+			case FiCompression::CompressionUnknown:
+				compression = tr("Inconnu");
+				break;
+			case FiCompression::CompressionNone:
+				compression = tr("Non");
+				break;
+			}
+			item = new TreeWidgetItem(QStringList() << file << QString::number(header->uncompressedSize()) << compression);
 			item->setData(0, FILE_TYPE_ROLE, FILE);
 			item->setData(0, FILE_NAME_ROLE, file);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
@@ -258,7 +273,7 @@ void FsDialog::openDir(const QString &name)
 	for(int j=0 ; j<list->topLevelItemCount() ; ++j) {
 		QCoreApplication::processEvents();
 		QTreeWidgetItem *item = list->topLevelItem(j);
-		if(item == NULL)	break;
+		if(item == nullptr)	break;
 
 		if(item->data(0, FILE_TYPE_ROLE).toInt()==FILE) {
 			item->setIcon(0, list->getFileIcon(item->text(0)));
@@ -299,7 +314,7 @@ QStringList FsDialog::listFilesInDir(QString dirPath)
 		QString file = i.key();
 		FsHeader *header = i.value();
 
-		if(header == NULL) {
+		if(header == nullptr) {
 			filesInDir.append(listFilesInDir(dirPath + file));
 		}
 		else {
@@ -362,10 +377,9 @@ void FsDialog::extract(QStringList sources)
 
 void FsDialog::replace(QString source, QString destination)
 {
-//	bool compress;
 	QTreeWidgetItem *item = list->currentItem();
 
-	if(item == NULL)	return;
+	if(item == nullptr)	return;
 
 	bool isDir = item->data(0, FILE_TYPE_ROLE).toInt() == DIR;
 
@@ -387,12 +401,10 @@ void FsDialog::replace(QString source, QString destination)
 	}
 
 	ProgressWidget progress(tr("Remplacement..."), ProgressWidget::Cancel, this);
-
-//	compress = fsArchive->fileIsCompressed(destination) && QMessageBox::question(this, tr("Compression"), tr("Voulez-vous compresser le fichier ?"), tr("Oui"), tr("Non")) == 0;
 	FsArchive::Error error;
 
 	if (isDir) {
-		QList<FsArchive::Error> errors = fsArchive->replaceDir(source, destination, true, &progress);
+		QList<FsArchive::Error> errors = fsArchive->replaceDir(source, destination, FiCompression::CompressionLzs, &progress);
 		if (errors.isEmpty()) {
 			error = FsArchive::Ok;
 		} else {
@@ -435,7 +447,7 @@ void FsDialog::add(QStringList sources, bool fromDir)
 {
 	QStringList destinations;
 	QString source, destination;
-	bool compress;
+	FiCompression compress;
 	int i, nbFiles;
 
 	nbFiles = sources.size();
@@ -445,7 +457,10 @@ void FsDialog::add(QStringList sources, bool fromDir)
 		destinations.append(currentPath % source.mid(source.lastIndexOf('/')+1));
 	}
 
-	compress = QMessageBox::question(this, tr("Compression"), tr("Voulez-vous compresser le(s) fichier(s) ?"), tr("Oui"), tr("Non")) == 0;
+	compress = compressionMessage(this);
+	if(compress == CompressionUnknown) {
+		return;
+	}
 
 	ProgressWidget progress(tr("Ajout..."), ProgressWidget::Stop, this);
 	QList<FsArchive::Error> errors;
@@ -517,7 +532,7 @@ void FsDialog::remove(QStringList destinations)
 void FsDialog::rename()
 {
 	QTreeWidgetItem *item = list->currentItem();
-	if(item==NULL)	return;
+	if(item==nullptr)	return;
 
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable);
 	list->editItem(item, 0);
@@ -569,4 +584,34 @@ void FsDialog::renameOK(QTreeWidgetItem *item, int column)
 		list->scrollToItem(item);
 	}
 	list->blockSignals(false);
+}
+
+FiCompression FsDialog::compressionMessage(QWidget *parent)
+{
+	QMessageBox msgBox(QMessageBox::Information,
+	                   tr("Compression"),
+	                   tr("Voulez-vous compresser le(s) fichier(s) ?"),
+	                   QMessageBox::NoButton, parent);
+	QPushButton *lzs = msgBox.addButton(tr("LZS"), QMessageBox::YesRole);
+	QPushButton *lz4 = msgBox.addButton(tr("LZ4 (FF8 Remaster)"), QMessageBox::YesRole);
+	QPushButton *no = msgBox.addButton(tr("Non"), QMessageBox::NoRole);
+	QPushButton *cancel = msgBox.addButton(tr("Annuler"), QMessageBox::RejectRole);
+
+	msgBox.setDefaultButton(lzs);
+	msgBox.setEscapeButton(cancel);
+
+	if(msgBox.exec() == -1) {
+		return CompressionUnknown;
+	}
+	if(msgBox.clickedButton() == lzs) {
+		return CompressionLzs;
+	}
+	if(msgBox.clickedButton() == lz4) {
+		return CompressionLz4;
+	}
+	if(msgBox.clickedButton() == no) {
+		return CompressionNone;
+	}
+
+	return CompressionUnknown;
 }

@@ -65,7 +65,8 @@ BackgroundFile::BackgroundFile() :
 {
 }
 
-bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim, QMultiMap<quint8, quint8> *defaultParams)
+bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim,
+                          const QMultiMap<quint8, quint8> *defaultParams)
 {
 	int mimSize = mim.size(), mapSize = map.size(), tilePos=0;
 	const char *constMapData = map.constData();
@@ -107,12 +108,8 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim, QMultiMa
 				        !allparams.contains(tile2.parameter, tile2.state)) {
 					allparams.insert(tile2.parameter, tile2.state);
 					// enable parameter only when state = 0
-					if(tile2.state == 0) {
-						if(!defaultParams) {
-							params.insert(tile2.parameter, tile2.state);
-						} else if(!defaultParams->contains(tile2.parameter)) {
-							defaultParams->insert(tile2.parameter, tile2.state);
-						}
+					if(!defaultParams && tile2.state == 0) {
+						params.insert(tile2.parameter, tile2.state);
 					}
 				}
 				layers.insert(tile2.layerID, true);

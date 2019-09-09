@@ -55,6 +55,7 @@ private:
 	void add(QStringList sources, bool fromDir = false);
 	void openDir(const QString &);
 	QStringList listFilesInDir(QString dirPath);
+	static FiCompression compressionMessage(QWidget *parent);
 
 	QToolBar *toolBar;
 	QAction *extractAction, *replaceAction, *_addFileAction, *_addDirAction, *removeAction, *renameAction;

@@ -45,6 +45,8 @@ public slots:
 	void setSelectedTriangle(int triangle);
 	void setSelectedDoor(int door);
 	void setSelectedGate(int gate);
+	void setLineToDraw(const Vertex_s vertex[2]);
+	void clearLineToDraw();
 private:
 	void computeFov();
 	void drawIdLine(int triangleID, const Vertex_sr &vertex1, const Vertex_sr &vertex2, qint16 access);
@@ -56,6 +58,8 @@ private:
 	int _selectedTriangle;
 	int _selectedDoor;
 	int _selectedGate;
+	bool _drawLine;
+	Vertex_s _lineToDrawPoint1, _lineToDrawPoint2;
 	double fovy;
 	Field *data;
 	QPoint moveStart;

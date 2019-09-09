@@ -19,13 +19,34 @@
 #define PLAINTEXTEDIT_H
 
 #include <QtWidgets>
+#include "PreviewWidget.h"
+
+class PlainTextEditPriv : public QPlainTextEdit
+{
+	Q_OBJECT
+public:
+	explicit PlainTextEditPriv(QWidget *parent = nullptr);
+	inline PreviewWidget *previewWidget() const {
+		return _overlay;
+	}
+signals:
+	void lineHovered(const QString &line, QPoint mousePos);
+private:
+	PreviewWidget *_overlay;
+	int _previousLineHovered;
+protected:
+	virtual void mouseMoveEvent(QMouseEvent *event);
+};
 
 class PlainTextEdit : public QWidget
 {
 	Q_OBJECT
 public:
-	explicit PlainTextEdit(QWidget *parent = 0);
-	QPlainTextEdit *textEdit();
+	explicit PlainTextEdit(QWidget *parent = nullptr);
+	PlainTextEditPriv *textEdit() const;
+	inline PreviewWidget *previewWidget() const {
+		return _textEdit->previewWidget();
+	}
 	QSize sizeHint() const;
 	inline QSize minimumSizeHint() const {
 		return sizeHint();
@@ -34,7 +55,7 @@ signals:
 	
 public slots:
 private:
-	QPlainTextEdit *_textEdit;
+	PlainTextEditPriv *_textEdit;
 protected:
 	virtual void paintEvent(QPaintEvent *event);
 	virtual bool eventFilter(QObject *obj, QEvent *event);

@@ -18,7 +18,7 @@
 #include "FieldArchivePC.h"
 
 FieldArchivePC::FieldArchivePC()
-	: FieldArchive(), archive(0)
+    : FieldArchive(), archive(nullptr)
 {
 }
 
@@ -111,7 +111,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 
 		if(!map.isEmpty())
 		{
-			Field *field = new FieldPC(map, entry, archive);
+			FieldPC *field = new FieldPC(map, entry, archive, Config::value("gameLang", "en").toString());
 			if(field->isOpen() && field->hasFiles()) {
 				if(field->hasJsmFile())
 					desc = Data::location(field->getJsmFile()->mapID());
@@ -248,7 +248,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 			}
 
 			FsArchive *fieldHeader = ((FieldPC *)field)->getArchiveHeader();
-			if(fieldHeader != NULL) {
+			if(fieldHeader != nullptr) {
 				oldFields.insert(field, fieldHeader->getHeader());
 			}
 
@@ -520,4 +520,34 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 	qDebug() << "save time" << t.elapsed();
 
 	return true;
+}
+
+QStringList FieldArchivePC::languages() const
+{
+	QStringList files = archive->toc();
+	QRegExp pathReg("_([a-z]+)\\.[a-z]+$", Qt::CaseInsensitive);
+	QStringList langs;
+	int stop = 10;
+
+	foreach(Field *field, fields) {
+		if (field->isPc() && field->isOpen()) {
+			FieldPC *fieldPC = (FieldPC *)field;
+
+			if (fieldPC->isMultiLanguage()) {
+				foreach(const QString &lang, fieldPC->languages()) {
+					if(!langs.contains(lang, Qt::CaseInsensitive)) {
+						langs.append(lang.toLower());
+					}
+				}
+
+				stop -= 1;
+
+				if (stop <= 0) {
+					break;
+				}
+			}
+		}
+	}
+
+	return langs;
 }

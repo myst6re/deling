@@ -1,14 +1,16 @@
 #include "JsmExpression.h"
 #include "Field.h"
 #include "Config.h"
+#include "Data.h"
 
 QString JsmInstruction::toString(const Field *field, int indent) const
 {
 	switch(type()) {
 	case Opcode:
 		return QString("%1%2")
-		        .arg(QString(indent, QChar('\t')),
-		             opcode()->toString());
+		        .arg(opcode() && opcode()->isLabel()
+		             ? "" : QString(indent, QChar('\t')),
+		             opcodeToString(opcode()));
 	case Expression:
 		return QString("%1%2")
 		        .arg(QString(indent, QChar('\t')),
@@ -23,6 +25,35 @@ QString JsmInstruction::toString(const Field *field, int indent) const
 	return QString(); // Never happen
 }
 
+int JsmInstruction::opcodeCount() const
+{
+	switch(type()) {
+	case Opcode:
+		return 1;
+	case Expression:
+		return expression()->opcodeCount();
+	case Control:
+		return control()->opcodeCount();
+	case Application:
+		return application()->opcodeCount();
+	}
+	return 0; // Never happen
+}
+
+QString JsmInstruction::opcodeToString(const JsmOpcode *opcode)
+{
+	if(!opcode) {
+		return "nil";
+	}
+	if(opcode->isLabel()) {
+		return QString("label %1").arg(opcode->param());
+	} else if(opcode->isGoto()) {
+		return QString("goto %1").arg(((JsmOpcodeGoto *)opcode)->label());
+	}
+	return QString("%1(%2)").arg(opcode->name().toLower(),
+	                             opcode->hasParam() ? opcode->paramStr() : "");
+}
+
 QStringList JsmProgram::toStringList(const Field *field, int indent) const
 {
 	QStringList ret;
@@ -32,6 +63,17 @@ QStringList JsmProgram::toStringList(const Field *field, int indent) const
 		if(!instrStr.isEmpty()) {
 			ret.append(instrStr);
 		}
+	}
+
+	return ret;
+}
+
+int JsmProgram::opcodeCount() const
+{
+	int ret = 0;
+
+	foreach(const JsmInstruction &instr, *this) {
+		ret += instr.opcodeCount();
 	}
 
 	return ret;
@@ -331,6 +373,8 @@ JsmExpressionBinary::Operation JsmExpressionBinary::logicalNot(bool *ok) const
 		return LogOr;
 	case LogOr:
 		return LogAnd;
+	default:
+		break;
 	}
 	if(ok) {
 		*ok = false;
@@ -418,8 +462,7 @@ QString JsmControlIfElse::toString(const Field *field, int indent,
 		if(_blockElse.size() == 1) {
 			const JsmInstruction &instr = _blockElse.first();
 			if (instr.type() == JsmInstruction::Control
-			        && instr.control()->type() ==
-			        JsmControl::IfElse) {
+			        && instr.control()->type() == JsmControl::IfElse) {
 				JsmControlIfElse *ifElse =
 				        static_cast<JsmControlIfElse *>(instr.control());
 				lines.append(indentString("else %1", indent)
@@ -488,10 +531,87 @@ QString JsmControlRepeatUntil::toString(const Field *field, int indent) const
 QStringList JsmApplication::stackToStringList(const Field *field) const
 {
 	QStringList params;
+	bool isText = false, isMap = false, isChara = false, isParty = false,
+	        isMagic = false;
 
+	switch(_opcode->key()) {
+	case JsmOpcode::AMESW:
+	case JsmOpcode::AMES:
+	case JsmOpcode::RAMESW:
+	case JsmOpcode::AASK:
+		isText = true;
+		break;
+	case JsmOpcode::MAPJUMP:
+	case JsmOpcode::MAPJUMP3:
+	case JsmOpcode::MAPJUMPO:
+	case JsmOpcode::PREMAPJUMP:
+	case JsmOpcode::PREMAPJUMP2:
+		isMap = true;
+		break;
+	case JsmOpcode::ADDPARTY:
+	case JsmOpcode::SUBPARTY:
+	case JsmOpcode::ISPARTY:
+	case JsmOpcode::ADDMEMBER:
+	case JsmOpcode::SUBMEMBER:
+	case JsmOpcode::ISMEMBER:
+	case JsmOpcode::SETDRESS:
+	case JsmOpcode::GETDRESS:
+	case JsmOpcode::SETPC:
+		isChara = true;
+		break;
+	case JsmOpcode::ADDMAGIC:
+		isMagic = isChara = true;
+		break;
+	case JsmOpcode::SETPARTY:
+		isParty = true;
+		break;
+	}
+
+	int i = 0;
 	QStack<JsmExpression *> stackCpy = _stack;
 	while(!stackCpy.isEmpty()) {
-		params.append(stackCpy.pop()->toString(field));
+		QString text;
+		JsmExpression *expr = stackCpy.pop();
+
+		if(isText || isMap || isChara || isParty) {
+			if(isText && i == 1) {
+				bool ok = false;
+				int id = expr->eval(&ok);
+
+				if (ok) {
+					text = QString("text_%1").arg(id);
+				}
+			} else if(isMap && i == 0) {
+				bool ok = false;
+				int id = expr->eval(&ok);
+
+				if (ok) {
+					text = QString("map_%1").arg(id);
+				}
+			} else if((isChara && i == 0) || isParty) {
+				bool ok = false;
+				int id = expr->eval(&ok);
+
+				if (ok) {
+					text = Data::name(id);
+				}
+			} else if(isMagic && i == 1) {
+				bool ok = false;
+				int id = expr->eval(&ok);
+
+				if (ok) {
+					text = Data::magic(id);
+				}
+			}
+
+			++i;
+		}
+
+		if (text.isEmpty()) {
+			text = expr->toString(field);
+		}
+
+		params.append(text);
 	}
 
 	return params;
@@ -501,7 +621,7 @@ QString JsmApplication::paramsToString(const Field *field) const
 {
 	QStringList params;
 
-	if(_opcode->hasParam()) {
+	if(_opcode && _opcode->hasParam()) {
 		params.append(_opcode->paramStr());
 	}
 
@@ -512,12 +632,26 @@ QString JsmApplication::paramsToString(const Field *field) const
 
 QString JsmApplication::toString(const Field *field) const
 {
-	return QString("%1(%2)").arg(_opcode->name().toLower(),
+	return QString("%1(%2)").arg(_opcode ? _opcode->name().toLower() : "nil",
 	                             paramsToString(field));
+}
+
+int JsmApplication::opcodeCount() const
+{
+	int ret = 1;
+
+	foreach(JsmExpression *expr, _stack) {
+		ret += expr->opcodeCount();
+	}
+
+	return ret;
 }
 
 JsmExpression *JsmApplicationAssignment::opcodeExpression() const
 {
+	if(!_opcode) {
+		return 0;
+	}
 	switch(_opcode->key()) {
 	case JsmOpcode::POPI_L:
 		return new JsmExpressionTemp(_opcode->param());
@@ -541,19 +675,44 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 	if(expr->type() == JsmExpression::Binary) {
 		JsmExpressionBinary *binaryExpr
 		        = static_cast<JsmExpressionBinary *>(expr);
-		if(opExpr->toString(field) ==
-		        binaryExpr->leftOperand()->toString(field)) {
+		JsmExpression *leftOp = binaryExpr->leftOperand(),
+		        *rightOp = binaryExpr->rightOperand();
+		if(opExpr->type() == leftOp->type()
+		        && (opExpr->type() == JsmExpression::Var
+		        && ((JsmExpressionVar *)opExpr)->var() ==
+		            ((JsmExpressionVar *)leftOp)->var()
+		         || ((JsmExpressionTemp *)opExpr)->temp() ==
+		            ((JsmExpressionTemp *)leftOp)->temp())) {
 			int base = 10;
 			if(binaryExpr->operation() == JsmExpressionBinary::And
 			        || binaryExpr->operation() == JsmExpressionBinary::Or
 			        || binaryExpr->operation() == JsmExpressionBinary::Eor) {
 				base = 16;
 			}
+			delete opExpr;
+			opExpr = leftOp;
 			ret = QString("%1 %2= %3")
 			      .arg(opExpr->toString(field),
 			           binaryExpr->operationToString(),
 			           JsmExpression::stripParenthesis(
-			               binaryExpr->rightOperand()->toString(field, base)));
+			               rightOp->toString(field, base)));
+			opExpr = nullptr;
+		} else if((binaryExpr->operation() == JsmExpressionBinary::Add
+		          || binaryExpr->operation() == JsmExpressionBinary::Mul)
+		          && opExpr->type() == rightOp->type()
+		          && (opExpr->type() == JsmExpression::Var
+		          && ((JsmExpressionVar *)opExpr)->var() ==
+		              ((JsmExpressionVar *)rightOp)->var()
+		           || ((JsmExpressionTemp *)opExpr)->temp() ==
+		              ((JsmExpressionTemp *)rightOp)->temp())) {
+			delete opExpr;
+			opExpr = rightOp;
+			ret = QString("%1 %2= %3")
+			      .arg(opExpr->toString(field),
+			           binaryExpr->operationToString(),
+			           JsmExpression::stripParenthesis(
+			               leftOp->toString(field, 10)));
+			opExpr = nullptr;
 		}
 	}
 	if(ret.isEmpty()) {
@@ -561,12 +720,17 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 		                             JsmExpression::stripParenthesis(
 		                                 expr->toString(field)));
 	}
-	delete opExpr;
+	if(opExpr != nullptr) {
+		delete opExpr;
+	}
 	return ret;
 }
 
 QString JsmApplicationExec::execType() const
 {
+	if(!_opcode) {
+		return QString();
+	}
 	switch(_opcode->key()) {
 	case JsmOpcode::REQ:
 		return QString();
@@ -582,6 +746,10 @@ QString JsmApplicationExec::execType() const
 
 QString JsmApplicationExec::toString(const Field *field) const
 {
+	if(!_opcode) {
+		return JsmApplication::toString(field);
+	}
+
 	QString groupName, methodName;
 	QStack<JsmExpression *> stackCpy = _stack;
 	bool ok;

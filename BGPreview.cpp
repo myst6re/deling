@@ -18,7 +18,7 @@
 #include "BGPreview.h"
 
 BGPreview::BGPreview(QWidget *parent) :
-	QLabel(parent)
+    QLabel(parent), _withClick(true)
 {
 	setAutoFillBackground(true);
 	setAlignment(Qt::AlignCenter);
@@ -31,7 +31,9 @@ BGPreview::BGPreview(QWidget *parent) :
 
 void BGPreview::fill(const QPixmap &background)
 {
-	setCursor(Qt::PointingHandCursor);
+	if(_withClick) {
+		setCursor(Qt::PointingHandCursor);
+	}
 
 	if(background.width()>width() || background.height()>height()) {
 		if(background.height()==height())
@@ -45,12 +47,16 @@ void BGPreview::fill(const QPixmap &background)
 
 void BGPreview::clear()
 {
-	setCursor(Qt::ArrowCursor);
+	if(_withClick) {
+		setCursor(Qt::ArrowCursor);
+	}
 	QLabel::clear();
 }
 
 void BGPreview::mouseReleaseEvent(QMouseEvent *event)
 {
-	if(event->button() == Qt::LeftButton)
-		emit triggered();
+	if(_withClick) {
+		if(event->button() == Qt::LeftButton)
+			emit triggered();
+	}
 }

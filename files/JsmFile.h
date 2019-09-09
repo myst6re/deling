@@ -48,7 +48,15 @@ struct JsmHeader {
 class JsmFile : public File
 {
 public:
-    JsmFile();
+	enum SearchType {
+		SearchText,
+		SearchOpcode,
+		SearchVar,
+		SearchExec,
+		SearchMapJump
+	};
+
+	JsmFile();
 	virtual ~JsmFile();
 
 	QString printCount();
@@ -77,8 +85,8 @@ public:
 
 	const JsmScripts &getScripts() const;
 
-	bool search(int type, quint64 value, int &groupID, int &methodID, int &opcodeID) const;
-	bool searchReverse(int type, quint64 value, int &groupID, int &methodID, int &opcodeID) const;
+	bool search(SearchType type, quint64 value, int &groupID, int &methodID, int &opcodeID) const;
+	bool searchReverse(SearchType type, quint64 value, int &groupID, int &methodID, int &opcodeID) const;
 	QList<int> searchAllVars() const;
 	QList<int> searchAllSpells(const QString &fieldName) const;
 	QList<int> searchAllCards(const QString &fieldName) const;
@@ -109,7 +117,7 @@ public:
 	static QStringList opcodeName;
 	static QStringList opcodeNameCalc;
 private:
-	bool search(int type, quint64 value, quint16 pos, int opcodeID) const;
+	bool search(SearchType type, quint64 value, quint16 pos, int opcodeID) const;
 	QString _toString(int position, int nbOpcode) const;
 	QString _toStringMore(int position, int nbOpcode, const Field *field) const;
 

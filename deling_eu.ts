@@ -7,7 +7,7 @@
         <location filename="BGPreview2.cpp" line="65"/>
         <source>Enregistrer l&apos;image</source>
         <oldsource>Enregistrer l&apos;irudia</oldsource>
-        <translation type="unfinished">Gorde irudia</translation>
+        <translation>Gorde irudia</translation>
     </message>
     <message>
         <location filename="BGPreview2.cpp" line="65"/>
@@ -57,7 +57,7 @@
     <message>
         <location filename="widgets/CharaWidget.cpp" line="67"/>
         <source>(Sans nom)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">(No Name)</translation>
     </message>
 </context>
 <context>
@@ -2067,8 +2067,8 @@
     <name>FsDialog</name>
     <message>
         <location filename="FsDialog.cpp" line="27"/>
-        <location filename="FsDialog.cpp" line="336"/>
-        <location filename="FsDialog.cpp" line="340"/>
+        <location filename="FsDialog.cpp" line="351"/>
+        <location filename="FsDialog.cpp" line="355"/>
         <source>Extraire</source>
         <translation>Atera</translation>
     </message>
@@ -2079,8 +2079,8 @@
     </message>
     <message>
         <location filename="FsDialog.cpp" line="29"/>
-        <location filename="FsDialog.cpp" line="382"/>
-        <location filename="FsDialog.cpp" line="384"/>
+        <location filename="FsDialog.cpp" line="397"/>
+        <location filename="FsDialog.cpp" line="399"/>
         <source>Remplacer</source>
         <translation>Birjarri</translation>
     </message>
@@ -2090,14 +2090,14 @@
         <translation type="obsolete">Ctrl+R</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="417"/>
-        <location filename="FsDialog.cpp" line="427"/>
+        <location filename="FsDialog.cpp" line="432"/>
+        <location filename="FsDialog.cpp" line="442"/>
         <source>Ajouter</source>
         <translation>Gehitu</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="34"/>
-        <location filename="FsDialog.cpp" line="503"/>
+        <location filename="FsDialog.cpp" line="518"/>
         <source>Supprimer</source>
         <translation>Kendu</translation>
     </message>
@@ -2117,35 +2117,34 @@
         <translation>Gurasoa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="243"/>
-        <location filename="FsDialog.cpp" line="448"/>
-        <location filename="FsDialog.cpp" line="465"/>
-        <location filename="FsDialog.cpp" line="503"/>
+        <location filename="FsDialog.cpp" line="463"/>
+        <location filename="FsDialog.cpp" line="480"/>
+        <location filename="FsDialog.cpp" line="518"/>
         <source>Oui</source>
         <oldsource>oui</oldsource>
         <translation>Bai</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="243"/>
-        <location filename="FsDialog.cpp" line="448"/>
-        <location filename="FsDialog.cpp" line="465"/>
-        <location filename="FsDialog.cpp" line="503"/>
+        <location filename="FsDialog.cpp" line="255"/>
+        <location filename="FsDialog.cpp" line="463"/>
+        <location filename="FsDialog.cpp" line="480"/>
+        <location filename="FsDialog.cpp" line="518"/>
         <source>Non</source>
         <translation>Ez</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="348"/>
-        <location filename="FsDialog.cpp" line="357"/>
+        <location filename="FsDialog.cpp" line="363"/>
+        <location filename="FsDialog.cpp" line="372"/>
         <source>Erreur</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="348"/>
+        <location filename="FsDialog.cpp" line="363"/>
         <source>Le fichier n&apos;a pas été extrait !</source>
         <translation>Fitxa ez atera ahal du!</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="357"/>
+        <location filename="FsDialog.cpp" line="372"/>
         <source>Les fichiers n&apos;ont pas été extraits !</source>
         <translation>Fitxak ez atera ahal ditu!</translation>
     </message>
@@ -2168,12 +2167,12 @@
     <message>
         <location filename="FsDialog.cpp" line="31"/>
         <source>Ajouter fichier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add File</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="33"/>
         <source>Ajouter dossier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add Director</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="37"/>
@@ -2182,22 +2181,37 @@
         <translation>F2</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="354"/>
+        <location filename="FsDialog.cpp" line="246"/>
+        <source>LZ4</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FsDialog.cpp" line="249"/>
+        <source>LZS</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="FsDialog.cpp" line="252"/>
+        <source>Inconnu</source>
+        <translation type="unfinished">Ezezaguna</translation>
+    </message>
+    <message>
+        <location filename="FsDialog.cpp" line="369"/>
         <source>Extraction...</source>
         <translation>Atera aritzen...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="389"/>
+        <location filename="FsDialog.cpp" line="404"/>
         <source>Remplacement...</source>
         <translation>Birjartzen...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="406"/>
+        <location filename="FsDialog.cpp" line="421"/>
         <source>Erreur de remplacement</source>
         <translation>Birjartze-hutsa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="448"/>
+        <location filename="FsDialog.cpp" line="463"/>
         <source>Compression</source>
         <translation>Tinkatzea</translation>
     </message>
@@ -2206,12 +2220,12 @@
         <translation type="obsolete">Fitxa tinkatuko al zenuke?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="448"/>
+        <location filename="FsDialog.cpp" line="463"/>
         <source>Voulez-vous compresser le(s) fichier(s) ?</source>
-        <translation type="unfinished">Fitxa tinkatuko al zenuke?</translation>
+        <translation>Fitxa tinkatuko al zenuke?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="450"/>
+        <location filename="FsDialog.cpp" line="465"/>
         <source>Ajout...</source>
         <translation>Gehitzen...</translation>
     </message>
@@ -2220,51 +2234,51 @@
         <translation type="obsolete">Gelditu</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="460"/>
-        <location filename="FsDialog.cpp" line="474"/>
+        <location filename="FsDialog.cpp" line="475"/>
+        <location filename="FsDialog.cpp" line="489"/>
         <source>Erreur d&apos;ajout</source>
         <translation>Gehitze-hutsa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="465"/>
+        <location filename="FsDialog.cpp" line="480"/>
         <source>Le fichier existe déjà</source>
         <translation>Fitxa jadanik egoten da</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="465"/>
+        <location filename="FsDialog.cpp" line="480"/>
         <source>Le fichier existe déjà, voulez-vous le remplacer ?</source>
         <translation>Fitxa jadanik egoten da, birjartzen nahi al duzu?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="474"/>
+        <location filename="FsDialog.cpp" line="489"/>
         <source>Un problème est survenu pour un ou plusieurs des fichiers à ajouter :
  - %1</source>
         <translation>Bat edo gehiago fitxa gehitzerakoan hutsa zegoen:
  - %1</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="503"/>
+        <location filename="FsDialog.cpp" line="518"/>
         <source>Voulez-vous supprimer les éléments sélectionnés ?</source>
         <translation>Aukeratutako gaiak kentzen ahal duzu?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="506"/>
+        <location filename="FsDialog.cpp" line="521"/>
         <source>Suppression...</source>
         <translation>Kentzen...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="511"/>
+        <location filename="FsDialog.cpp" line="526"/>
         <source>Erreur de suppression</source>
         <translation>Kentze-hutsa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="543"/>
-        <location filename="FsDialog.cpp" line="567"/>
+        <location filename="FsDialog.cpp" line="558"/>
+        <location filename="FsDialog.cpp" line="582"/>
         <source>Erreur de renommage</source>
         <translation>Berriz izendatze-hutsa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="543"/>
+        <location filename="FsDialog.cpp" line="558"/>
         <source>Caractères interdits utilisés (par exemple : &apos;\&apos; ou &apos;/&apos;)</source>
         <translation>Legez kanpoko karakterrak erabili dituzu (eg &apos;\&apos; or &apos;/&apos;)</translation>
     </message>
@@ -2291,76 +2305,80 @@
     </message>
     <message>
         <location filename="FsWidget.cpp" line="36"/>
+        <source>Compression</source>
+        <translation>Tinkatzea</translation>
+    </message>
+    <message>
         <source>Compressé ?</source>
-        <translation>Tinkatua?</translation>
+        <translation type="vanished">Tinkatua?</translation>
     </message>
 </context>
 <context>
     <name>JsmWidget</name>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="32"/>
+        <location filename="widgets/JsmWidget.cpp" line="37"/>
         <source>Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n&apos;aura peut-être aucun sens.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Warning: On this field scripts are in an old poorly recognized format. What you will read here may did not make sense.</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="38"/>
-        <location filename="widgets/JsmWidget.cpp" line="55"/>
+        <location filename="widgets/JsmWidget.cpp" line="43"/>
+        <location filename="widgets/JsmWidget.cpp" line="60"/>
         <source>Id</source>
         <translation>Id</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="38"/>
+        <location filename="widgets/JsmWidget.cpp" line="43"/>
         <source>Groupe</source>
         <translation>Erakundea</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="38"/>
+        <location filename="widgets/JsmWidget.cpp" line="43"/>
         <source>Exec</source>
         <translation>Exek</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="55"/>
+        <location filename="widgets/JsmWidget.cpp" line="60"/>
         <source>Script</source>
         <translation>Gidoia</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="55"/>
+        <location filename="widgets/JsmWidget.cpp" line="60"/>
         <source>Script label</source>
         <translation>Gidoi-labela</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="63"/>
+        <location filename="widgets/JsmWidget.cpp" line="70"/>
         <source>Instructions</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Instructions</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="64"/>
+        <location filename="widgets/JsmWidget.cpp" line="69"/>
         <source>Pseudo-code</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pseudo-code</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="90"/>
+        <location filename="widgets/JsmWidget.cpp" line="96"/>
         <source>Compiler</source>
         <translation>Bildumaratu</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="91"/>
-        <location filename="widgets/JsmWidget.cpp" line="92"/>
+        <location filename="widgets/JsmWidget.cpp" line="97"/>
+        <location filename="widgets/JsmWidget.cpp" line="98"/>
         <source>Compiler (Ctrl+B)</source>
         <translation>Bildumaratu (Ctrl+B)</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="128"/>
+        <location filename="widgets/JsmWidget.cpp" line="137"/>
         <source>Ligne %1 -&gt; %2</source>
         <translation>Lerro %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="133"/>
+        <location filename="widgets/JsmWidget.cpp" line="142"/>
         <source>Compilé avec succès</source>
         <translation>Bildumaratua arrakastaz</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.h" line="41"/>
+        <location filename="widgets/JsmWidget.h" line="44"/>
         <source>Scripts</source>
         <translation>Gidoiak</translation>
     </message>
@@ -2368,122 +2386,127 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="43"/>
+        <location filename="MainWindow.cpp" line="44"/>
         <source>&amp;Fichier</source>
         <translation>&amp;Fitxa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="45"/>
+        <location filename="MainWindow.cpp" line="46"/>
         <source>&amp;Ouvrir...</source>
         <translation>&amp;Ireki...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="46"/>
+        <location filename="MainWindow.cpp" line="47"/>
+        <source>Changer la langue du jeu</source>
+        <translation type="unfinished">Change game language</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="49"/>
         <source>Enregi&amp;strer</source>
         <translation>&amp;Gorde</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="47"/>
+        <location filename="MainWindow.cpp" line="50"/>
         <source>Enre&amp;gistrer Sous...</source>
         <translation>Gor&amp;de honela...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="48"/>
+        <location filename="MainWindow.cpp" line="51"/>
         <source>Exporter...</source>
         <translation>Exportatu...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="49"/>
+        <location filename="MainWindow.cpp" line="52"/>
         <source>Importer...</source>
         <translation>Inportatu...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="50"/>
+        <location filename="MainWindow.cpp" line="53"/>
         <source>Optimiser l&apos;archive...</source>
         <translation>Agiritegia optimizatu...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="52"/>
+        <location filename="MainWindow.cpp" line="55"/>
         <source>Plein écran</source>
         <translation>Paintaila osoa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="53"/>
+        <location filename="MainWindow.cpp" line="56"/>
         <source>Fe&amp;rmer</source>
         <translation>I&amp;txi</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="54"/>
+        <location filename="MainWindow.cpp" line="57"/>
         <source>&amp;Quitter</source>
         <translation>&amp;Utzi</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="56"/>
+        <location filename="MainWindow.cpp" line="59"/>
         <source>&amp;Outils</source>
         <translation>T&amp;resnak</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="57"/>
+        <location filename="MainWindow.cpp" line="60"/>
         <source>Rec&amp;hercher...</source>
         <translation>Aur&amp;kitu...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="58"/>
+        <location filename="MainWindow.cpp" line="61"/>
         <source>&amp;Var manager...</source>
         <translation>&amp;Var zuzendaria...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="60"/>
+        <location filename="MainWindow.cpp" line="63"/>
         <source>&amp;Lancer FF8...</source>
         <translation>Ha&amp;si FF8...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="64"/>
+        <location filename="MainWindow.cpp" line="67"/>
         <source>Op&amp;tions</source>
         <translation>A&amp;ukerak</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="66"/>
+        <location filename="MainWindow.cpp" line="69"/>
         <source>?</source>
         <translation>?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="70"/>
+        <location filename="MainWindow.cpp" line="73"/>
         <source>Barre d&apos;outils &amp;principale</source>
         <translation>Tres&amp;na-barra nagusia</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="79"/>
+        <location filename="MainWindow.cpp" line="83"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="79"/>
+        <location filename="MainWindow.cpp" line="83"/>
         <source>Fichier</source>
         <translation>Fitxa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="79"/>
+        <location filename="MainWindow.cpp" line="83"/>
         <source>Description</source>
         <translation>Deskripzioa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="93"/>
+        <location filename="MainWindow.cpp" line="97"/>
         <source>Recherche rapide</source>
         <translation>Bila lasterra</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="518"/>
+        <location filename="MainWindow.cpp" line="563"/>
         <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongi ibiliko fitxak (*.fs *.iso *.bin);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="598"/>
+        <location filename="MainWindow.cpp" line="643"/>
         <source>Une erreur s&apos;est produite lors de l&apos;enregistrement.</source>
         <translation>Hutsa gertatu da gorde egiterakoan.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="641"/>
+        <location filename="MainWindow.cpp" line="686"/>
         <source>Fichier nom des scripts écran PC (*.sym)</source>
         <translation>Gidoi-izenak gunea PC fitxa (*.sym)</translation>
     </message>
@@ -2509,59 +2532,59 @@
         <translation>Hasi berriz programa ondorioa ekartzeko.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="598"/>
-        <location filename="MainWindow.cpp" line="661"/>
-        <location filename="MainWindow.cpp" line="674"/>
-        <location filename="MainWindow.cpp" line="679"/>
-        <location filename="MainWindow.cpp" line="702"/>
-        <location filename="MainWindow.cpp" line="711"/>
-        <location filename="MainWindow.cpp" line="763"/>
+        <location filename="MainWindow.cpp" line="643"/>
+        <location filename="MainWindow.cpp" line="706"/>
+        <location filename="MainWindow.cpp" line="719"/>
+        <location filename="MainWindow.cpp" line="724"/>
+        <location filename="MainWindow.cpp" line="747"/>
+        <location filename="MainWindow.cpp" line="756"/>
+        <location filename="MainWindow.cpp" line="808"/>
         <source>Erreur</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="453"/>
+        <location filename="MainWindow.cpp" line="497"/>
         <source>Sauvegarder</source>
         <translation>Gorde</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="453"/>
+        <location filename="MainWindow.cpp" line="497"/>
         <source>Voulez-vous enregistrer les changements de %1 ?</source>
         <translation>%1-(e)ko aldaketak gorde egin nahiko zenituzke?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="453"/>
+        <location filename="MainWindow.cpp" line="497"/>
         <source>Oui</source>
         <translation>Bai</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="453"/>
+        <location filename="MainWindow.cpp" line="497"/>
         <source>Non</source>
         <translation>Ez</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="453"/>
-        <location filename="MainWindow.cpp" line="719"/>
+        <location filename="MainWindow.cpp" line="497"/>
+        <location filename="MainWindow.cpp" line="764"/>
         <source>Annuler</source>
         <translation>Ezeztatu</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="112"/>
+        <location filename="MainWindow.cpp" line="116"/>
         <source>Import/Export</source>
         <translation>Inportatu/Exportatu</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="216"/>
+        <location filename="MainWindow.cpp" line="236"/>
         <source>Ouverture...</source>
         <translation>Irekitzen...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="274"/>
+        <location filename="MainWindow.cpp" line="295"/>
         <source>Erreur d&apos;ouverture</source>
         <translation>Irekitze-hutsa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="518"/>
+        <location filename="MainWindow.cpp" line="563"/>
         <source>Ouvrir un fichier</source>
         <translation>Fitxa ireki</translation>
     </message>
@@ -2570,17 +2593,17 @@
         <translation type="obsolete">Ongi ibiliko fitxak (*.fs *.iso *.bin);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="578"/>
+        <location filename="MainWindow.cpp" line="623"/>
         <source>Enregistrer Sous</source>
         <translation>Gorde honela</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="578"/>
+        <location filename="MainWindow.cpp" line="623"/>
         <source>Archive FS (*.fs)</source>
         <translation>FS Artxiboa (*.fs)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="585"/>
+        <location filename="MainWindow.cpp" line="630"/>
         <source>Enregistrement...</source>
         <translation>Gorde...</translation>
     </message>
@@ -2589,62 +2612,62 @@
         <translation type="obsolete">Hutsa gertatu da artxiboa gorde egiterakoan.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="661"/>
+        <location filename="MainWindow.cpp" line="706"/>
         <source>Cet écran ne contient pas assez d&apos;éléments pour être exporté.</source>
         <translation>Gune honek ez du nahiko informazioa exportatzeko eduki.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="666"/>
+        <location filename="MainWindow.cpp" line="711"/>
         <source>Exporter</source>
         <translation>Exportatu</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="702"/>
+        <location filename="MainWindow.cpp" line="747"/>
         <source>Cet écran ne contient pas assez d&apos;éléments pour être importé.</source>
         <translation>Gune honek ez du nahiko informazioa inportatzeko eduki.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="707"/>
+        <location filename="MainWindow.cpp" line="752"/>
         <source>Importer</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="717"/>
+        <location filename="MainWindow.cpp" line="762"/>
         <source>À propos de l&apos;optimisation</source>
         <translation>Optimizatzeari buruz</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="718"/>
+        <location filename="MainWindow.cpp" line="763"/>
         <source>L&apos;optimiseur d&apos;archive va modifier l&apos;ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.
 Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de continuer.</source>
         <translation>Optimizagailuak artxibo-fitxa aldatuko du Deling-ek askoz lasterrago fitxa ireki dezala.
 Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino lehen.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="719"/>
+        <location filename="MainWindow.cpp" line="764"/>
         <source>Lancer l&apos;optimisation !</source>
         <translation>Optimizatzen hasi!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="722"/>
+        <location filename="MainWindow.cpp" line="767"/>
         <source>Optimisation...</source>
         <translation>Optimizatzen...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="763"/>
+        <location filename="MainWindow.cpp" line="808"/>
         <source>Final Fantasy VIII n&apos;a pas pu être lancé.
 %1</source>
         <translation>Final Fantasy VIII ezin du hasten.
 %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="882"/>
+        <location filename="MainWindow.cpp" line="927"/>
         <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</source>
         <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;br/&gt; - Aali&lt;br/&gt; - Aladore384&lt;br/&gt;</oldsource>
         <translation>Myst6re-k&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="896"/>
+        <location filename="MainWindow.cpp" line="941"/>
         <source>Fermer</source>
         <translation>Itxi</translation>
     </message>
@@ -3025,67 +3048,67 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>Huts ezezaguna</translation>
     </message>
     <message>
-        <location filename="FF8Image.cpp" line="166"/>
+        <location filename="FF8Image.cpp" line="202"/>
         <source>Erreur</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1111"/>
+        <location filename="FsArchive.cpp" line="1209"/>
         <source>Opération réalisée avec succès !</source>
         <translation>Jarduera bukatua arrakastaz!</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1113"/>
+        <location filename="FsArchive.cpp" line="1211"/>
         <source>L&apos;archive Fs ne peut pas être modifiée, vérifiez vos droits en écriture.</source>
         <translation>Ezin du Fs artxiboa aldatzen, zuzendu zure eskubideak idazketan.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1115"/>
+        <location filename="FsArchive.cpp" line="1213"/>
         <source>Le fichier source ne peut pas être ouvert%1.</source>
         <translation>Ezin du fitxa iturria irekitzen%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1117"/>
+        <location filename="FsArchive.cpp" line="1215"/>
         <source>Le fichier temp ne peut pas être ouvert%1.</source>
         <translation>Ezin du behineko fitxa irekitzen%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1119"/>
+        <location filename="FsArchive.cpp" line="1217"/>
         <source>Le fichier cible ne peut pas être ouvert%1.</source>
         <translation>Ezin du zuriko fitxa irekitzen%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1123"/>
+        <location filename="FsArchive.cpp" line="1221"/>
         <source>Erreur lors de la création des fichiers &apos;*.fi&apos; et &apos;*.fl&apos;.</source>
         <translation>Hutsa sortzerakoan fitxak &apos;*.fi&apos; and &apos;*.fl&apos;.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1125"/>
+        <location filename="FsArchive.cpp" line="1223"/>
         <source>Erreur lors de la sauvegarde de l&apos;archive Fs%1.</source>
         <translation>Hutsa gorde egiterakoan artxiboa Fs%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1127"/>
+        <location filename="FsArchive.cpp" line="1225"/>
         <source>Ce fichier existe déjà dans l&apos;archive%1.</source>
         <translation>Artxiboak fitxa hau jadanik edukitzen du%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1129"/>
+        <location filename="FsArchive.cpp" line="1227"/>
         <source>Ce fichier n&apos;existe pas dans l&apos;archive%1.</source>
         <translation>Artxiboak ez du fitxa hau edukitzen%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1131"/>
+        <location filename="FsArchive.cpp" line="1229"/>
         <source>Ce fichier est vide%1.</source>
         <translation>Fitxa hau hutsa da%1.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1121"/>
+        <location filename="FsArchive.cpp" line="1219"/>
         <source>Opération annulée.</source>
         <translation>Jarduera ezeztatua.</translation>
     </message>
     <message>
-        <location filename="FsArchive.cpp" line="1133"/>
+        <location filename="FsArchive.cpp" line="1231"/>
         <source>Erreur inconnue.</source>
         <translation>Huts ezezaguna.</translation>
     </message>
@@ -3096,7 +3119,7 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
     </message>
     <message>
         <location filename="files/JsmFile.cpp" line="790"/>
-        <location filename="files/JsmFile.cpp" line="828"/>
+        <location filename="files/JsmFile.cpp" line="829"/>
         <source>Conversion en entier impossible après &apos;LABEL&apos; : %1</source>
         <translation>Ezin du zenbaki oso bihurtzen &apos;LABELA&apos;: %1 ondoren</translation>
     </message>
@@ -3116,36 +3139,40 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>Opcode honek ezin du parametroak edukitzen: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="819"/>
+        <location filename="files/JsmFile.cpp" line="820"/>
         <source>Opération non reconnue : %1</source>
         <translation>Jarduera ezezaguna: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="840"/>
-        <location filename="files/JsmFile.cpp" line="860"/>
-        <location filename="files/JsmFile.cpp" line="875"/>
-        <location filename="files/JsmFile.cpp" line="890"/>
-        <location filename="files/JsmFile.cpp" line="897"/>
+        <location filename="files/JsmFile.cpp" line="841"/>
+        <location filename="files/JsmFile.cpp" line="864"/>
+        <location filename="files/JsmFile.cpp" line="879"/>
+        <location filename="files/JsmFile.cpp" line="894"/>
+        <location filename="files/JsmFile.cpp" line="901"/>
         <source>Conversion en entier impossible : %1</source>
         <translation>Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="853"/>
+        <location filename="files/JsmFile.cpp" line="857"/>
         <source>Conversion en entier impossible après &apos;VAR&apos; : %1</source>
         <translation type="unfinished">Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="868"/>
+        <location filename="files/JsmFile.cpp" line="872"/>
         <source>Conversion en entier impossible après &apos;TEMP&apos; : %1</source>
         <translation type="unfinished">Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="883"/>
-        <source>Conversion en entier impossible après &apos;CHAR&apos; : %1</source>
-        <translation type="unfinished">Ezin du zenbaki oso bihurtzen: %1</translation>
+        <location filename="files/JsmFile.cpp" line="887"/>
+        <source>Conversion en entier impossible après &apos;MODEL&apos; : %1</source>
+        <translation type="unfinished">Unable to convert to integer after &apos;MODEL&apos;: %1 </translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="920"/>
+        <source>Conversion en entier impossible après &apos;CHAR&apos; : %1</source>
+        <translation type="obsolete">Ezin du zenbaki oso bihurtzen: %1</translation>
+    </message>
+    <message>
+        <location filename="files/JsmFile.cpp" line="924"/>
         <source>&apos;LABEL%1&apos; indéfini.</source>
         <translation>&apos;LABELA %1&apos; zehaztugabea.</translation>
     </message>
@@ -3182,12 +3209,12 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>Ezin du gune-bidea irekitzen.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="191"/>
+        <location filename="MainWindow.cpp" line="195"/>
         <source>Enregistrement des données</source>
         <translation>Datuak gorde egiten</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="191"/>
+        <location filename="MainWindow.cpp" line="195"/>
         <source>Les polices de caractères n&apos;ont pas pu être enregistrées !</source>
         <translation>Ezin ditu fontak gorde!</translation>
     </message>
@@ -3207,7 +3234,7 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>Gune ateak PC fitxa (*.inf)</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.h" line="69"/>
+        <location filename="files/JsmFile.h" line="77"/>
         <source>Fichier scripts écran PC (*.jsm)</source>
         <translation>Gune Gidoia PC fitxa (*.jsm)</translation>
     </message>
@@ -3263,12 +3290,12 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>Field additionnal fonts PC file (*.tdw)</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="56"/>
+        <location filename="main.cpp" line="55"/>
         <source>Chargement des données</source>
         <translation>Datuak kargatzen</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="56"/>
+        <location filename="main.cpp" line="55"/>
         <source>Les polices de caractères n&apos;ont pas pu être chargées !</source>
         <translation>Ezin ditu fontak kargatzen!</translation>
     </message>
@@ -3302,13 +3329,13 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
     </message>
     <message>
         <location filename="Search.cpp" line="116"/>
-        <location filename="Search.cpp" line="162"/>
+        <location filename="Search.cpp" line="164"/>
         <source>Sensible à la casse</source>
         <translation>Kaxa-sentibera</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="117"/>
-        <location filename="Search.cpp" line="163"/>
+        <location filename="Search.cpp" line="165"/>
         <source>Expression régulière</source>
         <translation>Regex</translation>
     </message>
@@ -3333,33 +3360,43 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>Exekuzioa</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="189"/>
+        <location filename="Search.cpp" line="137"/>
+        <source>Saut d&apos;écran</source>
+        <translation type="unfinished">Map jump</translation>
+    </message>
+    <message>
+        <location filename="Search.cpp" line="191"/>
         <source>Paramètre :</source>
         <translation>Parametroa:</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="204"/>
+        <location filename="Search.cpp" line="206"/>
         <source>Pop uniquement</source>
         <translation>Pop bakarrik</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="223"/>
+        <location filename="Search.cpp" line="225"/>
         <source>Groupe id</source>
         <translation>Erakundea id</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="224"/>
+        <location filename="Search.cpp" line="226"/>
         <source>Label</source>
         <translation>Labela</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="321"/>
+        <location filename="Search.cpp" line="241"/>
+        <source>Écran id</source>
+        <translation type="unfinished">Map ID</translation>
+    </message>
+    <message>
+        <location filename="Search.cpp" line="337"/>
         <source>Dernier fichier,
 poursuite de la recherche dans le premier fichier.</source>
         <translation>Azkeneko fitxa.</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="346"/>
+        <location filename="Search.cpp" line="362"/>
         <source>Premier fichier,
 poursuite de la recherche dans le dernier fichier.</source>
         <translation>Lehenbiziko fitxa.</translation>
@@ -3711,8 +3748,8 @@ poursuite de la recherche dans le dernier fichier.</source>
     <name>TextPreview</name>
     <message>
         <location filename="TextPreview.cpp" line="36"/>
-        <location filename="TextPreview.cpp" line="601"/>
-        <location filename="TextPreview.cpp" line="616"/>
+        <location filename="TextPreview.cpp" line="622"/>
+        <location filename="TextPreview.cpp" line="637"/>
         <source>false</source>
         <comment>Use Japanese Encoding</comment>
         <translation>okerra</translation>

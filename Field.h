@@ -85,7 +85,7 @@ public:
 	CaFile *getCaFile() const;
 	RatFile *getRatFile() const;
 	MrtFile *getMrtFile() const;
-    InfFile *getInfFile() const;
+	InfFile *getInfFile() const;
 	PmpFile *getPmpFile() const;
 	PmdFile *getPmdFile() const;
 	PvpFile *getPvpFile() const;

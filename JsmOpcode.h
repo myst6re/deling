@@ -502,14 +502,23 @@ public:
 class JsmOpcodeGoto : public JsmOpcode
 {
 public:
-	explicit JsmOpcodeGoto(const JsmOpcode &other, int label);
+	JsmOpcodeGoto(const JsmOpcode &other, int label);
+	explicit JsmOpcodeGoto(const JsmOpcodeGoto &other);
 	virtual inline bool isGoto() const {
 		return true;
 	}
 	virtual inline bool hasParam() const {
 		return true;
 	}
+	inline int label() const {
+		return _label;
+	}
+	inline void setLabel(int label) {
+		_label = label;
+	}
 	virtual QString paramStr() const;
+private:
+	int _label;
 };
 
 #endif // JSMOPCODE_H

@@ -54,6 +54,10 @@ bool TdwFile::open(const QByteArray &tdw)
 
 	sizeHeader = posData - posHeader;
 
+	foreach(quint8 *table, _charWidth) {
+		delete table;
+	}
+
 	_charWidth.clear();
 	_charCount.clear();
 
@@ -95,9 +99,9 @@ void TdwFile::close()
 	if(!isModified()) {
 		_tim.clear();
 		_charCount.clear();
-		//foreach(quint8 *table, _charWidth) {
-		//	delete table;
-		//}
+		foreach(quint8 *table, _charWidth) {
+			delete table;
+		}
 		_charWidth.clear();
 	}
 }

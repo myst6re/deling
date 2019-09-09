@@ -22,6 +22,7 @@ WalkmeshGLWidget::WalkmeshGLWidget(QWidget *parent, const QGLWidget *shareWidget
 	  distance(0.0f), xRot(0.0f), yRot(0.0f), zRot(0.0f),
 	  xTrans(0.0f), yTrans(0.0f), transStep(360.0f), lastKeyPressed(-1),
 	  camID(0), _selectedTriangle(-1), _selectedDoor(-1), _selectedGate(-1),
+      _drawLine(false), _lineToDrawPoint1(Vertex_s()), _lineToDrawPoint2(Vertex_s()),
 	  fovy(70.0), data(0), curFrame(0)
 {
 //	setMouseTracking(true);
@@ -214,7 +215,7 @@ void WalkmeshGLWidget::paintGL()
 			++i;
 		}
 
-		if(data->hasInfFile()) {
+		if(!_drawLine && data->hasInfFile()) {
 			InfFile *inf = data->getInfFile();
 
 			glColor3ub(0xFF, 0x00, 0x00);
@@ -240,6 +241,12 @@ void WalkmeshGLWidget::paintGL()
 					glVertex3f(vertex.x/4096.0f, vertex.y/4096.0f, vertex.z/4096.0f);
 				}
 			}
+		}
+
+		if(_drawLine) {
+			glColor3ub(0xFF, 0x00, 0xFF);
+			glVertex3f(_lineToDrawPoint1.x/4096.0f, _lineToDrawPoint1.y/4096.0f, _lineToDrawPoint1.z/4096.0f);
+			glVertex3f(_lineToDrawPoint2.x/4096.0f, _lineToDrawPoint2.y/4096.0f, _lineToDrawPoint2.z/4096.0f);
 		}
 
 		glEnd();
@@ -327,10 +334,12 @@ void WalkmeshGLWidget::mousePressEvent(QMouseEvent *event)
 
 void WalkmeshGLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	xTrans += (event->pos().x() - moveStart.x()) / 4096.0;
-	yTrans -= (event->pos().y() - moveStart.y()) / 4096.0;
-	moveStart = event->pos();
-	updateGL();
+	if(event->button() == Qt::LeftButton) {
+		xTrans += (event->pos().x() - moveStart.x()) / 4096.0;
+		yTrans -= (event->pos().y() - moveStart.y()) / 4096.0;
+		moveStart = event->pos();
+		updateGL();
+	}
 }
 
 void WalkmeshGLWidget::keyPressEvent(QKeyEvent *event)
@@ -453,5 +462,19 @@ void WalkmeshGLWidget::setSelectedDoor(int door)
 void WalkmeshGLWidget::setSelectedGate(int gate)
 {
 	_selectedGate = gate;
+	updateGL();
+}
+
+void WalkmeshGLWidget::setLineToDraw(const Vertex_s vertex[2])
+{
+	_lineToDrawPoint1 = vertex[0];
+	_lineToDrawPoint2 = vertex[1];
+	_drawLine = true;
+	updateGL();
+}
+
+void WalkmeshGLWidget::clearLineToDraw()
+{
+	_drawLine = false;
 	updateGL();
 }

@@ -20,6 +20,8 @@ lessThan(QT_MAJOR_VERSION, 5) {
 
 # Input
 HEADERS += MainWindow.h \
+    PreviewWidget.h \
+    QLZ4.h \
     parameters.h \
     Data.h \
     Config.h \
@@ -105,7 +107,10 @@ HEADERS += MainWindow.h \
     ArchiveObservers.h \
     ProgressWidget.h \
     JsmExpression.h
+
 SOURCES += MainWindow.cpp \
+    PreviewWidget.cpp \
+    QLZ4.cpp \
     main.cpp \
     Data.cpp \
     Config.cpp \
@@ -215,6 +220,14 @@ RESOURCES += Deling.qrc
     }
 }
 
+# include lz4
+!win32 {
+    LIBS += -llz4
+} else {
+    INCLUDEPATH += lz4
+    LIBS += $$_PRO_FILE_PWD_/lz4/liblz4.lib
+}
+
 win32 {
     RC_FILE = Deling.rc
     LIBS += -lole32
@@ -238,7 +251,10 @@ OTHER_FILES += Deling.rc \
     compat/QtWidgets \
     deploy.bat \
     .travis.yml \
-    appveyor.yml
+    appveyor.yml \
+    fonts/sysfnt.txt \
+    fonts/sysfnt_demo_jp.txt \
+    fonts/sysfnt_jp.txt
 DISTFILES += Deling.desktop
 
 # call lrelease to make the qm files.
