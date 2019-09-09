@@ -161,7 +161,7 @@ bool FieldPC::openOptimized(const QList<FileExt> &selectedExts, FsArchive *archi
 		FsHeader *infos = header->getFile(filePath(ext));
 
 		if(infos != nullptr) {
-			maxSize = qMax(maxSize, infos->position() + infos->uncompressed_size());
+			maxSize = qMax(maxSize, infos->position() + infos->uncompressedSize());
 			files[ext] = infos;
 		}
 	}

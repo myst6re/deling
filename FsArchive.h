@@ -42,13 +42,13 @@ class FsHeader
 {
 public:
 	FsHeader();
-	FsHeader(const QString &path, quint32 uncompressed_size, quint32 position, quint32 compression);
+	FsHeader(const QString &path, quint32 uncompressedSize, quint32 position, quint32 compression);
 	const QString &path() const;
 	void setPath(const QString &);
 	QString dirName() const;
 	QString fileName() const;
-	quint32 uncompressed_size() const;
-	void setUncompressed_size(quint32);
+	quint32 uncompressedSize() const;
+	void setUncompressedSize(quint32);
 	bool compressedSize(QFile *fs, quint32 *lzsSize) const;
 	bool compressedSize(const char *fs_data, int size, quint32 *lzsSize) const;
 	bool compressedSize(const QByteArray &fs_data, quint32 *lzsSize) const;
@@ -58,6 +58,9 @@ public:
 	void setPosition(quint32);
 	FiCompression compression() const;
 	void setCompression(FiCompression compression);
+	bool isCompressed() const {
+		return _compression == int(CompressionLzs) || _compression == int(CompressionLz4);
+	}
 	QByteArray data(const QByteArray &, bool uncompress=true, int maxUncompress=0) const;
 	QByteArray data(QFile *, bool uncompress=true, int maxUncompress=0) const;
 	int setData(QByteArray &, const QByteArray &);
@@ -66,7 +69,7 @@ private:
 	const QByteArray &decompress(const char *data, int size, int max) const;
 	QByteArray compress(const QByteArray &data) const;
 	QString _path;
-	quint32 _uncompressed_size;
+	quint32 _uncompressedSize;
 	quint32 _position;
 	quint32 _compression;
 };
@@ -132,7 +135,7 @@ public:
 
 	static QString errorString(Error, const QString &fileName=QString());
 private:
-	void addFile(const QString &path, quint32 uncompressed_size, quint32 position, quint32 compression);
+	void addFile(const QString &path, quint32 uncompressedSize, quint32 position, quint32 compression);
 	bool removeFile(QString);
 	QString filePath(const QString &path) const;
 	bool setFilePath(QString path, const QString &newPath);

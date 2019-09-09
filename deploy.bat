@@ -4,7 +4,7 @@ set OUTPUT_DIR=deploy
 set EXE_PATH=release\Deling.exe
 set LIB_DIR=%QTDIR%\bin
 set QT_TR_DIR=%QTDIR%\translations
-set LANGUAGES=fr ja
+set LANGUAGES=fr ja eu
 
 rem Create target directory
 if not exist %OUTPUT_DIR% mkdir %OUTPUT_DIR%

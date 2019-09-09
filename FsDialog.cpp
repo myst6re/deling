@@ -255,7 +255,7 @@ void FsDialog::openDir(const QString &name)
 				compression = tr("Non");
 				break;
 			}
-			item = new TreeWidgetItem(QStringList() << file << QString::number(header->uncompressed_size()) << compression);
+			item = new TreeWidgetItem(QStringList() << file << QString::number(header->uncompressedSize()) << compression);
 			item->setData(0, FILE_TYPE_ROLE, FILE);
 			item->setData(0, FILE_NAME_ROLE, file);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
@@ -377,7 +377,6 @@ void FsDialog::extract(QStringList sources)
 
 void FsDialog::replace(QString source, QString destination)
 {
-//	bool compress;
 	QTreeWidgetItem *item = list->currentItem();
 
 	if(item == nullptr)	return;
@@ -402,8 +401,6 @@ void FsDialog::replace(QString source, QString destination)
 	}
 
 	ProgressWidget progress(tr("Remplacement..."), ProgressWidget::Cancel, this);
-
-//	compress = fsArchive->fileIsCompressed(destination) && QMessageBox::question(this, tr("Compression"), tr("Voulez-vous compresser le fichier ?"), tr("Oui"), tr("Non")) == 0;
 	FsArchive::Error error;
 
 	if (isDir) {
@@ -450,7 +447,7 @@ void FsDialog::add(QStringList sources, bool fromDir)
 {
 	QStringList destinations;
 	QString source, destination;
-	bool compress;
+	FiCompression compress;
 	int i, nbFiles;
 
 	nbFiles = sources.size();
@@ -460,15 +457,18 @@ void FsDialog::add(QStringList sources, bool fromDir)
 		destinations.append(currentPath % source.mid(source.lastIndexOf('/')+1));
 	}
 
-	compress = QMessageBox::question(this, tr("Compression"), tr("Voulez-vous compresser le(s) fichier(s) ?"), tr("Oui"), tr("Non")) == 0;
+	compress = compressionMessage(this);
+	if(compress == CompressionUnknown) {
+		return;
+	}
 
 	ProgressWidget progress(tr("Ajout..."), ProgressWidget::Stop, this);
 	QList<FsArchive::Error> errors;
 
 	if (fromDir) {
-		errors = fsArchive->appendDir(sources.first(), destinations.first(), compress ? FiCompression::CompressionLzs : FiCompression::CompressionNone, &progress);
+		errors = fsArchive->appendDir(sources.first(), destinations.first(), compress, &progress);
 	} else {
-		errors = fsArchive->appendFiles(sources, destinations, compress ? FiCompression::CompressionLzs : FiCompression::CompressionNone, &progress);
+		errors = fsArchive->appendFiles(sources, destinations, compress, &progress);
 	}
 
 	if(errors.contains(FsArchive::NonWritable)) {
@@ -584,4 +584,34 @@ void FsDialog::renameOK(QTreeWidgetItem *item, int column)
 		list->scrollToItem(item);
 	}
 	list->blockSignals(false);
+}
+
+FiCompression FsDialog::compressionMessage(QWidget *parent)
+{
+	QMessageBox msgBox(QMessageBox::Information,
+	                   tr("Compression"),
+	                   tr("Voulez-vous compresser le(s) fichier(s) ?"),
+	                   QMessageBox::NoButton, parent);
+	QPushButton *lzs = msgBox.addButton(tr("LZS"), QMessageBox::YesRole);
+	QPushButton *lz4 = msgBox.addButton(tr("LZ4 (FF8 Remaster)"), QMessageBox::YesRole);
+	QPushButton *no = msgBox.addButton(tr("Non"), QMessageBox::NoRole);
+	QPushButton *cancel = msgBox.addButton(tr("Annuler"), QMessageBox::RejectRole);
+
+	msgBox.setDefaultButton(lzs);
+	msgBox.setEscapeButton(cancel);
+
+	if(msgBox.exec() == -1) {
+		return CompressionUnknown;
+	}
+	if(msgBox.clickedButton() == lzs) {
+		return CompressionLzs;
+	}
+	if(msgBox.clickedButton() == lz4) {
+		return CompressionLz4;
+	}
+	if(msgBox.clickedButton() == no) {
+		return CompressionNone;
+	}
+
+	return CompressionUnknown;
 }
