@@ -2079,8 +2079,8 @@
     </message>
     <message>
         <location filename="FsDialog.cpp" line="29"/>
-        <location filename="FsDialog.cpp" line="397"/>
-        <location filename="FsDialog.cpp" line="399"/>
+        <location filename="FsDialog.cpp" line="396"/>
+        <location filename="FsDialog.cpp" line="398"/>
         <source>Remplacer</source>
         <translation>Birjarri</translation>
     </message>
@@ -2090,8 +2090,8 @@
         <translation type="obsolete">Ctrl+R</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="432"/>
-        <location filename="FsDialog.cpp" line="442"/>
+        <location filename="FsDialog.cpp" line="429"/>
+        <location filename="FsDialog.cpp" line="439"/>
         <source>Ajouter</source>
         <translation>Gehitu</translation>
     </message>
@@ -2117,7 +2117,6 @@
         <translation>Gurasoa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="463"/>
         <location filename="FsDialog.cpp" line="480"/>
         <location filename="FsDialog.cpp" line="518"/>
         <source>Oui</source>
@@ -2126,9 +2125,9 @@
     </message>
     <message>
         <location filename="FsDialog.cpp" line="255"/>
-        <location filename="FsDialog.cpp" line="463"/>
         <location filename="FsDialog.cpp" line="480"/>
         <location filename="FsDialog.cpp" line="518"/>
+        <location filename="FsDialog.cpp" line="597"/>
         <source>Non</source>
         <translation>Ez</translation>
     </message>
@@ -2149,8 +2148,14 @@
         <translation>Fitxak ez atera ahal ditu!</translation>
     </message>
     <message>
+        <location filename="FsDialog.cpp" line="596"/>
+        <source>LZ4 (FF8 Remaster)</source>
+        <translation type="unfinished">LZ4 (FF8 Remaster</translation>
+    </message>
+    <message>
+        <location filename="FsDialog.cpp" line="598"/>
         <source>Annuler</source>
-        <translation type="obsolete">Ezeztatu</translation>
+        <translation>Ezeztatu</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="28"/>
@@ -2187,6 +2192,7 @@
     </message>
     <message>
         <location filename="FsDialog.cpp" line="249"/>
+        <location filename="FsDialog.cpp" line="595"/>
         <source>LZS</source>
         <translation></translation>
     </message>
@@ -2201,17 +2207,17 @@
         <translation>Atera aritzen...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="404"/>
+        <location filename="FsDialog.cpp" line="403"/>
         <source>Remplacement...</source>
         <translation>Birjartzen...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="421"/>
+        <location filename="FsDialog.cpp" line="418"/>
         <source>Erreur de remplacement</source>
         <translation>Birjartze-hutsa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="463"/>
+        <location filename="FsDialog.cpp" line="592"/>
         <source>Compression</source>
         <translation>Tinkatzea</translation>
     </message>
@@ -2220,7 +2226,7 @@
         <translation type="obsolete">Fitxa tinkatuko al zenuke?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="463"/>
+        <location filename="FsDialog.cpp" line="593"/>
         <source>Voulez-vous compresser le(s) fichier(s) ?</source>
         <translation>Fitxa tinkatuko al zenuke?</translation>
     </message>
@@ -2662,9 +2668,9 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
     </message>
     <message>
         <location filename="MainWindow.cpp" line="927"/>
-        <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</source>
-        <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;br/&gt; - Aali&lt;br/&gt; - Aladore384&lt;br/&gt;</oldsource>
-        <translation>Myst6re-k&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</translation>
+        <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</source>
+        <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</oldsource>
+        <translation>Myst6re-k&lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="941"/>

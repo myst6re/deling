@@ -908,7 +908,7 @@ void MainWindow::gotoScript(int fieldID, int groupID, int methodID, int opcodeID
 void MainWindow::about()
 {
 	QDialog about(this, Qt::Dialog | Qt::CustomizeWindowHint);
-	about.setFixedSize(200,270);
+	about.setFixedSize(200,300);
 
 	QFont font;
 	font.setPointSize(12);
@@ -924,7 +924,7 @@ void MainWindow::about()
 
 	font.setPointSize(8);
 
-	QLabel desc2(tr("Par myst6re<br/><a href=\"https://sourceforge.net/projects/deling/\">sourceforge.net/projects/deling</a><br/><br/>Merci à :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li></ul>"), &about);
+	QLabel desc2(tr("Par myst6re<br/><a href=\"https://github.com/myst6re/deling/\">github.com/myst6re/deling</a><br/><br/>Merci à :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li><li>Maki</li><li>kruci</li></ul>"), &about);
 	desc2.setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
 	desc2.setTextFormat(Qt::RichText);
 	desc2.setOpenExternalLinks(true);
