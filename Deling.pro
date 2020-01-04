@@ -226,6 +226,11 @@ RESOURCES += Deling.qrc
 
 # include lz4
 !win32 {
+    macos {
+        INCLUDEPATH += /usr/local/include
+        LIBS += -L/usr/local/lib
+    }
+
     LIBS += -llz4
 } else {
     INCLUDEPATH += lz4
