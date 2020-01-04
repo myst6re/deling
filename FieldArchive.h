@@ -23,6 +23,8 @@
 #include "Field.h"
 #include "files/MchFile.h"
 
+typedef QListIterator<Field *> FieldArchiveIterator;
+
 class FieldArchive
 {
 public:
@@ -55,6 +57,7 @@ public:
 	QMultiMap<int, QString> searchAllVars() const;
 	QList<int> searchAllSpells(int fieldID) const;
 	QList<int> searchAllCards(int fieldID) const;
+	QList<int> searchAllCardPlayers(int fieldID) const;
 	QMap<Field *, QList<int> > searchAllBattles() const;
 	QMultiMap<int, Field *> searchAllMoments() const;
 	QMap<int, int> searchAllOpcodeTypes() const;
@@ -62,6 +65,9 @@ public:
 	QStringList fieldList() const;
 	const QStringList &mapList() const;
 	void setMapList(const QStringList &mapList);
+	inline FieldArchiveIterator iterator() const {
+		return QListIterator<Field *>(fields);
+	}
 protected:
 	QString errorMsg;
 	QList<Field *> fields;

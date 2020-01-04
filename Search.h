@@ -70,7 +70,7 @@ private:
 	QComboBox *typeScriptChoice, *searchOpcode;
 	QSpinBox *searchOpcodeValue;
 	QComboBox *selectScriptVar;
-	QCheckBox *popScriptVar;
+	QRadioButton *popScriptVar, *pushScriptVar;
 	QSpinBox *selectScriptGroup, *selectScriptLabel;
 	QStackedWidget *scriptStacked;
 	QPushButton *buttonNext, *buttonPrev;

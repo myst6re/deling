@@ -203,11 +203,23 @@ QWidget *Search::scriptPageWidget3()
 	selectScriptVar = new QComboBox(ret);
 	for(int i=0 ; i<1536 ; ++i)
 		selectScriptVar->addItem(QString("%1 - %2").arg(i, 4, 10, QChar('0')).arg(Config::value(QString("var%1").arg(i)).toString()));
-	popScriptVar = new QCheckBox(tr("Pop uniquement"), ret);
+	QGroupBox *group = new QGroupBox(ret);
+	QRadioButton *allScriptVar = new QRadioButton(tr("Tout"), ret);
+	popScriptVar = new QRadioButton(tr("Pop uniquement"), ret);
+	pushScriptVar = new QRadioButton(tr("Push uniquement"), ret);
+	pushScriptVar->hide();
+
+	allScriptVar->setChecked(true);
+
+	QHBoxLayout *groupLayout = new QHBoxLayout(group);
+	groupLayout->addWidget(allScriptVar);
+	groupLayout->addWidget(popScriptVar);
+	//groupLayout->addWidget(pushScriptVar);
+	groupLayout->addStretch(1);
 
 	QVBoxLayout *layout = new QVBoxLayout(ret);
 	layout->addWidget(selectScriptVar, 0, Qt::AlignTop);
-	layout->addWidget(popScriptVar, 0, Qt::AlignTop);
+	layout->addWidget(group, 0, Qt::AlignTop);
 
 	return ret;
 }
@@ -425,7 +437,7 @@ bool Search::findNextScript()
 		found = fieldArchive->searchScript(JsmFile::SearchOpcode, searchOpcode->currentIndex() | (searchOpcodeValue->value() << 16), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 2) {
-		found = fieldArchive->searchScript(JsmFile::SearchVar, (popScriptVar->isChecked() << 31) | (selectScriptVar->currentIndex() & 0x7FFFFFFF), fieldID, groupID, methodID, opcodeID, sort);
+		found = fieldArchive->searchScript(JsmFile::SearchVar, (popScriptVar->isChecked() << 31) | (pushScriptVar->isChecked() << 30) | (selectScriptVar->currentIndex() & 0x3FFFFFFF), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 3) {
 		Field *field = fieldArchive->getField(fieldID);
@@ -476,7 +488,7 @@ bool Search::findPrevScript()
 		found = fieldArchive->searchScriptReverse(JsmFile::SearchOpcode, searchOpcode->currentIndex(), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 2) {
-		found = fieldArchive->searchScriptReverse(JsmFile::SearchVar, (popScriptVar->isChecked() << 31) | (selectScriptVar->currentIndex() & 0x7FFFFFFF), fieldID, groupID, methodID, opcodeID, sort);
+		found = fieldArchive->searchScriptReverse(JsmFile::SearchVar, (popScriptVar->isChecked() << 31) | (pushScriptVar->isChecked() << 30) | (selectScriptVar->currentIndex() & 0x3FFFFFFF), fieldID, groupID, methodID, opcodeID, sort);
 	}
 	else if(typeScriptChoice->currentIndex() == 3) {
 		found = fieldArchive->searchScriptReverse(JsmFile::SearchExec, selectScriptGroup->value() | (selectScriptLabel->value() << 16), fieldID, groupID, methodID, opcodeID, sort);

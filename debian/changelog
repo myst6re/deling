@@ -1,3 +1,17 @@
+deling (0.10.1b) bionic; urgency=low
+
+  * [Image Preview] Force png extension when saving image
+  * [Image Preview] Show palettes menu more often
+  * [Export] Adding export all menu
+  * [FS/FL/FI Archive] Fixing bug when adding directory with subdirectories
+  * [Script viewer] Renaming "char_n" to "model_n". Adding "item_n", "magic_n" and key names.
+  * [Script viewer] Exec syntax can be foo#n.bar where n is the real group id.
+  * [Script viewer] Adding a color preview on hover
+  * [Script] UNKNOWN1 opcode is renamed to ANGELODISABLE and UNKNOWN5 to HASITEM
+  * [Sounds] Fixing export button disabled with read only archives
+
+ -- Jérôme Arzel <myst6re@gmail.com>  Sat, 04 Jan 2020 07:26:38 +0100
+
 deling (0.10.0b) bionic; urgency=low
 
   * [FF8 Remaster] Adding LZ4 compression algorithm

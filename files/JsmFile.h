@@ -79,7 +79,7 @@ public:
 
 	bool compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
 	QString toString(int groupID, int methodID, bool moreDecompiled,
-	                 const Field *field);
+	                 const Field *field, int indent = 0, bool noCache = false);
 	int opcodePositionInText(int groupID, int methodID, int opcodeID) const;
 	int fromString(int groupID, int methodID, const QString &text, QString &errorStr);
 
@@ -90,6 +90,7 @@ public:
 	QList<int> searchAllVars() const;
 	QList<int> searchAllSpells(const QString &fieldName) const;
 	QList<int> searchAllCards(const QString &fieldName) const;
+	QList<int> searchAllCardPlayers(const QString &fieldName) const;
 	QList<int> searchAllMoments() const;
 	void searchAllOpcodeTypes(QMap<int, int> &ret) const;
 	void searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const;
@@ -118,8 +119,8 @@ public:
 	static QStringList opcodeNameCalc;
 private:
 	bool search(SearchType type, quint64 value, quint16 pos, int opcodeID) const;
-	QString _toString(int position, int nbOpcode) const;
-	QString _toStringMore(int position, int nbOpcode, const Field *field) const;
+	QString _toString(int position, int nbOpcode, int indent = 0) const;
+	QString _toStringMore(int position, int nbOpcode, const Field *field, int indent = 0) const;
 
 	void searchWindows();
 	void searchGroupTypes();

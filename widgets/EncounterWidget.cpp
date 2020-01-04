@@ -105,23 +105,19 @@ void EncounterWidget::fill()
 
 	if(!hasData())	return;
 
-	bool hasMrt = data()->hasMrtFile(), hasRat = data()->hasRatFile();
-
-	if(hasMrt || hasRat) {
+	if(data()->hasMrtFile()) {
 		for(int i=0 ; i<4 ; ++i) {
-			if(hasMrt) {
-				formationEdit[i]->blockSignals(true);
-				formationEdit[i]->setValue(data()->getMrtFile()->formation(i));
-				formationEdit[i]->blockSignals(false);
-			}
+			formationEdit[i]->blockSignals(true);
+			formationEdit[i]->setValue(data()->getMrtFile()->formation(i));
+			formationEdit[i]->blockSignals(false);
 		}
+	}
 
-		if(hasRat) {
-			rateEdit->blockSignals(true);
-			rateEdit->setValue(data()->getRatFile()->rate());
-			rateEdit->blockSignals(false);
-			fillRateLabel(data()->getRatFile()->rate());
-		}
+	if(data()->hasRatFile()) {
+		rateEdit->blockSignals(true);
+		rateEdit->setValue(data()->getRatFile()->rate());
+		rateEdit->blockSignals(false);
+		fillRateLabel(data()->getRatFile()->rate());
 	}
 
 	PageWidget::fill();

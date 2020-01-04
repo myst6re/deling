@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	}
 
 	if(!FF8Font::listFonts()) {
-		QMessageBox::critical(0, QObject::tr("Chargement des données"), QObject::tr("Les polices de caractères n'ont pas pu être chargées !"));
+		QMessageBox::critical(nullptr, QObject::tr("Chargement des données"), QObject::tr("Les polices de caractères n'ont pas pu être chargées !"));
 		return -1;
 	}
 
@@ -61,5 +61,5 @@ int main(int argc, char *argv[])
 	if(argc>1)
 		window->openFile(argv[1]);
 
-    return app.exec();
+	return app.exec();
 }

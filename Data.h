@@ -45,7 +45,7 @@ public:
 private:
 	static TranslateChar locations[LOC_COUNT];
 	static const char *_maplist[MAP_COUNT];
-	static QString AppPath_cache;
+	static QString AppPathCache;
 };
 
 #endif // DATA_H

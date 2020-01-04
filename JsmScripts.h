@@ -103,6 +103,7 @@ public:
 	const QList<JsmScript> &getScriptList() const;
 	const JsmScript &script(int absoluteMethodID) const;
 	const JsmScript &script(int groupID, int methodID) const;
+	int findGroup(int absoluteMethodID) const;
 	int nbScript() const;
 	int nbScript(int groupID) const;
 	void setScriptName(int groupID, int methodID, const QString &name);
