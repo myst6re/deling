@@ -65,6 +65,8 @@ private slots:
 	void save();
 	void saveAs(QString path=QString());
 	void exportCurrent();
+	void exportAllScripts();
+	void exportAllEncounters();
 	void importCurrent();
 	void optimizeArchive();
 	void manageArchive();
@@ -102,6 +104,7 @@ private:
 	Search *searchDialog;
 	QAction *actionSave;
 	QAction *actionSaveAs;
+	QMenu *menuExportAll;
 	QAction *actionExport, *actionImport;
 	QAction *actionOpti;
 	QAction *actionClose;

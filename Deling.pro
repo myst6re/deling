@@ -20,8 +20,10 @@ lessThan(QT_MAJOR_VERSION, 5) {
 
 # Input
 HEADERS += MainWindow.h \
+    EncounterExporter.h \
     PreviewWidget.h \
     QLZ4.h \
+    ScriptExporter.h \
     parameters.h \
     Data.h \
     Config.h \
@@ -109,8 +111,10 @@ HEADERS += MainWindow.h \
     JsmExpression.h
 
 SOURCES += MainWindow.cpp \
+    EncounterExporter.cpp \
     PreviewWidget.cpp \
     QLZ4.cpp \
+    ScriptExporter.cpp \
     main.cpp \
     Data.cpp \
     Config.cpp \
