@@ -44,10 +44,44 @@ MiscSearch::MiscSearch(FieldArchive *fieldArchive, QWidget *parent)
 
 void MiscSearch::fillList()
 {
-	if(fieldArchive==NULL)	return;
+	if(fieldArchive==nullptr)	return;
 
 	list->clear();
 	list->addItems(fieldArchive->fieldList());
+	QStringList mapList = fieldArchive->mapList();
+	QMultiMap<int, QString> fields;
+
+	for(int i=0 ; i<list->count() ; ++i) {
+		Field *f = fieldArchive->getField(i);
+		if(f == nullptr || !f->hasJsmFile())	continue;
+		int mapId = f->getJsmFile()->mapID();
+		fields.insert(mapList.indexOf(f->name()), QString::number(mapList.indexOf(f->name())).append(" => ['name' => '").append(f->name()).append("', 'desc' => '").append(Data::location(mapId)).append("'],"));
+	}
+
+	QMapIterator<int, QString> it(fields);
+
+	while (it.hasNext()) {
+		it.next();
+		qDebug() << it.value().toUtf8().constData();
+	}
+
+	return;
+
+	QMap<int, QStringList> cardPlayers;
+	for(int i=0 ; i<list->count() ; ++i) {
+		QList<int> playersId = fieldArchive->searchAllCardPlayers(i);
+		foreach(int id, playersId) {
+			QStringList curList = cardPlayers.value(id, QStringList());
+			Field *f = fieldArchive->getField(i);
+			if(f == nullptr)	continue;
+			/*if(f->hasJsmFile()) {
+				curList.append(f->getJsmFile()->mapID() != -1 ? QString::number(f->getJsmFile()->mapID()) : f->name());
+			} else { */
+			    curList.append(f->name());
+			//}
+			cardPlayers.insert(id, curList);
+		}
+	}
 //	QMap<int, QStringList> spells;
 //	for(int i=0 ; i<list->count() ; ++i) {
 //		QList<int> spellsId = fieldArchive->searchAllSpells(i);
@@ -138,7 +172,7 @@ void MiscSearch::fillList()
 
 //	text.chop(2);
 //	text.append("\");\n");
-
+/*
 	QMap<int, int> opcodeTypes = fieldArchive->searchAllOpcodeTypes();
 	for(int j=0 ; j<JSM_OPCODE_COUNT ; ++j) {
 		if(!opcodeTypes.contains(j)) {
@@ -164,6 +198,13 @@ void MiscSearch::fillList()
 		}
 
 		text.append(QString("%1: %2\n").arg(JsmFile::opcodeName.value(i.key(), "???")).arg(type));
+	}*/
+
+	QMapIterator<int, QStringList> i(cardPlayers);
+	while(i.hasNext()) {
+		i.next();
+
+		text.append(QString::number(i.key())).append(": ").append(i.value().join(", ")).append("\n");
 	}
 
 //	qDebug() << "count" << moments.uniqueKeys().size();

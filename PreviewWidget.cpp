@@ -1,7 +1,8 @@
 #include "PreviewWidget.h"
 
 PreviewWidget::PreviewWidget(QWidget *parent)
-    : QWidget(parent), layout(nullptr), textPreview(nullptr), bgPreview(nullptr)
+    : QWidget(parent), layout(nullptr), textPreview(nullptr), bgPreview(nullptr),
+      colorPreview(nullptr)
 {
 	setFocusPolicy(Qt::NoFocus);
 }
@@ -46,4 +47,34 @@ void PreviewWidget::showBackground(const QPixmap &background)
 	bgPreview->fill(background);
 	setFixedSize(bgPreview->size());
 	layout->setCurrentWidget(bgPreview);
+}
+
+void PreviewWidget::showColors(const QList<QColor> &colors)
+{
+	if (colors.isEmpty()) {
+		return;
+	}
+
+	if (colorPreview == nullptr) {
+		buildLayout();
+		colorPreview = new QLabel(this);
+		colorPreview->setFrameShape(QFrame::Box);
+		layout->addWidget(colorPreview);
+	}
+
+	QPixmap pix(32 * colors.size(), 32);
+	QPainter p(&pix);
+
+	int x = 0;
+	foreach (const QColor &color, colors) {
+		p.fillRect(x, 0, 32, 32, color);
+		x += 32;
+	}
+
+	p.end();
+
+	colorPreview->setPixmap(pix);
+	colorPreview->setFixedSize(pix.size());
+	setFixedSize(pix.size());
+	layout->setCurrentWidget(colorPreview);
 }

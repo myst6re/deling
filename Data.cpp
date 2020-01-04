@@ -17,7 +17,7 @@
  ****************************************************************************/
 #include "Data.h"
 
-QString Data::AppPath_cache;
+QString Data::AppPathCache;
 
 bool Data::ff8Found()
 {
@@ -30,11 +30,11 @@ QString Data::AppPath()
 		return Config::value("appPath").toString();
 	}
 
-	if(AppPath_cache.isNull()) {
+	if(AppPathCache.isNull()) {
 		QSettings settings("Square Soft, Inc", "Final Fantasy VIII");
-		AppPath_cache = QDir::cleanPath(settings.value("1.00/AppPath", "").toString());
+		AppPathCache = QDir::cleanPath(settings.value("1.00/AppPath", "").toString());
 	}
-	return AppPath_cache;
+	return AppPathCache;
 }
 
 QString Data::location(int i)

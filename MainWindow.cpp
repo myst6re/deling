@@ -20,6 +20,8 @@
 #include "Config.h"
 #include "Data.h"
 #include "ProgressWidget.h"
+#include "ScriptExporter.h"
+#include "EncounterExporter.h"
 
 MainWindow::MainWindow()
     : fieldArchive(nullptr), field(nullptr), currentField(nullptr),
@@ -49,6 +51,9 @@ MainWindow::MainWindow()
 	actionSave = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton), tr("Enregi&strer"), this, SLOT(save()), QKeySequence::Save);
 	actionSaveAs = menu->addAction(tr("Enre&gistrer Sous..."), this, SLOT(saveAs()), QKeySequence::SaveAs);
 	actionExport = menu->addAction(tr("Exporter..."), this, SLOT(exportCurrent()));
+	menuExportAll = menu->addMenu(tr("Exporter tout"));
+	menuExportAll->addAction(tr("Scripts..."), this, SLOT(exportAllScripts()));
+	menuExportAll->addAction(tr("Rencontres aléatoires..."), this, SLOT(exportAllEncounters()));
 	actionImport = menu->addAction(tr("Importer..."), this, SLOT(importCurrent()));
 	actionOpti = menu->addAction(tr("Optimiser l'archive..."), this, SLOT(optimizeArchive()));
 	menu->addSeparator();
@@ -59,7 +64,7 @@ MainWindow::MainWindow()
 	menu = menuBar->addMenu(tr("&Outils"));
 	actionFind = menu->addAction(QIcon(":/images/find.png"), tr("Rec&hercher..."), this, SLOT(search()), QKeySequence::Find);
 	menu->addAction(tr("&Var manager..."), this, SLOT(varManager()));
-//	menu->addAction(tr("&Rechercher tout..."), this, SLOT(miscSearch()));
+	//menu->addAction(tr("&Rechercher tout..."), this, SLOT(miscSearch()));
 	actionRun = menu->addAction(QIcon(":/images/ff8.png"), tr("&Lancer FF8..."), this, SLOT(runFF8()), Qt::Key_F8);
 	actionRun->setShortcutContext(Qt::ApplicationShortcut);
 	actionRun->setEnabled(Data::ff8Found());
@@ -277,6 +282,7 @@ bool MainWindow::openArchive(const QString &path)
 		list1->resizeColumnToContents(2);
 
 		actionExport->setEnabled(true);
+		menuExportAll->setEnabled(true);
 
 		((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(fieldArchive->getModels());
 		((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(fieldArchive->getModels());
@@ -507,6 +513,7 @@ int MainWindow::closeFiles(bool quit)
 	setModified(false);
 	actionSaveAs->setEnabled(false);
 	actionExport->setEnabled(false);
+	menuExportAll->setEnabled(false);
 	actionImport->setEnabled(false);
 	actionOpti->setEnabled(false);
 	tabBar->setTabEnabled(tabBar->count()-1, false);
@@ -723,6 +730,50 @@ void MainWindow::exportCurrent()
 		if(!currentField->getFile(Field::FileType(type))->toFile(path)) {
 			QMessageBox::warning(this, tr("Erreur"), currentField->getFile(Field::FileType(type))->errorString());
 		}
+	}
+}
+
+void MainWindow::exportAllScripts()
+{
+	if(!fieldArchive)	return;
+
+	QString oldPath = Config::value("export_path").toString();
+
+	QString dirPath = QFileDialog::getExistingDirectory(this, tr("Exporter"), oldPath);
+	if (dirPath.isNull()) {
+		return;
+	}
+
+	Config::setValue("export_path", dirPath);
+
+	ProgressWidget progress(tr("Export..."), ProgressWidget::Cancel, this);
+
+	ScriptExporter exporter(fieldArchive);
+
+	if (!exporter.toDir(dirPath, &progress) && !progress.observerWasCanceled()) {
+		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
+	}
+}
+
+void MainWindow::exportAllEncounters()
+{
+	if(!fieldArchive)	return;
+
+	QString oldPath = Config::value("export_path").toString();
+
+	QString dirPath = QFileDialog::getExistingDirectory(this, tr("Exporter"), oldPath);
+	if (dirPath.isNull()) {
+		return;
+	}
+
+	Config::setValue("export_path", dirPath);
+
+	ProgressWidget progress(tr("Export..."), ProgressWidget::Cancel, this);
+
+	EncounterExporter exporter(fieldArchive);
+
+	if (!exporter.toDir(dirPath, &progress) && !progress.observerWasCanceled()) {
+		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
 	}
 }
 

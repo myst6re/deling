@@ -258,6 +258,21 @@ const JsmScript &JsmScripts::script(int groupID, int methodID) const
 	return scriptList.at(absoluteMethodID(groupID, methodID));
 }
 
+int JsmScripts::findGroup(int absoluteMethodID) const
+{
+	int groupId = 0;
+
+	foreach (const JsmGroup &group, groupList) {
+		if(group.label() > absoluteMethodID) {
+			return groupId - 1;
+		}
+
+		groupId += 1;
+	}
+
+	return groupId - 1;
+}
+
 int JsmScripts::nbScript() const
 {
 	return scriptList.size();

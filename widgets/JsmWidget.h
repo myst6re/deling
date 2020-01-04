@@ -57,7 +57,7 @@ private:
 	QToolBar *toolBar;
 	QLabel *errorLabel;
 	QLabel *warningWidget;
-	QRegExp _regText, _regMap, _regSetLine;
+	QRegExp _regConst, _regSetLine, _regColor, _regPlace;
 
 	static int currentItem(QTreeWidget *);
 //	void gotoScriptLabel(int groupID, int labelID);

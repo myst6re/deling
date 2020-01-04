@@ -15,28 +15,22 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef QLZ4_H
-#define QLZ4_H
+#ifndef SCRIPTEXPORTER_H
+#define SCRIPTEXPORTER_H
 
-#include <QByteArray>
+#include "FieldArchive.h"
 
-class QLZ4
+class ScriptExporter
 {
 public:
-	static const QByteArray &decompressAll(const QByteArray &data, bool *ok = nullptr) {
-		return decompressAll(data.constData(), data.size(), ok);
+	explicit ScriptExporter(FieldArchive *archive);
+	bool toDir(const QDir &dir, ArchiveObserver *observer = nullptr);
+	inline const QString &errorString() const {
+		return _lastErrorString;
 	}
-	static const QByteArray &decompressAll(const char *data, int size, bool *ok = nullptr);
-	static const QByteArray &decompress(const QByteArray &data, int max, bool *ok = nullptr) {
-		return decompress(data.constData(), data.size(), max, ok);
-	}
-	static const QByteArray &decompress(const char *data, int size, int max, bool *ok = nullptr);
-	static const QByteArray &compress(const QByteArray &data) {
-		return compress(data.constData(), data.size());
-	}
-	static const QByteArray &compress(const char *data, int size);
 private:
-	static QByteArray result;
+	FieldArchive *_archive;
+	QString _lastErrorString;
 };
 
-#endif // QLZ4_H
+#endif // SCRIPTEXPORTER_H

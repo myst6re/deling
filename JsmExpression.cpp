@@ -236,7 +236,7 @@ QString JsmExpressionChar::toString(const Field *field, int base) const
 {
 	Q_UNUSED(field)
 	Q_UNUSED(base)
-	return QString("char_%1").arg(_char);
+	return QString("model_%1").arg(_char);
 }
 
 QString JsmExpressionTemp::toString(const Field *field, int base) const
@@ -532,7 +532,7 @@ QStringList JsmApplication::stackToStringList(const Field *field) const
 {
 	QStringList params;
 	bool isText = false, isMap = false, isChara = false, isParty = false,
-	        isMagic = false;
+	        isMagic = false, isItem = false, isItem2 = false, isKeys = false;
 
 	switch(_opcode->key()) {
 	case JsmOpcode::AMESW:
@@ -554,6 +554,7 @@ QStringList JsmApplication::stackToStringList(const Field *field) const
 	case JsmOpcode::ADDMEMBER:
 	case JsmOpcode::SUBMEMBER:
 	case JsmOpcode::ISMEMBER:
+	case JsmOpcode::RESETGF:
 	case JsmOpcode::SETDRESS:
 	case JsmOpcode::GETDRESS:
 	case JsmOpcode::SETPC:
@@ -565,6 +566,18 @@ QStringList JsmApplication::stackToStringList(const Field *field) const
 	case JsmOpcode::SETPARTY:
 		isParty = true;
 		break;
+	case JsmOpcode::HASITEM:
+		isItem = true;
+		break;
+	case JsmOpcode::ADDITEM:
+		isItem2 = true;
+		break;
+	case JsmOpcode::KEYSCAN:
+	case JsmOpcode::KEYON:
+	case JsmOpcode::KEYSCAN2:
+	case JsmOpcode::KEYON2:
+		isKeys = true;
+		break;
 	}
 
 	int i = 0;
@@ -573,7 +586,7 @@ QStringList JsmApplication::stackToStringList(const Field *field) const
 		QString text;
 		JsmExpression *expr = stackCpy.pop();
 
-		if(isText || isMap || isChara || isParty) {
+		if(isText || isMap || isChara || isParty || isItem || isItem2 || isKeys) {
 			if(isText && i == 1) {
 				bool ok = false;
 				int id = expr->eval(&ok);
@@ -600,7 +613,71 @@ QStringList JsmApplication::stackToStringList(const Field *field) const
 				int id = expr->eval(&ok);
 
 				if (ok) {
-					text = Data::magic(id);
+					text = QString("magic_%1").arg(id);
+				}
+			} else if(isItem && i == 0) {
+				bool ok = false;
+				int id = expr->eval(&ok);
+
+				if (ok) {
+					text = QString("item_%1").arg(id);
+				}
+			} else if(isItem2 && i == 1) {
+				bool ok = false;
+				int id = expr->eval(&ok);
+
+				if (ok) {
+					text = QString("item_%1").arg(id);
+				}
+			} else if(isKeys && i == 0) {
+				bool ok = false;
+				int id = expr->eval(&ok);
+
+				if (ok) {
+					switch(id) {
+					case 0x1:
+						text = "KeyL1";
+						break;
+					case 0x2:
+						text = "KeyR1";
+						break;
+					case 0x4:
+						text = "KeyL2";
+						break;
+					case 0x8:
+						text = "KeyR2";
+						break;
+					case 0x10:
+						text = "KeyCancel";
+						break;
+					case 0x20:
+						text = "KeyMenu";
+						break;
+					case 0x40:
+						text = "KeyChoose";
+						break;
+					case 0x80:
+						text = "KeyCard";
+						break;
+					case 0x100:
+						text = "KeySelect";
+						break;
+					case 0x800:
+						text = "KeyStart";
+						break;
+					case 0x1000:
+						text = "KeyUp";
+						break;
+					case 0x2000:
+						text = "KeyRight";
+						break;
+					case 0x4000:
+						text = "KeyDown";
+						break;
+					case 0x8000:
+						text = "KeyLeft";
+						break;
+					}
 				}
 			}
 
@@ -754,15 +831,25 @@ QString JsmApplicationExec::toString(const Field *field) const
 	QStack<JsmExpression *> stackCpy = _stack;
 	bool ok;
 	int groupId = _opcode->param(),
-	    methodId = stackCpy.pop()->eval(&ok);
+	    absMethodId = stackCpy.pop()->eval(&ok);
 
-	if(ok && field && groupId >= 0 && methodId >= 0 && field->hasJsmFile()) {
+	if(ok && field && groupId >= 0 && absMethodId >= 0 && field->hasJsmFile()) {
 		JsmFile *jsm = field->getJsmFile();
 		const JsmScripts &scripts = jsm->getScripts();
 		if(groupId < scripts.nbGroup()
-		        && methodId < scripts.nbScript()) {
-			groupName = scripts.group(groupId).name();
-			methodName = scripts.script(methodId).name();
+		        && absMethodId < scripts.nbScript()) {
+			int validGroupId = scripts.findGroup(absMethodId);
+
+			if(validGroupId < 0) {
+				validGroupId = groupId;
+			}
+
+			groupName = scripts.group(validGroupId).name();
+			methodName = scripts.script(absMethodId).name();
+
+			if(validGroupId != groupId) {
+				groupName.append("#").append(QString::number(groupId));
+			}
 		}
 	}
 

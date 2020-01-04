@@ -15,6 +15,7 @@ public:
 
 	void showText(const QByteArray &textData, FF8Window ff8Window, TdwFile *tdwFile = nullptr);
 	void showBackground(const QPixmap &background);
+	void showColors(const QList<QColor> &colors);
 
 private:
 	void buildLayout();
@@ -22,6 +23,7 @@ private:
 	QStackedLayout *layout;
 	TextPreview *textPreview;
 	BGPreview *bgPreview;
+	QLabel *colorPreview;
 };
 
 #endif // PREVIEWWIDGET_H

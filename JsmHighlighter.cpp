@@ -29,9 +29,9 @@ JsmHighlighter::JsmHighlighter(QTextDocument *parent) :
 	_regKeywords = QRegExp(QString("\\b(%1)\\b")
 	                       .arg(keywords.join("|")));
 	_regNumeric = QRegExp("\\b-?(b[01]+|0x[\\da-fA-F]+|\\d+)\\b");
-	_regVar = QRegExp("\\b((char|temp)_\\d+|\\w+_[us](byte|word|long))\\b");
-	_regConst = QRegExp("\\b((text|map)_\\d+|[A-Z][a-z]+)\\b");
-	_regExec = QRegExp("\\b(\\w+\\.\\w+|req|reqsw|reqew|preq|preqsw|preqew)\\b");
+	_regVar = QRegExp("\\b((model|temp)_\\d+|\\w+_[us](byte|word|long))\\b");
+	_regConst = QRegExp("\\b((text|map|item|magic)_\\d+|[A-Z][a-zA-Z\\d]+)\\b");
+	_regExec = QRegExp("\\b([\\w#]+\\.\\w+|req|reqsw|reqew|preq|preqsw|preqew)\\b");
 }
 
 void JsmHighlighter::applyReg(const QString &text, const QRegExp &regExp,

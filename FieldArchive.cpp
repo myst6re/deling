@@ -308,6 +308,17 @@ QList<int> FieldArchive::searchAllCards(int fieldID) const
 	return QList<int>();
 }
 
+QList<int> FieldArchive::searchAllCardPlayers(int fieldID) const
+{
+	Field *field = getField(fieldID);
+
+	if(field && field->hasJsmFile()) {
+		return field->getJsmFile()->searchAllCardPlayers(field->name());
+	}
+
+	return QList<int>();
+}
+
 QMap<Field *, QList<int> > FieldArchive::searchAllBattles() const
 {
 	QMap<Field *, QList<int> > battles;

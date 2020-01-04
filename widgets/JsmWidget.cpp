@@ -21,8 +21,10 @@
 
 JsmWidget::JsmWidget(QWidget *parent)
     : PageWidget(parent), mainModels(nullptr), fieldArchive(nullptr),
-      _regText(QRegExp("\\btext_(\\d+)\\b")), _regMap(QRegExp("\\bmap_(\\d+)\\b")),
+      _regConst(QRegExp("\\b(text|map|item|magic)_(\\d+)\\b")),
       _regSetLine(QRegExp("setline\\(\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*\\)")),
+      _regColor(QRegExp("(polycolor|polycolorall|dcoladd|dcolsub|tcoladd|tcolsub|fcoladd|fcolsub|bgshade)\\(\\s*([\\w-]+)\\s*,\\s*([\\w-]+)\\s*,\\s*([\\w-]+)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\)")),
+      _regPlace(QRegExp("setplace\\(\\s*(-?\\d+)\\s*\\)")),
       groupID(-1), methodID(-1)
 {
 }
@@ -322,43 +324,52 @@ void JsmWidget::fillTextEdit()
 
 void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 {
-	int posText = _regText.indexIn(line);
+	int posConst = _regConst.indexIn(line);
 	PreviewWidget *preview = textEdit->previewWidget();
 
-	if(posText >= 0) {
-		int textId = _regText.capturedTexts().last().toInt();
-		MsdFile *file = data()->getMsdFile();
+	if(posConst >= 0) {
+		QString constType = _regConst.capturedTexts().at(1);
+		int constId = _regConst.capturedTexts().last().toInt();
+		FF8Window win = FF8Window();
+		win.type = NOWIN;
 
-		if(file && textId < file->nbText()) {
+		if(constType == "text") {
+			MsdFile *file = data()->getMsdFile();
 
-			FF8Window win = FF8Window();
-			win.type = NOWIN;
+			if(file && constId < file->nbText()) {
+				preview->showText(file->data(constId), win);
+				preview->move(cursorPos);
+				preview->show();
 
-			preview->show();
-			preview->showText(file->data(textId), win);
-			preview->move(cursorPos);
+				return;
+			}
+		} else if(constType == "map") {
+			Field *field = fieldArchive->getFieldFromMapId(constId);
 
-			return;
-		}
-	}
+			if(field != nullptr) {
+				if(fieldArchive->openBG(field)) {
+					BackgroundFile *file = field->getBackgroundFile();
 
-	int posMap = _regMap.indexIn(line);
+					if(file) {
+						preview->showBackground(QPixmap::fromImage(file->background()));
+						preview->move(cursorPos);
+						preview->show();
 
-	if(posMap >= 0 && fieldArchive) {
-		int mapId = _regMap.capturedTexts().last().toInt();
-		Field *field = fieldArchive->getFieldFromMapId(mapId);
-
-		if(field != nullptr) {
-			if(fieldArchive->openBG(field)) {
-				BackgroundFile *file = field->getBackgroundFile();
-
-				if(file) {
-					preview->show();
-					preview->showBackground(QPixmap::fromImage(file->background()));
-					preview->move(cursorPos);
-
-					return;
+						return;
+					}
 				}
+			}
+		} else if(constType == "item") {
+			// TODO: add items in Data
+		} else if(constType == "magic") {
+			QString magic = Data::magic(constId);
+
+			if(!magic.isEmpty()) {
+				preview->showText(FF8Text::toFF8(magic, false), win);
+				preview->move(cursorPos);
+				preview->show();
+
+				return;
 			}
 		}
 	}
@@ -381,11 +392,69 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 		walkmeshWidget.setLineToDraw(vertex);
 		QPixmap pixmap = walkmeshWidget.renderPixmap(320, 224);
 
-		preview->show();
 		preview->showBackground(pixmap);
 		preview->move(cursorPos);
+		preview->show();
 
 		return;
+	}
+
+	int posColor = _regColor.indexIn(line);
+
+	if(posColor >= 0) {
+		QStringList texts = _regColor.capturedTexts();
+		QByteArray color;
+		QList<QColor> colors;
+		int i = 2;
+
+		if(texts.at(1) == "bgshade") {
+			i = 3;
+		}
+
+		for (; i < texts.size(); ++i) {
+			bool ok;
+
+			int c = texts.at(i).toInt(&ok);
+
+			if(ok && c >= 0 && c <= 255) {
+				color.append(char(c));
+
+				if(color.size() == 3) {
+					colors.append(qRgb(color.at(0), color.at(1), color.at(2)));
+					color.clear();
+				}
+			} else {
+				i += 3 - color.size();
+				color.clear();
+			}
+		}
+
+		if(!colors.isEmpty()) {
+			preview->showColors(colors);
+			preview->move(cursorPos);
+			preview->show();
+
+			return;
+		}
+	}
+
+	int posPlace = _regPlace.indexIn(line);
+
+	if(posPlace >= 0) {
+		int locId = _regPlace.capturedTexts().last().toInt();
+		QString location = Data::location(locId);
+
+		if (!location.isEmpty()) {
+			FF8Window win = FF8Window();
+			win.type = NOWIN;
+
+			preview->showText(FF8Text::toFF8(location, false), win);
+			preview->move(cursorPos);
+			preview->show();
+
+			return;
+		}
+
 	}
 
 	textEdit->previewWidget()->hide();

@@ -765,7 +765,7 @@ QList<FsArchive::Error> FsArchive::appendFiles(const QStringList &sources, const
 			data = LZS::compress(data);
 			int size = data.size();
 			data.prepend((char *)&size, 4);
-		} else if(FiCompression::CompressionLz4) {
+		} else if(compression == FiCompression::CompressionLz4) {
 			data = QLZ4::compress(data);
 			int size = data.size();
 			data.prepend((char *)&size, 4);
@@ -798,7 +798,7 @@ QList<FsArchive::Error> FsArchive::appendDir(const QString &source, const QStrin
 
 	foreach (const QString &relativePath, listDirsRec(&sourceDir)) {
 		sources << sourceDir.absoluteFilePath(relativePath);
-		destinations << destination + "\\" + relativePath;
+		destinations << destination + "\\" + QString(relativePath).replace('/', '\\');
 	}
 
 	return appendFiles(sources, destinations, compression, progress);

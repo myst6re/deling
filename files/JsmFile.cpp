@@ -669,19 +669,21 @@ void JsmFile::setWindow(quint8 textID, int winID, const FF8Window &window)
 }
 
 QString JsmFile::toString(int groupID, int methodID, bool moreDecompiled,
-                          const Field *field)
+                          const Field *field, int indent, bool noCache)
 {
-	const QString &cache = scripts.script(groupID, methodID).decompiledScript(moreDecompiled);
-	if(!cache.isEmpty() && !needUpdate && !(needUpdateMore && moreDecompiled)) {
-		return cache;
+	if (!noCache) {
+		const QString &cache = scripts.script(groupID, methodID).decompiledScript(moreDecompiled);
+		if(!cache.isEmpty() && !needUpdate && !(needUpdateMore && moreDecompiled)) {
+			return cache;
+		}
 	}
 	needUpdate = false;
 	needUpdateMore = false;
 	QString ret;
 	if(moreDecompiled) {
-		ret = _toStringMore(groupID, methodID, field);
+		ret = _toStringMore(groupID, methodID, field, indent);
 	} else {
-		ret = _toString(groupID, methodID);
+		ret = _toString(groupID, methodID, indent);
 	}
 
 	setDecompiledScript(groupID, methodID, ret, moreDecompiled);
@@ -689,12 +691,15 @@ QString JsmFile::toString(int groupID, int methodID, bool moreDecompiled,
 	return ret;
 }
 
-QString JsmFile::_toString(int groupID, int methodID) const
+QString JsmFile::_toString(int groupID, int methodID, int indent) const
 {
 	QString ret;
 	QList<JsmOpcode *> opcodes = scripts.opcodesp(groupID, methodID, true);
 
 	foreach(JsmOpcode *op, opcodes) {
+		if (indent > 0) {
+			ret.append(QString(indent, QChar('\t')));
+		}
 		ret.append(op->toString());
 		ret.append("\n");
 		delete op;
@@ -703,15 +708,11 @@ QString JsmFile::_toString(int groupID, int methodID) const
 	return ret;
 }
 
-QString JsmFile::_toStringMore(int groupID, int methodID, const Field *field) const
+QString JsmFile::_toStringMore(int groupID, int methodID, const Field *field, int indent) const
 {
 	QSet<void *> collectPointers;
 	JsmProgram program = scripts.program(groupID, methodID, collectPointers);
-	QStringList ret = program.toStringList(field, 0);
-
-	if(!ret.isEmpty() && ret.last() == "ret(8)") {
-		ret.removeLast();
-	}
+	QStringList ret = program.toStringList(field, indent);
 
 	qDeleteAll(collectPointers);
 
@@ -1036,9 +1037,10 @@ bool JsmFile::search(SearchType type, quint64 value, quint16 pos, int opcodeID) 
 	case SearchOpcode:
 		return key == (value & 0xFFFF) && ((int)(value >> 16) == -1 || param == (int)(value >> 16));
 	case SearchVar:
-		return (((value & 0x80000000) && (key==JsmOpcode::POPM_B || key == JsmOpcode::POPM_W || key == JsmOpcode::POPM_L))
-				|| (!(value & 0x80000000) && key >= 10 && key <= 18))
-				&& (value & 0x7FFFFFFF) == (quint32)param;
+		return (((value & 0x80000000) && (key == JsmOpcode::POPM_B || key == JsmOpcode::POPM_W || key == JsmOpcode::POPM_L))
+		        || ((value & 0x40000000) && (key >= 10 && key <= 18 && key != JsmOpcode::POPM_B && key != JsmOpcode::POPM_W && key != JsmOpcode::POPM_L))
+		        || (!(value & 0xC0000000) && key >= 10 && key <= 18))
+		        && (value & 0x3FFFFFFF) == (quint32)param;
 	case SearchExec:
 		if(opcodeID < 1 || key < 20 || key > 22) return false;
 
@@ -1131,6 +1133,32 @@ QList<int> JsmFile::searchAllCards(const QString &fieldName) const
 				ret.append(param);
 			} else {
 				qWarning() << fieldName << "GETCARD without PSHN_L!" << QString::number(scripts.key(i - 1), 16);
+			}
+		}
+	}
+
+	return ret;
+}
+
+QList<int> JsmFile::searchAllCardPlayers(const QString &fieldName) const
+{
+	int nbOpcode = scripts.data().nbOpcode();
+	unsigned int key;
+	int param;
+	QList<int> ret;
+
+	for(int i=0 ; i<nbOpcode ; ++i)
+	{
+		JsmOpcode op = scripts.opcode(i);
+		key = op.key();
+		param = op.param();
+
+		if(key == JsmOpcode::CARDGAME && i > 6) {
+			if(scripts.key(i - 7) == JsmOpcode::PSHN_L) {
+				param = scripts.param(i - 7);
+				ret.append(param);
+			} else {
+				qWarning() << fieldName << "CARDGAME without PSHN_L!" << QString::number(scripts.key(i - 7), 16);
 			}
 		}
 	}
