@@ -180,9 +180,13 @@ void FsDialog::generatePreview()
 	else if(fileType == "h" || fileType == "c"
 		 || fileType == "sym" || fileType.isEmpty()
 		 || fileType == "bak" || fileType == "dir"
-		 || fileType == "fl")
+	     || fileType == "fl" || fileType == "txt")
 	{
 		preview->textPreview(QString(data));
+	}
+	else if(fileType == "png" || fileType == "jpg" || fileType == "jpeg")
+	{
+		preview->imagePreview(QPixmap::fromImage(QImage::fromData(data)), fileName);
 	}
 	else
 	{
