@@ -33,7 +33,7 @@ struct MapBlockPolygon
 	 *  - 18 : ground to mountain trabia (2)
 	 *  - 23 : ground to mountain trabia (3)
 	 *  - 24 : grass to mountain balamb
-	 *  - 25 : some borders in Esthar (?)
+	 *  - 25 : some borders in Esthar, ground to mountain (?)
 	 *  - 27 : railroads
 	 *  - 28 : roads + FH + some towns
 	 *  - 29 : inaccessible locations
