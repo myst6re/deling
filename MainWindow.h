@@ -67,6 +67,7 @@ private slots:
 	void exportCurrent();
 	void exportAllScripts();
 	void exportAllEncounters();
+	void exportAllBackground();
 	void importCurrent();
 	void optimizeArchive();
 	void manageArchive();

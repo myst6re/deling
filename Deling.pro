@@ -20,6 +20,7 @@ lessThan(QT_MAJOR_VERSION, 5) {
 
 # Input
 HEADERS += MainWindow.h \
+    BackgroundExporter.h \
     EncounterExporter.h \
     PreviewWidget.h \
     QLZ4.h \
@@ -111,6 +112,7 @@ HEADERS += MainWindow.h \
     JsmExpression.h
 
 SOURCES += MainWindow.cpp \
+    BackgroundExporter.cpp \
     EncounterExporter.cpp \
     PreviewWidget.cpp \
     QLZ4.cpp \

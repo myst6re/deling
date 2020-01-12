@@ -22,6 +22,7 @@
 #include "ProgressWidget.h"
 #include "ScriptExporter.h"
 #include "EncounterExporter.h"
+#include "BackgroundExporter.h"
 
 MainWindow::MainWindow()
     : fieldArchive(nullptr), field(nullptr), currentField(nullptr),
@@ -54,6 +55,7 @@ MainWindow::MainWindow()
 	menuExportAll = menu->addMenu(tr("Exporter tout"));
 	menuExportAll->addAction(tr("Scripts..."), this, SLOT(exportAllScripts()));
 	menuExportAll->addAction(tr("Rencontres aléatoires..."), this, SLOT(exportAllEncounters()));
+	menuExportAll->addAction(tr("Décors..."), this, SLOT(exportAllBackground()));
 	actionImport = menu->addAction(tr("Importer..."), this, SLOT(importCurrent()));
 	actionOpti = menu->addAction(tr("Optimiser l'archive..."), this, SLOT(optimizeArchive()));
 	menu->addSeparator();
@@ -771,6 +773,28 @@ void MainWindow::exportAllEncounters()
 	ProgressWidget progress(tr("Export..."), ProgressWidget::Cancel, this);
 
 	EncounterExporter exporter(fieldArchive);
+
+	if (!exporter.toDir(dirPath, &progress) && !progress.observerWasCanceled()) {
+		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
+	}
+}
+
+void MainWindow::exportAllBackground()
+{
+	if(!fieldArchive)	return;
+
+	QString oldPath = Config::value("export_path").toString();
+
+	QString dirPath = QFileDialog::getExistingDirectory(this, tr("Exporter"), oldPath);
+	if (dirPath.isNull()) {
+		return;
+	}
+
+	Config::setValue("export_path", dirPath);
+
+	ProgressWidget progress(tr("Export..."), ProgressWidget::Cancel, this);
+
+	BackgroundExporter exporter(fieldArchive);
 
 	if (!exporter.toDir(dirPath, &progress) && !progress.observerWasCanceled()) {
 		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
