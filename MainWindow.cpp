@@ -23,16 +23,6 @@
 #include "ScriptExporter.h"
 #include "EncounterExporter.h"
 #include "BackgroundExporter.h"
-#include "widgets/MsdWidget.h"
-#include "widgets/JsmWidget.h"
-#include "widgets/CharaWidget.h"
-#include "widgets/WalkmeshWidget.h"
-#include "widgets/BackgroundWidget.h"
-#include "widgets/EncounterWidget.h"
-#include "widgets/TdwWidget.h"
-#include "widgets/SoundWidget.h"
-#include "widgets/MiscWidget.h"
-#include "widgets/AboutDialog.h"
 
 MainWindow::MainWindow()
     : fieldArchive(nullptr), field(nullptr), currentField(nullptr),
@@ -729,7 +719,7 @@ void MainWindow::exportCurrent()
 	QString selectedFilter;
 	path = QFileDialog::getSaveFileName(this, tr("Exporter"), path, filter.join(";;"), &selectedFilter);
 	if(path.isNull())		return;
-	
+
 	int type = typeList.at(filter.indexOf(selectedFilter));
 
 	switch(type) {
