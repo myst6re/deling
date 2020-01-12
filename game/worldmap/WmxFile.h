@@ -18,10 +18,10 @@ public:
 	inline void setDevice(QIODevice *device) {
 		_io = device;
 	}
-	bool seekSegment(int segment);
 	bool readSegments(Map &map, int segmentCount = -1);
 	bool writeSegments(const Map &map);
 private:
+	bool seekSegment(int segment);
 	bool canReadSegment() const;
 	bool readSegment(MapSegment &segment);
 	bool writeSegment(const MapSegment &segment);

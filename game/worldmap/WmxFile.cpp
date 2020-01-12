@@ -28,7 +28,7 @@ struct MapBlockPolygon
 	 *  - 12 : esthar city roads
 	 *  - 14 : plateau
 	 *  - 15 : ground to mountain galbadia
-	 *  - 16 : ground to mountain galbadia, ethar, centra
+	 *  - 16 : ground to mountain galbadia, esthar, centra
 	 *  - 17 : ground to mountain trabia (1)
 	 *  - 18 : ground to mountain trabia (2)
 	 *  - 23 : ground to mountain trabia (3)
@@ -318,8 +318,7 @@ bool WmxFile::readBlock(MapBlock &block)
 		normals.append(n);
 	}
 
-	qDebug() << "block";
-	QSet<quint32> coll;
+	// QSet<quint32> coll;
 
 	QList<MapPoly> polygons;
 	foreach (const MapBlockPolygon &poly, polys) {
@@ -361,9 +360,9 @@ bool WmxFile::readBlock(MapBlock &block)
 		                        poly.u1, poly.u2));
 	}
 
-	foreach(quint32 texi, coll) {
+	/* foreach(quint32 texi, coll) {
 		qDebug() << QString("%1").arg(texi, 8, 2, QChar('0'));
-	}
+	} */
 
 	block.setPolygons(polygons);
 

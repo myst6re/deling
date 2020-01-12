@@ -85,6 +85,23 @@ QImage WorldmapGLWidget::toImage(int w, int h)
 void WorldmapGLWidget::setMap(const Map *map)
 {
 	_map = map;
+	_colorRegions[0] = qRgb(128, 0, 0);
+	//_colorRegions[1] = qRgb(128, 0, 128);
+	//_colorRegions[2] = qRgb(128, 0, 0);
+	/* _colorRegions[3] = qRgb(0, 128, 0);
+	_colorRegions[4] = qRgb(0, 0, 255);
+	_colorRegions[6] = qRgb(128, 128, 128);
+	_colorRegions[15] = qRgb(0, 128, 128);
+	_colorRegions[19] = qRgb(128, 128, 0); */
+	/* _colorRegions[5] = qRgb(255, 0, 255);
+	_colorRegions[6] = qRgb(255, 255, 255);
+	_colorRegions[7] = qRgb(128, 0, 0);
+	_colorRegions[8] = qRgb(0, 128, 0);
+	_colorRegions[9] = qRgb(0, 0, 128);
+	_colorRegions[10] = qRgb(128, 128, 0);
+	_colorRegions[11] = qRgb(0, 128, 128);
+	_colorRegions[12] = qRgb(128, 0, 128);
+	_colorRegions[13] = qRgb(128, 128, 128); */
 	updateGL();
 }
 
@@ -136,6 +153,7 @@ void WorldmapGLWidget::initializeGL()
 	glDepthFunc(GL_LEQUAL);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_LIGHTING);
+	glEnable(GL_MULTISAMPLE);
 }
 
 static GLdouble deg2rad(GLdouble deg)
@@ -189,6 +207,15 @@ void WorldmapGLWidget::paintGL()
 	glRotatef(_yRot, 0.0, 1.0, 0.0);
 	glRotatef(_zRot, 0.0, 0.0, 1.0);
 
+	glBegin(GL_POINTS);
+
+	glColor3ub(0xFF, 0x00, 0x00);
+
+	glVertex3f(0.0f,
+	           0.0f,
+	           0.0f);
+	glEnd();
+
 	glBegin(GL_TRIANGLES);
 
 	glColor3ub(0xFF, 0xFF, 0xFF);
@@ -198,8 +225,19 @@ void WorldmapGLWidget::paintGL()
 	const float scaleVect = 2048.0f, scale = _limits.width() * blocksPerLine;
 	const float xShift = -_limits.x() * blocksPerLine + (diffSize < 0 ? -diffSize : 0) * blocksPerLine / 2.0f;
 	const float zShift = -_limits.y() * blocksPerLine + (diffSize > 0 ? diffSize : 0) * blocksPerLine / 2.0f;
+	QList<quint8> encounterRegions = _map->encounterRegions();
 	int xs = 0, ys = 0;
 	foreach (const MapSegment &segment, _map->segments()) {
+		quint8 region = encounterRegions.at(ys * segmentPerLine + xs);
+		QList<WmEncounter> encounters = _map->encounters(region);
+		QSet<quint8> grounds;
+
+		foreach (const WmEncounter &enc, encounters) {
+			grounds.insert(enc.ground());
+		}
+
+		qDebug() << grounds;
+
 		// xs = ys = -1.0f;
 		// if (_limits.isNull() || _limits.contains(xs, ys)) {
 		    int xb = 0, yb = 0;
@@ -209,63 +247,9 @@ void WorldmapGLWidget::paintGL()
 					             &v1 = poly.vertex(1),
 					             &v2 = poly.vertex(2);
 					const int x = xs * blocksPerLine + xb, z = ys * blocksPerLine + yb;
-					switch(poly.groundType()) {
-					case 0:
-						glColor3ub(57, 71, 45);
-						break;
-					case 6:
-					case 15:
-					case 24:
-						glColor3ub(75, 80, 55);
-						break;
-					case 7:
-						glColor3ub(106, 78, 63);
-						break;
-					case 8:
-						glColor3ub(145, 124, 109);
-						break;
-					case 9:
-						glColor3ub(144, 157, 164);
-						break;
-					case 10:
-						glColor3ub(122, 143, 158);
-						break;
-					case 14:
-						glColor3ub(116, 100, 90);
-						break;
-					case 16:
-						glColor3ub(103, 85, 72);
-						break;
-					case 18:
-					case 23:
-						glColor3ub(57, 60, 53);
-						break;
-					case 27:
-						glColor3ub(112, 97, 86);
-						break;
-					case 28:
-						glColor3ub(69, 65, 64);
-						break;
-					case 29:
-						glColor3ub(133, 108, 91);
-						break;
-					case 31:
-						glColor3ub(53, 74, 75);
-						break;
-					case 32:
-						glColor3ub(56, 88, 99);
-						break;
-					case 33:
-						glColor3ub(40, 65, 81);
-						break;
-					case 34:
-						glColor3ub(35, 60, 75);
-						break;// 56, 88, 99
-					default:
-						const quint8 grey = 55 + poly.groundType() * 200 / 34;
-						glColor3ub(grey, grey, grey);
-						break;
-					}
+					QRgb c = groundColor(poly.groundType(), region, grounds);
+
+					glColor3ub(qRed(c), qGreen(c), qBlue(c));
 
 					glVertex3f((xShift + x + v0.x/scaleVect) / scale,
 					           normalizeY(v0.y)/scaleVect / scale,
@@ -414,4 +398,99 @@ static void qNormalizeAngle(int &angle)
 		angle += 360 * 16;
 	while (angle > 360 * 16)
 		angle -= 360 * 16;
+}
+
+QRgb WorldmapGLWidget::groundColor(quint8 groundType, quint8 region,
+                                   const QSet<quint8> &grounds)
+{
+	QRgb c;
+
+	switch(groundType) {
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+	case 4:
+	case 5:
+		c = qRgb(57, 71, 45);
+		break;
+	case 6:
+	case 15:
+	case 24:
+		c = qRgb(75, 80, 55);
+		break;
+	case 7:
+		c = qRgb(106, 78, 63);
+		break;
+	case 8:
+		c = qRgb(145, 124, 109);
+		break;
+	case 9:
+		c = qRgb(144, 157, 164);
+		break;
+	case 10:
+		//c = qRgb(122, 143, 158);
+		//c = qRgb(0xD0, 0xD0, 0xBA); // yellow
+		c = qRgb(0xA1, 0xA1, 0x8C);
+		break;
+	case 14:
+		c = qRgb(116, 100, 90);
+		break;
+	case 16:
+	case 25:
+		c = qRgb(103, 85, 72);
+		break;
+	case 17:
+	case 18:
+	case 23:
+		c = qRgb(57, 60, 53);
+		break;
+	case 27:
+		c = qRgb(112, 97, 86);
+		break;
+	case 28:
+		c = qRgb(69, 65, 64);
+		break;
+	case 29:
+		c = qRgb(133, 108, 91);
+		break;
+	case 31:
+		c = qRgb(53, 74, 75);
+		break;
+	case 32:
+		c = qRgb(56, 88, 99);
+		break;
+	case 33:
+		c = qRgb(40, 65, 81);
+		break;
+	case 34:
+		c = qRgb(35, 60, 75);// 56, 88, 99
+		break;
+	default:
+		const quint8 grey = 55 + groundType * 200 / 34;
+		c = qRgb(grey, grey, grey);
+		break;
+	}
+
+	if (/* grounds.contains(groundType) &&*/groundType >= 29 || !_colorRegions.contains(region)) {
+		//QRgb cRegion = _colorRegions.value(region, Qt::transparent);
+		QRgb cRegion = qRgb(128, 128, 128);
+		/* int r = qRed(cRegion) * .5 + qRed(c),
+			g = qGreen(cRegion) * .5 + qGreen(c),
+			b = qBlue(cRegion) * .5 + qBlue(c); */
+		int r = qRed(c) - qRed(cRegion) * .33,
+		    g = qGreen(c) - qGreen(cRegion) * .33,
+		    b = qBlue(c) - qBlue(cRegion) * .33;
+
+		if (r > 255) r = 255;
+		if (g > 255) g = 255;
+		if (b > 255) b = 255;
+		if (r < 0) r = 0;
+		if (g < 0) g = 0;
+		if (b < 0) b = 0;
+
+		c = qRgb(r, g, b);
+	}
+
+	return c;
 }

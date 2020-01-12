@@ -50,6 +50,8 @@ public:
 	inline float zRot() const {
 		return _zRot;
 	}
+	QRgb groundColor(quint8 groundType, quint8 region,
+	                 const QSet<quint8> &grounds);
 protected:
 	virtual void initializeGL();
 	virtual void resizeGL(int w, int h);
@@ -68,6 +70,7 @@ private:
 	float _xTrans, _yTrans, _transStep;
 	int _lastKeyPressed;
 	QPoint _moveStart;
+	QMap<int, QRgb> _colorRegions;
 };
 
 #endif // WORLDMAPGLWIDGET_H

@@ -75,18 +75,28 @@ int main(int argc, char *argv[])
 	if(argc>1)
 		window->openFile(argv[1]);
 
-	/* Map map1, map2;
+	Map map1, map2;
 	WmxFile wmx;
+	WmsetFile wmset;
 	QFile file("E:/Documents/Deling-build-desktop/wm/game/wmx.obj");
 	file.open(QIODevice::ReadOnly);
+	QFile file2("E:/Documents/Deling-build-desktop/wm/game/wmsetfr.obj");
+	file2.open(QIODevice::ReadOnly);
 	wmx.setDevice(&file);
+	wmset.setDevice(&file2);
 	if(!wmx.readSegments(map1, 768)) {
 		qWarning() << "Cannot read segments 1";
 	} else {
+		if (!wmset.readEncounterRegions(map1)) {
+			qWarning() << "Cannot read encounter regions";
+		}
+		if (!wmset.readEncounters(map1)) {
+			qWarning() << "Cannot read encounters";
+		}
 		WorldmapWidget *wmWidget = new WorldmapWidget();
 		wmWidget->resize(640, 480);
 		wmWidget->show();
-		wmWidget->setMap(&map1); */
+		wmWidget->setMap(&map1);
 
 		// wmWidget->scene()->setLimits(QRect(10, 0, 1, 1));
 
@@ -131,7 +141,7 @@ int main(int argc, char *argv[])
 
 		// wmWidget->scene()->renderPixmap(scale, scale)
 		*/
-	// }
+	}
 
 
 	/* if(!wmx.readSegments(map2)) {

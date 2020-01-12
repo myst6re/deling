@@ -1,4 +1,5 @@
 #include "WmsetFile.h"
+#include "game/worldmap/WmEncounter.h"
 
 WmsetFile::WmsetFile(QIODevice *io) :
     _io(io)
@@ -37,8 +38,7 @@ bool WmsetFile::extract(quint32 id, const QString &fileName)
 
 bool WmsetFile::extract(const QString &fileName, const QString &dirName)
 {
-	QList<quint32> toc = openToc();
-	if (toc.isEmpty()) {
+	if (_toc.isEmpty() && !openToc()) {
 		return false;
 	}
 
@@ -46,9 +46,9 @@ bool WmsetFile::extract(const QString &fileName, const QString &dirName)
 	QString name = info.completeBaseName(), ext = info.suffix();
 
 	QDir dir(dirName);
-	for (int i = 0; i < toc.size() - 1; ++i) {
-		quint32 offset = toc.at(i);
-		int size = toc.at(i + 1) - offset;
+	for (int i = 0; i < _toc.size() - 1; ++i) {
+		quint32 offset = _toc.at(i);
+		int size = _toc.at(i + 1) - offset;
 		if (size < 0) {
 			qWarning() << "WmsetFile::extract Invalid section size" << i;
 		} else if (!extract(offset, size, dir.filePath(QString("%1.part%2.%3")
@@ -129,24 +129,121 @@ bool WmsetFile::build(const QString &dirName, const QString &fileName)
 	return true;
 }
 
-QList<quint32> WmsetFile::openToc()
+bool WmsetFile::readEncounters(Map &map)
+{
+	if ((_toc.isEmpty() && !openToc()) || _toc.size() < 7) {
+		return false;
+	}
+
+	_io->seek(_toc.at(0) + 4);
+	QByteArray data = _io->read(_toc.at(6) - _toc.at(0) - 4);
+	const char *d = data.constData();
+
+	const quint32 offsetSection3 = _toc.at(2),
+	        offsetSection4 = _toc.at(3),
+	        offsetSection5 = _toc.at(4),
+	        offsetSection6 = _toc.at(5),
+	        sizeSection1 = (_toc.at(1) - _toc.at(0)) - 8,
+	        sizeSection3 = offsetSection4 - offsetSection3,
+	        sizeSection4 = offsetSection5 - offsetSection4,
+	        sizeSection5 = offsetSection6 - offsetSection5,
+	        sizeSection6 = _toc.at(6) - offsetSection6;
+
+	QList<WmEncounter> encounters;
+
+	for (int i = 0; i < int(sizeSection1); i += 4) {
+		quint8 regionId = quint8(data.at(i)),
+		       groundId = quint8(data.at(i + 1)),
+		       esi = quint8(data.at(i + 2));
+
+		if (esi >= sizeSection3 || esi * 16 >= sizeSection4) {
+			qDebug() << "Warning: Bad ESI" << esi;
+			continue;
+		}
+
+		quint8 flags = quint8(data.at(int(offsetSection3 + esi))),
+		       flagsLunarCry = 0;
+		QList<quint16> scenes, scenesLunarCry;
+
+		for (int j = 0; j < 8; ++j) {
+			quint16 sceneId;
+			memcpy(&sceneId, d + offsetSection4, sizeof(quint16));
+			scenes.append(sceneId);
+		}
+
+		if (regionId == 10) { // Esthar
+			esi -= 80;
+
+			if (esi >= sizeSection5 || esi * 16 >= sizeSection6) {
+				qDebug() << "Warning: Bad ESI lunar cry" << esi;
+				continue;
+			}
+
+			flagsLunarCry = quint8(data.at(int(offsetSection5 + esi)));
+
+			for (int j = 0; j < 8; ++j) {
+				quint16 sceneId;
+				memcpy(&sceneId, d + sizeSection6, sizeof(quint16));
+				scenesLunarCry.append(sceneId);
+			}
+
+		}
+
+		encounters.append(WmEncounter(
+		    scenes, flags, regionId, groundId, scenesLunarCry, flagsLunarCry
+		));
+	}
+
+	map.setEncounters(encounters);
+
+	return true;
+}
+
+bool WmsetFile::readEncounterRegions(Map &map)
+{
+	if ((_toc.isEmpty() && !openToc()) || _toc.size() < 3) {
+		return false;
+	}
+
+	const quint32 sizeSection2 = _toc.at(2) - _toc.at(1);
+
+	if (sizeSection2 < 24 * 32) {
+		qDebug() << "Section 2 size is not right" << sizeSection2;
+		return false;
+	}
+
+	_io->seek(_toc.at(1));
+	QByteArray data = _io->read(sizeSection2);
+
+	QList<quint8> regions;
+
+	for (int i = 0; i < 24 * 32; ++i) {
+		regions.append(quint8(data.at(i)));
+	}
+
+	map.setEncounterRegions(regions);
+
+	return true;
+}
+
+bool WmsetFile::openToc()
 {
 	_io->reset();
 	const int r = OBJFILE_SECTION_COUNT * sizeof(quint32);
 	QByteArray data = _io->read(r);
 	if (data.size() != r) {
 		qWarning() << "WmsetFile::openToc File too short";
-		return QList<quint32>();
+		return false;
 	}
 	const quint32 *constData = (const quint32 *)data.constData();
-	QList<quint32> ret;
+	_toc.clear();
 
 	for (int i = 0; i < OBJFILE_SECTION_COUNT; ++i) {
-		ret.append(constData[i]);
+		_toc.append(constData[i]);
 	}
-	ret.append(_io->size());
+	_toc.append(_io->size());
 
-	return ret;
+	return true;
 }
 
 bool WmsetFile::sectionInfos(quint32 id, quint32 &offset, quint32 &size)
