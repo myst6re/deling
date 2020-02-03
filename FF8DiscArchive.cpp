@@ -174,7 +174,7 @@ bool FF8DiscArchive::extractGZ(const FF8DiscFile &file, const QString &destinati
 const QList<FF8DiscFile> &FF8DiscArchive::rootDirectory()
 {
 	if(!rootFiles.isEmpty() || !IMGFound())		return rootFiles;
-	searchFiles();
+	//searchFiles();
 
 	quint32 position, size, numSectors = sizeIMG / SECTOR_SIZE_DATA;
 	qint64 maxPos;
