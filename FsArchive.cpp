@@ -288,9 +288,11 @@ FsArchive::FsArchive(const QByteArray &fl_data, const QByteArray &fi_data)
 }
 
 FsArchive::FsArchive(const QString &path)
-    : fromFile(true), _isOpen(false)
+    : fromFile(false), _isOpen(false)
 {
-	load(path);
+	if (!path.isEmpty()) {
+		open(path);
+	}
 }
 
 FsArchive::~FsArchive()
@@ -942,7 +944,7 @@ bool FsArchive::load(const QByteArray &fl_data, const QByteArray &fi_data)
 	return true;
 }
 
-bool FsArchive::load(const QString &path)
+bool FsArchive::open(const QString &path)
 {
 	if(_isOpen)	return false;
 

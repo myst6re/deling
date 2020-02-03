@@ -81,9 +81,10 @@ public:
 
 	//	FsArchive();
 	FsArchive(const QByteArray &fl_data, const QByteArray &fi_data);
-	explicit FsArchive(const QString &path);
+	explicit FsArchive(const QString &path = QString());
 	virtual ~FsArchive();
 
+	bool open(const QString &path);
 	void addFile(const QString &path, FiCompression compression);
 	FsHeader *getFile(const QString &path) const;
 	void fileToTheEnd(const QString &path, QByteArray &fs_data);
@@ -145,7 +146,6 @@ private:
 	static QStringList listDirsRec(QDir *sourceDir);
 
 	bool load(const QByteArray &fl_data, const QByteArray &fi_data);
-	bool load(const QString &path);
 
 	static bool searchData(const QMultiMap<quint32, FsHeader *> &headers,
 	                       QFile *fs, const QByteArray &data, quint32 &pos);
