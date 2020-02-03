@@ -2,24 +2,16 @@
 #define WORLDMAPGLWIDGET_H
 
 #include <QtWidgets>
-#include <QtOpenGL>
+#include <QOpenGLWidget>
 #include "game/worldmap/Map.h"
 
-class WorldmapGLWidget : public QGLWidget
+class WorldmapGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
 public:
 	explicit WorldmapGLWidget(QWidget *parent = Q_NULLPTR,
-	                          const QGLWidget *shareWidget = Q_NULLPTR,
-	                          Qt::WindowFlags f = Qt::WindowFlags());
-	explicit WorldmapGLWidget(QGLContext *context,
-	                          QWidget *parent = Q_NULLPTR,
-	                          const QGLWidget *shareWidget = Q_NULLPTR,
-	                          Qt::WindowFlags f = Qt::WindowFlags());
-	explicit WorldmapGLWidget(const QGLFormat &format,
-	                          QWidget *parent = Q_NULLPTR,
-	                          const QGLWidget *shareWidget = Q_NULLPTR,
 	                          Qt::WindowFlags f = Qt::WindowFlags());
 
+	virtual ~WorldmapGLWidget();
 	void setMap(const Map *map);
 	inline const Map *map() const {
 		return _map;
@@ -71,6 +63,7 @@ private:
 	int _lastKeyPressed;
 	QPoint _moveStart;
 	QMap<int, QRgb> _colorRegions;
+	QList< QList<QOpenGLTexture *> > _textures;
 };
 
 #endif // WORLDMAPGLWIDGET_H

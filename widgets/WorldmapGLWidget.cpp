@@ -1,36 +1,31 @@
 #include "WorldmapGLWidget.h"
 
 WorldmapGLWidget::WorldmapGLWidget(QWidget *parent,
-                                   const QGLWidget *shareWidget,
                                    Qt::WindowFlags f) :
-    QGLWidget(parent, shareWidget, f), _map(Q_NULLPTR),
+    QOpenGLWidget(parent, f), _map(Q_NULLPTR),
     _distance(-0.714248f), _xRot(-90.0f), _yRot(180.0f), _zRot(180.0f),
     _xTrans(-0.5f), _yTrans(0.5f), _transStep(360.0f), _lastKeyPressed(-1),
     _limits(QRect(0, 0, 32, 24))
 {
+	_xTrans = 0;
+	_yTrans = .12f;
+	_distance = -0.011123;
+	_xRot = -90;
+	_yRot = 180;
+	_zRot = 180;
 }
 
-WorldmapGLWidget::WorldmapGLWidget(QGLContext *context,
-                                   QWidget *parent,
-                                   const QGLWidget *shareWidget,
-                                   Qt::WindowFlags f) :
-    QGLWidget(context, parent, shareWidget, f), _map(Q_NULLPTR),
-    _distance(-0.714248f), _xRot(-90.0f), _yRot(180.0f), _zRot(180.0f),
-    _xTrans(-0.5f), _yTrans(0.5f), _transStep(360.0f), _lastKeyPressed(-1),
-    _limits(QRect(0, 0, 32, 24))
+WorldmapGLWidget::~WorldmapGLWidget()
 {
+	makeCurrent();
+
+	foreach (const QList<QOpenGLTexture *> &texs, _textures) {
+		foreach (QOpenGLTexture *tex, texs) {
+			delete tex;
+		}
+	}
 }
 
-WorldmapGLWidget::WorldmapGLWidget(const QGLFormat &format,
-                                   QWidget *parent,
-                                   const QGLWidget *shareWidget,
-                                   Qt::WindowFlags f) :
-    QGLWidget(format, parent, shareWidget, f), _map(Q_NULLPTR),
-    _distance(-0.714248f), _xRot(-90.0f), _yRot(180.0f), _zRot(180.0f),
-    _xTrans(-0.5f), _yTrans(0.5f), _transStep(360.0f), _lastKeyPressed(-1),
-    _limits(QRect(0, 0, 32, 24))
-{
-}
 /*
 QImage WorldmapGLWidget::toImage(int w, int h)
 {
@@ -85,6 +80,7 @@ QImage WorldmapGLWidget::toImage(int w, int h)
 void WorldmapGLWidget::setMap(const Map *map)
 {
 	_map = map;
+
 	_colorRegions[0] = qRgb(128, 0, 0);
 	//_colorRegions[1] = qRgb(128, 0, 128);
 	//_colorRegions[2] = qRgb(128, 0, 0);
@@ -102,58 +98,61 @@ void WorldmapGLWidget::setMap(const Map *map)
 	_colorRegions[11] = qRgb(0, 128, 128);
 	_colorRegions[12] = qRgb(128, 0, 128);
 	_colorRegions[13] = qRgb(128, 128, 128); */
-	updateGL();
+	update();
 }
 
 void WorldmapGLWidget::setLimits(const QRect &rect)
 {
 	_limits = rect;
-	updateGL();
+	update();
 }
 
 void WorldmapGLWidget::setXTrans(float trans)
 {
 	_xTrans = trans;
-	updateGL();
+	update();
 }
 
 void WorldmapGLWidget::setYTrans(float trans)
 {
 	_yTrans = trans;
-	updateGL();
+	update();
 }
 
 void WorldmapGLWidget::setZTrans(double trans)
 {
 	_distance = trans;
-	updateGL();
+	update();
 }
 
 void WorldmapGLWidget::setXRot(float rot)
 {
 	_xRot = rot;
-	updateGL();
+	update();
 }
 
 void WorldmapGLWidget::setYRot(float rot)
 {
 	_yRot = rot;
-	updateGL();
+	update();
 }
 
 void WorldmapGLWidget::setZRot(float rot)
 {
 	_zRot = rot;
-	updateGL();
+	update();
 }
 
 void WorldmapGLWidget::initializeGL()
 {
+	initializeOpenGLFunctions();
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_LIGHTING);
-	glEnable(GL_MULTISAMPLE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glEnable(GL_MULTISAMPLE);
 }
 
 static GLdouble deg2rad(GLdouble deg)
@@ -200,7 +199,7 @@ void WorldmapGLWidget::paintGL()
 		return;
 	}
 
-	qDebug() << _xTrans << _yTrans << _distance << _xRot << _yRot << _zRot;
+	//qDebug() << _xTrans << _yTrans << _distance << _xRot << _yRot << _zRot;
 
 	glTranslatef(_xTrans, _yTrans, _distance);
 	glRotatef(_xRot, 1.0, 0.0, 0.0);
@@ -218,14 +217,38 @@ void WorldmapGLWidget::paintGL()
 
 	glBegin(GL_TRIANGLES);
 
-	glColor3ub(0xFF, 0xFF, 0xFF);
+	//makeCurrent();
+
+	/* if (!_textures.isEmpty()) {
+		foreach (const QList<QOpenGLTexture *> &texs, _textures) {
+			foreach (QOpenGLTexture *tex, texs) {
+				delete tex;
+			}
+		}
+		_textures.clear();
+	} */
+
+	if (_textures.isEmpty()) {
+		foreach (const QList<QImage> &images, _map->textureImages()) {
+			QList<QOpenGLTexture *> texs;
+
+			foreach (const QImage &image, images) {
+				texs.append(new QOpenGLTexture(image.mirrored().convertToFormat(QImage::Format_RGB888), QOpenGLTexture::DontGenerateMipMaps));
+			}
+
+			_textures.append(texs);
+		}
+	}
+
+	//doneCurrent();
 
 	const int segmentPerLine = 32, blocksPerLine = 4,
 	        diffSize = _limits.width() - _limits.height();
 	const float scaleVect = 2048.0f, scale = _limits.width() * blocksPerLine;
 	const float xShift = -_limits.x() * blocksPerLine + (diffSize < 0 ? -diffSize : 0) * blocksPerLine / 2.0f;
 	const float zShift = -_limits.y() * blocksPerLine + (diffSize > 0 ? diffSize : 0) * blocksPerLine / 2.0f;
-	QList<quint8> encounterRegions = _map->encounterRegions();
+	const QList<quint8> &encounterRegions = _map->encounterRegions();
+
 	int xs = 0, ys = 0;
 	foreach (const MapSegment &segment, _map->segments()) {
 		quint8 region = encounterRegions.at(ys * segmentPerLine + xs);
@@ -235,8 +258,6 @@ void WorldmapGLWidget::paintGL()
 		foreach (const WmEncounter &enc, encounters) {
 			grounds.insert(enc.ground());
 		}
-
-		qDebug() << grounds;
 
 		// xs = ys = -1.0f;
 		// if (_limits.isNull() || _limits.contains(xs, ys)) {
@@ -249,23 +270,41 @@ void WorldmapGLWidget::paintGL()
 					const int x = xs * blocksPerLine + xb, z = ys * blocksPerLine + yb;
 					QRgb c = groundColor(poly.groundType(), region, grounds);
 
-					glColor3ub(qRed(c), qGreen(c), qBlue(c));
+					if (poly.texPage() < _textures.size() && poly.clutId() < _textures.at(poly.texPage()).size()) {
+						//glActiveTexture(GL_TEXTURE0);
+						glEnable(GL_TEXTURE_2D);
+						_textures.at(poly.texPage()).at(poly.clutId())->bind(0);
 
+						qDebug() << poly.texPage() << poly.clutId() << _textures.at(poly.texPage()).at(poly.clutId())->isBound();
+					} else {
+						qDebug() << "bad tex ids" << poly.texPage() << poly.clutId();
+					}
+
+					glColor3ub(qRed(c), qGreen(c), qBlue(c));
+					qDebug() << poly.texCoord(0).x << poly.texCoord(0).y
+					         << poly.texCoord(1).x << poly.texCoord(1).y
+					         << poly.texCoord(2).x << poly.texCoord(2).y;
+
+					glTexCoord2d(poly.texCoord(0).x / 256.0, poly.texCoord(0).y / 256.0);
 					glVertex3f((xShift + x + v0.x/scaleVect) / scale,
 					           normalizeY(v0.y)/scaleVect / scale,
 					           (zShift + z - v0.z/scaleVect) / scale);
+					glTexCoord2d(poly.texCoord(1).x / 256.0, poly.texCoord(1).y / 256.0);
 					glVertex3f((xShift + x + v1.x/scaleVect) / scale,
 					           normalizeY(v1.y)/scaleVect / scale,
 					           (zShift + z - v1.z/scaleVect) / scale);
+					glTexCoord2d(poly.texCoord(2).x / 256.0, poly.texCoord(2).y / 256.0);
 					glVertex3f((xShift + x + v2.x/scaleVect) / scale,
 					           normalizeY(v2.y)/scaleVect / scale,
 					           (zShift + z - v2.z/scaleVect) / scale);
+					break;
 				}
 				xb += 1;
 				if (xb >= blocksPerLine) {
 					xb = 0;
 					yb += 1;
 				}
+				break;
 			}
 		// }
 		xs += 1;
@@ -273,6 +312,7 @@ void WorldmapGLWidget::paintGL()
 			xs = 0;
 			ys += 1;
 		}
+		break;
 	}
 
 	glEnd();
@@ -281,9 +321,8 @@ void WorldmapGLWidget::paintGL()
 void WorldmapGLWidget::wheelEvent(QWheelEvent *event)
 {
 	setFocus();
-	qDebug() << event->delta();
 	_distance += event->delta() / 4096.0;
-	updateGL();
+	update();
 }
 
 void WorldmapGLWidget::mousePressEvent(QMouseEvent *event)
@@ -293,7 +332,7 @@ void WorldmapGLWidget::mousePressEvent(QMouseEvent *event)
 	if(event->button() == Qt::MidButton)
 	{
 		_distance = -35;
-		updateGL();
+		update();
 	}
 }
 
@@ -318,7 +357,6 @@ void WorldmapGLWidget::mouseMoveEvent(QMouseEvent *event)
 
 void WorldmapGLWidget::keyPressEvent(QKeyEvent *event)
 {
-	qDebug() << "key press";
 	if(_lastKeyPressed == event->key()
 	        && (event->key() == Qt::Key_Left
 	            || event->key() == Qt::Key_Right
@@ -336,43 +374,43 @@ void WorldmapGLWidget::keyPressEvent(QKeyEvent *event)
 	{
 	case Qt::Key_Left:
 		_xTrans += 1.0f/_transStep;
-		updateGL();
+		update();
 		break;
 	case Qt::Key_Right:
 		_xTrans -= 1.0f/_transStep;
-		updateGL();
+		update();
 		break;
 	case Qt::Key_Down:
 		_yTrans += 1.0f/_transStep;
-		updateGL();
+		update();
 		break;
 	case Qt::Key_Up:
 		_yTrans -= 1.0f/_transStep;
-		updateGL();
+		update();
 		break;
 	case Qt::Key_7:
 		_xRot += 0.1f;
-		updateGL();
+		update();
 		break;
 	case Qt::Key_1:
 		_xRot -= 0.1f;
-		updateGL();
+		update();
 		break;
 	case Qt::Key_8:
 		_yRot += 0.1f;
-		updateGL();
+		update();
 		break;
 	case Qt::Key_2:
 		_yRot -= 0.1f;
-		updateGL();
+		update();
 		break;
 	case Qt::Key_9:
 		_zRot += 0.1f;
-		updateGL();
+		update();
 		break;
 	case Qt::Key_3:
 		_zRot -= 0.1f;
-		updateGL();
+		update();
 		break;
 	default:
 		QWidget::keyPressEvent(event);

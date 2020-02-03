@@ -73,7 +73,7 @@ bool WmxFile::seekSegment(int segment)
 
 bool WmxFile::readSegments(Map &map, int segmentCount)
 {
-	_collect.clear();
+	//_collect.clear();
 
 	QList<MapSegment> segments;
 	bool toTheEnd = segmentCount < 0;
@@ -89,9 +89,9 @@ bool WmxFile::readSegments(Map &map, int segmentCount)
 
 	map.setSegments(segments);
 
-	QList<int> collect = _collect.values();
+	/* QList<int> collect = _collect.values();
 	qSort(collect);
-	qDebug() << _collect << collect.last();
+	qDebug() << _collect << collect.last(); */
 
 	return true;
 }

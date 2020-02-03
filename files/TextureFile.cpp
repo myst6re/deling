@@ -53,6 +53,15 @@ const QImage &TextureFile::image() const
 	return _image;
 }
 
+QImage TextureFile::image(int colorTable) const
+{
+	QImage ret = _image;
+
+	ret.setColorTable(_colorTables.at(colorTable));
+
+	return ret;
+}
+
 QImage *TextureFile::imagePtr()
 {
 	return &_image;

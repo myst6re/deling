@@ -3,18 +3,9 @@
 WorldmapWidget::WorldmapWidget(QWidget *parent, Qt::WindowFlags f) :
     QWidget(parent, f)
 {
-
-	QGLFormat format;
-	format.setSampleBuffers(true);
-	format.setSamples(4);    // Set the number of samples used for multisampling
-
-	QGLContext *context = new QGLContext(format);
-	context->create();
-	context->makeCurrent();
-
 	const int min = 0, max = 100, minRot = -360, maxRot = 360;
 
-	_scene = new WorldmapGLWidget(context, this);
+	_scene = new WorldmapGLWidget(this);
 
 	_xTransSlider = new QSlider(Qt::Vertical, this);
 	_xTransSlider->setRange(min, max);

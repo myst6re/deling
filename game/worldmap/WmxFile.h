@@ -37,7 +37,7 @@ private:
 	bool writeVertex(const MapBlockVertex &polygon);
 
 	QIODevice *_io;
-	QMap<quint32, int> _collect;
+	//QMap<quint32, int> _collect;
 };
 
 #endif // WMXFILE_H

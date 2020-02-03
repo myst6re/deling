@@ -28,6 +28,8 @@
 #include "ProgressWidget.h"
 #include "widgets/WorldmapWidget.h"
 #include "game/worldmap/WmxFile.h"
+#include "game/worldmap/TexlFile.h"
+#include "QLZ4.h"
 
 // Only for static compilation
 //Q_IMPORT_PLUGIN(qjpcodecs) // jp encoding
@@ -39,7 +41,6 @@ int main(int argc, char *argv[])
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 #endif
-
 	/* QFile objFile("E:/Documents/Deling-build-desktop/wm/game/wmsetfr.obj");
 	WmsetFile obj(&objFile);
 	if (objFile.open(QIODevice::ReadOnly)) {
@@ -75,15 +76,25 @@ int main(int argc, char *argv[])
 	if(argc>1)
 		window->openFile(argv[1]);
 
+	/* QFile f1("E:/Documents/hyne/autres/ff8slot00_switch_version.dat");
+	f1.open(QIODevice::ReadOnly);
+	QFile f2("E:/Documents/hyne/autres/ff8slot00_switch_version.dat.dec");
+	f2.open(QIODevice::WriteOnly);
+	f2.write(QLZ4::decompressAll(f1.readAll()));
+
 	Map map1, map2;
 	WmxFile wmx;
 	WmsetFile wmset;
+	TexlFile texl;
 	QFile file("E:/Documents/Deling-build-desktop/wm/game/wmx.obj");
 	file.open(QIODevice::ReadOnly);
 	QFile file2("E:/Documents/Deling-build-desktop/wm/game/wmsetfr.obj");
 	file2.open(QIODevice::ReadOnly);
+	QFile file3("E:/Documents/Deling-build-desktop/wm/game/texl.obj");
+	file3.open(QIODevice::ReadOnly);
 	wmx.setDevice(&file);
 	wmset.setDevice(&file2);
+	texl.setDevice(&file3);
 	if(!wmx.readSegments(map1, 768)) {
 		qWarning() << "Cannot read segments 1";
 	} else {
@@ -93,10 +104,13 @@ int main(int argc, char *argv[])
 		if (!wmset.readEncounters(map1)) {
 			qWarning() << "Cannot read encounters";
 		}
+		if (!texl.readTextures(map1)) {
+			qWarning() << "Cannot read textures";
+		}
 		WorldmapWidget *wmWidget = new WorldmapWidget();
 		wmWidget->resize(640, 480);
 		wmWidget->show();
-		wmWidget->setMap(&map1);
+		wmWidget->setMap(&map1); */
 
 		// wmWidget->scene()->setLimits(QRect(10, 0, 1, 1));
 
@@ -141,7 +155,7 @@ int main(int argc, char *argv[])
 
 		// wmWidget->scene()->renderPixmap(scale, scale)
 		*/
-	}
+	//}
 
 
 	/* if(!wmx.readSegments(map2)) {

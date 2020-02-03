@@ -4,6 +4,7 @@
 #include <QtCore>
 #include "game/worldmap/MapSegment.h"
 #include "game/worldmap/WmEncounter.h"
+#include "files/TimFile.h"
 
 class Map
 {
@@ -36,11 +37,21 @@ public:
 		_encounterRegions = regions;
 	}
 
+	inline const QList<TimFile> &textures() const {
+		return _textures;
+	}
+
+	inline void setTextures(const QList<TimFile> &textures) {
+		_textures = textures;
+	}
+
+	QList<QList<QImage> > textureImages() const;
 
 private:
 	QList<MapSegment> _segments;
 	QList<WmEncounter> _encounters;
 	QList<quint8> _encounterRegions;
+	QList<TimFile> _textures;
 };
 
 #endif // MAP_H

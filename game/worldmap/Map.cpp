@@ -17,3 +17,18 @@ QList<WmEncounter> Map::encounters(quint8 region) const
 
 	return ret;
 }
+
+QList<QList<QImage> > Map::textureImages() const
+{
+	QList<QList<QImage> > ret;
+
+	foreach (const TimFile &tim, _textures) {
+		QList<QImage> images;
+		for (int palID = 0; palID < tim.colorTableCount(); ++palID) {
+			images.append(tim.image(palID));
+		}
+		ret.append(images);
+	}
+
+	return ret;
+}
