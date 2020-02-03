@@ -107,7 +107,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 				else
 					desc = QString();
 
-				indexOf = mapList().indexOf(field->name());
+				indexOf = iso->isDemo() ? i : mapList().indexOf(field->name());
 				QString mapId = indexOf==-1 ? "~" : QString("%1").arg(indexOf, 3, 10, QChar('0'));
 
 				fields.append(field);

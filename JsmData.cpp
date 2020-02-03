@@ -17,12 +17,13 @@
  ****************************************************************************/
 #include "JsmData.h"
 
-JsmData::JsmData()
+JsmData::JsmData() :
+    _demo(false)
 {
 }
 
-JsmData::JsmData(const QByteArray &scriptData) :
-	scriptData(scriptData)
+JsmData::JsmData(const QByteArray &scriptData, bool demo) :
+    scriptData(scriptData), _demo(demo)
 {
 	if(this->scriptData.size() % 4 != 0) {
 		qWarning() << "JsmData::JsmData : Incorrect size" << this->scriptData.size();
@@ -55,7 +56,14 @@ JsmOpcode JsmData::opcode(int opcodeID) const
 
 	memcpy(&op, constData + opcodeID * 4, 4);
 
-	return JsmOpcode(op);
+	JsmOpcode ret(op);
+
+	// CANIME and CANIMEKEEP does not exist in early demo version
+	if(_demo && ret.key() >= JsmOpcode::CANIME) {
+		ret.setKey(ret.key() + 2);
+	}
+
+	return ret;
 }
 
 JsmOpcode *JsmData::opcodep(int opcodeID) const
@@ -134,7 +142,7 @@ JsmData &JsmData::replace(int opcodeID, int nbOpcode, const JsmData &after)
 
 JsmData JsmData::mid(int opcodeID, int nbOpcode) const
 {
-	return JsmData(scriptData.mid(opcodeID*4, nbOpcode==-1 ? nbOpcode : nbOpcode*4));
+	return JsmData(scriptData.mid(opcodeID*4, nbOpcode==-1 ? nbOpcode : nbOpcode*4), _demo);
 }
 
 const QByteArray &JsmData::constData() const

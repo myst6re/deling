@@ -162,7 +162,7 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data, bool old_f
 	}
 
 	scripts = JsmScripts(groupList, scriptList,
-						 QByteArray((char *)&jsm_data[jsm_header.section2], jsm_data_size-jsm_header.section2),
+	                     JsmData(QByteArray((char *)&jsm_data[jsm_header.section2], jsm_data_size-jsm_header.section2), _oldFormat),
 						 jsm_header.count0, jsm_header.count1, jsm_header.count2, jsm_header.count3);
 
 	searchWindows();

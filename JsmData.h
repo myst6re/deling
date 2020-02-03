@@ -25,7 +25,7 @@ class JsmData
 {
 public:
 	JsmData();
-	JsmData(const QByteArray &scriptData);
+	JsmData(const QByteArray &scriptData, bool demo);
 	int nbOpcode() const;
 	JsmData &append(const JsmOpcode &opcode);
 	JsmData &append(const JsmData &jsmData);
@@ -46,6 +46,7 @@ public:
 	JsmOpcode operator[](int opcodeID) const;
 private:
 	QByteArray scriptData;
+	bool _demo;
 };
 
 #endif // JSMDATA_H
