@@ -380,6 +380,12 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 			header->setFileData(filePath(Sfx), fs_data, sfx);
 		}
 	}
+	if(hasBackgroundFile() && getBackgroundFile()->isModified()) {
+		QByteArray map;
+		if(getBackgroundFile()->save(map)) {
+			header->setFileData(filePath(Map), fs_data, map);
+		}
+	}
 	header->save(fl_data, fi_data);
 }
 

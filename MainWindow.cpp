@@ -23,6 +23,15 @@
 #include "ScriptExporter.h"
 #include "EncounterExporter.h"
 #include "BackgroundExporter.h"
+#include "widgets/MsdWidget.h"
+#include "widgets/JsmWidget.h"
+#include "widgets/CharaWidget.h"
+#include "widgets/WalkmeshWidget.h"
+#include "widgets/BackgroundWidget.h"
+#include "widgets/EncounterWidget.h"
+#include "widgets/TdwWidget.h"
+#include "widgets/SoundWidget.h"
+#include "widgets/MiscWidget.h"
 
 MainWindow::MainWindow()
     : fieldArchive(nullptr), field(nullptr), currentField(nullptr),
@@ -695,12 +704,6 @@ void MainWindow::exportCurrent()
 					filter.append(tr("Fichier nom des scripts écran PC (*.sym)"));
 					typeList.append(FILE_COUNT);
 				}
-			}
-		}
-		else if(i == Field::Background) {
-			if(currentField->hasBackgroundFile()) {
-//				filter.append(currentField->getJsmFile()->filterText());
-//				typeList.append(i);
 			}
 		}
 		else {

@@ -28,8 +28,7 @@ struct Tile1 {
 	qint16 X, Y;
 	quint16 srcX, srcY;
 	quint16 Z;
-	quint8 texID; // 1 bit = depth | 2 bits = blend2 | 1 bit = blend1 | 4 bits = textID
-	quint8 ZZ1; // 0
+	quint16 texID; // 2 bits = depth | 2 bits = blend | 1 bit = draw | 4 bits = textID
 	quint16 palID; // 6 bits = Always 30 | 4 bits = PaletteID | 6 bits = Always 0
 	quint8 parameter;
 	quint8 state;
@@ -38,8 +37,7 @@ struct Tile1 {
 struct Tile2 {
 	qint16 X, Y;
 	quint16 Z;
-	quint8 texID; // 1 bit = depth | 2 bits = blend2 | 1 bit = blend1 | 4 bits = textID
-	quint8 ZZ1; // 0-1 (ending)
+	quint16 texID; // 2 bits = depth | 2 bits = blend | 1 bit = draw | 4 bits = textID
 	quint16 palID; // 6 bits = Always 30 | 4 bits = PaletteID | 6 bits = Always 0
 	quint8 srcX, srcY;
 	quint8 layerID; // 0-7
@@ -51,19 +49,20 @@ struct Tile2 {
 struct Tile {
 	qint16 X, Y;
 	quint16 Z;
-	quint8 texID;
-	quint8 blend1; // 0-1 (0: ending, 1: everything else)
-	quint8 blend2;
-	quint8 depth;
-	quint8 ZZ1; // 0-1 (1: ending, 0: everything else)
+	quint16 texID : 4;
+	quint16 draw : 1; // 0-1 (0: ending, 1: everything else)
+	quint16 blend : 2; // 0-3
+	quint16 depth : 2; // 0-2
 	quint8 palID;
-	quint8 srcX, srcY;
+	quint16 srcX, srcY;
 	quint8 layerID; // 0-7
 	quint8 blendType; // 0-4
 	quint8 parameter;
 	quint8 state;
 	static Tile fromTile1(const Tile1 &tile, int sizeOfTile);
 	static Tile fromTile2(const Tile2 &tile);
+	static Tile1 toTile1(const Tile &tile);
+	static Tile2 toTile2(const Tile &tile);
 };
 
 struct BackgroundBounds {
@@ -73,32 +72,60 @@ struct BackgroundBounds {
 class BackgroundFile : public File
 {
 public:
+	enum MapDepth {
+		DepthPal8,
+		DepthPal4,
+		DepthColor
+	};
+
 	BackgroundFile();
 	bool open(const QByteArray &map, const QByteArray &mim, const QMultiMap<quint8, quint8> *defaultParams = nullptr);
 	inline QString filterText() const {
-		return QString();
+		return QObject::tr("Fichier map tiles écran PC (*.map)");
 	}
+	bool save(QByteArray &map);
 
 	QImage background(bool hideBG=false) const;
 	QImage background(const QList<quint8> &activeParams, bool hideBG = false);
+	static QImage mimToImage(MapDepth depth);
+
+	inline const QList<Tile> &tiles() const {
+		return _tiles;
+	}
+	void setTiles(const QList<Tile> &tiles);
+	const Tile &tile(quint16 index) const;
+	void setTile(quint16 index, const Tile &tile);
+
+	void setVisibleTile(int index);
 
 	QMultiMap<quint8, quint8> params;
 	QMultiMap<quint8, quint8> allparams;
 	QMap<quint8, bool> layers;
 private:
+	enum MapType {
+		TypeOld,
+		TypeOldShort,
+		TypeNew
+	};
+
 	using File::open;
-	bool type1Parameters(const QByteArray &map,
-	                     const QMultiMap<quint8, quint8> *defaultParams);
-	bool type2Parameters(const QByteArray &map,
-	                     const QMultiMap<quint8, quint8> *defaultParams);
-	QMultiMap<quint16, Tile> type1(BackgroundBounds &bounds, bool hideBG = false) const;
-	QMultiMap<quint16, Tile> type2(BackgroundBounds &bounds, bool hideBG = false) const;
+	bool openParameters();
+	QList<Tile> parseTiles(const QByteArray &map, MapType &type) const;
 	QImage toImage(int palOffset, int srcYWidth,
-	               const QMultiMap<quint16, Tile> &tiles,
-	               const BackgroundBounds &bounds) const;
-	static QRgb BGcolor(int value, quint8 blendType=4, QRgb color0=0);
-	static QByteArray map, mim;
+	               const QMultiMap<quint16, int> &tiles,
+	               const BackgroundBounds &bounds, bool hideBG) const;
+	static void drawTile(const Tile &tile, int palOffset, int srcYWidth,
+	                     int imageWidth, const BackgroundBounds &bounds,
+	                     const char *constMimData, QRgb *pixels);
+	static void BGcolor(quint16 value, quint8 blendType, QRgb *pixels,
+	                    int index, bool forceBlack);
+	static QByteArray mim;
 	bool opened;
+	MapType _mapType;
+	QList<Tile> _tiles;
+	QMultiMap<quint16, int> _tilesZOrder;
+	BackgroundBounds _bounds;
+	int _visibleTile;
 };
 
 #endif // BACKGROUNDFILE_H
