@@ -185,7 +185,6 @@ void BackgroundWidget::setReadOnly(bool ro)
 
 	if(!isBuilded())	return;
 
-	currentTile->setReadOnly(ro);
 	tileX->setReadOnly(ro);
 	tileY->setReadOnly(ro);
 	tileZ->setReadOnly(ro);
@@ -193,7 +192,7 @@ void BackgroundWidget::setReadOnly(bool ro)
 	tilePalID->setReadOnly(ro);
 	tileBlend->setReadOnly(ro);
 	tileDraw->setDisabled(ro);
-	tileDepth->setDisabled(ro);
+	tileDepth->setReadOnly(ro);
 	tileSrcX->setReadOnly(ro);
 	tileSrcY->setReadOnly(ro);
 	tileLayerID->setReadOnly(ro);

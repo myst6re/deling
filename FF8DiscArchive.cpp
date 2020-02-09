@@ -232,6 +232,14 @@ const FF8DiscFile &FF8DiscArchive::rootFile(int id)
 	return rootDirectory().at(id);
 }
 
+const FF8DiscFile &FF8DiscArchive::sysFntTdwFile()
+{
+	if (isDemo()) {
+		return rootFile(isJp() ? 9 : 8);
+	}
+	return rootFile(129);
+}
+
 const FF8DiscFile &FF8DiscArchive::fieldBinFile()
 {
 	if (isDemo()) {

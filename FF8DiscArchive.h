@@ -54,6 +54,7 @@ public:
 	const QList<FF8DiscFile> &rootDirectory();
 	int rootCount();
 	const FF8DiscFile &rootFile(int id);
+	const FF8DiscFile &sysFntTdwFile();
 	const FF8DiscFile &fieldBinFile();
 //	QList<FF8DiscFile> worldmapDirectory();
 //	FF8DiscFile worldmapFile(int id);
