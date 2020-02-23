@@ -64,6 +64,16 @@ bool WmArchive::open(const QString &filename, Map &map, ArchiveObserver *progres
 		return false;
 	}
 
+	if (!wmset.readSpecialTextures(map)) {
+		_errorString = QObject::tr("Impossible de lire la mappemonde (4).");
+		return false;
+	}
+
+	if (!wmset.readRoadTextures(map)) {
+		_errorString = QObject::tr("Impossible de lire la mappemonde (4).");
+		return false;
+	}
+
 	wmsetData.clear();
 
 	if (progress) {

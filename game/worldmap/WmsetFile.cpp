@@ -226,6 +226,86 @@ bool WmsetFile::readEncounterRegions(Map &map)
 	return true;
 }
 
+bool WmsetFile::readSpecialTextures(Map &map)
+{
+	if ((_toc.isEmpty() && !openToc()) || _toc.size() < 38) {
+		return false;
+	}
+
+	const quint32 sizeSection38 = _toc.at(38) - _toc.at(37);
+
+	if (!_io->seek(_toc.at(37) + OBJFILE_SPECIAL_TEX_OFFSET * 4)) {
+		return false;
+	}
+	const int entryCount = OBJFILE_SPECIAL_TEX_COUNT - OBJFILE_SPECIAL_TEX_OFFSET;
+	QByteArray data = _io->read(entryCount * 4);
+
+	if (data.size() != entryCount * 4) {
+		return false;
+	}
+
+	const quint32 *constData = (const quint32 *)data.constData();
+
+	QList<quint32> toc;
+
+	for (quint8 i = 0; i < entryCount; ++i) {
+		toc.append(constData[i]);
+	}
+	toc.append(sizeSection38);
+
+	QMap<Map::SpecialTextureName, TimFile> textures;
+
+	for (int i = 0; i < toc.size() - 1; ++i) {
+		_io->seek(_toc.at(37) + toc.at(i));
+		QByteArray data = _io->read(toc.at(i + 1) - toc.at(i));
+		textures.insert(Map::SpecialTextureName(i), TimFile(data));
+	}
+
+	map.setSpecialTextures(textures);
+
+	return true;
+}
+
+bool WmsetFile::readRoadTextures(Map &map)
+{
+	if ((_toc.isEmpty() && !openToc()) || _toc.size() < 39) {
+		return false;
+	}
+
+	const quint32 sizeSection39 = _toc.at(39) - _toc.at(38);
+
+	if (!_io->seek(_toc.at(38))) {
+		return false;
+	}
+	const int entryCount = 13;
+	QByteArray data = _io->read(entryCount * 4);
+
+	if (data.size() != entryCount * 4) {
+		return false;
+	}
+
+	const quint32 *constData = (const quint32 *)data.constData();
+
+	QList<quint32> toc;
+
+	for (quint8 i = 0; i < entryCount; ++i) {
+		toc.append(constData[i]);
+	}
+	toc.append(sizeSection39);
+
+	QList<TimFile> textures;
+
+	for (int i = 0; i < toc.size() - 1; ++i) {
+		_io->seek(_toc.at(38) + toc.at(i));
+		QByteArray data = _io->read(toc.at(i + 1) - toc.at(i));
+		textures.append(TimFile(data));
+	}
+
+	map.setRoadTextures(textures);
+
+	return true;
+}
+
 bool WmsetFile::openToc()
 {
 	_io->reset();

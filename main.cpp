@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 	f1.open(QIODevice::ReadOnly);
 	QFile f2("E:/Documents/hyne/autres/ff8slot00_switch_version.dat.dec");
 	f2.open(QIODevice::WriteOnly);
-	f2.write(QLZ4::decompressAll(f1.readAll()));
+	f2.write(QLZ4::decompressAll(f1.readAll())); */
 
 	Map map1, map2;
 	WmxFile wmx;
@@ -104,13 +104,19 @@ int main(int argc, char *argv[])
 		if (!wmset.readEncounters(map1)) {
 			qWarning() << "Cannot read encounters";
 		}
+		if (!wmset.readSpecialTextures(map1)) {
+			qWarning() << "Cannot read special textures";
+		}
+		if (!wmset.readRoadTextures(map1)) {
+			qWarning() << "Cannot read special textures";
+		}
 		if (!texl.readTextures(map1)) {
 			qWarning() << "Cannot read textures";
 		}
 		WorldmapWidget *wmWidget = new WorldmapWidget();
 		wmWidget->resize(640, 480);
 		wmWidget->show();
-		wmWidget->setMap(&map1); */
+		wmWidget->setMap(&map1);
 
 		// wmWidget->scene()->setLimits(QRect(10, 0, 1, 1));
 
@@ -155,7 +161,7 @@ int main(int argc, char *argv[])
 
 		// wmWidget->scene()->renderPixmap(scale, scale)
 		*/
-	//}
+	}
 
 
 	/* if(!wmx.readSegments(map2)) {

@@ -5,6 +5,27 @@
 #include <QOpenGLWidget>
 #include "game/worldmap/Map.h"
 
+class OpenGLPalettedTexture {
+public:
+	OpenGLPalettedTexture() :
+	    _texture(nullptr), _palettes(nullptr), _paletteMultiplier(1.0f) {}
+	OpenGLPalettedTexture(QOpenGLTexture *tex, QOpenGLTexture *pal) :
+	    _texture(tex), _palettes(pal),
+	    _paletteMultiplier(256.0f / float(pal->width())) {}
+	inline QOpenGLTexture *texture() const {
+		return _texture;
+	}
+	inline QOpenGLTexture *palettes() const {
+		return _palettes;
+	}
+	inline float paletteMultiplier() const {
+		return _paletteMultiplier;
+	}
+private:
+	QOpenGLTexture *_texture, *_palettes;
+	float _paletteMultiplier;
+};
+
 class WorldmapGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
 public:
@@ -26,7 +47,7 @@ public:
 	inline float yTrans() const {
 		return _yTrans;
 	}
-	void setZTrans(double trans);
+	void setZTrans(float trans);
 	inline float zTrans() const {
 		return _distance;
 	}
@@ -42,6 +63,10 @@ public:
 	inline float zRot() const {
 		return _zRot;
 	}
+	void setTexture(int texture);
+	inline float texture() const {
+		return _texture;
+	}
 	QRgb groundColor(quint8 groundType, quint8 region,
 	                 const QSet<quint8> &grounds);
 protected:
@@ -55,15 +80,22 @@ protected:
 	virtual void focusInEvent(QFocusEvent *event);
 	virtual void focusOutEvent(QFocusEvent *event);
 private:
+	void importVertices();
+
 	const Map *_map;
-	QRect _limits;
-	double _distance;
+	float _distance;
 	float _xRot, _yRot, _zRot;
 	float _xTrans, _yTrans, _transStep;
-	int _lastKeyPressed;
+	int _lastKeyPressed, _texture;
+	QRect _limits;
 	QPoint _moveStart;
 	QMap<int, QRgb> _colorRegions;
 	QList< QList<QOpenGLTexture *> > _textures;
+	QList< QList<QOpenGLTexture *> > _specialTextures;
+	QOpenGLTexture *_seaTexture, *_roadTexture, *_redTexture;
+	QOpenGLBuffer buf;
+	QOpenGLShaderProgram *program;
+	QMatrix4x4 _matrixProj;
 };
 
 #endif // WORLDMAPGLWIDGET_H

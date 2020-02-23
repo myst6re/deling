@@ -26,10 +26,12 @@ private slots:
 	void setXRot(int value);
 	void setYRot(int value);
 	void setZRot(int value);
+	void setTexture(int value);
 private:
 	WorldmapGLWidget *_scene;
 	QSlider *_xTransSlider, *_yTransSlider, *_zTransSlider;
 	QSlider *_xRotSlider, *_yRotSlider, *_zRotSlider;
+	QSpinBox *_textureSpinBox;
 };
 
 #endif // WORLDMAPWIDGET_H

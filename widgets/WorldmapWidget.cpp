@@ -21,14 +21,19 @@ WorldmapWidget::WorldmapWidget(QWidget *parent, Qt::WindowFlags f) :
 	_zRotSlider = new QSlider(Qt::Vertical, this);
 	_zRotSlider->setRange(minRot, maxRot);
 
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->addWidget(_scene, 1);
-	layout->addWidget(_xTransSlider);
-	layout->addWidget(_yTransSlider);
-	layout->addWidget(_zTransSlider);
-	layout->addWidget(_xRotSlider);
-	layout->addWidget(_yRotSlider);
-	layout->addWidget(_zRotSlider);
+	_textureSpinBox = new QSpinBox(this);
+	_textureSpinBox->setRange(0, 8);
+
+	QGridLayout *layout = new QGridLayout(this);
+	layout->addWidget(_scene, 0, 0, 2, 1);
+	layout->addWidget(_xTransSlider, 0, 1);
+	layout->addWidget(_yTransSlider, 0, 2);
+	layout->addWidget(_zTransSlider, 0, 3);
+	layout->addWidget(_xRotSlider, 0, 4);
+	layout->addWidget(_yRotSlider, 0, 5);
+	layout->addWidget(_zRotSlider, 0, 6);
+	layout->addWidget(_textureSpinBox, 1, 1);
+	layout->setColumnStretch(0, 1);
 
 	_xTransSlider->setValue((_scene->xTrans() + 1.0) * _xTransSlider->maximum() / 2.0);
 	_yTransSlider->setValue((_scene->yTrans() + 1.0) * _yTransSlider->maximum() / 2.0);
@@ -38,6 +43,8 @@ WorldmapWidget::WorldmapWidget(QWidget *parent, Qt::WindowFlags f) :
 	_yRotSlider->setValue(_scene->yRot());
 	_zRotSlider->setValue(_scene->zRot());
 
+	_textureSpinBox->setValue(_scene->texture());
+
 	connect(_xTransSlider, SIGNAL(sliderMoved(int)), SLOT(setXTrans(int)));
 	connect(_yTransSlider, SIGNAL(sliderMoved(int)), SLOT(setYTrans(int)));
 	connect(_zTransSlider, SIGNAL(sliderMoved(int)), SLOT(setZTrans(int)));
@@ -45,6 +52,8 @@ WorldmapWidget::WorldmapWidget(QWidget *parent, Qt::WindowFlags f) :
 	connect(_xRotSlider, SIGNAL(sliderMoved(int)), SLOT(setXRot(int)));
 	connect(_yRotSlider, SIGNAL(sliderMoved(int)), SLOT(setYRot(int)));
 	connect(_zRotSlider, SIGNAL(sliderMoved(int)), SLOT(setZRot(int)));
+
+	connect(_textureSpinBox, SIGNAL(valueChanged(int)), SLOT(setTexture(int)));
 }
 
 void WorldmapWidget::setXTrans(int value)
@@ -59,7 +68,7 @@ void WorldmapWidget::setYTrans(int value)
 
 void WorldmapWidget::setZTrans(int value)
 {
-	_scene->setZTrans((value * 2.0 / double(_zTransSlider->maximum())) - 1.0);
+	_scene->setZTrans((value * 2.0 / _zTransSlider->maximum()) - 1.0);
 }
 
 void WorldmapWidget::setXRot(int value)
@@ -75,4 +84,9 @@ void WorldmapWidget::setYRot(int value)
 void WorldmapWidget::setZRot(int value)
 {
 	_scene->setZRot(value);
+}
+
+void WorldmapWidget::setTexture(int value)
+{
+	_scene->setTexture(value);
 }

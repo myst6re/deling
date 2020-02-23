@@ -20,7 +20,6 @@
 
 #include <QtCore>
 #include <QImage>
-#include "FF8Image.h"
 #include "files/TextureFile.h"
 
 class TimFile : public TextureFile
@@ -31,6 +30,39 @@ public:
 	TimFile(const TextureFile &texture, quint8 bpp, quint16 palX, quint16 palY, quint16 palW, quint16 palH, quint16 imgX, quint16 imgY);
 	bool open(const QByteArray &data);
 	bool save(QByteArray &data);
+	inline QPoint imgPos() const {
+		quint16 x = imgX;
+
+		if (bpp == 0) {
+			x *= 4;
+		} else if (bpp == 1) {
+			x *= 2;
+		}
+
+		return QPoint(x, imgY);
+	}
+	inline QPoint palPos() const {
+		return QPoint(palX, palY);
+	}
+	inline QSize imgSize() const {
+		return image().size();
+	}
+	inline QSize palSize() const {
+		return QSize(palW, palH);
+	}
+	inline QRect imgRect() const {
+		return QRect(imgPos(), imgSize());
+	}
+	inline QRect palRect() const {
+		return QRect(palPos(), palSize());
+	}
+	inline quint8 depth() const {
+		if (bpp == 0) {
+			return 4;
+		}
+		return bpp * 8;
+	}
+	QImage palImage() const;
 private:
 	quint8 bpp;
 	quint16 palX, palY;

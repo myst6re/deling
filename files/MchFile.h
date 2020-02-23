@@ -19,7 +19,6 @@
 #define MCHFILE_H
 
 #include "files/File.h"
-#include "files/TimFile.h"
 #include "CharaModel.h"
 
 class MchFile : public File

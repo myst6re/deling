@@ -9,6 +9,37 @@
 class Map
 {
 public:
+	enum SpecialTextureName {
+		Moon = 0,
+		Sky,
+		MiniMap,
+		Unknown1,
+		Unknown2,
+		Explosion,
+		Unknown3,
+		Sea1,
+		Sea2,
+		Sea3,
+		Cascade,
+		Sea4,
+		Beach1,
+		Beach2,
+		Sea5,
+		Unknown4,
+		Unknown5,
+		Unknown6,
+		Unknown7,
+		Unknown8,
+		Unknown9,
+		Unknown10,
+		Unknown11,
+		Unknown12,
+		Unknown13,
+		Unknown14,
+		Unknown15,
+		Unknown16
+	};
+
 	Map();
 
 	inline const QList<MapSegment> &segments() const {
@@ -45,13 +76,43 @@ public:
 		_textures = textures;
 	}
 
+	inline const TimFile specialTexture(SpecialTextureName name) const {
+		return _specialTextures[name];
+	}
+
+	inline void setSpecialTextures(const QMap<SpecialTextureName, TimFile> &textures) {
+		_specialTextures = textures;
+	}
+
+	inline const QList<TimFile> &roadTextures() const {
+		return _roadTextures;
+	}
+
+	inline void setRoadTextures(const QList<TimFile> &textures) {
+		_roadTextures = textures;
+	}
+
 	QList<QList<QImage> > textureImages() const;
+	QImage specialTextureImage(SpecialTextureName name) const;
+	//QList<QImage> seaTextureImage() const;
+	//QList<QImage> roadTextureImage() const;
+	QImage seaTextureImage() const {
+		return specialTextureImage(Sea1, Sea5);
+	}
+	QImage roadTextureImage() const {
+		return composeTextureImage(_roadTextures);
+	}
 
 private:
+	QImage specialTextureImage(SpecialTextureName min, SpecialTextureName max) const;
+	static QImage composeTextureImage(const QList<TimFile> &tims);
+
 	QList<MapSegment> _segments;
 	QList<WmEncounter> _encounters;
 	QList<quint8> _encounterRegions;
 	QList<TimFile> _textures;
+	QMap<SpecialTextureName, TimFile> _specialTextures;
+	QList<TimFile> _roadTextures;
 };
 
 #endif // MAP_H

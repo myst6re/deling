@@ -62,5 +62,7 @@
         <file>fonts/sysfnt.tdw</file>
         <file>fonts/sysfnt.txt</file>
         <file>fonts/sysfnt_jp.txt</file>
+        <file>shaders/vertex.glsl</file>
+        <file>shaders/fragment.glsl</file>
     </qresource>
 </RCC>

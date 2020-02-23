@@ -295,7 +295,9 @@ OTHER_FILES += Deling.rc \
     appveyor.yml \
     fonts/sysfnt.txt \
     fonts/sysfnt_demo_jp.txt \
-    fonts/sysfnt_jp.txt
+    fonts/sysfnt_jp.txt \
+    shaders/vertex.glsl \
+    shaders/fragment.glsl
 DISTFILES += Deling.desktop
 
 # call lrelease to make the qm files.
