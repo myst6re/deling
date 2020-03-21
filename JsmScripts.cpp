@@ -691,6 +691,7 @@ JsmProgram JsmScripts::program(int groupID, int methodID,
 		return JsmProgram();
 	}
 	JsmOpcode *firstOp = opcodes.first();
+	QList<int> labels = searchJumps(opcodes);
 	QList<JsmOpcode *>::const_iterator begin = opcodes.constBegin();
 	// Ignore label if correct at the beginning
 	if(firstOp->key() == JsmOpcode::LBL
@@ -698,7 +699,6 @@ JsmProgram JsmScripts::program(int groupID, int methodID,
 		begin += 1;
 		delete firstOp;
 	}
-	QList<int> labels = searchJumps(opcodes);
 	QSet<int> usedLabels; // Filled by program()
 	JsmProgram p = program(opcodes.constBegin(), begin, opcodes.constEnd(),
 	                       labels, collectPointers, usedLabels);
