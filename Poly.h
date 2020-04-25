@@ -51,6 +51,9 @@ public:
 	QRgb color(quint8 id) const;
 	const TexCoord &texCoord(quint8 id) const;
 	void setTexCoord(quint8 id, const TexCoord &texCoord);
+	inline const QList<TexCoord> &texCoords() const {
+		return _texCoords;
+	}
 	bool isMonochrome() const;
 	bool hasTexture() const;
 protected:
