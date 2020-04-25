@@ -25,9 +25,8 @@
 class CharaModel
 {
 public:
-	CharaModel(const QString &name, const QList<quint32> &toc, const QByteArray &data);
-	CharaModel(const QString &name);
 	CharaModel();
+	explicit CharaModel(const QString &name, const QList<TimFile> &textures = QList<TimFile>());
 	bool open(const QList<quint32> &toc, const QByteArray &data);
 	bool isEmpty() const;
 	QString name() const;

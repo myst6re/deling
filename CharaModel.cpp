@@ -17,39 +17,13 @@
  ****************************************************************************/
 #include "CharaModel.h"
 
-CharaModel::CharaModel(const QString &name, const QList<quint32> &toc, const QByteArray &data) :
-	_name(name)
-{
-	open(toc, data);
-}
-
-CharaModel::CharaModel(const QString &name) :
-	_name(name)
-{
-}
-
 CharaModel::CharaModel()
 {
 }
 
-bool CharaModel::open(const QList<quint32> &toc, const QByteArray &data)
+CharaModel::CharaModel(const QString &name, const QList<TimFile> &textures) :
+    _name(name), _textures(textures)
 {
-	_textures.clear();
-
-	// Toc = tim offsets + data offset + data size
-
-	for(int i=0 ; i<toc.size()-2 ; ++i) {
-		quint32 pos = toc.at(i) & 0xFFFFFF;
-//		qDebug() << "ouverture tim" << pos << ((toc.at(i+1) & 0xFFFFFF) - pos);
-		_textures.append(TimFile(data.mid(pos, (toc.at(i+1) & 0xFFFFFF) - pos)));
-		if(!_textures.last().isValid()) {
-			qWarning() << "CharaModel::open tim error: unknown format!" << _name << i;
-		}
-	}
-
-//	qDebug() << "charaModel ouvert" << _name;
-
-	return true;
 }
 
 bool CharaModel::isEmpty() const

@@ -17,16 +17,6 @@
  ****************************************************************************/
 #include "FF8Image.h"
 
-quint16 FF8Image::toPsColor(const QRgb &color)
-{
-	return (qRound(qRed(color)/COEFF_COLOR) & 31) | ((qRound(qGreen(color)/COEFF_COLOR) & 31) << 5) | ((qRound(qBlue(color)/COEFF_COLOR) & 31) << 10) | ((qAlpha(color)==255) << 15);
-}
-
-QRgb FF8Image::fromPsColor(quint16 color, bool useAlpha)
-{
-	return qRgba(qRound((color & 31)*COEFF_COLOR), qRound((color>>5 & 31)*COEFF_COLOR), qRound((color>>10 & 31)*COEFF_COLOR), color == 0 && useAlpha ? 0 : 255);
-}
-
 QPixmap FF8Image::lzs(const QByteArray &data)
 {
 	//QTime t;t.start();
@@ -109,90 +99,59 @@ QByteArray FF8Image::toLzs(const QImage &image, quint16 u1, quint16 u2)
 	return data.prepend((char *)&lzs_size, 4);
 }
 
-int FF8Image::findFirstTim(const QByteArray &data)
+QList<int> FF8Image::findTims(const QByteArray &data)
 {
-	int index = -1, dataSize = data.size();
-	quint32 palSize, imgSize;
+	int indexInData = -1, dataSize = data.size();
+	qint32 palSize, imgSize;
 	quint16 w, h;
 	quint8 bpp;
 	const char *constData = data.constData();
-	QByteArray search("\x10\x00\x00\x00",4);
+	QByteArray search("\x10\x00\x00\x00", 4);
+	QList<int> ret;
 
-	while( (index = data.indexOf(search, index+4)) != -1 )
-	{
-		palSize=0;
-		if(index+8 > dataSize)		continue;
-		bpp = (quint8)data.at(index+4);
+	while((indexInData = data.indexOf(search, indexInData+4)) != -1) {
+		palSize = 0;
+		if(indexInData + 8 > dataSize) {
+			continue;
+		}
+		bpp = quint8(data.at(indexInData + 4));
 
 //		qDebug() << "bpp" << bpp;
 
-		if(bpp==8 || bpp==9)
-		{
-			memcpy(&palSize, &constData[index+8], 4);
+		if(bpp == 8 || bpp == 9) {
+			memcpy(&palSize, &constData[indexInData + 8], 4);
 //			qDebug() << "palSize" << palSize;
-			if(index+20 > dataSize)	continue;
-			memcpy(&w, &constData[index+16], 2);
-			memcpy(&h, &constData[index+18], 2);
+			if(indexInData + 20 > dataSize) {
+				continue;
+			}
+			memcpy(&w, &constData[indexInData + 16], 2);
+			memcpy(&h, &constData[indexInData + 18], 2);
 //			qDebug() << "w" << w << "h" << h;
-			if(palSize != (quint32)w*h*2+12)	continue;
+			if(palSize != w * h * 2 + 12) {
+				continue;
+			}
 		}
-		else if(bpp!=2 && bpp!=3)	continue;
+		else if(bpp != 2 && bpp != 3) {
+			continue;
+		}
 
-		memcpy(&imgSize, &constData[index+8+palSize], 4);
+		memcpy(&imgSize, &constData[indexInData + 8 + palSize], 4);
 //		qDebug() << "imgSize" << imgSize;
-		if((quint32)(index+20+palSize) > (quint32)dataSize)	continue;
-		memcpy(&w, &constData[index+16+palSize], 2);
-		memcpy(&h, &constData[index+18+palSize], 2);
-//		qDebug() << "w" << w << "h" << h;
-		if(((bpp==8 || bpp==9 || bpp==2) && imgSize != (quint32)w*2*h+12) || (bpp==3 && imgSize != (quint32)w*3*h+12))	continue;
-
-		return index;
-	}
-	return -1;
-}
-
-int FF8Image::findTims(const QByteArray &data)
-{
-	int index = -1, oldIndex = 0, dataSize = data.size();
-	quint32 palSize, imgSize;
-	quint16 w, h, i=0;
-	quint8 bpp;
-	const char *constData = data.constData();
-
-	while( (index = data.indexOf(QByteArray("\x10\x00\x00\x00",4), index+1)) != -1 )
-	{
-		palSize=0;
-		if(index+4 >= dataSize)		continue;
-		bpp = (quint8)data.at(index+4);
-
-		if(bpp==8 || bpp==9)
-		{
-			memcpy(&palSize, &constData[index+8], 4);
-			if(index+20 >= dataSize)	continue;
-			memcpy(&w, &constData[index+16], 2);
-			memcpy(&h, &constData[index+18], 2);
-			if(palSize != (quint32)w*h*2+12)	continue;
+		if(indexInData + 20 + palSize > dataSize) {
+			continue;
 		}
-		else if(bpp!=2 && bpp!=3)	continue;
+		memcpy(&w, &constData[indexInData+16+palSize], 2);
+		memcpy(&h, &constData[indexInData+18+palSize], 2);
+//		qDebug() << "w" << w << "h" << h;
+		if(((bpp == 8 || bpp == 9 || bpp == 2) && imgSize != w * 2 * h + 12)
+		        || (bpp == 3 && imgSize != w * 3 * h + 12)) {
+			continue;
+		}
 
-		memcpy(&imgSize, &constData[index+8+palSize], 4);
-		if((quint32)index+20+palSize >= (quint32)dataSize)	continue;
-		memcpy(&w, &constData[index+16+palSize], 2);
-		memcpy(&h, &constData[index+18+palSize], 2);
-		if(((bpp==8 || bpp==9 || bpp==2) && imgSize != (quint32)w*2*h+12) || (bpp==3 && imgSize != (quint32)w*3*h+12))	continue;
-
-//		QFile fic(QString("C:/wamp/www/ff8/fils/fre/world/dat/wmsetfr%1.tim").arg(i++));
-//		fic.open(QIODevice::WriteOnly);
-//		fic.write(data.mid(index, 8+palSize+imgSize));
-//		fic.close();
-		qDebug() << "espace" << (index-oldIndex) << "position" << QString().setNum(oldIndex, 16);
-		qDebug() << QString().setNum(index, 16) << "(taille=" << (8+palSize+imgSize) << ")";
-		oldIndex = index+8+palSize+imgSize;
-//		Tim::image(data.mid(index, 8+palSize+imgSize), QString("C:/wamp/www/ff8/fils/fre/world/esk/texl%1.png").arg(i++));
+		ret.append(indexInData);
 	}
-	qDebug() << "espace" << (dataSize-oldIndex) << "position" << QString().setNum(oldIndex, 16);
 
-	return i+1;
+	return ret;
 }
 
 void FF8Image::error(QPaintDevice *pd)
