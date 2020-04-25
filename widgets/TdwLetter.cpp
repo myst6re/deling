@@ -122,6 +122,7 @@ void TdwLetter::mouseMoveEvent(QMouseEvent *e)
 		if(linePos / PIXEL_SIZE != newLinePos && newLinePos < 16) {
 			_tdwFile->setCharWidth(_currentTable, _letter, newLinePos);
 			update();
+			emit widthEdited(newLinePos);
 		}
 	} else if(startDrag2) {
 		setPixel(getPixel(mousePos));
