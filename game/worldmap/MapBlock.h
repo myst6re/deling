@@ -14,6 +14,9 @@ public:
 	inline void setPolygons(const QList<MapPoly> &polygons) {
 		_polygons = polygons;
 	}
+	inline void setPolygon(int id, const MapPoly &polygon) {
+		_polygons[id] = polygon;
+	}
 private:
 	QList<MapPoly> _polygons;
 };

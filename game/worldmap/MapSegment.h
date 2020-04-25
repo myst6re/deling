@@ -14,6 +14,9 @@ public:
 	inline void setBlocks(const QList<MapBlock> &blocks) {
 		_blocks = blocks;
 	}
+	inline void setBlock(int id, const MapBlock &block) {
+		_blocks[id] = block;
+	}
 
 	inline quint32 groupId() const {
 		return _groupId;

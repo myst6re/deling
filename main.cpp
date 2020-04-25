@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 	wmx.setDevice(&file);
 	wmset.setDevice(&file2);
 	texl.setDevice(&file3);
-	if(!wmx.readSegments(map1, 768)) {
+	if(!wmx.readSegments(map1, 835)) {
 		qWarning() << "Cannot read segments 1";
 	} else {
 		if (!wmset.readEncounterRegions(map1)) {

@@ -5,7 +5,8 @@ WorldmapGLWidget::WorldmapGLWidget(QWidget *parent,
     QOpenGLWidget(parent, f), _map(Q_NULLPTR),
     _distance(-0.714248f), _xRot(-90.0f), _yRot(180.0f), _zRot(180.0f),
     _xTrans(-0.5f), _yTrans(0.5f), _transStep(360.0f), _lastKeyPressed(-1),
-    _texture(0), _limits(QRect(0, 0, 32, 24))
+    _texture(-1), _segmentGroupId(-1), _segmentId(-1), _blockId(-1),
+    _groundType(-1), _polyId(-1), _limits(QRect(0, 0, 32, 24))
 {
 	/* _xTrans = 0;
 	_yTrans = .12f;
@@ -20,9 +21,9 @@ WorldmapGLWidget::~WorldmapGLWidget()
 	makeCurrent();
 	buf.destroy();
 
-	foreach (const QList<QOpenGLTexture *> &texs, _textures) {
-		foreach (QOpenGLTexture *tex, texs) {
-			delete tex;
+	for (const QList<QPair<QOpenGLTexture *, bool>> &texs : qAsConst(_textures)) {
+		for (const QPair<QOpenGLTexture *, bool> &tex : qAsConst(texs)) {
+			delete tex.first;
 		}
 	}
 
@@ -82,7 +83,7 @@ QImage WorldmapGLWidget::toImage(int w, int h)
 	restoreGLState();
 }
 */
-void WorldmapGLWidget::setMap(const Map *map)
+void WorldmapGLWidget::setMap(Map *map)
 {
 	_map = map;
 
@@ -157,6 +158,43 @@ void WorldmapGLWidget::setTexture(int texture)
 	update();
 }
 
+void WorldmapGLWidget::setSegmentGroupId(int segmentGroupId)
+{
+	_segmentGroupId = segmentGroupId;
+	update();
+}
+
+void WorldmapGLWidget::setSegmentId(int segmentId)
+{
+	_segmentId = segmentId;
+	update();
+}
+
+void WorldmapGLWidget::setBlockId(int blockId)
+{
+	_blockId = blockId;
+	update();
+}
+
+void WorldmapGLWidget::setGroundType(int groundType)
+{
+	_groundType = groundType;
+	update();
+}
+
+void WorldmapGLWidget::setPolyId(int polyId)
+{
+	_polyId = polyId;
+	update();
+}
+
+void WorldmapGLWidget::dumpCurrent()
+{
+	const MapPoly &poly = _map->segments().at(_segmentId).blocks().at(_blockId).polygons().at(_polyId);
+	qDebug() << QString::number(poly.flags1(), 16) << QString::number(poly.flags2(), 16)
+	         << poly.groundType() << poly.texPage() << poly.clutId();
+}
+
 void WorldmapGLWidget::initializeGL()
 {
 	initializeOpenGLFunctions();
@@ -214,10 +252,9 @@ static QOpenGLTexture *textureFromImage(const QImage &image)
 		uploadOptions.setAlignment(1);
 		texture->setData(0, QOpenGLTexture::Red, QOpenGLTexture::UInt8, image.constBits(), &uploadOptions);
 	} else { */
-		qDebug() << "Not Indexed";
-		texture = new QOpenGLTexture(image, QOpenGLTexture::GenerateMipMaps);
-		texture->setMinificationFilter(QOpenGLTexture::NearestMipMapLinear);
-		texture->setMagnificationFilter(QOpenGLTexture::Nearest);
+	texture = new QOpenGLTexture(image);
+	texture->setMinificationFilter(QOpenGLTexture::NearestMipMapLinear);
+	texture->setMagnificationFilter(QOpenGLTexture::Nearest);
 	//}
 
 	return texture;
@@ -229,18 +266,25 @@ void WorldmapGLWidget::importVertices()
 		return;
 	}
 
-	foreach (const QList<QImage> &images, _map->textureImages()) {
-		QList<QOpenGLTexture *> texs;
+	QList< QList< QPair<QImage, bool> > > images = _map->textureImages();
+	QImage seaImage = _map->seaTextureImage(),
+	        roadImage = _map->roadTextureImage();
 
-		foreach (const QImage &image, images) {
-			texs.append(textureFromImage(image));
+	// Set HasBlackPixels attribute on polys
+	//_map->searchBlackPixels(images, seaImage, roadImage);
+
+	for (const QList< QPair<QImage, bool> > &images : qAsConst(images)) {
+		QList< QPair<QOpenGLTexture *, bool> > texs;
+
+		for (const QPair<QImage, bool> &image : qAsConst(images)) {
+			texs.append(qMakePair(textureFromImage(image.first), image.second));
 		}
 
 		_textures.append(texs);
 	}
 
-	_seaTexture = textureFromImage(_map->seaTextureImage());
-	_roadTexture = textureFromImage(_map->roadTextureImage());
+	_seaTexture = textureFromImage(seaImage);
+	_roadTexture = textureFromImage(roadImage);
 
 	QImage redImage(256, 256, QImage::Format_RGB32);
 	redImage.fill(Qt::red);
@@ -284,6 +328,7 @@ void WorldmapGLWidget::importVertices()
 		}
 	} */
 
+	QList< QVector<GLfloat> > drawAfter;
 	foreach (const MapSegment &segment, _map->segments()) {
 		int xb = 0, yb = 0;
 		foreach (const MapBlock &block, segment.blocks()) {
@@ -295,22 +340,30 @@ void WorldmapGLWidget::importVertices()
 					return;
 				}
 
+				QVector<GLfloat> vertDataPoly;
+
 				for (quint8 i = 0; i < 3; ++i) {
 					const Vertex &v = poly.vertex(i);
 					const TexCoord &tc = poly.texCoord(i);
-					vertData.append((xShift + x + v.x / scaleVect) / scale);
-					vertData.append(normalizeY(v.y) / scaleVect / scale);
-					vertData.append((zShift + z - v.z / scaleVect) / scale);
-					if (poly.u1() & 0x20) {
-						vertData.append(tc.x / float(_roadTexture->width() - 1));
-						vertData.append(tc.y / float(_roadTexture->height() - 1));
-					} else if (poly.u1() & 0x40) {
-						vertData.append(tc.x / float(_seaTexture->width() - 1));
-						vertData.append(tc.y / float(_seaTexture->height() - 1));
+					vertDataPoly.append((xShift + x + v.x / scaleVect) / scale);
+					vertDataPoly.append(normalizeY(v.y) / scaleVect / scale);
+					vertDataPoly.append((zShift + z - v.z / scaleVect) / scale);
+					if (poly.isRoadTexture()) {
+						vertDataPoly.append(tc.x / float(_roadTexture->width() - 1));
+						vertDataPoly.append(tc.y / float(_roadTexture->height() - 1));
+					} else if (poly.isWaterTexture()) {
+						vertDataPoly.append(tc.x / float(_seaTexture->width() - 1));
+						vertDataPoly.append(tc.y / float(_seaTexture->height() - 1));
 					} else {
-						vertData.append(tc.x / scaleTex);
-						vertData.append(tc.y / scaleTex);
+						vertDataPoly.append(tc.x / scaleTex);
+						vertDataPoly.append(tc.y / scaleTex);
 					}
+				}
+
+				if (false && poly.isTransparent()) {
+					drawAfter.append(vertDataPoly);
+				} else {
+					vertData.append(vertDataPoly);
 				}
 
 				/* for (quint8 i = 0; i < 16; ++i) {
@@ -350,6 +403,10 @@ void WorldmapGLWidget::importVertices()
 			xs = 0;
 			ys += 1;
 		}
+	}
+
+	foreach (const QVector<GLfloat> &floats, drawAfter) {
+		vertData.append(floats);
 	}
 
 	QMapIterator<QPair<quint8, quint8>, QList<quint8> > it(collect1);
@@ -422,46 +479,91 @@ void WorldmapGLWidget::paintGL()
 	program->setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 3, 5 * sizeof(GLfloat));
 	program->setAttributeBuffer(PROGRAM_TEXCOORD_ATTRIBUTE, GL_FLOAT, 3 * sizeof(GLfloat), 2, 5 * sizeof(GLfloat));
 
-	int bufIndex = 0, palIdLocation = program->uniformLocation("palId"),
-	        palMultiplierLocation = program->uniformLocation("palMultiplier");
+	int bufIndex = 0, alphaLocation = program->uniformLocation("alpha");
 	QTime t;
 	t.start();
 
+	program->setUniformValue(alphaLocation, 1.0f);
+	const QList<quint8> &regions = _map->encounterRegions();
+
+	QList<MapPoly> drawAfter;
+	int segmentId = 0;
 	foreach (const MapSegment &segment, _map->segments()) {
+		bool isInRegion = _texture >= 0 && regions.at(segmentId) == _texture;
+		int blockId = 0;
 		foreach (const MapBlock &block, segment.blocks()) {
+			int polyId = 0;
 			foreach (const MapPoly &poly, block.polygons()) {
-				/* if (poly.groundType() == 31
-				        && poly.texCoord(0).x >= 0 && poly.texCoord(0).x < 64
-				        && poly.texCoord(0).y >= 64 && poly.texCoord(0).y < 128) {
-					lastTexture = _redTexture;
-					lastTexture->bind();
-				}
-				else if (poly.groundType() == 10 || poly.groundType() >= 31) {
-					lastTexture = _seaTexture;
-					lastTexture->bind();
-				} else if (poly.groundType() == 27 || poly.groundType() == 28) {
-					lastTexture = _roadTexture;
-					lastTexture->bind();
-				} else {
-					if (poly.texPage() < _textures.size() && poly.clutId() < _textures.at(poly.texPage()).size()) {
-						lastTexture = _textures.at(poly.texPage()).at(poly.clutId());
-						lastTexture->bind();
-					} else {
-						qDebug() << poly.clutId();
+
+				if (_texture >= 0) {
+					program->setUniformValue(alphaLocation, 0.5f);
+
+					if (poly.isTransparent()) {
+						program->setUniformValue(alphaLocation, 0.0f);
 					}
+
+					if (isInRegion && poly.groundType() <= 31) {
+						program->setUniformValue(alphaLocation, 1.0f);
+
+						if (poly.isTransparent()) {
+							program->setUniformValue(alphaLocation, 0.5f);
+						}
+					}
+				}
+
+				if (_segmentGroupId >= 0) {
+					if (_segmentGroupId == segment.groupId()) {
+						program->setUniformValue(alphaLocation, 1.0f);
+					} else {
+						program->setUniformValue(alphaLocation, 0.5f);
+					}
+				}
+
+				if (_segmentId >= 0) {
+					if (_segmentId == segmentId) {
+						program->setUniformValue(alphaLocation, 1.0f);
+					} else {
+						program->setUniformValue(alphaLocation, 0.5f);
+					}
+				}
+
+				if (_blockId >= 0) {
+					if (_blockId == blockId) {
+						program->setUniformValue(alphaLocation, 1.0f);
+					} else {
+						program->setUniformValue(alphaLocation, 0.5f);
+					}
+				}
+
+				if (_groundType >= 0) {
+					if (_groundType == poly.groundType()) {
+						program->setUniformValue(alphaLocation, 1.0f);
+					} else {
+						program->setUniformValue(alphaLocation, 0.5f);
+					}
+				}
+
+				if (_polyId >= 0) {
+					if (_polyId == polyId) {
+						program->setUniformValue(alphaLocation, 1.0f);
+					} else {
+						program->setUniformValue(alphaLocation, 0.5f);
+					}
+				}
+
+				/* if (poly.isTransparent()) {
+					program->setUniformValue(alphaLocation, 0.0f);
 				} */
-				if (poly.u1() & 0x20) {
-					program->setUniformValue(palMultiplierLocation, 0.0f);
-					glActiveTexture(GL_TEXTURE0);
+
+				polyId += 1;
+
+				if (poly.isRoadTexture()) {
 					_roadTexture->bind();
-				} else if (poly.u1() & 0x40) {
-					program->setUniformValue(palMultiplierLocation, 0.0f);
-					glActiveTexture(GL_TEXTURE0);
+				} else if (poly.isWaterTexture()) {
 					_seaTexture->bind();
 				} else if (poly.texPage() < _textures.size() && poly.clutId() < _textures.at(poly.texPage()).size()) {
-					program->setUniformValue(palMultiplierLocation, 0.0f);
-					glActiveTexture(GL_TEXTURE0);
-					_textures.at(poly.texPage()).at(poly.clutId())->bind();
+					QPair<QOpenGLTexture *, bool> p = _textures.at(poly.texPage()).at(poly.clutId());
+					p.first->bind();
 					/* const OpenGLPalettedTexture &paltex = _textures.at(poly.texPage());
 					program->setUniformValue(palIdLocation, (poly.clutId() + 0.5f) / paltex.palettes()->height());
 					program->setUniformValue(palMultiplierLocation, paltex.paletteMultiplier());
@@ -471,18 +573,42 @@ void WorldmapGLWidget::paintGL()
 					paltex.palettes()->bind(); */
 				} else {
 					qDebug() << poly.texPage() << poly.clutId();
-					glActiveTexture(GL_TEXTURE0);
+					//glActiveTexture(GL_TEXTURE0);
 					_redTexture->bind();
-					glActiveTexture(GL_TEXTURE1);
-					_redTexture->bind();
+					/* glActiveTexture(GL_TEXTURE1);
+					_redTexture->bind(); */
 				}
 
 				glDrawArrays(GL_TRIANGLES, bufIndex * 3, 3);
 
 				bufIndex += 1;
 			}
+			blockId += 1;
 		}
+		segmentId += 1;
 	}
+
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	//program->setUniformValue(alphaLocation, 0.5f);
+
+	/* foreach (const MapPoly &poly, drawAfter) {
+		if (poly.isRoadTexture()) {
+			_roadTexture->bind();
+		} else if (poly.isWaterTexture()) {
+			_seaTexture->bind();
+		} else if (poly.texPage() < _textures.size() && poly.clutId() < _textures.at(poly.texPage()).size()) {
+			_textures.at(poly.texPage()).at(poly.clutId()).first->bind();
+		} else {
+			qDebug() << poly.texPage() << poly.clutId();
+			_redTexture->bind();
+		}
+
+		glDrawArrays(GL_TRIANGLES, bufIndex * 3, 3);
+
+		bufIndex += 1;
+	} */
 
 	qDebug() << t.elapsed();
 }

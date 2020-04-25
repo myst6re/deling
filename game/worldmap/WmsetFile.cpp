@@ -135,28 +135,32 @@ bool WmsetFile::readEncounters(Map &map)
 		return false;
 	}
 
-	_io->seek(_toc.at(0) + 4);
-	QByteArray data = _io->read(_toc.at(6) - _toc.at(0) - 4);
-	const char *d = data.constData();
-
-	const quint32 offsetSection3 = _toc.at(2),
+	const quint32
+	        offsetSection1 = _toc.at(0),
+	        offsetSection2 = _toc.at(1),
+	        offsetSection3 = _toc.at(2),
 	        offsetSection4 = _toc.at(3),
 	        offsetSection5 = _toc.at(4),
 	        offsetSection6 = _toc.at(5),
-	        sizeSection1 = (_toc.at(1) - _toc.at(0)) - 8,
+	        offsetSection7 = _toc.at(6),
+	        sizeSection1 = (offsetSection1 - offsetSection2) - 8,
 	        sizeSection3 = offsetSection4 - offsetSection3,
 	        sizeSection4 = offsetSection5 - offsetSection4,
 	        sizeSection5 = offsetSection6 - offsetSection5,
-	        sizeSection6 = _toc.at(6) - offsetSection6;
+	        sizeSection6 = offsetSection7 - offsetSection6;
+
+	_io->reset();
+	QByteArray data = _io->read(offsetSection7);
+	const char *d = data.constData();
 
 	QList<WmEncounter> encounters;
 
 	for (int i = 0; i < int(sizeSection1); i += 4) {
-		quint8 regionId = quint8(data.at(i)),
-		       groundId = quint8(data.at(i + 1)),
-		       esi = quint8(data.at(i + 2));
+		quint8 regionId = quint8(data.at(int(offsetSection1) + i)),
+		       groundId = quint8(data.at(int(offsetSection1) + i + 1)),
+		       esi = quint8(data.at(int(offsetSection1) + i + 2));
 
-		if (esi >= sizeSection3 || esi * 16 >= sizeSection4) {
+		if (quint32(esi) >= sizeSection3 || quint32(esi) * 16 >= sizeSection4) {
 			qDebug() << "Warning: Bad ESI" << esi;
 			continue;
 		}
@@ -174,7 +178,7 @@ bool WmsetFile::readEncounters(Map &map)
 		if (regionId == 10) { // Esthar
 			esi -= 80;
 
-			if (esi >= sizeSection5 || esi * 16 >= sizeSection6) {
+			if (esi >= sizeSection5 || esi * 16 >= sizeSection6 || int(offsetSection5 + esi) < 0) {
 				qDebug() << "Warning: Bad ESI lunar cry" << esi;
 				continue;
 			}
@@ -234,10 +238,10 @@ bool WmsetFile::readSpecialTextures(Map &map)
 
 	const quint32 sizeSection38 = _toc.at(38) - _toc.at(37);
 
-	if (!_io->seek(_toc.at(37) + OBJFILE_SPECIAL_TEX_OFFSET * 4)) {
+	if (!_io->seek(_toc.at(37))) {
 		return false;
 	}
-	const int entryCount = OBJFILE_SPECIAL_TEX_COUNT - OBJFILE_SPECIAL_TEX_OFFSET;
+	const int entryCount = OBJFILE_SPECIAL_TEX_COUNT;
 	QByteArray data = _io->read(entryCount * 4);
 
 	if (data.size() != entryCount * 4) {
@@ -253,15 +257,25 @@ bool WmsetFile::readSpecialTextures(Map &map)
 	}
 	toc.append(sizeSection38);
 
-	QMap<Map::SpecialTextureName, TimFile> textures;
+	QList<TimFile> textures;
 
-	for (int i = 0; i < toc.size() - 1; ++i) {
+	for (int i = 0; i < OBJFILE_SPECIAL_TEX_OFFSET; ++i) {
 		_io->seek(_toc.at(37) + toc.at(i));
 		QByteArray data = _io->read(toc.at(i + 1) - toc.at(i));
-		textures.insert(Map::SpecialTextureName(i), TimFile(data));
+		textures.append(TimFile(data));
 	}
 
-	map.setSpecialTextures(textures);
+	map.setLowResTextures(textures);
+
+	QMap<Map::SpecialTextureName, TimFile> specialTextures;
+
+	for (int i = OBJFILE_SPECIAL_TEX_OFFSET; i < toc.size() - 1; ++i) {
+		_io->seek(_toc.at(37) + toc.at(i));
+		QByteArray data = _io->read(toc.at(i + 1) - toc.at(i));
+		specialTextures.insert(Map::SpecialTextureName(i - OBJFILE_SPECIAL_TEX_OFFSET), TimFile(data));
+	}
+
+	map.setSpecialTextures(specialTextures);
 
 	return true;
 }

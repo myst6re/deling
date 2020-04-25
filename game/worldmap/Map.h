@@ -76,6 +76,14 @@ public:
 		_textures = textures;
 	}
 
+	inline const QList<TimFile> &lowResTextures() const {
+		return _lowResTextures;
+	}
+
+	inline void setLowResTextures(const QList<TimFile> &textures) {
+		_lowResTextures = textures;
+	}
+
 	inline const TimFile specialTexture(SpecialTextureName name) const {
 		return _specialTextures[name];
 	}
@@ -92,25 +100,27 @@ public:
 		_roadTextures = textures;
 	}
 
-	QList<QList<QImage> > textureImages() const;
+	QList<QList<QPair<QImage, bool> > > textureImages() const;
 	QImage specialTextureImage(SpecialTextureName name) const;
-	//QList<QImage> seaTextureImage() const;
-	//QList<QImage> roadTextureImage() const;
 	QImage seaTextureImage() const {
 		return specialTextureImage(Sea1, Sea5);
 	}
 	QImage roadTextureImage() const {
 		return composeTextureImage(_roadTextures);
 	}
+	void searchBlackPixels(const QList<QList<QImage> > &textures,
+	                       const QImage &seaTexture, const QImage &roadTexture);
 
 private:
 	QImage specialTextureImage(SpecialTextureName min, SpecialTextureName max) const;
 	static QImage composeTextureImage(const QList<TimFile> &tims);
+	static bool searchBlackPixelsTexture(const QImage &texture,
+	                                     const QList<TexCoord> &tc);
 
 	QList<MapSegment> _segments;
 	QList<WmEncounter> _encounters;
 	QList<quint8> _encounterRegions;
-	QList<TimFile> _textures;
+	QList<TimFile> _textures, _lowResTextures;
 	QMap<SpecialTextureName, TimFile> _specialTextures;
 	QList<TimFile> _roadTextures;
 };

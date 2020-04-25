@@ -10,7 +10,7 @@ struct MapBlockPolygon
 	quint8 vi[3];
 	quint8 ni[3];
 	TexCoord pos[3];
-	quint8 texi, groundType, u1, u2;
+	quint8 texi, groundType, flags1, flags2;
 	/* texi:
 	 *  unknown (5-bits) | clut id (3-bits)
 	 * Ground type:
@@ -46,14 +46,18 @@ struct MapBlockPolygon
 	 * | road/railroad tex affected (except esthar roads) + esthar fence (1-bit)
 	 * | lakes + esthar fence + esthar city roads (1-bit) | enter city (1-bit)
 	 * | unused (1-bit)
-	 * | trabia frozen lakes (below the surface), tunnels (2-bits)
+	 * | trabia frozen lakes, tunnel, beyond gates (below the surface), tunnels (2-bits)
 	 * u2:
 	 *  movability (1-bit) | walking area, except forests (1-bit)
-	 * | all, except mountains and rocks (?) (1-bit)
-	 * | most of continents, except northest galbadia peninsula (1-bit)
-	 * | unused (1-bit) | unknown (1-bit)
-	 * | unknown (1-bit) | on walking area, except half-galbadia and balamb (1-bit)
+	 * | all, except mountains and rocks and Esthar and some grounds (?) (1-bit)
+	 * | most of continents, except northest galbadia peninsula, some mountains, Esthar City, South of Esthar (1-bit)
+	 * | unused (1-bit) | walking area, excep forests (1-bit)
+	 * | Galbadia, center of centra, trabia, balamb, horizon, some pieces of esthar (1-bit) | on walking area, except half-galbadia and balamb (1-bit)
 	 */
+
+	bool operator==(const MapBlockPolygon &other) {
+		return memcmp(this->vi, other.vi, 3) == 0;
+	}
 };
 
 struct MapBlockVertex
@@ -102,7 +106,7 @@ bool WmxFile::writeSegments(const Map &map)
 		if (!writeSegment(segment)) {
 			return false;
 		}
-	};
+	}
 
 	return true;
 }
@@ -283,13 +287,18 @@ bool WmxFile::readBlock(MapBlock &block)
 		return false;
 	}
 
-	QList<MapBlockPolygon> polys;
+	QList<MapBlockPolygon> polys, polys2;
 	for (quint16 i = 0; i < header.polyCount; ++i) {
 		MapBlockPolygon poly;
 		if (!readPolygon(poly)) {
 			return false;
 		}
-		polys.append(poly);
+		//if (!polys.contains(poly)) {
+			polys.append(poly);
+		/* } else {
+			polys2.append(poly);
+			qDebug() << "Poly already exist" << i;
+		} */
 	}
 
 	QList<Vertex> vertices;
@@ -357,7 +366,7 @@ bool WmxFile::readBlock(MapBlock &block)
 		polygons.append(MapPoly(pVertices, pNormals, texCoords,
 		                        poly.texi >> 4, poly.texi & 0xF,
 		                        poly.groundType,
-		                        poly.u1, poly.u2));
+		                        poly.flags1, poly.flags2));
 	}
 
 	/* foreach(quint32 texi, coll) {
@@ -413,13 +422,13 @@ bool WmxFile::writeBlock(const MapBlock &block)
 		if (curVertex < 4) {
 			poly.texi = 0;
 			poly.groundType = polygon.groundType();
-			poly.u1 = polygon.u1();
-			poly.u2 = polygon.u2();
+			poly.flags1 = polygon.flags1();
+			poly.flags2 = polygon.flags2();
 		} else {
 			poly.texi = (polygon.texPage() << 4) | (polygon.clutId() & 0xF);
 			poly.groundType = polygon.groundType();
-			poly.u1 = polygon.u1();
-			poly.u2 = polygon.u2();
+			poly.flags1 = polygon.flags1();
+			poly.flags2 = polygon.flags2();
 		}
 
 		polys.append(poly);

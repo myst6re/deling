@@ -18,59 +18,31 @@ QList<WmEncounter> Map::encounters(quint8 region) const
 	return ret;
 }
 
-QList<QList<QImage> > Map::textureImages() const
+QList<QList<QPair<QImage, bool> > > Map::textureImages() const
 {
-	QList<QList<QImage> > ret;
+	QList<QList<QPair<QImage, bool> > > ret;
 
 	foreach (const TimFile &tim, _textures) {
-		QList<QImage> images;
+		QList<QPair<QImage, bool> > images;
 		for (int palID = 0; palID < tim.colorTableCount(); ++palID) {
 			QImage img = tim.image(palID);
 			QVector<QRgb> colorTable = img.colorTable();
+			bool hasAlpha = false;
 			for (int i = 0 ; i < colorTable.size(); ++i) {
 				if (colorTable.at(i) == qRgba(0, 0, 0, 0)) {
-					colorTable[i] = qRgba(255, 0, 0, 127);
+					//colorTable[i] = qRgba(255, 0, 0, 100);
+					hasAlpha = true;
+					break;
 				}
 			}
 			img.setColorTable(colorTable);
-			images.append(img);
+			images.append(qMakePair(img, hasAlpha));
 		}
 		ret.append(images);
 	}
 
 	return ret;
 }
-/*
-QList<QImage> Map::seaTextureImage() const
-{
-	QList<QImage> images;
-	for (int palID = 0; palID < tim.colorTableCount(); ++palID) {
-		images.append(tim.image(palID));
-	}
-	ret.append(images);
-
-	return specialTextureImage(Sea1, Sea5);
-}
-
-QList<QImage> Map::roadTextureImage() const
-{
-	return composeTextureImage(_roadTextures);
-}
-
-QList<QList<QImage> > Map::roadTextureImages() const
-{
-	QList<QList<QImage> > ret;
-
-	foreach (const TimFile &tim, _textures) {
-		QList<QImage> images;
-		for (int palID = 0; palID < tim.colorTableCount(); ++palID) {
-			images.append(tim.image(palID));
-		}
-		ret.append(images);
-	}
-
-	return ret;
-} */
 
 QImage Map::specialTextureImage(SpecialTextureName name) const
 {
@@ -110,9 +82,80 @@ QImage Map::specialTextureImage(SpecialTextureName min, SpecialTextureName max) 
 	return composeTextureImage(tims);
 }
 
-/* QImage Map::waterTextureImage() const
+static double triangleArea(const TexCoord &a, const TexCoord &b, const TexCoord &c)
 {
-	QImage ret(QSize(256, 256), QImage::Format_RGB32);
-	ret.fill(qRgb(35, 60, 75)); // Blue
-	return ret;
-} */
+	return abs((a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y)) / 2.0);
+}
+
+static double triangleArea(const QList<TexCoord> &tc)
+{
+	return triangleArea(tc.at(0), tc.at(1), tc.at(2));
+}
+
+bool Map::searchBlackPixelsTexture(const QImage &texture,
+                                   const QList<TexCoord> &tc)
+{
+	double area = triangleArea(tc);
+	TexCoord point;
+	quint8 maxY = texture.height() - 1,
+	        maxX = texture.width() - 1;
+
+	for(int y = 0; y <= maxY; y++) {
+		for(int x = 0; x <= maxX; x++) {
+			point.x = x;
+			point.y = y;
+			double area1 = triangleArea(point, tc.at(1), tc.at(2)),
+			        area2 = triangleArea(tc.at(0), point, tc.at(2)),
+			        area3 = triangleArea(tc.at(0), tc.at(1), point);
+
+			if (area == area1 + area2 + area3
+			        && texture.color(point.y * texture.width() + point.x) == qRgba(0, 0, 0, 0)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void Map::searchBlackPixels(const QList<QList<QImage> > &textures,
+                            const QImage &seaTexture, const QImage &roadTexture)
+{
+	QSet<quint64> visited;
+	int segmentId = 0;
+	foreach (MapSegment segment, segments()) {
+		int blockId = 0;
+		foreach (MapBlock block, segment.blocks()) {
+			int polyId = 0;
+			foreach (MapPoly poly, block.polygons()) {
+				const QList<TexCoord> &tc = poly.texCoords();
+				quint64 coordHash = tc.at(0).x | (quint64(tc.at(0).y) << 8)
+				                    | (quint64(tc.at(1).x) << 16) | (quint64(tc.at(1).y) << 24)
+				                    | (quint64(tc.at(2).x) << 32) | (quint64(tc.at(2).y) << 40);
+
+				if (visited.contains(coordHash)) {
+					polyId++;
+					continue;
+				}
+
+				QImage texture;
+
+				if (poly.isRoadTexture()) {
+					texture = roadTexture;
+				} else if (poly.isWaterTexture()) {
+					texture = seaTexture;
+				} else {
+					texture = textures.at(poly.texPage()).at(poly.clutId());
+				}
+
+				poly.setHasBlackPixels(searchBlackPixelsTexture(texture, tc));
+				visited.insert(coordHash);
+				block.setPolygon(polyId++, poly);
+			}
+
+			segment.setBlock(blockId++, block);
+		}
+
+		_segments[segmentId++] = segment;
+	}
+}
