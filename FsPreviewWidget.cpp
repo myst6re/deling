@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "FsPreviewWidget.h"
+#include "BGPreview2.h"
 
 FsPreviewWidget::FsPreviewWidget(QWidget *parent) :
 	QStackedWidget(parent)
@@ -30,6 +31,7 @@ QWidget *FsPreviewWidget::imageWidget()
 {
 	QWidget *ret = new QWidget(this);
 
+	imageSelect = new QComboBox(ret);
 	palSelect = new QComboBox(ret);
 
 	scrollArea = new QScrollArea(ret);
@@ -38,9 +40,11 @@ QWidget *FsPreviewWidget::imageWidget()
 
 	QVBoxLayout *layout = new QVBoxLayout(ret);
 	layout->setContentsMargins(QMargins());
+	layout->addWidget(imageSelect, 0, Qt::AlignCenter);
 	layout->addWidget(palSelect, 0, Qt::AlignCenter);
 	layout->addWidget(scrollArea);
 
+	connect(imageSelect, SIGNAL(currentIndexChanged(int)), SIGNAL(currentImageChanged(int)));
 	connect(palSelect, SIGNAL(currentIndexChanged(int)), SIGNAL(currentPaletteChanged(int)));
 
 	return ret;
@@ -59,13 +63,28 @@ void FsPreviewWidget::clearPreview()
 	setCurrentIndex(EmptyPage);
 }
 
-void FsPreviewWidget::imagePreview(const QPixmap &image, const QString &name, int palID, int palCount)
+void FsPreviewWidget::imagePreview(const QPixmap &image, const QString &name,
+                                   int palID, int palCount, int imageID,
+                                   int imageCount)
 {
 	setCurrentIndex(ImagePage);
 	BGPreview2 *lbl = new BGPreview2();
 	lbl->setPixmap(image);
 	lbl->setName(name);
 	scrollArea->setWidget(lbl);
+
+	imageSelect->blockSignals(true);
+	imageSelect->clear();
+	if(imageCount > 1) {
+		imageSelect->setVisible(true);
+		for(int i=0 ; i<imageCount ; ++i) {
+			imageSelect->addItem(tr("Image %1").arg(i));
+		}
+		imageSelect->setCurrentIndex(imageID);
+	} else {
+		imageSelect->setVisible(false);
+	}
+	imageSelect->blockSignals(false);
 
 	palSelect->blockSignals(true);
 	palSelect->clear();

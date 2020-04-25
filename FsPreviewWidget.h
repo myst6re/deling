@@ -19,24 +19,26 @@
 #define FSPREVIEWWIDGET_H
 
 #include <QtWidgets>
-#include "BGPreview2.h"
 
 class FsPreviewWidget : public QStackedWidget
 {
 	Q_OBJECT
 public:
 	enum Pages { EmptyPage, ImagePage, TextPage };
-    explicit FsPreviewWidget(QWidget *parent = 0);
+	explicit FsPreviewWidget(QWidget *parent = nullptr);
 	void clearPreview();
-	void imagePreview(const QPixmap &image, const QString &name=QString(), int palID=0, int palCount=0);
+	void imagePreview(const QPixmap &image, const QString &name = QString(),
+	                  int palID = 0, int palCount = 0, int imageID = 0,
+	                  int imageCount = 0);
 	void textPreview(const QString &text);
 signals:
+	void currentImageChanged(int);
 	void currentPaletteChanged(int);
 private:
 	QWidget *imageWidget();
 	QWidget *textWidget();
 	QScrollArea *scrollArea;
-	QComboBox *palSelect;
+	QComboBox *imageSelect, *palSelect;
 };
 
 #endif // FSPREVIEWWIDGET_H

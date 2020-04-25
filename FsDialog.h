@@ -39,7 +39,8 @@ public:
 signals:
 private slots:
 	void setButtonsEnabled();
-	void generatePreview();
+	void changePreview();
+	void changeImageInPreview(int imageID);
 	void changeImagePaletteInPreview(int palID);
 	void doubleClicked(QTreeWidgetItem *);
 	void openDir();
@@ -52,6 +53,7 @@ private slots:
 	void rename();
 	void renameOK(QTreeWidgetItem *, int);
 private:
+	void generatePreview();
 	void add(QStringList sources, bool fromDir = false);
 	void openDir(const QString &);
 	QStringList listFilesInDir(QString dirPath);
@@ -65,7 +67,7 @@ private:
 	QLineEdit *pathWidget;
 	QString currentPath;
 	FsArchive *fsArchive;
-	int currentPal;
+	int currentImage, currentPal;
 };
 
 #endif // FSDIALOG_H
