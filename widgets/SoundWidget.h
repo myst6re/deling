@@ -49,6 +49,7 @@ private:
 	// AkaoList
 	QWidget *akaoGroup;
 	QPushButton *exportButton, *importButton;
+	QLabel *akaoId;
 
 };
 

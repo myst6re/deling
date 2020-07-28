@@ -20,11 +20,13 @@ lessThan(QT_MAJOR_VERSION, 5) {
 
 # Input
 HEADERS += MainWindow.h \
+    AkaoExporter.h \
     BackgroundExporter.h \
     EncounterExporter.h \
     PreviewWidget.h \
     QLZ4.h \
     ScriptExporter.h \
+    files/PsfFile.h \
     parameters.h \
     Data.h \
     Config.h \
@@ -112,11 +114,13 @@ HEADERS += MainWindow.h \
     JsmExpression.h
 
 SOURCES += MainWindow.cpp \
+    AkaoExporter.cpp \
     BackgroundExporter.cpp \
     EncounterExporter.cpp \
     PreviewWidget.cpp \
     QLZ4.cpp \
     ScriptExporter.cpp \
+    files/PsfFile.cpp \
     main.cpp \
     Data.cpp \
     Config.cpp \

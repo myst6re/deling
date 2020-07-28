@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "SoundWidget.h"
+#include "files/PsfFile.h"
 
 SoundWidget::SoundWidget() :
 	PageWidget()
@@ -55,11 +56,13 @@ void SoundWidget::build()
 
 	exportButton = new QPushButton(tr("Exporter"));
 	importButton = new QPushButton(tr("Importer"));
+	akaoId = new QLabel();
 
-	QHBoxLayout *akaoLayout = new QHBoxLayout(akaoGroup);
-	akaoLayout->addWidget(exportButton);
-	akaoLayout->addWidget(importButton);
-	akaoLayout->addStretch();
+	QGridLayout *akaoLayout = new QGridLayout(akaoGroup);
+	akaoLayout->addWidget(exportButton, 0, 0);
+	akaoLayout->addWidget(importButton, 0, 1);
+	akaoLayout->addWidget(akaoId, 1, 0, 1, 2);
+	akaoLayout->setColumnStretch(2, 1);
 	akaoLayout->setContentsMargins(QMargins());
 
 	QGridLayout *layout = new QGridLayout(this);
@@ -122,7 +125,11 @@ void SoundWidget::fillList(int count)
 {
 	list1->blockSignals(true);
 	for(int i=0 ; i<count ; ++i) {
-		list1->addItem(tr("Son %1").arg(i));
+		if (data()->hasAkaoListFile()) {
+			list1->addItem(tr("Musique %1").arg(data()->getAkaoListFile()->akaoID(i)));
+		} else {
+			list1->addItem(tr("Son %1").arg(i));
+		}
 	}
 	list1->blockSignals(false);
 
@@ -131,10 +138,15 @@ void SoundWidget::fillList(int count)
 
 void SoundWidget::setCurrentSound(int id)
 {
-	if(!hasData() || id<0 || !data()->hasSfxFile())	return;
+	if(!hasData() || id<0)	return;
 
-	if(id < data()->getSfxFile()->valueCount()) {
+	if(data()->hasSfxFile() && id < data()->getSfxFile()->valueCount()) {
 		sfxValue->setValue(data()->getSfxFile()->value(id));
+	}
+
+	if (data()->hasAkaoListFile() && id < data()->getAkaoListFile()->akaoCount()) {
+		bool warnings = false;
+		akaoId->setText(data()->getAkaoListFile()->parseScripts(id, &warnings));
 	}
 }
 
@@ -237,13 +249,22 @@ void SoundWidget::exportAkao()
 	if(data()->hasAkaoListFile()) {
 		int id = list1->currentRow();
 		if(id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
+			QString akaoFilter = tr("Fichier AKAO (*.akao)"), psfFilter = tr("Fichier PSF (*.minipsf)");
+			QString filter = (QStringList() << akaoFilter << psfFilter).join(";;"), selectedFilter;
 
-			QString path = QFileDialog::getSaveFileName(this, tr("Exporter son"), tr("son%1").arg(id), tr("Fichier AKAO (*.akao)"));
+			QString path = QFileDialog::getSaveFileName(this, tr("Exporter son"), tr("musique-%1.akao")
+			                                                                          .arg(data()->getAkaoListFile()->akaoID(id)),
+			                                            filter, &selectedFilter);
 			if(path.isNull())		return;
 
 			QFile f(path);
 			if(f.open(QIODevice::WriteOnly)) {
-				f.write(data()->getAkaoListFile()->akao(id));
+				if (selectedFilter == psfFilter) {
+					PsfFile psf = PsfFile::fromAkao(data()->getAkaoListFile()->akao(id), PsfTags("ff8.psflib"));
+					f.write(psf.save());
+				} else {
+					f.write(data()->getAkaoListFile()->akao(id));
+				}
 				f.close();
 			} else {
 				QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'exporter le son (%1).").arg(f.errorString()));
@@ -257,13 +278,25 @@ void SoundWidget::importAkao()
 	if(data()->hasAkaoListFile()) {
 		int id = list1->currentRow();
 		if(id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
+			QString akaoFilter = tr("Fichier AKAO (*.akao)"), psfFilter = tr("Fichier PSF (*.minipsf)");
+			QString filter = (QStringList() << akaoFilter << psfFilter).join(";;"), selectedFilter;
 
-			QString path = QFileDialog::getOpenFileName(this, tr("Importer son"), QString(), tr("Fichier AKAO (*.akao)"));
+			QString path = QFileDialog::getOpenFileName(this, tr("Importer son"), QString(), filter, &selectedFilter);
 			if(path.isNull())		return;
 
 			QFile f(path);
 			if(f.open(QIODevice::ReadOnly)) {
-				if(!data()->getAkaoListFile()->setAkao(id, f.readAll())) {
+				QByteArray d = f.readAll();
+				if (selectedFilter == psfFilter) {
+					PsfFile psf;
+					if (!psf.open(d)) {
+						QMessageBox::warning(this, tr("Erreur"), tr("Fichier invalide."));
+					} else {
+						d = psf.akao();
+					}
+				}
+
+				if(!data()->getAkaoListFile()->setAkao(id, d)) {
 					QMessageBox::warning(this, tr("Erreur"), tr("Fichier invalide."));
 				}
 				f.close();

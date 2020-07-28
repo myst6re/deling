@@ -25,6 +25,9 @@ class GZIP
 public:
 	static QByteArray decompress(const QByteArray &data/*, int decSize*/);
 	static QByteArray compress(const QByteArray &ungzip);
+	static QByteArray decompressNoHeader(const char *data, int size);
+	static QByteArray compressNoHeader(const char *data, int size, int level = -1);
+	static ulong crc(const char *data, int size);
 };
 
 #endif // GZIP_H

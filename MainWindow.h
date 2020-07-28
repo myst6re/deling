@@ -60,6 +60,7 @@ private slots:
 	void exportAllScripts();
 	void exportAllEncounters();
 	void exportAllBackground();
+	void exportAllAkao();
 	void importCurrent();
 	void optimizeArchive();
 	void manageArchive();

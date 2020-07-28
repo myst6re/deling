@@ -23,6 +23,7 @@
 #include "ScriptExporter.h"
 #include "EncounterExporter.h"
 #include "BackgroundExporter.h"
+#include "AkaoExporter.h"
 #include "widgets/MsdWidget.h"
 #include "widgets/JsmWidget.h"
 #include "widgets/CharaWidget.h"
@@ -65,6 +66,7 @@ MainWindow::MainWindow()
 	menuExportAll->addAction(tr("Scripts..."), this, SLOT(exportAllScripts()));
 	menuExportAll->addAction(tr("Rencontres aléatoires..."), this, SLOT(exportAllEncounters()));
 	menuExportAll->addAction(tr("Décors..."), this, SLOT(exportAllBackground()));
+	menuExportAll->addAction(tr("Musiques..."), this, SLOT(exportAllAkao()));
 	actionImport = menu->addAction(tr("Importer..."), this, SLOT(importCurrent()));
 	actionOpti = menu->addAction(tr("Optimiser l'archive..."), this, SLOT(optimizeArchive()));
 	menu->addSeparator();
@@ -798,6 +800,28 @@ void MainWindow::exportAllBackground()
 	ProgressWidget progress(tr("Export..."), ProgressWidget::Cancel, this);
 
 	BackgroundExporter exporter(fieldArchive);
+
+	if (!exporter.toDir(dirPath, &progress) && !progress.observerWasCanceled()) {
+		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
+	}
+}
+
+void MainWindow::exportAllAkao()
+{
+	if(!fieldArchive)	return;
+
+	QString oldPath = Config::value("export_path").toString();
+
+	QString dirPath = QFileDialog::getExistingDirectory(this, tr("Exporter"), oldPath);
+	if (dirPath.isNull()) {
+		return;
+	}
+
+	Config::setValue("export_path", dirPath);
+
+	ProgressWidget progress(tr("Export..."), ProgressWidget::Cancel, this);
+
+	AkaoExporter exporter(fieldArchive);
 
 	if (!exporter.toDir(dirPath, &progress) && !progress.observerWasCanceled()) {
 		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());

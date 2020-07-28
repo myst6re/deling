@@ -34,6 +34,9 @@ public:
 	bool setAkao(int id, const QByteArray &akao);
 	bool insertAkao(int id, const QByteArray &akao);
 	void removeAkao(int id);
+	QString parseScripts(int id, bool *warnings) const;
+	int akaoID(int id) const;
+	void setAkaoID(int id, quint16 akaoID);
 private:
 	QList<QByteArray> _akaos;
 };

@@ -124,3 +124,62 @@ void AkaoListFile::removeAkao(int id)
 	_akaos.removeAt(id);
 	modified = true;
 }
+
+QString AkaoListFile::parseScripts(int id, bool *warnings) const
+{
+	QString ret;
+
+	const QByteArray &data = akao(id);
+	const char *constData = data.constData();
+
+	quint16 akaoId, length, firstPos;
+	if(data.size() < 6) {
+		if(warnings) {
+			*warnings = true;
+		}
+		return QObject::tr("Error");
+	}
+	memcpy(&akaoId, constData + 4, 2);
+
+	ret.append(QObject::tr("totalLength=%1\nid=%2\n").arg(data.size()).arg(id));
+
+	if(data.size() < 8) {
+		return ret;
+	}
+	memcpy(&length, constData + 6, 2);
+
+	ret.append(QObject::tr("length=%1\n").arg(length));
+
+	if(data.size() < 22) {
+		return ret;
+	}
+	memcpy(&firstPos, constData + 20, 2);
+
+	ret.append(QObject::tr("ChannelCount=%1\n").arg(firstPos/2 + 1));
+	ret.append(data.mid(8, 8).toHex());
+	ret.append("\n");
+	ret.append(data.mid(16, 4).toHex());
+	ret.append("\n");
+
+	return ret;
+}
+
+int AkaoListFile::akaoID(int id) const
+{
+	const QByteArray &data = this->akao(id);
+
+	if(data.size() < 6) {
+		return -1;
+	}
+
+	quint16 akaoId;
+	memcpy(&akaoId, data.constData() + 4, 2);
+
+	return akaoId;
+}
+
+void AkaoListFile::setAkaoID(int id, quint16 akaoID)
+{
+	_akaos[id].replace(4, 2, (char *)&akaoID, 2);
+	modified = true;
+}
