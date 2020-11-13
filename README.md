@@ -9,61 +9,90 @@ Final Fantasy VIII field archive editor.
 
 ## Building
 
+If you are a developer and you want to build this software, follow the
+instructions below.
+
 ### Requirements
 
- - Qt 4.8 or Qt 5
- - GLUT
- - zlib
- - lz4
+ - CMake
+ - Qt 5.5+
 
-On Windows, you can either use mingw32 (g++) or msvc to compile.
-You need liblz4.dll to run Deling on Windows.
+### Windows
 
-### With Qt Creator
+#### Qt
 
-Open `Deling.pro` with Qt Creator IDE.
-Please refer to the official documentation of Qt Creator
-if you have troubles to compile and run Deling.
+0) Download the online installer from https://www.qt.io/download-qt-installer ( remember to click the Download button )
+1) Install Qt with these items checked:
+   - **Packages categories:** `Latest release`
+   - **Components:** Uncheck everything and pick only `MSVC 2019 32-bit`
 
-### Command line
+#### Visual Studio
 
-#### Windows
+> **Please note:**
+>
+> By default Visual Studio will pick the **x86-Release** build configuration, but you can choose any other profile available.
 
-Use the command prompt given in your Qt installation
-to set your environment (`%QTDIR%/bin/qtvars.bat` for Qt 4
-and `%QTDIR%/%compiler%/bin/qtenv2.bat` for Qt 5).
-If you want to compile with msvc, run `vcvarsall.bat`
-from your Microsoft Visual Studio installation
-(eg: `C:\Program Files\Microsoft Visual Studio 11.0\VC\vcvarsall.bat`.
+0) **REQUIRED!** Follow the steps to install Qt, if you didn't already
+0) Download the the latest [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) installer
+1) Run the installer and import this [.vsconfig](.vsconfig) file in the installer to pick the required components to build this project
+2) Once installed, open this repository **as a folder** in Visual Studio 2019 and click the build button.
 
-Then run:
+#### Optional: Visual Studio Code
 
-~~~sh
-mkdir build
-cd build
-qmake /path/to/Deling.pro
-# For mingw32
-mingw32-make
-# For msvc
-jom
-~~~
+0) **REQUIRED!** Follow the steps to install Qt, if you didn't already
+0) **REQUIRED!** Follow the steps to install Visual Studio, if you didn't already
+1) Download and install the latest [Visual Studio Code](https://code.visualstudio.com/) release
+2) Install the following extensions:
+   - https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools
+   - https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools
+3) Open this repository as a folder in Visual Studio code
+4) Choose as build profile in the status bar `CMake: [Release]` ( or one of the aforementioned profiles )
+5) Click the button on the status bar `Build`
 
-#### Linux
+### macOS
 
-Set your environment:
+In order to continue please make sure you have `brew` installed. See https://brew.sh/ for instructions.
 
- - [Qt 4 only] `QTDIR` must contains the directory of your Qt installation
- - `PATH` should contains the path to the bin directory of your Qt installation (`$QTDIR/bin`)
- - [Qt 4 only] Your compiler should be in the `PATH`
+#### Install dependencies
+```sh
+$ brew install cmake
+$ brew install qt5
+```
+Close and reopen your terminal.
 
-Then run:
+#### Build
 
-~~~sh
-mkdir build
-cd build
-qmake /path/to/Deling.pro
-make
-~~~
+> **Please note**: You can choose other build profiles if you want. See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html for more information.
+
+```sh
+$ mkdir -p .dist/build .dist/install
+$ cmake -S . -B .dist/build -DCMAKE_INSTALL_PREFIX=.dist/install -DCMAKE_BUILD_TYPE=Debug
+$ cmake --build .dist/build --config Debug
+```
+
+### Linux
+
+#### Install dependencies
+
+##### Debian/Ubuntu
+```sh
+$ apt-get install build-essential cmake qt5-default qttools5-dev
+```
+
+##### Arch Linux
+```sh
+$ pacman -S --needed base-devel cmake qt5
+```
+
+#### Build
+
+> **Please note**: You can choose other build profiles if you want. See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html for more information.
+
+```sh
+$ mkdir -p .dist/build .dist/install
+$ cmake -S . -B .dist/build -DCMAKE_INSTALL_PREFIX=.dist/install -DCMAKE_BUILD_TYPE=Debug
+$ cmake --build .dist/build --config Debug
+```
 
 ## How to contribute
 

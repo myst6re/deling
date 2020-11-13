@@ -1,0 +1,7 @@
+{
+  "cmake.buildDirectory": "${workspaceFolder}/.dist/build",
+  "cmake.configureSettings": {
+    "CMAKE_BUILD_TYPE": "${buildType}"
+  },
+  "cmake.installPrefix": "${workspaceFolder}/.dist/install"
+}
