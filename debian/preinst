@@ -1,6 +1,0 @@
-#! /bin/sh
-#DEBHELPER#
-set -e
-if [ -d /opt/deling ];then 
-rm -r /opt/deling
-fi

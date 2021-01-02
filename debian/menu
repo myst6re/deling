@@ -1,2 +1,0 @@
-?package(deling):needs="x11" section="Games/Toys"\
-  title="Deling" command="/usr/bin/deling"
