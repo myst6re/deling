@@ -41,21 +41,21 @@ bool MskFile::open(const QByteArray &msk)
 
 	modified = false;
 
-	if(msk.isEmpty())	return true;
+	if (msk.isEmpty())	return true;
 
-	if(msk.size() < 4) {
+	if (msk.size() < 4) {
 		qWarning() << "msk size too short" << msk.size();
 		return false;
 	}
 
 	memcpy(&count, mskData, 4);
 
-	if(quint32(msk.size()) != 4 + count * 24) {
+	if (quint32(msk.size()) != 4 + count * 24) {
 		qWarning() << "msk invalid size" << count << msk.size();
 		return false;
 	}
 
-	for(quint32 i=0 ; i<count ; ++i) {
+	for (quint32 i=0 ; i<count ; ++i) {
 		Vertex_s *vertex = new Vertex_s[4];
 
 		memcpy(vertex, &mskData[4 + i*24], 24);
@@ -90,7 +90,7 @@ Vertex_s *MskFile::cameraPosition(int frame) const
 
 void MskFile::setCameraPosition(int frame, Vertex_s camPos[4])
 {
-	if(frame < vertices.size()) {
+	if (frame < vertices.size()) {
 		delete[] vertices.at(frame);
 		vertices.replace(frame, camPos);
 	}
@@ -103,7 +103,7 @@ void MskFile::insertCameraPosition(int frame, Vertex_s camPos[4])
 
 void MskFile::removeCameraPosition(int frame)
 {
-	if(frame < vertices.size()) {
+	if (frame < vertices.size()) {
 		delete[] vertices.takeAt(frame);
 	}
 }

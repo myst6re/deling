@@ -48,13 +48,13 @@ void TdwManagerDialog::fillList1()
 	foreach(const QString &fontName, FF8Font::fontList()) {
 		QListWidgetItem *item;
 
-		if(fontName == "00" || fontName == "01") {
+		if (fontName == "00" || fontName == "01") {
 			item = new QListWidgetItem(fontName == "00" ? tr("Latin") : tr("Japonais"));
 			item->setData(Qt::UserRole, fontName);
 			list1->addItem(item);
 		} else {
 			FF8Font *font = FF8Font::font(fontName);
-			if(font) {
+			if (font) {
 				item = new QListWidgetItem(font->name());
 				item->setData(Qt::UserRole, fontName);
 				list1->addItem(item);
@@ -63,7 +63,7 @@ void TdwManagerDialog::fillList1()
 			}
 		}
 
-		if(currentEncoding == fontName) {
+		if (currentEncoding == fontName) {
 			list1->setCurrentItem(item);
 		}
 	}
@@ -73,12 +73,12 @@ void TdwManagerDialog::setTdw(int id)
 {
 	QListWidgetItem *item = list1->item(id);
 
-	if(!item)	return;
+	if (!item)	return;
 
 	QString fontName = item->data(Qt::UserRole).toString();
 
 	FF8Font *font = FF8Font::font(fontName);
-	if(font) {
+	if (font) {
 		tdwWidget->setFF8Font(font);
 	}
 
@@ -89,12 +89,12 @@ void TdwManagerDialog::addFont()
 {
 	QListWidgetItem *item = list1->currentItem();
 
-	if(!item)	return;
+	if (!item)	return;
 
 	QString name, nameId;
 
-	if(newNameDialog(name, nameId)) {
-		if(FF8Font::copyFont(nameId, item->data(Qt::UserRole).toString(), name)) {
+	if (newNameDialog(name, nameId)) {
+		if (FF8Font::copyFont(nameId, item->data(Qt::UserRole).toString(), name)) {
 			item = new QListWidgetItem(name);
 			item->setData(Qt::UserRole, nameId);
 			list1->addItem(item);
@@ -122,12 +122,12 @@ bool TdwManagerDialog::newNameDialog(QString &name, QString &nameId)
 
 	connect(ok, SIGNAL(clicked()), &dialog, SLOT(accept()));
 
-	if(dialog.exec() == QDialog::Accepted) {
+	if (dialog.exec() == QDialog::Accepted) {
 		QString name1 = nameEdit->text();
 		QString name2 = QDir::cleanPath(fileNameEdit->text());
 
 		QStringList fontList = FF8Font::fontList();
-		if(name1.isEmpty() || name2.isEmpty()
+		if (name1.isEmpty() || name2.isEmpty()
 				|| fontList.contains(name1)
 				|| QFile::exists(FF8Font::fontDirPath()+"/"+name2)) {
 			QMessageBox::warning(this, tr("Choisissez un autre nom"), tr("Ce nom existe déjà ou est invalide, veuillez en choisir un autre."));
@@ -144,15 +144,15 @@ bool TdwManagerDialog::newNameDialog(QString &name, QString &nameId)
 void TdwManagerDialog::removeFont()
 {
 	QList<QListWidgetItem *> items = list1->selectedItems();
-	if(items.isEmpty())		return;
+	if (items.isEmpty())		return;
 
-	if(QMessageBox::Yes != QMessageBox::question(this, tr("Supprimer une police"), tr("Voulez-vous vraiment supprimer la police sélectionnée ?"), QMessageBox::Yes | QMessageBox::Cancel)) {
+	if (QMessageBox::Yes != QMessageBox::question(this, tr("Supprimer une police"), tr("Voulez-vous vraiment supprimer la police sélectionnée ?"), QMessageBox::Yes | QMessageBox::Cancel)) {
 		return;
 	}
 
 	QListWidgetItem *item = items.first();
 
-	if(FF8Font::removeFont(item->data(Qt::UserRole).toString())) {
+	if (FF8Font::removeFont(item->data(Qt::UserRole).toString())) {
 		delete item;
 	}
 }

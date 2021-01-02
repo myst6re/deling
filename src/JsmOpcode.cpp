@@ -36,13 +36,13 @@ JsmOpcode::JsmOpcode(unsigned int key, int param)
 
 unsigned int JsmOpcode::key() const
 {
-	if(hasParam()) 	return op >> 24;
+	if (hasParam()) 	return op >> 24;
 	else			return op;
 }
 
 int JsmOpcode::param() const
 {
-	if(!(op & 0x00800000))		return op & 0x00FFFFFF;
+	if (!(op & 0x00800000))		return op & 0x00FFFFFF;
 	else						return op | 0xFF000000;
 }
 
@@ -58,7 +58,7 @@ void JsmOpcode::setOpcode(quint32 op)
 
 void JsmOpcode::setKey(unsigned int key)
 {
-	if(hasParam()) 	op = (key << 24) | (param() & 0x00FFFFFF);
+	if (hasParam()) 	op = (key << 24) | (param() & 0x00FFFFFF);
 	else			op = key;
 }
 
@@ -97,7 +97,7 @@ QString JsmOpcode::desc() const
 
 QString JsmOpcode::toString() const
 {
-	if(!hasParam()) {
+	if (!hasParam()) {
 		return name();
 	} else {
 		return QString("%1 %2")
@@ -118,10 +118,10 @@ bool JsmOpcodeCal::hasParam() const
 
 int JsmOpcodeCal::popCount() const
 {
-	if(param() == 5 || param() == 15) {
+	if (param() == 5 || param() == 15) {
 		return 1;
 	}
-	if(param() < 15) {
+	if (param() < 15) {
 		return 2;
 	}
 	return -1;
@@ -164,7 +164,7 @@ bool JsmOpcodePsh::hasParam() const
 
 JsmOpcodePsh::PushType JsmOpcodePsh::pushType() const
 {
-	switch(key()) {
+	switch (key()) {
 	case PSHN_L:
 		return Int;
 	case PSHI_L:
@@ -178,7 +178,7 @@ JsmOpcodePsh::PushType JsmOpcodePsh::pushType() const
 
 QString JsmOpcodePsh::paramStr() const
 {
-	switch(pushType()) {
+	switch (pushType()) {
 	case Int:
 		return JsmOpcode::paramStr();
 	case Temp:
@@ -212,7 +212,7 @@ JsmOpcodePop::PopType JsmOpcodePop::popType() const
 
 QString JsmOpcodePop::paramStr() const
 {
-	switch(popType()) {
+	switch (popType()) {
 	case Temp:
 		return QString("TEMP%1").arg(param());
 	case Var:

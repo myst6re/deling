@@ -24,7 +24,7 @@ MsdWidget::MsdWidget(QWidget *parent)
 
 void MsdWidget::build()
 {
-	if(isBuilded())	return;
+	if (isBuilded())	return;
 
 	textPreview = new TextPreview();
 
@@ -287,7 +287,7 @@ void MsdWidget::build()
 
 void MsdWidget::clear()
 {
-	if(!isFilled())		return;
+	if (!isFilled())		return;
 
 	textPreview->clear();
 	dontUpdateCurrentText = true;
@@ -300,7 +300,7 @@ void MsdWidget::clear()
 
 void MsdWidget::setReadOnly(bool readOnly)
 {
-	if(isBuilded()) {
+	if (isBuilded()) {
 		textEdit->setReadOnly(readOnly);
 		xCoord->setReadOnly(readOnly);
 		yCoord->setReadOnly(readOnly);
@@ -315,7 +315,7 @@ void MsdWidget::setReadOnly(bool readOnly)
 
 void MsdWidget::setEditTextEnabled(bool enabled)
 {
-	if(!isBuilded())	return;
+	if (!isBuilded())	return;
 
 	textEdit->setEnabled(enabled);
 	toolBar->setEnabled(enabled);
@@ -326,34 +326,34 @@ void MsdWidget::setEditTextEnabled(bool enabled)
 
 QString MsdWidget::selectedText() const
 {
-	if(!isBuilded())	return QString();
+	if (!isBuilded())	return QString();
 
 	return textEdit->textCursor().selectedText();
 }
 
 void MsdWidget::fill()
 {
-	if(!isBuilded())	build();
-	if(isFilled())		clear();
+	if (!isBuilded())	build();
+	if (isFilled())		clear();
 
-	if(!hasData())		return;
+	if (!hasData())		return;
 
-	if(data()->hasTdwFile())
+	if (data()->hasTdwFile())
 		textPreview->setFontImageAdd(data()->getTdwFile());
 
 	bool hasTexts = false;
 
-	if(data()->hasMsdFile()) {
+	if (data()->hasMsdFile()) {
 
 		int nbTexts = data()->getMsdFile()->nbText();
 
-		if(nbTexts!=0) {
+		if (nbTexts!=0) {
 
 			QIcon icon(":/images/text_icon.png"), iconDisabled(":/images/text_icon_disabled.png");
 
-			for(int i=0 ; i<nbTexts ; ++i) {
+			for (int i=0 ; i<nbTexts ; ++i) {
 				QListWidgetItem *item = new QListWidgetItem(tr("Texte %1").arg(i));
-				if(data()->hasJsmFile() && data()->getJsmFile()->nbWindows(i)>0)
+				if (data()->hasJsmFile() && data()->getJsmFile()->nbWindows(i)>0)
 					item->setIcon(icon);
 				else
 					item->setIcon(iconDisabled);
@@ -367,7 +367,7 @@ void MsdWidget::fill()
 	}
 
 	setEditTextEnabled(hasTexts);
-	if(!hasTexts) {
+	if (!hasTexts) {
 		textPreview->clearWin();
 		textPreview->setText(QByteArray());
 		changeTextPreviewPage();
@@ -379,10 +379,10 @@ void MsdWidget::fill()
 
 void MsdWidget::fillTextEdit(QListWidgetItem *item)
 {
-	if(item==NULL || !data()->hasMsdFile())	return;
+	if (item==NULL || !data()->hasMsdFile())	return;
 
 	textList->scrollToItem(item);
-	if(!hasData() || !data()->hasMsdFile())	return;
+	if (!hasData() || !data()->hasMsdFile())	return;
 
 	int textID = item->data(Qt::UserRole).toInt();
 	QString text = data()->getMsdFile()->text(textID);
@@ -391,7 +391,7 @@ void MsdWidget::fillTextEdit(QListWidgetItem *item)
 	dontUpdateCurrentText = false;
 	setEditTextEnabled(true);
 
-	if(hasData() && data()->hasJsmFile()) {
+	if (hasData() && data()->hasJsmFile()) {
 		textPreview->resetCurrentWin();
 		textPreview->setWins(data()->getJsmFile()->windows(textID), false);
 	}
@@ -467,12 +467,12 @@ void MsdWidget::changeCoord(const QPoint &point)
 
 void MsdWidget::changeXCoord(int x)
 {
-	if(textPreview->getNbWin()<=0)	return;
+	if (textPreview->getNbWin()<=0)	return;
 
 	int textID = textList->currentItem()->data(Qt::UserRole).toInt();
 	int winID = textPreview->getCurrentWin()-1;
 	FF8Window ff8Window = textPreview->getWindow();
-	if(ff8Window.x >= 0 && ff8Window.x != x) {
+	if (ff8Window.x >= 0 && ff8Window.x != x) {
 		ff8Window.x = x;
 
 		//		qDebug() << "changeXCoord()" << x << textID << winID;
@@ -485,12 +485,12 @@ void MsdWidget::changeXCoord(int x)
 
 void MsdWidget::changeYCoord(int y)
 {
-	if(textPreview->getNbWin()<=0)	return;
+	if (textPreview->getNbWin()<=0)	return;
 
 	int textID = textList->currentItem()->data(Qt::UserRole).toInt();
 	int winID = textPreview->getCurrentWin()-1;
 	FF8Window ff8Window = textPreview->getWindow();
-	if(ff8Window.y >= 0 && ff8Window.y != y) {
+	if (ff8Window.y >= 0 && ff8Window.y != y) {
 		ff8Window.y = y;
 
 		//		qDebug() << "changeYCoord()" << y << textID << winID;
@@ -503,7 +503,7 @@ void MsdWidget::changeYCoord(int y)
 
 void MsdWidget::insertTag(QAction *action)
 {
-	if(sender() != action->parentWidget())	return;// toolBar/Menu signals hack
+	if (sender() != action->parentWidget())	return;// toolBar/Menu signals hack
 	textEdit->insertPlainText(action->data().toString());
 	textEdit->setFocus();
 }
@@ -511,9 +511,9 @@ void MsdWidget::insertTag(QAction *action)
 void MsdWidget::updateCurrentText()
 {
 	//	qDebug() << "MsdWidget::updateCurrentText";
-	if(dontUpdateCurrentText || !hasData())	return;
+	if (dontUpdateCurrentText || !hasData())	return;
 
-	if(!data()->hasMsdFile()) {
+	if (!data()->hasMsdFile()) {
 		data()->addMsdFile();
 	}
 
@@ -527,7 +527,7 @@ void MsdWidget::updateCurrentText()
 void MsdWidget::updateWindowCoord()
 {
 	FF8Window ff8Win = textPreview->getWindow();
-	if(ff8Win.x < 0) {
+	if (ff8Win.x < 0) {
 		xCoord->setEnabled(false);
 		xCoord->setValue(0);
 	} else {
@@ -535,7 +535,7 @@ void MsdWidget::updateWindowCoord()
 		xCoord->setValue(ff8Win.x);
 	}
 
-	if(ff8Win.y < 0) {
+	if (ff8Win.y < 0) {
 		yCoord->setEnabled(false);
 		yCoord->setValue(0);
 	} else {
@@ -546,7 +546,7 @@ void MsdWidget::updateWindowCoord()
 
 void MsdWidget::updateText()
 {
-	if(!isBuilded())	return;
+	if (!isBuilded())	return;
 
 	fillTextEdit(textList->currentItem());
 	textPreview->reloadFont();
@@ -555,17 +555,17 @@ void MsdWidget::updateText()
 
 void MsdWidget::specialCharactersDialog()
 {
-	if(!isBuilded())	return;
+	if (!isBuilded())	return;
 
 	SpecialCharactersDialog dialog(this);
-	if(dialog.exec() == QDialog::Accepted) {
+	if (dialog.exec() == QDialog::Accepted) {
 		textEdit->insertPlainText(dialog.selectedCharacter());
 	}
 }
 
 void MsdWidget::insertTextAbove()
 {
-	if(!data()->hasMsdFile()) {
+	if (!data()->hasMsdFile()) {
 		data()->addMsdFile();
 	}
 
@@ -578,7 +578,7 @@ void MsdWidget::insertTextAbove()
 
 void MsdWidget::insertText()
 {
-	if(!data()->hasMsdFile()) {
+	if (!data()->hasMsdFile()) {
 		data()->addMsdFile();
 	}
 
@@ -601,10 +601,10 @@ void MsdWidget::removeText()
 
 void MsdWidget::gotoText(int textID, int from, int size)
 {
-	if(!isBuilded())	build();
+	if (!isBuilded())	build();
 
-	for(int i=0 ; i<textList->count() ; ++i) {
-		if(textID == textList->item(i)->data(Qt::UserRole).toInt()) {
+	for (int i=0 ; i<textList->count() ; ++i) {
+		if (textID == textList->item(i)->data(Qt::UserRole).toInt()) {
 			blockSignals(true);
 			textEdit->blockSignals(true);
 			textList->setCurrentItem(textList->item(i));

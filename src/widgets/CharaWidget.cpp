@@ -24,7 +24,7 @@ CharaWidget::CharaWidget(QWidget *parent)
 
 void CharaWidget::build()
 {
-	if(isBuilded())	return;
+	if (isBuilded())	return;
 
 	modelList = new QListWidget(this);
 	modelList->setFixedWidth(200);
@@ -44,7 +44,7 @@ void CharaWidget::build()
 
 void CharaWidget::clear()
 {
-	if(!isFilled())	return;
+	if (!isFilled())	return;
 
 	modelList->blockSignals(true);
 	modelList->clear();
@@ -56,13 +56,13 @@ void CharaWidget::clear()
 
 void CharaWidget::fill()
 {
-	if(!isBuilded())	build();
-	if(isFilled())		clear();
+	if (!isBuilded())	build();
+	if (isFilled())		clear();
 
-	if(!hasData() || !data()->hasCharaFile())		return;
+	if (!hasData() || !data()->hasCharaFile())		return;
 
 	modelList->blockSignals(true);
-	for(int i=0 ; i<data()->getCharaFile()->modelCount() ; ++i) {
+	for (int i=0 ; i<data()->getCharaFile()->modelCount() ; ++i) {
 		QString name = data()->getCharaFile()->model(i).name();
 		modelList->addItem(name.isEmpty() ? tr("(Sans nom)") : name);
 	}
@@ -76,13 +76,13 @@ void CharaWidget::fill()
 void CharaWidget::setMainModels(QHash<int, CharaModel *> *mainModels)
 {
 	this->mainModels = mainModels;
-	if(isBuilded())
+	if (isBuilded())
 		modelPreview->setMainModels(mainModels);
 }
 
 void CharaWidget::setModel(int modelID)
 {
-	if(!hasData() || !data()->hasCharaFile()
+	if (!hasData() || !data()->hasCharaFile()
 			|| modelID >= data()->getCharaFile()->modelCount()) {
 		modelPreview->clear();
 		return;

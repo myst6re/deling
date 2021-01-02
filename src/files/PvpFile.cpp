@@ -24,7 +24,7 @@ PvpFile::PvpFile()
 
 bool PvpFile::open(const QByteArray &pvp)
 {
-	if(pvp.size() != 4) {
+	if (pvp.size() != 4) {
 		qWarning() << "error pvp size" << pvp.size();
 		return false;
 	}

@@ -65,7 +65,7 @@ FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	connect(preview, SIGNAL(currentImageChanged(int)), SLOT(changeImageInPreview(int)));
 	connect(preview, SIGNAL(currentPaletteChanged(int)), SLOT(changeImagePaletteInPreview(int)));
 
-	if(fsArchive!=nullptr && fsArchive->dirExists("c:\\ff8\\data\\"))
+	if (fsArchive!=nullptr && fsArchive->dirExists("c:\\ff8\\data\\"))
 		openDir("c:\\ff8\\data\\");
 	else
 		openDir(QString());
@@ -89,7 +89,7 @@ void FsDialog::setCurrentPath(const QString &path)
 void FsDialog::setButtonsEnabled()
 {
 	QList<QTreeWidgetItem *> selectedItems = list->selectedItems();
-	if(selectedItems.isEmpty())
+	if (selectedItems.isEmpty())
 	{
 		extractAction->setEnabled(false);
 		replaceAction->setEnabled(false);
@@ -98,7 +98,7 @@ void FsDialog::setButtonsEnabled()
 		removeAction->setEnabled(false);
 		renameAction->setEnabled(false);
 	}
-	else if(selectedItems.size() == 1)
+	else if (selectedItems.size() == 1)
 	{
 		extractAction->setEnabled(true);
 		replaceAction->setEnabled(true);
@@ -117,7 +117,7 @@ void FsDialog::setButtonsEnabled()
 		renameAction->setEnabled(false);
 	}
 
-	if(fsArchive && !fsArchive->isWritable()) {
+	if (fsArchive && !fsArchive->isWritable()) {
 		replaceAction->setEnabled(false);
 		_addFileAction->setEnabled(false);
 		_addDirAction->setEnabled(false);
@@ -139,7 +139,7 @@ void FsDialog::generatePreview()
 	QList<QTreeWidgetItem *> items = list->selectedItems();
 	QString fileName, fileType, filePath;
 
-	if(items.isEmpty()) {
+	if (items.isEmpty()) {
 		preview->clearPreview();
 		return;
 	}
@@ -149,27 +149,27 @@ void FsDialog::generatePreview()
 	filePath = currentPath % fileName;
 	QByteArray data = fsArchive->fileData(filePath);
 
-	if(fileType == "lzs")
+	if (fileType == "lzs")
 	{
 		preview->imagePreview(FF8Image::lzs(data), fileName);
 	}
-	else if(fileType == "tex")
+	else if (fileType == "tex")
 	{
 		TexFile texFile(data);
 		texFile.setCurrentColorTable(currentPal);
 		preview->imagePreview(QPixmap::fromImage(texFile.image()), fileName, currentPal, texFile.colorTableCount());
 	}
-	else if(fileType == "tim")
+	else if (fileType == "tim")
 	{
 		TimFile timFile(data);
 		timFile.setCurrentColorTable(currentPal);
 		preview->imagePreview(QPixmap::fromImage(timFile.image()), fileName, currentPal, timFile.colorTableCount());
 	}
-	else if(fileType == "tdw")
+	else if (fileType == "tdw")
 	{
 		preview->imagePreview(QPixmap::fromImage(TdwFile::image(data, TdwFile::Color(currentPal))), fileName, currentPal, 8);
 	}
-	else if(fileType == "map" || fileType == "mim")
+	else if (fileType == "map" || fileType == "mim")
 	{
 		QString filePathWithoutExt = filePath.left(filePath.size()-3);
 		BackgroundFile backgroundFile;
@@ -177,29 +177,29 @@ void FsDialog::generatePreview()
 		             fileType == "mim" ? data : fsArchive->fileData(filePathWithoutExt+"mim"));
 		preview->imagePreview(QPixmap::fromImage(backgroundFile.background()), fileName);
 	}
-	else if(fileType == "cnf")
+	else if (fileType == "cnf")
 	{
 		QTextCodec *codec = QTextCodec::codecForName("Shift-JIS");
-		if(codec)
+		if (codec)
 			preview->textPreview(codec->toUnicode(data));
 		else
 			preview->textPreview(QString(data));
 	}
-	else if(fileType == "h" || fileType == "c"
+	else if (fileType == "h" || fileType == "c"
 		 || fileType == "sym" || fileType.isEmpty()
 		 || fileType == "bak" || fileType == "dir"
 	     || fileType == "fl" || fileType == "txt")
 	{
 		preview->textPreview(QString(data));
 	}
-	else if(fileType == "png" || fileType == "jpg" || fileType == "jpeg")
+	else if (fileType == "png" || fileType == "jpg" || fileType == "jpeg")
 	{
 		preview->imagePreview(QPixmap::fromImage(QImage::fromData(data)), fileName);
 	}
 	else
 	{
 		QList<int> indexes = FF8Image::findTims(data);
-		if(!indexes.isEmpty())
+		if (!indexes.isEmpty())
 		{
 			TimFile timFile(data.mid(indexes.value(currentImage, indexes.first())));
 			timFile.setCurrentColorTable(currentPal);
@@ -216,7 +216,7 @@ void FsDialog::generatePreview()
 
 void FsDialog::changeImageInPreview(int imageID)
 {
-	if(imageID < 0) {
+	if (imageID < 0) {
 		return;
 	}
 
@@ -226,7 +226,7 @@ void FsDialog::changeImageInPreview(int imageID)
 
 void FsDialog::changeImagePaletteInPreview(int palID)
 {
-	if(palID < 0) {
+	if (palID < 0) {
 		return;
 	}
 
@@ -236,13 +236,13 @@ void FsDialog::changeImagePaletteInPreview(int palID)
 
 void FsDialog::openDir(const QString &name)
 {
-	if(fsArchive==nullptr)	return;
+	if (fsArchive==nullptr)	return;
 
 	QMap<QString, FsHeader *> files = fsArchive->fileList(name);
 	QList<QTreeWidgetItem *> items;
 	TreeWidgetItem *item;
 
-//	if(files.isEmpty()) {
+//	if (files.isEmpty()) {
 //		QMessageBox::warning(this, tr("Erreur"), tr("Emplacement inexistant."));
 //		pathWidget->setText(currentPath);
 //		return;
@@ -254,12 +254,12 @@ void FsDialog::openDir(const QString &name)
 	up->setDisabled(currentPath.isEmpty());
 
 	QMapIterator<QString, FsHeader *> i(files);
-	while(i.hasNext()) {
+	while (i.hasNext()) {
 		i.next();
 		QString file = i.key();
 		FsHeader *header = i.value();
 
-		if(header == nullptr) {
+		if (header == nullptr) {
 			item = new TreeWidgetItem(QStringList() << file);
 			item->setData(0, FILE_TYPE_ROLE, DIR);
 			item->setData(0, FILE_NAME_ROLE, file);
@@ -269,7 +269,7 @@ void FsDialog::openDir(const QString &name)
 		}
 		else {
 			QString compression;
-			switch(header->compression()) {
+			switch (header->compression()) {
 			case FiCompression::CompressionLz4:
 				compression = tr("LZ4");
 				break;
@@ -298,12 +298,12 @@ void FsDialog::openDir(const QString &name)
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	pathWidget->setCompleter(completer);
 
-	for(int j=0 ; j<list->topLevelItemCount() ; ++j) {
+	for (int j=0 ; j<list->topLevelItemCount() ; ++j) {
 		QCoreApplication::processEvents();
 		QTreeWidgetItem *item = list->topLevelItem(j);
-		if(item == nullptr)	break;
+		if (item == nullptr)	break;
 
-		if(item->data(0, FILE_TYPE_ROLE).toInt()==FILE) {
+		if (item->data(0, FILE_TYPE_ROLE).toInt()==FILE) {
 			item->setIcon(0, list->getFileIcon(item->text(0)));
 		}
 	}
@@ -316,7 +316,7 @@ void FsDialog::openDir()
 
 void FsDialog::doubleClicked(QTreeWidgetItem *item)
 {
-	if(item->data(0, FILE_TYPE_ROLE).toInt() == DIR)
+	if (item->data(0, FILE_TYPE_ROLE).toInt() == DIR)
 		openDir(currentPath + item->text(0));
 	else
 		extract();
@@ -325,7 +325,7 @@ void FsDialog::doubleClicked(QTreeWidgetItem *item)
 void FsDialog::parentDir()
 {
 	int index = currentPath.lastIndexOf('\\', -2);
-	if(index==-1)
+	if (index==-1)
 		openDir(QString());
 	else
 		openDir(currentPath.left(index));
@@ -337,12 +337,12 @@ QStringList FsDialog::listFilesInDir(QString dirPath)
 	QStringList filesInDir;
 	QMap<QString, FsHeader *> files = fsArchive->fileList(dirPath);
 	QMapIterator<QString, FsHeader *> i(files);
-	while(i.hasNext()) {
+	while (i.hasNext()) {
 		i.next();
 		QString file = i.key();
 		FsHeader *header = i.value();
 
-		if(header == nullptr) {
+		if (header == nullptr) {
 			filesInDir.append(listFilesInDir(dirPath + file));
 		}
 		else {
@@ -356,24 +356,24 @@ void FsDialog::extract(QStringList sources)
 {
 	QString destination, source;
 
-	if(sources.isEmpty())
+	if (sources.isEmpty())
 	{
 		QList<QTreeWidgetItem *> items = list->selectedItems();
-		if(items.isEmpty())			return;
+		if (items.isEmpty())			return;
 
 		foreach(QTreeWidgetItem *item, items) {
 			source = currentPath % item->text(0);
-			if(item->data(0, FILE_TYPE_ROLE).toInt() == FILE) {
+			if (item->data(0, FILE_TYPE_ROLE).toInt() == FILE) {
 				sources.append(source);
 			} else {
 				sources.append(listFilesInDir(source));
 			}
 		}
 
-		if(sources.isEmpty())	return;
+		if (sources.isEmpty())	return;
 	}
 
-	if(sources.size()==1)
+	if (sources.size()==1)
 	{
 		destination = QDir::cleanPath(Config::value("extractPath").toString()) % "/" % sources.first().mid(currentPath.size());
 		destination = QFileDialog::getSaveFileName(this, tr("Extraire"), destination);
@@ -383,11 +383,11 @@ void FsDialog::extract(QStringList sources)
 		destination = QFileDialog::getExistingDirectory(this, tr("Extraire"), QDir::cleanPath(Config::value("extractPath").toString()));
 	}
 
-	if(destination.isEmpty())	return;
+	if (destination.isEmpty())	return;
 
-	if(sources.size()==1)
+	if (sources.size()==1)
 	{
-		if(!fsArchive->extractFile(sources.first(), destination))
+		if (!fsArchive->extractFile(sources.first(), destination))
 			QMessageBox::warning(this, tr("Erreur"), tr("Le fichier n'a pas été extrait !"));
 
 		Config::setValue("extractPath", destination.left(destination.lastIndexOf('/')));
@@ -396,7 +396,7 @@ void FsDialog::extract(QStringList sources)
 	{
 		ProgressWidget progress(tr("Extraction..."), ProgressWidget::Cancel, this);
 
-		if(fsArchive->extractFiles(sources, currentPath, destination, &progress) != FsArchive::Ok)
+		if (fsArchive->extractFiles(sources, currentPath, destination, &progress) != FsArchive::Ok)
 			QMessageBox::warning(this, tr("Erreur"), tr("Les fichiers n'ont pas été extraits !"));
 
 		Config::setValue("extractPath", destination);
@@ -407,15 +407,15 @@ void FsDialog::replace(QString source, QString destination)
 {
 	QTreeWidgetItem *item = list->currentItem();
 
-	if(item == nullptr)	return;
+	if (item == nullptr)	return;
 
 	bool isDir = item->data(0, FILE_TYPE_ROLE).toInt() == DIR;
 
-	if(destination.isEmpty()) {
+	if (destination.isEmpty()) {
 		destination = currentPath % item->text(0);
 	}
 
-	if(source.isEmpty()) {
+	if (source.isEmpty()) {
 		source = QDir::cleanPath(Config::value("replacePath").toString()) % "/" % item->text(0);
 		if (isDir) {
 			if (!QFile::exists(source)) {
@@ -425,7 +425,7 @@ void FsDialog::replace(QString source, QString destination)
 		} else {
 			source = QFileDialog::getOpenFileName(this, tr("Remplacer"), source);
 		}
-		if(source.isEmpty())	return;
+		if (source.isEmpty())	return;
 	}
 
 	ProgressWidget progress(tr("Remplacement..."), ProgressWidget::Cancel, this);
@@ -442,7 +442,7 @@ void FsDialog::replace(QString source, QString destination)
 		error = fsArchive->replaceFile(source, destination, &progress);
 	}
 
-	if(error != FsArchive::Ok) {
+	if (error != FsArchive::Ok) {
 		QMessageBox::warning(this, tr("Erreur de remplacement"), FsArchive::errorString(error));
 	} else {
 		openDir(currentPath);
@@ -453,9 +453,9 @@ void FsDialog::replace(QString source, QString destination)
 
 void FsDialog::addFile(QStringList sources)
 {
-	if(sources.isEmpty()) {
+	if (sources.isEmpty()) {
 		sources = QFileDialog::getOpenFileNames(this, tr("Ajouter"), Config::value("addPath").toString());
-		if(sources.isEmpty())	return;
+		if (sources.isEmpty())	return;
 	}
 
 	add(sources);
@@ -463,9 +463,9 @@ void FsDialog::addFile(QStringList sources)
 
 void FsDialog::addDirectory(QString source)
 {
-	if(source.isEmpty()) {
+	if (source.isEmpty()) {
 		source = QFileDialog::getExistingDirectory(this, tr("Ajouter"), Config::value("addPath").toString());
-		if(source.isEmpty())	return;
+		if (source.isEmpty())	return;
 	}
 
 	add(QStringList(source), true);
@@ -479,14 +479,14 @@ void FsDialog::add(QStringList sources, bool fromDir)
 	int i, nbFiles;
 
 	nbFiles = sources.size();
-	for(i=0 ; i<nbFiles ; ++i) {
+	for (i=0 ; i<nbFiles ; ++i) {
 		source = QDir::cleanPath(sources.at(i));
 		sources.replace(i, source);
 		destinations.append(currentPath % source.mid(source.lastIndexOf('/')+1));
 	}
 
 	compress = compressionMessage(this);
-	if(compress == CompressionUnknown) {
+	if (compress == CompressionUnknown) {
 		return;
 	}
 
@@ -499,25 +499,25 @@ void FsDialog::add(QStringList sources, bool fromDir)
 		errors = fsArchive->appendFiles(sources, destinations, compress, &progress);
 	}
 
-	if(errors.contains(FsArchive::NonWritable)) {
+	if (errors.contains(FsArchive::NonWritable)) {
 		QMessageBox::warning(this, tr("Erreur d'ajout"), FsArchive::errorString(FsArchive::NonWritable));
 	}
 	QStringList errorOut;
-	for(i=0 ; i<errors.size() && errorOut.size() < 20 ; ++i) {
-		if(errors.at(i) == FsArchive::FileExists) {
-			if(QMessageBox::question(this, tr("Le fichier existe déjà"), tr("Le fichier existe déjà, voulez-vous le remplacer ?"), tr("Oui"), tr("Non")) == 0) {
+	for (i=0 ; i<errors.size() && errorOut.size() < 20 ; ++i) {
+		if (errors.at(i) == FsArchive::FileExists) {
+			if (QMessageBox::question(this, tr("Le fichier existe déjà"), tr("Le fichier existe déjà, voulez-vous le remplacer ?"), tr("Oui"), tr("Non")) == 0) {
 				replace(sources.at(i), destinations.at(i));
 				continue;
 			}
 		}
-		if(errors.at(i) != FsArchive::Ok)
+		if (errors.at(i) != FsArchive::Ok)
 			errorOut.append(FsArchive::errorString(errors.at(i), sources.at(i)));
 	}
-	if(!errorOut.isEmpty()) {
+	if (!errorOut.isEmpty()) {
 		QMessageBox::warning(this, tr("Erreur d'ajout"), tr("Un problème est survenu pour un ou plusieurs des fichiers à ajouter :\n - %1").arg(errorOut.join("\n - ")));
 	}
 
-	if(errors.contains(FsArchive::Ok)) {
+	if (errors.contains(FsArchive::Ok)) {
 		openDir(currentPath);
 	}
 
@@ -527,12 +527,12 @@ void FsDialog::add(QStringList sources, bool fromDir)
 
 void FsDialog::remove(QStringList destinations)
 {
-	if(destinations.isEmpty()) {
+	if (destinations.isEmpty()) {
 		QList<QTreeWidgetItem *> items = list->selectedItems();
-		if(items.isEmpty())			return;
+		if (items.isEmpty())			return;
 
 		foreach(QTreeWidgetItem *item, items) {
-			if(item->data(0, FILE_TYPE_ROLE).toInt() == FILE) {
+			if (item->data(0, FILE_TYPE_ROLE).toInt() == FILE) {
 				destinations.append(currentPath % item->text(0));
 			}
 			else {
@@ -540,17 +540,17 @@ void FsDialog::remove(QStringList destinations)
 			}
 		}
 
-		if(destinations.isEmpty())	return;
+		if (destinations.isEmpty())	return;
 	}
 
-	if(QMessageBox::question(this, tr("Supprimer"), tr("Voulez-vous supprimer les éléments sélectionnés ?"), tr("Oui"), tr("Non")) != 0)
+	if (QMessageBox::question(this, tr("Supprimer"), tr("Voulez-vous supprimer les éléments sélectionnés ?"), tr("Oui"), tr("Non")) != 0)
 		return;
 
 	ProgressWidget progress(tr("Suppression..."), ProgressWidget::Cancel, this);
 
 	FsArchive::Error error = fsArchive->remove(destinations, &progress);
 
-	if(error != FsArchive::Ok) {
+	if (error != FsArchive::Ok) {
 		QMessageBox::warning(this, tr("Erreur de suppression"), FsArchive::errorString(error));
 	} else {
 		openDir(currentPath);
@@ -560,7 +560,7 @@ void FsDialog::remove(QStringList destinations)
 void FsDialog::rename()
 {
 	QTreeWidgetItem *item = list->currentItem();
-	if(item==nullptr)	return;
+	if (item==nullptr)	return;
 
 	item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable);
 	list->editItem(item, 0);
@@ -569,7 +569,7 @@ void FsDialog::rename()
 
 void FsDialog::renameOK(QTreeWidgetItem *item, int column)
 {
-	if(column != 0)	return;
+	if (column != 0)	return;
 
 	list->blockSignals(true);
 
@@ -577,12 +577,12 @@ void FsDialog::renameOK(QTreeWidgetItem *item, int column)
 	QString destination = currentPath % oldName, newDestination = currentPath % newName;
 	QStringList destinations, newDestinations;
 
-	if(destination.compare(newDestination, Qt::CaseInsensitive) == 0) {
+	if (destination.compare(newDestination, Qt::CaseInsensitive) == 0) {
 		list->blockSignals(false);
 		return;
 	}
 
-	if(newName.contains('\\') || newName.contains('/') || newName.contains('\n') || newName.contains('\r')) {
+	if (newName.contains('\\') || newName.contains('/') || newName.contains('\n') || newName.contains('\r')) {
 		QMessageBox::warning(this, tr("Erreur de renommage"), tr("Caractères interdits utilisés (par exemple : '\\' ou '/')"));
 		item->setText(0, oldName);
 		list->blockSignals(false);
@@ -591,7 +591,7 @@ void FsDialog::renameOK(QTreeWidgetItem *item, int column)
 
 //	qDebug() << destination << newDestination;
 
-	if(item->data(0, FILE_TYPE_ROLE).toInt() == FILE) {
+	if (item->data(0, FILE_TYPE_ROLE).toInt() == FILE) {
 		item->setIcon(0, list->getFileIcon(item->text(0)));
 		destinations.append(destination);
 		newDestinations.append(newDestination);
@@ -606,7 +606,7 @@ void FsDialog::renameOK(QTreeWidgetItem *item, int column)
 
 	FsArchive::Error error = fsArchive->rename(destinations, newDestinations);
 
-	if(error != FsArchive::Ok) {
+	if (error != FsArchive::Ok) {
 		QMessageBox::warning(this, tr("Erreur de renommage"), FsArchive::errorString(error));
 	} else {
 		list->scrollToItem(item);
@@ -628,16 +628,16 @@ FiCompression FsDialog::compressionMessage(QWidget *parent)
 	msgBox.setDefaultButton(lzs);
 	msgBox.setEscapeButton(cancel);
 
-	if(msgBox.exec() == -1) {
+	if (msgBox.exec() == -1) {
 		return CompressionUnknown;
 	}
-	if(msgBox.clickedButton() == lzs) {
+	if (msgBox.clickedButton() == lzs) {
 		return CompressionLzs;
 	}
-	if(msgBox.clickedButton() == lz4) {
+	if (msgBox.clickedButton() == lz4) {
 		return CompressionLz4;
 	}
-	if(msgBox.clickedButton() == no) {
+	if (msgBox.clickedButton() == no) {
 		return CompressionNone;
 	}
 

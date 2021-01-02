@@ -27,9 +27,9 @@ File::File() :
 bool File::fromFile(const QString &path)
 {
 	QFile f(path);
-	if(f.open(QIODevice::ReadOnly)) {
+	if (f.open(QIODevice::ReadOnly)) {
 		bool ok = open(f.readAll());
-		if(!ok) {
+		if (!ok) {
 			lastError = QObject::tr("Format de fichier invalide");
 		}
 		f.close();
@@ -42,10 +42,10 @@ bool File::fromFile(const QString &path)
 bool File::toFile(const QString &path)
 {
 	QFile f(path);
-	if(f.open(QIODevice::WriteOnly)) {
+	if (f.open(QIODevice::WriteOnly)) {
 		QByteArray data;
 		bool ok;
-		if((ok = save(data))) {
+		if ((ok = save(data))) {
 			f.write(data);
 		} else {
 			lastError = QObject::tr("Erreur inconnue");

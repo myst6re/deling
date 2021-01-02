@@ -28,7 +28,7 @@ bool IdFile::open(const QByteArray &id)
 	int id_data_size = id.size();
 	quint32 i, nbSector, accessStart;
 
-	if(id_data_size < 4) {
+	if (id_data_size < 4) {
 		qWarning() << "size id error" << id_data_size;
 		return false;
 	}
@@ -37,8 +37,8 @@ bool IdFile::open(const QByteArray &id)
 
 	accessStart = 4+nbSector*24;
 
-	if((quint32)id_data_size != accessStart+nbSector*6) {
-		if((quint32)id_data_size == accessStart+nbSector*6+2) {
+	if ((quint32)id_data_size != accessStart+nbSector*6) {
+		if ((quint32)id_data_size == accessStart+nbSector*6+2) {
 			memcpy(&_unknown, &id_data[accessStart+nbSector*6], 2);
 			_hasUnknownData = true;
 		} else {
@@ -47,10 +47,10 @@ bool IdFile::open(const QByteArray &id)
 		}
 	}
 
-	if(sizeof(Triangle) != 24) {
+	if (sizeof(Triangle) != 24) {
 		qWarning() << "invalid sizeof(Triangle)" << sizeof(Triangle) << 24;
 	}
-	if(sizeof(Access) != 6) {
+	if (sizeof(Access) != 6) {
 		qWarning() << "invalid sizeof(Triangle)" << sizeof(Access) << 6;
 	}
 
@@ -58,7 +58,7 @@ bool IdFile::open(const QByteArray &id)
 	Access acc;
 	triangles.clear();
 	_access.clear();
-	for(i=0 ; i<nbSector ; ++i) {
+	for (i=0 ; i<nbSector ; ++i) {
 		memcpy(&triangle, &id_data[4+i*24], 24);
 
 		triangles.append(triangle);
@@ -94,7 +94,7 @@ bool IdFile::save(QByteArray &id)
 		id.append((char *)&access, sizeof(Access));
 	}
 
-	if(_hasUnknownData) {
+	if (_hasUnknownData) {
 		id.append((char *)&_unknown, 2);
 	}
 

@@ -31,7 +31,7 @@ FieldPC::FieldPC(const QString &path, const QString &gameLang)
 
 FieldPC::~FieldPC()
 {
-	if(header)		delete header;
+	if (header)		delete header;
 }
 
 bool FieldPC::isPc() const
@@ -69,9 +69,9 @@ bool FieldPC::open(const QString &path)
 	QString archivePath = path;
 	archivePath.chop(1);
 
-	if(header)	delete header;
+	if (header)	delete header;
 	header = new FsArchive(archivePath);
-	if(!header->isOpen()) {
+	if (!header->isOpen()) {
 		qWarning() << "fieldData pas ouvert" << path;
 		delete header;
 		header = nullptr;
@@ -81,8 +81,8 @@ bool FieldPC::open(const QString &path)
 	QRegExp pathReg("^" + QRegExp::escape("C:\\ff8\\Data\\") + "(\\w+)" + QRegExp::escape("\\FIELD\\mapdata\\") + "(\\w+)" + QRegExp::escape("\\") + "(\\w+)" + QRegExp::escape("\\"), Qt::CaseInsensitive);
 	FsHeader *infInfos = header->getFile("*.inf");
 
-	if(!infInfos || pathReg.indexIn(infInfos->path()) == -1) {
-		if(infInfos) {
+	if (!infInfos || pathReg.indexIn(infInfos->path()) == -1) {
+		if (infInfos) {
 			qWarning() << "fieldData not opened wrong path" << infInfos->path();
 		} else {
 			qWarning() << "fieldData not opened" << path;
@@ -94,7 +94,7 @@ bool FieldPC::open(const QString &path)
 	_subDir = pathReg.capturedTexts().at(2);
 	setName(pathReg.capturedTexts().at(3));
 
-	if(!openOptimized(openExts())) {
+	if (!openOptimized(openExts())) {
 		return false;
 	}
 
@@ -109,35 +109,35 @@ bool FieldPC::openOptimized(const QList<FileExt> &selectedExts)
 	foreach(FileExt ext, selectedExts) {
 		QString path = filePath(ext);
 
-		if(header->fileExists(path)) {
+		if (header->fileExists(path)) {
 			files[ext] = path;
 		}
 	}
 
 	QMapIterator<FileExt, QString> it(files);
 
-	while(it.hasNext()) {
+	while (it.hasNext()) {
 		it.next();
 
 		FileExt ext = it.key();
 		FileType type = Field::Msd;
 
-		if(ext != CharaOne) {
+		if (ext != CharaOne) {
 			bool ok;
 			type = extToType(ext, &ok);
 
-			if(!ok) {
+			if (!ok) {
 				continue;
 			}
 		}
 
 		const QString &path = it.value();
 
-		if(ext == Jsm && files.contains(Sym)) {
+		if (ext == Jsm && files.contains(Sym)) {
 			openJsmFile(header->fileData(path), header->fileData(files[Sym]));
-		} else if(ext == Map && files.contains(Mim)) {
+		} else if (ext == Map && files.contains(Mim)) {
 			openBackgroundFile(header->fileData(path), header->fileData(files[Mim]));
-		} else if(ext == CharaOne) {
+		} else if (ext == CharaOne) {
 			openCharaFile(header->fileData(path));
 		} else {
 			openFile(type, header->fileData(path));
@@ -149,7 +149,7 @@ bool FieldPC::openOptimized(const QList<FileExt> &selectedExts)
 
 bool FieldPC::openOptimized(const QList<FileExt> &selectedExts, FsArchive *archive)
 {
-	if(!archive) {
+	if (!archive) {
 		return openOptimized(selectedExts);
 	}
 
@@ -160,13 +160,13 @@ bool FieldPC::openOptimized(const QList<FileExt> &selectedExts, FsArchive *archi
 	foreach(FileExt ext, selectedExts) {
 		FsHeader *infos = header->getFile(filePath(ext));
 
-		if(infos != nullptr) {
+		if (infos != nullptr) {
 			maxSize = qMax(maxSize, infos->position() + infos->uncompressedSize());
 			files[ext] = infos;
 		}
 	}
 
-	if(maxSize == 0) {
+	if (maxSize == 0) {
 		qWarning() << "No files!" << name();
 		return false;
 	}
@@ -174,35 +174,35 @@ bool FieldPC::openOptimized(const QList<FileExt> &selectedExts, FsArchive *archi
 	// Get data and open files
 	QByteArray fs_data = archive->fileData("*"%name()%".fs", true, int(maxSize));
 
-	if(fs_data.isEmpty()) {
+	if (fs_data.isEmpty()) {
 		qWarning() << "No data!" << name() << maxSize;
 		return false;
 	}
 
 	QMapIterator<FileExt, FsHeader *> it(files);
 
-	while(it.hasNext()) {
+	while (it.hasNext()) {
 		it.next();
 
 		FileExt ext = it.key();
 		FileType type = Field::Msd;
 
-		if(ext != CharaOne) {
+		if (ext != CharaOne) {
 			bool ok;
 			type = extToType(ext, &ok);
 
-			if(!ok) {
+			if (!ok) {
 				continue;
 			}
 		}
 
 		FsHeader *infos = it.value();
 
-		if(ext == Jsm && files.contains(Sym)) {
+		if (ext == Jsm && files.contains(Sym)) {
 			openJsmFile(infos->data(fs_data), files[Sym]->data(fs_data));
-		} else if(ext == Map && files.contains(Mim)) {
+		} else if (ext == Map && files.contains(Mim)) {
 			openBackgroundFile(infos->data(fs_data), files[Mim]->data(fs_data));
-		} else if(ext == CharaOne) {
+		} else if (ext == CharaOne) {
 			openCharaFile(infos->data(fs_data));
 		} else {
 			openFile(type, infos->data(fs_data));
@@ -216,12 +216,12 @@ bool FieldPC::open(FsArchive *archive)
 {
 	setOpen(false);
 
-	if(header)	delete header;
+	if (header)	delete header;
 
 	QRegExp pathReg("^" + QRegExp::escape("C:\\ff8\\Data\\") + "(\\w+)" + QRegExp::escape("\\FIELD\\mapdata\\") + "(\\w+)" + QRegExp::escape("\\"), Qt::CaseInsensitive);
 	FsHeader *flInfos = archive->getFile("*"%name()%".fl");
-	if(!flInfos || pathReg.indexIn(flInfos->path()) == -1) {
-		if(flInfos) {
+	if (!flInfos || pathReg.indexIn(flInfos->path()) == -1) {
+		if (flInfos) {
 			qWarning() << "fieldData not opened" << name() << "wrong path" << flInfos->path();
 		} else {
 			qWarning() << "fieldData not opened" << name() << archive->path();
@@ -232,14 +232,14 @@ bool FieldPC::open(FsArchive *archive)
 	_subDir = pathReg.capturedTexts().at(2);
 
 	header = new FsArchive(archive->fileData(flInfos->path()), archive->fileData("*"%name()%".fi"));
-	if(!header->isOpen()) {
+	if (!header->isOpen()) {
 		qWarning() << "fieldData not opened" << name();
 		delete header;
 		header = nullptr;
 		return false;
 	}
 
-	if(!openOptimized(openExts(), archive)) {
+	if (!openOptimized(openExts(), archive)) {
 		delete header;
 		header = nullptr;
 		return false;
@@ -260,11 +260,11 @@ bool FieldPC::save(const QString &path)
 	archivePath.chop(1);
 
 	QFile fs(FsArchive::fsPath(archivePath));
-	if(fs.open(QIODevice::ReadWrite)) {
+	if (fs.open(QIODevice::ReadWrite)) {
 		QFile fl(FsArchive::flPath(archivePath));
-		if(fl.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+		if (fl.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
 			QFile fi(FsArchive::fiPath(archivePath));
-			if(fi.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+			if (fi.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
 
 				QByteArray fs_data=fs.readAll(), fl_data, fi_data;
 
@@ -297,92 +297,92 @@ bool FieldPC::save(const QString &path)
 
 void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data)
 {
-	if(!header)	return;
+	if (!header)	return;
 
-	if(hasMsdFile() && getMsdFile()->isModified()) {
+	if (hasMsdFile() && getMsdFile()->isModified()) {
 		QByteArray msd;
-		if(getMsdFile()->save(msd)) {
+		if (getMsdFile()->save(msd)) {
 			header->setFileData(filePath(Msd), fs_data, msd);
 		}
 	}
-	if(hasJsmFile() && getJsmFile()->isModified()) {
+	if (hasJsmFile() && getJsmFile()->isModified()) {
 		QByteArray jsm, sym;
-		if(getJsmFile()->save(jsm, sym)) {
+		if (getJsmFile()->save(jsm, sym)) {
 			header->setFileData(filePath(Jsm), fs_data, jsm);
-			if(!sym.isEmpty()) {
+			if (!sym.isEmpty()) {
 				header->setFileData(filePath(Sym), fs_data, sym);
 			}
 		}
 	}
-	if(hasRatFile() && getRatFile()->isModified()) {
+	if (hasRatFile() && getRatFile()->isModified()) {
 		QByteArray rat;
-		if(getRatFile()->save(rat)) {
+		if (getRatFile()->save(rat)) {
 			header->setFileData(filePath(Rat), fs_data, rat);
 		}
 	}
-	if(hasMrtFile() && getMrtFile()->isModified()) {
+	if (hasMrtFile() && getMrtFile()->isModified()) {
 		QByteArray mrt;
-		if(getMrtFile()->save(mrt)) {
+		if (getMrtFile()->save(mrt)) {
 			header->setFileData(filePath(Mrt), fs_data, mrt);
 		}
 	}
-	if(hasInfFile() && getInfFile()->isModified()) {
+	if (hasInfFile() && getInfFile()->isModified()) {
 		QByteArray inf;
-		if(getInfFile()->save(inf)) {
+		if (getInfFile()->save(inf)) {
 			header->setFileData(filePath(Inf), fs_data, inf);
 		}
 	}
-	if(hasPmpFile() && getPmpFile()->isModified()) {
+	if (hasPmpFile() && getPmpFile()->isModified()) {
 		QByteArray pmp;
-		if(getPmpFile()->save(pmp)) {
+		if (getPmpFile()->save(pmp)) {
 			header->setFileData(filePath(Pmp), fs_data, pmp);
 		}
 	}
-	if(hasPmdFile() && getPmdFile()->isModified()) {
+	if (hasPmdFile() && getPmdFile()->isModified()) {
 		QByteArray pmd;
-		if(getPmdFile()->save(pmd)) {
+		if (getPmdFile()->save(pmd)) {
 			header->setFileData(filePath(Pmd), fs_data, pmd);
 		}
 	}
-	if(hasPvpFile() && getPvpFile()->isModified()) {
+	if (hasPvpFile() && getPvpFile()->isModified()) {
 		QByteArray pvp;
-		if(getPvpFile()->save(pvp)) {
+		if (getPvpFile()->save(pvp)) {
 			header->setFileData(filePath(Pvp), fs_data, pvp);
 		}
 	}
-	if(hasIdFile() && getIdFile()->isModified()) {
+	if (hasIdFile() && getIdFile()->isModified()) {
 		QByteArray id;
-		if(getIdFile()->save(id)) {
+		if (getIdFile()->save(id)) {
 			header->setFileData(filePath(Id), fs_data, id);
 		}
 	}
-	if(hasCaFile() && getCaFile()->isModified()) {
+	if (hasCaFile() && getCaFile()->isModified()) {
 		QByteArray ca;
-		if(getCaFile()->save(ca)) {
+		if (getCaFile()->save(ca)) {
 			header->setFileData(filePath(Ca), fs_data, ca);
 		}
 	}
-	if(hasMskFile() && getMskFile()->isModified()) {
+	if (hasMskFile() && getMskFile()->isModified()) {
 		QByteArray msk;
-		if(getMskFile()->save(msk)) {
+		if (getMskFile()->save(msk)) {
 			header->setFileData(filePath(Msk), fs_data, msk);
 		}
 	}
-	if(hasTdwFile() && getTdwFile()->isModified()) {
+	if (hasTdwFile() && getTdwFile()->isModified()) {
 		QByteArray tdw;
-		if(getTdwFile()->save(tdw)) {
+		if (getTdwFile()->save(tdw)) {
 			header->setFileData(filePath(Tdw), fs_data, tdw);
 		}
 	}
-	if(hasSfxFile() && getSfxFile()->isModified()) {
+	if (hasSfxFile() && getSfxFile()->isModified()) {
 		QByteArray sfx;
-		if(getSfxFile()->save(sfx)) {
+		if (getSfxFile()->save(sfx)) {
 			header->setFileData(filePath(Sfx), fs_data, sfx);
 		}
 	}
-	if(hasBackgroundFile() && getBackgroundFile()->isModified()) {
+	if (hasBackgroundFile() && getBackgroundFile()->isModified()) {
 		QByteArray map;
-		if(getBackgroundFile()->save(map)) {
+		if (getBackgroundFile()->save(map)) {
 			header->setFileData(filePath(Map), fs_data, map);
 		}
 	}
@@ -391,7 +391,7 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 
 void FieldPC::optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data)
 {
-	if(!header)	return;
+	if (!header)	return;
 
 	foreach(FileExt ext, open2Exts()) {
 		header->fileToTheEnd(filePath(ext), fs_data);
@@ -403,7 +403,7 @@ void FieldPC::optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_
 void FieldPC::setFile(FileType fileType)
 {
 	QString path = filePath(typeToExt(fileType, nullptr));
-	if(!path.isEmpty() && !header->fileExists(path)) {
+	if (!path.isEmpty() && !header->fileExists(path)) {
 		header->addFile(path, FiCompression::CompressionNone);
 		Field::setFile(fileType);
 	}
@@ -424,7 +424,7 @@ QStringList FieldPC::languages() const
 		if (pathReg.indexIn(file) != -1) {
 			const QString &lang = pathReg.capturedTexts().at(1);
 
-			if(!langs.contains(lang, Qt::CaseInsensitive)) {
+			if (!langs.contains(lang, Qt::CaseInsensitive)) {
 				langs.append(lang.toLower());
 			}
 		}
@@ -437,11 +437,11 @@ QString FieldPC::fileName(FileExt fileExt, bool useGameLang) const
 {
 	QString lang;
 
-	if(useGameLang) {
+	if (useGameLang) {
 		lang.append("_" % _gameLang);
 	}
 
-	switch(fileExt) {
+	switch (fileExt) {
 	case Msd:
 		return name() + lang + ".msd";
 	case Jsm:
@@ -484,7 +484,7 @@ QString FieldPC::filePath(FileExt fileExt) const
 {
 	QString path = filePath(fileExt, false);
 
-	if(!header->fileExists(path)) {
+	if (!header->fileExists(path)) {
 		path = filePath(fileExt, true);
 	}
 
@@ -508,7 +508,7 @@ Field::FileType FieldPC::extToType(FieldPC::FileExt fileExt, bool *ok)
 		*ok = true;
 	}
 
-	switch(fileExt) {
+	switch (fileExt) {
 	case FieldPC::Msd:
 		return Field::Msd;
 	case FieldPC::Jsm:
@@ -556,7 +556,7 @@ FieldPC::FileExt FieldPC::typeToExt(Field::FileType fileType, bool *ok)
 		*ok = true;
 	}
 
-	switch(fileType) {
+	switch (fileType) {
 	case Field::Msd:
 		return FieldPC::Msd;
 	case Field::Jsm:

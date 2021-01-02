@@ -140,20 +140,20 @@ bool TexFile::save(QByteArray &data)
 
 	//qDebug() << "texSize header" << data.size();
 
-	if(isPaletted()) {
+	if (isPaletted()) {
 		quint32 palID;
 
-		for(palID=0 ; palID < header.nbPalettes ; ++palID) {
+		for (palID=0 ; palID < header.nbPalettes ; ++palID) {
 			const QVector<QRgb> &palette = _colorTables.at(palID);
 			quint32 colorID;
-			for(colorID=0 ; colorID < header.nbColorsPerPalette1 && colorID < (quint32)palette.size() ; ++colorID) {
+			for (colorID=0 ; colorID < header.nbColorsPerPalette1 && colorID < (quint32)palette.size() ; ++colorID) {
 				const QRgb &color = palette.at(colorID);
 				data.append((char)qBlue(color));
 				data.append((char)qGreen(color));
 				data.append((char)qRed(color));
 				data.append((char)qAlpha(color));
 			}
-			for( ; colorID < header.nbColorsPerPalette1 ; ++colorID) {
+			for ( ; colorID < header.nbColorsPerPalette1 ; ++colorID) {
 				const QRgb color = qRgba(0, 0, 0, 0);
 				data.append((char *)&color, 4);
 			}
@@ -161,8 +161,8 @@ bool TexFile::save(QByteArray &data)
 
 		//qDebug() << "texSize palettes" << data.size() << _image.height() << _image.width();
 
-		for(int y=0 ; y<_image.height() ; ++y) {
-			for(int x=0 ; x<_image.width() ; ++x) {
+		for (int y=0 ; y<_image.height() ; ++y) {
+			for (int x=0 ; x<_image.width() ; ++x) {
 				data.append((char)_image.pixelIndex(x, y));
 			}
 		}
@@ -174,7 +174,7 @@ bool TexFile::save(QByteArray &data)
 		//qDebug() << "texSize colorKey" << data.size();
 	} else {
 		QRgb *pixels = (QRgb *)_image.bits();
-		for(int i=0 ; i<_image.width()*_image.height() ; ++i) {
+		for (int i=0 ; i<_image.width()*_image.height() ; ++i) {
 			quint16 color = FF8Image::toPsColor(pixels[i]);
 			data.append((char *)&color, 2);
 		}
@@ -221,7 +221,7 @@ void TexFile::debug()
 	f.write(QString("unknown7= %1 | unknown8= %2 | unknown9= %3 | unknown10= %4 | unknown11= %5\n")
 	            .arg(h.unknown7).arg(h.unknown8).arg(h.unknown9).arg(h.unknown10).arg(h.unknown11).toLatin1());
 
-	for(int i=0 ; i<_colorTables.size() ; ++i) {
+	for (int i=0 ; i<_colorTables.size() ; ++i) {
 		f.write(QString("Pal %1 ").arg(i).toLatin1());
 		foreach(const QRgb &color, _colorTables.at(i)) {
 			f.write(QString("(r=%1, g=%2, b=%3, a=%4) ")
@@ -231,7 +231,7 @@ void TexFile::debug()
 		f.write("\n");
 	}
 
-	for(int i=0 ; i<colorKeyArray.size() ; ++i) {
+	for (int i=0 ; i<colorKeyArray.size() ; ++i) {
 		f.write(QString("%1, ")
 		            .arg((quint8)colorKeyArray.at(i)).toLatin1());
 	}

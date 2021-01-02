@@ -26,11 +26,11 @@ bool Data::ff8Found()
 
 QString Data::AppPath()
 {
-	if(Config::value("dontUseRegAppPath").toBool()) {
+	if (Config::value("dontUseRegAppPath").toBool()) {
 		return Config::value("appPath").toString();
 	}
 
-	if(AppPathCache.isNull()) {
+	if (AppPathCache.isNull()) {
 		QSettings settings("Square Soft, Inc", "Final Fantasy VIII");
 		AppPathCache = QDir::cleanPath(settings.value("1.00/AppPath", "").toString());
 	}
@@ -91,7 +91,7 @@ QString Data::magic(int i)
 QStringList Data::maplist()
 {
 	QStringList maps;
-	for(int i=0 ; i<MAP_COUNT ; ++i) {
+	for (int i=0 ; i<MAP_COUNT ; ++i) {
 		maps.append(_maplist[i]);
 	}
 	return maps;

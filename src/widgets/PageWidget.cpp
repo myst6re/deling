@@ -30,7 +30,7 @@ bool PageWidget::isBuilded() const
 
 void PageWidget::build()
 {
-	if(isBuilded())		return;
+	if (isBuilded())		return;
 
 	builded = true;
 	setReadOnly(readOnly);
@@ -43,7 +43,7 @@ bool PageWidget::isFilled() const
 
 void PageWidget::fill()
 {
-	if(isFilled())		return;
+	if (isFilled())		return;
 
 	build();
 
@@ -53,7 +53,7 @@ void PageWidget::fill()
 
 void PageWidget::clear()
 {
-	if(!isFilled())		return;
+	if (!isFilled())		return;
 
 	setEnabled(false);
 	filled = false;
@@ -71,7 +71,7 @@ bool PageWidget::isReadOnly() const
 
 void PageWidget::setData(Field *field)
 {
-	if(_field != field) {
+	if (_field != field) {
 		clear();
 		_field = field;
 	}

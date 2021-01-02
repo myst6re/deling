@@ -24,7 +24,7 @@ EncounterWidget::EncounterWidget(QWidget *parent)
 
 void EncounterWidget::build()
 {
-	if(isBuilded())	return;
+	if (isBuilded())	return;
 
 	QLabel *labelColumn1 = new QLabel(tr("Formations"));
 	QLabel *labelColumn2 = new QLabel(tr("Fréquence"));
@@ -39,10 +39,10 @@ void EncounterWidget::build()
 	layout->addWidget(labelColumn1, 0, 0, Qt::AlignCenter);
 	layout->addWidget(labelColumn2, 0, 1, 1, 3, Qt::AlignCenter);
 
-	for(int i=0 ; i<4 ; ++i) {
+	for (int i=0 ; i<4 ; ++i) {
 		formationEdit[i] = new QSpinBox();
 		formationEdit[i]->setRange(0, 65535);
-		if(i==0) {
+		if (i==0) {
 			rateEdit = new QSlider(Qt::Horizontal);
 			rateEdit->setRange(0, 255);
 			rateEditLabel = new QLabel();
@@ -51,7 +51,7 @@ void EncounterWidget::build()
 		int row = 1+i;
 
 		layout->addWidget(formationEdit[i], row, 0);
-		if(i==0) {
+		if (i==0) {
 			layout->addWidget(new QLabel(tr("Basse")), row, 1);
 			layout->addWidget(rateEdit, row, 2);
 			layout->addWidget(new QLabel(tr("Haute")), row, 3);
@@ -71,9 +71,9 @@ void EncounterWidget::build()
 
 void EncounterWidget::clear()
 {
-	if(!isFilled())	return;
+	if (!isFilled())	return;
 
-	for(int i=0 ; i<4 ; ++i) {
+	for (int i=0 ; i<4 ; ++i) {
 		formationEdit[i]->blockSignals(true);
 		formationEdit[i]->setValue(0);
 		formationEdit[i]->blockSignals(false);
@@ -88,8 +88,8 @@ void EncounterWidget::clear()
 
 void EncounterWidget::setReadOnly(bool readOnly)
 {
-	if(isBuilded()) {
-		for(int i=0 ; i<4 ; ++i) {
+	if (isBuilded()) {
+		for (int i=0 ; i<4 ; ++i) {
 			formationEdit[i]->setReadOnly(readOnly);
 		}
 		rateEdit->setDisabled(readOnly);
@@ -100,20 +100,20 @@ void EncounterWidget::setReadOnly(bool readOnly)
 
 void EncounterWidget::fill()
 {
-	if(!isBuilded())	build();
-	if(isFilled())		clear();
+	if (!isBuilded())	build();
+	if (isFilled())		clear();
 
-	if(!hasData())	return;
+	if (!hasData())	return;
 
-	if(data()->hasMrtFile()) {
-		for(int i=0 ; i<4 ; ++i) {
+	if (data()->hasMrtFile()) {
+		for (int i=0 ; i<4 ; ++i) {
 			formationEdit[i]->blockSignals(true);
 			formationEdit[i]->setValue(data()->getMrtFile()->formation(i));
 			formationEdit[i]->blockSignals(false);
 		}
 	}
 
-	if(data()->hasRatFile()) {
+	if (data()->hasRatFile()) {
 		rateEdit->blockSignals(true);
 		rateEdit->setValue(data()->getRatFile()->rate());
 		rateEdit->blockSignals(false);
@@ -128,20 +128,20 @@ void EncounterWidget::editFormation()
 	QObject *s = sender();
 	int index, value = ((QSpinBox *)s)->value();
 
-	if(s == formationEdit[0]) {
+	if (s == formationEdit[0]) {
 		index = 0;
-	} else if(s == formationEdit[1]) {
+	} else if (s == formationEdit[1]) {
 		index = 1;
-	} else if(s == formationEdit[2]) {
+	} else if (s == formationEdit[2]) {
 		index = 2;
-	} else if(s == formationEdit[3]) {
+	} else if (s == formationEdit[3]) {
 		index = 3;
 	} else {
 		qWarning() << "EncounterWidget::editFormation Bad sender object";
 		return;
 	}
 
-	if(!data()->hasMrtFile()) {
+	if (!data()->hasMrtFile()) {
 		data()->addMrtFile();
 	}
 	data()->getMrtFile()->setFormation(index, value);
@@ -152,7 +152,7 @@ void EncounterWidget::editFormation()
 void EncounterWidget::editRate()
 {
 	fillRateLabel(rateEdit->value());
-	if(!data()->hasRatFile()) {
+	if (!data()->hasRatFile()) {
 		data()->addRatFile();
 	}
 	data()->getRatFile()->setRate(rateEdit->value());
@@ -162,7 +162,7 @@ void EncounterWidget::editRate()
 
 void EncounterWidget::fillRateLabel(int value)
 {
-	if(value == 0) {
+	if (value == 0) {
 		rateEditLabel->setText(tr("Pas de combats"));
 	} else {
 		rateEditLabel->setNum(value);

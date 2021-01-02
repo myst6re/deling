@@ -24,7 +24,7 @@ SoundWidget::SoundWidget() :
 
 void SoundWidget::build()
 {
-	if(isBuilded())	return;
+	if (isBuilded())	return;
 
 	ListWidget *listWidget = new ListWidget(this);
 	listWidget->addAction(ListWidget::Add, tr("Ajouter son"), this, SLOT(addSound()));
@@ -79,7 +79,7 @@ void SoundWidget::build()
 
 void SoundWidget::clear()
 {
-	if(!isFilled())		return;
+	if (!isFilled())		return;
 
 	list1->clear();
 	sfxValue->clear();
@@ -89,7 +89,7 @@ void SoundWidget::clear()
 
 void SoundWidget::setReadOnly(bool ro)
 {
-	if(isBuilded()) {
+	if (isBuilded()) {
 		toolBar->setDisabled(ro);
 		sfxValue->setReadOnly(ro);
 		importButton->setDisabled(ro);
@@ -100,15 +100,15 @@ void SoundWidget::setReadOnly(bool ro)
 
 void SoundWidget::fill()
 {
-	if(!isBuilded())	build();
-	if(isFilled())		clear();
+	if (!isBuilded())	build();
+	if (isFilled())		clear();
 
-	if(!hasData()) return;
+	if (!hasData()) return;
 
-	if(data()->isPc() && data()->hasSfxFile()) {
+	if (data()->isPc() && data()->hasSfxFile()) {
 		fillList(data()->getSfxFile()->valueCount());
 	}
-	else if(data()->isPs() && data()->hasAkaoListFile()) {
+	else if (data()->isPs() && data()->hasAkaoListFile()) {
 		fillList(data()->getAkaoListFile()->akaoCount());
 	}
 
@@ -121,7 +121,7 @@ void SoundWidget::fill()
 void SoundWidget::fillList(int count)
 {
 	list1->blockSignals(true);
-	for(int i=0 ; i<count ; ++i) {
+	for (int i=0 ; i<count ; ++i) {
 		list1->addItem(tr("Son %1").arg(i));
 	}
 	list1->blockSignals(false);
@@ -131,9 +131,9 @@ void SoundWidget::fillList(int count)
 
 void SoundWidget::setCurrentSound(int id)
 {
-	if(!hasData() || id<0 || !data()->hasSfxFile())	return;
+	if (!hasData() || id<0 || !data()->hasSfxFile())	return;
 
-	if(id < data()->getSfxFile()->valueCount()) {
+	if (id < data()->getSfxFile()->valueCount()) {
 		sfxValue->setValue(data()->getSfxFile()->value(id));
 	}
 }
@@ -144,24 +144,24 @@ void SoundWidget::addSound()
 
 	bool inserted = false;
 
-	if(data()->isPc()) {
-		if(!data()->hasSfxFile()) {
+	if (data()->isPc()) {
+		if (!data()->hasSfxFile()) {
 			data()->addSfxFile();
 		}
 		data()->getSfxFile()->insertValue(row+1, 0);
 		inserted = true;
 	}
-	else if(data()->isPs()) {
+	else if (data()->isPs()) {
 		QString path = QFileDialog::getOpenFileName(this, tr("Ajouter son"), QString(), tr("Fichier AKAO (*.akao)"));
-		if(path.isNull())		return;
+		if (path.isNull())		return;
 
 		QFile f(path);
-		if(f.open(QIODevice::ReadOnly)) {
-			if(!data()->hasAkaoListFile()) {
+		if (f.open(QIODevice::ReadOnly)) {
+			if (!data()->hasAkaoListFile()) {
 				data()->addAkaoListFile();
 			}
 
-			if(!data()->getAkaoListFile()->insertAkao(row+1, f.readAll())) {
+			if (!data()->getAkaoListFile()->insertAkao(row+1, f.readAll())) {
 				QMessageBox::warning(this, tr("Erreur"), tr("Fichier invalide."));
 			} else {
 				inserted = true;
@@ -172,9 +172,9 @@ void SoundWidget::addSound()
 		}
 	}
 
-	if(inserted) {
+	if (inserted) {
 		list1->insertItem(row+1, tr("Son %1").arg(row+1));
-		for(int i=row+2 ; i<list1->count() ; ++i) {
+		for (int i=row+2 ; i<list1->count() ; ++i) {
 			list1->item(i)->setText(tr("Son %1").arg(i));
 		}
 		list1->setCurrentRow(row+1);
@@ -186,33 +186,33 @@ void SoundWidget::removeSound()
 {
 	int row = list1->currentRow();
 
-	if(row < 0)		return;
+	if (row < 0)		return;
 
 	bool removed = false;
 
-	if(data()->isPc()) {
-		if(!data()->hasSfxFile()) {
+	if (data()->isPc()) {
+		if (!data()->hasSfxFile()) {
 			data()->addSfxFile();
 		}
 
-		if(row < data()->getSfxFile()->valueCount()) {
+		if (row < data()->getSfxFile()->valueCount()) {
 			data()->getSfxFile()->removeValue(row);
 			removed = true;
 		}
-	} else if(data()->isPs()) {
-		if(!data()->hasAkaoListFile()) {
+	} else if (data()->isPs()) {
+		if (!data()->hasAkaoListFile()) {
 			data()->addAkaoListFile();
 		}
 
-		if(row < data()->getAkaoListFile()->akaoCount()) {
+		if (row < data()->getAkaoListFile()->akaoCount()) {
 			data()->getAkaoListFile()->removeAkao(row);
 			removed = true;
 		}
 	}
 
-	if(removed) {
+	if (removed) {
 		delete list1->item(row);
-		for(int i=row ; i<list1->count() ; ++i) {
+		for (int i=row ; i<list1->count() ; ++i) {
 			list1->item(i)->setText(tr("Son %1").arg(i));
 		}
 		emit modified();
@@ -221,10 +221,10 @@ void SoundWidget::removeSound()
 
 void SoundWidget::editSfxValue(double v)
 {
-	if(data()->hasSfxFile()) {
+	if (data()->hasSfxFile()) {
 		int id = list1->currentRow();
-		if(id >= 0 && id < data()->getSfxFile()->valueCount()) {
-			if(v != data()->getSfxFile()->value(id)) {
+		if (id >= 0 && id < data()->getSfxFile()->valueCount()) {
+			if (v != data()->getSfxFile()->value(id)) {
 				data()->getSfxFile()->setValue(id, v);
 				emit modified();
 			}
@@ -234,15 +234,15 @@ void SoundWidget::editSfxValue(double v)
 
 void SoundWidget::exportAkao()
 {
-	if(data()->hasAkaoListFile()) {
+	if (data()->hasAkaoListFile()) {
 		int id = list1->currentRow();
-		if(id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
+		if (id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
 
 			QString path = QFileDialog::getSaveFileName(this, tr("Exporter son"), tr("son%1").arg(id), tr("Fichier AKAO (*.akao)"));
-			if(path.isNull())		return;
+			if (path.isNull())		return;
 
 			QFile f(path);
-			if(f.open(QIODevice::WriteOnly)) {
+			if (f.open(QIODevice::WriteOnly)) {
 				f.write(data()->getAkaoListFile()->akao(id));
 				f.close();
 			} else {
@@ -254,16 +254,16 @@ void SoundWidget::exportAkao()
 
 void SoundWidget::importAkao()
 {
-	if(data()->hasAkaoListFile()) {
+	if (data()->hasAkaoListFile()) {
 		int id = list1->currentRow();
-		if(id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
+		if (id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
 
 			QString path = QFileDialog::getOpenFileName(this, tr("Importer son"), QString(), tr("Fichier AKAO (*.akao)"));
-			if(path.isNull())		return;
+			if (path.isNull())		return;
 
 			QFile f(path);
-			if(f.open(QIODevice::ReadOnly)) {
-				if(!data()->getAkaoListFile()->setAkao(id, f.readAll())) {
+			if (f.open(QIODevice::ReadOnly)) {
+				if (!data()->getAkaoListFile()->setAkao(id, f.readAll())) {
 					QMessageBox::warning(this, tr("Erreur"), tr("Fichier invalide."));
 				}
 				f.close();

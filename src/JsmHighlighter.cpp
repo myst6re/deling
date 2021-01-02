@@ -58,7 +58,7 @@ void JsmHighlighter::applyReg(const QString &text, const QRegExp &regExp,
 
 void JsmHighlighter::highlightBlock(const QString &text)
 {
-	if(_pseudoCode) {
+	if (_pseudoCode) {
 		highlightBlockPseudoCode(text);
 	} else {
 		highlightBlockOpcodes(text);
@@ -84,74 +84,74 @@ void JsmHighlighter::highlightBlockOpcodes(const QString &text)
 	QStringList rows = text.split(QRegExp("[\\t ]+"), QString::SkipEmptyParts);
 	bool ok;
 
-	if(rows.isEmpty()) {
+	if (rows.isEmpty()) {
 		return;
 	}
 
 	const QString &name = rows.first();
 	int opcode = JsmFile::opcodeName.indexOf(name.toUpper());
 
-	if(opcode != -1) {
-		if(opcode == JsmOpcode::CAL) {
+	if (opcode != -1) {
+		if (opcode == JsmOpcode::CAL) {
 			setFormat(text.indexOf(name), name.size(), QColor(0x00,0x66,0xcc));
-		} else if(opcode >= JsmOpcode::JMP && opcode <= JsmOpcode::GJMP) {
+		} else if (opcode >= JsmOpcode::JMP && opcode <= JsmOpcode::GJMP) {
 			setFormat(text.indexOf(name), name.size(), QColor(0x66,0xcc,0x00));
-		} else if(opcode == JsmOpcode::LBL) {
+		} else if (opcode == JsmOpcode::LBL) {
 			setFormat(text.indexOf(name), name.size(), QColor(0xcc,0x00,0x00));
-		} else if(opcode >= JsmOpcode::RET && opcode <= JsmOpcode::PSHAC) {
+		} else if (opcode >= JsmOpcode::RET && opcode <= JsmOpcode::PSHAC) {
 			setFormat(text.indexOf(name), name.size(), QColor(0x66,0x66,0x66));
-		} else if(opcode >= JsmOpcode::REQ && opcode <= JsmOpcode::PREQEW) {
+		} else if (opcode >= JsmOpcode::REQ && opcode <= JsmOpcode::PREQEW) {
 			setFormat(text.indexOf(name), name.size(), QColor(0xcc,0x66,0x00));
-		} else if(opcode == JsmOpcode::MES || opcode == JsmOpcode::ASK
+		} else if (opcode == JsmOpcode::MES || opcode == JsmOpcode::ASK
 				  || opcode == JsmOpcode::AMESW || opcode == JsmOpcode::AMES
 				  || opcode == JsmOpcode::AASK || opcode == JsmOpcode::RAMESW) {
 			QTextCharFormat textFormat;
 			textFormat.setBackground(QColor(0xFF,0xFF,0x00));
 			setFormat(text.indexOf(name), name.size(), textFormat);
 		}
-	} else if(name.startsWith("LABEL", Qt::CaseInsensitive)) {
+	} else if (name.startsWith("LABEL", Qt::CaseInsensitive)) {
 		name.mid(5).toInt(&ok);
-		if(ok) {
+		if (ok) {
 			setFormat(text.indexOf(name), name.size(), QColor(0x66,0xcc,0x00));
 		}
 		return;
 	}
 
-	if(rows.size() == 1) {
+	if (rows.size() == 1) {
 		return;
 	}
 
 	const QString &param = rows.at(1);
 
-	if(opcode == JsmOpcode::CAL && JsmFile::opcodeNameCalc.contains(param.toUpper())) {
+	if (opcode == JsmOpcode::CAL && JsmFile::opcodeNameCalc.contains(param.toUpper())) {
 		setFormat(text.indexOf(param), param.size(), QColor(0x00,0x66,0xcc));
-	} else if(opcode >= JsmOpcode::JMP && opcode <= JsmOpcode::GJMP
+	} else if (opcode >= JsmOpcode::JMP && opcode <= JsmOpcode::GJMP
 	          && param.startsWith("LABEL", Qt::CaseInsensitive)) {
 		param.mid(5).toInt(&ok);
-		if(ok) {
+		if (ok) {
 			setFormat(text.indexOf(param), param.size(), QColor(0x66,0xcc,0x00));
 		}
-	} else if(opcode >= JsmOpcode::PSHI_L && opcode <= JsmOpcode::POPI_L
+	} else if (opcode >= JsmOpcode::PSHI_L && opcode <= JsmOpcode::POPI_L
 	          && param.startsWith("TEMP", Qt::CaseInsensitive)) {
 		param.mid(4).toInt(&ok);
-		if(ok) {
+		if (ok) {
 			setFormat(text.indexOf(param), param.size(), QColor(0x66,0x00,0xcc));
 		}
-	} else if(opcode >= JsmOpcode::PSHM_B && opcode <= JsmOpcode::PSHSM_L
+	} else if (opcode >= JsmOpcode::PSHM_B && opcode <= JsmOpcode::PSHSM_L
 	          && param.startsWith("VAR", Qt::CaseInsensitive)) {
 		param.mid(3).toInt(&ok);
-		if(ok) {
+		if (ok) {
 			setFormat(text.indexOf(param), param.size(), QColor(0x66,0x00,0xcc));
 		}
-	} else if(opcode == JsmOpcode::PSHAC
+	} else if (opcode == JsmOpcode::PSHAC
 	          && param.startsWith("MODEL", Qt::CaseInsensitive)) {
 		param.mid(5).toInt(&ok);
-		if(ok) {
+		if (ok) {
 			setFormat(text.indexOf(param), param.size(), QColor(0x66,0x00,0xcc));
 		}
 	} else {
 //		param.toInt(&ok);
-//		if(ok) {
+//		if (ok) {
 //			setFormat(text.indexOf(param), param.size(), QColor(0x00,0x66,0xcc));
 //		}
 	}

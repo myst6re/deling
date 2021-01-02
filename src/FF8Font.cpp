@@ -43,7 +43,7 @@ void FF8Font::setTables(const QList<QStringList> &tables)
 
 void FF8Font::setChar(int tableId, int charId, const QString &c)
 {
-	if(tableId < _tables.size() && charId < 224) {
+	if (tableId < _tables.size() && charId < 224) {
 		_tables[tableId][charId] = c;
 		modified = true;
 	}
@@ -80,7 +80,7 @@ void FF8Font::setPaths(const QString &txtPath, const QString &tdwPath)
 {
 	_txtPath = txtPath;
 	_tdwPath = tdwPath;
-	if(_name.isEmpty()) {
+	if (_name.isEmpty()) {
 		_name = txtPath.mid(txtPath.lastIndexOf('/')+1);
 		_name = _name.left(_name.size() - 4);
 	}
@@ -115,28 +115,28 @@ void FF8Font::openTxt(const QString &data)
 	// letterRegExp:	"Foo", "Foo","Foo"
 	QStringList table;
 
-	if(tableCount < 1) {
+	if (tableCount < 1) {
 		qWarning() << "invalid tdwFile!";
 		return;
 	}
 
 	foreach(const QString &line, lines) {
-		if(line.startsWith("#")) {
-			if(nameRegExp.indexIn(line) != -1) {
+		if (line.startsWith("#")) {
+			if (nameRegExp.indexIn(line) != -1) {
 				QStringList capturedTexts = nameRegExp.capturedTexts();
 				_name = capturedTexts.at(1).trimmed();
 			}
 		}
 		else {
 			int offset=0;
-			while((offset = letterRegExp.indexIn(line, offset)) != -1) {
+			while ((offset = letterRegExp.indexIn(line, offset)) != -1) {
 				QStringList capturedTexts = letterRegExp.capturedTexts();
 				table.append(capturedTexts.at(1));
 				offset += capturedTexts.first().size();
 
-				if(table.size() == 224) {
+				if (table.size() == 224) {
 					_tables.append(table);
-					if(_tables.size() > tableCount) {
+					if (_tables.size() > tableCount) {
 						//print();
 						return;
 					}
@@ -146,9 +146,9 @@ void FF8Font::openTxt(const QString &data)
 		}
 	}
 
-	if(!table.isEmpty()) {
-		if(table.size() < 224) {
-			for(int i=table.size() ; i<224 ; ++i) {
+	if (!table.isEmpty()) {
+		if (table.size() < 224) {
+			for (int i=table.size() ; i<224 ; ++i) {
 				table.append(QString());
 			}
 		}
@@ -163,19 +163,19 @@ QString FF8Font::saveTxt()
 {
 	QString data;
 
-	if(!_name.isEmpty()) {
+	if (!_name.isEmpty()) {
 		data.append("#NAME\t").append(_name).append("\n");
 	}
 
 	foreach(const QStringList &t, _tables) {
-		for(int j=0 ; j<14 ; ++j) {
-			for(int i=0 ; i<16 ; ++i) {
+		for (int j=0 ; j<14 ; ++j) {
+			for (int i=0 ; i<16 ; ++i) {
 				data.append(QString("\"%1\"").arg(t[j*16 + i]));
-				if(i<15) {
+				if (i<15) {
 					data.append(",");
 				}
 			}
-			if(j<13) {
+			if (j<13) {
 				data.append(",");
 			}
 			data.append("\n");
@@ -191,9 +191,9 @@ void FF8Font::print()
 	int tid=1;
 	foreach(const QStringList &t, _tables) {
 		qDebug() << QString("table %1").arg(tid++).toLatin1().data();
-		for(int j=0 ; j<14 ; ++j) {
+		for (int j=0 ; j<14 ; ++j) {
 			QString buf;
-			for(int i=0 ; i<16 ; ++i) {
+			for (int i=0 ; i<16 ; ++i) {
 				buf += QString("\"%1\",").arg(t[j*16 + i]);
 			}
 			qDebug() << buf.toLatin1().data();
@@ -224,7 +224,7 @@ bool FF8Font::listFonts()
 	FF8Font *latinFont = openFont(":/fonts/sysfnt.tdw", ":/fonts/sysfnt.txt");
 	FF8Font *jpFont = openFont(":/fonts/sysfnt_jp.tdw", ":/fonts/sysfnt_jp.txt");
 
-	if(!latinFont || !jpFont)	return false;
+	if (!latinFont || !jpFont)	return false;
 
 	latinFont->setReadOnly(true);
 	jpFont->setReadOnly(true);
@@ -250,9 +250,9 @@ FF8Font *FF8Font::openFont(const QString &tdwPath, const QString &txtPath)
 	FF8Font *ff8Font = NULL;
 	TdwFile *tdw = NULL;
 	QFile f(tdwPath);
-	if(f.open(QIODevice::ReadOnly)) {
+	if (f.open(QIODevice::ReadOnly)) {
 		tdw = new TdwFile();
-		if(!tdw->open(f.readAll())) {
+		if (!tdw->open(f.readAll())) {
 			qWarning() << "Cannot open tdw file!" << f.fileName();
 			delete tdw;
 			tdw = NULL;
@@ -260,11 +260,11 @@ FF8Font *FF8Font::openFont(const QString &tdwPath, const QString &txtPath)
 		f.close();
 	}
 
-	if(!tdw) {
+	if (!tdw) {
 		return NULL;
 	} else {
 		QFile f2(txtPath);
-		if(f2.open(QIODevice::ReadOnly)) {
+		if (f2.open(QIODevice::ReadOnly)) {
 			ff8Font = new FF8Font(tdw, f2.readAll());
 			f2.close();
 		} else {
@@ -282,22 +282,22 @@ void FF8Font::registerFont(const QString &name, FF8Font *font)
 
 void FF8Font::deregisterFont(const QString &name)
 {
-	if(fonts.contains(name)) {
+	if (fonts.contains(name)) {
 		delete fonts.take(name);
 	}
 }
 
 FF8Font *FF8Font::font(QString name)
 {
-	if(name.isEmpty()) {
+	if (name.isEmpty()) {
 		name = "00";
 	}
 
-	if(fonts.contains(name)) {
+	if (fonts.contains(name)) {
 		FF8Font *ff8Font = fonts.value(name);
-		if(!ff8Font) {
+		if (!ff8Font) {
 			ff8Font = openFont(font_dirPath + "/" + name + ".tdw", font_dirPath + "/" + name + ".txt");
-			if(!ff8Font) {
+			if (!ff8Font) {
 				fonts.remove(name);// Bad font, we can remove it
 			} else {
 				fonts.insert(name, ff8Font);
@@ -314,7 +314,7 @@ FF8Font *FF8Font::getCurrentConfigFont()
 	QString fnt = Config::value("encoding", "00").toString();
 
 	QStringList fontL = fontList();
-	if(fontL.contains(fnt)) {
+	if (fontL.contains(fnt)) {
 		return font(fnt);
 	}
 	return font(fontL.first());
@@ -325,18 +325,18 @@ bool FF8Font::saveFonts()
 	bool ok = true;
 
 	foreach(FF8Font *font, fonts) {
-		if(font && !font->isReadOnly() && font->isModified()) {
+		if (font && !font->isReadOnly() && font->isModified()) {
 			QFile f1(font->txtPath());
-			if(f1.open(QIODevice::WriteOnly)) {
+			if (f1.open(QIODevice::WriteOnly)) {
 				f1.write(font->saveTxt().toUtf8());
 				f1.close();
 			} else {
 				ok = false;
 			}
 			QFile f2(font->tdwPath());
-			if(f2.open(QIODevice::WriteOnly)) {
+			if (f2.open(QIODevice::WriteOnly)) {
 				QByteArray tdwData;
-				if(font->tdw()->save(tdwData)) {
+				if (font->tdw()->save(tdwData)) {
 					f2.write(tdwData);
 				} else {
 					ok = false;
@@ -345,7 +345,7 @@ bool FF8Font::saveFonts()
 			} else {
 				ok = false;
 			}
-			if(ok) {
+			if (ok) {
 				font->setModified(false);
 			}
 		}
@@ -356,22 +356,22 @@ bool FF8Font::saveFonts()
 
 bool FF8Font::copyFont(const QString &name, const QString &from, const QString &name2)
 {
-	if(fonts.contains(name) || !fonts.contains(from)) {
+	if (fonts.contains(name) || !fonts.contains(from)) {
 		return false;
 	}
 
 	FF8Font *ff8Font = font(from);
-	if(!ff8Font) {
+	if (!ff8Font) {
 		return false;
 	}
 
 	QFile ftxt(font_dirPath + "/" + name + ".txt");
-	if(!ftxt.open(QIODevice::WriteOnly)) {
+	if (!ftxt.open(QIODevice::WriteOnly)) {
 		return false;
 	}
 
 	QFile ftxt2(ff8Font->txtPath());
-	if(!ftxt2.open(QIODevice::ReadOnly)) {
+	if (!ftxt2.open(QIODevice::ReadOnly)) {
 		return false;
 	}
 
@@ -381,12 +381,12 @@ bool FF8Font::copyFont(const QString &name, const QString &from, const QString &
 	ftxt2.close();
 
 	QFile ftdw(font_dirPath + "/" + name + ".tdw");
-	if(!ftdw.open(QIODevice::WriteOnly)) {
+	if (!ftdw.open(QIODevice::WriteOnly)) {
 		return false;
 	}
 
 	QFile ftdw2(ff8Font->tdwPath());
-	if(!ftdw2.open(QIODevice::ReadOnly)) {
+	if (!ftdw2.open(QIODevice::ReadOnly)) {
 		return false;
 	}
 
@@ -398,7 +398,7 @@ bool FF8Font::copyFont(const QString &name, const QString &from, const QString &
 	fonts.insert(name, NULL);
 
 	ff8Font = font(name);
-	if(!ff8Font) {
+	if (!ff8Font) {
 		return false;
 	}
 
@@ -413,11 +413,11 @@ bool FF8Font::removeFont(const QString &name)
 
 	FF8Font *ff8Font = font(name);
 
-	if(!ff8Font || ff8Font->isReadOnly()) {
+	if (!ff8Font || ff8Font->isReadOnly()) {
 		return false;
 	}
 
-	if(!QFile::remove(ff8Font->txtPath())
+	if (!QFile::remove(ff8Font->txtPath())
 	|| !QFile::remove(ff8Font->tdwPath())) {
 		return false;
 	}

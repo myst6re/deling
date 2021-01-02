@@ -46,7 +46,7 @@ QAction *ListWidget::addAction(ActionType type, const QString &text,
 	QKeySequence shortcut;
 	QAction *action;
 
-	switch(type) {
+	switch (type) {
 	case Add:
 		icon = QIcon(":images/plus.png");
 		shortcut = QKeySequence("Ctrl++");

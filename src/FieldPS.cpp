@@ -26,7 +26,7 @@ HeaderPS::HeaderPS(const QByteArray &data, int count) :
 
 	memoryPos = posSections[0] - size;
 
-	for(int i=0 ; i<sectionCount ; ++i) {
+	for (int i=0 ; i<sectionCount ; ++i) {
 		posSections[i] -= memoryPos;
 	}
 	posSections[count] = data.size();
@@ -50,8 +50,8 @@ bool HeaderPS::isValid(int size) const
 		return false;
 	}
 
-	for(int i=0 ; i<sectionCount ; ++i) {
-		if(posSections[i] > posSections[i+1]) {
+	for (int i=0 ; i<sectionCount ; ++i) {
+		if (posSections[i] > posSections[i+1]) {
 			return false;
 		}
 	}
@@ -78,7 +78,7 @@ void HeaderPS::setSize(int section, quint32 newSize)
 {
 	int diff = newSize - size(section);
 
-	for(int i=section+1 ; i<sectionCount ; ++i) {
+	for (int i=section+1 ; i<sectionCount ; ++i) {
 		posSections[i] += diff;
 	}
 }
@@ -87,7 +87,7 @@ QByteArray HeaderPS::save() const
 {
 	QByteArray header;
 
-	for(int i=0 ; i<sectionCount ; ++i) {
+	for (int i=0 ; i<sectionCount ; ++i) {
 		quint32 posSection = posSections[i] + memoryPos;
 		header.append((char *)&posSection, 4);
 	}
@@ -141,7 +141,7 @@ bool FieldPS::open(const QByteArray &dat)
 	// inf + ca + id + map + msk + rat + mrt + AKAO + msd + pmd + jsm (DAT)
 	FieldDatHeader header(dat);
 
-	if(!header.isValid(dat.size())) {
+	if (!header.isValid(dat.size())) {
 		qWarning() << "FieldPS::open Bad dat header" << dat.size();
 		return false;
 	}
@@ -188,7 +188,7 @@ bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArr
 
 	quint32 posSectionPvp = 8, posSectionMim = posSectionPvp + 4;
 
-	if(!hasTdwFile()) {
+	if (!hasTdwFile()) {
 		if (mim.size() < 8) {
 			return false;
 		}
@@ -234,97 +234,97 @@ bool FieldPS::save(QByteArray &dat, QByteArray &mim)
 	// inf + ca + id + map + msk + rat + mrt + AKAO + msd + pmd + jsm (DAT)
 	FieldDatHeader header(dat);
 
-	if(hasMsdFile() && getMsdFile()->isModified()) {
+	if (hasMsdFile() && getMsdFile()->isModified()) {
 		QByteArray msd;
-		if(getMsdFile()->save(msd)) {
+		if (getMsdFile()->save(msd)) {
 			dat.replace(header.position(FieldDatHeader::Msd), header.size(FieldDatHeader::Msd), msd);
 			header.setSize(FieldDatHeader::Msd, msd.size());
 		}
 	}
-	if(hasJsmFile() && getJsmFile()->isModified()) {
+	if (hasJsmFile() && getJsmFile()->isModified()) {
 		QByteArray sym, jsm;
-		if(getJsmFile()->save(jsm, sym)) {
+		if (getJsmFile()->save(jsm, sym)) {
 			dat.replace(header.position(FieldDatHeader::Jsm), header.size(FieldDatHeader::Jsm), jsm);
 			header.setSize(FieldDatHeader::Jsm, jsm.size());
 		}
 	}
-	if(hasRatFile() && getRatFile()->isModified()) {
+	if (hasRatFile() && getRatFile()->isModified()) {
 		QByteArray rat;
-		if(getRatFile()->save(rat)) {
+		if (getRatFile()->save(rat)) {
 			dat.replace(header.position(FieldDatHeader::Rat), header.size(FieldDatHeader::Rat), rat);
 			header.setSize(FieldDatHeader::Rat, rat.size());
 		}
 	}
-	if(hasMrtFile() && getMrtFile()->isModified()) {
+	if (hasMrtFile() && getMrtFile()->isModified()) {
 		QByteArray mrt;
-		if(getMrtFile()->save(mrt)) {
+		if (getMrtFile()->save(mrt)) {
 			dat.replace(header.position(FieldDatHeader::Mrt), header.size(FieldDatHeader::Mrt), mrt);
 			header.setSize(FieldDatHeader::Mrt, mrt.size());
 		}
 	}
-	if(hasInfFile() && getInfFile()->isModified()) {
+	if (hasInfFile() && getInfFile()->isModified()) {
 		QByteArray inf;
-		if(getInfFile()->save(inf)) {
+		if (getInfFile()->save(inf)) {
 			dat.replace(header.position(FieldDatHeader::Inf), header.size(FieldDatHeader::Inf), inf);
 			header.setSize(FieldDatHeader::Inf, inf.size());
 		}
 	}
-	if(hasPmpFile() && getPmpFile()->isModified()) {
+	if (hasPmpFile() && getPmpFile()->isModified()) {
 		QByteArray pmp;
-		if(getPmpFile()->save(pmp)) {
+		if (getPmpFile()->save(pmp)) {
 			// TODO: pmp
 		}
 	}
-	if(hasPmdFile() && getPmdFile()->isModified()) {
+	if (hasPmdFile() && getPmdFile()->isModified()) {
 		QByteArray pmd;
-		if(getPmdFile()->save(pmd)) {
+		if (getPmdFile()->save(pmd)) {
 			dat.replace(header.position(FieldDatHeader::Pmd), header.size(FieldDatHeader::Pmd), pmd);
 			header.setSize(FieldDatHeader::Pmd, pmd.size());
 		}
 	}
-	if(hasPvpFile() && getPvpFile()->isModified()) {
+	if (hasPvpFile() && getPvpFile()->isModified()) {
 		QByteArray pvp;
-		if(getPvpFile()->save(pvp)) {
+		if (getPvpFile()->save(pvp)) {
 			mim.replace(8, 4, pvp);
 		}
 	}
-	if(hasIdFile() && getIdFile()->isModified()) {
+	if (hasIdFile() && getIdFile()->isModified()) {
 		QByteArray id;
-		if(getIdFile()->save(id)) {
+		if (getIdFile()->save(id)) {
 			dat.replace(header.position(FieldDatHeader::Id), header.size(FieldDatHeader::Id), id);
 			header.setSize(FieldDatHeader::Id, id.size());
 		}
 	}
-	if(hasCaFile() && getCaFile()->isModified()) {
+	if (hasCaFile() && getCaFile()->isModified()) {
 		QByteArray ca;
-		if(getCaFile()->save(ca)) {
+		if (getCaFile()->save(ca)) {
 			dat.replace(header.position(FieldDatHeader::Ca), header.size(FieldDatHeader::Ca), ca);
 			header.setSize(FieldDatHeader::Ca, ca.size());
 		}
 	}
-	if(hasMskFile() && getMskFile()->isModified()) {
+	if (hasMskFile() && getMskFile()->isModified()) {
 		QByteArray msk;
-		if(getMskFile()->save(msk)) {
+		if (getMskFile()->save(msk)) {
 			dat.replace(header.position(FieldDatHeader::Msk), header.size(FieldDatHeader::Msk), msk);
 			header.setSize(FieldDatHeader::Msk, msk.size());
 		}
 	}
-	if(hasTdwFile() && getTdwFile()->isModified()) {
+	if (hasTdwFile() && getTdwFile()->isModified()) {
 		QByteArray tdw;
-		if(getTdwFile()->save(tdw)) {
+		if (getTdwFile()->save(tdw)) {
 			//TODO: tdw
 		}
 	}
-	if(hasAkaoListFile() && getAkaoListFile()->isModified()) {
+	if (hasAkaoListFile() && getAkaoListFile()->isModified()) {
 		QByteArray akao;
-		if(getAkaoListFile()->save(akao)) {
+		if (getAkaoListFile()->save(akao)) {
 			dat.replace(header.position(FieldDatHeader::AKAO), header.size(FieldDatHeader::AKAO), akao);
 			header.setSize(FieldDatHeader::AKAO, akao.size());
 		}
 	}
-	if(hasBackgroundFile() && getBackgroundFile()->isModified()) {
+	if (hasBackgroundFile() && getBackgroundFile()->isModified()) {
 		QByteArray map;
-		if(getBackgroundFile()->save(map)) {
+		if (getBackgroundFile()->save(map)) {
 			dat.replace(header.position(FieldDatHeader::Map), header.size(FieldDatHeader::Map), map);
 			header.setSize(FieldDatHeader::Map, map.size());
 		}
@@ -347,7 +347,7 @@ bool FieldJpDemoPS::open(const QByteArray &dat)
 	// inf + ca + id + map + msk + rat + mrt + AKAO + msd + pmd + jsm (DAT)
 	FieldDatJpDemoHeader header(dat);
 
-	if(!header.isValid(dat.size())) {
+	if (!header.isValid(dat.size())) {
 		qWarning() << "FieldJpDemoPS::open Bad dat header" << dat.size();
 		return false;
 	}

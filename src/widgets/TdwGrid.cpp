@@ -42,17 +42,17 @@ void TdwGrid::paintEvent(QPaintEvent *)
 	const int lineCountV=17, lineCountH=15, charaSize=12, padding=1, cellSize=charaSize+1+padding*2;
 	QLine linesV[lineCountV], linesH[lineCountH];
 
-	for(int i=0 ; i<lineCountV ; ++i) {
+	for (int i=0 ; i<lineCountV ; ++i) {
 		linesV[i].setPoints(QPoint(i*cellSize, 0), QPoint(i*cellSize, height()));
 	}
 
-	for(int i=0 ; i<lineCountH ; ++i) {
+	for (int i=0 ; i<lineCountH ; ++i) {
 		linesH[i].setPoints(QPoint(0, i*cellSize), QPoint(width(), i*cellSize));
 	}
 
 	QPainter p(this);
 
-	if(isEnabled()) {
+	if (isEnabled()) {
 		p.setBrush(Qt::black);
 		p.drawRect(0, 0, width(), height());
 	}
@@ -62,31 +62,31 @@ void TdwGrid::paintEvent(QPaintEvent *)
 	p.drawLines(linesV, lineCountV);
 	p.drawLines(linesH, lineCountH);
 
-	if(_tdwFile) {
+	if (_tdwFile) {
 		int charCount=_tdwFile->charCount();
 
 		// Draw odd characters (optimization to reduce the number of palette change)
-		for(int i=0, x2=0, y2=0 ; i<charCount ; i+=2) {
+		for (int i=0, x2=0, y2=0 ; i<charCount ; i+=2) {
 			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), _tdwFile->letter(_currentTable, i, _color, true));
 			x2+=2;
-			if(x2 == 16) {
+			if (x2 == 16) {
 				++y2;
 				x2 = 0;
 			}
 		}
 
 		// Draw even characters
-		for(int i=1, x2=1, y2=0 ; i<charCount ; i+=2) {
+		for (int i=1, x2=1, y2=0 ; i<charCount ; i+=2) {
 			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), _tdwFile->letter(_currentTable, i, _color, true));
 			x2+=2;
-			if(x2 == 17) {
+			if (x2 == 17) {
 				++y2;
 				x2 = 1;
 			}
 		}
 	}
 
-	if(isEnabled()) {
+	if (isEnabled()) {
 		// Draw selection frame
 		p.setPen(hasFocus() ? Qt::red : QColor(0xff,0x7f,0x7f));
 
@@ -112,7 +112,7 @@ int TdwGrid::getLetter(const QPoint &pos)
 QPoint TdwGrid::getPos(int letter)
 {
 	const int cellSize = 15;
-	if(letter > 16*14)		return QPoint();
+	if (letter > 16*14)		return QPoint();
 	return QPoint((letter % 16) * cellSize, (letter / 16) * cellSize);
 }
 
@@ -129,7 +129,7 @@ void TdwGrid::updateLetter(const QRect &rect)
 void TdwGrid::mousePressEvent(QMouseEvent *e)
 {
 	int letter = getLetter(e->pos());
-	if(letter < 16*14) {
+	if (letter < 16*14) {
 		setLetter(letter);
 		emit letterClicked(letter);
 	}
@@ -140,31 +140,31 @@ void TdwGrid::keyPressEvent(QKeyEvent *e)
 {
 	int letter;
 
-	switch(e->key()) {
+	switch (e->key()) {
 	case Qt::Key_Left:
 		letter = _letter - 1;
-		if(letter >= 0) {
+		if (letter >= 0) {
 			setLetter(letter);
 			emit letterClicked(letter);
 		}
 		break;
 	case Qt::Key_Right:
 		letter = _letter + 1;
-		if(letter < 16*14) {
+		if (letter < 16*14) {
 			setLetter(letter);
 			emit letterClicked(letter);
 		}
 		break;
 	case Qt::Key_Up:
 		letter = _letter - 16;
-		if(letter >= 0) {
+		if (letter >= 0) {
 			setLetter(letter);
 			emit letterClicked(letter);
 		}
 		break;
 	case Qt::Key_Down:
 		letter = _letter + 16;
-		if(letter < 16*14) {
+		if (letter < 16*14) {
 			setLetter(letter);
 			emit letterClicked(letter);
 		}

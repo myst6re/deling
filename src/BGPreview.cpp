@@ -31,12 +31,12 @@ BGPreview::BGPreview(QWidget *parent) :
 
 void BGPreview::fill(const QPixmap &background)
 {
-	if(_withClick) {
+	if (_withClick) {
 		setCursor(Qt::PointingHandCursor);
 	}
 
-	if(background.width()>width() || background.height()>height()) {
-		if(background.height()==height())
+	if (background.width()>width() || background.height()>height()) {
+		if (background.height()==height())
 			setPixmap(background.scaled(background.width()*width()/background.height(), height(), Qt::KeepAspectRatio));
 		else
 			setPixmap(background.scaled(width(), height(), Qt::KeepAspectRatio));
@@ -47,7 +47,7 @@ void BGPreview::fill(const QPixmap &background)
 
 void BGPreview::clear()
 {
-	if(_withClick) {
+	if (_withClick) {
 		setCursor(Qt::ArrowCursor);
 	}
 	QLabel::clear();
@@ -55,8 +55,8 @@ void BGPreview::clear()
 
 void BGPreview::mouseReleaseEvent(QMouseEvent *event)
 {
-	if(_withClick) {
-		if(event->button() == Qt::LeftButton)
+	if (_withClick) {
+		if (event->button() == Qt::LeftButton)
 			emit triggered();
 	}
 }

@@ -31,19 +31,19 @@ bool MsdFile::open(const QByteArray &msd)
 
 	modified = false;
 
-	if(dataSize==0)	return true;
+	if (dataSize==0)	return true;
 
 	memcpy(&textPos, msd_data, 4);
 
-	if(textPos%4 != 0) {
+	if (textPos%4 != 0) {
 		lastError = QObject::tr("Format de fichier invalide");
 		return false;
 	}
 
 	nbText = textPos/4;
-	for(int i=1 ; i<nbText ; ++i) {
+	for (int i=1 ; i<nbText ; ++i) {
 		memcpy(&nextTextPos, &msd_data[i*4], 4);
-		if(nextTextPos>=dataSize || nextTextPos<textPos) {
+		if (nextTextPos>=dataSize || nextTextPos<textPos) {
 			lastError = QObject::tr("Format de fichier invalide");
 			return false;
 		}
@@ -66,7 +66,7 @@ bool MsdFile::save(QByteArray &msd)
 		pos = headerSize + msd_data.size();
 		msd.append((char *)&pos, 4);
 		msd_data.append(text);
-		if(!text.isEmpty() || needEndOfString.at(i++)) {
+		if (!text.isEmpty() || needEndOfString.at(i++)) {
 			msd_data.append('\x00');
 		}
 	}
@@ -88,7 +88,7 @@ FF8Text MsdFile::text(int id) const
 
 void MsdFile::setText(int id, const FF8Text &text)
 {
-	if(id>=0 && id<nbText()) {
+	if (id>=0 && id<nbText()) {
 		texts.replace(id, text.toFF8());
 		modified = true;
 	}
@@ -104,7 +104,7 @@ void MsdFile::insertText(int id)
 
 void MsdFile::removeText(int id)
 {
-	if(id>=0 && id<nbText()) {
+	if (id>=0 && id<nbText()) {
 //		qDebug() << "MsdFile::removeText(int id)" << id;
 		texts.removeAt(id);
 		needEndOfString.removeAt(id);
@@ -125,7 +125,7 @@ bool MsdFile::hasText(const QRegExp &txt) const
 int MsdFile::indexOfText(const QRegExp &txt, int from) const
 {
 	for (int textID = qMax(0, from) ; textID < nbText() ; ++textID) {
-		if(txt.indexIn(text(textID)) != -1) {
+		if (txt.indexIn(text(textID)) != -1) {
 			return textID;
 		}
 	}
@@ -135,11 +135,11 @@ int MsdFile::indexOfText(const QRegExp &txt, int from) const
 
 bool MsdFile::searchText(const QRegExp &txt, int &textID, int &from, int &size) const
 {
-	if(textID < 0)
+	if (textID < 0)
 		textID = 0;
-	if(textID >= nbText())
+	if (textID >= nbText())
 		return false;
-	if((from = txt.indexIn(text(textID), from)) != -1) {
+	if ((from = txt.indexIn(text(textID), from)) != -1) {
 		size = txt.matchedLength();
 		return true;
 	}
@@ -149,14 +149,14 @@ bool MsdFile::searchText(const QRegExp &txt, int &textID, int &from, int &size) 
 
 bool MsdFile::searchTextReverse(const QRegExp &txt, int &textID, int &from, int &index, int &size) const
 {
-	if(textID >= nbText()) {
+	if (textID >= nbText()) {
 		textID = nbText()-1;
 		from = -1;
 	}
-	if(textID < 0)
+	if (textID < 0)
 		return false;
 	FF8Text t = text(textID);
-	if((index = txt.lastIndexIn(t, from)) != -1) {
+	if ((index = txt.lastIndexIn(t, from)) != -1) {
 		from = index - t.size();
 		size = txt.matchedLength();
 		return true;
@@ -168,7 +168,7 @@ bool MsdFile::searchTextReverse(const QRegExp &txt, int &textID, int &from, int 
 bool MsdFile::isJp() const
 {
 	foreach(const QByteArray &text, texts) {
-		if(text.contains('\x19') || text.contains('\x1a') || text.contains('\x1b') || text.contains('\x1c')) return true;
+		if (text.contains('\x19') || text.contains('\x1a') || text.contains('\x1b') || text.contains('\x1c')) return true;
 	}
 	return false;
 }

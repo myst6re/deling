@@ -31,7 +31,7 @@ JsmWidget::JsmWidget(QWidget *parent)
 
 void JsmWidget::build()
 {
-	if(isBuilded())	return;
+	if (isBuilded())	return;
 
 	QFont font;
 	font.setPointSize(8);
@@ -127,12 +127,12 @@ void JsmWidget::compile()
 {
 	groupID = currentItem(list1);
 	methodID = currentItem(list2);
-	if(groupID==-1 || methodID==-1)	return;
+	if (groupID==-1 || methodID==-1)	return;
 
 	QString errorStr;
 	QPalette pal = errorLabel->palette();
 	int l = data()->getJsmFile()->fromString(groupID, methodID, textEdit->toPlainText(), errorStr);
-	if(l != 0) {
+	if (l != 0) {
 		pal.setColor(QPalette::Active, QPalette::ButtonText, Qt::darkRed);
 		pal.setColor(QPalette::Inactive, QPalette::ButtonText, Qt::darkRed);
 		errorLabel->setPalette(pal);
@@ -148,12 +148,12 @@ void JsmWidget::compile()
 
 void JsmWidget::clear()
 {
-	if(!isFilled())		return;
+	if (!isFilled())		return;
 
 	list1->blockSignals(true);
 	list2->blockSignals(true);
 
-	if(hasData() && data()->hasJsmFile())	saveSession();
+	if (hasData() && data()->hasJsmFile())	saveSession();
 
 	list1->clear();
 	modelPreview->clear();
@@ -170,10 +170,10 @@ void JsmWidget::clear()
 
 void JsmWidget::saveSession()
 {
-	if(!hasData() || !data()->hasJsmFile() || !isBuilded())	return;
+	if (!hasData() || !data()->hasJsmFile() || !isBuilded())	return;
 
 	data()->getJsmFile()->setCurrentOpcodeScroll(this->groupID, this->methodID, textEdit->verticalScrollBar()->value(), textEdit->textCursor());
-	if(textEdit->document()->isModified()) {
+	if (textEdit->document()->isModified()) {
 		data()->getJsmFile()->setDecompiledScript(this->groupID,
 		                                          this->methodID,
 		                                          textEdit->toPlainText(),
@@ -183,7 +183,7 @@ void JsmWidget::saveSession()
 
 void JsmWidget::setReadOnly(bool readOnly)
 {
-	if(isBuilded()) {
+	if (isBuilded()) {
 		textEdit->setReadOnly(readOnly);
 		toolBar->setEnabled(!readOnly);
 	}
@@ -193,7 +193,7 @@ void JsmWidget::setReadOnly(bool readOnly)
 
 void JsmWidget::setData(Field *field)
 {
-	if(hasData() && data()->hasJsmFile()) {
+	if (hasData() && data()->hasJsmFile()) {
 		saveSession();
 		this->methodID = this->groupID = -1;
 	}
@@ -204,7 +204,7 @@ void JsmWidget::setData(Field *field)
 void JsmWidget::setMainModels(QHash<int, CharaModel *> *mainModels)
 {
 	this->mainModels = mainModels;
-	if(isBuilded())
+	if (isBuilded())
 		modelPreview->setMainModels(mainModels);
 }
 
@@ -215,13 +215,13 @@ void JsmWidget::setFieldArchive(FieldArchive *fieldArchive)
 
 void JsmWidget::fill()
 {
-	if(!isBuilded())	build();
+	if (!isBuilded())	build();
 
-	if(isFilled())		clear();
+	if (isFilled())		clear();
 
 //	qDebug() << "JsmWidget::fill()";
 
-	if(!hasData() || !data()->hasJsmFile())		return;
+	if (!hasData() || !data()->hasJsmFile())		return;
 
 	int groupID = data()->getJsmFile()->currentGroupItem();
 
@@ -233,12 +233,12 @@ void JsmWidget::fill()
 	list1->resizeColumnToContents(1);
 	list1->resizeColumnToContents(2);
 
-	if(data()->getJsmFile()->oldFormat()) {
+	if (data()->getJsmFile()->oldFormat()) {
 		warningWidget->show();
 	}
 
 	QTreeWidgetItem *item = list1->topLevelItem(groupID);
-	if(item) 	list1->setCurrentItem(item);
+	if (item) 	list1->setCurrentItem(item);
 
 	PageWidget::fill();
 }
@@ -249,7 +249,7 @@ void JsmWidget::fillList2()
 
 	list2->clear();
 	int groupID = currentItem(list1);
-	if(groupID==-1)	return;
+	if (groupID==-1)	return;
 	int methodID = data()->getJsmFile()->currentMethodItem(groupID);
 
 	list1->scrollToItem(list1->currentItem());
@@ -262,11 +262,11 @@ void JsmWidget::fillList2()
 	const JsmGroup &group = data()->getJsmFile()->getScripts().group(groupID);
 	int modelID = group.modelId(), bgParamID = group.backgroundParamId();
 
-	if(modelID != -1 && data()->hasCharaFile()
+	if (modelID != -1 && data()->hasCharaFile()
 			&& modelID < data()->getCharaFile()->modelCount()) {
 		modelPreview->setEnabled(true);
 		modelPreview->setModel(data()->getCharaFile()->model(modelID));
-	} else if(bgParamID != -1 && data()->hasBackgroundFile()
+	} else if (bgParamID != -1 && data()->hasBackgroundFile()
 			  && data()->getBackgroundFile()->allparams.contains(bgParamID)) {
 		modelPreview->setEnabled(true);
 		modelPreview->fill(QPixmap::fromImage(data()->getBackgroundFile()->background(QList<quint8>() << bgParamID, true)));
@@ -276,7 +276,7 @@ void JsmWidget::fillList2()
 	}
 
 	QTreeWidgetItem *item = list2->topLevelItem(methodID);
-	if(item) 	list2->setCurrentItem(item);
+	if (item) 	list2->setCurrentItem(item);
 }
 
 void JsmWidget::fillTextEdit()
@@ -288,7 +288,7 @@ void JsmWidget::fillTextEdit()
 	Config::setValue("scriptType", tabBar->currentIndex());
 	groupID = currentItem(list1);
 	methodID = currentItem(list2);
-	if(groupID==-1 || methodID==-1) {
+	if (groupID==-1 || methodID==-1) {
 		textEdit->clear();
 		toolBar->setEnabled(false);
 		return;
@@ -296,7 +296,7 @@ void JsmWidget::fillTextEdit()
 
 	list2->scrollToItem(list2->currentItem());
 
-	if(tabBar->currentIndex() <= 0) {
+	if (tabBar->currentIndex() <= 0) {
 		toolBar->setEnabled(false);
 		textEdit->setReadOnly(true);
 		highlighter->setPseudoCode(true);
@@ -311,7 +311,7 @@ void JsmWidget::fillTextEdit()
 		int anchor;
 		int position = data()->getJsmFile()->currentTextCursor(groupID, methodID, anchor);
 
-		if(position >= 0) {
+		if (position >= 0) {
 			QTextCursor newCursor = textEdit->textCursor();
 			newCursor.setPosition(anchor);
 			newCursor.setPosition(position, QTextCursor::KeepAnchor);
@@ -327,30 +327,30 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 	int posConst = _regConst.indexIn(line);
 	PreviewWidget *preview = textEdit->previewWidget();
 
-	if(posConst >= 0) {
+	if (posConst >= 0) {
 		QString constType = _regConst.capturedTexts().at(1);
 		int constId = _regConst.capturedTexts().last().toInt();
 		FF8Window win = FF8Window();
 		win.type = NOWIN;
 
-		if(constType == "text") {
+		if (constType == "text") {
 			MsdFile *file = data()->getMsdFile();
 
-			if(file && constId < file->nbText()) {
+			if (file && constId < file->nbText()) {
 				preview->showText(file->data(constId), win);
 				preview->move(cursorPos);
 				preview->show();
 
 				return;
 			}
-		} else if(constType == "map") {
+		} else if (constType == "map") {
 			Field *field = fieldArchive->getFieldFromMapId(constId);
 
-			if(field != nullptr) {
-				if(fieldArchive->openBG(field)) {
+			if (field != nullptr) {
+				if (fieldArchive->openBG(field)) {
 					BackgroundFile *file = field->getBackgroundFile();
 
-					if(file) {
+					if (file) {
 						preview->showBackground(QPixmap::fromImage(file->background()));
 						preview->move(cursorPos);
 						preview->show();
@@ -359,12 +359,12 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 					}
 				}
 			}
-		} else if(constType == "item") {
+		} else if (constType == "item") {
 			// TODO: add items in Data
-		} else if(constType == "magic") {
+		} else if (constType == "magic") {
 			QString magic = Data::magic(constId);
 
-			if(!magic.isEmpty()) {
+			if (!magic.isEmpty()) {
 				preview->showText(FF8Text::toFF8(magic, false), win);
 				preview->move(cursorPos);
 				preview->show();
@@ -376,7 +376,7 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 
 	int posLine = _regSetLine.indexIn(line);
 
-	if(posLine >= 0) {
+	if (posLine >= 0) {
 		QStringList texts = _regSetLine.capturedTexts();
 		Vertex_s vertex[2];
 		vertex[0].x = qint16(texts.at(1).toInt());
@@ -403,13 +403,13 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 
 	int posColor = _regColor.indexIn(line);
 
-	if(posColor >= 0) {
+	if (posColor >= 0) {
 		QStringList texts = _regColor.capturedTexts();
 		QByteArray color;
 		QList<QColor> colors;
 		int i = 2;
 
-		if(texts.at(1) == "bgshade") {
+		if (texts.at(1) == "bgshade") {
 			i = 3;
 		}
 
@@ -418,10 +418,10 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 
 			int c = texts.at(i).toInt(&ok);
 
-			if(ok && c >= 0 && c <= 255) {
+			if (ok && c >= 0 && c <= 255) {
 				color.append(char(c));
 
-				if(color.size() == 3) {
+				if (color.size() == 3) {
 					colors.append(qRgb(color.at(0), color.at(1), color.at(2)));
 					color.clear();
 				}
@@ -431,7 +431,7 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 			}
 		}
 
-		if(!colors.isEmpty()) {
+		if (!colors.isEmpty()) {
 			preview->showColors(colors);
 			preview->move(cursorPos);
 			preview->show();
@@ -442,7 +442,7 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 
 	int posPlace = _regPlace.indexIn(line);
 
-	if(posPlace >= 0) {
+	if (posPlace >= 0) {
 		int locId = _regPlace.capturedTexts().last().toInt();
 		QString location = Data::location(locId);
 
@@ -471,71 +471,71 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 	int rinoaCount=1, selphieCount=1, seiferCount=1, edeaCount=1, lagunaCount=1, kirosCount=1;
 	int wardCount=1, drawPointCount=1, eventLineCount=1, doorCount=1;
 
-	for(int groupID=0 ; groupID<nbGroup ; ++groupID) {
+	for (int groupID=0 ; groupID<nbGroup ; ++groupID) {
 		const JsmGroup &grp = data()->getJsmFile()->getScripts().group(groupID);
 		QString name = grp.name();
 		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(groupID, 3) << QString() << QString("%1").arg(grp.execOrder(), 3));
 		item->setData(0, Qt::UserRole, groupID);
-		switch(grp.type()) {
+		switch (grp.type()) {
 		case JsmGroup::Main:
-			if(name.isEmpty())	name = QString("Director%1").arg(directorCount);
+			if (name.isEmpty())	name = QString("Director%1").arg(directorCount);
 			directorCount++;
 			item->setIcon(0, QIcon(":/images/main.png"));
 			break;
 		case JsmGroup::Model:
-			switch(grp.character()) {
+			switch (grp.character()) {
 			case 0:
-				if(name.isEmpty())	name = QString("Squall%1").arg(squallCount);
+				if (name.isEmpty())	name = QString("Squall%1").arg(squallCount);
 				squallCount++;
 				item->setIcon(0, QIcon(":/images/icon-squall.png"));
 				break;
 			case 1:
-				if(name.isEmpty())	name = QString("Zell%1").arg(zellCount);
+				if (name.isEmpty())	name = QString("Zell%1").arg(zellCount);
 				zellCount++;
 				item->setIcon(0, QIcon(":/images/icon-zell.png"));
 				break;
 			case 2:
-				if(name.isEmpty())	name = QString("Irvine%1").arg(irvineCount);
+				if (name.isEmpty())	name = QString("Irvine%1").arg(irvineCount);
 				irvineCount++;
 				item->setIcon(0, QIcon(":/images/icon-irvine.png"));
 				break;
 			case 3:
-				if(name.isEmpty())	name = QString("Quistis%1").arg(quistisCount);
+				if (name.isEmpty())	name = QString("Quistis%1").arg(quistisCount);
 				quistisCount++;
 				item->setIcon(0, QIcon(":/images/icon-quistis.png"));
 				break;
 			case 4:
-				if(name.isEmpty())	name = QString("Rinoa%1").arg(rinoaCount);
+				if (name.isEmpty())	name = QString("Rinoa%1").arg(rinoaCount);
 				rinoaCount++;
 				item->setIcon(0, QIcon(":/images/icon-rinoa.png"));
 				break;
 			case 5:
-				if(name.isEmpty())	name = QString("Selphie%1").arg(selphieCount);
+				if (name.isEmpty())	name = QString("Selphie%1").arg(selphieCount);
 				selphieCount++;
 				item->setIcon(0, QIcon(":/images/icon-selphie.png"));
 				break;
 			case 6:
-				if(name.isEmpty())	name = QString("Seifer%1").arg(seiferCount);
+				if (name.isEmpty())	name = QString("Seifer%1").arg(seiferCount);
 				seiferCount++;
 				item->setIcon(0, QIcon(":/images/icon-seifer.png"));
 				break;
 			case 7:
-				if(name.isEmpty())	name = QString("Edea%1").arg(edeaCount);
+				if (name.isEmpty())	name = QString("Edea%1").arg(edeaCount);
 				edeaCount++;
 				item->setIcon(0, QIcon(":/images/icon-edea.png"));
 				break;
 			case 8:
-				if(name.isEmpty())	name = QString("Laguna%1").arg(lagunaCount);
+				if (name.isEmpty())	name = QString("Laguna%1").arg(lagunaCount);
 				lagunaCount++;
 				item->setIcon(0, QIcon(":/images/icon-laguna.png"));
 				break;
 			case 9:
-				if(name.isEmpty())	name = QString("Kiros%1").arg(kirosCount);
+				if (name.isEmpty())	name = QString("Kiros%1").arg(kirosCount);
 				kirosCount++;
 				item->setIcon(0, QIcon(":/images/icon-kiros.png"));
 				break;
 			case 10:
-				if(name.isEmpty())	name = QString("Ward%1").arg(wardCount);
+				if (name.isEmpty())	name = QString("Ward%1").arg(wardCount);
 				wardCount++;
 				item->setIcon(0, QIcon(":/images/icon-ward.png"));
 				break;
@@ -543,7 +543,7 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 				item->setIcon(0, QIcon(":/images/3d_model.png"));
 				break;
 			case DRAWPOINT_CHARACTER:
-				if(name.isEmpty())	name = QString("DrawPoint%1").arg(drawPointCount);
+				if (name.isEmpty())	name = QString("DrawPoint%1").arg(drawPointCount);
 				drawPointCount++;
 				item->setIcon(0, QIcon(":/images/icon-drawpoint.png"));
 				break;
@@ -553,12 +553,12 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 			}
 			break;
 		case JsmGroup::Location:
-			if(name.isEmpty())	name = QString("EventLine%1").arg(eventLineCount);
+			if (name.isEmpty())	name = QString("EventLine%1").arg(eventLineCount);
 			eventLineCount++;
 			item->setIcon(0, QIcon(":/images/location.png"));
 			break;
 		case JsmGroup::Door:
-			if(name.isEmpty())	name = QString("Door%1").arg(doorCount);
+			if (name.isEmpty())	name = QString("Door%1").arg(doorCount);
 			doorCount++;
 			item->setIcon(0, QIcon(":/images/door.png"));
 			break;
@@ -571,7 +571,7 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 			item->setIcon(0, QIcon(pixnull));
 			break;
 		}
-		if(name.isEmpty()) 	name = QString("Module%1").arg(groupID);
+		if (name.isEmpty()) 	name = QString("Module%1").arg(groupID);
 		item->setText(1, name);
 		items.append(item);
 	}
@@ -588,7 +588,7 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 	int begin, count;
 	QString name;
 
-	if(data()->getJsmFile()->getScripts().nbGroup()<=groupID) {
+	if (data()->getJsmFile()->getScripts().nbGroup()<=groupID) {
 		qWarning() << "JsmFile::methodList error 1" << groupID << data()->getJsmFile()->getScripts().nbGroup();
 		return items;
 	}
@@ -598,31 +598,31 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 	begin = data()->getJsmFile()->getScripts().firstMethodID(groupID);
 	count = data()->getJsmFile()->getScripts().nbScript(groupID);
 
-	if(data()->getJsmFile()->getScripts().nbScript()<begin+count) {
+	if (data()->getJsmFile()->getScripts().nbScript()<begin+count) {
 		qWarning() << "JsmFile::methodList error 2" << data()->getJsmFile()->getScripts().nbScript() << (begin+count);
 		return items;
 	}
 
-	for(int methodID=0 ; methodID<count ; ++methodID) {
+	for (int methodID=0 ; methodID<count ; ++methodID) {
 		const JsmScript &script = data()->getJsmFile()->getScripts().script(groupID, methodID);
-		if(methodID==0) {
+		if (methodID==0) {
 			name = QString();
 		}
 		else {
 			name = script.name();
-			if(name.isEmpty()) {
-				if(methodID==1) {
+			if (name.isEmpty()) {
+				if (methodID==1) {
 					name = "default";
 				} else {
-					switch(groupType) {
+					switch (groupType) {
 					case JsmGroup::Model:
-						switch(methodID) {
+						switch (methodID) {
 						case 2:		name = "talk";		break;
 						case 3:		name = "push";		break;
 						}
 						break;
 					case JsmGroup::Location:
-						switch(methodID) {
+						switch (methodID) {
 						case 2:		name = "talk";		break;
 						case 3:		name = "push";		break;
 						case 4:		name = "across";	break;
@@ -632,7 +632,7 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 						}
 						break;
 					case JsmGroup::Door:
-						switch(methodID) {
+						switch (methodID) {
 						case 2:		name = "open";		break;
 						case 3:		name = "close";		break;
 						case 4:		name = "on";		break;
@@ -642,13 +642,13 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 					default:
 						break;
 					}
-					if(name.isEmpty())		name = QString("Method%1").arg(methodID);
+					if (name.isEmpty())		name = QString("Method%1").arg(methodID);
 				}
 			}
 		}
 		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(methodID, 3) << name << QString("%1").arg(begin+methodID, 3));
 		item->setData(0, Qt::UserRole, methodID);
-		if(script.flag()) {
+		if (script.flag()) {
 			item->setForeground(0, Qt::darkGreen);
 		}
 		items.append(item);
@@ -660,7 +660,7 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 int JsmWidget::currentItem(QTreeWidget *list)
 {
 	QList<QTreeWidgetItem *> items = list->selectedItems();
-	if(items.isEmpty())	return -1;
+	if (items.isEmpty())	return -1;
 
 	return items.first()->data(0, Qt::UserRole).toInt();
 }
@@ -669,36 +669,36 @@ int JsmWidget::currentItem(QTreeWidget *list)
 //{
 //	QList<QTreeWidgetItem *> items;
 
-//	if(item==NULL)	return;
+//	if (item==NULL)	return;
 //	bool ok;
 //	uint pos, raw, key;
 
 //	raw = item->text(2).toUInt(&ok, 16);
-//	if(!ok) return;
+//	if (!ok) return;
 //	key = raw>>24;
 
-//	if(key == 2 || key == 3) {
+//	if (key == 2 || key == 3) {
 //		pos = item->text(3).toUInt(&ok);
-//		if(!ok) return;
+//		if (!ok) return;
 
-//		if(key == 2)
+//		if (key == 2)
 //			pos += (qint16)(raw & 0x0000FFFF);
 //		else
 //			pos += raw & 0x0000FFFF;
 
 //		items = list3->findItems(QString().setNum(pos), Qt::MatchExactly, 3);
-//		if(items.isEmpty())	return;
+//		if (items.isEmpty())	return;
 
 //		item = list3->itemAbove(items.first());
 //		list3->setCurrentItem(item);
 //		list3->scrollToItem(item);
 //	}
-//	else if((key == 20 || key == 21 || key == 22) && list3->topLevelItemCount() > 2) {
+//	else if ((key == 20 || key == 21 || key == 22) && list3->topLevelItemCount() > 2) {
 //		int group = item->text(1).toUInt(&ok);
-//		if(!ok) return;
+//		if (!ok) return;
 
 //		int label = list3->itemAbove(item)->text(1).toUInt(&ok);
-//		if(!ok) return;
+//		if (!ok) return;
 
 //		gotoScriptLabel(group, label);
 //	}
@@ -706,21 +706,21 @@ int JsmWidget::currentItem(QTreeWidget *list)
 
 void JsmWidget::gotoScript(int groupID, int methodID, int opcodeID)
 {
-	if(!isBuilded())	build();
+	if (!isBuilded())	build();
 
 	// Force opcode list
 	tabBar->setCurrentIndex(1);
 
 	QList<QTreeWidgetItem *> items = list1->findItems(QString("%1").arg(groupID, 3), Qt::MatchExactly);
 	QTreeWidgetItem *item;
-	if(items.isEmpty())	return;
+	if (items.isEmpty())	return;
 
 	item = items.first();
 	list1->setCurrentItem(item);
 	list1->scrollToItem(item);
 
 	items = list2->findItems(QString("%1").arg(methodID, 3), Qt::MatchExactly);
-	if(items.isEmpty())	return;
+	if (items.isEmpty())	return;
 
 	item = items.first();
 	list2->setCurrentItem(item);
@@ -738,32 +738,32 @@ void JsmWidget::gotoScript(int groupID, int methodID, int opcodeID)
 //{
 //	QList<QTreeWidgetItem *> items = list1->findItems(QString("%1").arg(groupID, 3), Qt::MatchExactly);
 //	QTreeWidgetItem *item;
-//	if(items.isEmpty())	return;
+//	if (items.isEmpty())	return;
 
 //	item = items.first();
 //	list1->setCurrentItem(item);
 //	list1->scrollToItem(item);
 
 //	items = list2->findItems(QString("%1").arg(labelID, 3), Qt::MatchExactly, 2);
-//	if(items.isEmpty())	return;
+//	if (items.isEmpty())	return;
 
 //	item = items.first();
 //	list2->setCurrentItem(item);
 //	list2->scrollToItem(item);
 
-//	if(list3->topLevelItemCount()<1)	return;
+//	if (list3->topLevelItemCount()<1)	return;
 //	list3->scrollToItem(list3->topLevelItem(0));
 //}
 
 int JsmWidget::selectedOpcode()
 {
-	if(!isBuilded())	return 0;
+	if (!isBuilded())	return 0;
 
 	QTextCursor cursor = textEdit->textCursor();
 	cursor.movePosition(QTextCursor::StartOfWord);
 	cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
 	int index;
-	if((index = JsmFile::opcodeName.indexOf(cursor.selectedText().toUpper())) != -1) {
+	if ((index = JsmFile::opcodeName.indexOf(cursor.selectedText().toUpper())) != -1) {
 		return index;
 	}
 	return 0;

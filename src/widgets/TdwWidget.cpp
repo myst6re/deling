@@ -24,7 +24,7 @@ TdwWidget::TdwWidget(QWidget *parent) :
 
 void TdwWidget::build()
 {
-	if(isBuilded())		return;
+	if (isBuilded())		return;
 
 	tdwWidget = new TdwWidget2(true, this);
 
@@ -40,7 +40,7 @@ void TdwWidget::build()
 
 void TdwWidget::clear()
 {
-	if(!isFilled())		return;
+	if (!isFilled())		return;
 
 	tdwWidget->clear();
 
@@ -49,7 +49,7 @@ void TdwWidget::clear()
 
 void TdwWidget::setReadOnly(bool ro)
 {
-	if(isBuilded()) {
+	if (isBuilded()) {
 		tdwWidget->setReadOnly(ro);
 	}
 
@@ -58,10 +58,10 @@ void TdwWidget::setReadOnly(bool ro)
 
 void TdwWidget::fill()
 {
-	if(!isBuilded())	build();
-	if(isFilled())		clear();
+	if (!isBuilded())	build();
+	if (isFilled())		clear();
 
-	if(!hasData() || !data()->hasTdwFile()) return;
+	if (!hasData() || !data()->hasTdwFile()) return;
 
 	tdwWidget->setTdwFile(data()->getTdwFile());
 

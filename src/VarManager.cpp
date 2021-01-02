@@ -75,14 +75,14 @@ void VarManager::updateName(QTreeWidgetItem *item)
 
 void VarManager::editName()
 {
-	if(list->currentItem()==NULL)	return;
+	if (list->currentItem()==NULL)	return;
 	list->currentItem()->setText(2, name->text());
 }
 
 void VarManager::fillList()
 {
 	list->clear();
-	for(quint16 i=0 ; i<1536 ; ++i)
+	for (quint16 i=0 ; i<1536 ; ++i)
 	{
 		list->addTopLevelItem(new QTreeWidgetItem(QStringList() << QString("%1").arg(i, 4, 10, QChar('0')) << "" << Config::value(QString("var%1").arg(i)).toString() << "" << QString::number(0x78570+i,16).toUpper() << QString::number(0x780D8+i,16).toUpper()));
 	}
@@ -112,9 +112,9 @@ void VarManager::search()
 	int lastVar=-1;
 
 	QMapIterator<int, QString> i(vars);
-	while(i.hasNext()) {
+	while (i.hasNext()) {
 		i.next();
-		if(lastVar == i.key())	continue;
+		if (lastVar == i.key())	continue;
 
 		lastVar = i.key();
 		JsmOpcode op(lastVar);
@@ -125,15 +125,15 @@ void VarManager::search()
 		item = list->topLevelItem(param);
 		item->setBackground(0, QColor(0xff,0xe5,0x99));
 
-		if(key == 10 || key == 11 || key == 16) {
+		if (key == 10 || key == 11 || key == 16) {
 			item->setText(1, QString("%1Byte").arg(key == 16 ? "Signed " : ""));
 		}
-		else if(key == 12 || key == 13 || key == 17) {
+		else if (key == 12 || key == 13 || key == 17) {
 			item->setText(1, QString("%1Word").arg(key == 17 ? "Signed " : ""));
 			count.insert(param+1, true);
 			list->topLevelItem(param+1)->setBackground(0, QColor(0xff,0xe5,0x99));
 		}
-		else if(key == 14 || key == 15 || key == 18) {
+		else if (key == 14 || key == 15 || key == 18) {
 			item->setText(1, QString("%1Long").arg(key == 18 ? "Signed " : ""));
 			count.insert(param+1, true);
 			list->topLevelItem(param+1)->setBackground(0, QColor(0xff,0xe5,0x99));
@@ -158,10 +158,10 @@ void VarManager::search()
 void VarManager::save()
 {
 	QString text;
-	for(int i=0 ; i<1536 ; ++i)
+	for (int i=0 ; i<1536 ; ++i)
 	{
 		text = list->topLevelItem(i)->text(2);
-		if(!text.isEmpty()) {
+		if (!text.isEmpty()) {
 			Config::setValue(QString("var%1").arg(i), text);
 		}
 	}

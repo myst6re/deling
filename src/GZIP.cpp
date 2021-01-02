@@ -24,18 +24,18 @@ QByteArray GZIP::decompress(const QByteArray &data)
 	QByteArray ungzip;
 
 	QTemporaryFile temp;
-	if(!temp.open()) {
+	if (!temp.open()) {
 		return QByteArray();
 	}
 	temp.write(data);
 	temp.close();
 	gzFile file = gzopen(temp.fileName().toLatin1(), "rb");
-	if(!file) {
+	if (!file) {
 		return QByteArray();
 	}
 	char buffer[10000];
 	int r;
-	while((r = gzread(file, buffer, 10000)) > 0) {
+	while ((r = gzread(file, buffer, 10000)) > 0) {
 		ungzip.append(buffer, r);
 	}
 	gzclose(file);
@@ -48,13 +48,13 @@ QByteArray GZIP::compress(const QByteArray &ungzip)
 	QString tempPath = QDir::tempPath()+"/qt_temp.gz";
 
 	gzFile file2 = gzopen(tempPath.toLatin1(), "wb9");
-	if(!file2) {
+	if (!file2) {
 		return QByteArray();
 	}
 	gzwrite(file2, ungzip.constData(), ungzip.size());
 	gzclose(file2);
 	QFile finalFile(tempPath);
-	if(!finalFile.open(QIODevice::ReadOnly)) {
+	if (!finalFile.open(QIODevice::ReadOnly)) {
 		return QByteArray();
 	}
 

@@ -31,8 +31,8 @@ CharaPreview::CharaPreview(QWidget *parent) :
 
 void CharaPreview::fill(const QPixmap &background)
 {
-	if(background.width()>width() || background.height()>height()) {
-		if(background.height()==height())
+	if (background.width()>width() || background.height()>height()) {
+		if (background.height()==height())
 			setPixmap(background.scaled(background.width()*width()/background.height(), height(), Qt::KeepAspectRatio));
 		else
 			setPixmap(background.scaled(width(), height(), Qt::KeepAspectRatio));
@@ -50,13 +50,13 @@ void CharaPreview::setModel(const CharaModel &model)
 {
 	const CharaModel *m;
 
-	if(model.isEmpty() && mainModels && mainModels->contains(model.id())) {
+	if (model.isEmpty() && mainModels && mainModels->contains(model.id())) {
 		m = mainModels->value(model.id());
 	} else {
 		m = &model;
 	}
 
-	if(!m->isEmpty()) {
+	if (!m->isEmpty()) {
 		setName(QString("tex%1").arg(m->id()));
 		setPixmap(QPixmap::fromImage(m->texture(0).image()));
 	} else {

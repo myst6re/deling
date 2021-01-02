@@ -20,14 +20,14 @@
 Field::Field(const QString &name)
 	: _isOpen(false), _name(name)
 {
-	for(int i=0 ; i<FILE_COUNT ; ++i) {
+	for (int i=0 ; i<FILE_COUNT ; ++i) {
 		files.append(nullptr);
 	}
 }
 
 Field::~Field()
 {
-	for(int i=0 ; i<files.size() ; ++i) {
+	for (int i=0 ; i<files.size() ; ++i) {
 		deleteFile(FileType(i));
 	}
 
@@ -55,7 +55,7 @@ void Field::openFile(FileType fileType, const QByteArray &data)
 	deleteFile(fileType);
 	File *f = newFile(fileType);
 
-	if(!f->open(data)) {
+	if (!f->open(data)) {
 		qWarning() << "Field::openFile error" << _name;
 		deleteFile(fileType);
 	}
@@ -66,7 +66,7 @@ void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym, bool oldFo
 	deleteFile(Jsm);
 	JsmFile *f = (JsmFile *)newFile(Jsm);
 
-	if(!f->open(jsm, sym, oldFormat)) {
+	if (!f->open(jsm, sym, oldFormat)) {
 		qWarning() << "Field::openJsmFile error" << _name;
 		deleteFile(Jsm);
 	}
@@ -76,18 +76,18 @@ void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 {
 	BackgroundFile *f;
 
-	if(!hasBackgroundFile()) {
+	if (!hasBackgroundFile()) {
 		f = (BackgroundFile *)newFile(Background);
 	} else {
 		f = getBackgroundFile();
 	}
 
 	/* QMultiMap<quint8, quint8> params;
-	if(hasJsmFile()) {
+	if (hasJsmFile()) {
 		getJsmFile()->searchDefaultBGStates(params);
 	} */
 
-	if(!f->open(map, mim/*, &params */)) {
+	if (!f->open(map, mim/*, &params */)) {
 		qWarning() << "Field::openBackgroundFile error" << _name;
 		deleteFile(Background);
 	}
@@ -100,7 +100,7 @@ void Field::openCharaFile(const QByteArray &one)
 	deleteCharaFile();
 	charaFile = new CharaFile();
 
-	if(!charaFile->open(one, isPs())) {
+	if (!charaFile->open(one, isPs())) {
 		qWarning() << "Field::openCharaFile error" << _name;
 		deleteCharaFile();
 	}
@@ -108,7 +108,7 @@ void Field::openCharaFile(const QByteArray &one)
 
 File *Field::newFile(FileType fileType)
 {
-	switch(fileType) {
+	switch (fileType) {
 	case Msd:
 		return files[fileType] = new MsdFile();
 	case Jsm:
@@ -147,7 +147,7 @@ void Field::deleteFile(FileType fileType)
 {
 	File *f = getFile(fileType);
 
-	if(f != nullptr) {
+	if (f != nullptr) {
 		delete f;
 		files[fileType] = nullptr;
 	}
@@ -155,7 +155,7 @@ void Field::deleteFile(FileType fileType)
 
 void Field::deleteCharaFile()
 {
-	if(charaFile != nullptr) {
+	if (charaFile != nullptr) {
 		delete charaFile;
 		charaFile = nullptr;
 	}
@@ -248,8 +248,8 @@ bool Field::hasAkaoListFile() const
 
 bool Field::hasFiles() const
 {
-	for(int i=0 ; i<files.size() ; ++i) {
-		if(hasFile(FileType(i))) {
+	for (int i=0 ; i<files.size() ; ++i) {
+		if (hasFile(FileType(i))) {
 			return true;
 		}
 	}
@@ -386,7 +386,7 @@ void Field::setFile(FileType fileType)
 bool Field::isModified() const
 {
 	foreach(File *f, files) {
-		if(f && f->isModified()) {
+		if (f && f->isModified()) {
 			return true;
 		}
 	}
@@ -397,7 +397,7 @@ bool Field::isModified() const
 void Field::setModified(bool modified)
 {
 	foreach(File *f, files) {
-		if(f) {
+		if (f) {
 			f->setModified(modified);
 		}
 	}

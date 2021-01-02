@@ -24,7 +24,7 @@ FieldArchivePC::FieldArchivePC()
 
 FieldArchivePC::~FieldArchivePC()
 {
-	if(archive)			delete archive;
+	if (archive)			delete archive;
 }
 
 QString FieldArchivePC::archivePath() const
@@ -51,13 +51,13 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 	QString map, desc;
 	int index, fieldID=0;
 
-	if(archive)		delete archive;
+	if (archive)		delete archive;
 	archive = new FsArchive(archivePath);
-	if(!archive->isOpen()) {
+	if (!archive->isOpen()) {
 		errorMsg = QObject::tr("Impossible d'ouvrir l'archive.");
 		return 1;
 	}
-	if(!archive->isWritable()) {
+	if (!archive->isWritable()) {
 		readOnly = true;
 	}
 
@@ -65,7 +65,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 
 	// Ouverture de la liste des écrans (facultatif)
 	FsArchive mapData(archive->fileData("*field\\mapdata.fl"), archive->fileData("*field\\mapdata.fi"));
-	if(mapData.isOpen()) {
+	if (mapData.isOpen()) {
 		QByteArray mapdata_fs = archive->fileData("*field\\mapdata.fs");
 		setMapList(QString(mapData.fileData(QString("*field\\mapdata\\maplist"), mapdata_fs)).split('\n'));
 	} else {
@@ -76,11 +76,11 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 	// Ajout des écrans non-listés
 	QStringList toc = archive->toc();
 	foreach(const QString &entry, toc) {
-		if(entry.endsWith(".fs", Qt::CaseInsensitive) && !entry.endsWith("mapdata.fs", Qt::CaseInsensitive)
+		if (entry.endsWith(".fs", Qt::CaseInsensitive) && !entry.endsWith("mapdata.fs", Qt::CaseInsensitive)
 			&& !entry.endsWith("main_chr.fs", Qt::CaseInsensitive)
 			&& !entry.endsWith("ec.fs", Qt::CaseInsensitive) && !entry.endsWith("te.fs", Qt::CaseInsensitive))
 		{
-			if(!fsList.contains(entry, Qt::CaseInsensitive))
+			if (!fsList.contains(entry, Qt::CaseInsensitive))
 				fsList.append(entry);
 		}
 	}
@@ -93,27 +93,27 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 	foreach(const QString &entry, fsList) {
 		QCoreApplication::processEvents();
 
-		if(progress->observerWasCanceled()) {
+		if (progress->observerWasCanceled()) {
 			clearFields();
 			errorMsg = QObject::tr("Ouverture annulée.");
 			return 2;
 		}
 
-		if(currentMap%freq == 0) {
+		if (currentMap%freq == 0) {
 			progress->setObserverValue(currentMap);
 		}
 		currentMap++;
 
 		map = entry;
 		map.chop(3);
-		if((index = map.lastIndexOf('\\')) != -1)
+		if ((index = map.lastIndexOf('\\')) != -1)
 			map = map.mid(index+1);
 
-		if(!map.isEmpty())
+		if (!map.isEmpty())
 		{
 			FieldPC *field = new FieldPC(map, entry, archive, Config::value("gameLang", "en").toString());
-			if(field->isOpen() && field->hasFiles()) {
-				if(field->hasJsmFile())
+			if (field->isOpen() && field->hasFiles()) {
+				if (field->hasJsmFile())
 					desc = Data::location(field->getJsmFile()->mapID());
 				else
 					desc = QString();
@@ -134,14 +134,14 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 		}
 	}
 
-	if(fields.isEmpty()) {
+	if (fields.isEmpty()) {
 		errorMsg = QObject::tr("Aucun écran trouvé.");
 		return 3;
 	}
 
 	openModels();
 
-	if(Config::value("encoding", "00").toString() == "01") {
+	if (Config::value("encoding", "00").toString() == "01") {
 		Config::setValue("encoding", "00");
 	}
 
@@ -150,28 +150,28 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 
 bool FieldArchivePC::openModels()
 {
-	if(!archive)	return false;
+	if (!archive)	return false;
 
 	FsArchive mainModels(archive->fileData("*field\\model\\main_chr.fl"), archive->fileData("*field\\model\\main_chr.fi"));
-	if(!mainModels.isOpen()) {
+	if (!mainModels.isOpen()) {
 		return false;
 	}
 
 	QByteArray fs;
 	QRegExp fileName("d(\\d\\d\\d)\\.mch$", Qt::CaseInsensitive);
 	QStringList toc = mainModels.toc();
-	if(!toc.isEmpty()) {
+	if (!toc.isEmpty()) {
 		fs = archive->fileData("*field\\model\\main_chr.fs");
 	}
 
 	foreach(const QString &entry, toc) {
-		if(fileName.indexIn(entry, -8) != -1) {
+		if (fileName.indexIn(entry, -8) != -1) {
 			bool ok;
 			QStringList capturedTexts = fileName.capturedTexts();
 			int id = capturedTexts.at(1).toInt(&ok);
-			if(ok) {
+			if (ok) {
 				MchFile mch;
-				if(mch.open(mainModels.fileData(entry, fs), capturedTexts.first().left(4)) && mch.hasModel()) {
+				if (mch.open(mainModels.fileData(entry, fs), capturedTexts.first().left(4)) && mch.hasModel()) {
 					models.insert(id, new CharaModel(*mch.model()));
 				}
 			}
@@ -183,7 +183,7 @@ bool FieldArchivePC::openModels()
 
 bool FieldArchivePC::openBG(Field *field) const
 {
-	if(!archive)	return false;
+	if (!archive)	return false;
 
 	return ((FieldPC *)field)->open2(archive);
 }
@@ -191,7 +191,7 @@ bool FieldArchivePC::openBG(Field *field) const
 void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHeader> > &oldFields) const
 {
 	QMapIterator<Field *, QMap<QString, FsHeader> > i(oldFields);
-	while(i.hasNext()) {
+	while (i.hasNext()) {
 		i.next();
 		((FieldPC *)i.key())->getArchiveHeader()->setHeader(i.value());
 	}
@@ -199,7 +199,7 @@ void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHea
 
 bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 {
-	if(!archive)	return false;
+	if (!archive)	return false;
 
 	QTime t;t.start();
 	QStringList toc = archive->toc();
@@ -208,12 +208,12 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 //	quint32 freq;
 	QString file, temp_path, path=archive->path();
 
-	if(!archive->isWritable())	return false;
+	if (!archive->isWritable())	return false;
 
 	save_path.chop(1);// remove s, i or l in extension
 	path.chop(1);// remove s, i or l in extension
 
-	if(save_path.isEmpty() || save_path.compare(path, Qt::CaseInsensitive)==0) {
+	if (save_path.isEmpty() || save_path.compare(path, Qt::CaseInsensitive)==0) {
 		save_path = path;
 		temp_path = save_path.left(save_path.lastIndexOf("/")+1) + "delingtemp.f";
 	}
@@ -222,7 +222,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 	}
 
     QFile temp(FsArchive::fsPath(temp_path));
-	if(!temp.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+	if (!temp.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
 		temp.remove();
 		return false;
 	}
@@ -238,9 +238,9 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 	QMap<Field *, QMap<QString, FsHeader> > oldFields;
 
 	foreach(Field *field, fields) {
-		if(field->isModified()) {
+		if (field->isModified()) {
 			QCoreApplication::processEvents();
-			if(progress->observerWasCanceled()) {
+			if (progress->observerWasCanceled()) {
 				temp.remove();
 				restoreFieldHeaders(oldFields);
 				archive->setHeader(oldValues);
@@ -248,7 +248,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 			}
 
 			FsArchive *fieldHeader = ((FieldPC *)field)->getArchiveHeader();
-			if(fieldHeader != nullptr) {
+			if (fieldHeader != nullptr) {
 				oldFields.insert(field, fieldHeader->getHeader());
 			}
 
@@ -260,7 +260,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 //			fl_savCmp = fl_data;
 //			fi_savCmp = fi_data;
 
-//			if(fs_savCmp != fs_data) {
+//			if (fs_savCmp != fs_data) {
 //				QFile savfs("debug/" + field->name() + ".fs.out");
 //				savfs.open(QIODevice::WriteOnly);
 //				savfs.write(fs_data);
@@ -299,7 +299,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 			temp.write(fi_data);
 			toc.removeOne(file);
 
-//			if(fl_savCmp != fl_data) {
+//			if (fl_savCmp != fl_data) {
 //				QFile savfl("debug/" + field->name() + ".fl.out");
 //				savfl.open(QIODevice::WriteOnly);
 //				savfl.write(fl_data);
@@ -309,7 +309,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 //				savfl2.write(fl_savCmp);
 //				savfl2.close();
 //			}
-//			if(fi_savCmp != fi_data) {
+//			if (fi_savCmp != fi_data) {
 //				QFile savfi("debug/" + field->name() + ".fi.out");
 //				savfi.open(QIODevice::WriteOnly);
 //				savfi.write(fi_data);
@@ -326,7 +326,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 
 	foreach(const QString &entry, toc) {
 		QCoreApplication::processEvents();
-		if(progress->observerWasCanceled()) {
+		if (progress->observerWasCanceled()) {
 			temp.remove();
 			restoreFieldHeaders(oldFields);
 			archive->setHeader(oldValues);
@@ -344,14 +344,14 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 	temp.close();
 
 	progress->setObserverCanCancel(false);
-	if(progress->observerWasCanceled()) {
+	if (progress->observerWasCanceled()) {
 		temp.remove();
 		restoreFieldHeaders(oldFields);
 		archive->setHeader(oldValues);
 		return false;
 	}
 
-	if(!archive->saveAs(temp_path)) {
+	if (!archive->saveAs(temp_path)) {
 		qWarning() << "Error save header!!!";
         QFile::remove(FsArchive::fiPath(temp_path));
         QFile::remove(FsArchive::flPath(temp_path));
@@ -361,20 +361,20 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 		return false;
 	}
 
-	if(save_path.compare(path, Qt::CaseInsensitive)==0) {
+	if (save_path.compare(path, Qt::CaseInsensitive)==0) {
 		int replaceError = archive->replaceArchive(&temp);
-		if(replaceError==1) {
+		if (replaceError==1) {
             QFile::remove(FsArchive::fiPath(temp_path));
             QFile::remove(FsArchive::flPath(temp_path));
 			temp.remove();
 			restoreFieldHeaders(oldFields);
 			archive->setHeader(oldValues);
 			return false;
-		} else if(replaceError!=0) {
+		} else if (replaceError!=0) {
 			return false;
 		}
 	}
-	else if(!archive->setPath(save_path)) {
+	else if (!archive->setPath(save_path)) {
 		return false;
 	}
 
@@ -391,7 +391,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 
 bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 {
-	if(!archive)	return false;
+	if (!archive)	return false;
 
 	QTime t;t.start();
 	QStringList toc = archive->toc();
@@ -399,13 +399,13 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 	int pos;
 	QString file, temp_path, save_path=archive->path();
 
-	if(!archive->isWritable())	return false;
+	if (!archive->isWritable())	return false;
 
 	save_path.chop(1);// remove s, i or l in extension
 	temp_path = save_path.left(save_path.lastIndexOf("/")+1) + "delingtemp.f";
 
     QFile temp(FsArchive::fsPath(temp_path));
-	if(!temp.open(QIODevice::WriteOnly | QIODevice::Truncate))
+	if (!temp.open(QIODevice::WriteOnly | QIODevice::Truncate))
 		return false;
 
 	progress->setObserverMaximum(archive->size());
@@ -415,19 +415,19 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 	foreach(Field *field, fields) {
 		QCoreApplication::processEvents();
 
-		if(progress->observerWasCanceled()) {
+		if (progress->observerWasCanceled()) {
 			temp.remove();
 			restoreFieldHeaders(oldFields);
 			archive->setHeader(oldValues);
 			return false;
 		}
 
-//		if(!field->isOpen()) {
+//		if (!field->isOpen()) {
 //			openField(field);
 //		}
 
 		FsArchive *fieldHeader = ((FieldPC *)field)->getArchiveHeader();
-		if(fieldHeader != NULL) {
+		if (fieldHeader != NULL) {
 			oldFields.insert(field, fieldHeader->getHeader());
 		}
 
@@ -471,7 +471,7 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 	foreach(const QString &entry, toc) {
 		QCoreApplication::processEvents();
 
-		if(progress->observerWasCanceled()) {
+		if (progress->observerWasCanceled()) {
 			temp.remove();
 			restoreFieldHeaders(oldFields);
 			archive->setHeader(oldValues);
@@ -486,14 +486,14 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 	}
 
 	progress->setObserverCanCancel(false);
-	if(progress->observerWasCanceled()) {
+	if (progress->observerWasCanceled()) {
 		temp.remove();
 		restoreFieldHeaders(oldFields);
 		archive->setHeader(oldValues);
 		return false;
 	}
 
-	if(!archive->saveAs(temp_path)) {
+	if (!archive->saveAs(temp_path)) {
 		qWarning() << "Error save header!!!";
         QFile::remove(FsArchive::fiPath(temp_path));
         QFile::remove(FsArchive::flPath(temp_path));
@@ -504,14 +504,14 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 	}
 
 	int replaceError = archive->replaceArchive(&temp);
-	if(replaceError==1) {
+	if (replaceError==1) {
         QFile::remove(FsArchive::fiPath(temp_path));
         QFile::remove(FsArchive::flPath(temp_path));
 		temp.remove();
 		restoreFieldHeaders(oldFields);
 		archive->setHeader(oldValues);
 		return false;
-	} else if(replaceError!=0) {
+	} else if (replaceError!=0) {
 		return false;
 	}
 
@@ -535,7 +535,7 @@ QStringList FieldArchivePC::languages() const
 
 			if (fieldPC->isMultiLanguage()) {
 				foreach(const QString &lang, fieldPC->languages()) {
-					if(!langs.contains(lang, Qt::CaseInsensitive)) {
+					if (!langs.contains(lang, Qt::CaseInsensitive)) {
 						langs.append(lang.toLower());
 					}
 				}

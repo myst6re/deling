@@ -49,11 +49,11 @@ const QString &FieldArchive::errorMessage() const
 Field *FieldArchive::getField(int id) const
 {
 //	Field *field = fields.value(id, NULL);
-//	if(field == NULL)	return NULL;
-//	if(!field->isOpen() && openField(field)) {
+//	if (field == NULL)	return NULL;
+//	if (!field->isOpen() && openField(field)) {
 //		return field;
 //	}
-//	if(!field->isOpen())	return NULL;
+//	if (!field->isOpen())	return NULL;
 
 	return fields.value(id, nullptr);
 }
@@ -95,8 +95,8 @@ bool FieldArchive::compileScripts(int &errorFieldID, int &errorGroupID, int &err
 	errorFieldID = 0;
 
 	foreach(Field *field, fields) {
-		if(field->isOpen() && field->isModified() && field->hasJsmFile()) {
-			if(!field->getJsmFile()->compileAll(errorGroupID, errorMethodID, errorLine, errorStr)) {
+		if (field->isOpen() && field->isModified() && field->hasJsmFile()) {
+			if (!field->getJsmFile()->compileAll(errorGroupID, errorMethodID, errorLine, errorStr)) {
 				return false;
 			}
 		}
@@ -108,27 +108,27 @@ bool FieldArchive::compileScripts(int &errorFieldID, int &errorGroupID, int &err
 
 bool FieldArchive::searchIterators(QMap<QString, int>::const_iterator &i, QMap<QString, int>::const_iterator &end, int fieldID, Sorting sorting) const
 {
-	if(fieldID >= fields.size())		return false;
+	if (fieldID >= fields.size())		return false;
 
-	switch(sorting) {
+	switch (sorting) {
 	case SortByName:
 		i = fieldsSortByName.constFind(fieldsSortByName.key(fieldID), fieldID);
 		end = fieldsSortByName.constEnd();
-		if(i==end) {
+		if (i==end) {
 			i = fieldsSortByName.constBegin();
 		}
 		return true;
 	case SortByDesc:
 		i = fieldsSortByDesc.constFind(fieldsSortByDesc.key(fieldID), fieldID);
 		end = fieldsSortByDesc.constEnd();
-		if(i==end) {
+		if (i==end) {
 			i = fieldsSortByDesc.constBegin();
 		}
 		return true;
 	case SortByMapId:
 		i = fieldsSortByMapId.constFind(fieldsSortByMapId.key(fieldID), fieldID);
 		end = fieldsSortByMapId.constEnd();
-		if(i==end) {
+		if (i==end) {
 			i = fieldsSortByMapId.constBegin();
 		}
 		return true;
@@ -138,27 +138,27 @@ bool FieldArchive::searchIterators(QMap<QString, int>::const_iterator &i, QMap<Q
 
 bool FieldArchive::searchIteratorsP(QMap<QString, int>::const_iterator &i, QMap<QString, int>::const_iterator &begin, int fieldID, Sorting sorting) const
 {
-	if(fieldID < 0)		return false;
+	if (fieldID < 0)		return false;
 
-	switch(sorting) {
+	switch (sorting) {
 	case SortByName:
 		begin = fieldsSortByName.constBegin();
 		i = fieldsSortByName.constFind(fieldsSortByName.key(fieldID), fieldID);
-		if(i==fieldsSortByName.constEnd()) {
+		if (i==fieldsSortByName.constEnd()) {
 			--i;
 		}
 		return true;
 	case SortByDesc:
 		begin = fieldsSortByDesc.constBegin();
 		i = fieldsSortByDesc.constFind(fieldsSortByDesc.key(fieldID), fieldID);
-		if(i==fieldsSortByDesc.constEnd()) {
+		if (i==fieldsSortByDesc.constEnd()) {
 			--i;
 		}
 		break;
 	case SortByMapId:
 		begin = fieldsSortByMapId.constBegin();
 		i = fieldsSortByMapId.constFind(fieldsSortByMapId.key(fieldID), fieldID);
-		if(i==fieldsSortByMapId.constEnd()) {
+		if (i==fieldsSortByMapId.constEnd()) {
 			--i;
 		}
 		return true;
@@ -169,11 +169,11 @@ bool FieldArchive::searchIteratorsP(QMap<QString, int>::const_iterator &i, QMap<
 bool FieldArchive::searchText(const QRegExp &text, int &fieldID, int &textID, int &from, int &size, Sorting sorting) const
 {
 	QMap<QString, int>::const_iterator i, end;
-	if(!searchIterators(i, end, fieldID, sorting))	return false;
+	if (!searchIterators(i, end, fieldID, sorting))	return false;
 
-	for( ; i != end ; ++i) {
+	for ( ; i != end ; ++i) {
 		Field *field = getField(fieldID = i.value());
-		if(field && field->hasMsdFile() && field->getMsdFile()->searchText(text, textID, from, size))
+		if (field && field->hasMsdFile() && field->getMsdFile()->searchText(text, textID, from, size))
 			return true;
 		textID = from = 0;
 	}
@@ -184,11 +184,11 @@ bool FieldArchive::searchText(const QRegExp &text, int &fieldID, int &textID, in
 bool FieldArchive::searchTextReverse(const QRegExp &text, int &fieldID, int &textID, int &from, int &index, int &size, Sorting sorting) const
 {
 	QMap<QString, int>::const_iterator i, begin;
-	if(!searchIteratorsP(i, begin, fieldID, sorting))	return false;
+	if (!searchIteratorsP(i, begin, fieldID, sorting))	return false;
 
-	for( ; i != begin-1 ; --i) {
+	for ( ; i != begin-1 ; --i) {
 		Field *field = getField(fieldID = i.value());
-		if(field && field->hasMsdFile() && field->getMsdFile()->searchTextReverse(text, textID, from, index, size))
+		if (field && field->hasMsdFile() && field->getMsdFile()->searchTextReverse(text, textID, from, index, size))
 			return true;
 		textID = 2147483647;
 		from = -1;
@@ -200,11 +200,11 @@ bool FieldArchive::searchTextReverse(const QRegExp &text, int &fieldID, int &tex
 bool FieldArchive::searchScript(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
 	QMap<QString, int>::const_iterator i, end;
-	if(!searchIterators(i, end, fieldID, sorting))	return false;
+	if (!searchIterators(i, end, fieldID, sorting))	return false;
 
-	for( ; i != end ; ++i) {
+	for ( ; i != end ; ++i) {
 		Field *field = getField(fieldID = i.value());
-		if(field && field->hasJsmFile() && field->getJsmFile()->search(type, value, groupID, methodID, opcodeID))
+		if (field && field->hasJsmFile() && field->getJsmFile()->search(type, value, groupID, methodID, opcodeID))
 			return true;
 		groupID = methodID = opcodeID = 0;
 	}
@@ -215,15 +215,15 @@ bool FieldArchive::searchScript(JsmFile::SearchType type, quint64 value, int &fi
 bool FieldArchive::searchScriptText(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
 	QMap<QString, int>::const_iterator i, end;
-	if(!searchIterators(i, end, fieldID, sorting))	return false;
+	if (!searchIterators(i, end, fieldID, sorting))	return false;
 
-	for( ; i != end ; ++i) {
+	for ( ; i != end ; ++i) {
 		Field *field = getField(fieldID = i.value());
-		if(field && field->hasMsdFile() && field->hasJsmFile()) {
+		if (field && field->hasMsdFile() && field->hasJsmFile()) {
 			MsdFile *msd = field->getMsdFile();
 			int textID = -1;
-			while((textID = msd->indexOfText(text, textID + 1)) != -1) {
-				if(field->getJsmFile()->search(JsmFile::SearchText, textID, groupID, methodID, opcodeID))
+			while ((textID = msd->indexOfText(text, textID + 1)) != -1) {
+				if (field->getJsmFile()->search(JsmFile::SearchText, textID, groupID, methodID, opcodeID))
 					return true;
 				++textID;
 			}
@@ -237,11 +237,11 @@ bool FieldArchive::searchScriptText(const QRegExp &text, int &fieldID, int &grou
 bool FieldArchive::searchScriptReverse(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
 	QMap<QString, int>::const_iterator i, begin;
-	if(!searchIteratorsP(i, begin, fieldID, sorting))	return false;
+	if (!searchIteratorsP(i, begin, fieldID, sorting))	return false;
 
-	for( ; i != begin-1 ; --i) {
+	for ( ; i != begin-1 ; --i) {
 		Field *field = getField(fieldID = i.value());
-		if(field && field->hasJsmFile() && field->getJsmFile()->searchReverse(type, value, groupID, methodID, opcodeID))
+		if (field && field->hasJsmFile() && field->getJsmFile()->searchReverse(type, value, groupID, methodID, opcodeID))
 			return true;
 		groupID = methodID = opcodeID = -1;
 	}
@@ -252,15 +252,15 @@ bool FieldArchive::searchScriptReverse(JsmFile::SearchType type, quint64 value, 
 bool FieldArchive::searchScriptTextReverse(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
 	QMap<QString, int>::const_iterator i, begin;
-	if(!searchIteratorsP(i, begin, fieldID, sorting))	return false;
+	if (!searchIteratorsP(i, begin, fieldID, sorting))	return false;
 
-	for( ; i != begin-1 ; --i) {
+	for ( ; i != begin-1 ; --i) {
 		Field *field = getField(fieldID = i.value());
-		if(field && field->hasMsdFile() && field->hasJsmFile()) {
+		if (field && field->hasMsdFile() && field->hasJsmFile()) {
 			MsdFile *msd = field->getMsdFile();
 			int textID = -1;
-			while((textID = msd->indexOfText(text, textID + 1)) != -1) {
-				if(field->getJsmFile()->searchReverse(JsmFile::SearchText, textID, groupID, methodID, opcodeID))
+			while ((textID = msd->indexOfText(text, textID + 1)) != -1) {
+				if (field->getJsmFile()->searchReverse(JsmFile::SearchText, textID, groupID, methodID, opcodeID))
 					return true;
 				++textID;
 			}
@@ -276,7 +276,7 @@ QMultiMap<int, QString> FieldArchive::searchAllVars() const
 	QMultiMap<int, QString> vars;
 
 	foreach(Field *field, fields) {
-		if(field->hasJsmFile()) {
+		if (field->hasJsmFile()) {
 			QList<int> v = field->getJsmFile()->searchAllVars();
 			foreach(int var, v)
 				vars.insert(var, field->name());
@@ -290,7 +290,7 @@ QList<int> FieldArchive::searchAllSpells(int fieldID) const
 {
 	Field *field = getField(fieldID);
 
-	if(field && field->hasJsmFile()) {
+	if (field && field->hasJsmFile()) {
 		return field->getJsmFile()->searchAllSpells(field->name());
 	}
 
@@ -301,7 +301,7 @@ QList<int> FieldArchive::searchAllCards(int fieldID) const
 {
 	Field *field = getField(fieldID);
 
-	if(field && field->hasJsmFile()) {
+	if (field && field->hasJsmFile()) {
 		return field->getJsmFile()->searchAllCards(field->name());
 	}
 
@@ -312,7 +312,7 @@ QList<int> FieldArchive::searchAllCardPlayers(int fieldID) const
 {
 	Field *field = getField(fieldID);
 
-	if(field && field->hasJsmFile()) {
+	if (field && field->hasJsmFile()) {
 		return field->getJsmFile()->searchAllCardPlayers(field->name());
 	}
 
@@ -324,7 +324,7 @@ QMap<Field *, QList<int> > FieldArchive::searchAllBattles() const
 	QMap<Field *, QList<int> > battles;
 
 	foreach(Field *field, fields) {
-		if(field->hasMrtFile()) {
+		if (field->hasMrtFile()) {
 			battles.insert(field, field->getMrtFile()->searchAllBattles());
 		}
 	}
@@ -339,7 +339,7 @@ QMultiMap<int, Field *> FieldArchive::searchAllMoments() const
 	QStringList mapList = Data::maplist();
 
 	foreach(Field *field, fields) {
-		if(field->hasJsmFile() && (mapList.indexOf(field->name()) > 88 || mapList.indexOf(field->name()) == 73)) {
+		if (field->hasJsmFile() && (mapList.indexOf(field->name()) > 88 || mapList.indexOf(field->name()) == 73)) {
 			foreach(int moment, field->getJsmFile()->searchAllMoments()) {
 				moments.insert(moment, field);
 			}
@@ -354,7 +354,7 @@ QMap<int, int> FieldArchive::searchAllOpcodeTypes() const
 	QMap<int, int> ret;
 
 	foreach(Field *field, fields) {
-		if(field->hasJsmFile()) {
+		if (field->hasJsmFile()) {
 			field->getJsmFile()->searchAllOpcodeTypes(ret);
 		}
 	}
@@ -367,7 +367,7 @@ QList<Vertex_s> FieldArchive::searchAllSavePoints() const
 	QList<Vertex_s> ret;
 
 	foreach(Field *field, fields) {
-		if(field->hasJsmFile()) {
+		if (field->hasJsmFile()) {
 			//field->getJsmFile()->searchAllSavePoints(ret);
 		}
 	}

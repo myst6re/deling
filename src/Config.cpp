@@ -32,7 +32,7 @@ QString Config::programResourceDir()
 }
 
 void Config::set() {
-	if(!settings) {
+	if (!settings) {
 #ifdef Q_OS_WIN
 		settings = new QSettings(qApp->applicationDirPath()+"/"+PROG_NAME+".ini", QSettings::IniFormat);
 #else
@@ -42,7 +42,7 @@ void Config::set() {
 }
 
 void Config::remove() {
-	if(settings)
+	if (settings)
 		delete settings;
 }
 

@@ -21,7 +21,7 @@ void FieldThread::run()
 {
 	qDebug() << "thread started";
 
-	if(fieldArchive && field && fieldArchive->openBG(field)
+	if (fieldArchive && field && fieldArchive->openBG(field)
             && field->hasBackgroundFile()) {
 		qDebug() << "field opened";
 		QImage bg = field->getBackgroundFile()->background();

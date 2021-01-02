@@ -42,7 +42,7 @@ Search::Search(QTreeWidget *fieldList, QWidget *parent)
 	new QShortcut(QKeySequence::FindPrevious, this, SLOT(findPrev()), 0, Qt::ApplicationShortcut);
 
 	// buttonNext.width == buttonPrev.width
-	if(buttonPrev->sizeHint().width() > buttonNext->sizeHint().width())
+	if (buttonPrev->sizeHint().width() > buttonNext->sizeHint().width())
 		buttonNext->setFixedSize(buttonPrev->sizeHint());
 	else
 		buttonPrev->setFixedSize(buttonNext->sizeHint());
@@ -69,7 +69,7 @@ Qt::CaseSensitivity Search::sensitivity() const
 	QCheckBox *checkBox = currentIndex() == Text
 						  ? this->checkBox
 						  : this->scriptCheckBox;
-	if(checkBox->isChecked())
+	if (checkBox->isChecked())
 		return Qt::CaseSensitive;
 	else
 		return Qt::CaseInsensitive;
@@ -85,7 +85,7 @@ QString Search::text() const
 
 FieldArchive::Sorting Search::sorting() const
 {
-	switch(fieldList->sortColumn()) {
+	switch (fieldList->sortColumn()) {
 	case 1:
 		return FieldArchive::SortByDesc;
 	case 2:
@@ -101,7 +101,7 @@ QRegExp Search::regexp() const
 						  ? this->checkBox2
 						  : this->scriptCheckBox2;
 
-	if(checkBox->isChecked()) {
+	if (checkBox->isChecked()) {
 		return QRegExp(text(), sensitivity());
 	}
 	return QRegExp(QRegExp::escape(text()), sensitivity());
@@ -178,7 +178,7 @@ QWidget *Search::scriptPageWidget2()
 	QWidget *ret = new QWidget(this);
 
 	searchOpcode = new QComboBox(ret);
-	for(int i=0 ; i<JSM_OPCODE_COUNT ; ++i) {
+	for (int i=0 ; i<JSM_OPCODE_COUNT ; ++i) {
 		searchOpcode->addItem(QString("%1 - %2").arg(i, 3, 16, QChar('0')).arg(JsmOpcode::opcodes[i]));
 	}
 
@@ -201,7 +201,7 @@ QWidget *Search::scriptPageWidget3()
 	QWidget *ret = new QWidget(this);
 
 	selectScriptVar = new QComboBox(ret);
-	for(int i=0 ; i<1536 ; ++i)
+	for (int i=0 ; i<1536 ; ++i)
 		selectScriptVar->addItem(QString("%1 - %2").arg(i, 4, 10, QChar('0')).arg(Config::value(QString("var%1").arg(i)).toString()));
 	QGroupBox *group = new QGroupBox(ret);
 	QRadioButton *allScriptVar = new QRadioButton(tr("Tout"), ret);
@@ -263,14 +263,14 @@ Search::Tabs Search::currentIndex() const
 
 void Search::setCurrentIndex(int index)
 {
-	if(index < 2) {
+	if (index < 2) {
 		tabWidget->setCurrentIndex(index);
 	}
 }
 
 void Search::focusInEvent(QFocusEvent *)
 {
-	if(currentIndex() == Text) {
+	if (currentIndex() == Text) {
 		searchTextField->setFocus();
 		searchTextField->selectAll();
 	} else if (currentIndex() == Script) {
@@ -288,7 +288,7 @@ void Search::setFieldArchive(FieldArchive *fieldArchive)
 
 void Search::setFieldId(int fieldID)
 {
-//	if(fieldID != this->fieldID)
+//	if (fieldID != this->fieldID)
 //	{
 		this->fieldID = fieldID;
 //		qDebug() << "FieldID=" << fieldID << "(Search::setFieldId)";
@@ -300,7 +300,7 @@ void Search::setFieldId(int fieldID)
 
 void Search::setTextId(int textID)
 {
-//	if(textID != this->textID)
+//	if (textID != this->textID)
 //	{
 		this->textID = textID;
 //		qDebug() << "textID=" << textID << "(Search::setTextId)";
@@ -315,7 +315,7 @@ void Search::setFrom(int from)
 
 void Search::setSearchText(const QString &text)
 {
-	if(text.isEmpty())	return;
+	if (text.isEmpty())	return;
 	searchTextField->setText(text);
 	searchTextField->selectAll();
 	searchScriptTextField->setText(text);
@@ -330,21 +330,21 @@ void Search::setSearchOpcode(int opcode)
 void Search::findNext()
 {
 	bool found = false;
-	if(fieldArchive==NULL)	return;
+	if (fieldArchive==NULL)	return;
 
 	buttonNext->setEnabled(false);
 	buttonNext->setDefault(true);
 
-	if(currentIndex() == Text)
+	if (currentIndex() == Text)
 	{
 		found = findNextText();
 	}
-	else if(currentIndex() == Script)
+	else if (currentIndex() == Script)
 	{
 		found = findNextScript();
 	}
 
-	if(!found)
+	if (!found)
 	{
 		QMessageBox::information(this, windowTitle(), tr("Dernier fichier,\npoursuite de la recherche dans le premier fichier."));
 	}
@@ -355,21 +355,21 @@ void Search::findNext()
 void Search::findPrev()
 {
 	bool found = false;
-	if(fieldArchive==NULL)	return;
+	if (fieldArchive==NULL)	return;
 
 	buttonPrev->setEnabled(false);
 	buttonPrev->setDefault(true);
 
-	if(currentIndex() == Text)
+	if (currentIndex() == Text)
 	{
 		found = findPrevText();
 	}
-	else if(currentIndex() == Script)
+	else if (currentIndex() == Script)
 	{
 		found = findPrevScript();
 	}
 
-	if(!found)
+	if (!found)
 	{
 		QMessageBox::information(this, windowTitle(), tr("Premier fichier,\npoursuite de la recherche dans le dernier fichier."));
 	}
@@ -384,7 +384,7 @@ bool Search::findNextText()
 
 	++from;
 
-	if(fieldArchive->searchText(regexp(), fieldID, textID, from, size, sort))
+	if (fieldArchive->searchText(regexp(), fieldID, textID, from, size, sort))
 	{
 //		qDebug() << "from=" << from << "(MsdFile::findNextText::from=index)";
 		emit foundText(fieldID, textID, from, size);
@@ -408,7 +408,7 @@ bool Search::findPrevText()
 
 	--from;
 
-	if(fieldArchive->searchTextReverse(regexp(), fieldID, textID, from, index, size, sort))
+	if (fieldArchive->searchTextReverse(regexp(), fieldID, textID, from, index, size, sort))
 	{
 //		qDebug() << "from=" << from << "(Search::findPrevText::from=index)";
 		emit foundText(fieldID, textID, index, size);
@@ -430,37 +430,37 @@ bool Search::findNextScript()
 	bool found = false;
 	FieldArchive::Sorting sort = sorting();
 
-	if(typeScriptChoice->currentIndex() == 0) {
+	if (typeScriptChoice->currentIndex() == 0) {
 		found = fieldArchive->searchScriptText(regexp(), fieldID, groupID, methodID, opcodeID, sort);
 	}
-	else if(typeScriptChoice->currentIndex() == 1) {
+	else if (typeScriptChoice->currentIndex() == 1) {
 		found = fieldArchive->searchScript(JsmFile::SearchOpcode, searchOpcode->currentIndex() | (searchOpcodeValue->value() << 16), fieldID, groupID, methodID, opcodeID, sort);
 	}
-	else if(typeScriptChoice->currentIndex() == 2) {
+	else if (typeScriptChoice->currentIndex() == 2) {
 		found = fieldArchive->searchScript(JsmFile::SearchVar, (popScriptVar->isChecked() << 31) | (pushScriptVar->isChecked() << 30) | (selectScriptVar->currentIndex() & 0x3FFFFFFF), fieldID, groupID, methodID, opcodeID, sort);
 	}
-	else if(typeScriptChoice->currentIndex() == 3) {
+	else if (typeScriptChoice->currentIndex() == 3) {
 		Field *field = fieldArchive->getField(fieldID);
-		if(field != NULL && field->hasJsmFile()) {
+		if (field != NULL && field->hasJsmFile()) {
 			found = field->getJsmFile()->search(JsmFile::SearchExec, (selectScriptGroup->value() & 0xFFFF) | ((selectScriptLabel->value() & 0xFFFF) << 16), groupID, methodID, opcodeID);
 		}
-		if(!found) {
+		if (!found) {
 			groupID = methodID = opcodeID = 0;
 			return false;
 		}
 	}
-	else if(typeScriptChoice->currentIndex() == 4) {
+	else if (typeScriptChoice->currentIndex() == 4) {
 		Field *field = fieldArchive->getField(fieldID);
-		if(field != NULL && field->hasJsmFile()) {
+		if (field != NULL && field->hasJsmFile()) {
 			found = field->getJsmFile()->search(JsmFile::SearchMapJump, (selectScriptGroup->value() & 0xFFFF) | ((selectScriptLabel->value() & 0xFFFF) << 16), groupID, methodID, opcodeID);
 		}
-		if(!found) {
+		if (!found) {
 			groupID = methodID = opcodeID = 0;
 			return false;
 		}
 	}
 
-	if(found)
+	if (found)
 	{
 		sav = opcodeID;
 		emit foundOpcode(fieldID, groupID, methodID, opcodeID);
@@ -481,23 +481,23 @@ bool Search::findPrevScript()
 	bool found = false;
 	FieldArchive::Sorting sort = sorting();
 
-	if(typeScriptChoice->currentIndex() == 0) {
+	if (typeScriptChoice->currentIndex() == 0) {
 		found = fieldArchive->searchScriptTextReverse(regexp(), fieldID, groupID, methodID, opcodeID, sort);
 	}
-	else if(typeScriptChoice->currentIndex() == 1) {
+	else if (typeScriptChoice->currentIndex() == 1) {
 		found = fieldArchive->searchScriptReverse(JsmFile::SearchOpcode, searchOpcode->currentIndex(), fieldID, groupID, methodID, opcodeID, sort);
 	}
-	else if(typeScriptChoice->currentIndex() == 2) {
+	else if (typeScriptChoice->currentIndex() == 2) {
 		found = fieldArchive->searchScriptReverse(JsmFile::SearchVar, (popScriptVar->isChecked() << 31) | (pushScriptVar->isChecked() << 30) | (selectScriptVar->currentIndex() & 0x3FFFFFFF), fieldID, groupID, methodID, opcodeID, sort);
 	}
-	else if(typeScriptChoice->currentIndex() == 3) {
+	else if (typeScriptChoice->currentIndex() == 3) {
 		found = fieldArchive->searchScriptReverse(JsmFile::SearchExec, selectScriptGroup->value() | (selectScriptLabel->value() << 16), fieldID, groupID, methodID, opcodeID, sort);
 	}
-	else if(typeScriptChoice->currentIndex() == 4) {
+	else if (typeScriptChoice->currentIndex() == 4) {
 		found = fieldArchive->searchScriptReverse(JsmFile::SearchMapJump, selectScriptGroup->value() | (selectScriptLabel->value() << 16), fieldID, groupID, methodID, opcodeID, sort);
 	}
 
-	if(found)
+	if (found)
 	{
 		sav = opcodeID;
 		emit foundOpcode(fieldID, groupID, methodID, opcodeID);

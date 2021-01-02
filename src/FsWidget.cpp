@@ -27,7 +27,7 @@ FsWidget::FsWidget(QWidget *parent) :
 	fileIcon = QFileIconProvider().icon(QFileIconProvider::File);
 	dirIcon = QFileIconProvider().icon(QFileIconProvider::Folder);
 	tmp.setFileName(QDir::tempPath() % "/deling");
-	if(!tmp.isOpen()) {
+	if (!tmp.isOpen()) {
 		tmp.open(QIODevice::WriteOnly);
 	}
 	setAcceptDrops(true);
@@ -51,20 +51,20 @@ QIcon FsWidget::getFileIcon(const QString &fileName)
 	int index = fileName.lastIndexOf('.');
 	QString type;
 
-	if(index == -1)
+	if (index == -1)
 		return fileIcon;
 	else
 		type = fileName.mid(index + 1);
 
-	if(cacheIcon.contains(type))
+	if (cacheIcon.contains(type))
 	{
 		return cacheIcon.value(type);
 	}
 	else
 	{
 		tmp.rename(QDir::tempPath() % "/" % fileName);
-		if(!tmp.isOpen()) {
-			if(!tmp.open(QIODevice::ReadOnly))		return fileIcon;
+		if (!tmp.isOpen()) {
+			if (!tmp.open(QIODevice::ReadOnly))		return fileIcon;
 		}
 
 		QIcon icon = QFileIconProvider().icon(QFileInfo(tmp));
@@ -85,13 +85,13 @@ QIcon FsWidget::getDirIcon()
 
 void FsWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-	if(event->mimeData()->hasUrls())
+	if (event->mimeData()->hasUrls())
 		event->acceptProposedAction();
 }
 
 void FsWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-	if(event->mimeData()->hasUrls())
+	if (event->mimeData()->hasUrls())
 		event->acceptProposedAction();
 }
 
@@ -99,7 +99,7 @@ void FsWidget::dropEvent(QDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 
-	if(mimeData->hasUrls())
+	if (mimeData->hasUrls())
 	{
 		QList<QUrl> urlList = mimeData->urls();
 		QStringList pathList;
@@ -108,7 +108,7 @@ void FsWidget::dropEvent(QDropEvent *event)
 		foreach(const QUrl &url, urlList)
 		{
 			path = QDir::cleanPath(url.path().mid(1));
-			if(path.startsWith(QDir::rootPath())) {
+			if (path.startsWith(QDir::rootPath())) {
 				pathList.append(path);
 			}
 		}
@@ -122,7 +122,7 @@ void FsWidget::dropEvent(QDropEvent *event)
 {
 	if (event->button() == Qt::LeftButton) {
 		QTreeWidgetItem *item = itemAt(event->pos());
-		if(item == NULL)	return;
+		if (item == NULL)	return;
 
 		QFile tempFile(item->text(0));
 		tempFile.open(QIODevice::WriteOnly);

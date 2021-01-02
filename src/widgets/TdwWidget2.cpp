@@ -101,9 +101,9 @@ void TdwWidget2::setTdwFile(TdwFile *tdw)
 	tdwPalette->setTdwFile(tdw);
 	setLetter(0);
 
-	if(selectTable->count() != tdw->tableCount()) {
+	if (selectTable->count() != tdw->tableCount()) {
 		selectTable->clear();
-		for(int i=1 ; i<=tdw->tableCount() ; ++i) {
+		for (int i=1 ; i<=tdw->tableCount() ; ++i) {
 			selectTable->addItem(tr("Table %1").arg(i));
 		}
 		selectTable->setEnabled(selectTable->count() > 1);
@@ -148,19 +148,19 @@ void TdwWidget2::setLetter(int i)
 
 	QByteArray ba;
 
-	if(isAdditionnalTable) {
+	if (isAdditionnalTable) {
 		ba.append('\x1c');
-	} else if(tdwGrid->currentTable() >= 1 && tdwGrid->currentTable() <= 3) {
+	} else if (tdwGrid->currentTable() >= 1 && tdwGrid->currentTable() <= 3) {
 		ba.append(char(0x18 + tdwGrid->currentTable()));
 	}
 
-	if(tdwGrid->currentTable() <= 3) {
-		if(ff8Font) {
+	if (tdwGrid->currentTable() <= 3) {
+		if (ff8Font) {
 			textLetter->setText(FF8Text(ba.append((char)(0x20 + i)), ff8Font->tables()));
 		} else {
 			textLetter->setText(FF8Text(ba.append((char)(0x20 + i))));
 		}
-		if(tdwLetter->tdwFile()) {
+		if (tdwLetter->tdwFile()) {
 			widthLetter->setValue(tdwLetter->tdwFile()->charWidth(tdwGrid->currentTable(), i));
 		}
 	}
@@ -169,14 +169,14 @@ void TdwWidget2::setLetter(int i)
 
 void TdwWidget2::editLetter(const QString &letter)
 {
-	if(ff8Font) {
+	if (ff8Font) {
 		ff8Font->setChar(tdwGrid->currentTable(), tdwGrid->currentLetter(), letter);
 	}
 }
 
 void TdwWidget2::editWidth(int w)
 {
-	if(tdwLetter->tdwFile() && tdwLetter->tdwFile()->charWidth(tdwGrid->currentTable(), tdwGrid->currentLetter()) != w) {
+	if (tdwLetter->tdwFile() && tdwLetter->tdwFile()->charWidth(tdwGrid->currentTable(), tdwGrid->currentLetter()) != w) {
 		tdwLetter->tdwFile()->setCharWidth(tdwGrid->currentTable(), tdwGrid->currentLetter(), w);
 		tdwLetter->update();
 	}
@@ -188,8 +188,8 @@ void TdwWidget2::exportFont()
 
 	QString texF, tdwF, txtF, pngF, jpgF, bmpF;
 	QStringList filter;
-	if(tdwFile) {
-		if(!tdwFile->isOptimizedVersion())
+	if (tdwFile) {
+		if (!tdwFile->isOptimizedVersion())
 			filter.append(texF = tr("Fichier texture FF8 (*.tex)"));
 		filter.append(tdwF = tr("Fichier police FF8 (*.tdw)"));
 		filter.append(pngF = tr("Fichier image PNG (*.png)"));
@@ -197,20 +197,20 @@ void TdwWidget2::exportFont()
 		filter.append(bmpF = tr("Fichier image BMP (*.bmp)"));
 	}
 
-	if(ff8Font)
+	if (ff8Font)
 		filter.append(txtF = tr("Fichier traduction Deling (*.txt)"));
 	QString selectedFilter;
 
 	QString path = QFileDialog::getSaveFileName(this, tr("Exporter police de caractère"), "sysfnt", filter.join(";;"), &selectedFilter);
-	if(path.isNull())		return;
+	if (path.isNull())		return;
 
-	if(selectedFilter == texF) {
+	if (selectedFilter == texF) {
 		QByteArray data;
 		TexFile tex = tdwFile->toTexFile();
-		if(tex.isValid()) {
-			if(tex.save(data)) {
+		if (tex.isValid()) {
+			if (tex.save(data)) {
 				QFile f(path);
-				if(f.open(QIODevice::WriteOnly)) {
+				if (f.open(QIODevice::WriteOnly)) {
 					f.write(data);
 					f.close();
 				} else {
@@ -222,11 +222,11 @@ void TdwWidget2::exportFont()
 		} else {
 			QMessageBox::information(this, tr("Information"), tr("Format de police de caractère inexportable."));
 		}
-	} else if(selectedFilter == tdwF) {
+	} else if (selectedFilter == tdwF) {
 		QByteArray data;
-		if(tdwFile->save(data)) {
+		if (tdwFile->save(data)) {
 			QFile f(path);
-			if(f.open(QIODevice::WriteOnly)) {
+			if (f.open(QIODevice::WriteOnly)) {
 				f.write(data);
 				f.close();
 			} else {
@@ -235,22 +235,22 @@ void TdwWidget2::exportFont()
 		} else {
 			QMessageBox::warning(this, tr("Erreur"), tr("Erreur lors de l'enregistrement."));
 		}
-	} else if(selectedFilter == txtF) {
+	} else if (selectedFilter == txtF) {
 		QString data = ff8Font->saveTxt();
 		QFile f(path);
-		if(f.open(QIODevice::WriteOnly)) {
+		if (f.open(QIODevice::WriteOnly)) {
 			f.write(data.toUtf8());
 			f.close();
 		} else {
 			QMessageBox::warning(this, tr("Erreur"), tr("Erreur d'ouverture du fichier. (%1)").arg(f.errorString()));
 		}
-	} else if(selectedFilter == pngF ||
+	} else if (selectedFilter == pngF ||
 			  selectedFilter == jpgF ||
 			  selectedFilter == bmpF) {
 		char *format;
-		if(selectedFilter == pngF) {
+		if (selectedFilter == pngF) {
 			format = (char *)"PNG";
-		} else if(selectedFilter == jpgF) {
+		} else if (selectedFilter == jpgF) {
 			format = (char *)"JPG";
 		} else {
 			format = (char *)"BMP";
@@ -265,19 +265,19 @@ void TdwWidget2::importFont()
 
 	QString tdwF;
 	QStringList filter;
-	if(tdwFile) {
+	if (tdwFile) {
 		filter.append(tdwF = tr("Fichier police FF8 (*.tdw)"));
 	}
 	QString selectedFilter;
 
 	QString path = QFileDialog::getOpenFileName(this, tr("Importer police de caractère"), "sysfnt", filter.join(";;"), &selectedFilter);
-	if(path.isNull())		return;
+	if (path.isNull())		return;
 
-	if(selectedFilter == tdwF) {
+	if (selectedFilter == tdwF) {
 		QFile f(path);
-		if(f.open(QIODevice::ReadOnly)) {
+		if (f.open(QIODevice::ReadOnly)) {
 			TdwFile newTdw;
-			if(newTdw.open(f.readAll())) {
+			if (newTdw.open(f.readAll())) {
 				newTdw.setModified(true);
 				*tdwFile = newTdw;
 				setTdwFile(tdwFile);// update

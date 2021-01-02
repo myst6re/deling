@@ -5,7 +5,7 @@
 
 QString JsmInstruction::toString(const Field *field, int indent) const
 {
-	switch(type()) {
+	switch (type()) {
 	case Opcode:
 		return QString("%1%2")
 		        .arg(opcode() && opcode()->isLabel()
@@ -27,7 +27,7 @@ QString JsmInstruction::toString(const Field *field, int indent) const
 
 int JsmInstruction::opcodeCount() const
 {
-	switch(type()) {
+	switch (type()) {
 	case Opcode:
 		return 1;
 	case Expression:
@@ -42,12 +42,12 @@ int JsmInstruction::opcodeCount() const
 
 QString JsmInstruction::opcodeToString(const JsmOpcode *opcode)
 {
-	if(!opcode) {
+	if (!opcode) {
 		return "nil";
 	}
-	if(opcode->isLabel()) {
+	if (opcode->isLabel()) {
 		return QString("label %1").arg(opcode->param());
-	} else if(opcode->isGoto()) {
+	} else if (opcode->isGoto()) {
 		return QString("goto %1").arg(((JsmOpcodeGoto *)opcode)->label());
 	}
 	return QString("%1(%2)").arg(opcode->name().toLower(),
@@ -60,7 +60,7 @@ QStringList JsmProgram::toStringList(const Field *field, int indent) const
 
 	foreach(const JsmInstruction &instr, *this) {
 		QString instrStr = instr.toString(field, indent);
-		if(!instrStr.isEmpty()) {
+		if (!instrStr.isEmpty()) {
 			ret.append(instrStr);
 		}
 	}
@@ -81,7 +81,7 @@ int JsmProgram::opcodeCount() const
 
 int JsmExpression::eval(bool *ok) const
 {
-	if(ok) {
+	if (ok) {
 		*ok = false;
 	}
 	return 0;
@@ -101,17 +101,17 @@ JsmExpression *JsmExpression::factory(const JsmOpcode *op,
 {
 	JsmExpression *ret = 0;
 
-	switch(op->key()) {
+	switch (op->key()) {
 	case JsmOpcode::CAL:
-		if(op->param() == JsmExpressionUnary::Min
+		if (op->param() == JsmExpressionUnary::Min
 		        || op->param() == JsmExpressionUnary::Not) {
-			if(!stack.isEmpty()) {
+			if (!stack.isEmpty()) {
 				ret = new JsmExpressionUnary(
 				            JsmExpressionUnary::Operation(op->param()),
 				            stack.pop());
 			}
-		} else if(op->param() <= JsmExpressionBinary::Eor) {
-			if(stack.size() >= 2) {
+		} else if (op->param() <= JsmExpressionBinary::Eor) {
+			if (stack.size() >= 2) {
 				ret = new JsmExpressionBinary(
 				            JsmExpressionBinary::Operation(op->param()),
 				            stack.pop(),
@@ -150,7 +150,7 @@ JsmExpression *JsmExpression::factory(const JsmOpcode *op,
 		break;
 	}
 
-	if(ret) {
+	if (ret) {
 		stack.push(ret);
 	}
 
@@ -160,7 +160,7 @@ JsmExpression *JsmExpression::factory(const JsmOpcode *op,
 QString JsmExpressionVal::toString(const Field *field, int base) const
 {
 	Q_UNUSED(field)
-	switch(base) {
+	switch (base) {
 	case 2:
 		return QString("b%1").arg(quint32(_val), 0, base);
 	case 16:
@@ -173,7 +173,7 @@ QString JsmExpressionVal::toString(const Field *field, int base) const
 
 int JsmExpressionVal::eval(bool *ok) const
 {
-	if(ok) {
+	if (ok) {
 		*ok = true;
 	}
 	return _val;
@@ -182,7 +182,7 @@ int JsmExpressionVal::eval(bool *ok) const
 QString JsmExpressionVar::varName() const
 {
 	QString name = Config::value(QString("var%1").arg(_var)).toString();
-	if(!name.isEmpty() && _var < 1024) {
+	if (!name.isEmpty() && _var < 1024) {
 		return QString("%1_%2").arg(_var).arg(name
 		                                      .replace(QRegExp("\\W"), "_")
 		                                      .replace(QRegExp("_+"), "_"));
@@ -248,7 +248,7 @@ QString JsmExpressionTemp::toString(const Field *field, int base) const
 
 QString JsmExpressionUnary::toString(const Field *field, int base) const
 {
-	if(_op == Not) {
+	if (_op == Not) {
 		base = 16;
 	}
 	return QString("%1%2").arg(operationToString(),
@@ -264,8 +264,8 @@ int JsmExpressionUnary::eval(bool *ok) const
 {
 	bool ok2;
 	int v = _first->eval(&ok2);
-	if(ok2) {
-		if(ok) {
+	if (ok2) {
+		if (ok) {
 			*ok = true;
 		}
 		switch (_op) {
@@ -295,7 +295,7 @@ QString JsmExpressionUnary::operationToString(Operation op)
 
 QString JsmExpressionBinary::toString(const Field *field, int base) const
 {
-	if(_op == And
+	if (_op == And
 	        || _op == Or
 	        || _op == Eor) {
 		base = 16;
@@ -309,9 +309,9 @@ QString JsmExpressionBinary::toString(const Field *field, int base) const
 int JsmExpressionBinary::eval(bool *ok) const
 {
 	int v1 = _first->eval(ok);
-	if(ok && *ok) {
+	if (ok && *ok) {
 		int v2 = _second->eval(ok);
-		if(ok && *ok) {
+		if (ok && *ok) {
 			switch (_op) {
 			case Add:
 				return v1 + v2;
@@ -353,7 +353,7 @@ int JsmExpressionBinary::eval(bool *ok) const
 
 JsmExpressionBinary::Operation JsmExpressionBinary::logicalNot(bool *ok) const
 {
-	if(ok) {
+	if (ok) {
 		*ok = true;
 	}
 	switch (_op) {
@@ -376,7 +376,7 @@ JsmExpressionBinary::Operation JsmExpressionBinary::logicalNot(bool *ok) const
 	default:
 		break;
 	}
-	if(ok) {
+	if (ok) {
 		*ok = false;
 	}
 	return _op;
@@ -447,7 +447,7 @@ QString JsmControl::indentString(const char *str, int indent)
 QString JsmControlIfElse::toString(const Field *field, int indent,
                                    bool elseIf) const
 {
-	if(_block.isEmpty() && _blockElse.isEmpty()) {
+	if (_block.isEmpty() && _blockElse.isEmpty()) {
 		return QString();
 	}
 	// TODO: if block is empty, then blockElse will be executed unless condition
@@ -458,8 +458,8 @@ QString JsmControlIfElse::toString(const Field *field, int indent,
 
 	lines.append(_block.toStringList(field, indent + 1));
 
-	if(!_blockElse.isEmpty()) {
-		if(_blockElse.size() == 1) {
+	if (!_blockElse.isEmpty()) {
+		if (_blockElse.size() == 1) {
 			const JsmInstruction &instr = _blockElse.first();
 			if (instr.type() == JsmInstruction::Control
 			        && instr.control()->type() == JsmControl::IfElse) {
@@ -476,7 +476,7 @@ QString JsmControlIfElse::toString(const Field *field, int indent,
 	}
 
 JsmControlIfElse_toString_end:
-	if(!elseIf) {
+	if (!elseIf) {
 		lines.append(indentString("end", indent));
 	}
 
@@ -488,12 +488,12 @@ QString JsmControlWhile::toString(const Field *field, int indent) const
 	QString prefix, firstLine;
 	bool ok, noBlock = _block.isEmpty();
 
-	if(noBlock) {
+	if (noBlock) {
 		prefix = "wait ";
 	}
 
 	int value = condition()->eval(&ok);
-	if(ok && value == 1) {
+	if (ok && value == 1) {
 		// Forever
 		firstLine = "forever";
 	} else {
@@ -501,13 +501,13 @@ QString JsmControlWhile::toString(const Field *field, int indent) const
 		QString condStr = JsmExpression::stripParenthesis(
 		                      _condition->toString(field));
 		firstLine = QString("while %1").arg(condStr);
-		if(!noBlock) {
+		if (!noBlock) {
 			firstLine.append(" begin");
 		}
 	}
 	QStringList lines(indentString(prefix.append(firstLine), indent));
 
-	if(!noBlock) {
+	if (!noBlock) {
 		lines.append(_block.toStringList(field, indent + 1));
 		lines.append(indentString("end", indent));
 	}
@@ -534,7 +534,7 @@ QStringList JsmApplication::stackToStringList(const Field *field) const
 	bool isText = false, isMap = false, isChara = false, isParty = false,
 	        isMagic = false, isItem = false, isItem2 = false, isKeys = false;
 
-	switch(_opcode->key()) {
+	switch (_opcode->key()) {
 	case JsmOpcode::AMESW:
 	case JsmOpcode::AMES:
 	case JsmOpcode::RAMESW:
@@ -582,59 +582,59 @@ QStringList JsmApplication::stackToStringList(const Field *field) const
 
 	int i = 0;
 	QStack<JsmExpression *> stackCpy = _stack;
-	while(!stackCpy.isEmpty()) {
+	while (!stackCpy.isEmpty()) {
 		QString text;
 		JsmExpression *expr = stackCpy.pop();
 
-		if(isText || isMap || isChara || isParty || isItem || isItem2 || isKeys) {
-			if(isText && i == 1) {
+		if (isText || isMap || isChara || isParty || isItem || isItem2 || isKeys) {
+			if (isText && i == 1) {
 				bool ok = false;
 				int id = expr->eval(&ok);
 
 				if (ok) {
 					text = QString("text_%1").arg(id);
 				}
-			} else if(isMap && i == 0) {
+			} else if (isMap && i == 0) {
 				bool ok = false;
 				int id = expr->eval(&ok);
 
 				if (ok) {
 					text = QString("map_%1").arg(id);
 				}
-			} else if((isChara && i == 0) || isParty) {
+			} else if ((isChara && i == 0) || isParty) {
 				bool ok = false;
 				int id = expr->eval(&ok);
 
 				if (ok) {
 					text = Data::name(id);
 				}
-			} else if(isMagic && i == 1) {
+			} else if (isMagic && i == 1) {
 				bool ok = false;
 				int id = expr->eval(&ok);
 
 				if (ok) {
 					text = QString("magic_%1").arg(id);
 				}
-			} else if(isItem && i == 0) {
+			} else if (isItem && i == 0) {
 				bool ok = false;
 				int id = expr->eval(&ok);
 
 				if (ok) {
 					text = QString("item_%1").arg(id);
 				}
-			} else if(isItem2 && i == 1) {
+			} else if (isItem2 && i == 1) {
 				bool ok = false;
 				int id = expr->eval(&ok);
 
 				if (ok) {
 					text = QString("item_%1").arg(id);
 				}
-			} else if(isKeys && i == 0) {
+			} else if (isKeys && i == 0) {
 				bool ok = false;
 				int id = expr->eval(&ok);
 
 				if (ok) {
-					switch(id) {
+					switch (id) {
 					case 0x1:
 						text = "KeyL1";
 						break;
@@ -698,7 +698,7 @@ QString JsmApplication::paramsToString(const Field *field) const
 {
 	QStringList params;
 
-	if(_opcode && _opcode->hasParam()) {
+	if (_opcode && _opcode->hasParam()) {
 		params.append(_opcode->paramStr());
 	}
 
@@ -726,10 +726,10 @@ int JsmApplication::opcodeCount() const
 
 JsmExpression *JsmApplicationAssignment::opcodeExpression() const
 {
-	if(!_opcode) {
+	if (!_opcode) {
 		return 0;
 	}
-	switch(_opcode->key()) {
+	switch (_opcode->key()) {
 	case JsmOpcode::POPI_L:
 		return new JsmExpressionTemp(_opcode->param());
 	case JsmOpcode::POPM_B:
@@ -749,19 +749,19 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 	QString ret;
 	JsmExpression *opExpr = opcodeExpression(), // New instance
 	        *expr = _stack.top();
-	if(expr->type() == JsmExpression::Binary) {
+	if (expr->type() == JsmExpression::Binary) {
 		JsmExpressionBinary *binaryExpr
 		        = static_cast<JsmExpressionBinary *>(expr);
 		JsmExpression *leftOp = binaryExpr->leftOperand(),
 		        *rightOp = binaryExpr->rightOperand();
-		if(opExpr->type() == leftOp->type()
+		if (opExpr->type() == leftOp->type()
 		        && (opExpr->type() == JsmExpression::Var
 		        && ((JsmExpressionVar *)opExpr)->var() ==
 		            ((JsmExpressionVar *)leftOp)->var()
 		         || ((JsmExpressionTemp *)opExpr)->temp() ==
 		            ((JsmExpressionTemp *)leftOp)->temp())) {
 			int base = 10;
-			if(binaryExpr->operation() == JsmExpressionBinary::And
+			if (binaryExpr->operation() == JsmExpressionBinary::And
 			        || binaryExpr->operation() == JsmExpressionBinary::Or
 			        || binaryExpr->operation() == JsmExpressionBinary::Eor) {
 				base = 16;
@@ -774,7 +774,7 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 			           JsmExpression::stripParenthesis(
 			               rightOp->toString(field, base)));
 			opExpr = nullptr;
-		} else if((binaryExpr->operation() == JsmExpressionBinary::Add
+		} else if ((binaryExpr->operation() == JsmExpressionBinary::Add
 		          || binaryExpr->operation() == JsmExpressionBinary::Mul)
 		          && opExpr->type() == rightOp->type()
 		          && (opExpr->type() == JsmExpression::Var
@@ -792,12 +792,12 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 			opExpr = nullptr;
 		}
 	}
-	if(ret.isEmpty()) {
+	if (ret.isEmpty()) {
 		ret = QString("%1 = %2").arg(opExpr->toString(field),
 		                             JsmExpression::stripParenthesis(
 		                                 expr->toString(field)));
 	}
-	if(opExpr != nullptr) {
+	if (opExpr != nullptr) {
 		delete opExpr;
 	}
 	return ret;
@@ -805,10 +805,10 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 
 QString JsmApplicationExec::execType() const
 {
-	if(!_opcode) {
+	if (!_opcode) {
 		return QString();
 	}
-	switch(_opcode->key()) {
+	switch (_opcode->key()) {
 	case JsmOpcode::REQ:
 		return QString();
 	case JsmOpcode::REQSW:
@@ -823,7 +823,7 @@ QString JsmApplicationExec::execType() const
 
 QString JsmApplicationExec::toString(const Field *field) const
 {
-	if(!_opcode) {
+	if (!_opcode) {
 		return JsmApplication::toString(field);
 	}
 
@@ -833,33 +833,33 @@ QString JsmApplicationExec::toString(const Field *field) const
 	int groupId = _opcode->param(),
 	    absMethodId = stackCpy.pop()->eval(&ok);
 
-	if(ok && field && groupId >= 0 && absMethodId >= 0 && field->hasJsmFile()) {
+	if (ok && field && groupId >= 0 && absMethodId >= 0 && field->hasJsmFile()) {
 		JsmFile *jsm = field->getJsmFile();
 		const JsmScripts &scripts = jsm->getScripts();
-		if(groupId < scripts.nbGroup()
+		if (groupId < scripts.nbGroup()
 		        && absMethodId < scripts.nbScript()) {
 			int validGroupId = scripts.findGroup(absMethodId);
 
-			if(validGroupId < 0) {
+			if (validGroupId < 0) {
 				validGroupId = groupId;
 			}
 
 			groupName = scripts.group(validGroupId).name();
 			methodName = scripts.script(absMethodId).name();
 
-			if(validGroupId != groupId) {
+			if (validGroupId != groupId) {
 				groupName.append("#").append(QString::number(groupId));
 			}
 		}
 	}
 
-	if(groupName.isEmpty() || methodName.isEmpty()) {
+	if (groupName.isEmpty() || methodName.isEmpty()) {
 		return JsmApplication::toString(field);
 	}
 
 	QStringList params(stackCpy.pop()->toString(field));
 	QString eType = execType();
-	if(!eType.isEmpty()) {
+	if (!eType.isEmpty()) {
 		params.append(eType);
 	}
 

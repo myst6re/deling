@@ -24,7 +24,7 @@ MiscWidget::MiscWidget(QWidget *parent)
 
 void MiscWidget::build()
 {
-	if(isBuilded())	return;
+	if (isBuilded())	return;
 
 	QLabel *nameLbl = new QLabel(tr("Nom :"), this);
 	nameEdit = new QLineEdit(this);
@@ -45,7 +45,7 @@ void MiscWidget::build()
 	pmpView = new QLabel(pmpGroup);
 	pmpPaletteView = new QLabel(pmpGroup);
 	pmpPaletteBox = new QComboBox(pmpGroup);
-	for(int i=0 ; i<16 ; ++i)
+	for (int i=0 ; i<16 ; ++i)
 		pmpPaletteBox->addItem(tr("Palette %1").arg(i));
 	pmpDephBox = new QComboBox(pmpGroup);
 	pmpDephBox->addItem("4", 4);
@@ -86,7 +86,7 @@ void MiscWidget::build()
 
 void MiscWidget::clear()
 {
-	if(!isFilled())	return;
+	if (!isFilled())	return;
 
 	nameEdit->clear();
 	pmpEdit->clear();
@@ -101,7 +101,7 @@ void MiscWidget::clear()
 
 void MiscWidget::setReadOnly(bool readOnly)
 {
-	if(isBuilded()) {
+	if (isBuilded()) {
 		nameEdit->setReadOnly(readOnly);
 		pmpEdit->setReadOnly(readOnly);
 		pmdEdit->setReadOnly(readOnly);
@@ -114,22 +114,22 @@ void MiscWidget::setReadOnly(bool readOnly)
 
 void MiscWidget::fill()
 {
-	if(!isBuilded())	build();
-	if(isFilled())		clear();
+	if (!isBuilded())	build();
+	if (isFilled())		clear();
 
-	if(!hasData())	return;
+	if (!hasData())	return;
 
-	if(data()->hasInfFile()) {
+	if (data()->hasInfFile()) {
 		nameEdit->setText(data()->getInfFile()->getMapName());
 		pvpEdit2->setValue(data()->getInfFile()->pvp());
 	}
 	nameEdit->setEnabled(data()->hasInfFile());
 	pvpEdit2->setEnabled(data()->hasInfFile());
 
-	if(data()->hasPmpFile()) {
+	if (data()->hasPmpFile()) {
 		pmpEdit->setText(data()->getPmpFile()->getPmpData().toHex());
 		QPixmap pal = QPixmap::fromImage(data()->getPmpFile()->palette());
-		if(!pal.isNull()) {
+		if (!pal.isNull()) {
 			pal = pal.scaledToWidth(256);
 		}
 		pmpPaletteView->setPixmap(pal);
@@ -137,12 +137,12 @@ void MiscWidget::fill()
 	pmpEdit->setEnabled(data()->hasPmpFile());
 	updatePmpView();
 
-	if(data()->hasPmdFile()) {
+	if (data()->hasPmdFile()) {
 		pmdEdit->setText(data()->getPmdFile()->getPmdData().toHex());
 	}
 	pmdEdit->setEnabled(data()->hasPmdFile());
 
-	if(data()->hasPvpFile()) {
+	if (data()->hasPvpFile()) {
 		pvpEdit->setValue(data()->getPvpFile()->value());
 	}
 	pvpEdit->setEnabled(data()->hasPvpFile());
@@ -152,7 +152,7 @@ void MiscWidget::fill()
 
 void MiscWidget::editName(const QString &name)
 {
-	if(data()->hasInfFile()) {
+	if (data()->hasInfFile()) {
 		data()->getInfFile()->setMapName(name);
 		emit modified();
 	}
@@ -160,7 +160,7 @@ void MiscWidget::editName(const QString &name)
 
 void MiscWidget::editPmp(const QString &pmp)
 {
-	if(data()->hasPmpFile()) {
+	if (data()->hasPmpFile()) {
 		data()->getPmpFile()->setPmpData(
 					QByteArray::fromHex(pmp.toLatin1())
 					.leftJustified(data()->getPmpFile()->getPmpData().size(), '\x00', true));
@@ -171,7 +171,7 @@ void MiscWidget::editPmp(const QString &pmp)
 
 void MiscWidget::editPmd(const QString &pmd)
 {
-	if(data()->hasPmdFile()) {
+	if (data()->hasPmdFile()) {
 		data()->getPmdFile()->setPmdData(
 					QByteArray::fromHex(pmd.toLatin1())
 					.leftJustified(data()->getPmdFile()->getPmdData().size(), '\x00', true));
@@ -182,10 +182,10 @@ void MiscWidget::editPmd(const QString &pmd)
 
 void MiscWidget::editPvp(double value)
 {
-	if(!data()->hasPvpFile()) {
+	if (!data()->hasPvpFile()) {
 		data()->addPvpFile();
 	}
-	if(data()->getPvpFile()->value() != value) {
+	if (data()->getPvpFile()->value() != value) {
 		data()->getPvpFile()->setValue(value);
 		emit modified();
 	}
@@ -193,8 +193,8 @@ void MiscWidget::editPvp(double value)
 
 void MiscWidget::editPvp2(int value)
 {
-	if(data()->hasInfFile()) {
-		if(data()->getInfFile()->pvp() != value) {
+	if (data()->hasInfFile()) {
+		if (data()->getInfFile()->pvp() != value) {
 			data()->getInfFile()->setPvp(value);
 			emit modified();
 		}
@@ -203,7 +203,7 @@ void MiscWidget::editPvp2(int value)
 
 void MiscWidget::updatePmpView()
 {
-	if(hasData() && data()->hasPmpFile()) {
+	if (hasData() && data()->hasPmpFile()) {
 		int palID = pmpPaletteBox->currentIndex(), deph=pmpDephBox->itemData(pmpDephBox->currentIndex()).toInt();
 
 		pmpView->setPixmap(QPixmap::fromImage(data()->getPmpFile()->image(deph, palID)));

@@ -26,8 +26,8 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 {
 	_model = 0;
 
-	if(mch.size() < 0x100) {
-		if(mch.size() != 33) { // "This is dummy file. Kazuo Suzuki{0a}"
+	if (mch.size() < 0x100) {
+		if (mch.size() != 33) { // "This is dummy file. Kazuo Suzuki{0a}"
 			qWarning() << "MchFile::open mch file too short" << name << mch.size();
 		}
 		return false;
@@ -42,19 +42,19 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 		memcpy(&timOffset, constData, 4);
 		constData += 4;
 
-		if(timOffset != 0xFFFFFFFF) {
+		if (timOffset != 0xFFFFFFFF) {
 			toc.append(timOffset);
 		}
 
 //		qDebug() << "tim offset" << QString::number(timOffset & 0xFFFFFF, 16) << QString::number((timOffset >> 24) & 0xFF, 16);
-	} while(timOffset != 0xFFFFFFFF && constData - startData < 0x100);
+	} while (timOffset != 0xFFFFFFFF && constData - startData < 0x100);
 
-	if(timOffset == 0xFFFFFFFF) {
+	if (timOffset == 0xFFFFFFFF) {
 		memcpy(&modelOffset, constData, 4);
 
 //		qDebug() << "model data offset" << QString::number(modelOffset, 16);
 
-		if(!toc.isEmpty()) {
+		if (!toc.isEmpty()) {
 			toc.append(modelOffset);
 			toc.append(mch.size());
 
@@ -62,11 +62,11 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 
 			// Toc = tim offsets + data offset + data size
 
-			for(int i=0 ; i<toc.size()-2 ; ++i) {
+			for (int i=0 ; i<toc.size()-2 ; ++i) {
 				quint32 pos = toc.at(i) & 0xFFFFFF;
 		//		qDebug() << "ouverture tim" << pos << ((toc.at(i+1) & 0xFFFFFF) - pos);
 				textures.append(TimFile(mch.mid(pos, (toc.at(i+1) & 0xFFFFFF) - pos)));
-				if(!textures.last().isValid()) {
+				if (!textures.last().isValid()) {
 					qWarning() << "CharaModel::open tim error: unknown format!" << name << i;
 				}
 			}

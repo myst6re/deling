@@ -124,16 +124,16 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim,
 {
 	this->mim = mim;
 
-	if(!opened) {
+	if (!opened) {
 		allparams.clear();
 		params.clear();
 		layers.clear();
 		int mimSize = mim.size();
 		MapType mapType;
 
-		if(mimSize == 401408) {
+		if (mimSize == 401408) {
 			mapType = TypeOld;
-		} else if(mimSize == 438272) {
+		} else if (mimSize == 438272) {
 			mapType = TypeNew;
 		}
 
@@ -142,7 +142,7 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim,
 
 		openParameters();
 
-		if(defaultParams) {
+		if (defaultParams) {
 			params = *defaultParams;
 		} else {
 			// Enable parameter only when state = 0
@@ -194,19 +194,19 @@ bool BackgroundFile::openParameters()
 	_bounds = BackgroundBounds();
 
 	foreach(const Tile &tile, _tiles) {
-		if(tile.parameter != 255 &&
+		if (tile.parameter != 255 &&
 		        !allparams.contains(tile.parameter, tile.state)) {
 			allparams.insert(tile.parameter, tile.state);
 		}
 
-		if(qAbs(tile.X) < 1000 && qAbs(tile.Y) < 1000) {
-			if(tile.X >= 0 && tile.X > _bounds.right)
+		if (qAbs(tile.X) < 1000 && qAbs(tile.Y) < 1000) {
+			if (tile.X >= 0 && tile.X > _bounds.right)
 				_bounds.right = tile.X;
-			else if(tile.X < 0 && -tile.X > _bounds.left)
+			else if (tile.X < 0 && -tile.X > _bounds.left)
 				_bounds.left = -tile.X;
-			if(tile.Y >= 0 && tile.Y > _bounds.bottom)
+			if (tile.Y >= 0 && tile.Y > _bounds.bottom)
 				_bounds.bottom = tile.Y;
-			else if(tile.Y < 0 && -tile.Y > _bounds.top)
+			else if (tile.Y < 0 && -tile.Y > _bounds.top)
 				_bounds.top = -tile.Y;
 		} else {
 			qDebug() << "BackgroundFile::background out of bounds";
@@ -226,11 +226,11 @@ QImage BackgroundFile::background(bool hideBG) const
 	int mimSize = mim.size(), palOffset = 4096, srcYWidth = 1664;
 	MapType mapType;
 
-	if(mimSize == 401408) {
+	if (mimSize == 401408) {
 		mapType = TypeOld;
 		palOffset = 0;
 		srcYWidth = 1536;
-	} else if(mimSize == 438272) {
+	} else if (mimSize == 438272) {
 		mapType = TypeNew;
 	} else {
 		if (mimSize > 0) {
@@ -251,16 +251,16 @@ QImage BackgroundFile::background(const QList<quint8> &activeParams, bool hideBG
 	params.clear();
 
 	QMapIterator<quint8, quint8> itParams(allparams);
-	while(itParams.hasNext()){
+	while (itParams.hasNext()){
 		itParams.next();
-		if(activeParams.contains(itParams.key())) {
+		if (activeParams.contains(itParams.key())) {
 			params.insert(itParams.key(), itParams.value());
 		}
 	}
 
 	// Enable all layers
 	QMapIterator<quint8, bool> itLayers(layers);
-	while(itLayers.hasNext()){
+	while (itLayers.hasNext()){
 		itLayers.next();
 		layers.insert(itLayers.key(), true);
 	}
@@ -286,26 +286,26 @@ QList<Tile> BackgroundFile::parseTiles(const QByteArray &map,
 
 	type = sizeOfTile == 14 ? TypeOldShort : type;
 
-	if(sizeOfTile != 14 && sizeOfTile != 16) {
+	if (sizeOfTile != 14 && sizeOfTile != 16) {
 		qDebug() << "BackgroundFile::parseTiles: invalid map size" << mapSize << sizeOfTile;
 		return tiles;
 	}
 
-	while(tilePos + sizeOfTile <= mapSize) {
-		if(type != TypeNew) {
+	while (tilePos + sizeOfTile <= mapSize) {
+		if (type != TypeNew) {
 			memcpy(&tileType1, constMapData + tilePos, size_t(sizeOfTile));
 			tile = Tile::fromTile1(tileType1, sizeOfTile);
 		} else {
 			memcpy(&tileType2, constMapData + tilePos, size_t(sizeOfTile));
 			// HACK
-			if(tileType2.blendType >= 60) {
+			if (tileType2.blendType >= 60) {
 				type = TypeOld;
 				return parseTiles(map, type);
 			}
 			tile = Tile::fromTile2(tileType2);
 		}
 
-		if(tile.X == 0x7fff) {
+		if (tile.X == 0x7fff) {
 			break;
 		}
 
@@ -354,7 +354,7 @@ QImage BackgroundFile::toImage(int palOffset, int srcYWidth,
 	foreach(int tileIndex, tiles) {
 		const Tile &tile = _tiles.at(tileIndex);
 
-		if(((hideBG || tile.parameter != 255) &&
+		if (((hideBG || tile.parameter != 255) &&
 		    !params.contains(tile.parameter, tile.state)) ||
 		        (!layers.isEmpty() && !layers.value(tile.layerID))) {
 			continue;
@@ -371,7 +371,7 @@ QImage BackgroundFile::toImage(int palOffset, int srcYWidth,
 		drawTile(tile, palOffset, srcYWidth, width, bounds,
 		         constMimData, pixels);
 
-		for(int i = 0 ; i < 16 ; ++i) {
+		for (int i = 0 ; i < 16 ; ++i) {
 			pixels[bounds.left + tile.X + (bounds.top + tile.Y) * width + i] = qRgb(255, 0, 0);
 			pixels[bounds.left + tile.X + (bounds.top + tile.Y + 15) * width + i] = qRgb(255, 0, 0);
 			pixels[bounds.left + tile.X + (bounds.top + tile.Y + i) * width] = qRgb(255, 0, 0);
@@ -392,15 +392,15 @@ void BackgroundFile::drawTile(const Tile &tile, int palOffset, int srcYWidth,
 	int pos = palOffset + 8192 + tile.texID * 128 + tile.srcY * srcYWidth,
 	        x = 0, y = (bounds.top + tile.Y) * imageWidth;
 
-	if(tile.depth == 2) {
+	if (tile.depth == 2) {
 		pos += tile.srcX * 2;
 		srcYWidth /= 2;
 
-		for(int i=0 ; i<srcYWidth * 16 ; ++i) {
+		for (int i=0 ; i<srcYWidth * 16 ; ++i) {
 			memcpy(&color, constMimData + pos + i * 2, 2);
 			BGcolor(color, tile.blendType, pixels, baseX + x + y, !tile.draw);
 
-			if(x == 15) {
+			if (x == 15) {
 				x = 0;
 				i += srcYWidth - 16;
 				y += imageWidth;
@@ -408,14 +408,14 @@ void BackgroundFile::drawTile(const Tile &tile, int palOffset, int srcYWidth,
 				++x;
 			}
 		}
-	} else if(tile.depth == 1) {
+	} else if (tile.depth == 1) {
 		pos += tile.srcX;
 
-		for(int i=0 ; i<srcYWidth * 16 ; ++i) {
+		for (int i=0 ; i<srcYWidth * 16 ; ++i) {
 			memcpy(&color, constMimData + palStart + quint8(mim.at(pos+i)) * 2, 2);
 			BGcolor(color, tile.blendType, pixels, baseX + x + y, !tile.draw);
 
-			if(x == 15) {
+			if (x == 15) {
 				x = 0;
 				i += srcYWidth - 16;
 				y += imageWidth;
@@ -426,7 +426,7 @@ void BackgroundFile::drawTile(const Tile &tile, int palOffset, int srcYWidth,
 	} else {
 		pos += tile.srcX / 2;
 
-		for(int i=0 ; i<srcYWidth * 16 ; ++i) {
+		for (int i=0 ; i<srcYWidth * 16 ; ++i) {
 			quint8 index = quint8(mim.at(pos+i));
 			memcpy(&color, constMimData + palStart + (index & 0xF) * 2, 2);
 			BGcolor(color, tile.blendType, pixels, baseX + x + y, !tile.draw);
@@ -435,7 +435,7 @@ void BackgroundFile::drawTile(const Tile &tile, int palOffset, int srcYWidth,
 			memcpy(&color, constMimData + palStart + (index >> 4) * 2, 2);
 			BGcolor(color, tile.blendType, pixels, baseX + x + y, !tile.draw);
 
-			if(x == 15) {
+			if (x == 15) {
 				x = 0;
 				i += srcYWidth - 8;
 				y += imageWidth;
@@ -449,25 +449,25 @@ void BackgroundFile::drawTile(const Tile &tile, int palOffset, int srcYWidth,
 void BackgroundFile::BGcolor(quint16 value, quint8 blendType, QRgb *pixels,
                              int index, bool forceBlack)
 {
-	if(!forceBlack && value == 0) {
+	if (!forceBlack && value == 0) {
 		return;
 	}
 
 	QRgb color;
 
-	if(forceBlack) {
+	if (forceBlack) {
 		color = 0;
 	} else {
 		color = FF8Image::fromPsColor(value);
 	}
 
-	if(blendType == 4) {
+	if (blendType == 4) {
 		pixels[index] = color;
 	} else {
 		QRgb color0 = pixels[index];
 		int r = qRed(color), g = 0, b = 0;
 
-		switch(blendType) {
+		switch (blendType) {
 		case 0:
 			r = (qRed(color0) + r) / 2;
 			g = (qGreen(color0) + r) / 2;
@@ -475,27 +475,27 @@ void BackgroundFile::BGcolor(quint16 value, quint8 blendType, QRgb *pixels,
 			break;
 		case 1:
 			r = qRed(color0) + r;
-			if(r > 255)	r = 255;
+			if (r > 255)	r = 255;
 			g = qGreen(color0) + qGreen(color);
-			if(g > 255)	g = 255;
+			if (g > 255)	g = 255;
 			b = qBlue(color0) + qBlue(color);
-			if(b > 255)	b = 255;
+			if (b > 255)	b = 255;
 			break;
 		case 2:
 			r = qRed(color0) - r;
-			if(r < 0)	r = 0;
+			if (r < 0)	r = 0;
 			g = qGreen(color0) - qGreen(color);
-			if(g < 0)	g = 0;
+			if (g < 0)	g = 0;
 			b = qBlue(color0) - qBlue(color);
-			if(b < 0)	b = 0;
+			if (b < 0)	b = 0;
 			break;
 		case 3:
 			r = qRed(color0) + int(.25 * r);
-			if(r > 255)	r = 255;
+			if (r > 255)	r = 255;
 			g = qGreen(color0) + int(.25 * qGreen(color));
-			if(g > 255)	g = 255;
+			if (g > 255)	g = 255;
 			b = qBlue(color0) + int(.25 * qBlue(color));
-			if(b > 255)	b = 255;
+			if (b > 255)	b = 255;
 			break;
 		}
 
@@ -505,19 +505,19 @@ void BackgroundFile::BGcolor(quint16 value, quint8 blendType, QRgb *pixels,
 
 QImage BackgroundFile::mimToImage(MapDepth depth)
 {
-	if(depth == DepthColor) {
+	if (depth == DepthColor) {
 		int width = 832;
 		int height = (mim.size() - 0x3000) / (2 * width);
 		const char *data = mim.constData();
 
-		if(mim.size() < 0x3000 + width * height * 2) {
+		if (mim.size() < 0x3000 + width * height * 2) {
 			return QImage();
 		}
 
 		QImage img(width, height, QImage::Format_RGB32);
 		QRgb *px = (QRgb *)img.bits();
 
-		for(int j=0 ; j<width*height ; ++j) {
+		for (int j=0 ; j<width*height ; ++j) {
 			quint16 color;
 			memcpy(&color, data + 0x3000 + j*2, 2);
 

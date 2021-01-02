@@ -54,7 +54,7 @@ void JsmScript::setFlag(bool flag)
 
 void JsmScript::setDecompiledScript(const QString &text, bool moreDecompiled)
 {
-	if(moreDecompiled) {
+	if (moreDecompiled) {
 		_decompiledScriptMore = text;
 	} else {
 		_decompiledScript = text;
@@ -78,7 +78,7 @@ bool JsmScript::flag() const
 
 const QString &JsmScript::decompiledScript(bool moreDecompiled) const
 {
-	if(moreDecompiled) {
+	if (moreDecompiled) {
 		return _decompiledScriptMore;
 	}
 	return _decompiledScript;
@@ -263,7 +263,7 @@ int JsmScripts::findGroup(int absoluteMethodID) const
 	int groupId = 0;
 
 	foreach (const JsmGroup &group, groupList) {
-		if(group.label() > absoluteMethodID) {
+		if (group.label() > absoluteMethodID) {
 			return groupId - 1;
 		}
 
@@ -318,9 +318,9 @@ QList<int> JsmScripts::searchJumps(const QList<JsmOpcode *> &opcodes) const
 	foreach(JsmOpcode *op, opcodes) {
 		quint32 key = op->key();
 
-		if(key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
+		if (key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
 			int jumpTo = i + op->param();
-			if(jumpTo >= 0 && jumpTo < nbOpcode) {
+			if (jumpTo >= 0 && jumpTo < nbOpcode) {
 				labels.insert(jumpTo, true);
 			}
 		}
@@ -340,14 +340,14 @@ QList<JsmOpcode *> JsmScripts::opcodesp(int groupID, int methodID,
 
 	QList<JsmOpcode *> opcodes = scriptData.opcodesp(position, nbOpcode);
 
-	if(withLabels) {
+	if (withLabels) {
 		QList<int> labels = searchJumps(opcodes);
 		QMutableListIterator<JsmOpcode *> it(opcodes);
 		int i = 0;
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			JsmOpcode *op = it.next();
 			int lbl = labels.indexOf(i);
-			if(lbl != -1) {
+			if (lbl != -1) {
 				// Add label lbl
 				it.previous();
 				it.insert(new JsmOpcodeLabel(lbl));
@@ -355,10 +355,10 @@ QList<JsmOpcode *> JsmScripts::opcodesp(int groupID, int methodID,
 			}
 
 			unsigned int key = op->key();
-			if(key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
+			if (key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
 				int param = op->param(),
 				    lbl = labels.indexOf(i + param);
-				if(lbl != -1) {
+				if (lbl != -1) {
 					it.setValue(new JsmOpcodeGoto(*op, lbl));
 					delete op;
 				}
@@ -378,18 +378,18 @@ void JsmScripts::mergeAndConditions(JsmControl *control, int pos, int posEnd,
 	JsmProgram programCopy = control->block();
 	foreach(const JsmInstruction &instr, programCopy) {
 		// We're looking for a ifElse with one goto in the else block
-		if(instr.type() == JsmInstruction::Control) {
+		if (instr.type() == JsmInstruction::Control) {
 			JsmControl *subControl = instr.control();
-			if(subControl->block().isEmpty() &&
+			if (subControl->block().isEmpty() &&
 			        subControl->type() == JsmControl::IfElse &&
 			        ((JsmControlIfElse *)subControl)->blockElse().size() == 1) {
 				const JsmInstruction &subInstr =
 				        ((JsmControlIfElse *)subControl)->blockElse().first();
-				if(subInstr.type() == JsmInstruction::Opcode) {
+				if (subInstr.type() == JsmInstruction::Opcode) {
 					JsmOpcode *opcode = subInstr.opcode();
 					pos += subControl->condition()->opcodeCount();
 					// The goto must go to the start of the next else
-					if(opcode->isGoto() && pos + opcode->param() == posEnd) {
+					if (opcode->isGoto() && pos + opcode->param() == posEnd) {
 						pos += 1;
 						// This goto will be converted to and condition
 						JsmExpression *newCondition =
@@ -420,11 +420,11 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 	JsmProgram ret;
 	QStack<JsmExpression *> stack;
 
-	while(it < end) {
+	while (it < end) {
 		JsmOpcode *op = *it;
 		int pos = it - constBegin;
 		int lbl = labels.indexOf(pos);
-		if(lbl != -1) {
+		if (lbl != -1) {
 			// Add label lbl
 			JsmOpcode *opLabel = new JsmOpcodeLabel(lbl);
 			ret.append(JsmInstruction(opLabel));
@@ -436,34 +436,34 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 		// Compute expressions from PUSH and CAL, will modify the stack
 		JsmExpression *expression = JsmExpression::factory(op, stack);
 
-		if(expression) {
+		if (expression) {
 			collectPointers.insert(expression);
 			delete op; // Delete push/cal
 		} else {
 			bool instructionAppended = false;
 			// Use the stack
-			if(!stack.isEmpty()) {
-				if(op->popCount() >= 0) {
+			if (!stack.isEmpty()) {
+				if (op->popCount() >= 0) {
 					// Show elements of the stack directly
-					while(stack.size() > op->popCount()) {
+					while (stack.size() > op->popCount()) {
 						// FIXME: back to Opcode
 						ret.append(JsmInstruction(stack.pop()));
 					}
 				}
 
-				if(op->key() >= JsmOpcode::JMP && op->key() <= JsmOpcode::GJMP) {
-					if(op->key() == JsmOpcode::JPF) {
+				if (op->key() >= JsmOpcode::JMP && op->key() <= JsmOpcode::GJMP) {
+					if (op->key() == JsmOpcode::JPF) {
 						JsmExpression *condition = stack.pop();
 						JsmControl *toAppend = 0;
 
-						if(op->param() > 0 && it - 1 + op->param() <= end) {
+						if (op->param() > 0 && it - 1 + op->param() <= end) {
 							QList<JsmOpcode *>::const_iterator ifElsePos = it,
 									ifElseEnd = it + op->param() - 1;
 							JsmOpcode *lastOpOfBlock = *(ifElseEnd - 1);
 
 							// Else or While
-							if(lastOpOfBlock->key() == JsmOpcode::JMP) {
-								if(lastOpOfBlock->param() > 0
+							if (lastOpOfBlock->key() == JsmOpcode::JMP) {
+								if (lastOpOfBlock->param() > 0
 										&& ifElseEnd - 1 + lastOpOfBlock->param() <= end) {
 									// If Else
 									toAppend = new JsmControlIfElse(
@@ -483,7 +483,7 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 									                       usedLabels));
 
 									ifElseEnd += lastOpOfBlock->param() - 1;
-								} else if(lastOpOfBlock->param() < 0
+								} else if (lastOpOfBlock->param() < 0
 										  && ifElseEnd + lastOpOfBlock->param() ==
 										  ifElsePos - condition->opcodeCount()) {
 									// While
@@ -497,7 +497,7 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 									                       usedLabels));
 								}
 							}
-							if(!toAppend) {
+							if (!toAppend) {
 								// If
 								toAppend = new JsmControlIfElse(
 								               condition,
@@ -513,7 +513,7 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 							                   collectPointers, usedLabels);
 
 							it = ifElseEnd;
-						} // else if(op->param() <= 0 0 && it - 1 + op->param() >= 0) {
+						} // else if (op->param() <= 0 0 && it - 1 + op->param() >= 0) {
 							// TODO: repeatUntil: remove appended opcodes from ret
 							// toAppend = new JsmControlRepeatUntil(
 							//							stack.pop(),
@@ -521,9 +521,9 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 							//									it - 1, labels,
 							//									collectPointers));
 						// }
-						if(!toAppend) { // JPF
+						if (!toAppend) { // JPF
 							int lbl = labels.indexOf(pos + op->param());
-							if(lbl == -1) {
+							if (lbl == -1) {
 								qDebug() << labels << op->toString();
 								qFatal(qPrintable(QString("JsmScripts::program 1 label for pos %1 + %2 not found")
 								                  .arg(pos).arg(op->param())));
@@ -540,7 +540,7 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 						collectPointers.insert(toAppend);
 					} else { // JMP/GJMP
 						int lbl = labels.indexOf(pos + op->param());
-						if(lbl == -1) {
+						if (lbl == -1) {
 							qDebug() << labels << op->toString();
 							qFatal(qPrintable(QString("JsmScripts::program 3 label for pos %1 + %2 not found")
 							                  .arg(pos).arg(op->param())));
@@ -552,7 +552,7 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 					}
 					delete op; // Remove JPF/JMP/GJMP
 					instructionAppended = true;
-				} else if(op->key() == JsmOpcode::POPI_L
+				} else if (op->key() == JsmOpcode::POPI_L
 				          || op->key() == JsmOpcode::POPM_B
 				          || op->key() == JsmOpcode::POPM_W
 				          || op->key() == JsmOpcode::POPM_L) {
@@ -562,7 +562,7 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 					instructionAppended = true;
 					collectPointers.insert(application);
 					collectPointers.insert(op);
-				} else if(stack.size() >= 2
+				} else if (stack.size() >= 2
 				          && op->key() >= JsmOpcode::REQ
 				          && op->key() <= JsmOpcode::REQEW) {
 					JsmApplication *exec = new JsmApplicationExec(
@@ -576,10 +576,10 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 				}
 			}
 
-			if(!instructionAppended) {
-				if(!stack.isEmpty()) {
+			if (!instructionAppended) {
+				if (!stack.isEmpty()) {
 					QStack<JsmExpression *> invertedStack;
-					while(!stack.isEmpty()) {
+					while (!stack.isEmpty()) {
 						// FIXME: only pop what will be used by the game for this application
 						invertedStack.push(stack.pop());
 					}
@@ -594,9 +594,9 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 		}
 	}
 
-	if(!stack.isEmpty()) {
+	if (!stack.isEmpty()) {
 		QStack<JsmExpression *> invertedStack;
-		while(!stack.isEmpty()) {
+		while (!stack.isEmpty()) {
 			// FIXME: only pop what will be used by the game for this application
 			invertedStack.push(stack.pop());
 		}
@@ -613,23 +613,23 @@ JsmProgram &JsmScripts::program2ndPass(JsmProgram &program,
                                        const QSet<int> &usedLabels)
 {
 	QMutableListIterator<JsmInstruction> it(program);
-	while(it.hasNext()) {
+	while (it.hasNext()) {
 		const JsmInstruction &instr = it.next();
 
-		if(instr.type() == JsmInstruction::Control) {
+		if (instr.type() == JsmInstruction::Control) {
 			JsmControl *control = instr.control();
 			program2ndPass(control->block(), collectPointers, usedLabels);
-			if(control->type() == JsmControl::IfElse) {
+			if (control->type() == JsmControl::IfElse) {
 				JsmControlIfElse *ifElse =
 				        static_cast<JsmControlIfElse *>(control);
 				program2ndPass(ifElse->blockElse(), collectPointers,
 				               usedLabels);
-				if(ifElse->block().isEmpty()) {
-					if(ifElse->blockElse().isEmpty()) { // Useless if/Else
+				if (ifElse->block().isEmpty()) {
+					if (ifElse->blockElse().isEmpty()) { // Useless if/Else
 						
 					} else { // Not
 						JsmExpression *cond = ifElse->condition();
-						if(cond->type() != JsmExpression::Binary
+						if (cond->type() != JsmExpression::Binary
 						        || !static_cast<JsmExpressionBinary *>(cond)->
 						        logicalNot()) {
 							// Explicit Not
@@ -646,17 +646,17 @@ JsmProgram &JsmScripts::program2ndPass(JsmProgram &program,
 						ifElse->setBlock(ifElse->blockElse());
 						ifElse->setBlockElse(JsmProgram());
 					}
-				} else if(ifElse->block().size() == 1
+				} else if (ifElse->block().size() == 1
 				          && ifElse->blockElse().isEmpty()) { // If block only
 					const JsmInstruction &subInstr = ifElse->block().first();
-					if(subInstr.type() == JsmInstruction::Control) {
+					if (subInstr.type() == JsmInstruction::Control) {
 						JsmControl *subControl = subInstr.control();
 						// Contains only one if block
-						if(subControl->type() == JsmControl::IfElse) {
+						if (subControl->type() == JsmControl::IfElse) {
 							JsmControlIfElse *subIfElse =
 							        static_cast<JsmControlIfElse *>(subControl);
 							// If block without else
-							if(subIfElse->blockElse().isEmpty()) { // And
+							if (subIfElse->blockElse().isEmpty()) { // And
 								JsmExpression *newCondition =
 								        new JsmExpressionBinary(
 								            JsmExpressionBinary::LogAnd,
@@ -671,10 +671,10 @@ JsmProgram &JsmScripts::program2ndPass(JsmProgram &program,
 					}
 				}
 			}
-		} else if(instr.type() == JsmInstruction::Opcode) {
+		} else if (instr.type() == JsmInstruction::Opcode) {
 			// Removing unused labels
 			JsmOpcode *opcode = instr.opcode();
-			if(opcode->isLabel() && !usedLabels.contains(opcode->param())) {
+			if (opcode->isLabel() && !usedLabels.contains(opcode->param())) {
 				it.remove(); // FIXME: we can also delete the pointer and clean collectPointers
 			}
 		}
@@ -687,14 +687,14 @@ JsmProgram JsmScripts::program(int groupID, int methodID,
                                QSet<void *> &collectPointers) const
 {
 	QList<JsmOpcode *> opcodes = opcodesp(groupID, methodID, false);
-	if(opcodes.isEmpty()) {
+	if (opcodes.isEmpty()) {
 		return JsmProgram();
 	}
 	JsmOpcode *firstOp = opcodes.first();
 	QList<int> labels = searchJumps(opcodes);
 	QList<JsmOpcode *>::const_iterator begin = opcodes.constBegin();
 	// Ignore label if correct at the beginning
-	if(firstOp->key() == JsmOpcode::LBL
+	if (firstOp->key() == JsmOpcode::LBL
 	        && firstOp->param() == absoluteMethodID(groupID, methodID)) {
 		begin += 1;
 		delete firstOp;
@@ -836,11 +836,11 @@ void JsmScripts::replaceScript(int groupID, int methodID, const JsmData &data)
 
 void JsmScripts::shiftGroupsAfter(int groupID, int methodID, int shiftGroup, int shiftScript)
 {
-	if(shiftGroup == 0 || shiftScript == 0)	return;
+	if (shiftGroup == 0 || shiftScript == 0)	return;
 
 	groupList[groupID].incScriptCount(shiftGroup);
 
-	for(int i = qMax(groupID+shiftGroup, 0) ; i<nbGroup() ; ++i)
+	for (int i = qMax(groupID+shiftGroup, 0) ; i<nbGroup() ; ++i)
 		groupList[i].incLabel(shiftGroup);
 
 	shiftScriptsAfter(groupID, methodID, shiftScript);
@@ -848,9 +848,9 @@ void JsmScripts::shiftGroupsAfter(int groupID, int methodID, int shiftGroup, int
 
 void JsmScripts::shiftScriptsAfter(int groupID, int methodID, int shift)
 {
-	if(shift == 0)	return;
+	if (shift == 0)	return;
 
-	for(int i = absoluteMethodID(groupID, methodID+1) ; i<nbScript() ; ++i)
+	for (int i = absoluteMethodID(groupID, methodID+1) ; i<nbScript() ; ++i)
 		scriptList[i].incPos(shift);
 }
 

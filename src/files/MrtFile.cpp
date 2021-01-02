@@ -25,7 +25,7 @@ MrtFile::MrtFile()
 
 bool MrtFile::open(const QByteArray &mrt)
 {
-	if(mrt.size() != 8) {
+	if (mrt.size() != 8) {
 		qWarning() << "MrtFile::open Bad sizes" << mrt.size();
 		return false;
 	}
@@ -59,8 +59,8 @@ QList<int> MrtFile::searchAllBattles() const
 {
 	QList<int> battles;
 
-	for(int i=0 ; i<4 ; ++i) {
-		if(formations[i] != 0)
+	for (int i=0 ; i<4 ; ++i) {
+		if (formations[i] != 0)
 			battles.append(formations[i]);
 	}
 

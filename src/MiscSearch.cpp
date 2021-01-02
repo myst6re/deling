@@ -44,16 +44,16 @@ MiscSearch::MiscSearch(FieldArchive *fieldArchive, QWidget *parent)
 
 void MiscSearch::fillList()
 {
-	if(fieldArchive==nullptr)	return;
+	if (fieldArchive==nullptr)	return;
 
 	list->clear();
 	list->addItems(fieldArchive->fieldList());
 	QStringList mapList = fieldArchive->mapList();
 	QMultiMap<int, QString> fields;
 
-	for(int i=0 ; i<list->count() ; ++i) {
+	for (int i=0 ; i<list->count() ; ++i) {
 		Field *f = fieldArchive->getField(i);
-		if(f == nullptr || !f->hasJsmFile())	continue;
+		if (f == nullptr || !f->hasJsmFile())	continue;
 		int mapId = f->getJsmFile()->mapID();
 		fields.insert(mapList.indexOf(f->name()), QString::number(mapList.indexOf(f->name())).append(" => ['name' => '").append(f->name()).append("', 'desc' => '").append(Data::location(mapId)).append("'],"));
 	}
@@ -68,13 +68,13 @@ void MiscSearch::fillList()
 	return;
 
 	QMap<int, QStringList> cardPlayers;
-	for(int i=0 ; i<list->count() ; ++i) {
+	for (int i=0 ; i<list->count() ; ++i) {
 		QList<int> playersId = fieldArchive->searchAllCardPlayers(i);
 		foreach(int id, playersId) {
 			QStringList curList = cardPlayers.value(id, QStringList());
 			Field *f = fieldArchive->getField(i);
-			if(f == nullptr)	continue;
-			/*if(f->hasJsmFile()) {
+			if (f == nullptr)	continue;
+			/*if (f->hasJsmFile()) {
 				curList.append(f->getJsmFile()->mapID() != -1 ? QString::number(f->getJsmFile()->mapID()) : f->name());
 			} else { */
 			    curList.append(f->name());
@@ -83,13 +83,13 @@ void MiscSearch::fillList()
 		}
 	}
 //	QMap<int, QStringList> spells;
-//	for(int i=0 ; i<list->count() ; ++i) {
+//	for (int i=0 ; i<list->count() ; ++i) {
 //		QList<int> spellsId = fieldArchive->searchAllSpells(i);
 //		foreach(int id, spellsId) {
 //			QStringList curList = spells.value(id, QStringList());
 //			Field *f = fieldArchive->getField(i);
-//			if(f == NULL)	continue;
-//			if(f->hasJsmFile()) {
+//			if (f == NULL)	continue;
+//			if (f->hasJsmFile()) {
 //				curList.append(f->getJsmFile()->mapID() != -1 ? QString::number(f->getJsmFile()->mapID()) : f->name());
 //			} else {
 //				curList.append(f->name());
@@ -100,16 +100,16 @@ void MiscSearch::fillList()
 //	QString text;
 //	QMapIterator<int, QStringList> it(spells);
 //	int h=0, lastKey=1;
-//	while(it.hasNext()) {
+//	while (it.hasNext()) {
 //		it.next();
-//		if(h % 16 == 0) {
+//		if (h % 16 == 0) {
 //			text.append("\n");
 //		}
-//		while(lastKey+1 < it.key()) {
+//		while (lastKey+1 < it.key()) {
 //			text.append(QString("-1, "));
 //			lastKey++;
 //			h++;
-//			if(h % 16 == 0) {
+//			if (h % 16 == 0) {
 //				text.append("\n");
 //			}
 //		}
@@ -128,9 +128,9 @@ void MiscSearch::fillList()
 	QString text;
 //	QMap<Field *, QList<int> > battles = fieldArchive->searchAllBattles();
 //	QMapIterator<Field *, QList<int> > i(battles);
-//	while(i.hasNext()) {
+//	while (i.hasNext()) {
 //		i.next();
-//		if(!i.value().isEmpty()) {
+//		if (!i.value().isEmpty()) {
 //			text.append(QString("%1 -> ").arg(i.key()->name()));
 //			foreach(int battleID, i.value()) {
 //				text.append(QString("[%1] | ").arg(battleID));
@@ -143,10 +143,10 @@ void MiscSearch::fillList()
 //	int moment=-1, j=0;
 //	QMultiMap<int, Field *> moments = fieldArchive->searchAllMoments();
 //	QMapIterator<int, Field * > i(moments);
-//	while(i.hasNext()) {
+//	while (i.hasNext()) {
 //		i.next();
 
-//		if(moment == i.key())	continue;
+//		if (moment == i.key())	continue;
 
 //		moment = i.key();
 
@@ -154,12 +154,12 @@ void MiscSearch::fillList()
 
 //		text.append(QString("cInt(%1, %2), ").arg(moment).arg(mapId==-1 ? moments.values(moment).last()->name() : QString::number(mapId)));
 
-//		if(++j % 16 == 0) {
+//		if (++j % 16 == 0) {
 //			text.append("\n");
 //		}
 
-		/*if(moment != i.key()) {
-			if(moment != -1) {
+		/*if (moment != i.key()) {
+			if (moment != -1) {
 				text.chop(2);
 				text.append("\");\n");
 			}
@@ -174,18 +174,18 @@ void MiscSearch::fillList()
 //	text.append("\");\n");
 /*
 	QMap<int, int> opcodeTypes = fieldArchive->searchAllOpcodeTypes();
-	for(int j=0 ; j<JSM_OPCODE_COUNT ; ++j) {
-		if(!opcodeTypes.contains(j)) {
+	for (int j=0 ; j<JSM_OPCODE_COUNT ; ++j) {
+		if (!opcodeTypes.contains(j)) {
 			qWarning() << QString::number(j, 16) << JsmFile::opcodeName.value(j, "???") << "introuvable";
 		}
 	}
 	QMapIterator<int, int> i(opcodeTypes);
-	while(i.hasNext()) {
+	while (i.hasNext()) {
 		i.next();
 
 		QString type;
 
-		switch(i.value()) {
+		switch (i.value()) {
 		case JUST_KEY:
 			type = "Aucun paramètre";
 			break;
@@ -201,7 +201,7 @@ void MiscSearch::fillList()
 	}*/
 
 	QMapIterator<int, QStringList> i(cardPlayers);
-	while(i.hasNext()) {
+	while (i.hasNext()) {
 		i.next();
 
 		text.append(QString::number(i.key())).append(": ").append(i.value().join(", ")).append("\n");
@@ -215,7 +215,7 @@ void MiscSearch::fillList()
 int MiscSearch::getMapId(const QList<Field *> &fields)
 {
 	foreach(Field *field, fields) {
-		if(field->getJsmFile()->mapID() != -1)
+		if (field->getJsmFile()->mapID() != -1)
 			return field->getJsmFile()->mapID();
 	}
 	return -1;

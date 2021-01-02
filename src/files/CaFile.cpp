@@ -30,12 +30,12 @@ bool CaFile::open(const QByteArray &ca)
 
 	cameras.clear();
 
-	if(ca_data_size != 38 && ca_data_size % 40 != 0) {
+	if (ca_data_size != 38 && ca_data_size % 40 != 0) {
 		qWarning() << "size ca error" << ca_data_size << sizeof(Camera);
 		return false;
 	}
 
-	if(sizeof(Camera) != 40) {
+	if (sizeof(Camera) != 40) {
 		qWarning() << "sizeof ca struct error" << sizeof(Camera);
 		return false;
 	}
@@ -44,7 +44,7 @@ bool CaFile::open(const QByteArray &ca)
 
 	quint32 caCount = (ca_data_size / 40) + int(ca_data_size % 40 >= 38);
 
-	for(i=0 ; i<caCount ; ++i) {
+	for (i=0 ; i<caCount ; ++i) {
 		memcpy(&camera, &ca_data[i*40], 38);
 
 		cameras.append(camera);
@@ -95,7 +95,7 @@ void CaFile::insertCamera(int camID, const Camera &cam)
 
 void CaFile::removeCamera(int camID)
 {
-	if(cameras.size() > 1) {
+	if (cameras.size() > 1) {
 		cameras.removeAt(camID);
 		modified = true;
 	}

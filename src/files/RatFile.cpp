@@ -24,7 +24,7 @@ RatFile::RatFile()
 
 bool RatFile::open(const QByteArray &rat)
 {
-	if(rat.size() != 4) {
+	if (rat.size() != 4) {
 		qWarning() << "RatFile::open Bad sizes" << rat.size();
 		return false;
 	}

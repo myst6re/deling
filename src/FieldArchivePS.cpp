@@ -25,8 +25,8 @@ FieldArchivePS::FieldArchivePS()
 
 FieldArchivePS::~FieldArchivePS()
 {
-	if(iso) {
-		if(iso->isDemo()) {
+	if (iso) {
+		if (iso->isDemo()) {
 			FF8Font::deregisterFont("demo");
 			Config::setValue("encoding", "00");
 		}
@@ -56,14 +56,14 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 	QString desc;
 	int i, currentMap=0, fieldID=0;
 
-	if(iso)		delete iso;
+	if (iso)		delete iso;
 	iso = new FF8DiscArchive(path);
-	if(!iso->open(QIODevice::ReadOnly)) {
+	if (!iso->open(QIODevice::ReadOnly)) {
 		errorMsg = QObject::tr("Impossible d'ouvrir le fichier image disque. (%1)").arg(iso->errorString());
 		return 1;
 	}
 
-	if(!iso->findIMG()) {
+	if (!iso->findIMG()) {
 		errorMsg = QObject::tr("Fichier FF8DISC?.IMG introuvable.");
 		return 4;
 	}
@@ -72,7 +72,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 	int tocSize = fieldFiles.size();
 	const int tocStart = iso->isDemo() ? 0 : 77;
 
-	if(tocSize == 0) {
+	if (tocSize == 0) {
 		errorMsg = QObject::tr("Impossible d'ouvrir le dossier field.");
 		return 4;
 	}
@@ -83,33 +83,33 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 
 	quint32 freq = ((tocSize - tocStart) / 3)/100;
 
-	if(freq == 0) {
+	if (freq == 0) {
 		freq = 1;
 	}
 
 	progress->setObserverMaximum((tocSize - tocStart) / 3);
 
-	for(i=tocStart ; i<tocSize ; i += 3) {
+	for (i=tocStart ; i<tocSize ; i += 3) {
 		QCoreApplication::processEvents();
-		if(progress->observerWasCanceled()) {
+		if (progress->observerWasCanceled()) {
 			clearFields();
 			errorMsg = QObject::tr("Ouverture annulée.");
 			return 2;
 		}
-		if(currentMap % freq == 0) {
+		if (currentMap % freq == 0) {
 			progress->setObserverValue(currentMap);
 		}
 
 		QByteArray fieldData = iso->fileLZS(fieldFiles.at(i));
 
-		if(!fieldData.isEmpty()) {
+		if (!fieldData.isEmpty()) {
 			if (iso->isDemo()) {
 				field = new FieldJpDemoPS(i);
 			} else {
 				field = new FieldPS(i);
 			}
-			if(field->open(fieldData)) {
-				if(field->hasJsmFile())
+			if (field->open(fieldData)) {
+				if (field->hasJsmFile())
 					desc = Data::location(field->getJsmFile()->mapID());
 				else
 					desc = QString();
@@ -129,23 +129,23 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 		++currentMap;
 	}
 
-	if(fields.isEmpty()) {
+	if (fields.isEmpty()) {
 		errorMsg = QObject::tr("Aucun écran trouvé.");
 		return 4;
 	}
 
 	openModels();
 
-	if(iso->isDemo()) {
+	if (iso->isDemo()) {
 		QByteArray sysFntTdw = iso->file(iso->sysFntTdwFile());
 		TdwFile *tdw = new TdwFile();
 		tdw->open(sysFntTdw);
 		FF8Font::registerFont("demo", new FF8Font(tdw, QByteArray()));
 		Config::setValue("encoding", "demo");
 	} else {
-		if(iso->isJp() && Config::value("encoding", "00").toString() == "00") {
+		if (iso->isJp() && Config::value("encoding", "00").toString() == "00") {
 			Config::setValue("encoding", "01");
-		} else if(!iso->isJp() && Config::value("encoding", "00").toString() == "01") {
+		} else if (!iso->isJp() && Config::value("encoding", "00").toString() == "01") {
 			Config::setValue("encoding", "00");
 		}
 	}
@@ -155,16 +155,16 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 
 bool FieldArchivePS::openModels()
 {
-	if(!iso)	return false;
+	if (!iso)	return false;
 
 	const QList<FF8DiscFile> &fieldFiles = iso->fieldDirectory();
 
-	for(int i=0 ; i<77 && i<fieldFiles.size() ; ++i) {
+	for (int i=0 ; i<77 && i<fieldFiles.size() ; ++i) {
 		QByteArray fieldData = iso->file(fieldFiles.at(i));
 
-		if(!fieldData.isEmpty()) {
+		if (!fieldData.isEmpty()) {
 			MchFile mch;
-			if(mch.open(fieldData, QString("d%1").arg(i, 3, 10, QChar('0')))
+			if (mch.open(fieldData, QString("d%1").arg(i, 3, 10, QChar('0')))
 					&& mch.hasModel()) {
 				models.insert(i, new CharaModel(*mch.model()));
 			}
@@ -176,14 +176,14 @@ bool FieldArchivePS::openModels()
 
 bool FieldArchivePS::openBG(Field *field) const
 {
-	if(!iso)	return false;
+	if (!iso)	return false;
 
 	FieldPS *fieldPS = (FieldPS *)field;
 	quint32 isoFieldID = fieldPS->isoFieldID();
 	QByteArray dat, mim, lzk;
 
 	if (iso->isDemo()) {
-		if((int)isoFieldID+2 >= iso->fieldCount()) {
+		if ((int)isoFieldID+2 >= iso->fieldCount()) {
 			qWarning() << "FieldArchivePS::openBG field ID out of range" << isoFieldID << iso->fieldCount();
 			return false;
 		}
@@ -192,7 +192,7 @@ bool FieldArchivePS::openBG(Field *field) const
 		mim = iso->fileLZS(iso->fieldFile(isoFieldID+1));
 		lzk = iso->fileLZS(iso->fieldFile(isoFieldID+2));
 	} else {
-		if(isoFieldID < 1 || (int)isoFieldID+1 >= iso->fieldCount()) {
+		if (isoFieldID < 1 || (int)isoFieldID+1 >= iso->fieldCount()) {
 			qWarning() << "FieldArchivePS::openBG field ID out of range" << isoFieldID << iso->fieldCount();
 			return false;
 		}

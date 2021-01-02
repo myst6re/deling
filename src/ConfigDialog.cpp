@@ -71,15 +71,15 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 	fillMenuLang();
 	useRegAppPath->setChecked(!Config::value("dontUseRegAppPath").toBool());
 	QString appPath = Config::value("appPath").toString();
-	if(appPath.isEmpty()) {
+	if (appPath.isEmpty()) {
 		appPath = Data::AppPath();
 	}
 	appPathLine->setText(appPath);
 
 	foreach(const QString &fontName, FF8Font::fontList()) {
-		if(fontName == "00" || fontName == "01")	continue;
+		if (fontName == "00" || fontName == "01")	continue;
 		FF8Font *font = FF8Font::font(fontName);
-		if(font) {
+		if (font) {
 			encodingComboBox->addItem(font->name(), fontName);
 		}
 	}
@@ -110,8 +110,8 @@ void ConfigDialog::fillMenuLang()
 		langComboBox->setItemData(i++, str.right(5).left(2));
 	}
 
-	for(i=0 ; i<langComboBox->count() ; ++i) {
-		if(Config::value("lang")==langComboBox->itemData(i)) {
+	for (i=0 ; i<langComboBox->count() ; ++i) {
+		if (Config::value("lang")==langComboBox->itemData(i)) {
 			langComboBox->setCurrentIndex(i);
 			break;
 		}
@@ -121,7 +121,7 @@ void ConfigDialog::fillMenuLang()
 void ConfigDialog::setAppPath()
 {
 	QString appPath = QFileDialog::getExistingDirectory(this, tr("Chemin d'installation de Final Fantasy VIII PC"), Data::AppPath());
-	if(!appPath.isNull()) {
+	if (!appPath.isNull()) {
 		appPathLine->setText(appPath);
 	}
 }
@@ -136,7 +136,7 @@ void ConfigDialog::restartNow()
 {
 	QString title, text;
 	QTranslator translator;
-	if(translator.load(QString("deling_%1")
+	if (translator.load(QString("deling_%1")
 	                   .arg(Config::value("lang").toString()),
 	                   Config::programResourceDir())) {
 		title = translator.translate("MainWindow", "Paramètres modifiés");
@@ -158,7 +158,7 @@ void ConfigDialog::saveConfig()
 	Config::setValue("encoding", encodingComboBox->itemData(encodingComboBox->currentIndex()));
 //	Config::setValue("hideUnusedTexts", hideUnusedTexts->isChecked());
 
-	if(oldLang != Config::value("lang").toString()) {
+	if (oldLang != Config::value("lang").toString()) {
 		restartNow();
 	}
 

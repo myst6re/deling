@@ -48,7 +48,7 @@ void WalkmeshGLWidget::fill(Field *data)
 
 void WalkmeshGLWidget::computeFov()
 {
-	if(data && data->hasCaFile()
+	if (data && data->hasCaFile()
 			&& data->getCaFile()->cameraCount() > 0
 			&& camID < data->getCaFile()->cameraCount()) {
 		const Camera &cam = data->getCaFile()->camera(camID);
@@ -77,7 +77,7 @@ void WalkmeshGLWidget::resizeGL(int width, int height)
 
 void WalkmeshGLWidget::paintGL()
 {
-	if(!data)	return;
+	if (!data)	return;
 
 	drawBackground();
 
@@ -93,7 +93,7 @@ void WalkmeshGLWidget::paintGL()
 
 	QMatrix4x4 mView;
 
-	if(data->hasCaFile() && data->getCaFile()->cameraCount() > 0 && camID < data->getCaFile()->cameraCount()) {
+	if (data->hasCaFile() && data->getCaFile()->cameraCount() > 0 && camID < data->getCaFile()->cameraCount()) {
 		const Camera &cam = data->getCaFile()->camera(camID);
 
 		double camAxisXx = cam.camera_axis[0].x / 4096.0;
@@ -123,7 +123,7 @@ void WalkmeshGLWidget::paintGL()
 	gpuRenderer->bindModelMatrix(mModel);
 	gpuRenderer->bindViewMatrix(mView);
 
-	if(data->hasIdFile()) {
+	if (data->hasIdFile()) {
 		int i=0;
 
 		foreach(const Triangle &triangle, data->getIdFile()->getTriangles()) {
@@ -153,11 +153,11 @@ void WalkmeshGLWidget::paintGL()
 			++i;
 		}
 
-		if(!_drawLine && data->hasInfFile()) {
+		if (!_drawLine && data->hasInfFile()) {
 			InfFile *inf = data->getInfFile();
 
 			foreach(const Gateway &gate, inf->getGateways()) {
-				if(gate.fieldId != 0x7FFF) {
+				if (gate.fieldId != 0x7FFF) {
 					// Vertex info
 					QVector3D positionA(gate.exitLine[0].x / 4096.0, gate.exitLine[0].y / 4096.0, gate.exitLine[0].z / 4096.0),
 										positionB(gate.exitLine[1].x / 4096.0, gate.exitLine[1].y / 4096.0, gate.exitLine[1].z / 4096.0);
@@ -170,7 +170,7 @@ void WalkmeshGLWidget::paintGL()
 			}
 
 			foreach(const Trigger &trigger, inf->getTriggers()) {
-				if(trigger.doorID != 0xFF) {
+				if (trigger.doorID != 0xFF) {
 					// Vertex info
 					QVector3D positionA(trigger.trigger_line[0].x / 4096.0, trigger.trigger_line[0].y / 4096.0, trigger.trigger_line[0].z / 4096.0),
 										positionB(trigger.trigger_line[1].x / 4096.0, trigger.trigger_line[1].y / 4096.0, trigger.trigger_line[1].z / 4096.0);
@@ -183,7 +183,7 @@ void WalkmeshGLWidget::paintGL()
 			}
 		}
 
-		if(_drawLine) {
+		if (_drawLine) {
 			// Vertex info
 			QVector3D positionA(_lineToDrawPoint1.x / 4096.0, _lineToDrawPoint1.y / 4096.0, _lineToDrawPoint1.z / 4096.0),
 								positionB(_lineToDrawPoint2.x / 4096.0, _lineToDrawPoint2.y / 4096.0, _lineToDrawPoint2.z / 4096.0);
@@ -196,7 +196,7 @@ void WalkmeshGLWidget::paintGL()
 
 		gpuRenderer->draw(RendererPrimitiveType::PT_LINES);
 
-		if(_selectedTriangle >= 0 && _selectedTriangle < data->getIdFile()->triangleCount()) {
+		if (_selectedTriangle >= 0 && _selectedTriangle < data->getIdFile()->triangleCount()) {
 			const Triangle &triangle = data->getIdFile()->triangle(_selectedTriangle);
 
 			// Vertex info
@@ -212,10 +212,10 @@ void WalkmeshGLWidget::paintGL()
 			gpuRenderer->bufferVertex(positionC, color, texcoord);
 		}
 
-		if(data->hasInfFile()) {
-			if(_selectedGate >= 0 && _selectedGate < 12) {
+		if (data->hasInfFile()) {
+			if (_selectedGate >= 0 && _selectedGate < 12) {
 				const Gateway &gate = data->getInfFile()->getGateway(_selectedGate);
-				if(gate.fieldId != 0x7FFF) {
+				if (gate.fieldId != 0x7FFF) {
 					// Vertex info
 					QVector3D positionA(gate.exitLine[0].x / 4096.0, gate.exitLine[0].y / 4096.0, gate.exitLine[0].z / 4096.0),
 										positionB(gate.exitLine[1].x / 4096.0, gate.exitLine[1].y / 4096.0, gate.exitLine[1].z / 4096.0);
@@ -227,9 +227,9 @@ void WalkmeshGLWidget::paintGL()
 				}
 			}
 
-			if(_selectedDoor >= 0 && _selectedDoor < 12) {
+			if (_selectedDoor >= 0 && _selectedDoor < 12) {
 				const Trigger &trigger = data->getInfFile()->getTrigger(_selectedDoor);
-				if(trigger.doorID != 0xFF) {
+				if (trigger.doorID != 0xFF) {
 					// Vertex info
 					QVector3D positionA(trigger.trigger_line[0].x / 4096.0, trigger.trigger_line[0].y / 4096.0, trigger.trigger_line[0].z / 4096.0),
 										positionB(trigger.trigger_line[1].x / 4096.0, trigger.trigger_line[1].y / 4096.0, trigger.trigger_line[1].z / 4096.0);
@@ -302,12 +302,12 @@ void WalkmeshGLWidget::wheelEvent(QWheelEvent *event)
 void WalkmeshGLWidget::mousePressEvent(QMouseEvent *event)
 {
 	setFocus();
-	if(event->button() == Qt::MidButton)
+	if (event->button() == Qt::MidButton)
 	{
 		distance = -35;
 		update();
 	}
-	else if(event->button() == Qt::LeftButton)
+	else if (event->button() == Qt::LeftButton)
 	{
 		moveStart = event->pos();
 	}
@@ -315,7 +315,7 @@ void WalkmeshGLWidget::mousePressEvent(QMouseEvent *event)
 
 void WalkmeshGLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if(event->button() == Qt::LeftButton) {
+	if (event->button() == Qt::LeftButton) {
 		xTrans += (event->pos().x() - moveStart.x()) / 4096.0;
 		yTrans -= (event->pos().y() - moveStart.y()) / 4096.0;
 		moveStart = event->pos();
@@ -325,12 +325,12 @@ void WalkmeshGLWidget::mouseMoveEvent(QMouseEvent *event)
 
 void WalkmeshGLWidget::keyPressEvent(QKeyEvent *event)
 {
-	if(lastKeyPressed == event->key()
+	if (lastKeyPressed == event->key()
 			&& (event->key() == Qt::Key_Left
 				|| event->key() == Qt::Key_Right
 				|| event->key() == Qt::Key_Down
 				|| event->key() == Qt::Key_Up)) {
-		if(transStep > 100.0f) {
+		if (transStep > 100.0f) {
 			transStep *= 0.90f; // accelerator
 		}
 	} else {
@@ -338,7 +338,7 @@ void WalkmeshGLWidget::keyPressEvent(QKeyEvent *event)
 	}
 	lastKeyPressed = event->key();
 
-	switch(event->key())
+	switch (event->key())
 	{
 	case Qt::Key_Left:
 		xTrans += 1.0f/transStep;

@@ -25,7 +25,7 @@ JsmData::JsmData() :
 JsmData::JsmData(const QByteArray &scriptData, bool demo) :
     scriptData(scriptData), _demo(demo)
 {
-	if(this->scriptData.size() % 4 != 0) {
+	if (this->scriptData.size() % 4 != 0) {
 		qWarning() << "JsmData::JsmData : Incorrect size" << this->scriptData.size();
 		this->scriptData.resize(this->scriptData.size() - (this->scriptData.size() % 4));
 	}
@@ -59,7 +59,7 @@ JsmOpcode JsmData::opcode(int opcodeID) const
 	JsmOpcode ret(op);
 
 	// CANIME and CANIMEKEEP does not exist in early demo version
-	if(_demo && ret.key() >= JsmOpcode::CANIME) {
+	if (_demo && ret.key() >= JsmOpcode::CANIME) {
 		ret.setKey(ret.key() + 2);
 	}
 
@@ -70,7 +70,7 @@ JsmOpcode *JsmData::opcodep(int opcodeID) const
 {
 	JsmOpcode op = opcode(opcodeID);
 
-	switch(op.key()) {
+	switch (op.key()) {
 	case JsmOpcode::CAL:
 		return new JsmOpcodeCal(op);
 	case JsmOpcode::PSHN_L:
@@ -97,12 +97,12 @@ QList<JsmOpcode *> JsmData::opcodesp(int opcodeID, int nbOpcode) const
 {
 	QList<JsmOpcode *> ret;
 	int count;
-	if(nbOpcode >= 0) {
+	if (nbOpcode >= 0) {
 		count = nbOpcode;
 	} else {
 		count = this->nbOpcode() - opcodeID;
 	}
-	for(int i = 0 ; i < count ; ++i) {
+	for (int i = 0 ; i < count ; ++i) {
 		ret.append(opcodep(opcodeID + i));
 	}
 	return ret;

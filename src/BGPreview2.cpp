@@ -32,7 +32,7 @@ void BGPreview2::paintEvent(QPaintEvent *e)
 {
 	QLabel::paintEvent(e);
 
-	if(isEnabled() && showSave) {
+	if (isEnabled() && showSave) {
 		QPainter painter(this);
 		painter.drawPixmap(0, 0, QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton).pixmap(32));
 		painter.end();
@@ -53,9 +53,9 @@ void BGPreview2::leaveEvent(QEvent *)
 
 void BGPreview2::mousePressEvent(QMouseEvent *event)
 {
-	if(event->button() != Qt::LeftButton)	return;
+	if (event->button() != Qt::LeftButton)	return;
 
-	if(event->x()>=0 && event->x()<32 && event->y()>=0 && event->y()<32) {
+	if (event->x()>=0 && event->x()<32 && event->y()>=0 && event->y()<32) {
 		savePixmap();
 	}
 }
@@ -63,7 +63,7 @@ void BGPreview2::mousePressEvent(QMouseEvent *event)
 void BGPreview2::savePixmap()
 {
 	QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), name + ".png", tr("Image PNG (*.png);;Image JPG (*.jpg);;Image BMP (*.bmp);;Portable Pixmap (*.ppm)"));
-	if(path.isEmpty())	return;
+	if (path.isEmpty())	return;
 
 	pixmap()->save(path);
 }

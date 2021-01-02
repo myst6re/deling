@@ -25,53 +25,53 @@ InfFile::InfFile()
 	infStruct.control = 128;
 	infStruct.pvp = 12;
 	infStruct.cameraFocusHeight = 200;
-	for(int i=0 ; i<8 ; ++i) {
+	for (int i=0 ; i<8 ; ++i) {
 		infStruct.cameraRange[i].top = -112;
 		infStruct.cameraRange[i].bottom = 112;
 		infStruct.cameraRange[i].right = 160;
 		infStruct.cameraRange[i].left = -160;
 	}
-	for(int i=0 ; i<2 ; ++i) {
+	for (int i=0 ; i<2 ; ++i) {
 		infStruct.screenRange[i].top = 0;
 		infStruct.screenRange[i].bottom = 224;
 		infStruct.screenRange[i].right = 320;
 		infStruct.screenRange[i].left = 0;
 	}
-	for(int i=0 ; i<12 ; ++i) {
+	for (int i=0 ; i<12 ; ++i) {
 		infStruct.gateways[i].fieldId = 0x7FFF;
 		infStruct.gateways[i].unknown1[0] = 0x7FFF;
 		infStruct.gateways[i].unknown1[1] = 0x7FFF;
 		infStruct.gateways[i].unknown1[2] = 0x7FFF;
 		infStruct.gateways[i].unknown1[3] = 0x7FFF;
 	}
-	for(int i=0 ; i<12 ; ++i) {
+	for (int i=0 ; i<12 ; ++i) {
 		infStruct.triggers[i].doorID = 0xFF;
 	}
 }
 
 bool InfFile::open(const QByteArray &inf)
 {
-	if(sizeof(InfStruct) != inf.size() && 672 != inf.size() && 576 != inf.size() && 504 != inf.size()) {
+	if (sizeof(InfStruct) != inf.size() && 672 != inf.size() && 576 != inf.size() && 504 != inf.size()) {
 		qWarning() << "invalid inf size" << sizeof(InfStruct) << inf.size();
 		return false;
 	}
 
 	const char *constInf = inf.constData();
 
-	if(inf.size() == 672) {
+	if (inf.size() == 672) {
 		memcpy(&infStruct, constInf, 14);
 		infStruct.unknown[4] = '\0';
 		infStruct.unknown[5] = '\0';
 		infStruct.pvp = 0x0C;
 		memcpy(&infStruct.cameraFocusHeight, &constInf[14], 658);
-	} else if(inf.size() == 576) {
+	} else if (inf.size() == 576) {
 		memcpy(&infStruct, constInf, 14);
 		infStruct.unknown[4] = '\0';
 		infStruct.unknown[5] = '\0';
 		infStruct.pvp = 0x0C;
 		memcpy(&infStruct.cameraFocusHeight, &constInf[14], 2 + 10 * sizeof(Range));
 
-		for(int i=0 ; i<12 ; ++i) {
+		for (int i=0 ; i<12 ; ++i) {
 			memcpy(&infStruct.gateways[i], &constInf[96 + i*24], 3 * sizeof(Vertex_s) + 2);
 			quint16 val = infStruct.gateways[i].fieldId == 0x7FFF ? 0x7FFF : 0;
 			infStruct.gateways[i].unknown1[0] = val;
@@ -82,7 +82,7 @@ bool InfFile::open(const QByteArray &inf)
 		}
 
 		memcpy(infStruct.triggers, &constInf[384], 12 * sizeof(Trigger));
-	} else if(inf.size() == 504) {
+	} else if (inf.size() == 504) {
 		memcpy(&infStruct, constInf, 14);
 		infStruct.unknown[4] = '\0';
 		infStruct.unknown[5] = '\0';
@@ -98,7 +98,7 @@ bool InfFile::open(const QByteArray &inf)
 		infStruct.screenRange[0].right = 320;
 		infStruct.screenRange[1] = infStruct.screenRange[0];
 
-		for(int i=0 ; i<12 ; ++i) {
+		for (int i=0 ; i<12 ; ++i) {
 			memcpy(&infStruct.gateways[i], &constInf[24 + i*24], 3 * sizeof(Vertex_s) + 2);
 			quint16 val = infStruct.gateways[i].fieldId == 0x7FFF ? 0x7FFF : 0;
 			infStruct.gateways[i].unknown1[0] = val;
@@ -188,7 +188,7 @@ QList<Gateway> InfFile::getGateways() const
 {
 	QList<Gateway> gates;
 
-	for(int i=0 ; i<12 ; ++i) {
+	for (int i=0 ; i<12 ; ++i) {
 		gates.append(infStruct.gateways[i]);
 	}
 
@@ -211,8 +211,8 @@ QList<Trigger> InfFile::getTriggers(bool filter) const
 {
 	QList<Trigger> triggers;
 
-	for(int i=0 ; i<12 ; ++i) {
-		if(!filter || infStruct.triggers[i].doorID != 0xff) {
+	for (int i=0 ; i<12 ; ++i) {
+		if (!filter || infStruct.triggers[i].doorID != 0xff) {
 			triggers.append(infStruct.triggers[i]);
 		}
 	}

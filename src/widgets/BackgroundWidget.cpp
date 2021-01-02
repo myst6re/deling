@@ -24,7 +24,7 @@ BackgroundWidget::BackgroundWidget(QWidget *parent)
 
 void BackgroundWidget::build()
 {
-	if(isBuilded())	return;
+	if (isBuilded())	return;
 
 	QScrollArea *scrollArea = new QScrollArea(this);
 	scrollArea->setWidgetResizable(true);
@@ -153,7 +153,7 @@ void BackgroundWidget::build()
 
 void BackgroundWidget::clear()
 {
-	if(!isFilled())	return;
+	if (!isFilled())	return;
 
 	parametersWidget->clear();
 	statesWidget->clear();
@@ -183,7 +183,7 @@ void BackgroundWidget::setReadOnly(bool ro)
 {
 	PageWidget::setReadOnly(ro);
 
-	if(!isBuilded())	return;
+	if (!isBuilded())	return;
 
 	tileX->setReadOnly(ro);
 	tileY->setReadOnly(ro);
@@ -203,7 +203,7 @@ void BackgroundWidget::setReadOnly(bool ro)
 
 void BackgroundWidget::parameterChanged(int index)
 {
-	if(!hasData() || !data()->hasBackgroundFile())		return;
+	if (!hasData() || !data()->hasBackgroundFile())		return;
 
 	int parameter = parametersWidget->itemData(index).toInt();
 	QList<quint8> states = data()->getBackgroundFile()->allparams.values(parameter);
@@ -223,12 +223,12 @@ void BackgroundWidget::parameterChanged(int index)
 
 void BackgroundWidget::enableState(QListWidgetItem *item)
 {
-	if(!hasData() || !data()->hasBackgroundFile())		return;
+	if (!hasData() || !data()->hasBackgroundFile())		return;
 
 	bool enabled = item->data(Qt::CheckStateRole).toBool();
 	int parameter = parametersWidget->itemData(parametersWidget->currentIndex()).toInt(), state = item->data(Qt::UserRole).toInt();
 
-	if(enabled)
+	if (enabled)
 		data()->getBackgroundFile()->params.insert(parameter, state);
 	else
 		data()->getBackgroundFile()->params.remove(parameter, state);
@@ -238,7 +238,7 @@ void BackgroundWidget::enableState(QListWidgetItem *item)
 
 void BackgroundWidget::enableLayer(QListWidgetItem *item)
 {
-	if(!hasData() || !data()->hasBackgroundFile())		return;
+	if (!hasData() || !data()->hasBackgroundFile())		return;
 
 	bool enabled = item->data(Qt::CheckStateRole).toBool();
 	int layer = item->data(Qt::UserRole).toInt();
@@ -255,7 +255,7 @@ void BackgroundWidget::enableLayer(QListWidgetItem *item)
 
 void BackgroundWidget::setHideBack(bool)
 {
-	if(!hasData() || !data()->hasBackgroundFile())		return;
+	if (!hasData() || !data()->hasBackgroundFile())		return;
 
 	updateBackground();
 }
@@ -272,7 +272,7 @@ void BackgroundWidget::setPage(int index)
 
 void BackgroundWidget::setCurrentTile(int index)
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -299,7 +299,7 @@ void BackgroundWidget::setCurrentTile(int index)
 
 void BackgroundWidget::setTileX()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -320,7 +320,7 @@ void BackgroundWidget::setTileX()
 
 void BackgroundWidget::setTileY()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -341,7 +341,7 @@ void BackgroundWidget::setTileY()
 
 void BackgroundWidget::setTileZ()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -362,7 +362,7 @@ void BackgroundWidget::setTileZ()
 
 void BackgroundWidget::setTileTexID()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -383,7 +383,7 @@ void BackgroundWidget::setTileTexID()
 
 void BackgroundWidget::setTileBlend()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -404,7 +404,7 @@ void BackgroundWidget::setTileBlend()
 
 void BackgroundWidget::setTilePalID()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -425,7 +425,7 @@ void BackgroundWidget::setTilePalID()
 
 void BackgroundWidget::setTileDraw()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -446,7 +446,7 @@ void BackgroundWidget::setTileDraw()
 
 void BackgroundWidget::setTileDepth()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -467,7 +467,7 @@ void BackgroundWidget::setTileDepth()
 
 void BackgroundWidget::setTileSrcX()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -488,7 +488,7 @@ void BackgroundWidget::setTileSrcX()
 
 void BackgroundWidget::setTileSrcY()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -509,7 +509,7 @@ void BackgroundWidget::setTileSrcY()
 
 void BackgroundWidget::setTileLayerID()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -530,7 +530,7 @@ void BackgroundWidget::setTileLayerID()
 
 void BackgroundWidget::setTileBlendType()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -551,7 +551,7 @@ void BackgroundWidget::setTileBlendType()
 
 void BackgroundWidget::setTileParameter()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -572,7 +572,7 @@ void BackgroundWidget::setTileParameter()
 
 void BackgroundWidget::setTileState()
 {
-	if(!hasData() || !data()->hasBackgroundFile()) {
+	if (!hasData() || !data()->hasBackgroundFile()) {
 		return;
 	}
 
@@ -593,10 +593,10 @@ void BackgroundWidget::setTileState()
 
 void BackgroundWidget::fill()
 {
-	if(!isBuilded())	build();
-	if(isFilled())		clear();
+	if (!isBuilded())	build();
+	if (isFilled())		clear();
 
-	if(!hasData() || !data()->hasBackgroundFile())		return;
+	if (!hasData() || !data()->hasBackgroundFile())		return;
 
 	image->setName(data()->name());
 	updateBackground();

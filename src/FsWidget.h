@@ -32,11 +32,11 @@ private:
 	bool operator<(const QTreeWidgetItem &other)const {
 		int column = treeWidget()->sortColumn();
 
-		if(column == 0) {
+		if (column == 0) {
 			int fileType = data(0, FILE_TYPE_ROLE).toInt(), otherFileType = other.data(0, FILE_TYPE_ROLE).toInt();
-			if(fileType == DIR && otherFileType == FILE)	return true;
-			if(fileType == FILE && otherFileType == DIR)	return false;
-		} else if(column == 1) {
+			if (fileType == DIR && otherFileType == FILE)	return true;
+			if (fileType == FILE && otherFileType == DIR)	return false;
+		} else if (column == 1) {
 			return text(column).toInt() < other.text(column).toInt();
 		}
 

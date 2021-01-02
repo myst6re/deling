@@ -26,7 +26,7 @@ bool SfxFile::open(const QByteArray &sfx)
 {
 	int sfx_data_size = sfx.size();
 
-	if(sfx_data_size % 4 != 0) {
+	if (sfx_data_size % 4 != 0) {
 		qWarning() << "invalid sfx size" << sfx_data_size;
 		return false;
 	}
@@ -35,7 +35,7 @@ bool SfxFile::open(const QByteArray &sfx)
 
 	int count = sfx_data_size/4;
 
-	for(int i=0 ; i<count ; ++i) {
+	for (int i=0 ; i<count ; ++i) {
 		_values.append(sfx_data[i]);
 	}
 
