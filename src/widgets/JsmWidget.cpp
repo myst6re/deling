@@ -471,7 +471,7 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 	int rinoaCount=1, selphieCount=1, seiferCount=1, edeaCount=1, lagunaCount=1, kirosCount=1;
 	int wardCount=1, drawPointCount=1, eventLineCount=1, doorCount=1;
 
-	for (int groupID=0 ; groupID<nbGroup ; ++groupID) {
+	for (int groupID = 0; groupID < nbGroup; ++groupID) {
 		const JsmGroup &grp = data()->getJsmFile()->getScripts().group(groupID);
 		QString name = grp.name();
 		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(groupID, 3) << QString() << QString("%1").arg(grp.execOrder(), 3));
@@ -603,7 +603,7 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 		return items;
 	}
 
-	for (int methodID=0 ; methodID<count ; ++methodID) {
+	for (int methodID = 0; methodID < count; ++methodID) {
 		const JsmScript &script = data()->getJsmFile()->getScripts().script(groupID, methodID);
 		if (methodID==0) {
 			name = QString();

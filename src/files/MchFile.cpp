@@ -62,7 +62,7 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 
 			// Toc = tim offsets + data offset + data size
 
-			for (int i=0 ; i<toc.size()-2 ; ++i) {
+			for (int i = 0; i < toc.size()-2; ++i) {
 				quint32 pos = toc.at(i) & 0xFFFFFF;
 		//		qDebug() << "ouverture tim" << pos << ((toc.at(i+1) & 0xFFFFFF) - pos);
 				textures.append(TimFile(mch.mid(pos, (toc.at(i+1) & 0xFFFFFF) - pos)));

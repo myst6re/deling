@@ -59,7 +59,7 @@ QList<int> MrtFile::searchAllBattles() const
 {
 	QList<int> battles;
 
-	for (int i=0 ; i<4 ; ++i) {
+	for (int i = 0; i < 4; ++i) {
 		if (formations[i] != 0)
 			battles.append(formations[i]);
 	}

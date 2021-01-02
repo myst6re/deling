@@ -225,7 +225,7 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	fieldId = new QSpinBox(ret);
 	fieldId->setRange(0, 65535);
 
-	for (int i=0 ; i<4 ; ++i) {
+	for (int i = 0; i < 4; ++i) {
 		unknownGate1[i] = new QSpinBox(ret);
 		unknownGate1[i]->setRange(0, 65535);
 	}
@@ -257,7 +257,7 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	connect(exitPoints[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editExitPoint(Vertex_s)));
 	connect(entryPoint, SIGNAL(valuesChanged(Vertex_s)), SLOT(editEntryPoint(Vertex_s)));
 	connect(fieldId, SIGNAL(valueChanged(int)), SLOT(editFieldId(int)));
-	for (int i=0 ; i<4 ; ++i) {
+	for (int i = 0; i < 4; ++i) {
 		connect(unknownGate1[i], SIGNAL(valueChanged(int)), SLOT(editUnknownGate(int)));
 	}
 	connect(unknownGate2, SIGNAL(dataEdited(QByteArray)), SLOT(editUnknownGate(QByteArray)));
@@ -308,17 +308,17 @@ QWidget *WalkmeshWidget::buildCameraRangePage()
 
 	rangeList1 = new QListWidget(ret);
 
-	for (int i=0 ; i<8 ; ++i) {
+	for (int i = 0; i < 8; ++i) {
 		rangeList1->addItem(tr("Limite caméra %1").arg(i+1));
 	}
 
 	rangeList2 = new QListWidget(ret);
 
-	for (int i=0 ; i<2 ; ++i) {
+	for (int i = 0; i < 2; ++i) {
 		rangeList2->addItem(tr("Limite écran %1").arg(i+1));
 	}
 
-	for (int i=0 ; i<4 ; ++i) {
+	for (int i = 0; i < 4; ++i) {
 		rangeEdit1[i] = new QSpinBox(ret);
 		rangeEdit1[i]->setRange(-32768, 32767);
 		rangeEdit2[i] = new QSpinBox(ret);
@@ -353,7 +353,7 @@ QWidget *WalkmeshWidget::buildCameraRangePage()
 
 	connect(rangeList1, SIGNAL(currentRowChanged(int)), SLOT(setCurrentRange1(int)));
 	connect(rangeList2, SIGNAL(currentRowChanged(int)), SLOT(setCurrentRange2(int)));
-	for (int i=0 ; i<4 ; ++i) {
+	for (int i = 0; i < 4; ++i) {
 		connect(rangeEdit1[i], SIGNAL(valueChanged(int)), SLOT(editRange(int)));
 		connect(rangeEdit2[i], SIGNAL(valueChanged(int)), SLOT(editRange(int)));
 	}
@@ -454,7 +454,7 @@ void WalkmeshWidget::setReadOnly(bool ro)
 		caZoomEdit->setReadOnly(ro);
 		// WalkPage
 		idToolbar->setDisabled(ro);
-		for (int i=0 ; i<3 ; ++i) {
+		for (int i = 0; i < 3; ++i) {
 			idVertices[i]->setReadOnly(ro);
 			idAccess[i]->setReadOnly(ro);
 		}
@@ -471,7 +471,7 @@ void WalkmeshWidget::setReadOnly(bool ro)
 		doorPosition[1]->setReadOnly(ro);
 		doorUsed->setDisabled(ro);
 		// CamRangePage
-		for (int i=0 ; i<4 ; ++i) {
+		for (int i = 0; i < 4; ++i) {
 			rangeEdit1[i]->setReadOnly(ro);
 			rangeEdit2[i]->setReadOnly(ro);
 		}
@@ -508,7 +508,7 @@ void WalkmeshWidget::fill()
 		if (camList->count() != camCount) {
 			camList->blockSignals(true);
 			camList->clear();
-			for (int i=0 ; i<camCount ; ++i) {
+			for (int i = 0; i < camCount; ++i) {
 				camList->addItem(tr("Caméra %1").arg(i));
 			}
 			camList->blockSignals(false);
@@ -524,7 +524,7 @@ void WalkmeshWidget::fill()
 		if (idList->count() != triangleCount) {
 			idList->blockSignals(true);
 			idList->clear();
-			for (int i=0 ; i<triangleCount ; ++i) {
+			for (int i = 0; i < triangleCount; ++i) {
 				idList->addItem(tr("Triangle %1").arg(i));
 			}
 			idList->blockSignals(false);
@@ -575,7 +575,7 @@ void WalkmeshWidget::fill()
 	if (data()->hasMskFile()) {
 		frameList->clear();
 		int cameraPositionCount = data()->getMskFile()->cameraPositionCount();
-		for (int i=0 ; i<cameraPositionCount ; ++i) {
+		for (int i = 0; i < cameraPositionCount; ++i) {
 			frameList->addItem(tr("Position %1").arg(i+1));
 		}
 		frameList->setCurrentRow(0);
@@ -655,7 +655,7 @@ void WalkmeshWidget::addCamera()
 		}
 		data()->getCaFile()->insertCamera(row+1, ca);
 		camList->insertItem(row+1, tr("Camera %1").arg(row+1));
-		for (int i=row+2 ; i<camList->count() ; ++i) {
+		for (int i = row + 2; i < camList->count(); ++i) {
 			camList->item(i)->setText(tr("Camera %1").arg(i));
 		}
 		camList->setCurrentRow(row+1);
@@ -674,7 +674,7 @@ void WalkmeshWidget::removeCamera()
 	if (data()->hasCaFile() && row < data()->getCaFile()->cameraCount()) {
 		data()->getCaFile()->removeCamera(row);
 		delete camList->item(row);
-		for (int i=row ; i<camList->count() ; ++i) {
+		for (int i = row; i < camList->count(); ++i) {
 			camList->item(i)->setText(tr("Camera %1").arg(i));
 		}
 		setCurrentCamera(row);
@@ -781,7 +781,7 @@ void WalkmeshWidget::addTriangle()
 		}
 		data()->getIdFile()->insertTriangle(row+1, tri, acc);
 		idList->insertItem(row+1, tr("Triangle %1").arg(row+1));
-		for (int i=row+2 ; i<idList->count() ; ++i) {
+		for (int i = row + 2; i < idList->count(); ++i) {
 			idList->item(i)->setText(tr("Triangle %1").arg(i));
 		}
 		idList->setCurrentRow(row+1);
@@ -798,7 +798,7 @@ void WalkmeshWidget::removeTriangle()
 	if (data()->hasIdFile() && row < data()->getIdFile()->triangleCount()) {
 		data()->getIdFile()->removeTriangle(row);
 		delete idList->item(row);
-		for (int i=row ; i<idList->count() ; ++i) {
+		for (int i = row; i < idList->count(); ++i) {
 			idList->item(i)->setText(tr("Triangle %1").arg(i));
 		}
 		setCurrentId(row);
@@ -1191,7 +1191,7 @@ void WalkmeshWidget::addMovieCameraPosition()
 	data()->getMskFile()->insertCameraPosition(row+1, camPos);
 
 	frameList->addItem(tr("Position %1").arg(row+1));
-	for (int i=row+1 ; i<frameList->count() ; ++i) {
+	for (int i = row + 1; i < frameList->count(); ++i) {
 		frameList->item(i)->setText(tr("Position %1").arg(i+1));
 	}
 
@@ -1212,7 +1212,7 @@ void WalkmeshWidget::removeMovieCameraPosition()
 	data()->getMskFile()->removeCameraPosition(row);
 
 	delete frameList->item(row);
-	for (int i=row ; i<frameList->count() ; ++i) {
+	for (int i = row; i < frameList->count(); ++i) {
 		frameList->item(i)->setText(tr("Position %1").arg(i+1));
 	}
 

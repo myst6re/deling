@@ -467,7 +467,7 @@ int IsoArchiveIO::copyBytes(QIODevice *out, int size, int last_esti, IsoControl 
 
 //	qDebug() << "écriture de" << size << "octets (" << (size/SECTOR_SIZE) << "secteurs) dans isoTemp";
 
-	for (i=0 ; i<count ; ++i) {
+	for (i = 0; i < count; ++i) {
 		if (control->wasCanceled())	return -1;
 		out->write(read(READ_MAX));
 
@@ -663,7 +663,7 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 
 //	qDebug() << "vérification headers";
 //	int newSectorCount = destination->size()/SECTOR_SIZE;
-//	for (int i=0 ; i<newSectorCount ; ++i) {
+//	for (int i = 0; i < newSectorCount; ++i) {
 //		if (control->wasCanceled())	return false;
 //		destination->seek(12 + i*SECTOR_SIZE);
 //		if (destination->read(3) != IsoArchive::int2Header(i)) {

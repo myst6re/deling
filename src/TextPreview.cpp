@@ -234,7 +234,7 @@ void TextPreview::calcSize()
 
 	width = ask_first==0 && ask_last>=0 ? 79 : 15;
 
-	for (int i=0 ; i<size ; ++i) {
+	for (int i = 0; i < size; ++i) {
 		caract = (quint8)ff8Text.at(i);
 		if (caract==0) break;
 		switch (caract) {

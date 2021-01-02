@@ -42,11 +42,11 @@ void TdwGrid::paintEvent(QPaintEvent *)
 	const int lineCountV=17, lineCountH=15, charaSize=12, padding=1, cellSize=charaSize+1+padding*2;
 	QLine linesV[lineCountV], linesH[lineCountH];
 
-	for (int i=0 ; i<lineCountV ; ++i) {
+	for (int i = 0; i < lineCountV; ++i) {
 		linesV[i].setPoints(QPoint(i*cellSize, 0), QPoint(i*cellSize, height()));
 	}
 
-	for (int i=0 ; i<lineCountH ; ++i) {
+	for (int i = 0; i < lineCountH; ++i) {
 		linesH[i].setPoints(QPoint(0, i*cellSize), QPoint(width(), i*cellSize));
 	}
 
@@ -66,7 +66,7 @@ void TdwGrid::paintEvent(QPaintEvent *)
 		int charCount=_tdwFile->charCount();
 
 		// Draw odd characters (optimization to reduce the number of palette change)
-		for (int i=0, x2=0, y2=0 ; i<charCount ; i+=2) {
+		for (int i=0, x2=0, y2 = 0; i < charCount; i+=2) {
 			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), _tdwFile->letter(_currentTable, i, _color, true));
 			x2+=2;
 			if (x2 == 16) {
@@ -76,7 +76,7 @@ void TdwGrid::paintEvent(QPaintEvent *)
 		}
 
 		// Draw even characters
-		for (int i=1, x2=1, y2=0 ; i<charCount ; i+=2) {
+		for (int i=1, x2=1, y2 = 0; i < charCount; i+=2) {
 			p.drawImage(QPoint(1+padding+x2*cellSize, 1+padding+y2*cellSize), _tdwFile->letter(_currentTable, i, _color, true));
 			x2+=2;
 			if (x2 == 17) {

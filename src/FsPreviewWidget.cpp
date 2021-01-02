@@ -77,7 +77,7 @@ void FsPreviewWidget::imagePreview(const QPixmap &image, const QString &name,
 	imageSelect->clear();
 	if (imageCount > 1) {
 		imageSelect->setVisible(true);
-		for (int i=0 ; i<imageCount ; ++i) {
+		for (int i = 0; i < imageCount; ++i) {
 			imageSelect->addItem(tr("Image %1").arg(i));
 		}
 		imageSelect->setCurrentIndex(imageID);
@@ -90,7 +90,7 @@ void FsPreviewWidget::imagePreview(const QPixmap &image, const QString &name,
 	palSelect->clear();
 	if (palCount > 1) {
 		palSelect->setVisible(true);
-		for (int i=0 ; i<palCount ; ++i) {
+		for (int i = 0; i < palCount; ++i) {
 			palSelect->addItem(tr("Palette %1").arg(i));
 		}
 		palSelect->setCurrentIndex(palID);

@@ -39,7 +39,7 @@ void EncounterWidget::build()
 	layout->addWidget(labelColumn1, 0, 0, Qt::AlignCenter);
 	layout->addWidget(labelColumn2, 0, 1, 1, 3, Qt::AlignCenter);
 
-	for (int i=0 ; i<4 ; ++i) {
+	for (int i = 0; i < 4; ++i) {
 		formationEdit[i] = new QSpinBox();
 		formationEdit[i]->setRange(0, 65535);
 		if (i==0) {
@@ -73,7 +73,7 @@ void EncounterWidget::clear()
 {
 	if (!isFilled())	return;
 
-	for (int i=0 ; i<4 ; ++i) {
+	for (int i = 0; i < 4; ++i) {
 		formationEdit[i]->blockSignals(true);
 		formationEdit[i]->setValue(0);
 		formationEdit[i]->blockSignals(false);
@@ -89,7 +89,7 @@ void EncounterWidget::clear()
 void EncounterWidget::setReadOnly(bool readOnly)
 {
 	if (isBuilded()) {
-		for (int i=0 ; i<4 ; ++i) {
+		for (int i = 0; i < 4; ++i) {
 			formationEdit[i]->setReadOnly(readOnly);
 		}
 		rateEdit->setDisabled(readOnly);
@@ -106,7 +106,7 @@ void EncounterWidget::fill()
 	if (!hasData())	return;
 
 	if (data()->hasMrtFile()) {
-		for (int i=0 ; i<4 ; ++i) {
+		for (int i = 0; i < 4; ++i) {
 			formationEdit[i]->blockSignals(true);
 			formationEdit[i]->setValue(data()->getMrtFile()->formation(i));
 			formationEdit[i]->blockSignals(false);

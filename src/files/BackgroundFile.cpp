@@ -371,7 +371,7 @@ QImage BackgroundFile::toImage(int palOffset, int srcYWidth,
 		drawTile(tile, palOffset, srcYWidth, width, bounds,
 		         constMimData, pixels);
 
-		for (int i = 0 ; i < 16 ; ++i) {
+		for (int i = 0; i < 16; ++i) {
 			pixels[bounds.left + tile.X + (bounds.top + tile.Y) * width + i] = qRgb(255, 0, 0);
 			pixels[bounds.left + tile.X + (bounds.top + tile.Y + 15) * width + i] = qRgb(255, 0, 0);
 			pixels[bounds.left + tile.X + (bounds.top + tile.Y + i) * width] = qRgb(255, 0, 0);
@@ -396,7 +396,7 @@ void BackgroundFile::drawTile(const Tile &tile, int palOffset, int srcYWidth,
 		pos += tile.srcX * 2;
 		srcYWidth /= 2;
 
-		for (int i=0 ; i<srcYWidth * 16 ; ++i) {
+		for (int i = 0; i < srcYWidth * 16; ++i) {
 			memcpy(&color, constMimData + pos + i * 2, 2);
 			BGcolor(color, tile.blendType, pixels, baseX + x + y, !tile.draw);
 
@@ -411,7 +411,7 @@ void BackgroundFile::drawTile(const Tile &tile, int palOffset, int srcYWidth,
 	} else if (tile.depth == 1) {
 		pos += tile.srcX;
 
-		for (int i=0 ; i<srcYWidth * 16 ; ++i) {
+		for (int i = 0; i < srcYWidth * 16;  ++i) {
 			memcpy(&color, constMimData + palStart + quint8(mim.at(pos+i)) * 2, 2);
 			BGcolor(color, tile.blendType, pixels, baseX + x + y, !tile.draw);
 
@@ -426,7 +426,7 @@ void BackgroundFile::drawTile(const Tile &tile, int palOffset, int srcYWidth,
 	} else {
 		pos += tile.srcX / 2;
 
-		for (int i=0 ; i<srcYWidth * 16 ; ++i) {
+		for (int i = 0; i < srcYWidth * 16;  ++i) {
 			quint8 index = quint8(mim.at(pos+i));
 			memcpy(&color, constMimData + palStart + (index & 0xF) * 2, 2);
 			BGcolor(color, tile.blendType, pixels, baseX + x + y, !tile.draw);
@@ -517,7 +517,7 @@ QImage BackgroundFile::mimToImage(MapDepth depth)
 		QImage img(width, height, QImage::Format_RGB32);
 		QRgb *px = (QRgb *)img.bits();
 
-		for (int j=0 ; j<width*height ; ++j) {
+		for (int j = 0; j < width * height; ++j) {
 			quint16 color;
 			memcpy(&color, data + 0x3000 + j*2, 2);
 

@@ -298,7 +298,7 @@ void FsDialog::openDir(const QString &name)
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	pathWidget->setCompleter(completer);
 
-	for (int j=0 ; j<list->topLevelItemCount() ; ++j) {
+	for (int j = 0; j < list->topLevelItemCount(); ++j) {
 		QCoreApplication::processEvents();
 		QTreeWidgetItem *item = list->topLevelItem(j);
 		if (item == nullptr)	break;
@@ -479,7 +479,7 @@ void FsDialog::add(QStringList sources, bool fromDir)
 	int i, nbFiles;
 
 	nbFiles = sources.size();
-	for (i=0 ; i<nbFiles ; ++i) {
+	for (i = 0; i < nbFiles; ++i) {
 		source = QDir::cleanPath(sources.at(i));
 		sources.replace(i, source);
 		destinations.append(currentPath % source.mid(source.lastIndexOf('/')+1));
@@ -503,7 +503,7 @@ void FsDialog::add(QStringList sources, bool fromDir)
 		QMessageBox::warning(this, tr("Erreur d'ajout"), FsArchive::errorString(FsArchive::NonWritable));
 	}
 	QStringList errorOut;
-	for (i=0 ; i<errors.size() && errorOut.size() < 20 ; ++i) {
+	for (i = 0; i < errors.size() && errorOut.size() < 20; ++i) {
 		if (errors.at(i) == FsArchive::FileExists) {
 			if (QMessageBox::question(this, tr("Le fichier existe déjà"), tr("Le fichier existe déjà, voulez-vous le remplacer ?"), tr("Oui"), tr("Non")) == 0) {
 				replace(sources.at(i), destinations.at(i));

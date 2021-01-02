@@ -148,7 +148,7 @@ void FF8Font::openTxt(const QString &data)
 
 	if (!table.isEmpty()) {
 		if (table.size() < 224) {
-			for (int i=table.size() ; i<224 ; ++i) {
+			for (int i = table.size(); i < 224; ++i) {
 				table.append(QString());
 			}
 		}
@@ -168,8 +168,8 @@ QString FF8Font::saveTxt()
 	}
 
 	foreach(const QStringList &t, _tables) {
-		for (int j=0 ; j<14 ; ++j) {
-			for (int i=0 ; i<16 ; ++i) {
+		for (int j = 0; j < 14; ++j) {
+			for (int i = 0; i < 16; ++i) {
 				data.append(QString("\"%1\"").arg(t[j*16 + i]));
 				if (i<15) {
 					data.append(",");
@@ -191,9 +191,9 @@ void FF8Font::print()
 	int tid=1;
 	foreach(const QStringList &t, _tables) {
 		qDebug() << QString("table %1").arg(tid++).toLatin1().data();
-		for (int j=0 ; j<14 ; ++j) {
+		for (int j = 0; j < 14; ++j) {
 			QString buf;
-			for (int i=0 ; i<16 ; ++i) {
+			for (int i = 0; i < 16; ++i) {
 				buf += QString("\"%1\",").arg(t[j*16 + i]);
 			}
 			qDebug() << buf.toLatin1().data();

@@ -121,7 +121,7 @@ void SoundWidget::fill()
 void SoundWidget::fillList(int count)
 {
 	list1->blockSignals(true);
-	for (int i=0 ; i<count ; ++i) {
+	for (int i = 0; i < count; ++i) {
 		list1->addItem(tr("Son %1").arg(i));
 	}
 	list1->blockSignals(false);
@@ -174,7 +174,7 @@ void SoundWidget::addSound()
 
 	if (inserted) {
 		list1->insertItem(row+1, tr("Son %1").arg(row+1));
-		for (int i=row+2 ; i<list1->count() ; ++i) {
+		for (int i = row + 2; i < list1->count(); ++i) {
 			list1->item(i)->setText(tr("Son %1").arg(i));
 		}
 		list1->setCurrentRow(row+1);
@@ -212,7 +212,7 @@ void SoundWidget::removeSound()
 
 	if (removed) {
 		delete list1->item(row);
-		for (int i=row ; i<list1->count() ; ++i) {
+		for (int i = row; i < list1->count(); ++i) {
 			list1->item(i)->setText(tr("Son %1").arg(i));
 		}
 		emit modified();

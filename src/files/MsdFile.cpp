@@ -41,7 +41,7 @@ bool MsdFile::open(const QByteArray &msd)
 	}
 
 	nbText = textPos/4;
-	for (int i=1 ; i<nbText ; ++i) {
+	for (int i = 1; i < nbText; ++i) {
 		memcpy(&nextTextPos, &msd_data[i*4], 4);
 		if (nextTextPos>=dataSize || nextTextPos<textPos) {
 			lastError = QObject::tr("Format de fichier invalide");
@@ -124,7 +124,7 @@ bool MsdFile::hasText(const QRegExp &txt) const
 
 int MsdFile::indexOfText(const QRegExp &txt, int from) const
 {
-	for (int textID = qMax(0, from) ; textID < nbText() ; ++textID) {
+	for (int textID = qMax(0, from); textID < nbText(); ++textID) {
 		if (txt.indexIn(text(textID)) != -1) {
 			return textID;
 		}

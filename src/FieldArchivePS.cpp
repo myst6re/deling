@@ -89,7 +89,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 
 	progress->setObserverMaximum((tocSize - tocStart) / 3);
 
-	for (i=tocStart ; i<tocSize ; i += 3) {
+	for (i = tocStart; i < tocSize; i += 3) {
 		QCoreApplication::processEvents();
 		if (progress->observerWasCanceled()) {
 			clearFields();
@@ -159,7 +159,7 @@ bool FieldArchivePS::openModels()
 
 	const QList<FF8DiscFile> &fieldFiles = iso->fieldDirectory();
 
-	for (int i=0 ; i<77 && i<fieldFiles.size() ; ++i) {
+	for (int i = 0; i<77 && i < fieldFiles.size(); ++i) {
 		QByteArray fieldData = iso->file(fieldFiles.at(i));
 
 		if (!fieldData.isEmpty()) {

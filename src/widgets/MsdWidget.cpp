@@ -351,7 +351,7 @@ void MsdWidget::fill()
 
 			QIcon icon(":/images/text_icon.png"), iconDisabled(":/images/text_icon_disabled.png");
 
-			for (int i=0 ; i<nbTexts ; ++i) {
+			for (int i = 0; i < nbTexts; ++i) {
 				QListWidgetItem *item = new QListWidgetItem(tr("Texte %1").arg(i));
 				if (data()->hasJsmFile() && data()->getJsmFile()->nbWindows(i)>0)
 					item->setIcon(icon);
@@ -603,7 +603,7 @@ void MsdWidget::gotoText(int textID, int from, int size)
 {
 	if (!isBuilded())	build();
 
-	for (int i=0 ; i<textList->count() ; ++i) {
+	for (int i = 0; i < textList->count(); ++i) {
 		if (textID == textList->item(i)->data(Qt::UserRole).toInt()) {
 			blockSignals(true);
 			textEdit->blockSignals(true);

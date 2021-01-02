@@ -26,7 +26,7 @@ HeaderPS::HeaderPS(const QByteArray &data, int count) :
 
 	memoryPos = posSections[0] - size;
 
-	for (int i=0 ; i<sectionCount ; ++i) {
+	for (int i = 0; i < sectionCount; ++i) {
 		posSections[i] -= memoryPos;
 	}
 	posSections[count] = data.size();
@@ -50,7 +50,7 @@ bool HeaderPS::isValid(int size) const
 		return false;
 	}
 
-	for (int i=0 ; i<sectionCount ; ++i) {
+	for (int i = 0; i < sectionCount; ++i) {
 		if (posSections[i] > posSections[i+1]) {
 			return false;
 		}
@@ -78,7 +78,7 @@ void HeaderPS::setSize(int section, quint32 newSize)
 {
 	int diff = newSize - size(section);
 
-	for (int i=section+1 ; i<sectionCount ; ++i) {
+	for (int i = section+1; i < sectionCount; ++i) {
 		posSections[i] += diff;
 	}
 }
@@ -87,7 +87,7 @@ QByteArray HeaderPS::save() const
 {
 	QByteArray header;
 
-	for (int i=0 ; i<sectionCount ; ++i) {
+	for (int i = 0; i < sectionCount; ++i) {
 		quint32 posSection = posSections[i] + memoryPos;
 		header.append((char *)&posSection, 4);
 	}

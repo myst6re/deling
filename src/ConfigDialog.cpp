@@ -110,7 +110,7 @@ void ConfigDialog::fillMenuLang()
 		langComboBox->setItemData(i++, str.right(5).left(2));
 	}
 
-	for (i=0 ; i<langComboBox->count() ; ++i) {
+	for (i = 0; i < langComboBox->count(); ++i) {
 		if (Config::value("lang")==langComboBox->itemData(i)) {
 			langComboBox->setCurrentIndex(i);
 			break;

@@ -178,7 +178,7 @@ QWidget *Search::scriptPageWidget2()
 	QWidget *ret = new QWidget(this);
 
 	searchOpcode = new QComboBox(ret);
-	for (int i=0 ; i<JSM_OPCODE_COUNT ; ++i) {
+	for (int i = 0; i < JSM_OPCODE_COUNT; ++i) {
 		searchOpcode->addItem(QString("%1 - %2").arg(i, 3, 16, QChar('0')).arg(JsmOpcode::opcodes[i]));
 	}
 

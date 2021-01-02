@@ -64,16 +64,16 @@ bool TdwFile::open(const QByteArray &tdw)
 	if (sizeHeader != 0) {
 		tableCount = sizeHeader / 112 + int(sizeHeader % 112 != 0);
 
-		for (tableID=0 ; tableID<tableCount ; ++tableID) {
+		for (tableID = 0; tableID < tableCount; ++tableID) {
 
 			quint8 *charWidth = new quint8[224];
 
-			for (i=0 ; i<sizeHeader && i<quint32(112) ; ++i) {
+			for (i = 0; i<sizeHeader && i < quint32(112); ++i) {
 				space = tdw.at(posHeader + tableID*112 + i);
 				charWidth[i*2] = space & 0xF;
 				charWidth[i*2 + 1] = space >> 4;
 			}
-			for ( ; i<quint32(112) ; ++i) {
+			for ( ; i < quint32(112) ; ++i) {
 				charWidth[i*2] = 0;
 				charWidth[i*2 + 1] = 0;
 			}
@@ -115,7 +115,7 @@ bool TdwFile::save(QByteArray &tdw)
 	tdw.append((char *)&posData, 4);
 
 	foreach(quint8 *table, _charWidth) {
-		for (i=0 ; i<112 ; ++i) {
+		for (i = 0; i < 112; ++i) {
 			space = ((table[i*2 + 1] & 0xF) << 4) | (table[i*2] & 0xF);
 			if (space == 0)	break;
 			tdw.append((char)space);
@@ -221,10 +221,10 @@ void TdwFile::setLetter(int charId, const QImage &image)
 
 	int x2, y2 = rect.y();
 
-	for (int y=0 ; y<image.height() ; ++y) {
+	for (int y = 0; y < image.height(); ++y) {
 		x2 = rect.x();
 
-		for (int x=0 ; x<image.width() ; ++x) {
+		for (int x = 0; x < image.width(); ++x) {
 			_tim.imagePtr()->setPixel(x2, y2, image.pixelIndex(x, y));
 			++x2;
 		}
@@ -242,7 +242,7 @@ void TdwFile::setImage(const QImage &image, int hCount, int vCount)
 	QSize letterSize = this->letterSize();
 	int x=0, y=0;
 
-	for (int charId=0 ; charId<charCount ; ++charId) {
+	for (int charId = 0; charId < charCount; ++charId) {
 		setLetter(charId, image.copy(x * letterWidth, y * letterHeight, letterWidth, letterHeight).scaled(letterSize));
 		if (++x == hCount) {
 			x = 0;
@@ -332,7 +332,7 @@ int TdwFile::charCount(quint8 tableId) const
 
 	quint8 *charWidth = _charWidth.at(tableId);
 
-	for (int i=0 ; i<224 ; ++i) {
+	for (int i = 0; i < 224; ++i) {
 		if (charWidth[i]==0)		return i;
 	}
 
@@ -348,7 +348,7 @@ TexFile TdwFile::toTexFile() const
 
 	QImage img(256, 128, QImage::Format_Indexed8);
 	QVector<QRgb> colorTable = _tim.image().colorTable();
-	for (int i=0 ; i<colorTable.size() ; ++i) {
+	for (int i = 0; i < colorTable.size(); ++i) {
 		QRgb &color = colorTable[i];
 		if (color != 0) {
 			color = qRgba(qRed(color), qGreen(color), qBlue(color), 254);
@@ -359,8 +359,8 @@ TexFile TdwFile::toTexFile() const
 	img.setColorTable(colorTable);
 	img.fill(0);
 
-	for (int y=0 ; y<120 ; ++y) {
-		for (int x=0 ; x<256 ; ++x) {
+	for (int y = 0; y < 120; ++y) {
+		for (int x = 0; x < 256; ++x) {
 			img.setPixel(x, y, _tim.image().pixelIndex(x, y));
 		}
 	}

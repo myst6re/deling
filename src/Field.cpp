@@ -20,14 +20,14 @@
 Field::Field(const QString &name)
 	: _isOpen(false), _name(name)
 {
-	for (int i=0 ; i<FILE_COUNT ; ++i) {
+	for (int i = 0; i < FILE_COUNT; ++i) {
 		files.append(nullptr);
 	}
 }
 
 Field::~Field()
 {
-	for (int i=0 ; i<files.size() ; ++i) {
+	for (int i = 0; i < files.size(); ++i) {
 		deleteFile(FileType(i));
 	}
 
@@ -248,7 +248,7 @@ bool Field::hasAkaoListFile() const
 
 bool Field::hasFiles() const
 {
-	for (int i=0 ; i<files.size() ; ++i) {
+	for (int i = 0; i < files.size(); ++i) {
 		if (hasFile(FileType(i))) {
 			return true;
 		}

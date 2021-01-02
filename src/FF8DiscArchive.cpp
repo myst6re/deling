@@ -305,7 +305,7 @@ const QList<FF8DiscFile> &FF8DiscArchive::fieldDirectory()
 		}
 	}
 
-	for (int i=0 ; i<tocSize ; ++i) {
+	for (int i = 0; i < tocSize; ++i) {
 		memcpy(&position, fieldBinData + index + i*8, 4);
 		memcpy(&size, fieldBinData + index + i*8 + 4, 4);
 

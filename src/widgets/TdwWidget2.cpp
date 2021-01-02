@@ -103,7 +103,7 @@ void TdwWidget2::setTdwFile(TdwFile *tdw)
 
 	if (selectTable->count() != tdw->tableCount()) {
 		selectTable->clear();
-		for (int i=1 ; i<=tdw->tableCount() ; ++i) {
+		for (int i = 1; i <= tdw->tableCount(); ++i) {
 			selectTable->addItem(tr("Table %1").arg(i));
 		}
 		selectTable->setEnabled(selectTable->count() > 1);

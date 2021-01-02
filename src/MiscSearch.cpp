@@ -51,7 +51,7 @@ void MiscSearch::fillList()
 	QStringList mapList = fieldArchive->mapList();
 	QMultiMap<int, QString> fields;
 
-	for (int i=0 ; i<list->count() ; ++i) {
+	for (int i = 0; i < list->count(); ++i) {
 		Field *f = fieldArchive->getField(i);
 		if (f == nullptr || !f->hasJsmFile())	continue;
 		int mapId = f->getJsmFile()->mapID();
@@ -68,7 +68,7 @@ void MiscSearch::fillList()
 	return;
 
 	QMap<int, QStringList> cardPlayers;
-	for (int i=0 ; i<list->count() ; ++i) {
+	for (int i = 0; i < list->count(); ++i) {
 		QList<int> playersId = fieldArchive->searchAllCardPlayers(i);
 		foreach(int id, playersId) {
 			QStringList curList = cardPlayers.value(id, QStringList());
@@ -83,7 +83,7 @@ void MiscSearch::fillList()
 		}
 	}
 //	QMap<int, QStringList> spells;
-//	for (int i=0 ; i<list->count() ; ++i) {
+//	for (int i = 0; i < list->count(); ++i) {
 //		QList<int> spellsId = fieldArchive->searchAllSpells(i);
 //		foreach(int id, spellsId) {
 //			QStringList curList = spells.value(id, QStringList());
@@ -174,7 +174,7 @@ void MiscSearch::fillList()
 //	text.append("\");\n");
 /*
 	QMap<int, int> opcodeTypes = fieldArchive->searchAllOpcodeTypes();
-	for (int j=0 ; j<JSM_OPCODE_COUNT ; ++j) {
+	for (int j = 0; j < JSM_OPCODE_COUNT; ++j) {
 		if (!opcodeTypes.contains(j)) {
 			qWarning() << QString::number(j, 16) << JsmFile::opcodeName.value(j, "???") << "introuvable";
 		}

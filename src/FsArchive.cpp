@@ -735,7 +735,7 @@ QList<FsArchive::Error> FsArchive::appendFiles(const QStringList &sources, const
 
 	progress->setObserverMaximum(nbFiles);
 
-	for (i=0 ; i<nbFiles ; ++i) {
+	for (i = 0; i < nbFiles; ++i) {
 		QCoreApplication::processEvents();
 		if (progress->observerWasCanceled())				break;// Stop, don't canceling
 
@@ -880,7 +880,7 @@ FsArchive::Error FsArchive::rename(const QStringList &destinations, const QStrin
 	if (!isWritable())						return NonWritable;
 
 	size = destinations.size();
-	for (i=0 ; i<size ; ++i) {
+	for (i = 0; i < size; ++i) {
 		destination = destinations.at(i);
 		newDestination = newDestinations.at(i);
 

@@ -62,7 +62,7 @@ void CharaWidget::fill()
 	if (!hasData() || !data()->hasCharaFile())		return;
 
 	modelList->blockSignals(true);
-	for (int i=0 ; i<data()->getCharaFile()->modelCount() ; ++i) {
+	for (int i = 0; i < data()->getCharaFile()->modelCount(); ++i) {
 		QString name = data()->getCharaFile()->model(i).name();
 		modelList->addItem(name.isEmpty() ? tr("(Sans nom)") : name);
 	}

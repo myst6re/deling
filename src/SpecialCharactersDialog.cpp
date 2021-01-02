@@ -10,7 +10,7 @@ SpecialCharactersDialog::SpecialCharactersDialog(QWidget *parent) :
 	if (hasTables) {
 		tableSelect = new QComboBox(this);
 		int tableCount = FF8Font::getCurrentConfigFont()->tdw()->tableCount();
-		for (int i=0 ; i<tableCount ; ++i) {
+		for (int i = 0; i < tableCount; ++i) {
 			tableSelect->addItem(tr("Table %1").arg(i+1));
 		}
 	}

@@ -695,7 +695,7 @@ void MainWindow::exportCurrent()
 		filter.append(tr("Fichier informations décors écran PC (*.map)"));
 		typeList.append(map);
 	}*/
-	for (int i=0 ; i<FILE_COUNT ; ++i) {
+	for (int i = 0; i < FILE_COUNT; ++i) {
 		if (i == Field::Jsm) {
 			if (currentField->hasJsmFile()) {
 				filter.append(currentField->getJsmFile()->filterText());
@@ -812,7 +812,7 @@ void MainWindow::importCurrent()
     QStringList filter;
     QList<int> typeList;
 
-    for (int i=0 ; i<FILE_COUNT ; ++i) {
+    for (int i = 0; i < FILE_COUNT; ++i) {
         if (i != Field::Background && i != Field::Jsm) {
 			if (currentField->hasFile(Field::FileType(i))) {
 				filter.append(currentField->getFile(Field::FileType(i))->filterText());
@@ -947,7 +947,7 @@ bool MainWindow::gotoField(int fieldID)
 {
 	int i, size=list1->topLevelItemCount();
 
-	for (i=0 ; i<size ; ++i) {
+	for (i = 0; i < size; ++i) {
 		QTreeWidgetItem *item = list1->topLevelItem(i);
 		if (item->data(0, Qt::UserRole).toInt() == fieldID) {
 			blockSignals(true);

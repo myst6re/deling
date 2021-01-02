@@ -102,7 +102,7 @@ QList<JsmOpcode *> JsmData::opcodesp(int opcodeID, int nbOpcode) const
 	} else {
 		count = this->nbOpcode() - opcodeID;
 	}
-	for (int i = 0 ; i < count ; ++i) {
+	for (int i = 0; i < count; ++i) {
 		ret.append(opcodep(opcodeID + i));
 	}
 	return ret;

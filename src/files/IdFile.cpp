@@ -58,7 +58,7 @@ bool IdFile::open(const QByteArray &id)
 	Access acc;
 	triangles.clear();
 	_access.clear();
-	for (i=0 ; i<nbSector ; ++i) {
+	for (i = 0; i < nbSector; ++i) {
 		memcpy(&triangle, &id_data[4+i*24], 24);
 
 		triangles.append(triangle);

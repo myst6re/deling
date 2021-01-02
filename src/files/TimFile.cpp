@@ -80,7 +80,7 @@ bool TimFile::open(const QByteArray &data)
 			{
 				QVector<QRgb> pal;
 
-				for (quint16 j=0 ; j<onePalSize ; ++j) {
+				for (quint16 j = 0; j < onePalSize; ++j) {
 					memcpy(&color, &constData[20+pos*2+j*2], 2);
 					pal.append(FF8Image::fromPsColor(color, true));
 				}
@@ -236,7 +236,7 @@ bool TimFile::save(QByteArray &data)
 
 		foreach(const QVector<QRgb> &colorTable, _colorTables) {
 			int i;
-			for (i=0 ; i<colorTable.size() && i<colorPerPal ; ++i) {
+			for (i = 0; i<colorTable.size() && i < colorPerPal; ++i) {
 				quint16 psColor = FF8Image::toPsColor(colorTable.at(i));
 				data.append((char *)&psColor, 2);
 			}
@@ -263,8 +263,8 @@ bool TimFile::save(QByteArray &data)
 
 		width *= 2;
 
-		for (int y=0 ; y<height ; ++y) {
-			for (int x=0 ; x<width ; ++x) {
+		for (int y = 0; y < height; ++y) {
+			for (int x = 0; x < width; ++x) {
 				if (bpp == 0) {
 					quint8 index = (_image.pixelIndex(x*2, y) & 0xF) | ((_image.pixelIndex(x*2+1, y) & 0xF) << 4);
 					data.append((char)index);
@@ -283,8 +283,8 @@ bool TimFile::save(QByteArray &data)
 		data.append((char *)&width, 2);
 		data.append((char *)&height, 2);
 
-		for (int y=0 ; y<height ; ++y) {
-			for (int x=0 ; x<width ; ++x) {
+		for (int y = 0; y < height; ++y) {
+			for (int x = 0; x < width; ++x) {
 				if (bpp == 2) {
 					quint16 color = FF8Image::toPsColor(_image.pixel(x, y));
 					data.append((char *)&color, 2);
