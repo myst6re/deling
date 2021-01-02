@@ -262,7 +262,7 @@ int JsmScripts::findGroup(int absoluteMethodID) const
 {
 	int groupId = 0;
 
-	foreach (const JsmGroup &group, groupList) {
+	for (const JsmGroup &group: groupList) {
 		if (group.label() > absoluteMethodID) {
 			return groupId - 1;
 		}
@@ -315,7 +315,7 @@ QList<int> JsmScripts::searchJumps(const QList<JsmOpcode *> &opcodes) const
 	QMap<int, bool> labels;
 	int i = 0, nbOpcode = opcodes.size();
 
-	foreach(JsmOpcode *op, opcodes) {
+	for (JsmOpcode *op: opcodes) {
 		quint32 key = op->key();
 
 		if (key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
@@ -376,7 +376,7 @@ void JsmScripts::mergeAndConditions(JsmControl *control, int pos, int posEnd,
                                     QSet<int> &usedLabels)
 {
 	JsmProgram programCopy = control->block();
-	foreach(const JsmInstruction &instr, programCopy) {
+	for (const JsmInstruction &instr: programCopy) {
 		// We're looking for a ifElse with one goto in the else block
 		if (instr.type() == JsmInstruction::Control) {
 			JsmControl *subControl = instr.control();

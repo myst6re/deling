@@ -234,7 +234,7 @@ bool TimFile::save(QByteArray &data)
 		data.append((char *)&palW, 2);
 		data.append((char *)&palH, 2);
 
-		foreach(const QVector<QRgb> &colorTable, _colorTables) {
+		for (const QVector<QRgb> &colorTable: _colorTables) {
 			int i;
 			for (i = 0; i<colorTable.size() && i < colorPerPal; ++i) {
 				quint16 psColor = FF8Image::toPsColor(colorTable.at(i));

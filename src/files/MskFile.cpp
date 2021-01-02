@@ -24,7 +24,7 @@ MskFile::MskFile()
 
 MskFile::~MskFile()
 {
-	foreach(Vertex_s *vertex, vertices) {
+	for (Vertex_s *vertex: vertices) {
 		delete[] vertex;
 	}
 }
@@ -34,7 +34,7 @@ bool MskFile::open(const QByteArray &msk)
 	const char *mskData = msk.constData();
 	quint32 count;
 
-	foreach(Vertex_s *vertex, vertices) {
+	for (Vertex_s *vertex: vertices) {
 		delete[] vertex;
 	}
 	vertices.clear();
@@ -71,7 +71,7 @@ bool MskFile::save(QByteArray &msk)
 	qint32 count = vertices.size();
 	msk.append((char *)&count, 4);
 
-	foreach(Vertex_s *vertex, vertices) {
+	for (Vertex_s *vertex: vertices) {
 		msk.append((char *)&vertex, 24);
 	}
 

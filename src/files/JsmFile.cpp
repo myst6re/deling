@@ -277,7 +277,7 @@ bool JsmFile::save(QByteArray &jsm)
 	JsmHeader jsm_header;
 	quint8 nbDoors=0, nbLines=0, nbBackground=0, nbOther=0;
 
-	foreach(const JsmGroup &group, scripts.getGroupList()) {
+	for (const JsmGroup &group: scripts.getGroupList()) {
 		switch(group.type()) {
 		case JsmGroup::Door:
 			nbDoors++;
@@ -317,7 +317,7 @@ bool JsmFile::save(QByteArray &jsm)
 		qWarning() << "Count Other different" << nbOther << scripts.countOthers();
 	}
 
-	foreach(const JsmScript &script, scripts.getScriptList()) {
+	for (const JsmScript &script: scripts.getScriptList()) {
 		data = (script.flag() << 15) | (script.pos() & 0x7FFF);
 		section1.append((char *)&data, 2);
 	}
@@ -362,7 +362,7 @@ QString JsmFile::saveSym()
 {
 	QString ret;
 
-	foreach(const JsmGroup &group, scripts.getGroupList()) {
+	for (const JsmGroup &group: scripts.getGroupList()) {
 		if(group.name().isEmpty())	break;
 
 		if(group.type() != JsmGroup::Door) {
@@ -696,7 +696,7 @@ QString JsmFile::_toString(int groupID, int methodID, int indent) const
 	QString ret;
 	QList<JsmOpcode *> opcodes = scripts.opcodesp(groupID, methodID, true);
 
-	foreach(JsmOpcode *op, opcodes) {
+	for (JsmOpcode *op: opcodes) {
 		if (indent > 0) {
 			ret.append(QString(indent, QChar('\t')));
 		}
@@ -770,7 +770,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 	errorStr = "";
 
 	int l=1;
-	foreach(const QString &line, lines) {
+	for (const QString &line: lines) {
 		QStringList rows = line.split(spaces, QString::SkipEmptyParts);
 		int rowsSize = rows.size();
 		if(rowsSize < 1) {

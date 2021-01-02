@@ -536,7 +536,7 @@ void WalkmeshWidget::fill()
 
 	if (data()->hasInfFile()) {
 		gateList->clear();
-		foreach(const Gateway &gateway, data()->getInfFile()->getGateways()) {
+		for (const Gateway &gateway: data()->getInfFile()->getGateways()) {
 			if (gateway.fieldId != 0x7FFF) {
 				gateList->addItem(QString("%1 (%2)").arg(Data::maplist().value(gateway.fieldId)).arg(gateway.fieldId));
 			} else {
@@ -547,7 +547,7 @@ void WalkmeshWidget::fill()
 		setCurrentGateway(0);
 
 		doorList->clear();
-		foreach(const Trigger &trigger, data()->getInfFile()->getTriggers(false)) {
+		for (const Trigger &trigger: data()->getInfFile()->getTriggers(false)) {
 			if (trigger.doorID != 0xFF) {
 				doorList->addItem(tr("Porte %1").arg(trigger.doorID));
 			} else {

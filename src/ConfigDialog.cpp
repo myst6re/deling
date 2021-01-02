@@ -76,7 +76,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 	}
 	appPathLine->setText(appPath);
 
-	foreach(const QString &fontName, FF8Font::fontList()) {
+	for (const QString &fontName: FF8Font::fontList()) {
 		if (fontName == "00" || fontName == "01")	continue;
 		FF8Font *font = FF8Font::font(fontName);
 		if (font) {
@@ -104,7 +104,7 @@ void ConfigDialog::fillMenuLang()
 
 	QTranslator translator;
 	int i=1;
-	foreach(const QString &str, stringList) {
+	for (const QString &str: stringList) {
 		translator.load(dir.filePath(str));
 		langComboBox->addItem(translator.translate("MainWindow", "Français", "Your translation language"));
 		langComboBox->setItemData(i++, str.right(5).left(2));

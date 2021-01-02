@@ -105,7 +105,7 @@ void FsWidget::dropEvent(QDropEvent *event)
 		QStringList pathList;
 		QString path;
 
-		foreach(const QUrl &url, urlList)
+		for (const QUrl &url: urlList)
 		{
 			path = QDir::cleanPath(url.path().mid(1));
 			if (path.startsWith(QDir::rootPath())) {

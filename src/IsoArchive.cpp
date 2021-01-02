@@ -115,7 +115,7 @@ IsoDirectory::IsoDirectory(const QString &name, quint32 location, quint32 size, 
 
 IsoDirectory::~IsoDirectory()
 {
-	foreach(IsoFileOrDirectory *fOrD, _filesAndDirectories) {
+	for (IsoFileOrDirectory *fOrD: _filesAndDirectories) {
 		delete fOrD;
 	}
 }
@@ -134,7 +134,7 @@ QList<IsoFile *> IsoDirectory::files() const
 {
 	QList<IsoFile *> fs;
 
-	foreach(IsoFileOrDirectory *fOrD, _filesAndDirectories) {
+	for (IsoFileOrDirectory *fOrD: _filesAndDirectories) {
 		if (fOrD->isFile()) {
 			fs.append((IsoFile *)fOrD);
 		}
@@ -147,7 +147,7 @@ QList<IsoDirectory *> IsoDirectory::directories() const
 {
 	QList<IsoDirectory *> ds;
 
-	foreach(IsoFileOrDirectory *fOrD, _filesAndDirectories) {
+	for (IsoFileOrDirectory *fOrD: _filesAndDirectories) {
 		if (fOrD->isDirectory()) {
 			ds.append((IsoDirectory *)fOrD);
 		}
@@ -513,16 +513,16 @@ bool IsoArchive::_open()
 //	pathTables2b = pathTable(qFromBigEndian(volume.vd1.opt_type_path_table2), volume.vd1.path_table_size);
 
 	/*qDebug() << "PATHTABLE1";
-	foreach(PathTable pt, pathTables1a)
+	for (PathTable pt: pathTables1a)
 		qDebug() << pathTableToString(pt);
 	qDebug() << "PATHTABLE2";
-	foreach(PathTable pt, pathTables1b)
+	for (PathTable pt: pathTables1b)
 		qDebug() << pathTableToString(pt);
 	qDebug() << "PATHTABLE3";
-	foreach(PathTable pt, pathTables2a)
+	for (PathTable pt: pathTables2a)
 		qDebug() << pathTableToString(pt, true);
 	qDebug() << "PATHTABLE4";
-	foreach(PathTable pt, pathTables2b)
+	for (PathTable pt: pathTables2b)
 		qDebug() << pathTableToString(pt, true);
 	*/
 
@@ -532,7 +532,7 @@ bool IsoArchive::_open()
 int IsoArchive::findPadding(const QList<IsoFileOrDirectory *> &orderedFileList, quint32 minSectorCount)
 {
 	int i=0;
-	foreach(IsoFileOrDirectory *fileOrDir, orderedFileList) {
+	for (IsoFileOrDirectory *fileOrDir: orderedFileList) {
 		if (fileOrDir->paddingAfter() >= minSectorCount) {
 			return i;
 		}
@@ -556,7 +556,7 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 		directory = _rootDirectory;
 	}
 
-	foreach(IsoFile *isoFile, getModifiedFiles(directory)) {
+	for (IsoFile *isoFile: getModifiedFiles(directory)) {
 		// Est-ce que les nouvelles données sont plus grandes que les anciennes ? Est-ce qu'on est pas à la fin de l'archive ?
 		if (isoFile->newSectorCount() > isoFile->sectorCount() + isoFile->paddingAfter()
 				&& isoFile->location() + isoFile->sectorCount() < sectorCount()) {
@@ -587,7 +587,7 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 
 	reset();
 
-	foreach(const IsoFile *isoFile, writeToTheMain) {
+	for (const IsoFile *isoFile: writeToTheMain) {
 		if (control->wasCanceled())	return false;
 
 		secteur = isoFile->newLocation();
@@ -634,7 +634,7 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 	// Fichiers trop gros mis à la fin de l'ISO
 	secteur = destination->pos()/SECTOR_SIZE;
 
-	foreach(const IsoFile *isoFile, writeToTheEnd) {
+	for (const IsoFile *isoFile: writeToTheEnd) {
 //		qDebug() << "écriture de" << isoFile->name() << "(" << isoFile->sectorCount() << "secteurs) dans isoTemp (à la fin) au secteur" << secteur;
 		secteur = writeSectors(isoFile->newData(), destination, secteur, control);
 		if (secteur == -1)	return false;
@@ -685,7 +685,7 @@ void IsoArchive::repairLocationSectors(IsoDirectory *directory, IsoArchive *newI
 	quint32 pos, oldSectorStart, newSectorStart, newSectorStart2, oldSize, newSize, newSize2;
 	QList<IsoDirectory *> dirs;
 
-	foreach(IsoFileOrDirectory *fileOrDir, directory->filesAndDirectories()) {
+	for (IsoFileOrDirectory *fileOrDir: directory->filesAndDirectories()) {
 		if (fileOrDir->isModified()) {
 			pos = fileOrDir->structPosition + 2;
 			oldSectorStart = fileOrDir->location();
@@ -717,7 +717,7 @@ void IsoArchive::repairLocationSectors(IsoDirectory *directory, IsoArchive *newI
 		}
 	}
 
-	foreach(IsoDirectory *d, dirs) {
+	for (IsoDirectory *d: dirs) {
 		repairLocationSectors(d, newIso);
 	}
 }
@@ -851,7 +851,7 @@ IsoDirectory *IsoArchive::_openDirectoryRecord(IsoDirectory *directories, QList<
 		}
 	}
 
-	foreach(IsoDirectory *dir, directories->directories()) {
+	for (IsoDirectory *dir: directories->directories()) {
 		if (!dir->isSpecial()) {
 //			qDebug() << "IN DIR" << dir->name() << dir->location();
 			if (!_openDirectoryRecord(dir, dirVisisted)) {
@@ -955,7 +955,7 @@ void IsoArchive::_extractAll(const QString &destination, IsoDirectory *directori
 	QDir dir(destination);
 	QString currentPath = dir.absolutePath().append('/');
 //	qDebug() << currentPath;
-	foreach(IsoFileOrDirectory *fileOrDir, directories->filesAndDirectories()) {
+	for (IsoFileOrDirectory *fileOrDir: directories->filesAndDirectories()) {
 		QCoreApplication::processEvents();
 		
 		if (fileOrDir->isDirectory())// Directory
@@ -1154,7 +1154,7 @@ QList<IsoFileOrDirectory *> IsoArchive::getIntegrity() const
 
 void IsoArchive::_getIntegrity(QMap<quint32, IsoFileOrDirectory *> &files, IsoDirectory *directory) const
 {
-	foreach(IsoFileOrDirectory *fileOrDir, directory->filesAndDirectories()) {
+	for (IsoFileOrDirectory *fileOrDir: directory->filesAndDirectories()) {
 		if (!fileOrDir->isSpecial()) {
 			files.insert(fileOrDir->location(), fileOrDir);
 
@@ -1174,7 +1174,7 @@ QMap<quint32, IsoFile *> IsoArchive::getModifiedFiles(IsoDirectory *directory) c
 
 void IsoArchive::getModifiedFiles(QMap<quint32, IsoFile *> &files, IsoDirectory *directory) const
 {
-	foreach(IsoFileOrDirectory *fileOrDir, directory->filesAndDirectories()) {
+	for (IsoFileOrDirectory *fileOrDir: directory->filesAndDirectories()) {
 		if (fileOrDir->isDirectory()) {
 			getModifiedFiles(files, (IsoDirectory *)fileOrDir);
 		} else if (((IsoFile *)fileOrDir)->isModified()) {
@@ -1185,7 +1185,7 @@ void IsoArchive::getModifiedFiles(QMap<quint32, IsoFile *> &files, IsoDirectory 
 
 void IsoArchive::applyModifications(IsoDirectory *directory)
 {
-	foreach(IsoFileOrDirectory *fileOrDir, directory->filesAndDirectories()) {
+	for (IsoFileOrDirectory *fileOrDir: directory->filesAndDirectories()) {
 		if (fileOrDir->isDirectory()) {
 			applyModifications((IsoDirectory *)fileOrDir);
 		}

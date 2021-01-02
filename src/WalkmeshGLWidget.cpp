@@ -126,7 +126,7 @@ void WalkmeshGLWidget::paintGL()
 	if (data->hasIdFile()) {
 		int i=0;
 
-		foreach(const Triangle &triangle, data->getIdFile()->getTriangles()) {
+		for (const Triangle &triangle: data->getIdFile()->getTriangles()) {
 			const Access &access = data->getIdFile()->access(i);
 
 			// Vertex info
@@ -156,7 +156,7 @@ void WalkmeshGLWidget::paintGL()
 		if (!_drawLine && data->hasInfFile()) {
 			InfFile *inf = data->getInfFile();
 
-			foreach(const Gateway &gate, inf->getGateways()) {
+			for (const Gateway &gate: inf->getGateways()) {
 				if (gate.fieldId != 0x7FFF) {
 					// Vertex info
 					QVector3D positionA(gate.exitLine[0].x / 4096.0, gate.exitLine[0].y / 4096.0, gate.exitLine[0].z / 4096.0),
@@ -169,7 +169,7 @@ void WalkmeshGLWidget::paintGL()
 				}
 			}
 
-			foreach(const Trigger &trigger, inf->getTriggers()) {
+			for (const Trigger &trigger: inf->getTriggers()) {
 				if (trigger.doorID != 0xFF) {
 					// Vertex info
 					QVector3D positionA(trigger.trigger_line[0].x / 4096.0, trigger.trigger_line[0].y / 4096.0, trigger.trigger_line[0].z / 4096.0),

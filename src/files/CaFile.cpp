@@ -57,7 +57,7 @@ bool CaFile::open(const QByteArray &ca)
 
 bool CaFile::save(QByteArray &ca)
 {
-	foreach(Camera camera, cameras) {
+	for (Camera camera: cameras) {
 		camera.camera_axis2z = camera.camera_axis[2].z;
 		camera.camera_zoom2 = camera.camera_zoom;
 		ca.append((char *)&camera, sizeof(Camera));

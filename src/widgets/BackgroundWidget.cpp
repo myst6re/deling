@@ -211,7 +211,7 @@ void BackgroundWidget::parameterChanged(int index)
 	QListWidgetItem *item;
 
 	statesWidget->clear();
-	foreach(quint8 state, states)
+	for (quint8 state: states)
 	{
 		item = new QListWidgetItem(tr("État %1").arg(state));
 		item->setData(Qt::UserRole, state);
@@ -605,14 +605,14 @@ void BackgroundWidget::fill()
 
 	parametersWidget->clear();
 	QList<quint8> parameters = bgFile->allparams.uniqueKeys();
-	foreach(quint8 parameter, parameters)
+	for (quint8 parameter: parameters)
 		parametersWidget->addItem(tr("Paramètre %1").arg(parameter), parameter);
 
 	QList<quint8> layerIDs = bgFile->layers.keys();
 	QListWidgetItem *item;
 
 	layersWidget->clear();
-	foreach(quint8 layerID, layerIDs)
+	for (quint8 layerID: layerIDs)
 	{
 		item = new QListWidgetItem(tr("Couche %1").arg(layerID));
 		item->setData(Qt::UserRole, layerID);

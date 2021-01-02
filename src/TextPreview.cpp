@@ -91,7 +91,7 @@ int TextPreview::calcFF8TextWidth(const QByteArray &ff8Text)
 {
 	int width = 0;
 
-    foreach(quint8 c, ff8Text) {
+    for (quint8 c: ff8Text) {
 		if (c>=32 && c<227)
 			width += font->charWidth(0, c-32);
 	}
@@ -647,7 +647,7 @@ void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 t
 
 void TextPreview::word(int *x, int *y, const QByteArray &charIds, QPainter *painter, quint8 tableId)
 {
-	foreach(char charId, charIds) {
+	for (char charId: charIds) {
 		if (charId<0x20)	return;
 		letter(x, y, charId-0x20, painter, tableId);
 	}

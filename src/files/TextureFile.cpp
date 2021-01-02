@@ -103,9 +103,9 @@ void TextureFile::debug() const
 	int x, y;
 
 	y = 0;
-	foreach(const QVector<QRgb> &colorTable, _colorTables) {
+	for (const QVector<QRgb> &colorTable: _colorTables) {
 		x = 0;
-		foreach(const QRgb &color, colorTable) {
+		for (const QRgb &color: colorTable) {
 			img.setPixel(x*4+0, y*4+0, color);
 			img.setPixel(x*4+0, y*4+1, color);
 			img.setPixel(x*4+0, y*4+2, color);

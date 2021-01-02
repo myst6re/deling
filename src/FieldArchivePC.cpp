@@ -75,7 +75,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 	int currentMap=0;
 	// Ajout des écrans non-listés
 	QStringList toc = archive->toc();
-	foreach(const QString &entry, toc) {
+	for (const QString &entry: toc) {
 		if (entry.endsWith(".fs", Qt::CaseInsensitive) && !entry.endsWith("mapdata.fs", Qt::CaseInsensitive)
 			&& !entry.endsWith("main_chr.fs", Qt::CaseInsensitive)
 			&& !entry.endsWith("ec.fs", Qt::CaseInsensitive) && !entry.endsWith("te.fs", Qt::CaseInsensitive))
@@ -90,7 +90,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 	progress->setObserverMaximum(fsList.size());
 
 	// Ouverture des écrans listés
-	foreach(const QString &entry, fsList) {
+	for (const QString &entry: fsList) {
 		QCoreApplication::processEvents();
 
 		if (progress->observerWasCanceled()) {
@@ -164,7 +164,7 @@ bool FieldArchivePC::openModels()
 		fs = archive->fileData("*field\\model\\main_chr.fs");
 	}
 
-	foreach(const QString &entry, toc) {
+	for (const QString &entry: toc) {
 		if (fileName.indexIn(entry, -8) != -1) {
 			bool ok;
 			QStringList capturedTexts = fileName.capturedTexts();
@@ -231,13 +231,13 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 	progress->setObserverMaximum(archiveSize);
 
 	/*QDir dd("debug");
-	foreach(QString machin, dd.entryList(QStringList() << "*")) {
+	for (QString machin: dd.entryList(QStringList() << "*")) {
 		QFile::remove(dd.absoluteFilePath(machin));
 	}*/
 	QMap<QString, FsHeader> oldValues = archive->getHeader();
 	QMap<Field *, QMap<QString, FsHeader> > oldFields;
 
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		if (field->isModified()) {
 			QCoreApplication::processEvents();
 			if (progress->observerWasCanceled()) {
@@ -324,7 +324,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 		}
 	}
 
-	foreach(const QString &entry, toc) {
+	for (const QString &entry: toc) {
 		QCoreApplication::processEvents();
 		if (progress->observerWasCanceled()) {
 			temp.remove();
@@ -378,7 +378,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 		return false;
 	}
 
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		field->setModified(false);
 	}
 
@@ -412,7 +412,7 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 	QMap<QString, FsHeader> oldValues = archive->getHeader();
 	QMap<Field *, QMap<QString, FsHeader> > oldFields;
 
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		QCoreApplication::processEvents();
 
 		if (progress->observerWasCanceled()) {
@@ -468,7 +468,7 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 		progress->setObserverValue(pos);
 	}
 
-	foreach(const QString &entry, toc) {
+	for (const QString &entry: toc) {
 		QCoreApplication::processEvents();
 
 		if (progress->observerWasCanceled()) {
@@ -529,12 +529,12 @@ QStringList FieldArchivePC::languages() const
 	QStringList langs;
 	int stop = 10;
 
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		if (field->isPc() && field->isOpen()) {
 			FieldPC *fieldPC = (FieldPC *)field;
 
 			if (fieldPC->isMultiLanguage()) {
-				foreach(const QString &lang, fieldPC->languages()) {
+				for (const QString &lang: fieldPC->languages()) {
 					if (!langs.contains(lang, Qt::CaseInsensitive)) {
 						langs.append(lang.toLower());
 					}

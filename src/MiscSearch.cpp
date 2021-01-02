@@ -70,7 +70,7 @@ void MiscSearch::fillList()
 	QMap<int, QStringList> cardPlayers;
 	for (int i = 0; i < list->count(); ++i) {
 		QList<int> playersId = fieldArchive->searchAllCardPlayers(i);
-		foreach(int id, playersId) {
+		for (int id: playersId) {
 			QStringList curList = cardPlayers.value(id, QStringList());
 			Field *f = fieldArchive->getField(i);
 			if (f == nullptr)	continue;
@@ -85,7 +85,7 @@ void MiscSearch::fillList()
 //	QMap<int, QStringList> spells;
 //	for (int i = 0; i < list->count(); ++i) {
 //		QList<int> spellsId = fieldArchive->searchAllSpells(i);
-//		foreach(int id, spellsId) {
+//		for (int id: spellsId) {
 //			QStringList curList = spells.value(id, QStringList());
 //			Field *f = fieldArchive->getField(i);
 //			if (f == NULL)	continue;
@@ -114,7 +114,7 @@ void MiscSearch::fillList()
 //			}
 //		}
 //		QString t;
-//		foreach(const QString &map, it.value()) {
+//		for (const QString &map: it.value()) {
 //			t.append(map).append("/");
 //		}
 //		t.chop(1);
@@ -132,7 +132,7 @@ void MiscSearch::fillList()
 //		i.next();
 //		if (!i.value().isEmpty()) {
 //			text.append(QString("%1 -> ").arg(i.key()->name()));
-//			foreach(int battleID, i.value()) {
+//			for (int battleID: i.value()) {
 //				text.append(QString("[%1] | ").arg(battleID));
 //			}
 //			text.chop(3);
@@ -214,7 +214,7 @@ void MiscSearch::fillList()
 
 int MiscSearch::getMapId(const QList<Field *> &fields)
 {
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		if (field->getJsmFile()->mapID() != -1)
 			return field->getJsmFile()->mapID();
 	}

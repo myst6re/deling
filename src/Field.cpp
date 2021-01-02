@@ -385,7 +385,7 @@ void Field::setFile(FileType fileType)
 
 bool Field::isModified() const
 {
-	foreach(File *f, files) {
+	for (File *f: files) {
 		if (f && f->isModified()) {
 			return true;
 		}
@@ -396,7 +396,7 @@ bool Field::isModified() const
 
 void Field::setModified(bool modified)
 {
-	foreach(File *f, files) {
+	for (File *f: files) {
 		if (f) {
 			f->setModified(modified);
 		}

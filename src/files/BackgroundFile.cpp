@@ -146,7 +146,7 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim,
 			params = *defaultParams;
 		} else {
 			// Enable parameter only when state = 0
-			foreach(quint8 param, allparams.keys(0)) {
+			for (quint8 param: allparams.keys(0)) {
 				params.insert(param, 0);
 			}
 		}
@@ -166,7 +166,7 @@ bool BackgroundFile::save(QByteArray &map)
 	map = QByteArray(int(size) * (_tiles.size() + 1), '\0');
 	char *data = map.data();
 
-	foreach(const Tile &tile, _tiles) {
+	for (const Tile &tile: _tiles) {
 		if (_mapType == TypeNew) {
 			tile2 = Tile::toTile2(tile);
 			memcpy(data, &tile2, 16);
@@ -193,7 +193,7 @@ bool BackgroundFile::openParameters()
 	_tilesZOrder.clear();
 	_bounds = BackgroundBounds();
 
-	foreach(const Tile &tile, _tiles) {
+	for (const Tile &tile: _tiles) {
 		if (tile.parameter != 255 &&
 		        !allparams.contains(tile.parameter, tile.state)) {
 			allparams.insert(tile.parameter, tile.state);
@@ -351,7 +351,7 @@ QImage BackgroundFile::toImage(int palOffset, int srcYWidth,
 	QRgb *pixels = (QRgb *)image.bits();
 	image.fill(0xFF000000);
 
-	foreach(int tileIndex, tiles) {
+	for (int tileIndex: tiles) {
 		const Tile &tile = _tiles.at(tileIndex);
 
 		if (((hideBG || tile.parameter != 255) &&

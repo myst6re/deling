@@ -106,7 +106,7 @@ bool FieldPC::openOptimized(const QList<FileExt> &selectedExts)
 {
 	QMap<FileExt, QString> files;
 
-	foreach(FileExt ext, selectedExts) {
+	for (FileExt ext: selectedExts) {
 		QString path = filePath(ext);
 
 		if (header->fileExists(path)) {
@@ -157,7 +157,7 @@ bool FieldPC::openOptimized(const QList<FileExt> &selectedExts, FsArchive *archi
 	quint32 maxSize = 0;
 
 	// Gather max decompression size and header infos
-	foreach(FileExt ext, selectedExts) {
+	for (FileExt ext: selectedExts) {
 		FsHeader *infos = header->getFile(filePath(ext));
 
 		if (infos != nullptr) {
@@ -393,7 +393,7 @@ void FieldPC::optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_
 {
 	if (!header)	return;
 
-	foreach(FileExt ext, open2Exts()) {
+	for (FileExt ext: open2Exts()) {
 		header->fileToTheEnd(filePath(ext), fs_data);
 	}
 
@@ -420,7 +420,7 @@ QStringList FieldPC::languages() const
 	QRegExp pathReg("_([a-z]+)\\.[a-z]+$", Qt::CaseInsensitive);
 	QStringList langs;
 
-	foreach(const QString &file, files) {
+	for (const QString &file: files) {
 		if (pathReg.indexIn(file) != -1) {
 			const QString &lang = pathReg.capturedTexts().at(1);
 

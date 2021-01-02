@@ -62,7 +62,7 @@ bool MsdFile::save(QByteArray &msd)
 	QByteArray msd_data;
 	int headerSize = nbText()*4, pos, i=0;
 
-	foreach(const QByteArray &text, texts) {
+	for (const QByteArray &text: texts) {
 		pos = headerSize + msd_data.size();
 		msd.append((char *)&pos, 4);
 		msd_data.append(text);
@@ -167,7 +167,7 @@ bool MsdFile::searchTextReverse(const QRegExp &txt, int &textID, int &from, int 
 
 bool MsdFile::isJp() const
 {
-	foreach(const QByteArray &text, texts) {
+	for (const QByteArray &text: texts) {
 		if (text.contains('\x19') || text.contains('\x1a') || text.contains('\x1b') || text.contains('\x1c')) return true;
 	}
 	return false;

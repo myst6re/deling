@@ -82,7 +82,7 @@ quint8 FF8DiscArchive::discNumber() const
 
 bool FF8DiscArchive::isJp() const
 {
-	foreach(IsoFile *file, IsoArchive::rootDirectory()->files()) {
+	for (IsoFile *file: IsoArchive::rootDirectory()->files()) {
 		const QString &name = file->name();
 		if (name.startsWith("SLPS") || name.startsWith("SCPS") || name.startsWith("SLPM"))
 			return true;

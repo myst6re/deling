@@ -361,7 +361,7 @@ void FsDialog::extract(QStringList sources)
 		QList<QTreeWidgetItem *> items = list->selectedItems();
 		if (items.isEmpty())			return;
 
-		foreach(QTreeWidgetItem *item, items) {
+		for (QTreeWidgetItem *item: items) {
 			source = currentPath % item->text(0);
 			if (item->data(0, FILE_TYPE_ROLE).toInt() == FILE) {
 				sources.append(source);
@@ -531,7 +531,7 @@ void FsDialog::remove(QStringList destinations)
 		QList<QTreeWidgetItem *> items = list->selectedItems();
 		if (items.isEmpty())			return;
 
-		foreach(QTreeWidgetItem *item, items) {
+		for (QTreeWidgetItem *item: items) {
 			if (item->data(0, FILE_TYPE_ROLE).toInt() == FILE) {
 				destinations.append(currentPath % item->text(0));
 			}
@@ -598,7 +598,7 @@ void FsDialog::renameOK(QTreeWidgetItem *item, int column)
 	}
 	else {
 		destinations.append(fsArchive->tocInDirectory(destination));
-		foreach(const QString &path, destinations) {
+		for (const QString &path: destinations) {
 			newDestinations.append(newDestination % path.mid(destination.size()));
 		}
 	}

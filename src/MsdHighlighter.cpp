@@ -33,7 +33,7 @@ MsdHighlighter::MsdHighlighter(QTextDocument *parent) :
 		  << "\\{Galbadia\\}" << "\\{Esthar\\}" << "\\{Balamb\\}" << "\\{Dollet\\}"
 		  << "\\{Timber\\}" << "\\{Trabia\\}" << "\\{Centra\\}" << "\\{Horizon\\}";
 
-	foreach(const QString &name, names) {
+	for (const QString &name: names) {
 		rule.pattern = QRegExp(name);
 		rule.color = Qt::darkGreen;
 		highlightingRules.append(rule);
@@ -47,7 +47,7 @@ MsdHighlighter::MsdHighlighter(QTextDocument *parent) :
 		  << "\\{PurpleBlink\\}" << "\\{WhiteBlink\\}" << "\\{Wait\\d\\d\\d\\}"
 		  << "\\{Var[0b]?[0-7]\\}" << "^\\{NewPage\\}$" << "\\{jp\\d\\d\\d\\}";
 
-	foreach(const QString &s, syst) {
+	for (const QString &s: syst) {
 		rule.pattern = QRegExp(s, Qt::CaseInsensitive);
 		rule.color = Qt::darkBlue;
 		highlightingRules.append(rule);
@@ -58,7 +58,7 @@ MsdHighlighter::MsdHighlighter(QTextDocument *parent) :
 			"\\{GF\\}" << "\\{nt\\}" << "\\{il\\}" << "\\{o \\}" << "\\{ef\\}" << "\\{on\\}" << "\\{ w\\}" << "\\{ r\\}" <<
 			"\\{wi\\}" << "\\{fi\\}" << "\\{EC\\}" << "\\{s \\}" << "\\{ar\\}" << "\\{FE\\}" << "\\{ S\\}" << "\\{ag\\}";
 
-	foreach(const QString &d, doublet) {
+	for (const QString &d: doublet) {
 		rule.pattern = QRegExp(d);
 		rule.color = Qt::darkBlue;
 		highlightingRules.append(rule);
@@ -67,7 +67,7 @@ MsdHighlighter::MsdHighlighter(QTextDocument *parent) :
 
 void MsdHighlighter::highlightBlock(const QString &text)
 {
-	foreach(const HighlightingRule &rule, highlightingRules) {
+	for (const HighlightingRule &rule: highlightingRules) {
 		QRegExp expression(rule.pattern);
 		int index = expression.indexIn(text);
 		while (index >= 0) {

@@ -301,7 +301,7 @@ FsArchive::~FsArchive()
 		fi.close();
 		qDebug() << "close fs" << fs.fileName();
 	}
-	foreach(FsHeader *header, toc_access) 	delete header;
+	for (FsHeader *header: toc_access) 	delete header;
 }
 
 void FsArchive::addFile(const QString &path, quint32 uncompressedSize, quint32 position, quint32 compression)
@@ -379,7 +379,7 @@ bool FsArchive::dirExists(QString dir) const
 	if (dir.isEmpty())
 		return true;
 
-	foreach(FsHeader *info, toc_access) {
+	for (FsHeader *info: toc_access) {
 		if (info->path().startsWith(dir, Qt::CaseInsensitive)) {
 			return true;
 		}
@@ -522,7 +522,7 @@ QStringList FsArchive::toc() const
 	QStringList toc;
 
 	// Files sorted by positions
-	foreach(FsHeader *header, sortedByPosition) {
+	for (FsHeader *header: sortedByPosition) {
 		toc.append(header->path());
 	}
 
@@ -536,7 +536,7 @@ QStringList FsArchive::dirs() const
 	int lastIndex;
 
 	// Files sorted by positions
-	foreach(FsHeader *header, sortedByPosition) {
+	for (FsHeader *header: sortedByPosition) {
 		dir = header->path();
 		cleanPath(dir);
 		lastIndex = dir.lastIndexOf('\\', -2);
@@ -587,7 +587,7 @@ FsArchive::Error FsArchive::extractFiles(const QStringList &fileNames, const QSt
 	QDir dir(fileDir);
 	int i=0, sizeOfBaseFileName = baseFileName.size();
 
-	foreach(QString fileName, fileNames) {
+	for (QString fileName: fileNames) {
 		QCoreApplication::processEvents();
 
 		if (progress->observerWasCanceled()) {
@@ -642,7 +642,7 @@ FsArchive::Error FsArchive::replaceFile(const QString &source, const QString &de
 
 	progress->setObserverMaximum(toc.size());
 
-	foreach(const QString &entry, toc) {
+	for (const QString &entry: toc) {
 		QCoreApplication::processEvents();
 		if (progress->observerWasCanceled()) {
 			temp.remove();
@@ -703,10 +703,10 @@ QStringList FsArchive::listDirsRec(QDir *sourceDir)
 {
 	QStringList paths;
 
-	foreach (const QFileInfo &fileInfo, sourceDir->entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Readable)) {
+	for (const QFileInfo &fileInfo: sourceDir->entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Readable)) {
 		if (fileInfo.isDir()) {
 			sourceDir->cd(fileInfo.fileName());
-			foreach (const QString &subPath, listDirsRec(sourceDir)) {
+			for (const QString &subPath: listDirsRec(sourceDir)) {
 				paths << fileInfo.fileName() + "/" + subPath;
 			}
 			sourceDir->cdUp();
@@ -796,7 +796,7 @@ QList<FsArchive::Error> FsArchive::appendDir(const QString &source, const QStrin
 	QStringList sources, destinations;
 	QDir sourceDir(source);
 
-	foreach (const QString &relativePath, listDirsRec(&sourceDir)) {
+	for (const QString &relativePath: listDirsRec(&sourceDir)) {
 		sources << sourceDir.absoluteFilePath(relativePath);
 		destinations << destination + "\\" + QString(relativePath).replace('/', '\\');
 	}
@@ -824,7 +824,7 @@ FsArchive::Error FsArchive::remove(QStringList destinations, ArchiveObserver *pr
 
 	progress->setObserverMaximum(toc.size());
 
-	foreach(const QString &entry, toc) {
+	for (const QString &entry: toc) {
 		QCoreApplication::processEvents();
 		if (progress->observerWasCanceled()) {
 			temp.remove();
@@ -923,7 +923,7 @@ bool FsArchive::load(const QByteArray &fl_data, const QByteArray &fi_data)
 		return false;
 	}
 
-	foreach(const QString &line, fl) {
+	for (const QString &line: fl) {
 		memcpy(&fi_infos, fi_constData, 12);
 
 		addFile(line, fi_infos.size, fi_infos.pos, fi_infos.compression);
@@ -973,7 +973,7 @@ void FsArchive::save(QByteArray &fl_data, QByteArray &fi_data) const
 {
 	quint32 size, pos, compression;
 
-	foreach(FsHeader *header, sortedByPosition) {
+	for (FsHeader *header: sortedByPosition) {
 		fl_data.append(header->path().toLatin1());
 		fl_data.append("\r\n", 2);
 		size = header->uncompressedSize();
@@ -1134,7 +1134,7 @@ void FsArchive::rebuildInfos()
 	// Rebuild structure and order indication
 	QMap<quint32, FsHeader *> newInfos;
 	QMap<QString, FsHeader *> newToc;
-	foreach(FsHeader *info, sortedByPosition) {
+	for (FsHeader *info: sortedByPosition) {
 		newInfos.insert(info->position(), info);
 		newToc.insert(info->path().toLower(), info);
 	}
@@ -1152,7 +1152,7 @@ QMap<QString, FsHeader *> FsArchive::fileList(QString dir) const
 
 	// qDebug() << "FsArchive::fileList(QString dir)" << dir;
 
-	foreach(FsHeader *info, sortedByPosition) {
+	for (FsHeader *info: sortedByPosition) {
 		filePath = info->path();
 
 		if (filePath.compare(dir, Qt::CaseInsensitive)!=0
@@ -1179,7 +1179,7 @@ QStringList FsArchive::tocInDirectory(QString dir) const
 
 	dir = cleanPath(dir);
 
-	foreach(FsHeader *info, sortedByPosition) {
+	for (FsHeader *info: sortedByPosition) {
 		filePath = info->path();
 		if (filePath.compare(dir, Qt::CaseInsensitive)!=0
 		        && (dir.isEmpty() || filePath.startsWith(dir, Qt::CaseInsensitive))) {
@@ -1242,7 +1242,7 @@ QString FsArchive::errorString(Error error, const QString &fileName)
    ret.append(QString("[FS] %1 | [FL] %2 | [FI] %3\n").arg(fs.fileName(), fl.fileName(), fi.fileName()));
   }
 
-  foreach(int pos, toc_access) {
+  for (int pos: toc_access) {
    header = sortedByPosition.value(pos);
    ret.append(QString("%1 = pos:%2 | uncompressedSize:%3 | isCompressed:%4 | isNull:%5\n")
 		.arg(header->path()).arg(header->position()).arg(header->uncompressedSize()).arg(header->isCompressed()).arg(header->isNull()));
@@ -1259,7 +1259,7 @@ bool FsArchive::verify()
 {
 	quint64 guessPos = 0;
 	quint32 ss = 0;
-	foreach(FsHeader *info, sortedByPosition) {
+	for (FsHeader *info: sortedByPosition) {
 		ss = qMax(info->uncompressedSize(), ss);
 		quint32 size;
 		if (!info->physicalSize(&fs, &size)) {
@@ -1360,7 +1360,7 @@ bool FsArchive::repair(FsArchive *other)
 	return true;
 
 	/*quint64 guessPos = 0;
-	foreach(FsHeader *info, sortedByPosition) {
+	for (FsHeader *info: sortedByPosition) {
 		quint32 size;
 		if (!info->physicalSize(&fs, &size)) {
 			qWarning() << "FsArchive::verify io error" << fs.errorString();
@@ -1380,7 +1380,7 @@ bool FsArchive::repair(FsArchive *other)
 bool FsArchive::searchData(const QMultiMap<quint32, FsHeader *> &headers,
                            QFile *fs, const QByteArray &data, quint32 &pos)
 {
-	foreach (const FsHeader *header, headers) {
+	for (const FsHeader *header: headers) {
 		if (header->data(fs) == data) {
 			pos = header->position();
 			return true;

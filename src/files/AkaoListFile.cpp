@@ -77,12 +77,12 @@ bool AkaoListFile::save(QByteArray &akao)
 {
 	quint32 pos = _akaos.size() * 4;
 
-	foreach(const QByteArray &data, _akaos) {
+	for (const QByteArray &data: _akaos) {
 		akao.append((char *)&pos, 4);
 		pos += data.size();
 	}
 
-	foreach(const QByteArray &data, _akaos) {
+	for (const QByteArray &data: _akaos) {
 		akao.append(data);
 	}
 

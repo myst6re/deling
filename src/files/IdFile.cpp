@@ -83,14 +83,14 @@ bool IdFile::save(QByteArray &id)
 
 	id.append((char *)&count, 4);
 
-	foreach(Triangle triangle, triangles) {
+	for (Triangle triangle: triangles) {
 		triangle.vertices[0].res = triangle.vertices[0].z;
 		triangle.vertices[1].res = triangle.vertices[0].z;
 		triangle.vertices[2].res = triangle.vertices[0].z;
 		id.append((char *)&triangle.vertices, sizeof(Triangle));
 	}
 
-	foreach(const Access &access, _access) {
+	for (const Access &access: _access) {
 		id.append((char *)&access, sizeof(Access));
 	}
 

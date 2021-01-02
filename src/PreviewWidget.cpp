@@ -66,7 +66,7 @@ void PreviewWidget::showColors(const QList<QColor> &colors)
 	QPainter p(&pix);
 
 	int x = 0;
-	foreach (const QColor &color, colors) {
+	for (const QColor &color: colors) {
 		p.fillRect(x, 0, 32, 32, color);
 		x += 32;
 	}

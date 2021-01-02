@@ -223,7 +223,7 @@ void TexFile::debug()
 
 	for (int i = 0; i < _colorTables.size(); ++i) {
 		f.write(QString("Pal %1 ").arg(i).toLatin1());
-		foreach(const QRgb &color, _colorTables.at(i)) {
+		for (const QRgb &color: _colorTables.at(i)) {
 			f.write(QString("(r=%1, g=%2, b=%3, a=%4) ")
 			            .arg(qRed(color)).arg(qGreen(color)).arg(qBlue(color)).arg(qAlpha(color))
 			            .toLatin1());

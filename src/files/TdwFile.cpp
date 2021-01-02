@@ -24,7 +24,7 @@ TdwFile::TdwFile() :
 
 TdwFile::~TdwFile()
 {
-	foreach(quint8 *charWidth, _charWidth) {
+	for (quint8 *charWidth: _charWidth) {
 		delete[] charWidth;
 	}
 }
@@ -54,7 +54,7 @@ bool TdwFile::open(const QByteArray &tdw)
 
 	sizeHeader = posData - posHeader;
 
-	foreach(quint8 *table, _charWidth) {
+	for (quint8 *table: _charWidth) {
 		delete table;
 	}
 
@@ -99,7 +99,7 @@ void TdwFile::close()
 	if (!isModified()) {
 		_tim.clear();
 		_charCount.clear();
-		foreach(quint8 *table, _charWidth) {
+		for (quint8 *table: _charWidth) {
 			delete table;
 		}
 		_charWidth.clear();
@@ -114,7 +114,7 @@ bool TdwFile::save(QByteArray &tdw)
 	tdw.append((char *)&posHeader, 4);
 	tdw.append((char *)&posData, 4);
 
-	foreach(quint8 *table, _charWidth) {
+	for (quint8 *table: _charWidth) {
 		for (i = 0; i < 112; ++i) {
 			space = ((table[i*2 + 1] & 0xF) << 4) | (table[i*2] & 0xF);
 			if (space == 0)	break;
@@ -200,7 +200,7 @@ QImage TdwFile::letter(int charId, Color color, bool curFrame)
 	QImage ret = img.copy(letterRect(charId));
 	if (color > 7 && !curFrame) {
 		QVector<QRgb> colorTable;
-		foreach(QRgb color, ret.colorTable()) {
+		for (QRgb color: ret.colorTable()) {
 			colorTable.append(qRgba(qRed(color) * 0.75, qGreen(color) * 0.75, qBlue(color) * 0.75, qAlpha(color)));
 		}
 		ret.setColorTable(colorTable);

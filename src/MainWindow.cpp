@@ -127,7 +127,7 @@ MainWindow::MainWindow()
 	pageWidgets.append(new MiscWidget());
 
 	tabBar = new QTabBar();
-	foreach(PageWidget *pageWidget, pageWidgets)
+	for (PageWidget *pageWidget: pageWidgets)
 		tabBar->addTab(pageWidget->tabName());
 	tabBar->addTab(tr("Import/Export"));
 	tabBar->setDrawBase(false);
@@ -148,7 +148,7 @@ MainWindow::MainWindow()
 	addToolBar(toolbarArea, toolBar);
 
 	stackedWidget = new QStackedWidget();
-	foreach(PageWidget *pageWidget, pageWidgets)
+	for (PageWidget *pageWidget: pageWidgets)
 		stackedWidget->addWidget(pageWidget);
 
 	QWidget *tempW = new QWidget();
@@ -178,7 +178,7 @@ MainWindow::MainWindow()
 	connect(pageWidgets.at(TextPage), SIGNAL(fromChanged(int)), searchDialog, SLOT(setFrom(int)));
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillPage()));
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(setCurrentPage(int)));
-	foreach(PageWidget *pageWidget, pageWidgets)
+	for (PageWidget *pageWidget: pageWidgets)
 		connect(pageWidget, SIGNAL(modified()), SLOT(setModified()));
 	connect(bgPreview, SIGNAL(triggered()), SLOT(bgPage()));
 	connect(fieldThread, SIGNAL(background(QImage)), SLOT(fillBackground(QImage)));
@@ -263,7 +263,7 @@ bool MainWindow::openArchive(const QString &path)
 		QList<QTreeWidgetItem *> items;
 
 		int fieldID=0;
-		foreach(Field *field, fieldArchive->getFields()) {
+		for (Field *field: fieldArchive->getFields()) {
 			QString desc;
 			if (field->hasJsmFile())
 				desc = Data::location(field->getJsmFile()->mapID());
@@ -397,7 +397,7 @@ bool MainWindow::openJsmFile(const QString &)
 
 void MainWindow::setReadOnly(bool readOnly)
 {
-	foreach(PageWidget *pageWidget, pageWidgets)
+	for (PageWidget *pageWidget: pageWidgets)
 		pageWidget->setReadOnly(readOnly);
 
 	actionImport->setDisabled(readOnly);
@@ -416,7 +416,7 @@ void MainWindow::buildGameLangMenu(const QStringList &langs)
 
 	QString currentLang = Config::value("gameLang", "en").toString();
 
-	foreach(const QString &lang, langs) {
+	for (const QString &lang: langs) {
 		QAction *action = menuGameLang->addAction(lang);
 		action->setCheckable(true);
 		action->setChecked(lang == currentLang);
@@ -466,7 +466,7 @@ void MainWindow::fillPage()
 		fieldThread->start();*/
 	}
 
-	foreach(PageWidget *pageWidget, pageWidgets)
+	for (PageWidget *pageWidget: pageWidgets)
 		pageWidget->setData(currentField);
 
 	if (currentField->hasBackgroundFile())
@@ -532,7 +532,7 @@ int MainWindow::closeFiles(bool quit)
 	bgPreview->clear();
 	bgPreview->setEnabled(false);
 	actionGameLang->setVisible(false);
-	foreach(PageWidget *pageWidget, pageWidgets) {
+	for (PageWidget *pageWidget: pageWidgets) {
 		pageWidget->clear();
 		pageWidget->cleanData();
 	}

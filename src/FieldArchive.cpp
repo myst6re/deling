@@ -26,15 +26,15 @@ FieldArchive::FieldArchive()
 
 FieldArchive::~FieldArchive()
 {
-	foreach(Field *field, fields)		delete field;
-	foreach(CharaModel *model, models)	delete model;
+	for (Field *field: fields)		delete field;
+	for (CharaModel *model: models)	delete model;
 }
 
 void FieldArchive::clearFields()
 {
-	foreach(Field *field, fields)	delete field;
+	for (Field *field: fields)	delete field;
 	fields.clear();
-	foreach(CharaModel *model, models)	delete model;
+	for (CharaModel *model: models)	delete model;
 	models.clear();
 	fieldsSortByName.clear();
 	fieldsSortByDesc.clear();
@@ -94,7 +94,7 @@ bool FieldArchive::compileScripts(int &errorFieldID, int &errorGroupID, int &err
 {
 	errorFieldID = 0;
 
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		if (field->isOpen() && field->isModified() && field->hasJsmFile()) {
 			if (!field->getJsmFile()->compileAll(errorGroupID, errorMethodID, errorLine, errorStr)) {
 				return false;
@@ -275,10 +275,10 @@ QMultiMap<int, QString> FieldArchive::searchAllVars() const
 {
 	QMultiMap<int, QString> vars;
 
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		if (field->hasJsmFile()) {
 			QList<int> v = field->getJsmFile()->searchAllVars();
-			foreach(int var, v)
+			for (int var: v)
 				vars.insert(var, field->name());
 		}
 	}
@@ -323,7 +323,7 @@ QMap<Field *, QList<int> > FieldArchive::searchAllBattles() const
 {
 	QMap<Field *, QList<int> > battles;
 
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		if (field->hasMrtFile()) {
 			battles.insert(field, field->getMrtFile()->searchAllBattles());
 		}
@@ -338,9 +338,9 @@ QMultiMap<int, Field *> FieldArchive::searchAllMoments() const
 
 	QStringList mapList = Data::maplist();
 
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		if (field->hasJsmFile() && (mapList.indexOf(field->name()) > 88 || mapList.indexOf(field->name()) == 73)) {
-			foreach(int moment, field->getJsmFile()->searchAllMoments()) {
+			for (int moment: field->getJsmFile()->searchAllMoments()) {
 				moments.insert(moment, field);
 			}
 		}
@@ -353,7 +353,7 @@ QMap<int, int> FieldArchive::searchAllOpcodeTypes() const
 {
 	QMap<int, int> ret;
 
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		if (field->hasJsmFile()) {
 			field->getJsmFile()->searchAllOpcodeTypes(ret);
 		}
@@ -366,7 +366,7 @@ QList<Vertex_s> FieldArchive::searchAllSavePoints() const
 {
 	QList<Vertex_s> ret;
 
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		if (field->hasJsmFile()) {
 			//field->getJsmFile()->searchAllSavePoints(ret);
 		}
@@ -379,7 +379,7 @@ QStringList FieldArchive::fieldList() const
 {
 	QStringList list;
 
-	foreach(Field *field, fields) {
+	for (Field *field: fields) {
 		list.append(field->name());
 	}
 

@@ -58,7 +58,7 @@ QStringList JsmProgram::toStringList(const Field *field, int indent) const
 {
 	QStringList ret;
 
-	foreach(const JsmInstruction &instr, *this) {
+	for (const JsmInstruction &instr: *this) {
 		QString instrStr = instr.toString(field, indent);
 		if (!instrStr.isEmpty()) {
 			ret.append(instrStr);
@@ -72,7 +72,7 @@ int JsmProgram::opcodeCount() const
 {
 	int ret = 0;
 
-	foreach(const JsmInstruction &instr, *this) {
+	for (const JsmInstruction &instr: *this) {
 		ret += instr.opcodeCount();
 	}
 
@@ -717,7 +717,7 @@ int JsmApplication::opcodeCount() const
 {
 	int ret = 1;
 
-	foreach(JsmExpression *expr, _stack) {
+	for (JsmExpression *expr: _stack) {
 		ret += expr->opcodeCount();
 	}
 

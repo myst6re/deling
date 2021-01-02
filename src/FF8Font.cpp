@@ -120,7 +120,7 @@ void FF8Font::openTxt(const QString &data)
 		return;
 	}
 
-	foreach(const QString &line, lines) {
+	for (const QString &line: lines) {
 		if (line.startsWith("#")) {
 			if (nameRegExp.indexIn(line) != -1) {
 				QStringList capturedTexts = nameRegExp.capturedTexts();
@@ -167,7 +167,7 @@ QString FF8Font::saveTxt()
 		data.append("#NAME\t").append(_name).append("\n");
 	}
 
-	foreach(const QStringList &t, _tables) {
+	for (const QStringList &t: _tables) {
 		for (int j = 0; j < 14; ++j) {
 			for (int i = 0; i < 16; ++i) {
 				data.append(QString("\"%1\"").arg(t[j*16 + i]));
@@ -189,7 +189,7 @@ QString FF8Font::saveTxt()
 void FF8Font::print()
 {
 	int tid=1;
-	foreach(const QStringList &t, _tables) {
+	for (const QStringList &t: _tables) {
 		qDebug() << QString("table %1").arg(tid++).toLatin1().data();
 		for (int j = 0; j < 14; ++j) {
 			QString buf;
@@ -232,7 +232,7 @@ bool FF8Font::listFonts()
 	fonts.insert("00", latinFont);
 	fonts.insert("01", jpFont);
 
-	foreach(const QString &str, stringList) {
+	for (const QString &str: stringList) {
 		int index = str.lastIndexOf('.');
 		fonts.insert(str.left(index), NULL);
 	}
@@ -324,7 +324,7 @@ bool FF8Font::saveFonts()
 {
 	bool ok = true;
 
-	foreach(FF8Font *font, fonts) {
+	for (FF8Font *font: fonts) {
 		if (font && !font->isReadOnly() && font->isModified()) {
 			QFile f1(font->txtPath());
 			if (f1.open(QIODevice::WriteOnly)) {

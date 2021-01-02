@@ -45,7 +45,7 @@ void TdwManagerDialog::fillList1()
 {
 	QString currentEncoding = Config::value("encoding", "00").toString();
 
-	foreach(const QString &fontName, FF8Font::fontList()) {
+	for (const QString &fontName: FF8Font::fontList()) {
 		QListWidgetItem *item;
 
 		if (fontName == "00" || fontName == "01") {
