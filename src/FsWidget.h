@@ -27,7 +27,7 @@
 
 class TreeWidgetItem : public QTreeWidgetItem {
 public:
-	TreeWidgetItem(const QStringList &strings):QTreeWidgetItem(strings){}
+	TreeWidgetItem(const QStringList &strings) : QTreeWidgetItem(strings) {}
 private:
 	bool operator<(const QTreeWidgetItem &other)const {
 		int column = treeWidget()->sortColumn();

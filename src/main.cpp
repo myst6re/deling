@@ -37,26 +37,29 @@ int main(int argc, char *argv[])
 	lang = Config::value("lang", lang.left(lang.indexOf("_"))).toString();
 
 	QTranslator qtTranslator;
-	if(qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+	if (qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
 		app.installTranslator(&qtTranslator);
+	}
 
 	QTranslator translator;
-	if(translator.load("deling_" % lang, Config::programResourceDir())){
+	if (translator.load("deling_" % lang, Config::programResourceDir())) {
 		app.installTranslator(&translator);
 		Config::setValue("lang", lang);
 	} else{
 		Config::setValue("lang", "fr");
 	}
 
-	if(!FF8Font::listFonts()) {
-		QMessageBox::critical(nullptr, QObject::tr("Chargement des données"), QObject::tr("Les polices de caractères n'ont pas pu être chargées !"));
+	if (!FF8Font::listFonts()) {
+		QMessageBox::critical(nullptr, QObject::tr("Chargement des données"),
+		                      QObject::tr("Les polices de caractères n'ont pas pu être chargées !"));
 		return -1;
 	}
 
 	MainWindow *window = new MainWindow();
 	window->show();
-	if(argc>1)
+	if (argc > 1) {
 		window->openFile(argv[1]);
+	}
 
 	return app.exec();
 }

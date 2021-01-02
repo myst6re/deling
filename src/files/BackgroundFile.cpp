@@ -251,7 +251,7 @@ QImage BackgroundFile::background(const QList<quint8> &activeParams, bool hideBG
 	params.clear();
 
 	QMapIterator<quint8, quint8> itParams(allparams);
-	while (itParams.hasNext()){
+	while (itParams.hasNext()) {
 		itParams.next();
 		if (activeParams.contains(itParams.key())) {
 			params.insert(itParams.key(), itParams.value());
@@ -260,7 +260,7 @@ QImage BackgroundFile::background(const QList<quint8> &activeParams, bool hideBG
 
 	// Enable all layers
 	QMapIterator<quint8, bool> itLayers(layers);
-	while (itLayers.hasNext()){
+	while (itLayers.hasNext()) {
 		itLayers.next();
 		layers.insert(itLayers.key(), true);
 	}
