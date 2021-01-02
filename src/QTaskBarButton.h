@@ -18,50 +18,84 @@
 #ifndef QTASKBARBUTTON_H
 #define QTASKBARBUTTON_H
 
-#include <QtWidgets>
+#ifdef Q_OS_WIN32
+#	include <QWinTaskbarButton>
 
-#if defined(Q_OS_WIN) && defined(TASKBAR_BUTTON)
-#	ifdef QTASKBAR_WIN_QT5
-#		include <QWinTaskbarButton>
-#		include <QWinTaskbarProgress>
-#	else
-#		include <shobjidl.h>
-#		define QTASKBAR_WIN
-#	endif
-#endif
+typedef QWinTaskbarProgress QTaskbarProgress;
+typedef QWinTaskbarButton QTaskbarButton;
 
-class QTaskBarButton : public QObject
+#define QTASKBAR_WIN
+
+#else
+
+#include <QObject>
+#include <QString>
+#include <QIcon>
+
+class QTaskbarProgress : public QObject
 {
-    Q_OBJECT
-public:
-	enum State {
-		Invisible, Normal, Indeterminate, Paused, Error
-	};
+	Q_OBJECT
 
-	explicit QTaskBarButton(QWidget *mainWindow);
-	virtual ~QTaskBarButton();
-	void setOverlayIcon(const QPixmap &pixmap, const QString &text=QString());
-	void setState(State state);
+	enum State {
+		None = 0x0,
+		Paused = 0x1,
+		Stopped = 0x2,
+		Visible = 0x4
+	};
+public:
+	explicit QTaskbarProgress(QObject *parent = nullptr);
+
+	bool isPaused() const;
+	bool isStopped() const;
+	bool isVisible() const;
 	int maximum() const;
 	int minimum() const;
-	State state() const;
 	int value() const;
-signals:
-	void valueChanged(int value);
 public slots:
+	void hide();
+	void pause();
 	void reset();
+	void resume();
 	void setMaximum(int maximum);
 	void setMinimum(int minimum);
+	void setPaused(bool paused);
 	void setRange(int minimum, int maximum);
 	void setValue(int value);
+	void setVisible(bool visible);
+	void show();
+	void stop();
+signals:
+	void maximumChanged(int maximum);
+	void minimumChanged(int minimum);
+	void pausedChanged(bool paused);
+	void stoppedChanged(bool stopped);
+	void valueChanged(int value);
+	void visibilityChanged(bool visible);
+
 private:
-#ifdef QTASKBAR_WIN
-	WId _winId;
-	ITaskbarList3 *pITask;
-#elif defined(QTASKBAR_WIN_QT5)
-	QWinTaskbarButton _taskbarButton;
-#endif // Q_OS_WIN
-	int _minimum, _maximum, _value;
 	State _state;
+	int _maximum, _minimum, _value;
 };
+
+class QTaskbarButton : public QObject
+{
+	Q_OBJECT
+public:
+	explicit QTaskbarButton(QObject *parent = nullptr);
+	virtual ~QTaskbarButton();
+	QString overlayAccessibleDescription() const;
+	QIcon overlayIcon() const;
+	QTaskbarProgress *progress() const;
+public slots:
+	void clearOverlayIcon();
+	void setOverlayAccessibleDescription(const QString &description);
+	void setOverlayIcon(const QIcon &icon);
+private:
+	QIcon _icon;
+	QString _accessibleDescription;
+	QTaskbarProgress *_progress;
+};
+
+#endif
+
 #endif // QTASKBARBUTTON_H

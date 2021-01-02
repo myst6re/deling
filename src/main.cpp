@@ -30,9 +30,6 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	app.setWindowIcon(QIcon(":/images/deling.png"));
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-#endif
 
 	Config::set();
 

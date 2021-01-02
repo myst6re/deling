@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Makou Reactor Final Fantasy VII Field Script Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2013 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,221 +15,161 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "QTaskBarButton.h"
+#include "QTaskbarButton.h"
 
-#ifdef QTASKBAR_WIN
+#ifndef QTASKBAR_WIN
 
-QTaskBarButton::QTaskBarButton(QWidget *mainWindow) :
-	QObject(mainWindow), pITask(0), _minimum(0), _maximum(100),
-	_value(0), _state(Invisible)
-{
-	_winId = mainWindow->window()->winId();
-
-	CoInitialize(NULL);
-	HRESULT hRes = CoCreateInstance(CLSID_TaskbarList,
-									NULL, CLSCTX_INPROC_SERVER,
-									IID_ITaskbarList3, (LPVOID*)&pITask);
-	if(FAILED(hRes)) {
-		pITask = 0;
-		CoUninitialize();
-		return;
-	}
-
-	pITask->HrInit();
-}
-
-QTaskBarButton::~QTaskBarButton()
-{
-	if(pITask) {
-		pITask->Release();
-		pITask = NULL;
-		CoUninitialize();
-	}
-}
-
-void QTaskBarButton::setOverlayIcon(const QPixmap &pixmap, const QString &text)
-{
-	if(!pITask)	return;
-
-	if(pixmap.isNull()) {
-		pITask->SetOverlayIcon(_winId, NULL, NULL);
-	} else {
-		const HICON icon = pixmap.toWinHICON();
-		pITask->SetOverlayIcon(_winId, icon, (wchar_t *)text.utf16());
-		DestroyIcon(icon);
-	}
-}
-
-void QTaskBarButton::setState(State state)
-{
-	if(!pITask)	return;
-
-	TBPFLAG flag;
-	switch(state) {
-	case Invisible:		flag = TBPF_NOPROGRESS;
-		break;
-	case Indeterminate:	flag = TBPF_INDETERMINATE;
-		break;
-	case Paused:		flag = TBPF_PAUSED;
-		break;
-	case Error:			flag = TBPF_ERROR;
-		break;
-	default:			flag = TBPF_NORMAL;
-		break;
-	}
-
-	if(S_OK == pITask->SetProgressState(_winId, flag)) {
-		_state = state;
-	}
-}
-
-void QTaskBarButton::setValue(int value)
-{
-	if(!pITask)	return;
-
-	int completed = value - _minimum, total = _maximum - _minimum;
-	if(completed < 0 || total <= 0) {
-		return;
-	}
-
-	if(S_OK == pITask->SetProgressValue(_winId, completed, total)) {
-		_value = value;
-		emit valueChanged(value);
-	}
-}
-
-#elif defined(QTASKBAR_WIN_QT5)
-
-QTaskBarButton::QTaskBarButton(QWidget *mainWindow) :
-	_taskbarButton(mainWindow), _minimum(0), _maximum(100),
-    _value(0), _state(Invisible)
-{
-	_taskbarButton.setWindow(mainWindow->windowHandle());
-	QWinTaskbarProgress *progress = _taskbarButton.progress();
-	connect(progress, SIGNAL(valueChanged(int)), SIGNAL(valueChanged(int)));
-}
-
-QTaskBarButton::~QTaskBarButton()
+QTaskbarProgress::QTaskbarProgress(QObject *parent) :
+    QObject(parent)
 {
 }
 
-void QTaskBarButton::setOverlayIcon(const QPixmap &pixmap, const QString &text)
+bool QTaskbarProgress::isPaused() const
 {
-	_taskbarButton.setOverlayIcon(pixmap);
-	_taskbarButton.setOverlayAccessibleDescription(text);
+	return (int(_state) | int(Paused)) != 0;
 }
 
-void QTaskBarButton::setState(State state)
+bool QTaskbarProgress::isStopped() const
 {
-	QWinTaskbarProgress *progress = _taskbarButton.progress();
-
-	switch(state) {
-	case Invisible:
-		progress->hide();
-		break;
-	case Indeterminate:
-		progress->show();
-		progress->setRange(0, 0);
-		progress->resume();
-		break;
-	case Paused:
-		progress->show();
-		progress->setRange(minimum(), maximum());
-		progress->pause();
-		break;
-	case Error:
-		progress->show();
-		progress->setRange(minimum(), maximum());
-		progress->stop();
-		break;
-	default:
-		progress->show();
-		progress->setRange(minimum(), maximum());
-		progress->resume();
-		break;
-	}
+	return (int(_state) | int(Stopped)) != 0;
 }
 
-void QTaskBarButton::setValue(int value)
+bool QTaskbarProgress::isVisible() const
 {
-	QWinTaskbarProgress *progress = _taskbarButton.progress();
-	if (progress->minimum() != minimum()) {
-		progress->setMinimum(minimum());
-	}
-	if (progress->maximum() != maximum()) {
-		progress->setMaximum(maximum());
-	}
-	_taskbarButton.progress()->setValue(value);
+	return (int(_state) | int(Visible)) != 0;
 }
 
-#else
-
-QTaskBarButton::QTaskBarButton(QWidget *parent) :
-	QObject(parent), _minimum(0), _maximum(100),
-    _value(0), _state(Invisible)
-{
-}
-
-QTaskBarButton::~QTaskBarButton()
-{
-}
-
-void QTaskBarButton::setOverlayIcon(const QPixmap &pixmap, const QString &text)
-{
-	Q_UNUSED(pixmap);
-	Q_UNUSED(text);
-}
-
-void QTaskBarButton::setState(State state)
-{
-	Q_UNUSED(state);
-}
-
-void QTaskBarButton::setValue(int value)
-{
-	Q_UNUSED(value);
-}
-
-#endif
-
-int QTaskBarButton::maximum() const
+int QTaskbarProgress::maximum() const
 {
 	return _maximum;
 }
 
-int QTaskBarButton::minimum() const
+int QTaskbarProgress::minimum() const
 {
 	return _minimum;
 }
 
-QTaskBarButton::State QTaskBarButton::state() const
-{
-	return _state;
-}
-
-int QTaskBarButton::value() const
+int QTaskbarProgress::value() const
 {
 	return _value;
 }
 
-void QTaskBarButton::reset()
+void QTaskbarProgress::hide()
 {
-	setState(Normal);
-	setValue(0);
+	setVisible(false);
 }
 
-void QTaskBarButton::setMaximum(int maximum)
+void QTaskbarProgress::pause()
+{
+	setPaused(true);
+}
+
+void QTaskbarProgress::reset()
+{
+	_state = None;
+	_value = _minimum;
+}
+
+void QTaskbarProgress::resume()
+{
+	setPaused(false);
+	_state = State(int(_state) & ~int(Stopped));
+	emit stoppedChanged(false);
+}
+
+void QTaskbarProgress::setMaximum(int maximum)
 {
 	_maximum = maximum;
+	emit maximumChanged(maximum);
 }
 
-void QTaskBarButton::setMinimum(int minimum)
+void QTaskbarProgress::setMinimum(int minimum)
 {
 	_minimum = minimum;
+	emit minimumChanged(minimum);
 }
 
-void QTaskBarButton::setRange(int minimum, int maximum)
+void QTaskbarProgress::setPaused(bool paused)
+{
+	if (paused) {
+		_state = State(int(_state) | int(Paused));
+	} else {
+		_state = State(int(_state) & ~int(Paused));
+	}
+	emit pausedChanged(paused);
+}
+
+void QTaskbarProgress::setRange(int minimum, int maximum)
 {
 	setMinimum(minimum);
 	setMaximum(maximum);
 }
+
+void QTaskbarProgress::setValue(int value)
+{
+	_value = value;
+	emit valueChanged(value);
+}
+
+void QTaskbarProgress::setVisible(bool visible)
+{
+	if (visible) {
+		_state = State(int(_state) | int(Visible));
+	} else {
+		_state = State(int(_state) & ~int(Visible));
+	}
+	emit visibilityChanged(visible);
+}
+
+void QTaskbarProgress::show()
+{
+	setVisible(true);
+}
+
+void QTaskbarProgress::stop()
+{
+	_state = State(int(_state) | int(Stopped));
+	emit stoppedChanged(true);
+}
+
+QTaskbarButton::QTaskbarButton(QObject *parent) :
+    QObject(parent), _progress(new QTaskbarProgress(parent))
+{
+}
+
+QTaskbarButton::~QTaskbarButton()
+{
+	delete _progress;
+}
+
+QString QTaskbarButton::overlayAccessibleDescription() const
+{
+	return _accessibleDescription;
+}
+
+QIcon QTaskbarButton::overlayIcon() const
+{
+	return _icon;
+}
+
+QTaskbarProgress *QTaskbarButton::progress() const
+{
+	return _progress;
+}
+
+void QTaskbarButton::clearOverlayIcon()
+{
+	_icon = QIcon();
+}
+
+void QTaskbarButton::setOverlayAccessibleDescription(const QString &description)
+{
+	_accessibleDescription = description;
+}
+
+void QTaskbarButton::setOverlayIcon(const QIcon &icon)
+{
+	_icon = icon;
+}
+
+#endif
