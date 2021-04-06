@@ -33,9 +33,6 @@ void JsmWidget::build()
 {
 	if(isBuilded())	return;
 
-	QFont font;
-	font.setPointSize(8);
-
 	warningWidget = new QLabel(tr("Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n'aura peut-être aucun sens."), this);
 	warningWidget->hide();
 	warningWidget->setWordWrap(true);
@@ -46,7 +43,6 @@ void JsmWidget::build()
 	list1->setFixedWidth(180);
 	list1->setAutoScroll(false);
 	list1->setIndentation(0);
-	list1->setFont(font);
 	list1->setUniformRowHeights(true);
 
 	modelPreview = new CharaPreview(this);
@@ -63,7 +59,6 @@ void JsmWidget::build()
 	list2->setFixedWidth(180);
 	list2->setAutoScroll(false);
 	list2->setIndentation(0);
-	list2->setFont(font);
 	list2->setUniformRowHeights(true);
 
 	tabBar = new QTabBar(this);

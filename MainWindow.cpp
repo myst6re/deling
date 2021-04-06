@@ -38,9 +38,6 @@ MainWindow::MainWindow()
       fieldThread(new FieldThread), file(nullptr), menuGameLang(nullptr),
       fsDialog(nullptr), _varManager(nullptr), firstShow(true)
 {
-	QFont font;
-	font.setPointSize(8);
-
 	setMinimumSize(700, 600);
 	resize(Config::value("mainWindowSize", QSize(768, 502)).toSize());
 	if(Config::value("mainWindowMaximized", true).toBool())
@@ -70,7 +67,7 @@ MainWindow::MainWindow()
 	menu->addSeparator();
 	menu->addAction(tr("Plein écran"), this, SLOT(fullScreen()), Qt::Key_F11);
 	actionClose = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Fe&rmer"), this, SLOT(closeFiles()));
-	menu->addAction(tr("&Quitter"), this, SLOT(close()));
+	menu->addAction(tr("&Quitter"), this, SLOT(close()))->setMenuRole(QAction::QuitRole);
 
 	menu = menuBar->addMenu(tr("&Outils"));
 	actionFind = menu->addAction(QIcon(":/images/find.png"), tr("Rec&hercher..."), this, SLOT(search()), QKeySequence::Find);
@@ -80,9 +77,14 @@ MainWindow::MainWindow()
 	actionRun->setShortcutContext(Qt::ApplicationShortcut);
 	actionRun->setEnabled(Data::ff8Found());
 	addAction(actionRun);
-	menuBar->addAction(tr("Op&tions"), this, SLOT(configDialog()));
 
-	menuBar->addAction(tr("?"), this, SLOT(about()));
+#ifndef Q_OS_MAC
+	menuBar->addAction(tr("Op&tions"), this, SLOT(configDialog()))->setMenuRole(QAction::PreferencesRole);
+	menuBar->addAction(tr("&?"), this, SLOT(about()))->setMenuRole(QAction::AboutRole);
+#else
+	menu->addAction(tr("Op&tions"), this, SLOT(configDialog()))->setMenuRole(QAction::PreferencesRole);
+	menu->addAction(tr("&?"), this, SLOT(about()))->setMenuRole(QAction::AboutRole);
+#endif
 
 	setMenuBar(menuBar);
 
@@ -101,7 +103,6 @@ MainWindow::MainWindow()
 	list1->setSortingEnabled(true);
 	list1->setAutoScroll(false);
 	list1->setColumnWidth(2, 28);
-	list1->setFont(font);
 	list1->sortByColumn(Config::value("list1ColumnSort",2).toInt(), Qt::AscendingOrder);
 	list1->setUniformRowHeights(true);
 	list1->header()->setStretchLastSection(false);

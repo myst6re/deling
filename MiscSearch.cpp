@@ -23,11 +23,8 @@ MiscSearch::MiscSearch(FieldArchive *fieldArchive, QWidget *parent)
 	setWindowTitle(tr("Rechercher tout"));
 	setWindowModality(Qt::NonModal);
 	setSizeGripEnabled(true);
-	QFont font;
-	font.setPointSize(8);
 
 	list = new QListWidget(this);
-	list->setFont(font);
 	list->setUniformItemSizes(true);
 
 	textEdit = new QPlainTextEdit(this);
