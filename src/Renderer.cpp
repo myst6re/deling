@@ -27,9 +27,10 @@ size_t vectorSizeOf(const typename std::vector<T>& vec)
 }
 
 Renderer::Renderer(QOpenGLWidget *_widget) :
-	mTexture(QOpenGLTexture::Target2D), mLogger(_widget), mProgram(_widget),
-	mVertexShader(QOpenGLShader::Vertex, _widget), mFragmentShader(QOpenGLShader::Fragment, _widget),
-	mVertex(QOpenGLBuffer::VertexBuffer), mIndex(QOpenGLBuffer::IndexBuffer)
+    mLogger(_widget), mProgram(_widget),
+    mVertexShader(QOpenGLShader::Vertex, _widget), mFragmentShader(QOpenGLShader::Fragment, _widget),
+    mVertex(QOpenGLBuffer::VertexBuffer), mIndex(QOpenGLBuffer::IndexBuffer),
+    mTexture(QOpenGLTexture::Target2D)
 {
 	mWidget = _widget;
 
@@ -125,7 +126,7 @@ void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
 	mProgram.setUniformValue("viewMatrix", mViewMatrix);
 
 	// --- Draw ---
-	mGL.glDrawElements(_type, mIndexBuffer.size(), GL_UNSIGNED_INT, NULL);
+	mGL.glDrawElements(_type, mIndexBuffer.size(), GL_UNSIGNED_INT, nullptr);
 
 	// --- After Draw ---
 	mVertex.release();
@@ -176,7 +177,7 @@ void Renderer::bindIndex(uint32_t *_index, uint32_t _count)
 
 	for (uint32_t idx = 0; idx < _count; idx++)
 	{
-			mIndexBuffer.push_back(_index[idx]);
+		mIndexBuffer.push_back(_index[idx]);
 	}
 }
 
