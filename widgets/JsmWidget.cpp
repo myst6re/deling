@@ -40,13 +40,16 @@ void JsmWidget::build()
 
 	list1 = new QTreeWidget(this);
 	list1->setHeaderLabels(QStringList() << tr("Id") << tr("Groupe") << tr("Exec"));
-	list1->setFixedWidth(180);
+	list1->setMaximumWidth(
+	    list1->fontMetrics().boundingRect(QString(16, 'M')).width());
+	list1->setMinimumWidth(
+	    list1->fontMetrics().boundingRect(QString(8, 'M')).width());
 	list1->setAutoScroll(false);
 	list1->setIndentation(0);
 	list1->setUniformRowHeights(true);
+	list1->setAlternatingRowColors(true);
 
 	modelPreview = new CharaPreview(this);
-	modelPreview->setFixedSize(list1->width(), list1->width());
 	modelPreview->setMainModels(mainModels);
 
 	QVBoxLayout *list1Layout = new QVBoxLayout();
@@ -56,10 +59,14 @@ void JsmWidget::build()
 
 	list2 = new QTreeWidget(this);
 	list2->setHeaderLabels(QStringList() << tr("Id") << tr("Script") << tr("Script label"));
-	list2->setFixedWidth(180);
+	list2->setMaximumWidth(
+	    list2->fontMetrics().boundingRect(QString(16, 'M')).width());
+	list2->setMinimumWidth(
+	    list2->fontMetrics().boundingRect(QString(8, 'M')).width());
 	list2->setAutoScroll(false);
 	list2->setIndentation(0);
 	list2->setUniformRowHeights(true);
+	list2->setAlternatingRowColors(true);
 
 	tabBar = new QTabBar(this);
 	tabBar->setDrawBase(false);
