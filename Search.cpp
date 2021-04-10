@@ -185,6 +185,10 @@ QWidget *Search::scriptPageWidget2()
 	for(int i=0 ; i<JSM_OPCODE_COUNT ; ++i) {
 		searchOpcode->addItem(QString("%1 - %2").arg(i, 3, 16, QChar('0')).arg(JsmOpcode::opcodes[i]));
 	}
+	searchOpcode->setEditable(true);
+	searchOpcode->setInsertPolicy(QComboBox::NoInsert);
+	searchOpcode->completer()->setCompletionMode(QCompleter::PopupCompletion);
+	searchOpcode->completer()->setFilterMode(Qt::MatchContains);
 
 	searchOpcodeValue = new QSpinBox(ret);
 	searchOpcodeValue->setRange(-1, 162777216);// 0 -> 2^24
@@ -207,6 +211,10 @@ QWidget *Search::scriptPageWidget3()
 	selectScriptVar = new QComboBox(ret);
 	for(int i=0 ; i<1536 ; ++i)
 		selectScriptVar->addItem(QString("%1 - %2").arg(i, 4, 10, QChar('0')).arg(Config::value(QString("var%1").arg(i)).toString()));
+	selectScriptVar->setEditable(true);
+	selectScriptVar->setInsertPolicy(QComboBox::NoInsert);
+	selectScriptVar->completer()->setCompletionMode(QCompleter::PopupCompletion);
+	selectScriptVar->completer()->setFilterMode(Qt::MatchContains);
 	QGroupBox *group = new QGroupBox(ret);
 	QRadioButton *allScriptVar = new QRadioButton(tr("Tout"), ret);
 	popScriptVar = new QRadioButton(tr("Pop uniquement"), ret);
