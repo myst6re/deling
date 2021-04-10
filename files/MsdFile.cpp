@@ -112,22 +112,6 @@ void MsdFile::removeText(int id)
 	}
 }
 
-bool MsdFile::hasText(const QRegExp &txt) const
-{
-	return indexOfText(txt) != -1;
-}
-
-int MsdFile::indexOfText(const QRegExp &txt, int from) const
-{
-	for (int textID = qMax(0, from) ; textID < nbText() ; ++textID) {
-		if(txt.indexIn(text(textID)) != -1) {
-			return textID;
-		}
-	}
-
-	return -1;
-}
-
 bool MsdFile::searchText(const QRegExp &txt, int &textID, int &from, int &size) const
 {
 	if (textID < 0) {

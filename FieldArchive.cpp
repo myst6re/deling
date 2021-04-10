@@ -221,11 +221,14 @@ bool FieldArchive::searchScriptText(const QRegExp &text, int &fieldID, int &grou
 		if(field && field->hasMsdFile() && field->hasJsmFile()) {
 			MsdFile *msd = field->getMsdFile();
 			JsmFile *jsm = field->getJsmFile();
-			int textID = 0;
-			while((textID = msd->indexOfText(text, textID)) != -1) {
-				if(jsm->search(JsmFile::SearchText, quint64(textID), groupID, methodID, opcodeID))
-					return true;
-				++textID;
+			QList<quint64> textIDs;
+			for (int textID = 0; textID < msd->nbText(); ++textID) {
+				if (text.indexIn(msd->text(textID)) >= 0) {
+					textIDs.append(quint64(textID));
+				}
+			}
+			if (jsm->search(JsmFile::SearchText, textIDs, groupID, methodID, opcodeID)) {
+				return true;
 			}
 		}
 		groupID = methodID = opcodeID = 0;
@@ -259,11 +262,14 @@ bool FieldArchive::searchScriptTextReverse(const QRegExp &text, int &fieldID, in
 		if(field && field->hasMsdFile() && field->hasJsmFile()) {
 			MsdFile *msd = field->getMsdFile();
 			JsmFile *jsm = field->getJsmFile();
-			int textID = 0;
-			while((textID = msd->indexOfText(text, textID)) != -1) {
-				if(jsm->searchReverse(JsmFile::SearchText, quint16(textID), groupID, methodID, opcodeID))
-					return true;
-				++textID;
+			QList<quint64> textIDs;
+			for (int textID = 0; textID < msd->nbText(); ++textID) {
+				if (text.indexIn(msd->text(textID)) >= 0) {
+					textIDs.append(quint64(textID));
+				}
+			}
+			if (jsm->searchReverse(JsmFile::SearchText, textIDs, groupID, methodID, opcodeID)) {
+				return true;
 			}
 		}
 		groupID = methodID = opcodeID = 2147483647;
