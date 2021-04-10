@@ -25,6 +25,7 @@ HEADERS += MainWindow.h \
     PreviewWidget.h \
     QLZ4.h \
     ScriptExporter.h \
+    SearchAll.h \
     parameters.h \
     Data.h \
     Config.h \
@@ -57,6 +58,7 @@ HEADERS += MainWindow.h \
     FieldArchivePC.h \
     JsmOpcode.h \
     PlainTextEdit.h \
+    widgets/AboutDialog.h \
     widgets/PageWidget.h \
     widgets/BackgroundWidget.h \
     widgets/JsmWidget.h \
@@ -117,6 +119,7 @@ SOURCES += MainWindow.cpp \
     PreviewWidget.cpp \
     QLZ4.cpp \
     ScriptExporter.cpp \
+    SearchAll.cpp \
     main.cpp \
     Data.cpp \
     Config.cpp \
@@ -149,6 +152,7 @@ SOURCES += MainWindow.cpp \
     FieldArchivePC.cpp \
     JsmOpcode.cpp \
     PlainTextEdit.cpp \
+    widgets/AboutDialog.cpp \
     widgets/PageWidget.cpp \
     widgets/BackgroundWidget.cpp \
     widgets/JsmWidget.cpp \
