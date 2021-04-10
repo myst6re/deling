@@ -70,7 +70,7 @@ void JsmWidget::build()
 	textEdit = te->textEdit();
 	QFont font2 = textEdit->document()->defaultFont();
 	font2.setStyleHint(QFont::TypeWriter);
-	font2.setFamily("Courrier");
+	font2.setFamily("Courier");
 	textEdit->document()->setDefaultFont(font2);
 	highlighter = new JsmHighlighter(textEdit->document());
 	// continue highlight when window is inactive
