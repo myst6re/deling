@@ -24,6 +24,7 @@
 #include "FieldArchivePS.h"
 #include "FieldThread.h"
 #include "Search.h"
+#include "SearchAll.h"
 #include "BGPreview.h"
 #include "TextPreview.h"
 #include "widgets/PageWidget.h"
@@ -95,6 +96,7 @@ private:
 	MiscSearch *miscSearchD;
 	QLabel *currentPath;
 	Search *searchDialog;
+	SearchAll *searchAllDialog;
 	QAction *actionSave;
 	QAction *actionSaveAs;
 	QMenu *menuExportAll;

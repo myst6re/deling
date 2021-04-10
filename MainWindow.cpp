@@ -32,6 +32,7 @@
 #include "widgets/TdwWidget.h"
 #include "widgets/SoundWidget.h"
 #include "widgets/MiscWidget.h"
+#include "widgets/AboutDialog.h"
 
 MainWindow::MainWindow()
     : fieldArchive(nullptr), field(nullptr), currentField(nullptr),
@@ -165,13 +166,16 @@ MainWindow::MainWindow()
 
 	setCentralWidget(mainStackedWidget);
 
-	searchDialog = new Search(list1, this);
+	searchAllDialog = new SearchAll(this);
+	searchDialog = new Search(list1, searchAllDialog, this);
 
 	closeFiles();
 	setCurrentPage(Config::value("currentPage", TextPage).toInt());
 
 	connect(searchDialog, SIGNAL(foundText(int,int,int,int)), SLOT(gotoText(int,int,int,int)));
 	connect(searchDialog, SIGNAL(foundOpcode(int,int,int,int)), SLOT(gotoScript(int,int,int,int)));
+	connect(searchAllDialog, SIGNAL(foundText(int,int,int,int)), SLOT(gotoText(int,int,int,int)));
+	connect(searchAllDialog, SIGNAL(foundOpcode(int,int,int,int)), SLOT(gotoScript(int,int,int,int)));
 	connect(lineSearch, SIGNAL(textEdited(QString)), SLOT(filterMap()));
 	connect(lineSearch, SIGNAL(returnPressed()), SLOT(filterMap()));
 	connect(this, SIGNAL(fieldIdChanged(int)), searchDialog, SLOT(setFieldId(int)));
@@ -247,6 +251,7 @@ void MainWindow::filterMap()
 bool MainWindow::openArchive(const QString &path)
 {
 	searchDialog->setFieldArchive(fieldArchive);
+	searchAllDialog->setFieldArchive(fieldArchive);
 	if(_varManager != nullptr)
 		_varManager->setFieldArchive(fieldArchive);
 
@@ -543,6 +548,7 @@ int MainWindow::closeFiles(bool quit)
 	setReadOnly(false);
 
 	searchDialog->setFieldArchive(nullptr);
+	searchAllDialog->setFieldArchive(nullptr);
 	if(_varManager != nullptr)		_varManager->setFieldArchive(nullptr);
 
 	if(fsDialog) {
@@ -986,40 +992,6 @@ void MainWindow::gotoScript(int fieldID, int groupID, int methodID, int opcodeID
 
 void MainWindow::about()
 {
-	QDialog about(this, Qt::Dialog | Qt::CustomizeWindowHint);
-	about.setFixedSize(200,300);
-
-	QFont font;
-	font.setPointSize(12);
-
-	QLabel image(&about);
-	image.setPixmap(QPixmap(":/images/deling_city.png"));
-	image.move(-5, about.height() - 128);
-
-	QLabel desc1(PROG_FULLNAME, &about);
-	desc1.setFont(font);
-	desc1.setFixedWidth(about.width());
-	desc1.setAlignment(Qt::AlignHCenter);
-
-	font.setPointSize(8);
-
-	QLabel desc2(tr("Par myst6re<br/><a href=\"https://github.com/myst6re/deling/\">github.com/myst6re/deling</a><br/><br/>Merci à :<ul style=\"margin:0\"><li>Aali</li><li>Aladore384</li><li>Asa</li><li>Maki</li><li>kruci</li></ul>"), &about);
-	desc2.setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
-	desc2.setTextFormat(Qt::RichText);
-	desc2.setOpenExternalLinks(true);
-	desc2.move(9,40);
-	desc2.setFont(font);
-
-	QLabel desc3(QString("Qt %1").arg(QT_VERSION_STR), &about);
-	QPalette pal = desc3.palette();
-	pal.setColor(QPalette::WindowText, QColor(0xAA,0xAA,0xAA));
-	desc3.setPalette(pal);
-	desc3.move(about.width()-8-desc3.sizeHint().width(), about.height()-8-desc3.sizeHint().height());
-	desc3.setFont(font);
-
-	QPushButton button(tr("Fermer"), &about);
-	button.move(8, about.height()-8-button.sizeHint().height());
-	connect(&button, SIGNAL(released()), &about, SLOT(close()));
-
+	AboutDialog about(this);
 	about.exec();
 }

@@ -16,9 +16,11 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "Search.h"
+#include "SearchAll.h"
 
-Search::Search(QTreeWidget *fieldList, QWidget *parent)
-	: QDialog(parent, Qt::Tool), fieldArchive(NULL), fieldList(fieldList)
+Search::Search(QTreeWidget *fieldList, SearchAll *searchAllDialog, QWidget *parent)
+    : QDialog(parent, Qt::Tool), fieldArchive(nullptr), fieldList(fieldList),
+      searchAllDialog(searchAllDialog)
 {
 	fieldID = -1;
 	textID = from = groupID = methodID = opcodeID = 0;
@@ -32,25 +34,26 @@ Search::Search(QTreeWidget *fieldList, QWidget *parent)
 
 	buttonNext = new QPushButton(tr("Chercher le suivant"), this);
 	buttonPrev = new QPushButton(tr("Chercher le précédent"), this);
+	buttonSearchAll = new QPushButton(tr("Chercher tout"), this);
 	buttonPrev->setAutoDefault(false);
 	buttonNext->setAutoDefault(false);
 	buttonNext->setEnabled(false);
 	buttonPrev->setEnabled(false);
 	buttonNext->setDefault(true);
 
-	new QShortcut(QKeySequence::FindNext, this, SLOT(findNext()), 0, Qt::ApplicationShortcut);
-	new QShortcut(QKeySequence::FindPrevious, this, SLOT(findPrev()), 0, Qt::ApplicationShortcut);
+	new QShortcut(QKeySequence::FindNext, this, SLOT(findNext()), nullptr, Qt::ApplicationShortcut);
+	new QShortcut(QKeySequence::FindPrevious, this, SLOT(findPrev()), nullptr, Qt::ApplicationShortcut);
 
+	int maxWidth = qMax(buttonPrev->sizeHint().width(), buttonNext->sizeHint().width());
 	// buttonNext.width == buttonPrev.width
-	if(buttonPrev->sizeHint().width() > buttonNext->sizeHint().width())
-		buttonNext->setFixedSize(buttonPrev->sizeHint());
-	else
-		buttonPrev->setFixedSize(buttonNext->sizeHint());
+	buttonNext->setFixedWidth(maxWidth);
+	buttonPrev->setFixedWidth(maxWidth);
 	
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(tabWidget, 0, 0, 1, 2);
 	layout->addWidget(buttonPrev, 1, 0, Qt::AlignRight);
 	layout->addWidget(buttonNext, 1, 1, Qt::AlignLeft);
+	layout->addWidget(buttonSearchAll, 2, 0, 1, 2, Qt::AlignCenter);
 	QMargins margins = layout->contentsMargins();
 	margins.setTop(0);
 	margins.setLeft(0);
@@ -59,6 +62,7 @@ Search::Search(QTreeWidget *fieldList, QWidget *parent)
 
 	connect(buttonNext, SIGNAL(released()), SLOT(findNext()));
 	connect(buttonPrev, SIGNAL(released()), SLOT(findPrev()));
+	connect(buttonSearchAll, SIGNAL(released()), SLOT(findAll()));
 	connect(tabWidget, SIGNAL(currentChanged(int)), SLOT(setFocus()));
 	connect(searchTextField, SIGNAL(textEdited(QString)), searchScriptTextField, SLOT(setText(QString)));
 	connect(searchScriptTextField, SIGNAL(textEdited(QString)), searchTextField, SLOT(setText(QString)));
@@ -282,19 +286,20 @@ void Search::focusInEvent(QFocusEvent *)
 void Search::setFieldArchive(FieldArchive *fieldArchive)
 {
 	this->fieldArchive = fieldArchive;
-	buttonNext->setEnabled(fieldArchive!=NULL);
-	buttonPrev->setEnabled(fieldArchive!=NULL);
+	buttonNext->setEnabled(fieldArchive != nullptr);
+	buttonPrev->setEnabled(fieldArchive != nullptr);
+	buttonSearchAll->setEnabled(fieldArchive != nullptr);
 }
 
 void Search::setFieldId(int fieldID)
 {
 //	if(fieldID != this->fieldID)
 //	{
-		this->fieldID = fieldID;
+	    this->fieldID = fieldID;
 //		qDebug() << "FieldID=" << fieldID << "(Search::setFieldId)";
-		this->textID = -1;
+	    this->textID = -1;
 //		qDebug() << "textID=" << textID << "(Search::setFieldId::textID=0)";
-		this->from = -1;
+	    this->from = -1;
 //	}
 }
 
@@ -302,9 +307,9 @@ void Search::setTextId(int textID)
 {
 //	if(textID != this->textID)
 //	{
-		this->textID = textID;
+	    this->textID = textID;
 //		qDebug() << "textID=" << textID << "(Search::setTextId)";
-		this->from = -1;
+	    this->from = -1;
 //	}
 }
 
@@ -377,6 +382,30 @@ void Search::findPrev()
 	buttonPrev->setEnabled(true);
 }
 
+void Search::findAll()
+{
+	if (fieldArchive == nullptr) {
+		return;
+	}
+
+	searchAllDialog->show();
+	searchAllDialog->activateWindow();
+	searchAllDialog->raise();
+
+	parentWidget()->setEnabled(false);
+	setEnabled(false);
+
+	if (currentIndex() == Text) {
+		findAllText();
+	}
+	else if (currentIndex() == Script) {
+		findAllScript();
+	}
+
+	parentWidget()->setEnabled(true);
+	setEnabled(true);
+}
+
 bool Search::findNextText()
 {
 	int size;
@@ -384,49 +413,53 @@ bool Search::findNextText()
 
 	++from;
 
-	if(fieldArchive->searchText(regexp(), fieldID, textID, from, size, sort))
-	{
-//		qDebug() << "from=" << from << "(MsdFile::findNextText::from=index)";
+	if (fieldArchive->searchText(regexp(), fieldID, textID, from, size, sort)) {
 		emit foundText(fieldID, textID, from, size);
-		// "found" signal may change 'from' value
-//		qDebug() << "from=" << from << "(MsdFile::findNextText::from++)";
 		return true;
 	}
 
-	textID = from = fieldID = -1;
-//	qDebug() << "FieldID=" << fieldID << "(Search::findNextText::0)";
-//	qDebug() << "textID=" << textID << "(Search::findNextText::0)";
-//	qDebug() << "from=" << from << "(MsdFile::findNextText::0)";
+	fieldID = textID = from = -1;
 
 	return false;
 }
 
 bool Search::findPrevText()
 {
-	int index, size;
+	int size;
 	FieldArchive::Sorting sort = sorting();
 
 	--from;
 
-	if(fieldArchive->searchTextReverse(regexp(), fieldID, textID, from, index, size, sort))
-	{
-//		qDebug() << "from=" << from << "(Search::findPrevText::from=index)";
-		emit foundText(fieldID, textID, index, size);
+	if (fieldArchive->searchTextReverse(regexp(), fieldID, textID, from, size, sort)) {
+		emit foundText(fieldID, textID, from, size);
 		return true;
 	}
 
-	fieldID = textID = 2147483647;
-	from = 0;
-//	qDebug() << "FieldID=" << fieldID << "(Search::findPrevText::0)";
-//	qDebug() << "textID=" << textID << "(Search::findPrevText::0)";
-//	qDebug() << "from=" << from << "(Search::findPrevText::0)";
+	fieldID = textID = from = 2147483647;
 
 	return false;
+
 }
 
 bool Search::findNextScript()
 {
 	int sav;
+
+	++opcodeID;
+
+	if (findNextScript(fieldID, groupID, methodID, opcodeID)) {
+		sav = opcodeID;
+		emit foundOpcode(fieldID, groupID, methodID, opcodeID);
+		// "found" signal may change 'opcodeID' value
+		opcodeID = sav;
+		return true;
+	}
+
+	return false;
+}
+
+bool Search::findNextScript(int &fieldID, int &groupID, int &methodID, int &opcodeID)
+{
 	bool found = false;
 	FieldArchive::Sorting sort = sorting();
 
@@ -441,36 +474,31 @@ bool Search::findNextScript()
 	}
 	else if(typeScriptChoice->currentIndex() == 3) {
 		Field *field = fieldArchive->getField(fieldID);
-		if(field != NULL && field->hasJsmFile()) {
+		if(field != nullptr && field->hasJsmFile()) {
 			found = field->getJsmFile()->search(JsmFile::SearchExec, (selectScriptGroup->value() & 0xFFFF) | ((selectScriptLabel->value() & 0xFFFF) << 16), groupID, methodID, opcodeID);
 		}
 		if(!found) {
-			groupID = methodID = opcodeID = 0;
+			groupID = methodID = opcodeID = 2147483647;
 			return false;
 		}
 	}
 	else if(typeScriptChoice->currentIndex() == 4) {
 		Field *field = fieldArchive->getField(fieldID);
-		if(field != NULL && field->hasJsmFile()) {
+		if(field != nullptr && field->hasJsmFile()) {
 			found = field->getJsmFile()->search(JsmFile::SearchMapJump, (selectScriptGroup->value() & 0xFFFF) | ((selectScriptLabel->value() & 0xFFFF) << 16), groupID, methodID, opcodeID);
 		}
 		if(!found) {
-			groupID = methodID = opcodeID = 0;
+			groupID = methodID = opcodeID = 2147483647;
 			return false;
 		}
 	}
 
 	if(found)
 	{
-		sav = opcodeID;
-		emit foundOpcode(fieldID, groupID, methodID, opcodeID);
-		// "found" signal may change 'opcodeID' value
-		opcodeID = sav + 1;
 		return true;
 	}
 
-	groupID = methodID = opcodeID = 0;
-	fieldID = -1;
+	fieldID = groupID = methodID = opcodeID = 2147483647;
 
 	return false;
 }
@@ -480,6 +508,8 @@ bool Search::findPrevScript()
 	int sav;
 	bool found = false;
 	FieldArchive::Sorting sort = sorting();
+
+	--opcodeID;
 
 	if(typeScriptChoice->currentIndex() == 0) {
 		found = fieldArchive->searchScriptTextReverse(regexp(), fieldID, groupID, methodID, opcodeID, sort);
@@ -502,11 +532,53 @@ bool Search::findPrevScript()
 		sav = opcodeID;
 		emit foundOpcode(fieldID, groupID, methodID, opcodeID);
 		// "found" signal may change 'opcodeID' value
-		opcodeID = sav - 1;
+		opcodeID = sav;
 		return true;
 	}
 
-	fieldID = groupID = methodID = opcodeID = -1;
+	fieldID = groupID = methodID = opcodeID = 2147483647;
 
 	return false;
+}
+
+void Search::findAllScript()
+{
+	int fieldID = -1, groupID = 0, methodID = 0, opcodeID = 0;
+
+	QDeadlineTimer t(50);
+
+	searchAllDialog->setScriptSearch();
+	while (findNextScript(fieldID, groupID, methodID, ++opcodeID)) {
+		if (t.hasExpired()) {
+			QCoreApplication::processEvents();
+			t.setRemainingTime(50);
+		}
+		// Cancelled
+		if (searchAllDialog->isHidden()) {
+			break;
+		}
+		searchAllDialog->addResultOpcode(fieldID, groupID, methodID, opcodeID);
+	}
+}
+
+void Search::findAllText()
+{
+	FieldArchive::Sorting sort = sorting();
+	int fieldID = -1, textID = -1, from = -1;
+
+	QDeadlineTimer t(50);
+
+	searchAllDialog->setTextSearch();
+	int size;
+	while (fieldArchive->searchText(regexp(), fieldID, textID, ++from, size, sort)) {
+		if (t.hasExpired()) {
+			QCoreApplication::processEvents();
+			t.setRemainingTime(50);
+		}
+		// Cancelled
+		if (searchAllDialog->isHidden()) {
+			break;
+		}
+		searchAllDialog->addResultText(fieldID, textID, from, size);
+	}
 }

@@ -981,29 +981,35 @@ bool JsmFile::search(SearchType type, quint64 value, int &groupID, int &methodID
 
 bool JsmFile::searchReverse(SearchType type, quint64 value, int &groupID, int &methodID, int &opcodeID) const
 {
-	int nbOpcode;
-	quint16 pos;
-
-	if(groupID < 0 || groupID >= scripts.nbGroup())
+	if (groupID >= scripts.nbGroup()) {
 		groupID = scripts.nbGroup() - 1;
+	}
 
-	while(groupID >= 0) {
-		if(methodID < 0 || methodID >= scripts.nbScript(groupID))
+	while (groupID >= 0) {
+		if (methodID >= scripts.nbScript(groupID)) {
 			methodID = scripts.nbScript(groupID) - 1;
+		}
 
-		while(methodID >= 0) {
-			pos = scripts.posScript(groupID, methodID, &nbOpcode);
-			if(opcodeID < 0 || opcodeID >= nbOpcode)
+		while (methodID >= 0) {
+			int nbOpcode;
+			const int pos = scripts.posScript(groupID, methodID, &nbOpcode);
+
+			if (opcodeID >= nbOpcode) {
 				opcodeID = nbOpcode - 1;
+			}
 
-			while(opcodeID >= 0) {
-				if(search(type, value, pos, opcodeID))	return true;
+			while (opcodeID >= 0) {
+				if (search(type, value, quint16(pos), opcodeID)) {
+					return true;
+				}
 
 				--opcodeID;
 			}
 			--methodID;
+			opcodeID = 2147483647;
 		}
 		--groupID;
+		methodID = 2147483647;
 	}
 
 	return false;

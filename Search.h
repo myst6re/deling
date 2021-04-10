@@ -21,6 +21,8 @@
 #include <QtWidgets>
 #include "FieldArchive.h"
 
+class SearchAll;
+
 class Search : public QDialog
 {
     Q_OBJECT
@@ -29,7 +31,7 @@ public:
 		Text=0, Script
 	};
 
-	explicit Search(QTreeWidget *fieldList, QWidget *parent=0);
+	explicit Search(QTreeWidget *fieldList, SearchAll *searchAllDialog, QWidget *parent = nullptr);
 	void setFieldArchive(FieldArchive *);
 	void setSearchText(const QString &text);
 	void setSearchOpcode(int opcode);
@@ -45,6 +47,7 @@ signals:
 private slots:
 	void findNext();
 	void findPrev();
+	void findAll();
 protected:
 	void focusInEvent(QFocusEvent *);
 private:
@@ -55,7 +58,10 @@ private:
 	bool findNextText();
 	bool findPrevText();
 	bool findNextScript();
+	bool findNextScript(int &fieldID, int &groupID, int &methodID, int &opcodeID);
 	bool findPrevScript();
+	void findAllScript();
+	void findAllText();
 	QWidget *textPageWidget();
 	QWidget *scriptPageWidget();
 	QWidget *scriptPageWidget1();
@@ -73,9 +79,10 @@ private:
 	QRadioButton *popScriptVar, *pushScriptVar;
 	QSpinBox *selectScriptGroup, *selectScriptLabel;
 	QStackedWidget *scriptStacked;
-	QPushButton *buttonNext, *buttonPrev;
+	QPushButton *buttonNext, *buttonPrev, *buttonSearchAll;
 	FieldArchive *fieldArchive;
 	QTreeWidget *fieldList;
+	SearchAll *searchAllDialog;
 	int fieldID;
 	int textID, from;
 	int groupID, methodID, opcodeID;
