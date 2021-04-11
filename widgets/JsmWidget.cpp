@@ -469,7 +469,7 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 	int nbGroup = data()->getJsmFile()->getScripts().nbGroup();
 	int directorCount=1, squallCount=1, zellCount=1, irvineCount=1, quistisCount=1;
 	int rinoaCount=1, selphieCount=1, seiferCount=1, edeaCount=1, lagunaCount=1, kirosCount=1;
-	int wardCount=1, drawPointCount=1, eventLineCount=1, doorCount=1;
+	int wardCount=1, modelCount=1, drawPointCount=1, eventLineCount=1, doorCount=1, bgCount=1;
 
 	for(int groupID=0 ; groupID<nbGroup ; ++groupID) {
 		const JsmGroup &grp = data()->getJsmFile()->getScripts().group(groupID);
@@ -540,6 +540,8 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 				item->setIcon(0, QIcon(":/images/icon-ward.png"));
 				break;
 			case -1:
+				if(name.isEmpty())	name = QString("Model%1").arg(modelCount);
+				modelCount++;
 				item->setIcon(0, QIcon(":/images/3d_model.png"));
 				break;
 			case DRAWPOINT_CHARACTER:
@@ -563,6 +565,8 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 			item->setIcon(0, QIcon(":/images/door.png"));
 			break;
 		case JsmGroup::Background:
+			if(name.isEmpty())	name = QString("Background%1").arg(bgCount);
+			bgCount++;
 			item->setIcon(0, QIcon(":/images/background.png"));
 			break;
 		default:
