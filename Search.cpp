@@ -151,7 +151,6 @@ QWidget *Search::scriptPageWidget()
 	layout->addWidget(typeScriptChoice);
 	layout->addWidget(scriptStacked);
 	layout->addStretch(1);
-	layout->setContentsMargins(QMargins());
 
 	connect(typeScriptChoice, SIGNAL(currentIndexChanged(int)), scriptStacked, SLOT(setCurrentIndex(int)));
 	connect(typeScriptChoice, SIGNAL(currentIndexChanged(int)), SLOT(setFocus()));
@@ -172,6 +171,7 @@ QWidget *Search::scriptPageWidget1()
 	layout->addWidget(searchScriptTextField);
 	layout->addWidget(scriptCheckBox);
 	layout->addWidget(scriptCheckBox2);
+	layout->setContentsMargins(QMargins());
 	layout->addStretch(1);
 
 	return ret;
@@ -200,6 +200,7 @@ QWidget *Search::scriptPageWidget2()
 	layout->addWidget(searchOpcodeValue, 1, 1);
 	layout->setRowStretch(2, 1);
 	layout->setColumnStretch(1, 1);
+	layout->setContentsMargins(QMargins());
 
 	return ret;
 }
@@ -230,8 +231,10 @@ QWidget *Search::scriptPageWidget3()
 	groupLayout->addStretch(1);
 
 	QVBoxLayout *layout = new QVBoxLayout(ret);
-	layout->addWidget(selectScriptVar, 0, Qt::AlignTop);
-	layout->addWidget(group, 0, Qt::AlignTop);
+	layout->addWidget(selectScriptVar, 0);
+	layout->addWidget(group, 0);
+	layout->addStretch(1);
+	layout->setContentsMargins(QMargins());
 
 	return ret;
 }
@@ -250,6 +253,8 @@ QWidget *Search::scriptPageWidget4()
 	layout->addWidget(new QLabel(tr("Label"),ret), 0, 1);
 	layout->addWidget(selectScriptGroup, 1, 0);
 	layout->addWidget(selectScriptLabel, 1, 1);
+	layout->setRowStretch(2, 1);
+	layout->setContentsMargins(QMargins());
 
 	return ret;
 }
@@ -261,9 +266,11 @@ QWidget *Search::scriptPageWidget5()
 	selectMap = new QSpinBox(ret);
 	selectMap->setRange(0, 65535);
 
-	QHBoxLayout *layout = new QHBoxLayout(ret);
-	layout->addWidget(new QLabel(tr("Écran id"),ret));
-	layout->addWidget(selectMap);
+	QGridLayout *layout = new QGridLayout(ret);
+	layout->addWidget(new QLabel(tr("Écran id"),ret), 0, 0);
+	layout->addWidget(selectMap, 0, 1);
+	layout->setRowStretch(1, 1);
+	layout->setContentsMargins(QMargins());
 
 	return ret;
 }
@@ -301,24 +308,15 @@ void Search::setFieldArchive(FieldArchive *fieldArchive)
 
 void Search::setFieldId(int fieldID)
 {
-//	if(fieldID != this->fieldID)
-//	{
-	    this->fieldID = fieldID;
-//		qDebug() << "FieldID=" << fieldID << "(Search::setFieldId)";
-	    this->textID = -1;
-//		qDebug() << "textID=" << textID << "(Search::setFieldId::textID=0)";
-	    this->from = -1;
-//	}
+	this->fieldID = fieldID;
+	this->textID = -1;
+	this->from = -1;
 }
 
 void Search::setTextId(int textID)
 {
-//	if(textID != this->textID)
-//	{
-	    this->textID = textID;
-//		qDebug() << "textID=" << textID << "(Search::setTextId)";
-	    this->from = -1;
-//	}
+	this->textID = textID;
+	this->from = -1;
 }
 
 void Search::setFrom(int from)
