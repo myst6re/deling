@@ -40,76 +40,7 @@ const QByteArray &LZS::decompress(const QByteArray &data, int max)
 
 const QByteArray &LZS::decompress(const char *data, int fileSize, int max)
 {
-	int curResult=0, sizeAlloc=max+10;
-	quint16 curBuff=4078, adresse, premOctet=0, i, length;
-	const quint8 *fileData = (const quint8 *)data;
-	const quint8 *endFileData = fileData + fileSize;
-
-	// Impossible case
-	if(quint64(sizeAlloc) > 2000 * quint64(fileSize)) {
-		qWarning() << "LZS::decompress impossible ratio case" << sizeAlloc << 2000 * quint64(fileSize);
-		result.clear();
-		return result;
-	}
-
-	if(result.size() < sizeAlloc) {
-		try {
-			result.resize(sizeAlloc);
-		} catch(std::bad_alloc) {
-			result.clear();
-			return result;
-		}
-	}
-
-	memset(text_buf, 0, 4078);//Le buffer de 4096 octets est initialisé à 0
-
-	forever
-	{
-		if(((premOctet >>= 1) & 256) == 0) {
-			premOctet = *fileData++ | 0xff00;//On récupère le premier octet puis on avance d'un octet
-		}
-
-		if(fileData >= endFileData || curResult >= max) {
-			result.truncate(curResult);
-			return result;//Fini !
-		}
-
-		if(premOctet & 1)
-		{
-			result[curResult] = text_buf[curBuff] = *fileData++;//On récupère l'octet (qui n'est pas compressé) et on le sauvegarde dans la chaine finale (result) et dans le buffer. Et bien sûr on fait avancer les curseurs d'un octet.
-			curBuff = (curBuff + 1) & 4095;//Le curseur du buffer doit toujours être entre 0 et 4095
-			++curResult;
-		}
-		else
-		{
-//			quint16 twoBytes = *((const quint16 *)fileData);
-//			adresse = (twoBytes & 0x00FF) | ((twoBytes & 0xF000) >> 4);
-//			length = ((twoBytes & 0x0F00) >> 8) + 2 + adresse;
-//			fileData += 2;
-
-			adresse = *fileData++;
-			length = *fileData++;
-			adresse |= (length & 0xF0) << 4;//on récupère l'adresse dans les deux octets (qui sont "compressés")
-			length = (length & 0xF) + 2 + adresse;
-
-			for(i=adresse ; i<=length ; ++i)
-			{
-				result[curResult] = text_buf[curBuff] = text_buf[i & 4095];//On va chercher l'octet (qui est décompressé) dans le buffer à l'adresse indiquée puis on le sauvegarde dans la chaine finale et le buffer.
-				curBuff = (curBuff + 1) & 4095;
-				++curResult;
-			}
-		}
-	}
-}
-
-const QByteArray &LZS::decompressAll(const QByteArray &data)
-{
-	return decompressAll(data.constData(), data.size());
-}
-
-const QByteArray &LZS::decompressAll(const char *data, int fileSize)
-{
-	int sizeAlloc=fileSize*5;
+	int sizeAlloc=qMin(max, fileSize * 5);
 	quint16 curBuff=4078, offset, premOctet=0, i, length;
 	const quint8 *fileData = (const quint8 *)data;
 	const quint8 *endFileData = fileData + fileSize;
@@ -134,7 +65,7 @@ const QByteArray &LZS::decompressAll(const char *data, int fileSize)
 			premOctet = *fileData++ | 0xff00;//On récupère le premier octet puis on avance d'un octet
 		}
 
-		if(fileData >= endFileData) {
+		if(fileData >= endFileData || result.size() >= max) {
 			return result; // Done
 		}
 
@@ -145,11 +76,6 @@ const QByteArray &LZS::decompressAll(const char *data, int fileSize)
 		}
 		else
 		{
-//			quint16 twoBytes = *((const quint16 *)fileData);
-//			offset = (twoBytes & 0x00FF) | ((twoBytes & 0xF000) >> 4);
-//			length = ((twoBytes & 0x0F00) >> 8) + 2 + offset;
-//			fileData += 2;
-
 			offset = *fileData++;
 			length = *fileData++;
 			offset |= (length & 0xF0) << 4;//on récupère l'offset dans les deux octets (qui sont "compressés")

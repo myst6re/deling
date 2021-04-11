@@ -153,7 +153,7 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 						qWarning() << "CharaFile::open Compression error" << i << lzsSize << data.size();
 						return false;
 					}
-					data = LZS::decompressAll(data.constData() + 4, lzsSize);
+					data = LZS::decompress(data.constData() + 4, lzsSize);
 				}
 
 				QList<TimFile> textures;
