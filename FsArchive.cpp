@@ -1300,7 +1300,7 @@ bool FsArchive::repair(FsArchive *other)
 		QByteArray d;
 		if(size <= 5000000) {
 			QByteArray data = fs.read(size);
-			d = LZS::decompressAll(data);
+			d = LZS::decompress(data);
 			decSize = d.size();
 			qDebug() << "repair entry compressed" << pos << size << d.size();
 			compressed = true;

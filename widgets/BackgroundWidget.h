@@ -30,6 +30,7 @@ class BackgroundWidget : public PageWidget
 public:
 	BackgroundWidget(QWidget *parent=0);
 	void clear();
+	void setReadOnly(bool ro);
 	void fill();
 	inline QString tabName() const { return tr("Décors"); }
 private slots:
@@ -38,6 +39,22 @@ private slots:
 	void enableLayer(QListWidgetItem *item);
 //	void switchItem(QListWidgetItem *item);
 	void setHideBack(bool);
+	void setPage(int index);
+	void setCurrentTile(int index);
+	void setTileX();
+	void setTileY();
+	void setTileZ();
+	void setTileTexID();
+	void setTileBlend();
+	void setTilePalID();
+	void setTileDraw();
+	void setTileDepth();
+	void setTileSrcX();
+	void setTileSrcY();
+	void setTileLayerID();
+	void setTileBlendType();
+	void setTileParameter();
+	void setTileState();
 private:
 	void updateBackground();
 	void build();
@@ -46,6 +63,13 @@ private:
 	QComboBox *parametersWidget;
 	QListWidget *statesWidget, *layersWidget;
 	QCheckBox *hideBack;
+	QSpinBox *currentTile, *tileDepth;
+	QSpinBox *tileX, *tileY, *tileZ;
+	QSpinBox *tileTexID, *tileBlend, *tilePalID;
+	QCheckBox *tileDraw;
+	QSpinBox *tileSrcX, *tileSrcY, *tileLayerID;
+	QSpinBox *tileBlendType, *tileParameter, *tileState;
+	QStackedLayout *stackedLayout;
 };
 
 #endif // BACKGROUNDWIDGET_H

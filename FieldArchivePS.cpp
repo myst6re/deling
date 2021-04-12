@@ -25,7 +25,14 @@ FieldArchivePS::FieldArchivePS()
 
 FieldArchivePS::~FieldArchivePS()
 {
-	if(iso)		delete iso;
+	if(iso) {
+		if(iso->isDemo()) {
+			FF8Font::deregisterFont("demo");
+			Config::setValue("encoding", "00");
+		}
+
+		delete iso;
+	}
 }
 
 QString FieldArchivePS::archivePath() const
@@ -107,7 +114,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 				else
 					desc = QString();
 
-				indexOf = mapList().indexOf(field->name());
+				indexOf = iso->isDemo() ? i : mapList().indexOf(field->name());
 				QString mapId = indexOf==-1 ? "~" : QString("%1").arg(indexOf, 3, 10, QChar('0'));
 
 				fields.append(field);
@@ -129,10 +136,18 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 
 	openModels();
 
-	if(iso->isJp() && Config::value("encoding", "00").toString() == "00") {
-		Config::setValue("encoding", "01");
-	} else if(!iso->isJp() && Config::value("encoding", "00").toString() == "01") {
-		Config::setValue("encoding", "00");
+	if(iso->isDemo()) {
+		QByteArray sysFntTdw = iso->file(iso->sysFntTdwFile());
+		TdwFile *tdw = new TdwFile();
+		tdw->open(sysFntTdw);
+		FF8Font::registerFont("demo", new FF8Font(tdw, QByteArray()));
+		Config::setValue("encoding", "demo");
+	} else {
+		if(iso->isJp() && Config::value("encoding", "00").toString() == "00") {
+			Config::setValue("encoding", "01");
+		} else if(!iso->isJp() && Config::value("encoding", "00").toString() == "01") {
+			Config::setValue("encoding", "00");
+		}
 	}
 
 	return 0;

@@ -275,6 +275,18 @@ FF8Font *FF8Font::openFont(const QString &tdwPath, const QString &txtPath)
 	}
 }
 
+void FF8Font::registerFont(const QString &name, FF8Font *font)
+{
+	fonts.insert(name, font);
+}
+
+void FF8Font::deregisterFont(const QString &name)
+{
+	if(fonts.contains(name)) {
+		delete fonts.take(name);
+	}
+}
+
 FF8Font *FF8Font::font(QString name)
 {
 	if(name.isEmpty()) {

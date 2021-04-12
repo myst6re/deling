@@ -418,7 +418,7 @@ public:
 		return false;
 	}
 	virtual inline JsmOpcode *controlStructJump() const {
-		return 0;
+		return nullptr;
 	}
 	virtual inline bool isVirtual() const {
 		return false;

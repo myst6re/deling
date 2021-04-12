@@ -26,10 +26,17 @@ class CharaPreview : public BGPreview2
 {
 	Q_OBJECT
 public:
-	explicit CharaPreview(QWidget *parent = 0);
+	explicit CharaPreview(QWidget *parent = nullptr);
 	void fill(const QPixmap &background);
 	void setMainModels(QHash<int, CharaModel *> *mainModels);
 	void setModel(const CharaModel &model);
+protected:
+	inline bool hasHeightForWidth() const override {
+		return true;
+	}
+	inline int heightForWidth(int w) const override {
+		return w;
+	}
 private:
 	QHash<int, CharaModel *> *mainModels;
 };

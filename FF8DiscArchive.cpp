@@ -125,7 +125,7 @@ QByteArray FF8DiscArchive::fileLZS(const FF8DiscFile &file, bool strict)
 	if((strict && file.getSize() != lzsSize+4) || (!strict && (lzsSize + 4)/SECTOR_SIZE_DATA + (int)(lzsSize%SECTOR_SIZE_DATA != 0) != file.getSize()/SECTOR_SIZE_DATA + (int)(file.getSize()%SECTOR_SIZE_DATA != 0)))
 		return QByteArray();
 
-	return LZS::decompressAll(readIso(lzsSize).constData(), lzsSize);
+	return LZS::decompress(readIso(lzsSize).constData(), lzsSize);
 }
 
 QByteArray FF8DiscArchive::fileGZ(const FF8DiscFile &file)
@@ -174,7 +174,7 @@ bool FF8DiscArchive::extractGZ(const FF8DiscFile &file, const QString &destinati
 const QList<FF8DiscFile> &FF8DiscArchive::rootDirectory()
 {
 	if(!rootFiles.isEmpty() || !IMGFound())		return rootFiles;
-	searchFiles();
+	//searchFiles();
 
 	quint32 position, size, numSectors = sizeIMG / SECTOR_SIZE_DATA;
 	qint64 maxPos;
@@ -230,6 +230,14 @@ int FF8DiscArchive::rootCount()
 const FF8DiscFile &FF8DiscArchive::rootFile(int id)
 {
 	return rootDirectory().at(id);
+}
+
+const FF8DiscFile &FF8DiscArchive::sysFntTdwFile()
+{
+	if (isDemo()) {
+		return rootFile(isJp() ? 9 : 8);
+	}
+	return rootFile(129);
 }
 
 const FF8DiscFile &FF8DiscArchive::fieldBinFile()

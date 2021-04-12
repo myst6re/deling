@@ -19,7 +19,7 @@
 #include "ProgressWidget.h"
 
 FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
-	QWidget(parent), fsArchive(fsArchive), currentPal(0)
+    QWidget(parent), fsArchive(fsArchive), currentImage(0), currentPal(0)
 {
 	setMinimumSize(800, 528);
 
@@ -59,10 +59,10 @@ FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	connect(list, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), SLOT(doubleClicked(QTreeWidgetItem*)));
 	connect(list, SIGNAL(itemChanged(QTreeWidgetItem*,int)), SLOT(renameOK(QTreeWidgetItem*,int)));
 	connect(list, SIGNAL(fileDropped(QStringList)), SLOT(addFile(QStringList)));
-	connect(list, SIGNAL(itemSelectionChanged()), SLOT(setButtonsEnabled()));
-	connect(list, SIGNAL(itemSelectionChanged()), SLOT(generatePreview()));
+	connect(list, SIGNAL(itemSelectionChanged()), SLOT(changePreview()));
 	connect(up, SIGNAL(released()), SLOT(parentDir()));
 	connect(pathWidget, SIGNAL(returnPressed()), SLOT(openDir()));
+	connect(preview, SIGNAL(currentImageChanged(int)), SLOT(changeImageInPreview(int)));
 	connect(preview, SIGNAL(currentPaletteChanged(int)), SLOT(changeImagePaletteInPreview(int)));
 
 	if(fsArchive!=nullptr && fsArchive->dirExists("c:\\ff8\\data\\"))
@@ -126,6 +126,14 @@ void FsDialog::setButtonsEnabled()
 	}
 }
 
+void FsDialog::changePreview()
+{
+	currentImage = 0;
+	currentPal = 0;
+	setButtonsEnabled();
+	generatePreview();
+}
+
 void FsDialog::generatePreview()
 {
 	QList<QTreeWidgetItem *> items = list->selectedItems();
@@ -180,18 +188,24 @@ void FsDialog::generatePreview()
 	else if(fileType == "h" || fileType == "c"
 		 || fileType == "sym" || fileType.isEmpty()
 		 || fileType == "bak" || fileType == "dir"
-		 || fileType == "fl")
+	     || fileType == "fl" || fileType == "txt")
 	{
 		preview->textPreview(QString(data));
 	}
+	else if(fileType == "png" || fileType == "jpg" || fileType == "jpeg")
+	{
+		preview->imagePreview(QPixmap::fromImage(QImage::fromData(data)), fileName);
+	}
 	else
 	{
-		int index;
-		if((index = FF8Image::findFirstTim(data)) != -1)
+		QList<int> indexes = FF8Image::findTims(data);
+		if(!indexes.isEmpty())
 		{
-			TimFile timFile(data.mid(index));
+			TimFile timFile(data.mid(indexes.value(currentImage, indexes.first())));
 			timFile.setCurrentColorTable(currentPal);
-			preview->imagePreview(QPixmap::fromImage(timFile.image()), fileName, currentPal, timFile.colorTableCount());
+			preview->imagePreview(QPixmap::fromImage(timFile.image()), fileName,
+			                      currentPal, timFile.colorTableCount(),
+			                      currentImage, indexes.size());
 		}
 		else
 		{
@@ -200,9 +214,21 @@ void FsDialog::generatePreview()
 	}
 }
 
+void FsDialog::changeImageInPreview(int imageID)
+{
+	if(imageID < 0) {
+		return;
+	}
+
+	currentImage = imageID;
+	generatePreview();
+}
+
 void FsDialog::changeImagePaletteInPreview(int palID)
 {
-	if(palID < 0)	return;
+	if(palID < 0) {
+		return;
+	}
 
 	currentPal = palID;
 	generatePreview();

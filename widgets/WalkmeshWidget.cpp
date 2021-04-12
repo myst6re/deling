@@ -307,14 +307,12 @@ QWidget *WalkmeshWidget::buildCameraRangePage()
 	QWidget *ret = new QWidget(this);
 
 	rangeList1 = new QListWidget(ret);
-	rangeList1->setFixedWidth(125);
 
 	for(int i=0 ; i<8 ; ++i) {
 		rangeList1->addItem(tr("Limite caméra %1").arg(i+1));
 	}
 
 	rangeList2 = new QListWidget(ret);
-	rangeList2->setFixedWidth(125);
 
 	for(int i=0 ; i<2 ; ++i) {
 		rangeList2->addItem(tr("Limite écran %1").arg(i+1));

@@ -119,10 +119,10 @@ void MiscWidget::fill()
 
 	if(!hasData())	return;
 
-    if(data()->hasInfFile()) {
-        nameEdit->setText(data()->getInfFile()->getMapName());
+	if(data()->hasInfFile()) {
+		nameEdit->setText(data()->getInfFile()->getMapName());
 		pvpEdit2->setValue(data()->getInfFile()->pvp());
-    }
+	}
 	nameEdit->setEnabled(data()->hasInfFile());
 	pvpEdit2->setEnabled(data()->hasInfFile());
 
@@ -133,10 +133,9 @@ void MiscWidget::fill()
 			pal = pal.scaledToWidth(256);
 		}
 		pmpPaletteView->setPixmap(pal);
-		updatePmpView();
-    }
+	}
 	pmpEdit->setEnabled(data()->hasPmpFile());
-	pmpGroup->setEnabled(data()->hasPmpFile());
+	updatePmpView();
 
 	if(data()->hasPmdFile()) {
 		pmdEdit->setText(data()->getPmdFile()->getPmdData().toHex());

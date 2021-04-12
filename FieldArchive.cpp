@@ -181,17 +181,16 @@ bool FieldArchive::searchText(const QRegExp &text, int &fieldID, int &textID, in
 	return false;
 }
 
-bool FieldArchive::searchTextReverse(const QRegExp &text, int &fieldID, int &textID, int &from, int &index, int &size, Sorting sorting) const
+bool FieldArchive::searchTextReverse(const QRegExp &text, int &fieldID, int &textID, int &from, int &size, Sorting sorting) const
 {
 	QMap<QString, int>::const_iterator i, begin;
 	if(!searchIteratorsP(i, begin, fieldID, sorting))	return false;
 
 	for( ; i != begin-1 ; --i) {
 		Field *field = getField(fieldID = i.value());
-		if(field && field->hasMsdFile() && field->getMsdFile()->searchTextReverse(text, textID, from, index, size))
+		if(field && field->hasMsdFile() && field->getMsdFile()->searchTextReverse(text, textID, from, size))
 			return true;
-		textID = 2147483647;
-		from = -1;
+		textID = from = 2147483647;
 	}
 
 	return false;
@@ -221,11 +220,15 @@ bool FieldArchive::searchScriptText(const QRegExp &text, int &fieldID, int &grou
 		Field *field = getField(fieldID = i.value());
 		if(field && field->hasMsdFile() && field->hasJsmFile()) {
 			MsdFile *msd = field->getMsdFile();
-			int textID = -1;
-			while((textID = msd->indexOfText(text, textID + 1)) != -1) {
-				if(field->getJsmFile()->search(JsmFile::SearchText, textID, groupID, methodID, opcodeID))
-					return true;
-				++textID;
+			JsmFile *jsm = field->getJsmFile();
+			QList<quint64> textIDs;
+			for (int textID = 0; textID < msd->nbText(); ++textID) {
+				if (text.indexIn(msd->text(textID)) >= 0) {
+					textIDs.append(quint64(textID));
+				}
+			}
+			if (jsm->search(JsmFile::SearchText, textIDs, groupID, methodID, opcodeID)) {
+				return true;
 			}
 		}
 		groupID = methodID = opcodeID = 0;
@@ -243,7 +246,7 @@ bool FieldArchive::searchScriptReverse(JsmFile::SearchType type, quint64 value, 
 		Field *field = getField(fieldID = i.value());
 		if(field && field->hasJsmFile() && field->getJsmFile()->searchReverse(type, value, groupID, methodID, opcodeID))
 			return true;
-		groupID = methodID = opcodeID = -1;
+		groupID = methodID = opcodeID = 2147483647;
 	}
 
 	return false;
@@ -258,14 +261,18 @@ bool FieldArchive::searchScriptTextReverse(const QRegExp &text, int &fieldID, in
 		Field *field = getField(fieldID = i.value());
 		if(field && field->hasMsdFile() && field->hasJsmFile()) {
 			MsdFile *msd = field->getMsdFile();
-			int textID = -1;
-			while((textID = msd->indexOfText(text, textID + 1)) != -1) {
-				if(field->getJsmFile()->searchReverse(JsmFile::SearchText, textID, groupID, methodID, opcodeID))
-					return true;
-				++textID;
+			JsmFile *jsm = field->getJsmFile();
+			QList<quint64> textIDs;
+			for (int textID = 0; textID < msd->nbText(); ++textID) {
+				if (text.indexIn(msd->text(textID)) >= 0) {
+					textIDs.append(quint64(textID));
+				}
+			}
+			if (jsm->searchReverse(JsmFile::SearchText, textIDs, groupID, methodID, opcodeID)) {
+				return true;
 			}
 		}
-		groupID = methodID = opcodeID = -1;
+		groupID = methodID = opcodeID = 2147483647;
 	}
 
 	return false;

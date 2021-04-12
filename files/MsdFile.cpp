@@ -112,57 +112,46 @@ void MsdFile::removeText(int id)
 	}
 }
 
-int MsdFile::nbText() const
-{
-	return texts.size();
-}
-
-bool MsdFile::hasText(const QRegExp &txt) const
-{
-	return indexOfText(txt) != -1;
-}
-
-int MsdFile::indexOfText(const QRegExp &txt, int from) const
-{
-	for (int textID = qMax(0, from) ; textID < nbText() ; ++textID) {
-		if(txt.indexIn(text(textID)) != -1) {
-			return textID;
-		}
-	}
-
-	return -1;
-}
-
 bool MsdFile::searchText(const QRegExp &txt, int &textID, int &from, int &size) const
 {
-	if(textID < 0)
+	if (textID < 0) {
 		textID = 0;
-	if(textID >= nbText())
-		return false;
-	if((from = txt.indexIn(text(textID), from)) != -1) {
-		size = txt.matchedLength();
-		return true;
 	}
 
-	return searchText(txt, ++textID, from = 0, size);
+	for (; textID < nbText(); ++textID) {
+		from = txt.indexIn(text(textID), from);
+		if (from != -1) {
+			size = txt.matchedLength();
+			return true;
+		}
+		from = 0;
+	}
+
+	return false;
 }
 
-bool MsdFile::searchTextReverse(const QRegExp &txt, int &textID, int &from, int &index, int &size) const
+bool MsdFile::searchTextReverse(const QRegExp &txt, int &textID, int &from, int &size) const
 {
-	if(textID >= nbText()) {
-		textID = nbText()-1;
-		from = -1;
-	}
-	if(textID < 0)
-		return false;
-	FF8Text t = text(textID);
-	if((index = txt.lastIndexIn(t, from)) != -1) {
-		from = index - t.size();
-		size = txt.matchedLength();
-		return true;
+	if (textID >= nbText()) {
+		textID = nbText() - 1;
+		from = 2147483647;
 	}
 
-	return searchTextReverse(txt, --textID, from = -1, index, size);
+	for (; textID >= 0; --textID) {
+		const FF8Text t = text(textID);
+		int offset = from - t.size();
+		if (offset >= 0) {
+			offset = -1;
+		}
+		from = txt.lastIndexIn(t, offset);
+		if (from != -1) {
+			size = txt.matchedLength();
+			return true;
+		}
+		from = 2147483647;
+	}
+
+	return false;
 }
 
 bool MsdFile::isJp() const

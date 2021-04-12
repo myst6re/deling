@@ -31,13 +31,16 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 
 	selectTable = new QComboBox(this);
 
-	fromImage1 = new QPushButton(tr("À partir d'une image..."), this);
+	/* fromImage1 = new QPushButton(tr("À partir d'une image..."), this);
 	fromImage1->setVisible(false);//TODO
 	fromImage2 = new QPushButton(tr("À partir d'une image..."), this);
-	fromImage2->setVisible(false);//TODO
+	fromImage2->setVisible(false);//TODO */
 //	QPushButton *resetButton1 = new QPushButton(tr("Annuler les modifications"), this);//TODO
 	textLetter = new QLineEdit(this);
 	textLetter->setReadOnly(isAdditionnalTable);
+	widthLetter = new QSpinBox(this);
+	widthLetter->setRange(0, 15);
+	widthLetter->setReadOnly(isAdditionnalTable);
 	exportButton = new QPushButton(tr("Exporter..."), this);
 	importButton = new QPushButton(tr("Importer..."), this);
 	resetButton2 = new QPushButton(tr("Annuler les modifications"), this);
@@ -45,19 +48,21 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(tdwGrid, 0, 0, 1, 2, Qt::AlignRight);
-	layout->addWidget(tdwLetter, 0, 2, 2, 2, Qt::AlignLeft);
-	layout->addWidget(fromImage1, 1, 0, 1, 2, Qt::AlignLeft);
+	layout->addWidget(tdwLetter, 0, 2, 2, 4, Qt::AlignLeft);
+	//layout->addWidget(fromImage1, 1, 0, 1, 2, Qt::AlignLeft);
 	layout->addWidget(selectPal, 2, 0, Qt::AlignRight);
 	layout->addWidget(selectTable, 2, 1, Qt::AlignLeft);
-	layout->addWidget(tdwPalette, 2, 2, 1, 2, Qt::AlignLeft);
-	layout->addWidget(textLetter, 3, 2);
-	layout->addWidget(fromImage2, 3, 3, Qt::AlignRight);
+	layout->addWidget(tdwPalette, 2, 2, 1, 4, Qt::AlignLeft);
+	layout->addWidget(new QLabel(tr("Texte :")), 3, 2);
+	layout->addWidget(textLetter, 3, 3);
+	layout->addWidget(new QLabel(tr("Largeur :")), 3, 4);
+	layout->addWidget(widthLetter, 3, 5);
+	//layout->addWidget(fromImage2, 3, 3, Qt::AlignRight);
 //	layout->addWidget(resetButton1, 4, 0, 1, 2, Qt::AlignLeft);
 	layout->addWidget(exportButton, 4, 0, Qt::AlignLeft);
 	layout->addWidget(importButton, 4, 1, Qt::AlignLeft);
-	layout->addWidget(resetButton2, 4, 2, 1, 2, Qt::AlignRight);
+	layout->addWidget(resetButton2, 4, 2, 1, 4, Qt::AlignRight);
 	layout->setRowStretch(5, 1);
-	layout->setColumnStretch(3, 1);
 	layout->setContentsMargins(QMargins());
 
 	connect(selectPal, SIGNAL(currentIndexChanged(int)), SLOT(setColor(int)));
@@ -71,6 +76,8 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 	connect(resetButton2, SIGNAL(clicked()), SLOT(resetLetter()));
 	connect(tdwPalette, SIGNAL(colorChanged(int)), tdwLetter, SLOT(setPixelIndex(int)));
 	connect(textLetter, SIGNAL(textEdited(QString)), SLOT(editLetter(QString)));
+	connect(widthLetter, SIGNAL(valueChanged(int)), SLOT(editWidth(int)));
+	connect(tdwLetter, SIGNAL(widthEdited(int)), widthLetter, SLOT(setValue(int)));
 }
 
 void TdwWidget2::clear()
@@ -107,15 +114,17 @@ void TdwWidget2::setIsAdditionnalTable(bool isAdditionnalTable)
 {
 	this->isAdditionnalTable = isAdditionnalTable;
 	textLetter->setReadOnly(isAdditionnalTable);
+	widthLetter->setReadOnly(isAdditionnalTable);
 }
 
 void TdwWidget2::setReadOnly(bool ro)
 {
 	textLetter->setReadOnly(isAdditionnalTable || ro);
+	widthLetter->setReadOnly(isAdditionnalTable || ro);
 	tdwLetter->setReadOnly(ro);
 	tdwPalette->setReadOnly(ro);
-	fromImage1->setDisabled(ro);
-	fromImage2->setDisabled(ro);
+	/* fromImage1->setDisabled(ro);
+	fromImage2->setDisabled(ro); */
 }
 
 void TdwWidget2::setColor(int i)
@@ -151,6 +160,9 @@ void TdwWidget2::setLetter(int i)
 		} else {
 			textLetter->setText(FF8Text(ba.append((char)(0x20 + i))));
 		}
+		if(tdwLetter->tdwFile()) {
+			widthLetter->setValue(tdwLetter->tdwFile()->charWidth(tdwGrid->currentTable(), i));
+		}
 	}
 	resetButton2->setEnabled(false);
 }
@@ -159,6 +171,14 @@ void TdwWidget2::editLetter(const QString &letter)
 {
 	if(ff8Font) {
 		ff8Font->setChar(tdwGrid->currentTable(), tdwGrid->currentLetter(), letter);
+	}
+}
+
+void TdwWidget2::editWidth(int w)
+{
+	if(tdwLetter->tdwFile() && tdwLetter->tdwFile()->charWidth(tdwGrid->currentTable(), tdwGrid->currentLetter()) != w) {
+		tdwLetter->tdwFile()->setCharWidth(tdwGrid->currentTable(), tdwGrid->currentLetter(), w);
+		tdwLetter->update();
 	}
 }
 

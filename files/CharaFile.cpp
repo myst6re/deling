@@ -153,9 +153,25 @@ bool CharaFile::open(const QByteArray &one, bool ps)
 						qWarning() << "CharaFile::open Compression error" << i << lzsSize << data.size();
 						return false;
 					}
-					data = LZS::decompressAll(data.constData() + 4, lzsSize);
+					data = LZS::decompress(data.constData() + 4, lzsSize);
 				}
-				models.append(CharaModel(name, toc, data));
+
+				QList<TimFile> textures;
+
+				// Toc = tim offsets + data offset + data size
+
+				for(int i=0 ; i<toc.size()-2 ; ++i) {
+					quint32 pos = toc.at(i) & 0xFFFFFF;
+			//		qDebug() << "ouverture tim" << pos << ((toc.at(i+1) & 0xFFFFFF) - pos);
+					textures.append(TimFile(data.mid(pos, (toc.at(i+1) & 0xFFFFFF) - pos)));
+					if(!textures.last().isValid()) {
+						qWarning() << "CharaModel::open tim error: unknown format!" << name << i;
+					}
+				}
+
+			//	qDebug() << "charaModel ouvert" << _name;
+
+				models.append(CharaModel(name, textures));
 //				qDebug() << "Tim ajouté" << name;
 			} else {
 				qWarning() << "CharaFile::open Unknown format (5)!" << i << QString::number(timOffset, 16);

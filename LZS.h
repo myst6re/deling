@@ -31,10 +31,8 @@
 class LZS
 {
 public:
-	static const QByteArray &decompress(const QByteArray &data, int max);
-	static const QByteArray &decompress(const char *data, int fileSize, int max);
-	static const QByteArray &decompressAll(const QByteArray &data);
-	static const QByteArray &decompressAll(const char *data, int fileSize);
+	static const QByteArray &decompress(const QByteArray &data, int max = std::numeric_limits<int>::max());
+	static const QByteArray &decompress(const char *data, int fileSize, int max =  std::numeric_limits<int>::max());
 	static const QByteArray &compress(const QByteArray &fileData);
 	static const QByteArray &compress(const char *data, int sizeData);
 	static void clear();

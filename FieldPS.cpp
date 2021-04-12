@@ -322,6 +322,13 @@ bool FieldPS::save(QByteArray &dat, QByteArray &mim)
 			header.setSize(FieldDatHeader::AKAO, akao.size());
 		}
 	}
+	if(hasBackgroundFile() && getBackgroundFile()->isModified()) {
+		QByteArray map;
+		if(getBackgroundFile()->save(map)) {
+			dat.replace(header.position(FieldDatHeader::Map), header.size(FieldDatHeader::Map), map);
+			header.setSize(FieldDatHeader::Map, map.size());
+		}
+	}
 
 	dat.replace(0, 48, header.save());
 
