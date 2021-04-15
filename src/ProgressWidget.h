@@ -3,7 +3,7 @@
 
 #include <QProgressDialog>
 #include "ArchiveObserverProgressDialog.h"
-#include "QTaskbarButton.h"
+#include "QTaskBarButton.h"
 
 class ProgressWidget : public QObject, public ArchiveObserverProgressDialog
 {
