@@ -33,9 +33,6 @@ void JsmWidget::build()
 {
 	if (isBuilded())	return;
 
-	QFont font;
-	font.setPointSize(8);
-
 	warningWidget = new QLabel(tr("Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n'aura peut-être aucun sens."), this);
 	warningWidget->hide();
 	warningWidget->setWordWrap(true);
@@ -43,14 +40,16 @@ void JsmWidget::build()
 
 	list1 = new QTreeWidget(this);
 	list1->setHeaderLabels(QStringList() << tr("Id") << tr("Groupe") << tr("Exec"));
-	list1->setFixedWidth(180);
+	list1->setMaximumWidth(
+	    list1->fontMetrics().boundingRect(QString(16, 'M')).width());
+	list1->setMinimumWidth(
+	    list1->fontMetrics().boundingRect(QString(8, 'M')).width());
 	list1->setAutoScroll(false);
 	list1->setIndentation(0);
-	list1->setFont(font);
 	list1->setUniformRowHeights(true);
+	list1->setAlternatingRowColors(true);
 
 	modelPreview = new CharaPreview(this);
-	modelPreview->setFixedSize(list1->width(), list1->width());
 	modelPreview->setMainModels(mainModels);
 
 	QVBoxLayout *list1Layout = new QVBoxLayout();
@@ -60,11 +59,14 @@ void JsmWidget::build()
 
 	list2 = new QTreeWidget(this);
 	list2->setHeaderLabels(QStringList() << tr("Id") << tr("Script") << tr("Script label"));
-	list2->setFixedWidth(180);
+	list2->setMaximumWidth(
+	    list2->fontMetrics().boundingRect(QString(16, 'M')).width());
+	list2->setMinimumWidth(
+	    list2->fontMetrics().boundingRect(QString(8, 'M')).width());
 	list2->setAutoScroll(false);
 	list2->setIndentation(0);
-	list2->setFont(font);
 	list2->setUniformRowHeights(true);
+	list2->setAlternatingRowColors(true);
 
 	tabBar = new QTabBar(this);
 	tabBar->setDrawBase(false);
@@ -75,7 +77,7 @@ void JsmWidget::build()
 	textEdit = te->textEdit();
 	QFont font2 = textEdit->document()->defaultFont();
 	font2.setStyleHint(QFont::TypeWriter);
-	font2.setFamily("Courrier");
+	font2.setFamily("Courier");
 	textEdit->document()->setDefaultFont(font2);
 	highlighter = new JsmHighlighter(textEdit->document());
 	// continue highlight when window is inactive
@@ -469,7 +471,7 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 	int nbGroup = data()->getJsmFile()->getScripts().nbGroup();
 	int directorCount=1, squallCount=1, zellCount=1, irvineCount=1, quistisCount=1;
 	int rinoaCount=1, selphieCount=1, seiferCount=1, edeaCount=1, lagunaCount=1, kirosCount=1;
-	int wardCount=1, drawPointCount=1, eventLineCount=1, doorCount=1;
+	int wardCount=1, modelCount=1, drawPointCount=1, eventLineCount=1, doorCount=1, bgCount=1;
 
 	for (int groupID = 0; groupID < nbGroup; ++groupID) {
 		const JsmGroup &grp = data()->getJsmFile()->getScripts().group(groupID);
@@ -540,6 +542,8 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 				item->setIcon(0, QIcon(":/images/icon-ward.png"));
 				break;
 			case -1:
+				if(name.isEmpty())	name = QString("Model%1").arg(modelCount);
+				modelCount++;
 				item->setIcon(0, QIcon(":/images/3d_model.png"));
 				break;
 			case DRAWPOINT_CHARACTER:
@@ -563,6 +567,8 @@ QList<QTreeWidgetItem *> JsmWidget::nameList() const
 			item->setIcon(0, QIcon(":/images/door.png"));
 			break;
 		case JsmGroup::Background:
+			if(name.isEmpty())	name = QString("Background%1").arg(bgCount);
+			bgCount++;
 			item->setIcon(0, QIcon(":/images/background.png"));
 			break;
 		default:

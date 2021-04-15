@@ -21,15 +21,12 @@ VarManager::VarManager(FieldArchive *fieldArchive, QWidget *parent)
 	: QWidget(parent, Qt::Tool)
 {
 	setWindowTitle(tr("Gestionnaire de variables"));
-	QFont font;
-	font.setPointSize(8);
 	
 	var = new QSpinBox(this);
 	var->setRange(0, 1536);// Valid vars : 4 -> 1536
 
 	name = new QLineEdit(this);
 	list = new QTreeWidget(this);
-	list->setFont(font);
 	list->setHeaderLabels(QStringList() << tr("Var") << tr("Type") << tr("Nom") << tr("Écran") << tr("MEM fr") << tr("MEM us"));
 	list->setAutoScroll(false);
 	list->setIndentation(0);

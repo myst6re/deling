@@ -49,7 +49,7 @@ public:
 	virtual bool openBG(Field *field) const=0;
 	bool compileScripts(int &errorFieldID, int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
 	bool searchText(const QRegExp &text, int &fieldID, int &textID, int &from, int &size, Sorting=SortByMapId) const;
-	bool searchTextReverse(const QRegExp &text, int &fieldID, int &textID, int &from, int &index, int &size, Sorting=SortByMapId) const;
+	bool searchTextReverse(const QRegExp &text, int &fieldID, int &textID, int &from, int &size, Sorting=SortByMapId) const;
 	bool searchScript(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
 	bool searchScriptText(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
 	bool searchScriptReverse(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;

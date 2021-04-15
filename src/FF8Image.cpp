@@ -26,7 +26,7 @@ QPixmap FF8Image::lzs(const QByteArray &data)
 	memcpy(&lzs_size, lzs_constData, 4);
 	if(lzs_size != real_size - 4)	return errorPixmap();
 
-	const QByteArray &decdata = LZS::decompressAll(lzs_constData + 4, lzs_size);
+	const QByteArray &decdata = LZS::decompress(lzs_constData + 4, lzs_size);
 
 	quint16 l, h;
 	int size = decdata.size(), i=8;

@@ -3,7 +3,7 @@ version: "0.10.1.{build}"
 
 # Use the latest available toolchain
 image:
-  - macos
+  - macOS
   - Ubuntu2004
   - Visual Studio 2019
 
