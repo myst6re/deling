@@ -37,15 +37,15 @@ struct RendererVertex {
 };
 
 enum RendererPrimitiveType {
-	PT_POINTS = 0,
-	PT_LINES,
-	PT_LINE_LOOP,
-	PT_LINE_STRIP,
-	PT_TRIANGLES,
-	PT_TRIANGLE_STRIP,
-	PT_TRIANGLE_FAN,
-	PT_QUADS,
-	PT_QUAD_STRIP
+	PT_POINTS = GL_POINTS,
+	PT_LINES = GL_LINES,
+	PT_LINE_LOOP = GL_LINE_LOOP,
+	PT_LINE_STRIP =  GL_LINE_STRIP,
+	PT_TRIANGLES =  GL_TRIANGLES,
+	PT_TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
+	PT_TRIANGLE_FAN = GL_TRIANGLE_FAN,
+	PT_QUADS = GL_QUADS,
+	PT_QUAD_STRIP = GL_QUAD_STRIP
 };
 
 class Renderer : public QObject
@@ -89,7 +89,7 @@ public:
 
 	void draw(RendererPrimitiveType _type, float _pointSize = 1.0f);
 
-	void setViewport(uint32_t _x, uint32_t _y, uint32_t _width, uint32_t _height);
+	void setViewport(int32_t _x, int32_t _y, int32_t _width, int32_t _height);
 
 	void bindModelMatrix(QMatrix4x4 _matrix);
 	void bindProjectionMatrix(QMatrix4x4 _matrix);
@@ -101,9 +101,10 @@ public:
 	void bindTexture(QImage &_image, bool generateMipmaps = false);
 
 	void bufferVertex(QVector3D _position, QRgba64 _color, QVector2D _texcoord);
-
+#ifdef QT_DEBUG
 protected slots:
 	void messageLogged(const QOpenGLDebugMessage &msg);
+#endif
 };
 
 #endif

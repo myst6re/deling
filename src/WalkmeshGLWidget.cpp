@@ -243,52 +243,52 @@ void WalkmeshGLWidget::paintGL()
 		}
 
 		gpuRenderer->draw(RendererPrimitiveType::PT_POINTS, 7.0f);
-  }
+	}
 }
 
 void WalkmeshGLWidget::drawBackground()
 {
-  if (data->getBackgroundFile())
-  {
-    RendererVertex vertices[] = {
-      {
-        {-1.0f, -1.0f, 1.0f, 1.0f},
-        {1.0f, 1.0f, 1.0f, 1.0f},
-        {0.0f, 1.0f},
-      },
-      {
-        {-1.0f, 1.0f, 1.0f, 1.0f},
-        {1.0f, 1.0f, 1.0f, 1.0f},
-        {0.0f, 0.0f},
-      },
-      {
-        {1.0f, -1.0f, 1.0f, 1.0f},
-        {1.0f, 1.0f, 1.0f, 1.0f},
-        {1.0f, 1.0f},
-      },
-      {
-        {1.0f, 1.0f, 1.0f, 1.0f},
-        {1.0f, 1.0f, 1.0f, 1.0f},
-        {1.0f, 0.0f},
-      }
-    };
+	if (data->getBackgroundFile())
+	{
+		RendererVertex vertices[] = {
+		    {
+		        {-1.0f, -1.0f, 1.0f, 1.0f},
+		        {1.0f, 1.0f, 1.0f, 1.0f},
+		        {0.0f, 1.0f},
+		    },
+		    {
+		        {-1.0f, 1.0f, 1.0f, 1.0f},
+		        {1.0f, 1.0f, 1.0f, 1.0f},
+		        {0.0f, 0.0f},
+		    },
+		    {
+		        {1.0f, -1.0f, 1.0f, 1.0f},
+		        {1.0f, 1.0f, 1.0f, 1.0f},
+		        {1.0f, 1.0f},
+		    },
+		    {
+		        {1.0f, 1.0f, 1.0f, 1.0f},
+		        {1.0f, 1.0f, 1.0f, 1.0f},
+		        {1.0f, 0.0f},
+		    }
+		};
 
-    uint32_t indices[] = {
-      0, 1, 2,
-      1, 3, 2
-    };
+		uint32_t indices[] = {
+		    0, 1, 2,
+		    1, 3, 2
+		};
 
-    QMatrix4x4 mBG;
+		QMatrix4x4 mBG;
 
-    gpuRenderer->bindProjectionMatrix(mBG);
-    gpuRenderer->bindViewMatrix(mBG);
-    gpuRenderer->bindModelMatrix(mBG);
+		gpuRenderer->bindProjectionMatrix(mBG);
+		gpuRenderer->bindViewMatrix(mBG);
+		gpuRenderer->bindModelMatrix(mBG);
 
-    gpuRenderer->bindVertex(vertices, 4);
-    gpuRenderer->bindIndex(indices, 6);
+		gpuRenderer->bindVertex(vertices, 4);
+		gpuRenderer->bindIndex(indices, 6);
 		QImage tex = data->getBackgroundFile()->background();
 		gpuRenderer->bindTexture(tex);
-    gpuRenderer->draw(RendererPrimitiveType::PT_TRIANGLES);
+		gpuRenderer->draw(RendererPrimitiveType::PT_TRIANGLES);
 	}
 }
 

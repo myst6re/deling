@@ -33,7 +33,12 @@ int main(int argc, char *argv[])
 	app.setWindowIcon(QIcon(":/images/deling.png"));
 
 	QSurfaceFormat glFormat;
+#ifdef QT_DEBUG
+	glFormat.setVersion(4, 3);
+	glFormat.setOption(QSurfaceFormat::DebugContext);
+#else
 	glFormat.setVersion(3, 2);
+#endif
 	glFormat.setProfile(QSurfaceFormat::CoreProfile);
 	QSurfaceFormat::setDefaultFormat(glFormat);
 
