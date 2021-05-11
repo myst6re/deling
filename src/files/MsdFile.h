@@ -39,8 +39,8 @@ public:
 	inline int nbText() const {
 		return texts.size();
 	}
-	bool searchText(const QRegExp &txt, int &textID, int &from, int &size) const;
-	bool searchTextReverse(const QRegExp &txt, int &textID, int &from, int &size) const;
+	bool searchText(const QRegularExpression &txt, int &textID, int &from, int &size) const;
+	bool searchTextReverse(const QRegularExpression &txt, int &textID, int &from, int &size) const;
 	bool isJp() const;
 private:
 	QList<QByteArray> texts;

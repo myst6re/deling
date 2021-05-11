@@ -208,7 +208,7 @@ QByteArray FF8Text::toFF8() const
 			QString rest = string.mid(c);
 			for(i=0 ; i<11 ; ++i)
 				if(rest.startsWith(names[i])) {//{Name}
-					ff8str.append(QString('\x03')%QString((char)(0x30+i)));
+					ff8str.append('\x03').append(char(0x30 + i));
 					c += qstrlen(names[i])-1;
 					goto end;
 				}
@@ -229,14 +229,14 @@ QByteArray FF8Text::toFF8() const
 			}
 			for(i=0 ; i<16 ; ++i) {
 				if(rest.startsWith(colors[i], Qt::CaseInsensitive)) {//{Color}
-					ff8str.append(QString('\x06')%QString((char)(0x20+i)));
+					ff8str.append('\x06').append(char(0x20 + i));
 					c += qstrlen(colors[i])-1;
 					goto end;
 				}
 			}
 			for(i=0 ; i<8 ; ++i) {
 				if(rest.startsWith(locations[i], Qt::CaseInsensitive)) {//{Location}
-					ff8str.append(QString('\x0e')%QString((char)(0x20+i)));
+					ff8str.append('\x0e').append(char(0x20 + i));
 					c += qstrlen(locations[i])-1;
 					goto end;
 				}

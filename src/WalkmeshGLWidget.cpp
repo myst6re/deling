@@ -17,6 +17,7 @@
  ****************************************************************************/
 #include "WalkmeshGLWidget.h"
 
+#ifdef OPENGLLOL
 WalkmeshGLWidget::WalkmeshGLWidget(QWidget *parent)
 	: QOpenGLWidget(parent),
 	  distance(0.0f), xRot(0.0f), yRot(0.0f), zRot(0.0f),
@@ -67,12 +68,12 @@ void WalkmeshGLWidget::updatePerspective()
 
 void WalkmeshGLWidget::initializeGL()
 {
-	gpuRenderer = new Renderer(this);
+	//gpuRenderer = new Renderer(this);
 }
 
 void WalkmeshGLWidget::resizeGL(int width, int height)
 {
-	gpuRenderer->setViewport(0, 0, width, height);
+	//gpuRenderer->setViewport(0, 0, width, height);
 }
 
 void WalkmeshGLWidget::paintGL()
@@ -459,3 +460,5 @@ void WalkmeshGLWidget::clearLineToDraw()
 	_drawLine = false;
 	update();
 }
+
+#endif

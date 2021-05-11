@@ -18,6 +18,8 @@
 #ifndef WALKMESHGLWIDGET_H
 #define WALKMESHGLWIDGET_H
 
+#ifdef OPENGLLOL
+
 #include <QtWidgets>
 #include "Field.h"
 #include "Renderer.h"
@@ -59,7 +61,7 @@ private:
 	Field *data;
 	QPoint moveStart;
 	int curFrame;
-	Renderer *gpuRenderer;
+	//Renderer *gpuRenderer;
 	QMatrix4x4 mProjection;
 
 protected:
@@ -74,5 +76,7 @@ protected:
 	virtual void focusInEvent(QFocusEvent *event);
 	virtual void focusOutEvent(QFocusEvent *event);
 };
+
+#endif
 
 #endif // WALKMESHGLWIDGET_H

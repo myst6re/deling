@@ -19,7 +19,7 @@
 #define JSMWIDGET_H
 
 #include <QtWidgets>
-#include <QRegExp>
+#include <QRegularExpression>
 #include "widgets/PageWidget.h"
 #include "widgets/CharaPreview.h"
 #include "JsmHighlighter.h"
@@ -57,7 +57,7 @@ private:
 	QToolBar *toolBar;
 	QLabel *errorLabel;
 	QLabel *warningWidget;
-	QRegExp _regConst, _regSetLine, _regColor, _regPlace;
+	QRegularExpression _regConst, _regSetLine, _regColor, _regPlace;
 
 	static int currentItem(QTreeWidget *);
 //	void gotoScriptLabel(int groupID, int labelID);

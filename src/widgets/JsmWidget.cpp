@@ -21,10 +21,10 @@
 
 JsmWidget::JsmWidget(QWidget *parent)
     : PageWidget(parent), mainModels(nullptr), fieldArchive(nullptr),
-      _regConst(QRegExp("\\b(text|map|item|magic)_(\\d+)\\b")),
-      _regSetLine(QRegExp("setline\\(\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*\\)")),
-      _regColor(QRegExp("(polycolor|polycolorall|dcoladd|dcolsub|tcoladd|tcolsub|fcoladd|fcolsub|bgshade)\\(\\s*([\\w-]+)\\s*,\\s*([\\w-]+)\\s*,\\s*([\\w-]+)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\)")),
-      _regPlace(QRegExp("setplace\\(\\s*(-?\\d+)\\s*\\)")),
+      _regConst(QRegularExpression("\\b(text|map|item|magic)_(\\d+)\\b")),
+      _regSetLine(QRegularExpression("setline\\(\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*\\)")),
+      _regColor(QRegularExpression("(polycolor|polycolorall|dcoladd|dcolsub|tcoladd|tcolsub|fcoladd|fcolsub|bgshade)\\(\\s*([\\w-]+)\\s*,\\s*([\\w-]+)\\s*,\\s*([\\w-]+)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\)")),
+      _regPlace(QRegularExpression("setplace\\(\\s*(-?\\d+)\\s*\\)")),
       groupID(-1), methodID(-1)
 {
 }
@@ -326,12 +326,13 @@ void JsmWidget::fillTextEdit()
 
 void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 {
-	int posConst = _regConst.indexIn(line);
+	QRegularExpressionMatch matchConst = _regConst.match(line);
+	int posConst = int(matchConst.capturedStart());
 	PreviewWidget *preview = textEdit->previewWidget();
 
 	if (posConst >= 0) {
-		QString constType = _regConst.capturedTexts().at(1);
-		int constId = _regConst.capturedTexts().last().toInt();
+		QString constType = matchConst.captured(1);
+		int constId = matchConst.captured(2).toInt();
 		FF8Window win = FF8Window();
 		win.type = NOWIN;
 
@@ -376,10 +377,11 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 		}
 	}
 
-	int posLine = _regSetLine.indexIn(line);
+	QRegularExpressionMatch matchSetLine = _regSetLine.match(line);
+	int posLine = int(matchSetLine.capturedStart());
 
 	if (posLine >= 0) {
-		QStringList texts = _regSetLine.capturedTexts();
+		QStringList texts = matchSetLine.capturedTexts();
 		Vertex_s vertex[2];
 		vertex[0].x = qint16(texts.at(1).toInt());
 		vertex[0].y = qint16(texts.at(2).toInt());
@@ -388,13 +390,14 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 		vertex[1].y = qint16(texts.at(5).toInt());
 		vertex[1].z = qint16(texts.at(6).toInt());
 
+#ifdef OPENGLLOL
 		WalkmeshGLWidget walkmeshWidget;
 		walkmeshWidget.hide();
 		walkmeshWidget.fill(data());
 		walkmeshWidget.setLineToDraw(vertex);
-
+#endif
 		QPixmap pixmap;
-		pixmap.convertFromImage(walkmeshWidget.grabFramebuffer());
+		// pixmap.convertFromImage(walkmeshWidget.grabFramebuffer());
 
 		preview->showBackground(pixmap);
 		preview->move(cursorPos);
@@ -403,10 +406,11 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 		return;
 	}
 
-	int posColor = _regColor.indexIn(line);
+	QRegularExpressionMatch matchColor = _regColor.match(line);
+	int posColor = int(matchColor.capturedStart());
 
 	if (posColor >= 0) {
-		QStringList texts = _regColor.capturedTexts();
+		QStringList texts = matchColor.capturedTexts();
 		QByteArray color;
 		QList<QColor> colors;
 		int i = 2;
@@ -442,10 +446,11 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 		}
 	}
 
-	int posPlace = _regPlace.indexIn(line);
+	QRegularExpressionMatch matchPlace = _regPlace.match(line);
+	int posPlace = int(matchPlace.capturedStart());
 
 	if (posPlace >= 0) {
-		int locId = _regPlace.capturedTexts().last().toInt();
+		int locId = matchPlace.capturedTexts().last().toInt();
 		QString location = Data::location(locId);
 
 		if (!location.isEmpty()) {

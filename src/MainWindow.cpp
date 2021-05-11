@@ -193,7 +193,7 @@ void MainWindow::showEvent(QShowEvent *)
 {
 	if (firstShow) {
 		if (!windowState().testFlag(Qt::WindowMaximized)) {
-			QPoint screenCenter = QApplication::desktop()->screenGeometry(this).center();
+			QPoint screenCenter = QGuiApplication::primaryScreen()->geometry().center();
 			move(screenCenter.x() - width()/2, screenCenter.y() - height()/2);
 		}
 		toolBar->setVisible(Config::value("toolbarVisible", true).toBool());
@@ -257,7 +257,7 @@ bool MainWindow::openArchive(const QString &path)
 
 	ProgressWidget progress(tr("Ouverture..."), ProgressWidget::Cancel, this);
 
-	QTime t;t.start();
+	QElapsedTimer t;t.start();
 	int error = fieldArchive->open(path, &progress);
 
 	qDebug() << "openTime" << t.elapsed() << "ms";
@@ -443,7 +443,7 @@ void MainWindow::fillPage()
 
 	bgPreview->clear();
 
-	QTime t;t.start();
+	QElapsedTimer t;t.start();
 
 	if (this->field != nullptr) {
 		currentField = this->field;

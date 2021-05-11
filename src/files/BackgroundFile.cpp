@@ -250,7 +250,7 @@ QImage BackgroundFile::background(const QList<quint8> &activeParams, bool hideBG
 	// Enable activeParams only
 	params.clear();
 
-	QMapIterator<quint8, quint8> itParams(allparams);
+	QMultiMapIterator<quint8, quint8> itParams(allparams);
 	while (itParams.hasNext()) {
 		itParams.next();
 		if (activeParams.contains(itParams.key())) {

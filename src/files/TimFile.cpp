@@ -30,7 +30,7 @@ TimFile::TimFile(const TextureFile &texture, quint8 bpp, quint16 palX, quint16 p
 
 bool TimFile::open(const QByteArray &data)
 {
-	//	QTime t;t.start();
+	//	QElapsedTimer t;t.start();
 
 	quint32 palSize=0, imgSize=0, color=0;
 	quint16 w, h;

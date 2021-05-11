@@ -26,33 +26,31 @@ JsmHighlighter::JsmHighlighter(QTextDocument *parent) :
 	         << "wait forever" << "repeat" << "until" << "ret"
 	         << "goto" << "label";
 	// Don't forget to escape strings if necessary
-	_regKeywords = QRegExp(QString("\\b(%1)\\b")
+	_regKeywords = QRegularExpression(QString("\\b(%1)\\b")
 	                       .arg(keywords.join("|")));
-	_regNumeric = QRegExp("\\b-?(b[01]+|0x[\\da-fA-F]+|\\d+)\\b");
-	_regVar = QRegExp("\\b((model|temp)_\\d+|\\w+_[us](byte|word|long))\\b");
-	_regConst = QRegExp("\\b((text|map|item|magic)_\\d+|[A-Z][a-zA-Z\\d]+)\\b");
-	_regExec = QRegExp("\\b([\\w#]+\\.\\w+|req|reqsw|reqew|preq|preqsw|preqew)\\b");
+	_regNumeric = QRegularExpression("\\b-?(b[01]+|0x[\\da-fA-F]+|\\d+)\\b");
+	_regVar = QRegularExpression("\\b((model|temp)_\\d+|\\w+_[us](byte|word|long))\\b");
+	_regConst = QRegularExpression("\\b((text|map|item|magic)_\\d+|[A-Z][a-zA-Z\\d]+)\\b");
+	_regExec = QRegularExpression("\\b([\\w#]+\\.\\w+|req|reqsw|reqew|preq|preqsw|preqew)\\b");
 }
 
-void JsmHighlighter::applyReg(const QString &text, const QRegExp &regExp,
+void JsmHighlighter::applyReg(const QString &text, const QRegularExpression &regExp,
                               const QTextCharFormat &format)
 {
-	int index = regExp.indexIn(text);
-	while (index >= 0) {
-		int length = regExp.matchedLength();
-		setFormat(index, length, format);
-		index = regExp.indexIn(text, index + length);
+	QRegularExpressionMatchIterator it = regExp.globalMatch(text);
+	while (it.hasNext()) {
+		QRegularExpressionMatch match = it.next();
+		setFormat(int(match.capturedStart()), int(match.capturedLength()), format);
 	}
 }
 
-void JsmHighlighter::applyReg(const QString &text, const QRegExp &regExp,
+void JsmHighlighter::applyReg(const QString &text, const QRegularExpression &regExp,
                               const QColor &color)
 {
-	int index = regExp.indexIn(text);
-	while (index >= 0) {
-		int length = regExp.matchedLength();
-		setFormat(index, length, color);
-		index = regExp.indexIn(text, index + length);
+	QRegularExpressionMatchIterator it = regExp.globalMatch(text);
+	while (it.hasNext()) {
+		QRegularExpressionMatch match = it.next();
+		setFormat(int(match.capturedStart()), int(match.capturedLength()), color);
 	}
 }
 
@@ -81,7 +79,7 @@ void JsmHighlighter::highlightBlockPseudoCode(const QString &text)
 
 void JsmHighlighter::highlightBlockOpcodes(const QString &text)
 {
-	QStringList rows = text.split(QRegExp("[\\t ]+"), QString::SkipEmptyParts);
+	QStringList rows = text.split(QRegularExpression("[\\t ]+"), Qt::SkipEmptyParts);
 	bool ok;
 
 	if (rows.isEmpty()) {

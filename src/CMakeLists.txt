@@ -18,7 +18,7 @@
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Autodetect the current Qt MSVC toolkit installed
 # Original source: https://stackoverflow.com/a/47723189 + custom patch to reflect current VS year based on the toolkit
@@ -96,21 +96,30 @@ endif()
 
 find_package(LZ4 REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(Qt5 COMPONENTS Widgets OpenGL LinguistTools REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
 
 file(GLOB_RECURSE source_files "*.cpp")
-
 # Translations
 file(GLOB_RECURSE translation_files "${RELEASE_NAME}_*.ts")
-set_source_files_properties(${translation_files} PROPERTIES OUTPUT_LOCATION "${CMAKE_INSTALL_FULL_BINDIR}")
-qt5_add_translation(QM_FILES ${translation_files})
 
-# GUI
-add_executable(${GUI_TARGET} WIN32 ${source_files} ${QM_FILES} qt/${RELEASE_NAME}.qrc qt/${RELEASE_NAME}.rc)
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(${GUI_TARGET}
+        WIN32 ${source_files} ${QM_FILES} qt/${RELEASE_NAME}.qrc qt/${RELEASE_NAME}.rc
+    )
+
+    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${translation_files})
+else()
+    add_executable(${GUI_TARGET}
+        WIN32 ${source_files} ${QM_FILES} qt/${RELEASE_NAME}.qrc qt/${RELEASE_NAME}.rc
+    )
+    set_source_files_properties(${translation_files} PROPERTIES OUTPUT_LOCATION "${CMAKE_INSTALL_FULL_BINDIR}")
+    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${translation_files})
+endif()
+
 target_include_directories(${GUI_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_link_libraries(${GUI_TARGET}
-    Qt5::OpenGL
-    Qt5::Widgets
+target_link_libraries(${GUI_TARGET} PRIVATE
+    Qt${QT_VERSION_MAJOR}::Widgets
     LZ4::LZ4
     ZLIB::ZLIB
 )
@@ -130,7 +139,7 @@ endif()
 include(GNUInstallDirs)
 
 # Retrieve the absolute path to qmake and then use that path to find the binaries
-get_target_property(_qmake_executable Qt5::qmake IMPORTED_LOCATION)
+get_target_property(_qmake_executable Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
 get_filename_component(_qt_bin_dir "${_qmake_executable}" DIRECTORY)
 find_program(LCONVERT_EXECUTABLE lconvert HINTS "${_qt_bin_dir}")
 find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")

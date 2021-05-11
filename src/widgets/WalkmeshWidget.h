@@ -92,7 +92,7 @@ private:
 	void editRange2(int id, int v);
 	void editUnknownGate(int id, int val);
 
-	WalkmeshGLWidget *walkmeshGL;
+	QWidget *walkmeshGL;
 	QSlider *slider1, *slider2, *slider3;
 	QTabWidget *tabWidget;
 	//CamPage

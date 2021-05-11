@@ -112,16 +112,17 @@ void MsdFile::removeText(int id)
 	}
 }
 
-bool MsdFile::searchText(const QRegExp &txt, int &textID, int &from, int &size) const
+bool MsdFile::searchText(const QRegularExpression &txt, int &textID, int &from, int &size) const
 {
 	if (textID < 0) {
 		textID = 0;
 	}
 
 	for (; textID < nbText(); ++textID) {
-		from = txt.indexIn(text(textID), from);
+		QRegularExpressionMatch match = txt.match(text(textID), from);
+		from = int(match.capturedStart());
 		if (from != -1) {
-			size = txt.matchedLength();
+			size = int(match.capturedLength());
 			return true;
 		}
 		from = 0;
@@ -130,7 +131,7 @@ bool MsdFile::searchText(const QRegExp &txt, int &textID, int &from, int &size) 
 	return false;
 }
 
-bool MsdFile::searchTextReverse(const QRegExp &txt, int &textID, int &from, int &size) const
+bool MsdFile::searchTextReverse(const QRegularExpression &txt, int &textID, int &from, int &size) const
 {
 	if (textID >= nbText()) {
 		textID = nbText() - 1;
@@ -143,6 +144,7 @@ bool MsdFile::searchTextReverse(const QRegExp &txt, int &textID, int &from, int 
 		if (offset >= 0) {
 			offset = -1;
 		}
+		QRegularExpressionMatch match = txt.match(t, offset, QRegularExpression::)
 		from = txt.lastIndexIn(t, offset);
 		if (from != -1) {
 			size = txt.matchedLength();
