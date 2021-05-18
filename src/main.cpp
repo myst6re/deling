@@ -20,7 +20,7 @@
 //#define QT_NO_WARNING_OUTPUT 1
 
 #include <QApplication>
-#include <QGLFormat>
+//#include <QGLFormat>
 #include "Config.h"
 #include "MainWindow.h"
 
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	app.setWindowIcon(QIcon(":/images/deling.png"));
-
+/*
 	QSurfaceFormat glFormat;
 #ifdef QT_DEBUG
 	glFormat.setVersion(4, 3);
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 #endif
 	glFormat.setProfile(QSurfaceFormat::CoreProfile);
 	QSurfaceFormat::setDefaultFormat(glFormat);
-
+*/
 	Config::set();
 
 	QString lang = QLocale::system().name().toLower();

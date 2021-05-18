@@ -120,8 +120,8 @@ bool MsdFile::searchText(const QRegularExpression &txt, int &textID, int &from, 
 
 	for (; textID < nbText(); ++textID) {
 		QRegularExpressionMatch match = txt.match(text(textID), from);
-		from = int(match.capturedStart());
-		if (from != -1) {
+		if (match.hasMatch()) {
+			from = int(match.capturedStart());
 			size = int(match.capturedLength());
 			return true;
 		}
@@ -140,16 +140,24 @@ bool MsdFile::searchTextReverse(const QRegularExpression &txt, int &textID, int 
 
 	for (; textID >= 0; --textID) {
 		const FF8Text t = text(textID);
-		int offset = from - t.size();
-		if (offset >= 0) {
-			offset = -1;
+		QRegularExpressionMatch previousMatch;
+		QRegularExpressionMatchIterator it = txt.globalMatch(t);
+		while (it.hasNext()) {
+			QRegularExpressionMatch match = it.next();
+			
+			if (match.capturedStart() > from) {
+				break;
+			}
+			
+			previousMatch = match;
 		}
-		QRegularExpressionMatch match = txt.match(t, offset, QRegularExpression::)
-		from = txt.lastIndexIn(t, offset);
-		if (from != -1) {
-			size = txt.matchedLength();
+
+		if (previousMatch.hasMatch()) {
+			from = int(previousMatch.capturedStart());
+			size = int(previousMatch.capturedLength());
 			return true;
 		}
+
 		from = 2147483647;
 	}
 
