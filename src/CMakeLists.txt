@@ -39,7 +39,7 @@ elseif(MSVC)
     # get root path so we can search for 5.3, 5.4, 5.5, etc
     string(REPLACE "/Tools" ";" QT_BIN "${QT_BIN}")
     list(GET QT_BIN 0 QT_BIN)
-    file(GLOB QT_VERSIONS "${QT_BIN}/5.*")
+    file(GLOB QT_VERSIONS "${QT_BIN}/6.*")
     list(SORT QT_VERSIONS)
 
     # assume the latest version will be last alphabetically
@@ -64,11 +64,11 @@ elseif(MSVC)
     set(QT_PATH "${QT_VERSION}/msvc${QT_MSVC}")
 
     set(QT_AUTODETECT False)
-elseif(APPLE AND EXISTS /usr/local/opt/qt5)
-	# Homebrew installs Qt5 (up to at least 5.9.1) in
-	# /usr/local/qt5, ensure it can be found by CMake since
-	# it is not in the default /usr/local prefix.
-	list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt5")
+elseif(APPLE AND EXISTS /usr/local/opt/qt6)
+    # Homebrew installs Qt5 (up to at least 5.9.1) in
+    # /usr/local/qt6, ensure it can be found by CMake since
+    # it is not in the default /usr/local prefix.
+    list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt6")
 endif()
 
 # Print the autodetected Qt path
@@ -99,26 +99,18 @@ endif()
 
 find_package(LZ4 REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS Widgets LinguistTools REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
 
 file(GLOB_RECURSE source_files "*.cpp")
 # Translations
 file(GLOB_RECURSE translation_files "${RELEASE_NAME}_*.ts")
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(${GUI_TARGET}
-        WIN32 ${source_files} ${QM_FILES} qt/${RELEASE_NAME}.qrc qt/${RELEASE_NAME}.rc
-    )
+qt_add_executable(${GUI_TARGET}
+    WIN32 ${source_files} ${QM_FILES} qt/${RELEASE_NAME}.qrc qt/${RELEASE_NAME}.rc
+)
 
-    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${translation_files})
-else()
-    add_executable(${GUI_TARGET}
-        WIN32 ${source_files} ${QM_FILES} qt/${RELEASE_NAME}.qrc qt/${RELEASE_NAME}.rc
-    )
-    set_source_files_properties(${translation_files} PROPERTIES OUTPUT_LOCATION "${CMAKE_INSTALL_FULL_BINDIR}")
-    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${translation_files})
-endif()
+qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${translation_files})
 
 target_include_directories(${GUI_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_link_libraries(${GUI_TARGET} PRIVATE
