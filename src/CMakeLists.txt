@@ -24,6 +24,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Original source: https://stackoverflow.com/a/47723189 + custom patch to reflect current VS year based on the toolkit
 set(QT_AUTODETECT True)
 
+# Force deprecated to be errors (before Qt 5.15)
+add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
+
 # use Qt_DIR approach so you can find Qt after cmake has been invoked
 if(DEFINED ENV{_CMAKE_QT_DIR})
     set(QT_PATH $ENV{_CMAKE_QT_DIR})

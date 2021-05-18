@@ -526,4 +526,6 @@ QImage BackgroundFile::mimToImage(MapDepth depth)
 
 		return img;
 	}
+	
+	return QImage();
 }
