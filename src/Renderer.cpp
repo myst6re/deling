@@ -19,8 +19,6 @@
 
 #include "Renderer.h"
 
-#ifdef OPENGLLOL
-
 // Get the size of a vector in bytes
 template<typename T>
 size_t vectorSizeOf(const typename std::vector<T>& vec)
@@ -320,5 +318,4 @@ void Renderer::messageLogged(const QOpenGLDebugMessage &msg)
 
 	qDebug() << qPrintable(error) << qPrintable(msg.message());
 }
-#endif
 #endif

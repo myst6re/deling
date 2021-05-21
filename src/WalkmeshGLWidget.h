@@ -18,8 +18,6 @@
 #ifndef WALKMESHGLWIDGET_H
 #define WALKMESHGLWIDGET_H
 
-#ifdef OPENGLLOL
-
 #include <QtWidgets>
 #include "Field.h"
 #include "Renderer.h"
@@ -55,14 +53,14 @@ private:
 	int _selectedTriangle;
 	int _selectedDoor;
 	int _selectedGate;
-	bool _drawLine;
 	Vertex_s _lineToDrawPoint1, _lineToDrawPoint2;
 	double fovy;
 	Field *data;
 	QPoint moveStart;
 	int curFrame;
-	//Renderer *gpuRenderer;
+	Renderer *gpuRenderer;
 	QMatrix4x4 mProjection;
+	bool _drawLine;
 
 protected:
 	virtual void timerEvent(QTimerEvent *);
@@ -76,7 +74,5 @@ protected:
 	virtual void focusInEvent(QFocusEvent *event);
 	virtual void focusOutEvent(QFocusEvent *event);
 };
-
-#endif
 
 #endif // WALKMESHGLWIDGET_H

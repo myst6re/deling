@@ -390,14 +390,12 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 		vertex[1].y = qint16(texts.at(5).toInt());
 		vertex[1].z = qint16(texts.at(6).toInt());
 
-#ifdef OPENGLLOL
 		WalkmeshGLWidget walkmeshWidget;
 		walkmeshWidget.hide();
 		walkmeshWidget.fill(data());
 		walkmeshWidget.setLineToDraw(vertex);
-#endif
 		QPixmap pixmap;
-		// pixmap.convertFromImage(walkmeshWidget.grabFramebuffer());
+		pixmap.convertFromImage(walkmeshWidget.grabFramebuffer());
 
 		preview->showBackground(pixmap);
 		preview->move(cursorPos);

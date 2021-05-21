@@ -19,7 +19,7 @@
 
 #ifndef RENDERER_H
 #define RENDERER_H
-/*
+
 #include <QMatrix4x4>
 #include <QOpenGLBuffer>
 #include <QOpenGLDebugLogger>
@@ -105,6 +105,6 @@ public:
 protected slots:
 	void messageLogged(const QOpenGLDebugMessage &msg);
 #endif
-};*/
+};
 
 #endif

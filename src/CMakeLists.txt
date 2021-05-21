@@ -99,8 +99,8 @@ endif()
 
 find_package(LZ4 REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(QT NAMES Qt6 COMPONENTS Widgets LinguistTools REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS Widgets LinguistTools OpenGL OpenGLWidgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools OpenGL OpenGLWidgets REQUIRED)
 
 file(GLOB_RECURSE source_files "*.cpp")
 # Translations
@@ -115,6 +115,9 @@ qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${translation_files})
 target_include_directories(${GUI_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_link_libraries(${GUI_TARGET} PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::OpenGL
+    Qt${QT_VERSION_MAJOR}::OpenGLWidgets
+    Qt${QT_VERSION_MAJOR}::GuiPrivate
     LZ4::LZ4
     ZLIB::ZLIB
 )
