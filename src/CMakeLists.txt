@@ -34,11 +34,8 @@ if(DEFINED ENV{_CMAKE_QT_DIR})
 # Attempt autodetection on Windows. Unix environments should have Qt within the already known paths by the compiler
 elseif(MSVC)
     # look for user-registry pointing to qtcreator
-    get_filename_component(QT_BIN [HKEY_CURRENT_USER\\Software\\Classes\\Applications\\QtProject.QtCreator.cpp\\shell\\Open\\Command] PATH)
+    get_filename_component(QT_BIN [HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{89c4e30e-3a1a-47c7-80d7-013ba3e25e57};InstallLocation] ABSOLUTE CACHE)
 
-    # get root path so we can search for 5.3, 5.4, 5.5, etc
-    string(REPLACE "/Tools" ";" QT_BIN "${QT_BIN}")
-    list(GET QT_BIN 0 QT_BIN)
     file(GLOB QT_VERSIONS "${QT_BIN}/6.*")
     list(SORT QT_VERSIONS)
 
@@ -74,8 +71,17 @@ endif()
 # Print the autodetected Qt path
 if(NOT QT_AUTODETECT)
     message("-- Qt found: ${QT_PATH}")
-    set(Qt5_DIR "${QT_PATH}/lib/cmake/Qt5/")
-    set(Qt5Test_DIR "${QT_PATH}/lib/cmake/Qt5Test")
+    set(QT_DIR "${QT_PATH}/lib/cmake/Qt6/")
+    set(Qt6_DIR "${QT_PATH}/lib/cmake/Qt6/")
+    set(Qt6Test_DIR "${QT_PATH}/lib/cmake/Qt6Test")
+    set(Qt6Gui_DIR "${QT_PATH}/lib/cmake/Qt6Gui/")
+    set(Qt6Widgets_DIR "${QT_PATH}/lib/cmake/Qt6Widgets/")
+    set(Qt6WidgetsTools_DIR "${QT_PATH}/lib/cmake/Qt6WidgetsTools/")
+    set(Qt6CoreTools_DIR "${QT_PATH}/lib/cmake/Qt6CoreTools/")
+    set(Qt6GuiTools_DIR "${QT_PATH}/lib/cmake/Qt6GuiTools/")
+    set(Qt6LinguistTools_DIR "${QT_PATH}/lib/cmake/Qt6LinguistTools/")
+    set(Qt6OpenGL_DIR "${QT_PATH}/lib/cmake/Qt6OpenGL/")
+    set(Qt6OpenGLWidgets_DIR "${QT_PATH}/lib/cmake/Qt6OpenGLWidgets/")
 endif()
 
 set(CMAKE_AUTOMOC ON)
@@ -127,7 +133,6 @@ if(MSVC)
         PRIVATE /DNOMINMAX
         PRIVATE /EHsc
         PRIVATE /w
-        PRIVATE /Ox
     )
     target_link_options(${GUI_TARGET}
         PRIVATE /PDBALTPATH:${RELEASE_NAME}.pdb
