@@ -179,9 +179,9 @@ void FsDialog::generatePreview()
 	}
 	else if (fileType == "cnf")
 	{
-		QTextCodec *codec = QTextCodec::codecForName("Shift-JIS");
-		if (codec)
-			preview->textPreview(codec->toUnicode(data));
+		QStringDecoder decoder("Shift-JIS");
+		if (decoder.isValid())
+			preview->textPreview(decoder.decode(data));
 		else
 			preview->textPreview(QString(data));
 	}

@@ -50,7 +50,7 @@ bool JsmFile::open(const QString &path)
 		return false;
 	}
 	QString symPath = path;
-	symPath.replace(QRegExp("\\..+$"), ".sym");
+	symPath.replace(QRegularExpression("\\..+$"), ".sym");
 	if(QFile::exists(symPath)) {
 		QFile sym_file(symPath);
 		if(!sym_file.open(QIODevice::ReadOnly)) {
@@ -180,7 +180,7 @@ bool JsmFile::openSym(const QByteArray &sym_data)
 	QStringList sym_strings;
 	int nbScripts, nbGroup, nbLines, nbEntities = scripts.nbEntitiesForSym();
 
-	sym_strings = QString(sym_data).split('\n', QString::SkipEmptyParts);
+	sym_strings = QString(sym_data).split('\n', Qt::SkipEmptyParts);
 	nbLines = sym_strings.size();
 
 	if(nbLines<=0) return false;
@@ -190,7 +190,7 @@ bool JsmFile::openSym(const QByteArray &sym_data)
 
 	if(nbScripts>0 && nbLines==nbEntities+nbScripts) {
 		QString line;
-		QRegExp validName("^[\\w]+$");
+		QRegularExpression validName("^[\\w]+$");
 		int groupID=-1, methodID=1, index;
 
 		for(int i=0 ; i<nbScripts ; ++i) {
@@ -201,7 +201,7 @@ bool JsmFile::openSym(const QByteArray &sym_data)
 
 			line = sym_strings.at(nbEntities+i).simplified();
 			if((index = line.indexOf("::")) == -1) {
-				if(validName.exactMatch(line)) {
+				if(validName.match(line).hasMatch()) {
 					scripts.setGroupName(groupID+1, line);
 				} else {
 					qWarning() << "JsmFile::openSym erreur nom groupe invalide" << line;
@@ -210,7 +210,7 @@ bool JsmFile::openSym(const QByteArray &sym_data)
 				++groupID;
 				methodID = 1;
 			}
-			else if(validName.exactMatch(line.mid(index+2))) {
+			else if(validName.match(line.mid(index+2)).hasMatch()) {
 				if(groupID == -1) {
 					qWarning() << "JsmFile::openSym constructeur indéfini" << line;
 					break;
@@ -758,8 +758,8 @@ bool JsmFile::compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, 
 
 int JsmFile::fromString(int groupID, int methodID, const QString &text, QString &errorStr)
 {
-	QRegExp endLine("(\\r\\n|\\n|\\r)");
-	QRegExp spaces("[\\t ]+");
+	QRegularExpression endLine("(\\r\\n|\\n|\\r)");
+	QRegularExpression spaces("[\\t ]+");
 	QStringList lines = text.split(endLine);
 	JsmData res;
 	int key, param, posLbl, lbl;
@@ -771,7 +771,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 
 	int l=1;
 	for (const QString &line: lines) {
-		QStringList rows = line.split(spaces, QString::SkipEmptyParts);
+		QStringList rows = line.split(spaces, Qt::SkipEmptyParts);
 		int rowsSize = rows.size();
 		if(rowsSize < 1) {
 			++l;
@@ -912,7 +912,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 		++l;
 	}
 
-	QMapIterator<int, int> it(gotosPos);
+	QMultiMapIterator<int, int> it(gotosPos);
 	while(it.hasNext()) {
 		it.next();
 		lbl = it.key();

@@ -20,7 +20,7 @@
 //#define QT_NO_WARNING_OUTPUT 1
 
 #include <QApplication>
-#include <QGLFormat>
+#include <QSurfaceFormat>
 #include "Config.h"
 #include "MainWindow.h"
 

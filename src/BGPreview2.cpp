@@ -65,5 +65,5 @@ void BGPreview2::savePixmap()
 	QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), name + ".png", tr("Image PNG (*.png);;Image JPG (*.jpg);;Image BMP (*.bmp);;Portable Pixmap (*.ppm)"));
 	if (path.isEmpty())	return;
 
-	pixmap()->save(path);
+	pixmap().save(path);
 }

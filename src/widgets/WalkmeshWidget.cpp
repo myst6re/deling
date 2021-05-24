@@ -26,7 +26,7 @@ void WalkmeshWidget::build()
 {
 	if (isBuilded())		return;
 
-	walkmeshGL = new WalkmeshGLWidget;
+	walkmeshGL = new WalkmeshGLWidget(this);
 
 	slider1 = new QSlider(this);
 	slider2 = new QSlider(this);

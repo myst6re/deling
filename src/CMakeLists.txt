@@ -18,11 +18,14 @@
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Autodetect the current Qt MSVC toolkit installed
 # Original source: https://stackoverflow.com/a/47723189 + custom patch to reflect current VS year based on the toolkit
 set(QT_AUTODETECT True)
+
+# Force deprecated to be errors (before Qt 5.15)
+add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 
 # use Qt_DIR approach so you can find Qt after cmake has been invoked
 if(DEFINED ENV{_CMAKE_QT_DIR})
@@ -31,12 +34,9 @@ if(DEFINED ENV{_CMAKE_QT_DIR})
 # Attempt autodetection on Windows. Unix environments should have Qt within the already known paths by the compiler
 elseif(MSVC)
     # look for user-registry pointing to qtcreator
-    get_filename_component(QT_BIN [HKEY_CURRENT_USER\\Software\\Classes\\Applications\\QtProject.QtCreator.cpp\\shell\\Open\\Command] PATH)
+    get_filename_component(QT_BIN [HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{89c4e30e-3a1a-47c7-80d7-013ba3e25e57};InstallLocation] ABSOLUTE CACHE)
 
-    # get root path so we can search for 5.3, 5.4, 5.5, etc
-    string(REPLACE "/Tools" ";" QT_BIN "${QT_BIN}")
-    list(GET QT_BIN 0 QT_BIN)
-    file(GLOB QT_VERSIONS "${QT_BIN}/5.*")
+    file(GLOB QT_VERSIONS "${QT_BIN}/6.*")
     list(SORT QT_VERSIONS)
 
     # assume the latest version will be last alphabetically
@@ -61,18 +61,27 @@ elseif(MSVC)
     set(QT_PATH "${QT_VERSION}/msvc${QT_MSVC}")
 
     set(QT_AUTODETECT False)
-elseif(APPLE AND EXISTS /usr/local/opt/qt5)
-	# Homebrew installs Qt5 (up to at least 5.9.1) in
-	# /usr/local/qt5, ensure it can be found by CMake since
-	# it is not in the default /usr/local prefix.
-	list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt5")
+elseif(APPLE AND EXISTS /usr/local/opt/qt6)
+    # Homebrew installs Qt5 (up to at least 5.9.1) in
+    # /usr/local/qt6, ensure it can be found by CMake since
+    # it is not in the default /usr/local prefix.
+    list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/qt6")
 endif()
 
 # Print the autodetected Qt path
 if(NOT QT_AUTODETECT)
     message("-- Qt found: ${QT_PATH}")
-    set(Qt5_DIR "${QT_PATH}/lib/cmake/Qt5/")
-    set(Qt5Test_DIR "${QT_PATH}/lib/cmake/Qt5Test")
+    set(QT_DIR "${QT_PATH}/lib/cmake/Qt6/")
+    set(Qt6_DIR "${QT_PATH}/lib/cmake/Qt6/")
+    set(Qt6Test_DIR "${QT_PATH}/lib/cmake/Qt6Test")
+    set(Qt6Gui_DIR "${QT_PATH}/lib/cmake/Qt6Gui/")
+    set(Qt6Widgets_DIR "${QT_PATH}/lib/cmake/Qt6Widgets/")
+    set(Qt6WidgetsTools_DIR "${QT_PATH}/lib/cmake/Qt6WidgetsTools/")
+    set(Qt6CoreTools_DIR "${QT_PATH}/lib/cmake/Qt6CoreTools/")
+    set(Qt6GuiTools_DIR "${QT_PATH}/lib/cmake/Qt6GuiTools/")
+    set(Qt6LinguistTools_DIR "${QT_PATH}/lib/cmake/Qt6LinguistTools/")
+    set(Qt6OpenGL_DIR "${QT_PATH}/lib/cmake/Qt6OpenGL/")
+    set(Qt6OpenGLWidgets_DIR "${QT_PATH}/lib/cmake/Qt6OpenGLWidgets/")
 endif()
 
 set(CMAKE_AUTOMOC ON)
@@ -96,21 +105,25 @@ endif()
 
 find_package(LZ4 REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(Qt5 COMPONENTS Widgets OpenGL LinguistTools REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS Widgets LinguistTools OpenGL OpenGLWidgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools OpenGL OpenGLWidgets REQUIRED)
 
 file(GLOB_RECURSE source_files "*.cpp")
-
 # Translations
 file(GLOB_RECURSE translation_files "${RELEASE_NAME}_*.ts")
-set_source_files_properties(${translation_files} PROPERTIES OUTPUT_LOCATION "${CMAKE_INSTALL_FULL_BINDIR}")
-qt5_add_translation(QM_FILES ${translation_files})
 
-# GUI
-add_executable(${GUI_TARGET} WIN32 ${source_files} ${QM_FILES} qt/${RELEASE_NAME}.qrc qt/${RELEASE_NAME}.rc)
+qt_add_executable(${GUI_TARGET}
+    WIN32 ${source_files} ${QM_FILES} qt/${RELEASE_NAME}.qrc qt/${RELEASE_NAME}.rc
+)
+
+qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${translation_files})
+
 target_include_directories(${GUI_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_link_libraries(${GUI_TARGET}
-    Qt5::OpenGL
-    Qt5::Widgets
+target_link_libraries(${GUI_TARGET} PRIVATE
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::OpenGL
+    Qt${QT_VERSION_MAJOR}::OpenGLWidgets
+    Qt${QT_VERSION_MAJOR}::GuiPrivate
     LZ4::LZ4
     ZLIB::ZLIB
 )
@@ -120,7 +133,6 @@ if(MSVC)
         PRIVATE /DNOMINMAX
         PRIVATE /EHsc
         PRIVATE /w
-        PRIVATE /Ox
     )
     target_link_options(${GUI_TARGET}
         PRIVATE /PDBALTPATH:${RELEASE_NAME}.pdb
@@ -130,7 +142,7 @@ endif()
 include(GNUInstallDirs)
 
 # Retrieve the absolute path to qmake and then use that path to find the binaries
-get_target_property(_qmake_executable Qt5::qmake IMPORTED_LOCATION)
+get_target_property(_qmake_executable Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
 get_filename_component(_qt_bin_dir "${_qmake_executable}" DIRECTORY)
 find_program(LCONVERT_EXECUTABLE lconvert HINTS "${_qt_bin_dir}")
 find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")

@@ -106,7 +106,7 @@ bool FieldArchive::compileScripts(int &errorFieldID, int &errorGroupID, int &err
 	return true;
 }
 
-bool FieldArchive::searchIterators(QMap<QString, int>::const_iterator &i, QMap<QString, int>::const_iterator &end, int fieldID, Sorting sorting) const
+bool FieldArchive::searchIterators(QMultiMap<QString, int>::const_iterator &i, QMultiMap<QString, int>::const_iterator &end, int fieldID, Sorting sorting) const
 {
 	if (fieldID >= fields.size())		return false;
 
@@ -136,7 +136,7 @@ bool FieldArchive::searchIterators(QMap<QString, int>::const_iterator &i, QMap<Q
 	return true;
 }
 
-bool FieldArchive::searchIteratorsP(QMap<QString, int>::const_iterator &i, QMap<QString, int>::const_iterator &begin, int fieldID, Sorting sorting) const
+bool FieldArchive::searchIteratorsP(QMultiMap<QString, int>::const_iterator &i, QMultiMap<QString, int>::const_iterator &begin, int fieldID, Sorting sorting) const
 {
 	if (fieldID < 0)		return false;
 
@@ -166,9 +166,9 @@ bool FieldArchive::searchIteratorsP(QMap<QString, int>::const_iterator &i, QMap<
 	return true;
 }
 
-bool FieldArchive::searchText(const QRegExp &text, int &fieldID, int &textID, int &from, int &size, Sorting sorting) const
+bool FieldArchive::searchText(const QRegularExpression &text, int &fieldID, int &textID, int &from, int &size, Sorting sorting) const
 {
-	QMap<QString, int>::const_iterator i, end;
+	QMultiMap<QString, int>::const_iterator i, end;
 	if (!searchIterators(i, end, fieldID, sorting))	return false;
 
 	for ( ; i != end ; ++i) {
@@ -181,12 +181,12 @@ bool FieldArchive::searchText(const QRegExp &text, int &fieldID, int &textID, in
 	return false;
 }
 
-bool FieldArchive::searchTextReverse(const QRegExp &text, int &fieldID, int &textID, int &from, int &size, Sorting sorting) const
+bool FieldArchive::searchTextReverse(const QRegularExpression &text, int &fieldID, int &textID, int &from, int &size, Sorting sorting) const
 {
-	QMap<QString, int>::const_iterator i, begin;
+	QMultiMap<QString, int>::const_iterator i, begin;
 	if (!searchIteratorsP(i, begin, fieldID, sorting))	return false;
 
-	for ( ; i != begin-1 ; --i) {
+	for ( ; i != begin ; --i) {
 		Field *field = getField(fieldID = i.value());
 		if (field && field->hasMsdFile() && field->getMsdFile()->searchTextReverse(text, textID, from, size))
 			return true;
@@ -198,7 +198,7 @@ bool FieldArchive::searchTextReverse(const QRegExp &text, int &fieldID, int &tex
 
 bool FieldArchive::searchScript(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
-	QMap<QString, int>::const_iterator i, end;
+	QMultiMap<QString, int>::const_iterator i, end;
 	if (!searchIterators(i, end, fieldID, sorting))	return false;
 
 	for ( ; i != end ; ++i) {
@@ -211,9 +211,9 @@ bool FieldArchive::searchScript(JsmFile::SearchType type, quint64 value, int &fi
 	return false;
 }
 
-bool FieldArchive::searchScriptText(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
+bool FieldArchive::searchScriptText(const QRegularExpression &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
-	QMap<QString, int>::const_iterator i, end;
+	QMultiMap<QString, int>::const_iterator i, end;
 	if (!searchIterators(i, end, fieldID, sorting))	return false;
 
 	for ( ; i != end ; ++i) {
@@ -223,7 +223,7 @@ bool FieldArchive::searchScriptText(const QRegExp &text, int &fieldID, int &grou
 			JsmFile *jsm = field->getJsmFile();
 			QList<quint64> textIDs;
 			for (int textID = 0; textID < msd->nbText(); ++textID) {
-				if (text.indexIn(msd->text(textID)) >= 0) {
+				if (text.match(msd->text(textID)).hasMatch()) {
 					textIDs.append(quint64(textID));
 				}
 			}
@@ -239,10 +239,10 @@ bool FieldArchive::searchScriptText(const QRegExp &text, int &fieldID, int &grou
 
 bool FieldArchive::searchScriptReverse(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
-	QMap<QString, int>::const_iterator i, begin;
+	QMultiMap<QString, int>::const_iterator i, begin;
 	if (!searchIteratorsP(i, begin, fieldID, sorting))	return false;
 
-	for ( ; i != begin-1 ; --i) {
+	for ( ; i != begin ; --i) {
 		Field *field = getField(fieldID = i.value());
 		if (field && field->hasJsmFile() && field->getJsmFile()->searchReverse(type, value, groupID, methodID, opcodeID))
 			return true;
@@ -252,19 +252,19 @@ bool FieldArchive::searchScriptReverse(JsmFile::SearchType type, quint64 value, 
 	return false;
 }
 
-bool FieldArchive::searchScriptTextReverse(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
+bool FieldArchive::searchScriptTextReverse(const QRegularExpression &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting sorting) const
 {
-	QMap<QString, int>::const_iterator i, begin;
+	QMultiMap<QString, int>::const_iterator i, begin;
 	if (!searchIteratorsP(i, begin, fieldID, sorting))	return false;
 
-	for ( ; i != begin-1 ; --i) {
+	for ( ; i != begin ; --i) {
 		Field *field = getField(fieldID = i.value());
 		if (field && field->hasMsdFile() && field->hasJsmFile()) {
 			MsdFile *msd = field->getMsdFile();
 			JsmFile *jsm = field->getJsmFile();
 			QList<quint64> textIDs;
 			for (int textID = 0; textID < msd->nbText(); ++textID) {
-				if (text.indexIn(msd->text(textID)) >= 0) {
+				if (text.match(msd->text(textID)).hasMatch()) {
 					textIDs.append(quint64(textID));
 				}
 			}

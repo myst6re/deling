@@ -39,13 +39,13 @@ protected:
 private:
 	void highlightBlockPseudoCode(const QString &text);
 	void highlightBlockOpcodes(const QString &text);
-	void applyReg(const QString &text, const QRegExp &regExp,
+	void applyReg(const QString &text, const QRegularExpression &regExp,
 	              const QTextCharFormat &format);
-	void applyReg(const QString &text, const QRegExp &regExp,
+	void applyReg(const QString &text, const QRegularExpression &regExp,
 	              const QColor &color);
 
 	bool _pseudoCode;
-	QRegExp _regKeywords, _regNumeric, _regVar, _regConst, _regExec;
+	QRegularExpression _regKeywords, _regNumeric, _regVar, _regConst, _regExec;
 };
 
 #endif // JSMHIGHLIGHTER_H

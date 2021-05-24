@@ -19,7 +19,7 @@
 
 QPixmap FF8Image::lzs(const QByteArray &data)
 {
-	//QTime t;t.start();
+	//QElapsedTimer t;t.start();
 	int lzs_size = 0, real_size = data.size();
 	const char *lzs_constData = data.constData();
 
@@ -159,7 +159,7 @@ void FF8Image::error(QPaintDevice *pd)
 	QFont font;
 	font.setPixelSize(44);
 	QString text = QObject::tr("Erreur");
-	int textWidth = QFontMetrics(font).width(text);
+	int textWidth = QFontMetrics(font).horizontalAdvance(text);
 	int textHeight = QFontMetrics(font).height();
 
 	QPainter p(pd);

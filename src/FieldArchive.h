@@ -48,12 +48,12 @@ public:
 	virtual bool openModels()=0;
 	virtual bool openBG(Field *field) const=0;
 	bool compileScripts(int &errorFieldID, int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
-	bool searchText(const QRegExp &text, int &fieldID, int &textID, int &from, int &size, Sorting=SortByMapId) const;
-	bool searchTextReverse(const QRegExp &text, int &fieldID, int &textID, int &from, int &size, Sorting=SortByMapId) const;
+	bool searchText(const QRegularExpression &text, int &fieldID, int &textID, int &from, int &size, Sorting=SortByMapId) const;
+	bool searchTextReverse(const QRegularExpression &text, int &fieldID, int &textID, int &from, int &size, Sorting=SortByMapId) const;
 	bool searchScript(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
-	bool searchScriptText(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
+	bool searchScriptText(const QRegularExpression &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
 	bool searchScriptReverse(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
-	bool searchScriptTextReverse(const QRegExp &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
+	bool searchScriptTextReverse(const QRegularExpression &text, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
 	QMultiMap<int, QString> searchAllVars() const;
 	QList<int> searchAllSpells(int fieldID) const;
 	QList<int> searchAllCards(int fieldID) const;
@@ -78,8 +78,8 @@ protected:
 	QMultiMap<QString, int> fieldsSortByMapId;
 	bool readOnly;
 private:
-	bool searchIterators(QMap<QString, int>::const_iterator &i, QMap<QString, int>::const_iterator &end, int fieldID, Sorting sorting) const;
-	bool searchIteratorsP(QMap<QString, int>::const_iterator &i, QMap<QString, int>::const_iterator &begin, int fieldID, Sorting sorting) const;
+	bool searchIterators(QMultiMap<QString, int>::const_iterator &i, QMultiMap<QString, int>::const_iterator &end, int fieldID, Sorting sorting) const;
+	bool searchIteratorsP(QMultiMap<QString, int>::const_iterator &i, QMultiMap<QString, int>::const_iterator &begin, int fieldID, Sorting sorting) const;
 };
 
 #endif // FSARCHIVE_H

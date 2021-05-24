@@ -108,7 +108,7 @@ void VarManager::search()
 	QMap<int, bool> count;
 	int lastVar=-1;
 
-	QMapIterator<int, QString> i(vars);
+	QMultiMapIterator<int, QString> i(vars);
 	while (i.hasNext()) {
 		i.next();
 		if (lastVar == i.key())	continue;
@@ -140,7 +140,7 @@ void VarManager::search()
 			list->topLevelItem(param+3)->setBackground(0, QColor(0xff,0xe5,0x99));
 		}
 		QStringList fields(vars.values(lastVar));
-		fields.append(item->text(3).split(", ", QString::SkipEmptyParts));
+		fields.append(item->text(3).split(", ", Qt::SkipEmptyParts));
 		fields.removeDuplicates();
 		item->setText(3, fields.join(", "));
 	}

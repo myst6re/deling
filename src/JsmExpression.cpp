@@ -184,8 +184,8 @@ QString JsmExpressionVar::varName() const
 	QString name = Config::value(QString("var%1").arg(_var)).toString();
 	if (!name.isEmpty() && _var < 1024) {
 		return QString("%1_%2").arg(_var).arg(name
-		                                      .replace(QRegExp("\\W"), "_")
-		                                      .replace(QRegExp("_+"), "_"));
+		                                      .replace(QRegularExpression("\\W"), "_")
+		                                      .replace(QRegularExpression("_+"), "_"));
 	}
 	return QString::number(_var);
 }

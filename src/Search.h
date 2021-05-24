@@ -54,7 +54,7 @@ private:
 	QString text() const;
 	Qt::CaseSensitivity sensitivity() const;
 	FieldArchive::Sorting sorting() const;
-	QRegExp regexp() const;
+	QRegularExpression regexp() const;
 	bool findNextText();
 	bool findPrevText();
 	bool findNextScript();

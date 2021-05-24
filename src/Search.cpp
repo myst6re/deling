@@ -99,16 +99,17 @@ FieldArchive::Sorting Search::sorting() const
 	}
 }
 
-QRegExp Search::regexp() const
+QRegularExpression Search::regexp() const
 {
 	QCheckBox *checkBox = currentIndex() == Text
 						  ? this->checkBox2
 						  : this->scriptCheckBox2;
 
+	QRegularExpression::PatternOptions options = sensitivity() == Qt::CaseInsensitive ? QRegularExpression::CaseInsensitiveOption : QRegularExpression::NoPatternOption;
 	if (checkBox->isChecked()) {
-		return QRegExp(text(), sensitivity());
+		return QRegularExpression(text(), options);
 	}
-	return QRegExp(QRegExp::escape(text()), sensitivity());
+	return QRegularExpression(QRegularExpression::escape(text()), options);
 }
 
 QWidget *Search::textPageWidget()
