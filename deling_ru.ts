@@ -3309,7 +3309,7 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     <message>
         <location filename="Search.cpp" line="30"/>
         <source>Textes</source>
-        <translation>Тексты</translation>
+        <translation>Текст</translation>
     </message>
     <message>
         <location filename="Search.cpp" line="31"/>
@@ -3493,7 +3493,7 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="262"/>
         <source>Importer son</source>
-        <translation>м</translation>
+        <translation>Импорт звука</translation>
     </message>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="272"/>
@@ -3615,7 +3615,7 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="28"/>
         <source>Jaune</source>
-        <translation>м</translation>
+        <translation>Желтый</translation>
     </message>
     <message>
         <location filename="widgets/TdwWidget2.cpp" line="28"/>
