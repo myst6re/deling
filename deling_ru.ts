@@ -2999,7 +2999,7 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     <message>
         <location filename="widgets/MsdWidget.h" line="41"/>
         <source>Textes</source>
-        <translation>Тексты</translation>
+        <translation>Текст</translation>
     </message>
 </context>
 <context>
