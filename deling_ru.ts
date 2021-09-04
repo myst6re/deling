@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="widgets/AboutDialog.cpp" line="11"/>
+        <source>Par Jérôme &amp;lt;myst6re&amp;gt; Arzel &lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;</source>
+        <translation>Автор: Jérôme &amp;lt;myst6re&amp;gt; Arzel &lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="widgets/AboutDialog.cpp" line="17"/>
+        <source>Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</source>
+        <translation>Благодаря:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</translation>
+    </message>
+</context>
+<context>
     <name>BGPreview2</name>
     <message>
         <location filename="BGPreview2.cpp" line="65"/>
@@ -18,27 +31,112 @@
 <context>
     <name>BackgroundWidget</name>
     <message>
-        <location filename="widgets/BackgroundWidget.cpp" line="50"/>
+        <location filename="widgets/BackgroundWidget.cpp" line="52"/>
         <source>Cacher background</source>
         <translation>Скрыть фон</translation>
     </message>
     <message>
-        <location filename="widgets/BackgroundWidget.cpp" line="95"/>
+        <location filename="widgets/BackgroundWidget.cpp" line="94"/>
+        <source>Tile ID</source>
+        <translation>ИД тайла</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="96"/>
+        <source>Destination X</source>
+        <translation>Пункт назначения X</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="97"/>
+        <source>Destination Y</source>
+        <translation>Пункт назначения Y</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="98"/>
+        <source>Destination Z</source>
+        <translation>Пункт назначения Z</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="99"/>
+        <source>Source X</source>
+        <translation>Источник X</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="100"/>
+        <source>Source Y</source>
+        <translation>Источник Y</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="101"/>
+        <source>Texture</source>
+        <translation>Текстура</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="102"/>
+        <source>Palette</source>
+        <translation>Палитра</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="103"/>
+        <source>Transparence</source>
+        <translation>Прозрачность</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="104"/>
+        <source>Dessiner</source>
+        <translation type="unfinished">Draw</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="105"/>
+        <source>Type transparence</source>
+        <translation>Тип прозрачности</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="106"/>
+        <source>Type couleur</source>
+        <translation>Тип цвета</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="107"/>
+        <source>Couche</source>
+        <translation>Слой</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="108"/>
+        <source>Paramètre</source>
+        <translation>Параметр</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="109"/>
+        <source>État</source>
+        <translation type="unfinished">Состояние</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="117"/>
+        <source>Paramètres</source>
+        <translation>Параметры</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="118"/>
+        <source>Tuiles</source>
+        <translation>Тайлы</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="216"/>
         <source>État %1</source>
         <translation>Состояние %1</translation>
     </message>
     <message>
-        <location filename="widgets/BackgroundWidget.cpp" line="160"/>
+        <location filename="widgets/BackgroundWidget.cpp" line="609"/>
         <source>Paramètre %1</source>
         <translation>Параметр %1</translation>
     </message>
     <message>
-        <location filename="widgets/BackgroundWidget.cpp" line="168"/>
+        <location filename="widgets/BackgroundWidget.cpp" line="617"/>
         <source>Couche %1</source>
         <translation>Слой %1</translation>
     </message>
     <message>
-        <location filename="widgets/BackgroundWidget.h" line="34"/>
+        <location filename="widgets/BackgroundWidget.h" line="35"/>
         <source>Décors</source>
         <translation>Фон</translation>
     </message>
@@ -48,12 +146,12 @@
     <message>
         <location filename="widgets/CharaWidget.h" line="32"/>
         <source>Modèles 3D</source>
-        <translation>3D Модель</translation>
+        <translation>3D модель</translation>
     </message>
     <message>
         <location filename="widgets/CharaWidget.cpp" line="67"/>
         <source>(Sans nom)</source>
-        <translation>(Без Имени)</translation>
+        <translation>(без имени)</translation>
     </message>
 </context>
 <context>
@@ -117,7 +215,7 @@
     <message>
         <location filename="ConfigDialog.cpp" line="123"/>
         <source>Chemin d&apos;installation de Final Fantasy VIII PC</source>
-        <translation>Путь установки ПК Final Fantasy VIII</translation>
+        <translation>Путь установки Final Fantasy VIII ПК</translation>
     </message>
 </context>
 <context>
@@ -2027,12 +2125,12 @@ Dollet Harbor</translation>
     <message>
         <location filename="widgets/EncounterWidget.h" line="33"/>
         <source>Rencontres aléatoires</source>
-        <translation type="unfinished">Encounters</translation>
+        <translation>Столкновения</translation>
     </message>
     <message>
         <location filename="widgets/EncounterWidget.cpp" line="29"/>
         <source>Formations</source>
-        <translation type="unfinished">Formations</translation>
+        <translation>Построение</translation>
     </message>
     <message>
         <location filename="widgets/EncounterWidget.cpp" line="30"/>
@@ -2050,7 +2148,7 @@ Dollet Harbor</translation>
         <translation>Высокая</translation>
     </message>
     <message>
-        <location filename="widgets/EncounterWidget.cpp" line="170"/>
+        <location filename="widgets/EncounterWidget.cpp" line="166"/>
         <source>Pas de combats</source>
         <translation>Без сражений</translation>
     </message>
@@ -2059,8 +2157,8 @@ Dollet Harbor</translation>
     <name>FsDialog</name>
     <message>
         <location filename="FsDialog.cpp" line="27"/>
-        <location filename="FsDialog.cpp" line="351"/>
-        <location filename="FsDialog.cpp" line="355"/>
+        <location filename="FsDialog.cpp" line="379"/>
+        <location filename="FsDialog.cpp" line="383"/>
         <source>Extraire</source>
         <translation>Извлечь</translation>
     </message>
@@ -2072,8 +2170,8 @@ Dollet Harbor</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="29"/>
-        <location filename="FsDialog.cpp" line="396"/>
-        <location filename="FsDialog.cpp" line="398"/>
+        <location filename="FsDialog.cpp" line="424"/>
+        <location filename="FsDialog.cpp" line="426"/>
         <source>Remplacer</source>
         <translation>Заменить</translation>
     </message>
@@ -2084,14 +2182,14 @@ Dollet Harbor</translation>
         <translation>Ctrl+R</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="429"/>
-        <location filename="FsDialog.cpp" line="439"/>
+        <location filename="FsDialog.cpp" line="457"/>
+        <location filename="FsDialog.cpp" line="467"/>
         <source>Ajouter</source>
         <translation>Добавить</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="34"/>
-        <location filename="FsDialog.cpp" line="518"/>
+        <location filename="FsDialog.cpp" line="546"/>
         <source>Supprimer</source>
         <translation>Удалить</translation>
     </message>
@@ -2119,87 +2217,88 @@ Dollet Harbor</translation>
     <message>
         <location filename="FsDialog.cpp" line="40"/>
         <source>Parent</source>
-        <translation type="unfinished">Parent</translation>
+        <translatorcomment>*корневая</translatorcomment>
+        <translation>Вверх</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="246"/>
+        <location filename="FsDialog.cpp" line="274"/>
         <source>LZ4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="249"/>
-        <location filename="FsDialog.cpp" line="595"/>
+        <location filename="FsDialog.cpp" line="277"/>
+        <location filename="FsDialog.cpp" line="623"/>
         <source>LZS</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="252"/>
+        <location filename="FsDialog.cpp" line="280"/>
         <source>Inconnu</source>
-        <translation type="unfinished">Неизвестный</translation>
+        <translation>Неизвестный</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="480"/>
-        <location filename="FsDialog.cpp" line="518"/>
+        <location filename="FsDialog.cpp" line="508"/>
+        <location filename="FsDialog.cpp" line="546"/>
         <source>Oui</source>
         <oldsource>oui</oldsource>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="255"/>
-        <location filename="FsDialog.cpp" line="480"/>
-        <location filename="FsDialog.cpp" line="518"/>
-        <location filename="FsDialog.cpp" line="597"/>
+        <location filename="FsDialog.cpp" line="283"/>
+        <location filename="FsDialog.cpp" line="508"/>
+        <location filename="FsDialog.cpp" line="546"/>
+        <location filename="FsDialog.cpp" line="625"/>
         <source>Non</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="363"/>
-        <location filename="FsDialog.cpp" line="372"/>
+        <location filename="FsDialog.cpp" line="391"/>
+        <location filename="FsDialog.cpp" line="400"/>
         <source>Erreur</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="363"/>
+        <location filename="FsDialog.cpp" line="391"/>
         <source>Le fichier n&apos;a pas été extrait !</source>
         <translation>Файл не был извлечен!</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="372"/>
+        <location filename="FsDialog.cpp" line="400"/>
         <source>Les fichiers n&apos;ont pas été extraits !</source>
         <translation>Файлы не были извлечены!</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="593"/>
+        <location filename="FsDialog.cpp" line="621"/>
         <source>Voulez-vous compresser le(s) fichier(s) ?</source>
         <translation>Хотите сжать файл(ы)?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="596"/>
+        <location filename="FsDialog.cpp" line="624"/>
         <source>LZ4 (FF8 Remaster)</source>
         <translation>LZ4 (FF8 Remaster)</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="598"/>
+        <location filename="FsDialog.cpp" line="626"/>
         <source>Annuler</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="369"/>
+        <location filename="FsDialog.cpp" line="397"/>
         <source>Extraction...</source>
         <translation>Извлечь...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="403"/>
+        <location filename="FsDialog.cpp" line="431"/>
         <source>Remplacement...</source>
         <translation>Заменить...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="418"/>
+        <location filename="FsDialog.cpp" line="446"/>
         <source>Erreur de remplacement</source>
         <translation>Ошибка замены</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="592"/>
+        <location filename="FsDialog.cpp" line="620"/>
         <source>Compression</source>
         <translation>Сжатие</translation>
     </message>
@@ -2208,7 +2307,7 @@ Dollet Harbor</translation>
         <translation type="obsolete">Would you compress the file?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="465"/>
+        <location filename="FsDialog.cpp" line="493"/>
         <source>Ajout...</source>
         <translation>Добавить...</translation>
     </message>
@@ -2217,51 +2316,51 @@ Dollet Harbor</translation>
         <translation type="obsolete">Stop</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="475"/>
-        <location filename="FsDialog.cpp" line="489"/>
+        <location filename="FsDialog.cpp" line="503"/>
+        <location filename="FsDialog.cpp" line="517"/>
         <source>Erreur d&apos;ajout</source>
-        <translation type="unfinished">Добавить ошибку</translation>
+        <translation>Ошибка добавления</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="480"/>
+        <location filename="FsDialog.cpp" line="508"/>
         <source>Le fichier existe déjà</source>
         <translation>Файл уже существует</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="480"/>
+        <location filename="FsDialog.cpp" line="508"/>
         <source>Le fichier existe déjà, voulez-vous le remplacer ?</source>
         <translation>Файл уже существует, вы хотите его заменить?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="489"/>
+        <location filename="FsDialog.cpp" line="517"/>
         <source>Un problème est survenu pour un ou plusieurs des fichiers à ajouter :
  - %1</source>
         <translation>Возникла проблема с добавлением одного или нескольких файлов:
  - %1</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="518"/>
+        <location filename="FsDialog.cpp" line="546"/>
         <source>Voulez-vous supprimer les éléments sélectionnés ?</source>
         <translation>Вы хотите удалить выбранные элементы?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="521"/>
+        <location filename="FsDialog.cpp" line="549"/>
         <source>Suppression...</source>
         <translation>Удаление...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="526"/>
+        <location filename="FsDialog.cpp" line="554"/>
         <source>Erreur de suppression</source>
-        <translation>Удаление ошибки</translation>
+        <translation>Ошибка удаления</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="558"/>
-        <location filename="FsDialog.cpp" line="582"/>
+        <location filename="FsDialog.cpp" line="586"/>
+        <location filename="FsDialog.cpp" line="610"/>
         <source>Erreur de renommage</source>
         <translation>Ошибка переименования</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="558"/>
+        <location filename="FsDialog.cpp" line="586"/>
         <source>Caractères interdits utilisés (par exemple : &apos;\&apos; ou &apos;/&apos;)</source>
         <translation>Используются недопустимые символы (например, &apos; \ &apos; или &apos;/&apos;)</translation>
     </message>
@@ -2269,7 +2368,12 @@ Dollet Harbor</translation>
 <context>
     <name>FsPreviewWidget</name>
     <message>
-        <location filename="FsPreviewWidget.cpp" line="75"/>
+        <location filename="FsPreviewWidget.cpp" line="81"/>
+        <source>Image %1</source>
+        <translation>Изображение %1</translation>
+    </message>
+    <message>
+        <location filename="FsPreviewWidget.cpp" line="94"/>
         <source>Palette %1</source>
         <translation>Палитра %1</translation>
     </message>
@@ -2299,64 +2403,65 @@ Dollet Harbor</translation>
 <context>
     <name>JsmWidget</name>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="39"/>
+        <location filename="widgets/JsmWidget.cpp" line="36"/>
         <source>Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n&apos;aura peut-être aucun sens.</source>
         <translation>Предупреждение: В этом поле скрипты находятся в старом плохо распознанном формате. То, что вы прочтете здесь, возможно, не имело смысла.</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="45"/>
-        <location filename="widgets/JsmWidget.cpp" line="62"/>
+        <location filename="widgets/JsmWidget.cpp" line="42"/>
+        <location filename="widgets/JsmWidget.cpp" line="61"/>
         <source>Id</source>
         <translation>ИД</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="45"/>
+        <location filename="widgets/JsmWidget.cpp" line="42"/>
         <source>Groupe</source>
         <translation>Группа</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="45"/>
+        <location filename="widgets/JsmWidget.cpp" line="42"/>
         <source>Exec</source>
+        <translatorcomment>*Исполнение</translatorcomment>
         <translation type="unfinished">Exec</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="62"/>
+        <location filename="widgets/JsmWidget.cpp" line="61"/>
         <source>Script</source>
         <translation>Скрипт</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="62"/>
+        <location filename="widgets/JsmWidget.cpp" line="61"/>
         <source>Script label</source>
         <translation>Метка скрипта</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="72"/>
+        <location filename="widgets/JsmWidget.cpp" line="74"/>
         <source>Instructions</source>
         <translation>Инструкции</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="71"/>
+        <location filename="widgets/JsmWidget.cpp" line="73"/>
         <source>Pseudo-code</source>
         <translation>Псевдокод</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="98"/>
+        <location filename="widgets/JsmWidget.cpp" line="100"/>
         <source>Compiler</source>
         <translation>Компилировать</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="99"/>
-        <location filename="widgets/JsmWidget.cpp" line="100"/>
+        <location filename="widgets/JsmWidget.cpp" line="101"/>
+        <location filename="widgets/JsmWidget.cpp" line="102"/>
         <source>Compiler (Ctrl+B)</source>
         <translation>Компилировать (Ctrl+B)</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="139"/>
+        <location filename="widgets/JsmWidget.cpp" line="141"/>
         <source>Ligne %1 -&gt; %2</source>
         <translation>Строка %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="144"/>
+        <location filename="widgets/JsmWidget.cpp" line="146"/>
         <source>Compilé avec succès</source>
         <translation>Успешно скомпилирован</translation>
     </message>
@@ -2369,129 +2474,145 @@ Dollet Harbor</translation>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="44"/>
+        <location filename="MainWindow.cpp" line="54"/>
         <source>&amp;Fichier</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="46"/>
+        <location filename="MainWindow.cpp" line="56"/>
         <source>&amp;Ouvrir...</source>
         <translation>&amp;Открыть...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="47"/>
+        <location filename="MainWindow.cpp" line="57"/>
         <source>Changer la langue du jeu</source>
         <translation>Изменение языка игры</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="49"/>
+        <location filename="MainWindow.cpp" line="59"/>
         <source>Enregi&amp;strer</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="50"/>
+        <location filename="MainWindow.cpp" line="60"/>
         <source>Enre&amp;gistrer Sous...</source>
-        <translation>Сохранить &amp;Как...</translation>
+        <translation>Сохранить &amp;как...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="51"/>
+        <location filename="MainWindow.cpp" line="61"/>
         <source>Exporter...</source>
         <translation>Экспорт...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="53"/>
+        <location filename="MainWindow.cpp" line="62"/>
+        <source>Exporter tout</source>
+        <translation>Экспортировать все</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="63"/>
+        <source>Scripts...</source>
+        <translation>Скрипты...</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="64"/>
+        <source>Rencontres aléatoires...</source>
+        <translatorcomment>Random Encounters...</translatorcomment>
+        <translation>Случайные столкновения...</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="65"/>
+        <source>Décors...</source>
+        <translation>Фоны...</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="66"/>
         <source>Importer...</source>
         <translation>Импорт...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="54"/>
+        <location filename="MainWindow.cpp" line="67"/>
         <source>Optimiser l&apos;archive...</source>
         <translation>Оптимизировать архив...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="56"/>
+        <location filename="MainWindow.cpp" line="69"/>
         <source>Plein écran</source>
         <translation>Полноэкранный</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="57"/>
+        <location filename="MainWindow.cpp" line="70"/>
         <source>Fe&amp;rmer</source>
-        <translation>З&amp;акрыть</translation>
+        <translation>&amp;Закрыть</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="58"/>
+        <location filename="MainWindow.cpp" line="71"/>
         <source>&amp;Quitter</source>
         <translation>&amp;Выйти</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="60"/>
+        <location filename="MainWindow.cpp" line="73"/>
         <source>&amp;Outils</source>
-        <translation>И&amp;нструменты</translation>
+        <translation>&amp;Инструменты</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="61"/>
+        <location filename="MainWindow.cpp" line="74"/>
         <source>Rec&amp;hercher...</source>
-        <translation>Н&amp;айти...</translation>
+        <translation>&amp;Найти...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="62"/>
+        <location filename="MainWindow.cpp" line="75"/>
         <source>&amp;Var manager...</source>
         <translation>&amp;Управление переменными...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="63"/>
-        <source>&amp;Rechercher tout...</source>
-        <translation>&amp;Найти все...</translation>
-    </message>
-    <message>
-        <location filename="MainWindow.cpp" line="64"/>
+        <location filename="MainWindow.cpp" line="77"/>
         <source>&amp;Lancer FF8...</source>
         <translation>&amp;Запустить FF8...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="68"/>
+        <location filename="MainWindow.cpp" line="83"/>
+        <location filename="MainWindow.cpp" line="86"/>
         <source>Op&amp;tions</source>
         <translation>Наст&amp;ройки</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="70"/>
         <source>?</source>
-        <translation>?</translation>
+        <translation type="vanished">?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="74"/>
+        <location filename="MainWindow.cpp" line="92"/>
         <source>Barre d&apos;outils &amp;principale</source>
         <translation>&amp;Панель инструментов</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="84"/>
+        <location filename="MainWindow.cpp" line="102"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="84"/>
+        <location filename="MainWindow.cpp" line="102"/>
         <source>Fichier</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="84"/>
+        <location filename="MainWindow.cpp" line="102"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="98"/>
+        <location filename="MainWindow.cpp" line="115"/>
         <source>Recherche rapide</source>
         <translation>Быстрый поиск</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="646"/>
+        <location filename="MainWindow.cpp" line="668"/>
         <source>Une erreur s&apos;est produite lors de l&apos;enregistrement.</source>
         <translation>Произошла ошибка при сохранении.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="689"/>
+        <location filename="MainWindow.cpp" line="711"/>
         <source>Fichier nom des scripts écran PC (*.sym)</source>
-        <translation type="unfinished">Название скрипта field файла ПК (* .sym)</translation>
+        <translation>Название скрипта field файла ПК (* .sym)</translation>
     </message>
     <message>
         <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;li&gt;MaKiPL&lt;/li&gt;&lt;/ul&gt;</source>
@@ -2515,80 +2636,88 @@ Dollet Harbor</translation>
         <translation>Перезапустите программу чтобы настройки, вступили в силу.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="646"/>
-        <location filename="MainWindow.cpp" line="709"/>
-        <location filename="MainWindow.cpp" line="722"/>
-        <location filename="MainWindow.cpp" line="727"/>
-        <location filename="MainWindow.cpp" line="748"/>
-        <location filename="MainWindow.cpp" line="770"/>
-        <location filename="MainWindow.cpp" line="779"/>
-        <location filename="MainWindow.cpp" line="831"/>
+        <location filename="MainWindow.cpp" line="668"/>
+        <location filename="MainWindow.cpp" line="725"/>
+        <location filename="MainWindow.cpp" line="738"/>
+        <location filename="MainWindow.cpp" line="743"/>
+        <location filename="MainWindow.cpp" line="766"/>
+        <location filename="MainWindow.cpp" line="788"/>
+        <location filename="MainWindow.cpp" line="810"/>
+        <location filename="MainWindow.cpp" line="832"/>
+        <location filename="MainWindow.cpp" line="841"/>
+        <location filename="MainWindow.cpp" line="893"/>
         <source>Erreur</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="499"/>
+        <location filename="MainWindow.cpp" line="520"/>
         <source>Sauvegarder</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="499"/>
+        <location filename="MainWindow.cpp" line="520"/>
         <source>Voulez-vous enregistrer les changements de %1 ?</source>
         <translation>Хотите сохранить изменения %1 ?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="499"/>
+        <location filename="MainWindow.cpp" line="520"/>
         <source>Oui</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="499"/>
+        <location filename="MainWindow.cpp" line="520"/>
         <source>Non</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="499"/>
-        <location filename="MainWindow.cpp" line="787"/>
+        <location filename="MainWindow.cpp" line="520"/>
+        <location filename="MainWindow.cpp" line="849"/>
         <source>Annuler</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="117"/>
+        <location filename="MainWindow.cpp" line="134"/>
         <source>Import/Export</source>
         <translation>Импорт/Экспорт</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="237"/>
+        <location filename="MainWindow.cpp" line="84"/>
+        <location filename="MainWindow.cpp" line="87"/>
+        <source>&amp;?</source>
+        <translation>&amp;?</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="258"/>
         <source>Ouverture...</source>
         <translation>Открытие...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="297"/>
+        <location filename="MainWindow.cpp" line="318"/>
         <source>Erreur d&apos;ouverture</source>
         <translation>Ошибка открытия</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="566"/>
+        <location filename="MainWindow.cpp" line="588"/>
         <source>Ouvrir un fichier</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="566"/>
+        <location filename="MainWindow.cpp" line="588"/>
         <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)</source>
         <translation>Совместимый файл (*.fs *.iso *.bin);;Архив ФС (*.fs);;Файл образа диска (*.iso *.bin)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="626"/>
+        <location filename="MainWindow.cpp" line="648"/>
         <source>Enregistrer Sous</source>
         <translation>Сохранить как</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="626"/>
+        <location filename="MainWindow.cpp" line="648"/>
         <source>Archive FS (*.fs)</source>
         <translation>Архив ФС (*.fs)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="633"/>
+        <location filename="MainWindow.cpp" line="655"/>
         <source>Enregistrement...</source>
         <translation>Сохранить...</translation>
     </message>
@@ -2597,70 +2726,72 @@ Dollet Harbor</translation>
         <translation type="obsolete">An error occurred when saving the archive.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="709"/>
+        <location filename="MainWindow.cpp" line="725"/>
         <source>Cet écran ne contient pas assez d&apos;éléments pour être exporté.</source>
         <translation>Этот field не содержит достаточно информации для экспорта.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="714"/>
-        <location filename="MainWindow.cpp" line="738"/>
+        <location filename="MainWindow.cpp" line="730"/>
+        <location filename="MainWindow.cpp" line="754"/>
+        <location filename="MainWindow.cpp" line="776"/>
+        <location filename="MainWindow.cpp" line="798"/>
         <source>Exporter</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="743"/>
+        <location filename="MainWindow.cpp" line="761"/>
+        <location filename="MainWindow.cpp" line="783"/>
+        <location filename="MainWindow.cpp" line="805"/>
         <source>Export...</source>
         <translation>Экспорт...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="770"/>
+        <location filename="MainWindow.cpp" line="832"/>
         <source>Cet écran ne contient pas assez d&apos;éléments pour être importé.</source>
-        <translation type="unfinished">Этот field не содержит достаточно информации для импорта.</translation>
+        <translation>Этот field не содержит достаточно информации для импорта.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="775"/>
+        <location filename="MainWindow.cpp" line="837"/>
         <source>Importer</source>
         <translation>Импорт</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="785"/>
+        <location filename="MainWindow.cpp" line="847"/>
         <source>À propos de l&apos;optimisation</source>
         <translation>Про оптимизацию</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="786"/>
+        <location filename="MainWindow.cpp" line="848"/>
         <source>L&apos;optimiseur d&apos;archive va modifier l&apos;ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.
 Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de continuer.</source>
-        <translation>Оптимизатор изменит порядок файлов архива, чтобы открытие происходило намного быстрее с помощью Deling.
+        <translation>Оптимизация изменит порядок файлов архива, чтобы открытие происходило намного быстрее с помощью Deling.
 Настоятельно рекомендуется сохранить архив (FS, FI и FL), прежде чем продолжить.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="787"/>
+        <location filename="MainWindow.cpp" line="849"/>
         <source>Lancer l&apos;optimisation !</source>
         <translation>Начнало оптимизимизации !</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="790"/>
+        <location filename="MainWindow.cpp" line="852"/>
         <source>Optimisation...</source>
         <translation>Оптимизация...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="831"/>
+        <location filename="MainWindow.cpp" line="893"/>
         <source>Final Fantasy VIII n&apos;a pas pu être lancé.
 %1</source>
         <translation>Final Fantasy VIII не удалось запустить.
 %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="950"/>
         <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</source>
         <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</oldsource>
-        <translation>Автор myst6re&lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Благодаря:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation type="vanished">By myst6re&lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="964"/>
         <source>Fermer</source>
-        <translation>Закрыть</translation>
+        <translation type="vanished">Close</translation>
     </message>
 </context>
 <context>
@@ -2668,7 +2799,7 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     <message>
         <location filename="MiscSearch.cpp" line="23"/>
         <source>Rechercher tout</source>
-        <translation>Найти Все</translation>
+        <translation>Найти всё</translation>
     </message>
 </context>
 <context>
@@ -2810,6 +2941,7 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     <message>
         <location filename="widgets/MsdWidget.cpp" line="161"/>
         <source>Lieux</source>
+        <translatorcomment>Locations</translatorcomment>
         <translation>Места</translation>
     </message>
     <message>
@@ -2825,7 +2957,7 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     <message>
         <location filename="widgets/MsdWidget.cpp" line="35"/>
         <source>Insérer un texte en dessous</source>
-        <translation>Вставьте текст ниже</translation>
+        <translation>Вставить текст ниже</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="147"/>
@@ -2840,12 +2972,12 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     <message>
         <location filename="widgets/MsdWidget.cpp" line="151"/>
         <source>Dollet</source>
-        <translation type="unfinished">Dollet</translation>
+        <translation>Доллет</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="153"/>
         <source>Timber</source>
-        <translation type="unfinished">Timber</translation>
+        <translation>Тимбер</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="155"/>
@@ -2860,7 +2992,7 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     <message>
         <location filename="widgets/MsdWidget.cpp" line="159"/>
         <source>Horizon</source>
-        <translation>Р. Горизонт</translation>
+        <translation>Р. хутор</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="171"/>
@@ -2885,7 +3017,7 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     <message>
         <location filename="widgets/MsdWidget.cpp" line="203"/>
         <source>Touches</source>
-        <translation type="unfinished">Кнопки</translation>
+        <translation>Кнопки</translation>
     </message>
     <message>
         <location filename="widgets/MsdWidget.cpp" line="175"/>
@@ -3039,7 +3171,7 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="FF8Image.cpp" line="202"/>
+        <location filename="FF8Image.cpp" line="161"/>
         <source>Erreur</source>
         <translation>Ошибка</translation>
     </message>
@@ -3104,57 +3236,57 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
         <translation>Неизвестная ошибка.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="780"/>
+        <location filename="files/JsmFile.cpp" line="782"/>
         <source>Trop d&apos;arguments</source>
         <translation>Слишком много аргументов</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="789"/>
-        <location filename="files/JsmFile.cpp" line="828"/>
+        <location filename="files/JsmFile.cpp" line="791"/>
+        <location filename="files/JsmFile.cpp" line="830"/>
         <source>Conversion en entier impossible après &apos;LABEL&apos; : %1</source>
         <translation>Невозможно преобразовать в целое число после &apos;LABEL&apos;: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="793"/>
+        <location filename="files/JsmFile.cpp" line="795"/>
         <source>&apos;LABEL%1&apos; déjà déclaré précédemment.</source>
-        <translation>&apos;LABEL%1&apos; уже объявлена.</translation>
+        <translation>&apos;LABEL%1&apos; уже объявлен.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="802"/>
+        <location filename="files/JsmFile.cpp" line="804"/>
         <source>Opcode non reconnu : %1</source>
         <translation>Неизвестный код операции: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="810"/>
+        <location filename="files/JsmFile.cpp" line="812"/>
         <source>Cet opcode ne peut pas avoir de paramètre : %1</source>
         <translation>Этот код операции не может иметь параметров: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="819"/>
+        <location filename="files/JsmFile.cpp" line="821"/>
         <source>Opération non reconnue : %1</source>
         <translation>Неизвестная операция: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="840"/>
-        <location filename="files/JsmFile.cpp" line="863"/>
-        <location filename="files/JsmFile.cpp" line="878"/>
-        <location filename="files/JsmFile.cpp" line="893"/>
-        <location filename="files/JsmFile.cpp" line="900"/>
+        <location filename="files/JsmFile.cpp" line="842"/>
+        <location filename="files/JsmFile.cpp" line="865"/>
+        <location filename="files/JsmFile.cpp" line="880"/>
+        <location filename="files/JsmFile.cpp" line="895"/>
+        <location filename="files/JsmFile.cpp" line="902"/>
         <source>Conversion en entier impossible : %1</source>
         <translation>Невозможно преобразовать в целое число: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="856"/>
+        <location filename="files/JsmFile.cpp" line="858"/>
         <source>Conversion en entier impossible après &apos;VAR&apos; : %1</source>
         <translation>Невозможно преобразовать в целое число после &apos;VAR&apos;: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="871"/>
+        <location filename="files/JsmFile.cpp" line="873"/>
         <source>Conversion en entier impossible après &apos;TEMP&apos; : %1</source>
         <translation>Невозможно преобразовать в целое число после &apos;TEMP&apos;: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="886"/>
+        <location filename="files/JsmFile.cpp" line="888"/>
         <source>Conversion en entier impossible après &apos;MODEL&apos; : %1</source>
         <translation>Невозможно преобразовать в целое число после &apos;MODEL&apos;: %1</translation>
     </message>
@@ -3163,7 +3295,7 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
         <translation type="vanished">Unable to convert to integer after &apos;CHAR&apos;: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="923"/>
+        <location filename="files/JsmFile.cpp" line="925"/>
         <source>&apos;LABEL%1&apos; indéfini.</source>
         <translation>&apos;LABEL %1&apos; не определена.</translation>
     </message>
@@ -3174,46 +3306,46 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="98"/>
-        <location filename="FieldArchivePS.cpp" line="89"/>
+        <location filename="FieldArchivePS.cpp" line="96"/>
         <source>Ouverture annulée.</source>
         <translation>Открытие отменено.</translation>
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="138"/>
-        <location filename="FieldArchivePS.cpp" line="126"/>
+        <location filename="FieldArchivePS.cpp" line="133"/>
         <source>Aucun écran trouvé.</source>
         <translation>Не найден field.</translation>
     </message>
     <message>
-        <location filename="FieldArchivePS.cpp" line="55"/>
+        <location filename="FieldArchivePS.cpp" line="62"/>
         <source>Impossible d&apos;ouvrir le fichier image disque. (%1)</source>
-        <translatorcomment>Не удается открыть файл образа диска. (%1)</translatorcomment>
-        <translation>Can not open the disk image file. (%1)</translation>
+        <translation>Не удается открыть файл образа диска. (%1)</translation>
     </message>
     <message>
-        <location filename="FieldArchivePS.cpp" line="60"/>
+        <location filename="FieldArchivePS.cpp" line="67"/>
         <source>Fichier FF8DISC?.IMG introuvable.</source>
         <translation>Файл FF8DISC?.IMG не найден.</translation>
     </message>
     <message>
-        <location filename="FieldArchivePS.cpp" line="69"/>
+        <location filename="FieldArchivePS.cpp" line="76"/>
         <source>Impossible d&apos;ouvrir le dossier field.</source>
         <translation>Не удалось открыть каталог field.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="196"/>
+        <location filename="MainWindow.cpp" line="216"/>
         <source>Enregistrement des données</source>
         <translation>Сохранение данных</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="196"/>
+        <location filename="MainWindow.cpp" line="216"/>
         <source>Les polices de caractères n&apos;ont pas pu être enregistrées !</source>
         <translation>Шрифты не удалось сохранить!</translation>
     </message>
     <message>
         <location filename="files/CaFile.h" line="43"/>
         <source>Fichier caméra écran PC (*.ca)</source>
-        <translation type="unfinished">Field camera PC File (*.ca)</translation>
+        <translatorcomment>Field camera PC File (*.ca)</translatorcomment>
+        <translation>Камера ПК файла field (*.ca)</translation>
     </message>
     <message>
         <location filename="files/IdFile.h" line="43"/>
@@ -3223,17 +3355,20 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     <message>
         <location filename="files/InfFile.h" line="64"/>
         <source>Fichier passages et portes écran PC (*.inf)</source>
-        <translation type="unfinished">Field gate and doors PC File (*.inf)</translation>
+        <translatorcomment>Field gate and doors PC File (*.inf)</translatorcomment>
+        <translation>Ворота и двери файла ПК (*.inf)</translation>
     </message>
     <message>
         <location filename="files/JsmFile.h" line="77"/>
         <source>Fichier scripts écran PC (*.jsm)</source>
-        <translation type="unfinished">Field Script PC file (*.jsm)</translation>
+        <translatorcomment>Field Script PC file (*.jsm)</translatorcomment>
+        <translation>Скрипт ПК файла field (*.jsm)</translation>
     </message>
     <message>
         <location filename="files/MchFile.h" line="31"/>
         <source>Fichier modèle 3D écran (*.mch)</source>
-        <translation type="unfinished">Field 3D model file (*.mch)</translation>
+        <translatorcomment>Field 3D model file (*.mch)</translatorcomment>
+        <translation>3D модели файла field (*.mch)</translation>
     </message>
     <message>
         <location filename="files/MrtFile.h" line="30"/>
@@ -3243,12 +3378,14 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     <message>
         <location filename="files/MsdFile.h" line="32"/>
         <source>Fichier dialogues écran PC (*.msd)</source>
-        <translation type="unfinished">Field dialogs PC file (*.msd)</translation>
+        <translatorcomment>Field dialogs PC file (*.msd)</translatorcomment>
+        <translation>Диалоги файла ПК (*.msd)</translation>
     </message>
     <message>
         <location filename="files/MskFile.h" line="32"/>
         <source>Fichier caméra cinématique écran PC (*.msk)</source>
-        <translation type="unfinished">Field movie camera PC file (*.msk)</translation>
+        <translatorcomment>Field movie camera PC file (*.msk)</translatorcomment>
+        <translation>Движение камеры файл ПК (*.msk)</translation>
     </message>
     <message>
         <location filename="files/PmdFile.h" line="30"/>
@@ -3263,23 +3400,27 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     <message>
         <location filename="files/PvpFile.h" line="30"/>
         <source>Fichier inconnu écran PC (*.pvp)</source>
-        <translation type="unfinished">Field unknown PC file (*.pvp)</translation>
+        <translatorcomment>Field unknown PC file (*.pvp)</translatorcomment>
+        <translation>Неизвестный ПК файл field (*.pvp)</translation>
     </message>
     <message>
         <location filename="files/RatFile.h" line="30"/>
         <source>Fichier fréquence combat écran PC (*.rat)</source>
         <oldsource>Fichier inconnu combat écran PC (*.rat)</oldsource>
+        <translatorcomment>Field battle rate PC file (*.rat)</translatorcomment>
         <translation type="unfinished">Field battle rate PC file (*.rat)</translation>
     </message>
     <message>
         <location filename="files/SfxFile.h" line="30"/>
         <source>Fichier sons écran PC (*.sfx)</source>
-        <translation type="unfinished">Field sounds PC file (*.sfx)</translation>
+        <translatorcomment>Field sounds PC file (*.sfx)</translatorcomment>
+        <translation>Звуковой файл ПК файла field (*.sfx)</translation>
     </message>
     <message>
         <location filename="files/TdwFile.h" line="38"/>
         <source>Fichier caractères additionnels écran PC (*.tdw)</source>
-        <translation type="unfinished">Field additionnal fonts PC file (*.tdw)</translation>
+        <translatorcomment>Field additionnal fonts PC file (*.tdw)</translatorcomment>
+        <translation>Дополнительные шрифты ПК файла field (*.tdw)</translation>
     </message>
     <message>
         <location filename="main.cpp" line="55"/>
@@ -3292,131 +3433,195 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
         <translation>Шрифты не удалось загрузить!</translation>
     </message>
     <message>
-        <location filename="ScriptExporter.cpp" line="40"/>
-        <location filename="ScriptExporter.cpp" line="49"/>
-        <location filename="ScriptExporter.cpp" line="57"/>
+        <location filename="BackgroundExporter.cpp" line="57"/>
+        <location filename="EncounterExporter.cpp" line="57"/>
+        <location filename="ScriptExporter.cpp" line="56"/>
+        <location filename="ScriptExporter.cpp" line="65"/>
+        <location filename="ScriptExporter.cpp" line="73"/>
         <source>sans-nom</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестный</translation>
+    </message>
+    <message>
+        <location filename="BackgroundExporter.cpp" line="61"/>
+        <source>Impossible d&apos;exporter &apos;%1&apos; en image</source>
+        <translatorcomment>* в изображение</translatorcomment>
+        <translation type="unfinished">Невозможно экспортировать &apos;%1&apos; в образ</translation>
+    </message>
+    <message>
+        <location filename="files/BackgroundFile.h" line="84"/>
+        <source>Fichier map tiles écran PC (*.map)</source>
+        <translatorcomment>Map Tiles PC Field File (*.map)</translatorcomment>
+        <translation>Карта тайлов ПК файла field (*.map)</translation>
     </message>
 </context>
 <context>
     <name>Search</name>
     <message>
-        <location filename="Search.cpp" line="25"/>
+        <location filename="Search.cpp" line="27"/>
         <source>Rechercher</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="30"/>
+        <location filename="Search.cpp" line="32"/>
         <source>Textes</source>
         <translation>Текст</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="31"/>
+        <location filename="Search.cpp" line="33"/>
         <source>Scripts</source>
         <translation>Скрипты</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="33"/>
+        <location filename="Search.cpp" line="35"/>
         <source>Chercher le suivant</source>
         <translation>Найти следующий</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="34"/>
+        <location filename="Search.cpp" line="36"/>
         <source>Chercher le précédent</source>
         <translation>Найти предыдущий</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="116"/>
-        <location filename="Search.cpp" line="164"/>
+        <location filename="Search.cpp" line="37"/>
+        <source>Chercher tout</source>
+        <translation>Найти всё</translation>
+    </message>
+    <message>
+        <location filename="Search.cpp" line="120"/>
+        <location filename="Search.cpp" line="167"/>
         <source>Sensible à la casse</source>
         <translation>Чувствительность к регистру</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="117"/>
-        <location filename="Search.cpp" line="165"/>
+        <location filename="Search.cpp" line="121"/>
+        <location filename="Search.cpp" line="168"/>
         <source>Expression régulière</source>
         <translation>Регулярные выражения</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="133"/>
+        <location filename="Search.cpp" line="137"/>
         <source>Texte</source>
         <translation>Текст</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="134"/>
+        <location filename="Search.cpp" line="138"/>
         <source>Opcode</source>
         <translation>Код операции</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="135"/>
+        <location filename="Search.cpp" line="139"/>
         <source>Variable</source>
-        <translation type="unfinished">Переменная</translation>
+        <translation>Переменная</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="136"/>
+        <location filename="Search.cpp" line="140"/>
         <source>Exécution</source>
-        <translation type="unfinished">Исполнение</translation>
+        <translation>Исполнение</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="137"/>
+        <location filename="Search.cpp" line="141"/>
         <source>Saut d&apos;écran</source>
         <translatorcomment>**Экранный переход</translatorcomment>
         <translation type="unfinished">Map jump</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="191"/>
+        <location filename="Search.cpp" line="199"/>
         <source>Paramètre :</source>
         <translation>Параметр:</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="207"/>
+        <location filename="Search.cpp" line="220"/>
         <source>Tout</source>
-        <translation type="unfinished"></translation>
+        <translation>Все</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="208"/>
+        <location filename="Search.cpp" line="221"/>
         <source>Pop uniquement</source>
         <translation type="unfinished">Pop only</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="209"/>
+        <location filename="Search.cpp" line="222"/>
         <source>Push uniquement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Push only</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="236"/>
+        <location filename="Search.cpp" line="252"/>
         <source>Groupe id</source>
-        <translation type="unfinished">ИД группы</translation>
+        <translation>ИД группы</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="237"/>
+        <location filename="Search.cpp" line="253"/>
         <source>Label</source>
         <translation>Метка</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="252"/>
+        <location filename="Search.cpp" line="270"/>
         <source>Écran id</source>
         <translation>ИД карты</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="348"/>
+        <location filename="Search.cpp" line="360"/>
         <source>Dernier fichier,
 poursuite de la recherche dans le premier fichier.</source>
         <translation>Последний файл.</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="373"/>
+        <location filename="Search.cpp" line="385"/>
         <source>Premier fichier,
 poursuite de la recherche dans le dernier fichier.</source>
         <translation>Первый файл.</translation>
     </message>
 </context>
 <context>
+    <name>SearchAll</name>
+    <message>
+        <location filename="SearchAll.cpp" line="9"/>
+        <source>Chercher tout</source>
+        <translation>Найти всё</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="28"/>
+        <source>Copier</source>
+        <oldsource>Copy</oldsource>
+        <translation>Копировать</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="48"/>
+        <source>Groupe</source>
+        <oldsource>Group</oldsource>
+        <translation>Группа</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="48"/>
+        <source>Script</source>
+        <translation>Скрипт</translation>
+    </message>
+    <message>
+        <source>Lines</source>
+        <translation type="vanished">Lines</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="48"/>
+        <source>Instruction</source>
+        <translation>Инструкция</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="48"/>
+        <source>Lignes</source>
+        <translation>Линии</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="56"/>
+        <source>N° de texte</source>
+        <oldsource>Text #</oldsource>
+        <translation>Текст #</translation>
+    </message>
+</context>
+<context>
     <name>SoundWidget</name>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="30"/>
-        <location filename="widgets/SoundWidget.cpp" line="156"/>
+        <location filename="widgets/SoundWidget.cpp" line="155"/>
         <source>Ajouter son</source>
         <translation>Добавить звук</translation>
     </message>
@@ -3441,62 +3646,62 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Импорт</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="126"/>
-        <location filename="widgets/SoundWidget.cpp" line="177"/>
-        <location filename="widgets/SoundWidget.cpp" line="179"/>
-        <location filename="widgets/SoundWidget.cpp" line="217"/>
+        <location filename="widgets/SoundWidget.cpp" line="125"/>
+        <location filename="widgets/SoundWidget.cpp" line="176"/>
+        <location filename="widgets/SoundWidget.cpp" line="178"/>
+        <location filename="widgets/SoundWidget.cpp" line="216"/>
         <source>Son %1</source>
         <translation>Звук %1</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="156"/>
-        <location filename="widgets/SoundWidget.cpp" line="242"/>
-        <location filename="widgets/SoundWidget.cpp" line="262"/>
+        <location filename="widgets/SoundWidget.cpp" line="155"/>
+        <location filename="widgets/SoundWidget.cpp" line="241"/>
+        <location filename="widgets/SoundWidget.cpp" line="261"/>
         <source>Fichier AKAO (*.akao)</source>
         <translation>Файл AKAO (*.akao)</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="166"/>
-        <location filename="widgets/SoundWidget.cpp" line="172"/>
-        <location filename="widgets/SoundWidget.cpp" line="250"/>
-        <location filename="widgets/SoundWidget.cpp" line="268"/>
-        <location filename="widgets/SoundWidget.cpp" line="272"/>
+        <location filename="widgets/SoundWidget.cpp" line="165"/>
+        <location filename="widgets/SoundWidget.cpp" line="171"/>
+        <location filename="widgets/SoundWidget.cpp" line="249"/>
+        <location filename="widgets/SoundWidget.cpp" line="267"/>
+        <location filename="widgets/SoundWidget.cpp" line="271"/>
         <source>Erreur</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="166"/>
-        <location filename="widgets/SoundWidget.cpp" line="268"/>
+        <location filename="widgets/SoundWidget.cpp" line="165"/>
+        <location filename="widgets/SoundWidget.cpp" line="267"/>
         <source>Fichier invalide.</source>
         <translation>Недопустимый файл.</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="172"/>
+        <location filename="widgets/SoundWidget.cpp" line="171"/>
         <source>Impossible d&apos;ajouter le son (%1).</source>
         <translation>Невозможно добавить звук (%1).</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="242"/>
+        <location filename="widgets/SoundWidget.cpp" line="241"/>
         <source>Exporter son</source>
         <translation>Экспорт звука</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="242"/>
+        <location filename="widgets/SoundWidget.cpp" line="241"/>
         <source>son%1</source>
         <translation>звук%1</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="250"/>
+        <location filename="widgets/SoundWidget.cpp" line="249"/>
         <source>Impossible d&apos;exporter le son (%1).</source>
         <translation>Не удалось экспортировать звук (%1).</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="262"/>
+        <location filename="widgets/SoundWidget.cpp" line="261"/>
         <source>Importer son</source>
         <translation>Импорт звука</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="272"/>
+        <location filename="widgets/SoundWidget.cpp" line="271"/>
         <source>Impossible d&apos;importer le son (%1).</source>
         <translation>Не удалось импортировать звук (%1).</translation>
     </message>
@@ -3643,109 +3848,117 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Белый</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="34"/>
-        <location filename="widgets/TdwWidget2.cpp" line="36"/>
         <source>À partir d&apos;une image...</source>
-        <translation>Из образа...</translation>
+        <translation type="vanished">From an image...</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="41"/>
+        <location filename="widgets/TdwWidget2.cpp" line="44"/>
         <source>Exporter...</source>
         <translation>Экспорт...</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="42"/>
+        <location filename="widgets/TdwWidget2.cpp" line="45"/>
         <source>Importer...</source>
         <translation>Импорт...</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="43"/>
+        <location filename="widgets/TdwWidget2.cpp" line="46"/>
         <source>Annuler les modifications</source>
-        <translation>Отменить Изменения</translation>
+        <translation>Отменить изменения</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="100"/>
+        <location filename="widgets/TdwWidget2.cpp" line="56"/>
+        <source>Texte :</source>
+        <translation>Текст:</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="58"/>
+        <source>Largeur :</source>
+        <translation>Ширина:</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="107"/>
         <source>Table %1</source>
         <translation>Таблица %1</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="173"/>
+        <location filename="widgets/TdwWidget2.cpp" line="193"/>
         <source>Fichier texture FF8 (*.tex)</source>
         <translation>Файл текстуры FF8 (*.tex)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="174"/>
-        <location filename="widgets/TdwWidget2.cpp" line="249"/>
+        <location filename="widgets/TdwWidget2.cpp" line="194"/>
+        <location filename="widgets/TdwWidget2.cpp" line="269"/>
         <source>Fichier police FF8 (*.tdw)</source>
         <translation>Файл шрифта FF8 (*.tdw)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="175"/>
+        <location filename="widgets/TdwWidget2.cpp" line="195"/>
         <source>Fichier image PNG (*.png)</source>
         <translation>Файл изображения PNG (*.png)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="176"/>
+        <location filename="widgets/TdwWidget2.cpp" line="196"/>
         <source>Fichier image JPG (*.jpg)</source>
         <translation>Файл изображения JPG (*.jpg)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="177"/>
+        <location filename="widgets/TdwWidget2.cpp" line="197"/>
         <source>Fichier image BMP (*.bmp)</source>
         <translation>Файл изображения BMP (*.bmp)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="181"/>
+        <location filename="widgets/TdwWidget2.cpp" line="201"/>
         <source>Fichier traduction Deling (*.txt)</source>
         <translation>Файл перевода Deling (*.txt)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="184"/>
+        <location filename="widgets/TdwWidget2.cpp" line="204"/>
         <source>Exporter police de caractère</source>
         <translation>Экспорт шрифта</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="197"/>
-        <location filename="widgets/TdwWidget2.cpp" line="200"/>
-        <location filename="widgets/TdwWidget2.cpp" line="213"/>
-        <location filename="widgets/TdwWidget2.cpp" line="216"/>
-        <location filename="widgets/TdwWidget2.cpp" line="225"/>
-        <location filename="widgets/TdwWidget2.cpp" line="266"/>
-        <location filename="widgets/TdwWidget2.cpp" line="270"/>
+        <location filename="widgets/TdwWidget2.cpp" line="217"/>
+        <location filename="widgets/TdwWidget2.cpp" line="220"/>
+        <location filename="widgets/TdwWidget2.cpp" line="233"/>
+        <location filename="widgets/TdwWidget2.cpp" line="236"/>
+        <location filename="widgets/TdwWidget2.cpp" line="245"/>
+        <location filename="widgets/TdwWidget2.cpp" line="286"/>
+        <location filename="widgets/TdwWidget2.cpp" line="290"/>
         <source>Erreur</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="197"/>
-        <location filename="widgets/TdwWidget2.cpp" line="213"/>
-        <location filename="widgets/TdwWidget2.cpp" line="225"/>
-        <location filename="widgets/TdwWidget2.cpp" line="270"/>
+        <location filename="widgets/TdwWidget2.cpp" line="217"/>
+        <location filename="widgets/TdwWidget2.cpp" line="233"/>
+        <location filename="widgets/TdwWidget2.cpp" line="245"/>
+        <location filename="widgets/TdwWidget2.cpp" line="290"/>
         <source>Erreur d&apos;ouverture du fichier. (%1)</source>
         <translation>Ошибка при открытии файла. (%1)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="200"/>
-        <location filename="widgets/TdwWidget2.cpp" line="216"/>
+        <location filename="widgets/TdwWidget2.cpp" line="220"/>
+        <location filename="widgets/TdwWidget2.cpp" line="236"/>
         <source>Erreur lors de l&apos;enregistrement.</source>
         <translation>Ошибка при сохранении.</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="203"/>
+        <location filename="widgets/TdwWidget2.cpp" line="223"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="203"/>
+        <location filename="widgets/TdwWidget2.cpp" line="223"/>
         <source>Format de police de caractère inexportable.</source>
         <translation>Формат шрифта не переносим.</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="253"/>
+        <location filename="widgets/TdwWidget2.cpp" line="273"/>
         <source>Importer police de caractère</source>
         <translation>Импорт шрифта</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="266"/>
+        <location filename="widgets/TdwWidget2.cpp" line="286"/>
         <source>Fichier invalide</source>
         <translation>Недопустимый файл</translation>
     </message>
@@ -3778,12 +3991,12 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="TextPreview.cpp" line="61"/>
         <source>Dollet</source>
-        <translation type="unfinished">Dollet</translation>
+        <translation>Доллет</translation>
     </message>
     <message>
         <location filename="TextPreview.cpp" line="62"/>
         <source>Timber</source>
-        <translation type="unfinished">Timber</translation>
+        <translation>Тимбер</translation>
     </message>
     <message>
         <location filename="TextPreview.cpp" line="62"/>
@@ -3798,7 +4011,7 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="TextPreview.cpp" line="63"/>
         <source>Horizon</source>
-        <translation type="unfinished">Р. Горизонт</translation>
+        <translation>Р. хутор</translation>
     </message>
 </context>
 <context>
@@ -3809,49 +4022,49 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Управление переменными</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
-        <location filename="VarManager.cpp" line="45"/>
+        <location filename="VarManager.cpp" line="30"/>
+        <location filename="VarManager.cpp" line="42"/>
         <source>Var</source>
-        <translation>Переменная</translation>
+        <translation type="unfinished">Переменная</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
+        <location filename="VarManager.cpp" line="30"/>
         <source>Écran</source>
         <translation type="unfinished">Field</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
+        <location filename="VarManager.cpp" line="30"/>
         <source>MEM fr</source>
-        <translation type="unfinished">MEM fr</translation>
+        <translation>MEM fr</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
+        <location filename="VarManager.cpp" line="30"/>
         <source>MEM us</source>
-        <translation type="unfinished">MEM us</translation>
+        <translation>MEM us</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
+        <location filename="VarManager.cpp" line="30"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="40"/>
+        <location filename="VarManager.cpp" line="37"/>
         <source>Adresses utilisées</source>
         <translation>Используемые адреса</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="41"/>
+        <location filename="VarManager.cpp" line="38"/>
         <source>Sauver</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="155"/>
+        <location filename="VarManager.cpp" line="152"/>
         <source>Vars utilisés : %1/1536</source>
         <translation>Используемые переменные: %1/1536</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
-        <location filename="VarManager.cpp" line="47"/>
+        <location filename="VarManager.cpp" line="30"/>
+        <location filename="VarManager.cpp" line="44"/>
         <source>Nom</source>
         <translation>Имя</translation>
     </message>
@@ -3915,17 +4128,18 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="55"/>
         <source>Caméra cinématique</source>
-        <translation type="unfinished">Movie Camera</translation>
+        <translatorcomment>Movie Camera</translatorcomment>
+        <translation type="unfinished">Движение камеры</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="56"/>
         <source>Divers</source>
-        <translation type="unfinished">Прочее</translation>
+        <translation>Прочее</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="96"/>
         <source>Ajouter caméra</source>
-        <translation type="unfinished">Добавить камеру</translation>
+        <translation>Добавить камеру</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="97"/>
@@ -3940,6 +4154,7 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="124"/>
         <source>Axes de la caméra :</source>
+        <translatorcomment>*Оси</translatorcomment>
         <translation>Ось камеры:</translation>
     </message>
     <message>
@@ -3990,32 +4205,32 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="192"/>
         <source>Point 1 :</source>
-        <translation type="unfinished">Point 1:</translation>
+        <translation>Точка 1:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="194"/>
         <source>Point 2 :</source>
-        <translation type="unfinished">Point 2:</translation>
+        <translation>Точка 2:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="196"/>
         <source>Point 3 :</source>
-        <translation type="unfinished">Point 3:</translation>
+        <translation>Точка 3:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="235"/>
         <source>Id écran :</source>
-        <translation type="unfinished">ИД Field:</translation>
+        <translation>ИД Field:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="237"/>
         <source>Inconnu 1 :</source>
-        <translation type="unfinished">Неизвестный 1:</translation>
+        <translation>Неизвестный 1:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="242"/>
         <source>Inconnu 2 :</source>
-        <translation type="unfinished">Неизвестный 2:</translation>
+        <translation>Неизвестный 2:</translation>
     </message>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="247"/>
@@ -4041,106 +4256,106 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <location filename="widgets/WalkmeshWidget.cpp" line="290"/>
         <source>Ligne déclench. porte :</source>
-        <translation type="unfinished">Триггер Линии двери:</translation>
+        <translation>Триггер линии двери:</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="313"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="312"/>
         <source>Limite caméra %1</source>
         <translation>Диапазон камеры %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="320"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="318"/>
         <source>Limite écran %1</source>
         <translation>Диапазон экрана %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="333"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="341"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="331"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="339"/>
         <source>Haut</source>
         <translation>Сверху</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="335"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="343"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="333"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="341"/>
         <source>Bas</source>
         <translation>Снизу</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="337"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="345"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="335"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="343"/>
         <source>Droite</source>
         <translation>Справа</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="339"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="347"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="337"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="345"/>
         <source>Gauche</source>
         <translation>Слева</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="371"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="369"/>
         <source>Ajouter</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="372"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="370"/>
         <source>Effacer</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="411"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="409"/>
         <source>Orientation des mouvements :</source>
         <translation>Ориентация движений:</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="414"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="412"/>
         <source>Inconnu :</source>
-        <translation type="unfinished">Неизвестный:</translation>
+        <translation>Неизвестный:</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="416"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="414"/>
         <source>Hauteur focus caméra sur le personnage :</source>
         <translation>Высота фокусировки камеры на игровом персонаже:</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="514"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="512"/>
         <source>Caméra %1</source>
         <translation>Камера %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="530"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="528"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="783"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="785"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="787"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="804"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="802"/>
         <source>Triangle %1</source>
         <translation>Треугольник %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="545"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="556"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1017"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1044"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="543"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="554"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1015"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1042"/>
         <source>Inutilisé</source>
-        <translation type="unfinished">Неиспользуемый</translation>
+        <translation>Неиспользуемый</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="554"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1042"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="552"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1040"/>
         <source>Porte %1</source>
         <translation>Дверь %1</translation>
     </message>
     <message>
+        <location filename="widgets/WalkmeshWidget.cpp" line="657"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="659"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="661"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="680"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="678"/>
         <source>Camera %1</source>
         <translation>Камера %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="581"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="579"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1193"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="1195"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1197"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1218"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1216"/>
         <source>Position %1</source>
         <translatorcomment>**Позиция</translatorcomment>
         <translation>Положение %1</translation>
