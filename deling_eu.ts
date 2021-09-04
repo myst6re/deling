@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="eu_ES">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="widgets/AboutDialog.cpp" line="11"/>
+        <source>Par Jérôme &amp;lt;myst6re&amp;gt; Arzel &lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;</source>
+        <translation type="unfinished">By Jérôme &amp;lt;myst6re&amp;gt; Arzel &lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="widgets/AboutDialog.cpp" line="17"/>
+        <source>Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</source>
+        <translation type="unfinished">Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</translation>
+    </message>
+</context>
+<context>
     <name>BGPreview2</name>
     <message>
         <location filename="BGPreview2.cpp" line="65"/>
@@ -22,27 +35,112 @@
 <context>
     <name>BackgroundWidget</name>
     <message>
-        <location filename="widgets/BackgroundWidget.cpp" line="50"/>
+        <location filename="widgets/BackgroundWidget.cpp" line="52"/>
         <source>Cacher background</source>
         <translation>Hondoa ezkutatu</translation>
     </message>
     <message>
-        <location filename="widgets/BackgroundWidget.cpp" line="95"/>
+        <location filename="widgets/BackgroundWidget.cpp" line="94"/>
+        <source>Tile ID</source>
+        <translation type="unfinished">Tile ID</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="96"/>
+        <source>Destination X</source>
+        <translation type="unfinished">Destination X</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="97"/>
+        <source>Destination Y</source>
+        <translation type="unfinished">Destination Y</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="98"/>
+        <source>Destination Z</source>
+        <translation type="unfinished">Destination Z</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="99"/>
+        <source>Source X</source>
+        <translation type="unfinished">Source X</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="100"/>
+        <source>Source Y</source>
+        <translation type="unfinished">Source Y</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="101"/>
+        <source>Texture</source>
+        <translation type="unfinished">Texture</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="102"/>
+        <source>Palette</source>
+        <translation type="unfinished">Palette</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="103"/>
+        <source>Transparence</source>
+        <translation type="unfinished">Alpha</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="104"/>
+        <source>Dessiner</source>
+        <translation type="unfinished">Draw</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="105"/>
+        <source>Type transparence</source>
+        <translation type="unfinished">Alpha Type</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="106"/>
+        <source>Type couleur</source>
+        <translation type="unfinished">Color Type</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="107"/>
+        <source>Couche</source>
+        <translation type="unfinished">Layer</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="108"/>
+        <source>Paramètre</source>
+        <translation type="unfinished">Parameter</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="109"/>
+        <source>État</source>
+        <translation type="unfinished">State</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="117"/>
+        <source>Paramètres</source>
+        <translation type="unfinished">Parameters</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="118"/>
+        <source>Tuiles</source>
+        <translation type="unfinished">Tiles</translation>
+    </message>
+    <message>
+        <location filename="widgets/BackgroundWidget.cpp" line="216"/>
         <source>État %1</source>
         <translation>Egoera %1</translation>
     </message>
     <message>
-        <location filename="widgets/BackgroundWidget.cpp" line="160"/>
+        <location filename="widgets/BackgroundWidget.cpp" line="609"/>
         <source>Paramètre %1</source>
         <translation>Parametroa %1</translation>
     </message>
     <message>
-        <location filename="widgets/BackgroundWidget.cpp" line="168"/>
+        <location filename="widgets/BackgroundWidget.cpp" line="617"/>
         <source>Couche %1</source>
         <translation>Geruza %1</translation>
     </message>
     <message>
-        <location filename="widgets/BackgroundWidget.h" line="34"/>
+        <location filename="widgets/BackgroundWidget.h" line="35"/>
         <source>Décors</source>
         <translation>Hondoa</translation>
     </message>
@@ -2058,7 +2156,7 @@
         <translation>Garaia</translation>
     </message>
     <message>
-        <location filename="widgets/EncounterWidget.cpp" line="170"/>
+        <location filename="widgets/EncounterWidget.cpp" line="166"/>
         <source>Pas de combats</source>
         <translation>Ez borrokarik</translation>
     </message>
@@ -2067,8 +2165,8 @@
     <name>FsDialog</name>
     <message>
         <location filename="FsDialog.cpp" line="27"/>
-        <location filename="FsDialog.cpp" line="351"/>
-        <location filename="FsDialog.cpp" line="355"/>
+        <location filename="FsDialog.cpp" line="379"/>
+        <location filename="FsDialog.cpp" line="383"/>
         <source>Extraire</source>
         <translation>Atera</translation>
     </message>
@@ -2079,8 +2177,8 @@
     </message>
     <message>
         <location filename="FsDialog.cpp" line="29"/>
-        <location filename="FsDialog.cpp" line="396"/>
-        <location filename="FsDialog.cpp" line="398"/>
+        <location filename="FsDialog.cpp" line="424"/>
+        <location filename="FsDialog.cpp" line="426"/>
         <source>Remplacer</source>
         <translation>Birjarri</translation>
     </message>
@@ -2090,14 +2188,14 @@
         <translation type="obsolete">Ctrl+R</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="429"/>
-        <location filename="FsDialog.cpp" line="439"/>
+        <location filename="FsDialog.cpp" line="457"/>
+        <location filename="FsDialog.cpp" line="467"/>
         <source>Ajouter</source>
         <translation>Gehitu</translation>
     </message>
     <message>
         <location filename="FsDialog.cpp" line="34"/>
-        <location filename="FsDialog.cpp" line="518"/>
+        <location filename="FsDialog.cpp" line="546"/>
         <source>Supprimer</source>
         <translation>Kendu</translation>
     </message>
@@ -2117,43 +2215,43 @@
         <translation>Gurasoa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="480"/>
-        <location filename="FsDialog.cpp" line="518"/>
+        <location filename="FsDialog.cpp" line="508"/>
+        <location filename="FsDialog.cpp" line="546"/>
         <source>Oui</source>
         <oldsource>oui</oldsource>
         <translation>Bai</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="255"/>
-        <location filename="FsDialog.cpp" line="480"/>
-        <location filename="FsDialog.cpp" line="518"/>
-        <location filename="FsDialog.cpp" line="597"/>
+        <location filename="FsDialog.cpp" line="283"/>
+        <location filename="FsDialog.cpp" line="508"/>
+        <location filename="FsDialog.cpp" line="546"/>
+        <location filename="FsDialog.cpp" line="625"/>
         <source>Non</source>
         <translation>Ez</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="363"/>
-        <location filename="FsDialog.cpp" line="372"/>
+        <location filename="FsDialog.cpp" line="391"/>
+        <location filename="FsDialog.cpp" line="400"/>
         <source>Erreur</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="363"/>
+        <location filename="FsDialog.cpp" line="391"/>
         <source>Le fichier n&apos;a pas été extrait !</source>
         <translation>Fitxa ez atera ahal du!</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="372"/>
+        <location filename="FsDialog.cpp" line="400"/>
         <source>Les fichiers n&apos;ont pas été extraits !</source>
         <translation>Fitxak ez atera ahal ditu!</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="596"/>
+        <location filename="FsDialog.cpp" line="624"/>
         <source>LZ4 (FF8 Remaster)</source>
         <translation type="unfinished">LZ4 (FF8 Remaster</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="598"/>
+        <location filename="FsDialog.cpp" line="626"/>
         <source>Annuler</source>
         <translation>Ezeztatu</translation>
     </message>
@@ -2186,38 +2284,38 @@
         <translation>F2</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="246"/>
+        <location filename="FsDialog.cpp" line="274"/>
         <source>LZ4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="249"/>
-        <location filename="FsDialog.cpp" line="595"/>
+        <location filename="FsDialog.cpp" line="277"/>
+        <location filename="FsDialog.cpp" line="623"/>
         <source>LZS</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="252"/>
+        <location filename="FsDialog.cpp" line="280"/>
         <source>Inconnu</source>
         <translation type="unfinished">Ezezaguna</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="369"/>
+        <location filename="FsDialog.cpp" line="397"/>
         <source>Extraction...</source>
         <translation>Atera aritzen...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="403"/>
+        <location filename="FsDialog.cpp" line="431"/>
         <source>Remplacement...</source>
         <translation>Birjartzen...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="418"/>
+        <location filename="FsDialog.cpp" line="446"/>
         <source>Erreur de remplacement</source>
         <translation>Birjartze-hutsa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="592"/>
+        <location filename="FsDialog.cpp" line="620"/>
         <source>Compression</source>
         <translation>Tinkatzea</translation>
     </message>
@@ -2226,12 +2324,12 @@
         <translation type="obsolete">Fitxa tinkatuko al zenuke?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="593"/>
+        <location filename="FsDialog.cpp" line="621"/>
         <source>Voulez-vous compresser le(s) fichier(s) ?</source>
         <translation>Fitxa tinkatuko al zenuke?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="465"/>
+        <location filename="FsDialog.cpp" line="493"/>
         <source>Ajout...</source>
         <translation>Gehitzen...</translation>
     </message>
@@ -2240,51 +2338,51 @@
         <translation type="obsolete">Gelditu</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="475"/>
-        <location filename="FsDialog.cpp" line="489"/>
+        <location filename="FsDialog.cpp" line="503"/>
+        <location filename="FsDialog.cpp" line="517"/>
         <source>Erreur d&apos;ajout</source>
         <translation>Gehitze-hutsa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="480"/>
+        <location filename="FsDialog.cpp" line="508"/>
         <source>Le fichier existe déjà</source>
         <translation>Fitxa jadanik egoten da</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="480"/>
+        <location filename="FsDialog.cpp" line="508"/>
         <source>Le fichier existe déjà, voulez-vous le remplacer ?</source>
         <translation>Fitxa jadanik egoten da, birjartzen nahi al duzu?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="489"/>
+        <location filename="FsDialog.cpp" line="517"/>
         <source>Un problème est survenu pour un ou plusieurs des fichiers à ajouter :
  - %1</source>
         <translation>Bat edo gehiago fitxa gehitzerakoan hutsa zegoen:
  - %1</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="518"/>
+        <location filename="FsDialog.cpp" line="546"/>
         <source>Voulez-vous supprimer les éléments sélectionnés ?</source>
         <translation>Aukeratutako gaiak kentzen ahal duzu?</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="521"/>
+        <location filename="FsDialog.cpp" line="549"/>
         <source>Suppression...</source>
         <translation>Kentzen...</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="526"/>
+        <location filename="FsDialog.cpp" line="554"/>
         <source>Erreur de suppression</source>
         <translation>Kentze-hutsa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="558"/>
-        <location filename="FsDialog.cpp" line="582"/>
+        <location filename="FsDialog.cpp" line="586"/>
+        <location filename="FsDialog.cpp" line="610"/>
         <source>Erreur de renommage</source>
         <translation>Berriz izendatze-hutsa</translation>
     </message>
     <message>
-        <location filename="FsDialog.cpp" line="558"/>
+        <location filename="FsDialog.cpp" line="586"/>
         <source>Caractères interdits utilisés (par exemple : &apos;\&apos; ou &apos;/&apos;)</source>
         <translation>Legez kanpoko karakterrak erabili dituzu (eg &apos;\&apos; or &apos;/&apos;)</translation>
     </message>
@@ -2292,7 +2390,12 @@
 <context>
     <name>FsPreviewWidget</name>
     <message>
-        <location filename="FsPreviewWidget.cpp" line="75"/>
+        <location filename="FsPreviewWidget.cpp" line="81"/>
+        <source>Image %1</source>
+        <translation type="unfinished">Image %1</translation>
+    </message>
+    <message>
+        <location filename="FsPreviewWidget.cpp" line="94"/>
         <source>Palette %1</source>
         <translation type="unfinished">Paleta %1</translation>
     </message>
@@ -2322,64 +2425,64 @@
 <context>
     <name>JsmWidget</name>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="39"/>
+        <location filename="widgets/JsmWidget.cpp" line="36"/>
         <source>Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n&apos;aura peut-être aucun sens.</source>
         <translation type="unfinished">Warning: On this field scripts are in an old poorly recognized format. What you will read here may did not make sense.</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="45"/>
-        <location filename="widgets/JsmWidget.cpp" line="62"/>
+        <location filename="widgets/JsmWidget.cpp" line="42"/>
+        <location filename="widgets/JsmWidget.cpp" line="61"/>
         <source>Id</source>
         <translation>Id</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="45"/>
+        <location filename="widgets/JsmWidget.cpp" line="42"/>
         <source>Groupe</source>
         <translation>Erakundea</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="45"/>
+        <location filename="widgets/JsmWidget.cpp" line="42"/>
         <source>Exec</source>
         <translation>Exek</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="62"/>
+        <location filename="widgets/JsmWidget.cpp" line="61"/>
         <source>Script</source>
         <translation>Gidoia</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="62"/>
+        <location filename="widgets/JsmWidget.cpp" line="61"/>
         <source>Script label</source>
         <translation>Gidoi-labela</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="72"/>
+        <location filename="widgets/JsmWidget.cpp" line="74"/>
         <source>Instructions</source>
         <translation type="unfinished">Instructions</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="71"/>
+        <location filename="widgets/JsmWidget.cpp" line="73"/>
         <source>Pseudo-code</source>
         <translation type="unfinished">Pseudo-code</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="98"/>
+        <location filename="widgets/JsmWidget.cpp" line="100"/>
         <source>Compiler</source>
         <translation>Bildumaratu</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="99"/>
-        <location filename="widgets/JsmWidget.cpp" line="100"/>
+        <location filename="widgets/JsmWidget.cpp" line="101"/>
+        <location filename="widgets/JsmWidget.cpp" line="102"/>
         <source>Compiler (Ctrl+B)</source>
         <translation>Bildumaratu (Ctrl+B)</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="139"/>
+        <location filename="widgets/JsmWidget.cpp" line="141"/>
         <source>Ligne %1 -&gt; %2</source>
         <translation>Lerro %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="widgets/JsmWidget.cpp" line="144"/>
+        <location filename="widgets/JsmWidget.cpp" line="146"/>
         <source>Compilé avec succès</source>
         <translation>Bildumaratua arrakastaz</translation>
     </message>
@@ -2392,132 +2495,147 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="44"/>
+        <location filename="MainWindow.cpp" line="54"/>
         <source>&amp;Fichier</source>
         <translation>&amp;Fitxa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="46"/>
+        <location filename="MainWindow.cpp" line="56"/>
         <source>&amp;Ouvrir...</source>
         <translation>&amp;Ireki...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="47"/>
+        <location filename="MainWindow.cpp" line="57"/>
         <source>Changer la langue du jeu</source>
         <translation type="unfinished">Change game language</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="49"/>
+        <location filename="MainWindow.cpp" line="59"/>
         <source>Enregi&amp;strer</source>
         <translation>&amp;Gorde</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="50"/>
+        <location filename="MainWindow.cpp" line="60"/>
         <source>Enre&amp;gistrer Sous...</source>
         <translation>Gor&amp;de honela...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="51"/>
+        <location filename="MainWindow.cpp" line="61"/>
         <source>Exporter...</source>
         <translation>Exportatu...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="53"/>
+        <location filename="MainWindow.cpp" line="62"/>
+        <source>Exporter tout</source>
+        <translation type="unfinished">Export All</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="63"/>
+        <source>Scripts...</source>
+        <translation type="unfinished">Scripts...</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="64"/>
+        <source>Rencontres aléatoires...</source>
+        <translation type="unfinished">Random Encounters...</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="65"/>
+        <source>Décors...</source>
+        <translation type="unfinished">Backgrounds...</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="66"/>
         <source>Importer...</source>
         <translation>Inportatu...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="54"/>
+        <location filename="MainWindow.cpp" line="67"/>
         <source>Optimiser l&apos;archive...</source>
         <translation>Agiritegia optimizatu...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="56"/>
+        <location filename="MainWindow.cpp" line="69"/>
         <source>Plein écran</source>
         <translation>Paintaila osoa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="57"/>
+        <location filename="MainWindow.cpp" line="70"/>
         <source>Fe&amp;rmer</source>
         <translation>I&amp;txi</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="58"/>
+        <location filename="MainWindow.cpp" line="71"/>
         <source>&amp;Quitter</source>
         <translation>&amp;Utzi</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="60"/>
+        <location filename="MainWindow.cpp" line="73"/>
         <source>&amp;Outils</source>
         <translation>T&amp;resnak</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="61"/>
+        <location filename="MainWindow.cpp" line="74"/>
         <source>Rec&amp;hercher...</source>
         <translation>Aur&amp;kitu...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="62"/>
+        <location filename="MainWindow.cpp" line="75"/>
         <source>&amp;Var manager...</source>
         <translation>&amp;Var zuzendaria...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="63"/>
-        <source>&amp;Rechercher tout...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="MainWindow.cpp" line="64"/>
+        <location filename="MainWindow.cpp" line="77"/>
         <source>&amp;Lancer FF8...</source>
         <translation>Ha&amp;si FF8...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="68"/>
+        <location filename="MainWindow.cpp" line="83"/>
+        <location filename="MainWindow.cpp" line="86"/>
         <source>Op&amp;tions</source>
         <translation>A&amp;ukerak</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="70"/>
         <source>?</source>
-        <translation>?</translation>
+        <translation type="vanished">?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="74"/>
+        <location filename="MainWindow.cpp" line="92"/>
         <source>Barre d&apos;outils &amp;principale</source>
         <translation>Tres&amp;na-barra nagusia</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="84"/>
+        <location filename="MainWindow.cpp" line="102"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="84"/>
+        <location filename="MainWindow.cpp" line="102"/>
         <source>Fichier</source>
         <translation>Fitxa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="84"/>
+        <location filename="MainWindow.cpp" line="102"/>
         <source>Description</source>
         <translation>Deskripzioa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="98"/>
+        <location filename="MainWindow.cpp" line="115"/>
         <source>Recherche rapide</source>
         <translation>Bila lasterra</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="566"/>
+        <location filename="MainWindow.cpp" line="588"/>
         <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)</source>
         <translation>Ongi ibiliko fitxak (*.fs *.iso *.bin);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="646"/>
+        <location filename="MainWindow.cpp" line="668"/>
         <source>Une erreur s&apos;est produite lors de l&apos;enregistrement.</source>
         <translation>Hutsa gertatu da gorde egiterakoan.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="689"/>
+        <location filename="MainWindow.cpp" line="711"/>
         <source>Fichier nom des scripts écran PC (*.sym)</source>
         <translation>Gidoi-izenak gunea PC fitxa (*.sym)</translation>
     </message>
@@ -2543,60 +2661,68 @@
         <translation>Hasi berriz programa ondorioa ekartzeko.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="646"/>
-        <location filename="MainWindow.cpp" line="709"/>
-        <location filename="MainWindow.cpp" line="722"/>
-        <location filename="MainWindow.cpp" line="727"/>
-        <location filename="MainWindow.cpp" line="748"/>
-        <location filename="MainWindow.cpp" line="770"/>
-        <location filename="MainWindow.cpp" line="779"/>
-        <location filename="MainWindow.cpp" line="831"/>
+        <location filename="MainWindow.cpp" line="668"/>
+        <location filename="MainWindow.cpp" line="725"/>
+        <location filename="MainWindow.cpp" line="738"/>
+        <location filename="MainWindow.cpp" line="743"/>
+        <location filename="MainWindow.cpp" line="766"/>
+        <location filename="MainWindow.cpp" line="788"/>
+        <location filename="MainWindow.cpp" line="810"/>
+        <location filename="MainWindow.cpp" line="832"/>
+        <location filename="MainWindow.cpp" line="841"/>
+        <location filename="MainWindow.cpp" line="893"/>
         <source>Erreur</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="499"/>
+        <location filename="MainWindow.cpp" line="520"/>
         <source>Sauvegarder</source>
         <translation>Gorde</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="499"/>
+        <location filename="MainWindow.cpp" line="84"/>
+        <location filename="MainWindow.cpp" line="87"/>
+        <source>&amp;?</source>
+        <translation type="unfinished">&amp;?</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="520"/>
         <source>Voulez-vous enregistrer les changements de %1 ?</source>
         <translation>%1-(e)ko aldaketak gorde egin nahiko zenituzke?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="499"/>
+        <location filename="MainWindow.cpp" line="520"/>
         <source>Oui</source>
         <translation>Bai</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="499"/>
+        <location filename="MainWindow.cpp" line="520"/>
         <source>Non</source>
         <translation>Ez</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="499"/>
-        <location filename="MainWindow.cpp" line="787"/>
+        <location filename="MainWindow.cpp" line="520"/>
+        <location filename="MainWindow.cpp" line="849"/>
         <source>Annuler</source>
         <translation>Ezeztatu</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="117"/>
+        <location filename="MainWindow.cpp" line="134"/>
         <source>Import/Export</source>
         <translation>Inportatu/Exportatu</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="237"/>
+        <location filename="MainWindow.cpp" line="258"/>
         <source>Ouverture...</source>
         <translation>Irekitzen...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="297"/>
+        <location filename="MainWindow.cpp" line="318"/>
         <source>Erreur d&apos;ouverture</source>
         <translation>Irekitze-hutsa</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="566"/>
+        <location filename="MainWindow.cpp" line="588"/>
         <source>Ouvrir un fichier</source>
         <translation>Fitxa ireki</translation>
     </message>
@@ -2605,17 +2731,17 @@
         <translation type="obsolete">Ongi ibiliko fitxak (*.fs *.iso *.bin);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="626"/>
+        <location filename="MainWindow.cpp" line="648"/>
         <source>Enregistrer Sous</source>
         <translation>Gorde honela</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="626"/>
+        <location filename="MainWindow.cpp" line="648"/>
         <source>Archive FS (*.fs)</source>
         <translation>FS Artxiboa (*.fs)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="633"/>
+        <location filename="MainWindow.cpp" line="655"/>
         <source>Enregistrement...</source>
         <translation>Gorde...</translation>
     </message>
@@ -2624,70 +2750,72 @@
         <translation type="obsolete">Hutsa gertatu da artxiboa gorde egiterakoan.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="709"/>
+        <location filename="MainWindow.cpp" line="725"/>
         <source>Cet écran ne contient pas assez d&apos;éléments pour être exporté.</source>
         <translation>Gune honek ez du nahiko informazioa exportatzeko eduki.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="714"/>
-        <location filename="MainWindow.cpp" line="738"/>
+        <location filename="MainWindow.cpp" line="730"/>
+        <location filename="MainWindow.cpp" line="754"/>
+        <location filename="MainWindow.cpp" line="776"/>
+        <location filename="MainWindow.cpp" line="798"/>
         <source>Exporter</source>
         <translation>Exportatu</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="743"/>
+        <location filename="MainWindow.cpp" line="761"/>
+        <location filename="MainWindow.cpp" line="783"/>
+        <location filename="MainWindow.cpp" line="805"/>
         <source>Export...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Export...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="770"/>
+        <location filename="MainWindow.cpp" line="832"/>
         <source>Cet écran ne contient pas assez d&apos;éléments pour être importé.</source>
         <translation>Gune honek ez du nahiko informazioa inportatzeko eduki.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="775"/>
+        <location filename="MainWindow.cpp" line="837"/>
         <source>Importer</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="785"/>
+        <location filename="MainWindow.cpp" line="847"/>
         <source>À propos de l&apos;optimisation</source>
         <translation>Optimizatzeari buruz</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="786"/>
+        <location filename="MainWindow.cpp" line="848"/>
         <source>L&apos;optimiseur d&apos;archive va modifier l&apos;ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.
 Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de continuer.</source>
         <translation>Optimizagailuak artxibo-fitxa aldatuko du Deling-ek askoz lasterrago fitxa ireki dezala.
 Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino lehen.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="787"/>
+        <location filename="MainWindow.cpp" line="849"/>
         <source>Lancer l&apos;optimisation !</source>
         <translation>Optimizatzen hasi!</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="790"/>
+        <location filename="MainWindow.cpp" line="852"/>
         <source>Optimisation...</source>
         <translation>Optimizatzen...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="831"/>
+        <location filename="MainWindow.cpp" line="893"/>
         <source>Final Fantasy VIII n&apos;a pas pu être lancé.
 %1</source>
         <translation>Final Fantasy VIII ezin du hasten.
 %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="950"/>
         <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</source>
         <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</oldsource>
-        <translation>Myst6re-k&lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation type="vanished">Myst6re-k&lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="964"/>
         <source>Fermer</source>
-        <translation>Itxi</translation>
+        <translation type="vanished">Itxi</translation>
     </message>
 </context>
 <context>
@@ -3066,7 +3194,7 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>Huts ezezaguna</translation>
     </message>
     <message>
-        <location filename="FF8Image.cpp" line="202"/>
+        <location filename="FF8Image.cpp" line="161"/>
         <source>Erreur</source>
         <translation>Hutsa</translation>
     </message>
@@ -3131,57 +3259,57 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>Huts ezezaguna.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="780"/>
+        <location filename="files/JsmFile.cpp" line="782"/>
         <source>Trop d&apos;arguments</source>
         <translation>Gehiegi argumentuak</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="789"/>
-        <location filename="files/JsmFile.cpp" line="828"/>
+        <location filename="files/JsmFile.cpp" line="791"/>
+        <location filename="files/JsmFile.cpp" line="830"/>
         <source>Conversion en entier impossible après &apos;LABEL&apos; : %1</source>
         <translation>Ezin du zenbaki oso bihurtzen &apos;LABELA&apos;: %1 ondoren</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="793"/>
+        <location filename="files/JsmFile.cpp" line="795"/>
         <source>&apos;LABEL%1&apos; déjà déclaré précédemment.</source>
         <translation>&apos;LABELA %1&apos; jadanik deklaratua.</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="802"/>
+        <location filename="files/JsmFile.cpp" line="804"/>
         <source>Opcode non reconnu : %1</source>
         <translation>Opcode ezezaguna: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="810"/>
+        <location filename="files/JsmFile.cpp" line="812"/>
         <source>Cet opcode ne peut pas avoir de paramètre : %1</source>
         <translation>Opcode honek ezin du parametroak edukitzen: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="819"/>
+        <location filename="files/JsmFile.cpp" line="821"/>
         <source>Opération non reconnue : %1</source>
         <translation>Jarduera ezezaguna: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="840"/>
-        <location filename="files/JsmFile.cpp" line="863"/>
-        <location filename="files/JsmFile.cpp" line="878"/>
-        <location filename="files/JsmFile.cpp" line="893"/>
-        <location filename="files/JsmFile.cpp" line="900"/>
+        <location filename="files/JsmFile.cpp" line="842"/>
+        <location filename="files/JsmFile.cpp" line="865"/>
+        <location filename="files/JsmFile.cpp" line="880"/>
+        <location filename="files/JsmFile.cpp" line="895"/>
+        <location filename="files/JsmFile.cpp" line="902"/>
         <source>Conversion en entier impossible : %1</source>
         <translation>Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="856"/>
+        <location filename="files/JsmFile.cpp" line="858"/>
         <source>Conversion en entier impossible après &apos;VAR&apos; : %1</source>
         <translation type="unfinished">Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="871"/>
+        <location filename="files/JsmFile.cpp" line="873"/>
         <source>Conversion en entier impossible après &apos;TEMP&apos; : %1</source>
         <translation type="unfinished">Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="886"/>
+        <location filename="files/JsmFile.cpp" line="888"/>
         <source>Conversion en entier impossible après &apos;MODEL&apos; : %1</source>
         <translation type="unfinished">Unable to convert to integer after &apos;MODEL&apos;: %1 </translation>
     </message>
@@ -3190,7 +3318,7 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation type="obsolete">Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
-        <location filename="files/JsmFile.cpp" line="923"/>
+        <location filename="files/JsmFile.cpp" line="925"/>
         <source>&apos;LABEL%1&apos; indéfini.</source>
         <translation>&apos;LABELA %1&apos; zehaztugabea.</translation>
     </message>
@@ -3201,38 +3329,38 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="98"/>
-        <location filename="FieldArchivePS.cpp" line="89"/>
+        <location filename="FieldArchivePS.cpp" line="96"/>
         <source>Ouverture annulée.</source>
         <translation>Irekitzea ezeztatua.</translation>
     </message>
     <message>
         <location filename="FieldArchivePC.cpp" line="138"/>
-        <location filename="FieldArchivePS.cpp" line="126"/>
+        <location filename="FieldArchivePS.cpp" line="133"/>
         <source>Aucun écran trouvé.</source>
         <translation>Ezin du gunerik aurkitu.</translation>
     </message>
     <message>
-        <location filename="FieldArchivePS.cpp" line="55"/>
+        <location filename="FieldArchivePS.cpp" line="62"/>
         <source>Impossible d&apos;ouvrir le fichier image disque. (%1)</source>
         <translation>Ezin du disko-irudia fitxa irekitzen. (%1)</translation>
     </message>
     <message>
-        <location filename="FieldArchivePS.cpp" line="60"/>
+        <location filename="FieldArchivePS.cpp" line="67"/>
         <source>Fichier FF8DISC?.IMG introuvable.</source>
         <translation>FF8DISC?.IMG aurkituezina.</translation>
     </message>
     <message>
-        <location filename="FieldArchivePS.cpp" line="69"/>
+        <location filename="FieldArchivePS.cpp" line="76"/>
         <source>Impossible d&apos;ouvrir le dossier field.</source>
         <translation>Ezin du gune-bidea irekitzen.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="196"/>
+        <location filename="MainWindow.cpp" line="216"/>
         <source>Enregistrement des données</source>
         <translation>Datuak gorde egiten</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="196"/>
+        <location filename="MainWindow.cpp" line="216"/>
         <source>Les polices de caractères n&apos;ont pas pu être enregistrées !</source>
         <translation>Ezin ditu fontak gorde!</translation>
     </message>
@@ -3318,130 +3446,192 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <translation>Ezin ditu fontak kargatzen!</translation>
     </message>
     <message>
-        <location filename="ScriptExporter.cpp" line="40"/>
-        <location filename="ScriptExporter.cpp" line="49"/>
-        <location filename="ScriptExporter.cpp" line="57"/>
+        <location filename="BackgroundExporter.cpp" line="57"/>
+        <location filename="EncounterExporter.cpp" line="57"/>
+        <location filename="ScriptExporter.cpp" line="56"/>
+        <location filename="ScriptExporter.cpp" line="65"/>
+        <location filename="ScriptExporter.cpp" line="73"/>
         <source>sans-nom</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unamed</translation>
+    </message>
+    <message>
+        <location filename="BackgroundExporter.cpp" line="61"/>
+        <source>Impossible d&apos;exporter &apos;%1&apos; en image</source>
+        <translation type="unfinished">Unable to export &apos;%1&apos; to image</translation>
+    </message>
+    <message>
+        <location filename="files/BackgroundFile.h" line="84"/>
+        <source>Fichier map tiles écran PC (*.map)</source>
+        <translation type="unfinished">Map Tiles PC Field File (*.map)</translation>
     </message>
 </context>
 <context>
     <name>Search</name>
     <message>
-        <location filename="Search.cpp" line="25"/>
+        <location filename="Search.cpp" line="27"/>
         <source>Rechercher</source>
         <translation>Bilatu</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="30"/>
+        <location filename="Search.cpp" line="32"/>
         <source>Textes</source>
         <translation>Testuak</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="31"/>
+        <location filename="Search.cpp" line="33"/>
         <source>Scripts</source>
         <translation>Gidoiak</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="33"/>
+        <location filename="Search.cpp" line="35"/>
         <source>Chercher le suivant</source>
         <translation>Hurrengoa aurkitu</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="34"/>
+        <location filename="Search.cpp" line="36"/>
         <source>Chercher le précédent</source>
         <translation>Aurrekoa aurkitu</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="116"/>
-        <location filename="Search.cpp" line="164"/>
+        <location filename="Search.cpp" line="37"/>
+        <source>Chercher tout</source>
+        <translation type="unfinished">Search All</translation>
+    </message>
+    <message>
+        <location filename="Search.cpp" line="120"/>
+        <location filename="Search.cpp" line="167"/>
         <source>Sensible à la casse</source>
         <translation>Kaxa-sentibera</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="117"/>
-        <location filename="Search.cpp" line="165"/>
+        <location filename="Search.cpp" line="121"/>
+        <location filename="Search.cpp" line="168"/>
         <source>Expression régulière</source>
         <translation>Regex</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="133"/>
+        <location filename="Search.cpp" line="137"/>
         <source>Texte</source>
         <translation>Testua</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="134"/>
+        <location filename="Search.cpp" line="138"/>
         <source>Opcode</source>
         <translation>Opcode</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="135"/>
+        <location filename="Search.cpp" line="139"/>
         <source>Variable</source>
         <translation>Var pool</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="136"/>
+        <location filename="Search.cpp" line="140"/>
         <source>Exécution</source>
         <translation>Exekuzioa</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="137"/>
+        <location filename="Search.cpp" line="141"/>
         <source>Saut d&apos;écran</source>
         <translation type="unfinished">Map jump</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="191"/>
+        <location filename="Search.cpp" line="199"/>
         <source>Paramètre :</source>
         <translation>Parametroa:</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="207"/>
+        <location filename="Search.cpp" line="220"/>
         <source>Tout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="208"/>
+        <location filename="Search.cpp" line="221"/>
         <source>Pop uniquement</source>
         <translation>Pop bakarrik</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="209"/>
+        <location filename="Search.cpp" line="222"/>
         <source>Push uniquement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Push only</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="236"/>
+        <location filename="Search.cpp" line="252"/>
         <source>Groupe id</source>
         <translation>Erakundea id</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="237"/>
+        <location filename="Search.cpp" line="253"/>
         <source>Label</source>
         <translation>Labela</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="252"/>
+        <location filename="Search.cpp" line="270"/>
         <source>Écran id</source>
         <translation type="unfinished">Map ID</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="348"/>
+        <location filename="Search.cpp" line="360"/>
         <source>Dernier fichier,
 poursuite de la recherche dans le premier fichier.</source>
         <translation>Azkeneko fitxa.</translation>
     </message>
     <message>
-        <location filename="Search.cpp" line="373"/>
+        <location filename="Search.cpp" line="385"/>
         <source>Premier fichier,
 poursuite de la recherche dans le dernier fichier.</source>
         <translation>Lehenbiziko fitxa.</translation>
     </message>
 </context>
 <context>
+    <name>SearchAll</name>
+    <message>
+        <location filename="SearchAll.cpp" line="9"/>
+        <source>Chercher tout</source>
+        <translation type="unfinished">Search All</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="28"/>
+        <source>Copier</source>
+        <oldsource>Copy</oldsource>
+        <translation type="unfinished">Copy</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="48"/>
+        <source>Groupe</source>
+        <oldsource>Group</oldsource>
+        <translation type="unfinished">Group</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="48"/>
+        <source>Script</source>
+        <translation type="unfinished">Gidoia</translation>
+    </message>
+    <message>
+        <source>Lines</source>
+        <translation type="obsolete">Lines</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="48"/>
+        <source>Instruction</source>
+        <translation type="unfinished">Instruction</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="48"/>
+        <source>Lignes</source>
+        <translation type="unfinished">Lines</translation>
+    </message>
+    <message>
+        <location filename="SearchAll.cpp" line="56"/>
+        <source>N° de texte</source>
+        <oldsource>Text #</oldsource>
+        <translation type="unfinished">Text #</translation>
+    </message>
+</context>
+<context>
     <name>SoundWidget</name>
     <message>
         <location filename="widgets/SoundWidget.cpp" line="30"/>
-        <location filename="widgets/SoundWidget.cpp" line="156"/>
+        <location filename="widgets/SoundWidget.cpp" line="155"/>
         <source>Ajouter son</source>
         <translation>Soinua gehitu</translation>
     </message>
@@ -3466,62 +3656,62 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Inportatu</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="126"/>
-        <location filename="widgets/SoundWidget.cpp" line="177"/>
-        <location filename="widgets/SoundWidget.cpp" line="179"/>
-        <location filename="widgets/SoundWidget.cpp" line="217"/>
+        <location filename="widgets/SoundWidget.cpp" line="125"/>
+        <location filename="widgets/SoundWidget.cpp" line="176"/>
+        <location filename="widgets/SoundWidget.cpp" line="178"/>
+        <location filename="widgets/SoundWidget.cpp" line="216"/>
         <source>Son %1</source>
         <translation>Soinua %1</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="156"/>
-        <location filename="widgets/SoundWidget.cpp" line="242"/>
-        <location filename="widgets/SoundWidget.cpp" line="262"/>
+        <location filename="widgets/SoundWidget.cpp" line="155"/>
+        <location filename="widgets/SoundWidget.cpp" line="241"/>
+        <location filename="widgets/SoundWidget.cpp" line="261"/>
         <source>Fichier AKAO (*.akao)</source>
         <translation>AKAO fitxa (*.akao)</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="166"/>
-        <location filename="widgets/SoundWidget.cpp" line="172"/>
-        <location filename="widgets/SoundWidget.cpp" line="250"/>
-        <location filename="widgets/SoundWidget.cpp" line="268"/>
-        <location filename="widgets/SoundWidget.cpp" line="272"/>
+        <location filename="widgets/SoundWidget.cpp" line="165"/>
+        <location filename="widgets/SoundWidget.cpp" line="171"/>
+        <location filename="widgets/SoundWidget.cpp" line="249"/>
+        <location filename="widgets/SoundWidget.cpp" line="267"/>
+        <location filename="widgets/SoundWidget.cpp" line="271"/>
         <source>Erreur</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="166"/>
-        <location filename="widgets/SoundWidget.cpp" line="268"/>
+        <location filename="widgets/SoundWidget.cpp" line="165"/>
+        <location filename="widgets/SoundWidget.cpp" line="267"/>
         <source>Fichier invalide.</source>
         <translation>Fitxa irekiezina.</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="172"/>
+        <location filename="widgets/SoundWidget.cpp" line="171"/>
         <source>Impossible d&apos;ajouter le son (%1).</source>
         <translation>Ezin du soinua gehitzen (%1).</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="242"/>
+        <location filename="widgets/SoundWidget.cpp" line="241"/>
         <source>Exporter son</source>
         <translation>Soinua exportatu</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="242"/>
+        <location filename="widgets/SoundWidget.cpp" line="241"/>
         <source>son%1</source>
         <translation>soinua%1</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="250"/>
+        <location filename="widgets/SoundWidget.cpp" line="249"/>
         <source>Impossible d&apos;exporter le son (%1).</source>
         <translation>Ezin du soinua exportatu (%1).</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="262"/>
+        <location filename="widgets/SoundWidget.cpp" line="261"/>
         <source>Importer son</source>
         <translation>Soinua inportatu</translation>
     </message>
     <message>
-        <location filename="widgets/SoundWidget.cpp" line="272"/>
+        <location filename="widgets/SoundWidget.cpp" line="271"/>
         <source>Impossible d&apos;importer le son (%1).</source>
         <translation>Ezin du soinua inportatu (%1).</translation>
     </message>
@@ -3668,113 +3858,121 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Zuria</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="34"/>
-        <location filename="widgets/TdwWidget2.cpp" line="36"/>
         <source>À partir d&apos;une image...</source>
         <oldsource>À partir d&apos;une irudia...</oldsource>
-        <translation type="unfinished">Irudi batetik...</translation>
+        <translation type="obsolete">Irudi batetik...</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="41"/>
+        <location filename="widgets/TdwWidget2.cpp" line="44"/>
         <source>Exporter...</source>
         <translation>Exportatu...</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="42"/>
+        <location filename="widgets/TdwWidget2.cpp" line="45"/>
         <source>Importer...</source>
         <translation>Inportatu...</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="43"/>
+        <location filename="widgets/TdwWidget2.cpp" line="46"/>
         <source>Annuler les modifications</source>
         <translation>Aukerak ezeztatu</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="100"/>
+        <location filename="widgets/TdwWidget2.cpp" line="56"/>
+        <source>Texte :</source>
+        <translation type="unfinished">Text:</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="58"/>
+        <source>Largeur :</source>
+        <translation type="unfinished">Width:</translation>
+    </message>
+    <message>
+        <location filename="widgets/TdwWidget2.cpp" line="107"/>
         <source>Table %1</source>
         <translation>Taula %1</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="173"/>
+        <location filename="widgets/TdwWidget2.cpp" line="193"/>
         <source>Fichier texture FF8 (*.tex)</source>
         <translation>FF8 fitxa egitura (*.tex)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="174"/>
-        <location filename="widgets/TdwWidget2.cpp" line="249"/>
+        <location filename="widgets/TdwWidget2.cpp" line="194"/>
+        <location filename="widgets/TdwWidget2.cpp" line="269"/>
         <source>Fichier police FF8 (*.tdw)</source>
         <translation>FF8 fitxa fonta (*.tdw)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="175"/>
+        <location filename="widgets/TdwWidget2.cpp" line="195"/>
         <source>Fichier image PNG (*.png)</source>
         <oldsource>Fichier irudia PNG (*.png)</oldsource>
         <translation type="unfinished">PNG fitxa irudia (*.png)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="176"/>
+        <location filename="widgets/TdwWidget2.cpp" line="196"/>
         <source>Fichier image JPG (*.jpg)</source>
         <oldsource>Fichier irudia JPG (*.jpg)</oldsource>
         <translation type="unfinished">JPG fitxa irudia (*.jpg)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="177"/>
+        <location filename="widgets/TdwWidget2.cpp" line="197"/>
         <source>Fichier image BMP (*.bmp)</source>
         <oldsource>Fichier irudia BMP (*.bmp)</oldsource>
         <translation type="unfinished">BMP fitxa irudia (*.bmp)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="181"/>
+        <location filename="widgets/TdwWidget2.cpp" line="201"/>
         <source>Fichier traduction Deling (*.txt)</source>
         <translation>Deling fitxa itzulpena (*.txt)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="184"/>
+        <location filename="widgets/TdwWidget2.cpp" line="204"/>
         <source>Exporter police de caractère</source>
         <translation>Exportatu fonta</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="197"/>
-        <location filename="widgets/TdwWidget2.cpp" line="200"/>
-        <location filename="widgets/TdwWidget2.cpp" line="213"/>
-        <location filename="widgets/TdwWidget2.cpp" line="216"/>
-        <location filename="widgets/TdwWidget2.cpp" line="225"/>
-        <location filename="widgets/TdwWidget2.cpp" line="266"/>
-        <location filename="widgets/TdwWidget2.cpp" line="270"/>
+        <location filename="widgets/TdwWidget2.cpp" line="217"/>
+        <location filename="widgets/TdwWidget2.cpp" line="220"/>
+        <location filename="widgets/TdwWidget2.cpp" line="233"/>
+        <location filename="widgets/TdwWidget2.cpp" line="236"/>
+        <location filename="widgets/TdwWidget2.cpp" line="245"/>
+        <location filename="widgets/TdwWidget2.cpp" line="286"/>
+        <location filename="widgets/TdwWidget2.cpp" line="290"/>
         <source>Erreur</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="197"/>
-        <location filename="widgets/TdwWidget2.cpp" line="213"/>
-        <location filename="widgets/TdwWidget2.cpp" line="225"/>
-        <location filename="widgets/TdwWidget2.cpp" line="270"/>
+        <location filename="widgets/TdwWidget2.cpp" line="217"/>
+        <location filename="widgets/TdwWidget2.cpp" line="233"/>
+        <location filename="widgets/TdwWidget2.cpp" line="245"/>
+        <location filename="widgets/TdwWidget2.cpp" line="290"/>
         <source>Erreur d&apos;ouverture du fichier. (%1)</source>
         <translation>Hutsa fitxa irekiterakoan. (%1)</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="200"/>
-        <location filename="widgets/TdwWidget2.cpp" line="216"/>
+        <location filename="widgets/TdwWidget2.cpp" line="220"/>
+        <location filename="widgets/TdwWidget2.cpp" line="236"/>
         <source>Erreur lors de l&apos;enregistrement.</source>
         <translation>Hutsa gorde egiterakoan.</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="203"/>
+        <location filename="widgets/TdwWidget2.cpp" line="223"/>
         <source>Information</source>
         <translation>Informazioa</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="203"/>
+        <location filename="widgets/TdwWidget2.cpp" line="223"/>
         <source>Format de police de caractère inexportable.</source>
         <translation>Fonta-formatua exportatuezina.</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="253"/>
+        <location filename="widgets/TdwWidget2.cpp" line="273"/>
         <source>Importer police de caractère</source>
         <translation>Fonta inportatu</translation>
     </message>
     <message>
-        <location filename="widgets/TdwWidget2.cpp" line="266"/>
+        <location filename="widgets/TdwWidget2.cpp" line="286"/>
         <source>Fichier invalide</source>
         <translation>Fitxa irekiezina</translation>
     </message>
@@ -3838,49 +4036,49 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Var zuzendaria</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
-        <location filename="VarManager.cpp" line="45"/>
+        <location filename="VarManager.cpp" line="30"/>
+        <location filename="VarManager.cpp" line="42"/>
         <source>Var</source>
         <translation>Var</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
+        <location filename="VarManager.cpp" line="30"/>
         <source>Écran</source>
         <translation>Gunea</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
+        <location filename="VarManager.cpp" line="30"/>
         <source>MEM fr</source>
         <translation>MEM fr</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
+        <location filename="VarManager.cpp" line="30"/>
         <source>MEM us</source>
         <translation>MEM us</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
+        <location filename="VarManager.cpp" line="30"/>
         <source>Type</source>
         <translation>Mota</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="40"/>
+        <location filename="VarManager.cpp" line="37"/>
         <source>Adresses utilisées</source>
         <translation>Helbideak erabiliak</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="41"/>
+        <location filename="VarManager.cpp" line="38"/>
         <source>Sauver</source>
         <translation>Gorde</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="155"/>
+        <location filename="VarManager.cpp" line="152"/>
         <source>Vars utilisés : %1/1536</source>
         <translation>Var-ak erabiliak: %1/1536</translation>
     </message>
     <message>
-        <location filename="VarManager.cpp" line="33"/>
-        <location filename="VarManager.cpp" line="47"/>
+        <location filename="VarManager.cpp" line="30"/>
+        <location filename="VarManager.cpp" line="44"/>
         <source>Nom</source>
         <translation>Izena</translation>
     </message>
@@ -4072,103 +4270,103 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Ate lerro katua:</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="313"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="312"/>
         <source>Limite caméra %1</source>
         <translation>Kamera-irismena %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="320"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="318"/>
         <source>Limite écran %1</source>
         <translation>Pantaila-irismena %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="333"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="341"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="331"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="339"/>
         <source>Haut</source>
         <translation>Goia</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="335"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="343"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="333"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="341"/>
         <source>Bas</source>
         <translation>Behea</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="337"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="345"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="335"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="343"/>
         <source>Droite</source>
         <translation>Eskuina</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="339"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="347"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="337"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="345"/>
         <source>Gauche</source>
         <translation>Ezkerra</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="371"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="369"/>
         <source>Ajouter</source>
         <translation>Gehitu</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="372"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="370"/>
         <source>Effacer</source>
         <translation>Kendu</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="411"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="409"/>
         <source>Orientation des mouvements :</source>
         <translation>Mugimenduak orientazioa:</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="414"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="412"/>
         <source>Inconnu :</source>
         <translation>Ezezaguna:</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="416"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="414"/>
         <source>Hauteur focus caméra sur le personnage :</source>
         <translation>Kamera Foku Garaiera ahaljokatu karaketerran.:</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="514"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="512"/>
         <source>Caméra %1</source>
         <translation>Kamera %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="530"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="528"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="783"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="785"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="787"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="804"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="802"/>
         <source>Triangle %1</source>
         <translation>Hiruki %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="545"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="556"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1017"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1044"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="543"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="554"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1015"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1042"/>
         <source>Inutilisé</source>
         <translation>Ez erabilia(k)</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="554"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1042"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="552"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1040"/>
         <source>Porte %1</source>
         <translation>Ate %1</translation>
     </message>
     <message>
+        <location filename="widgets/WalkmeshWidget.cpp" line="657"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="659"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="661"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="680"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="678"/>
         <source>Camera %1</source>
         <translation>Kamera %1</translation>
     </message>
     <message>
-        <location filename="widgets/WalkmeshWidget.cpp" line="581"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="579"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1193"/>
         <location filename="widgets/WalkmeshWidget.cpp" line="1195"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1197"/>
-        <location filename="widgets/WalkmeshWidget.cpp" line="1218"/>
+        <location filename="widgets/WalkmeshWidget.cpp" line="1216"/>
         <source>Position %1</source>
         <translation>Maila %1</translation>
     </message>
