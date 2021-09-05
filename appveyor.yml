@@ -14,6 +14,8 @@ install:
   - DIR C:\Qt\Tools
   - DIR %QTDIR%\..
   - DIR %QTTOOLS%
+  - DIR %QTDIR%
+  - DIR %QTTOOLS%\bin
   - set PATH=%QTDIR%\bin;%QTTOOLS%\bin;%PATH%
   - '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"'
 
