@@ -16,7 +16,8 @@ install:
   - DIR %QTTOOLS%
   - DIR %QTDIR%
   - DIR %QTTOOLS%\bin
-  - set PATH=%QTDIR%\bin;%QTTOOLS%\bin;%PATH%
+  - DIR %QTTOOLS%\bin\jom
+  - set PATH=%QTDIR%\bin;%QTTOOLS%\bin;%QTTOOLS%\bin\jom;%PATH%
   - '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"'
 
 before_build:
