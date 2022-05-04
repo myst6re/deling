@@ -208,7 +208,7 @@ SOURCES += MainWindow.cpp \
 
 TRANSLATIONS += deling_en.ts \
     deling_ja.ts \
-    deling_eu.ts
+    deling_eu.ts \
     deling_ru.ts
 
 CODECFORTR = UTF-8
