@@ -25,6 +25,7 @@ set(LANGS
     en
     es
     ja
+    ru
 CACHE INTERNAL "")
 list(TRANSFORM LANGS REPLACE ".+" "${RELEASE_NAME}_\\0.ts" OUTPUT_VARIABLE TS_FILES)
 
