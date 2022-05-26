@@ -20,6 +20,7 @@ public:
 	static bool build(const QString &dirName, const QString &fileName);
 	bool readEncounters(Map &map);
 	bool readEncounterRegions(Map &map);
+	bool readDrawPoints(Map &map);
 	bool readSpecialTextures(Map &map);
 	bool readRoadTextures(Map &map);
 private:

@@ -230,6 +230,42 @@ bool WmsetFile::readEncounterRegions(Map &map)
 	return true;
 }
 
+bool WmsetFile::readDrawPoints(Map &map)
+{
+	if ((_toc.isEmpty() && !openToc()) || _toc.size() < 35) {
+		return false;
+	}
+
+	const quint32 sizeSection35 = _toc.at(35) - _toc.at(34);
+
+	if (!_io->seek(_toc.at(34))) {
+		return false;
+	}
+	QByteArray data = _io->read(sizeSection35);
+
+	if (data.size() != int(sizeSection35)) {
+		return false;
+	}
+
+	const char *constData = data.constData();
+
+	QList<DrawPoint> drawPoints;
+	const int entryCount = data.size() / 4;
+
+	for (int i = 0; i < entryCount; ++i) {
+		DrawPoint dp;
+		dp.x = data.at(i * 4),
+		dp.y = data.at(i * 4 + 1);
+		dp.magicID = 0;
+		memcpy(&dp.magicID, constData + i * 4 + 2, 2);
+		drawPoints.append(dp);
+	}
+
+	map.setDrawPoints(drawPoints);
+
+	return true;
+}
+
 bool WmsetFile::readSpecialTextures(Map &map)
 {
 	if ((_toc.isEmpty() && !openToc()) || _toc.size() < 38) {

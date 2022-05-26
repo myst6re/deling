@@ -74,6 +74,11 @@ bool WmArchive::open(const QString &filename, Map &map, ArchiveObserver *progres
 		return false;
 	}
 
+	if (!wmset.readDrawPoints(map)) {
+		_errorString = QObject::tr("Impossible de lire la mappemonde (5).");
+		return false;
+	}
+
 	wmsetData.clear();
 
 	if (progress) {

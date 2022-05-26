@@ -110,9 +110,16 @@ int main(int argc, char *argv[])
 		if (!wmset.readRoadTextures(map1)) {
 			qWarning() << "Cannot read special textures";
 		}
+		if (!wmset.readDrawPoints(map1)) {
+			qWarning() << "Cannot read draw points";
+		}
 		if (!texl.readTextures(map1)) {
 			qWarning() << "Cannot read textures";
 		}
+		for (const DrawPoint &dp: map1.drawPoints()) {
+			qDebug() << dp.x << dp.y << dp.magicID;
+		}
+
 		WorldmapWidget *wmWidget = new WorldmapWidget();
 		wmWidget->resize(640, 480);
 		wmWidget->show();

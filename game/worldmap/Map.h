@@ -6,6 +6,11 @@
 #include "game/worldmap/WmEncounter.h"
 #include "files/TimFile.h"
 
+struct DrawPoint {
+	quint8 x, y;
+	quint16 magicID;
+};
+
 class Map
 {
 public:
@@ -100,6 +105,14 @@ public:
 		_roadTextures = textures;
 	}
 
+	inline const QList<DrawPoint> &drawPoints() const {
+		return _drawPoints;
+	}
+
+	inline void setDrawPoints(const QList<DrawPoint> &drawPoints) {
+		_drawPoints = drawPoints;
+	}
+
 	QList<QList<QPair<QImage, bool> > > textureImages() const;
 	QImage specialTextureImage(SpecialTextureName name) const;
 	QImage seaTextureImage() const {
@@ -123,6 +136,7 @@ private:
 	QList<TimFile> _textures, _lowResTextures;
 	QMap<SpecialTextureName, TimFile> _specialTextures;
 	QList<TimFile> _roadTextures;
+	QList<DrawPoint> _drawPoints;
 };
 
 #endif // MAP_H
