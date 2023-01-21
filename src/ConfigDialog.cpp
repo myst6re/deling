@@ -105,9 +105,10 @@ void ConfigDialog::fillMenuLang()
 	QTranslator translator;
 	int i=1;
 	for (const QString &str: stringList) {
-		translator.load(dir.filePath(str));
-		langComboBox->addItem(translator.translate("MainWindow", "Français", "Your translation language"));
-		langComboBox->setItemData(i++, str.right(5).left(2));
+		if (translator.load(dir.filePath(str))) {
+			langComboBox->addItem(translator.translate("MainWindow", "Français", "Your translation language"));
+			langComboBox->setItemData(i++, str.right(5).left(2));
+		}
 	}
 
 	for (i = 0; i < langComboBox->count(); ++i) {

@@ -474,7 +474,7 @@ void FsArchive::changePositions(FsHeader *start, int diff)
 	FsHeader *header;
 
 	// décalage des positions des fichiers qui suivent
-	QMap<quint32, FsHeader *>::iterator i = sortedByPosition.find(sortedByPosition.key(start), start);
+	QMultiMap<quint32, FsHeader *>::iterator i = sortedByPosition.find(sortedByPosition.key(start), start);
 	if (i != sortedByPosition.end())
 	{
 		++i;
@@ -616,7 +616,7 @@ FsArchive::Error FsArchive::extractFiles(const QStringList &fileNames, const QSt
 
 FsArchive::Error FsArchive::replaceFile(const QString &source, const QString &destination, ArchiveObserver *progress)
 {
-	QTime t;t.start();
+	QElapsedTimer t;t.start();
 
 	QStringList toc;
 	int pos, i=0;
@@ -720,7 +720,7 @@ QStringList FsArchive::listDirsRec(QDir *sourceDir)
 
 QList<FsArchive::Error> FsArchive::appendFiles(const QStringList &sources, const QStringList &destinations, FiCompression compression, ArchiveObserver *progress)
 {
-	QTime t;t.start();
+	QElapsedTimer t;t.start();
 
 	QByteArray data, fl_data, fi_data;
 	int i, nbFiles = sources.size();
@@ -806,7 +806,7 @@ QList<FsArchive::Error> FsArchive::appendDir(const QString &source, const QStrin
 
 FsArchive::Error FsArchive::remove(QStringList destinations, ArchiveObserver *progress)
 {
-	QTime t;t.start();
+	QElapsedTimer t;t.start();
 
 	QStringList toc = this->toc();
 	//	QByteArray fl_data, fi_data;
@@ -871,7 +871,7 @@ FsArchive::Error FsArchive::remove(QStringList destinations, ArchiveObserver *pr
 
 FsArchive::Error FsArchive::rename(const QStringList &destinations, const QStringList &newDestinations)
 {
-	QTime t;t.start();
+	QElapsedTimer t;t.start();
 
 	QByteArray fl_data, fi_data;
 	QString destination, newDestination;
@@ -912,7 +912,7 @@ bool FsArchive::load(const QByteArray &fl_data, const QByteArray &fi_data)
 		return false;
 	}
 
-	QStringList fl = QString(fl_data).split("\r\n", QString::SkipEmptyParts);
+	QStringList fl = QString(fl_data).split("\r\n", Qt::SkipEmptyParts);
 	Fi_infos fi_infos;
 
 	const char *fi_constData = fi_data.constData();
@@ -1111,7 +1111,7 @@ void FsArchive::fileToTheEnd(const QString &path, QByteArray &fs_data)
 
 	if (header==nullptr)	return;
 
-	QMap<quint32, FsHeader *>::iterator i = sortedByPosition.find(header->position(), header);
+	QMultiMap<quint32, FsHeader *>::iterator i = sortedByPosition.find(header->position(), header);
 	if (i == sortedByPosition.end())	return;
 	++i;
 	if (i == sortedByPosition.end())	return;
@@ -1132,7 +1132,7 @@ void FsArchive::fileToTheEnd(const QString &path, QByteArray &fs_data)
 void FsArchive::rebuildInfos()
 {
 	// Rebuild structure and order indication
-	QMap<quint32, FsHeader *> newInfos;
+	QMultiMap<quint32, FsHeader *> newInfos;
 	QMap<QString, FsHeader *> newToc;
 	for (FsHeader *info: sortedByPosition) {
 		newInfos.insert(info->position(), info);
@@ -1287,7 +1287,7 @@ bool FsArchive::repair(FsArchive *other)
 	quint32 size;
 	// Copy
 	QMultiMap<quint32, FsHeader *> otherHeaders = other->sortedByPosition;
-	QMapIterator<quint32, FsHeader *> it(sortedByPosition);
+	QMultiMapIterator<quint32, FsHeader *> it(sortedByPosition);
 	fs.reset();
 	forever {
 		int decSize = 0;

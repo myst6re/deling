@@ -20,7 +20,7 @@ public:
 	virtual void setObserverValue(int value);
 private:
 	QProgressDialog _progress;
-	QTaskbarButton _taskBarButton;
+	QTaskBarButton _taskBarButton;
 };
 
 #endif // PROGRESSWIDGET_H

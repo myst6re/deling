@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Makou Reactor Final Fantasy VII Field Script Editor
- ** Copyright (C) 2009-2013 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2022 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,87 +15,48 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef QTASKBARBUTTON_H
-#define QTASKBARBUTTON_H
+#pragma once
 
-#ifdef Q_OS_WIN32
-#	include <QWinTaskbarButton>
+#include <QtWidgets>
 
-typedef QWinTaskbarProgress QTaskbarProgress;
-typedef QWinTaskbarButton QTaskbarButton;
-
-#define QTASKBAR_WIN
-
-#else
-
-#include <QObject>
-#include <QString>
-#include <QIcon>
-
-class QTaskbarProgress : public QObject
-{
-	Q_OBJECT
-
-	enum State {
-		None = 0x0,
-		Paused = 0x1,
-		Stopped = 0x2,
-		Visible = 0x4
-	};
-public:
-	explicit QTaskbarProgress(QObject *parent = nullptr);
-
-	bool isPaused() const;
-	bool isStopped() const;
-	bool isVisible() const;
-	int maximum() const;
-	int minimum() const;
-	int value() const;
-public slots:
-	void hide();
-	void pause();
-	void reset();
-	void resume();
-	void setMaximum(int maximum);
-	void setMinimum(int minimum);
-	void setPaused(bool paused);
-	void setRange(int minimum, int maximum);
-	void setValue(int value);
-	void setVisible(bool visible);
-	void show();
-	void stop();
-signals:
-	void maximumChanged(int maximum);
-	void minimumChanged(int minimum);
-	void pausedChanged(bool paused);
-	void stoppedChanged(bool stopped);
-	void valueChanged(int value);
-	void visibilityChanged(bool visible);
-
-private:
-	State _state;
-	int _maximum, _minimum, _value;
-};
-
-class QTaskbarButton : public QObject
-{
-	Q_OBJECT
-public:
-	explicit QTaskbarButton(QObject *parent = nullptr);
-	virtual ~QTaskbarButton();
-	QString overlayAccessibleDescription() const;
-	QIcon overlayIcon() const;
-	QTaskbarProgress *progress() const;
-public slots:
-	void clearOverlayIcon();
-	void setOverlayAccessibleDescription(const QString &description);
-	void setOverlayIcon(const QIcon &icon);
-private:
-	QIcon _icon;
-	QString _accessibleDescription;
-	QTaskbarProgress *_progress;
-};
-
+#ifdef TASKBAR_BUTTON
+#	if defined(Q_OS_WIN)
+#		include <shobjidl.h>
+#		define QTASKBAR_WIN
+#	elif defined(Q_OS_DARWIN)
+#		define QTASKBAR_APPLE
+#	endif
 #endif
 
-#endif // QTASKBARBUTTON_H
+class QTaskBarButton : public QObject
+{
+    Q_OBJECT
+public:
+	enum State {
+		Invisible, Normal, Indeterminate, Paused, Error
+	};
+
+	explicit QTaskBarButton(QWidget *mainWindow);
+	virtual ~QTaskBarButton() override;
+	void setOverlayIcon(const QImage &image, const QString &text = QString());
+	void setState(State state);
+	int maximum() const;
+	int minimum() const;
+	State state() const;
+	int value() const;
+signals:
+	void valueChanged(int value);
+public slots:
+	void reset();
+	void setMaximum(int maximum);
+	void setMinimum(int minimum);
+	void setRange(int minimum, int maximum);
+	void setValue(int value);
+private:
+#ifdef QTASKBAR_WIN
+	WId _winId;
+	ITaskbarList3 *pITask;
+#endif // Q_OS_WIN
+	int _minimum, _maximum, _value;
+	State _state;
+};

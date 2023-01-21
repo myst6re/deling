@@ -18,15 +18,15 @@
 #include "WalkmeshGLWidget.h"
 
 WalkmeshGLWidget::WalkmeshGLWidget(QWidget *parent)
-	: QOpenGLWidget(parent),
-	  distance(0.0f), xRot(0.0f), yRot(0.0f), zRot(0.0f),
-	  xTrans(0.0f), yTrans(0.0f), transStep(360.0f), lastKeyPressed(-1),
-	  camID(0), _selectedTriangle(-1), _selectedDoor(-1), _selectedGate(-1),
-      _drawLine(false), _lineToDrawPoint1(Vertex_s()), _lineToDrawPoint2(Vertex_s()),
-	  fovy(70.0), data(0), curFrame(0)
+    : QOpenGLWidget(parent),
+      distance(0.0), xRot(0.0f), yRot(0.0f), zRot(0.0f),
+      xTrans(0.0f), yTrans(0.0f), transStep(360.0f), lastKeyPressed(-1),
+      camID(0), _selectedTriangle(-1), _selectedDoor(-1), _selectedGate(-1),
+      _lineToDrawPoint1(Vertex_s()), _lineToDrawPoint2(Vertex_s()),
+      fovy(70.0), data(nullptr), curFrame(0), _drawLine(false)
 {
-//	setMouseTracking(true);
-//	startTimer(100);
+	// setMouseTracking(true);
+	// startTimer(100);
 }
 
 void WalkmeshGLWidget::timerEvent(QTimerEvent *)
@@ -36,7 +36,7 @@ void WalkmeshGLWidget::timerEvent(QTimerEvent *)
 
 void WalkmeshGLWidget::clear()
 {
-	data = 0;
+	data = nullptr;
 	update();
 }
 
@@ -295,14 +295,14 @@ void WalkmeshGLWidget::drawBackground()
 void WalkmeshGLWidget::wheelEvent(QWheelEvent *event)
 {
 	setFocus();
-	distance += event->delta() / 4096.0;
+	distance += event->pixelDelta().x() / 4096.0;
 	update();
 }
 
 void WalkmeshGLWidget::mousePressEvent(QMouseEvent *event)
 {
 	setFocus();
-	if (event->button() == Qt::MidButton)
+	if (event->button() == Qt::MiddleButton)
 	{
 		distance = -35;
 		update();

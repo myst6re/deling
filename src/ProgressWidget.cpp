@@ -10,24 +10,24 @@ ProgressWidget::ProgressWidget(const QString &labelText, ButtonLabel buttonLabel
 	_progress.setRange(0, 0);
 	_progress.setWindowModality(Qt::WindowModal);
 	_progress.show();
-	_taskBarButton.progress()->hide();
+	_taskBarButton.setState(QTaskBarButton::Invisible);
 }
 
 ProgressWidget::~ProgressWidget()
 {
-	_taskBarButton.progress()->hide();
+	_taskBarButton.setState(QTaskBarButton::Invisible);
 }
 
 void ProgressWidget::setObserverMaximum(unsigned int max)
 {
 	ArchiveObserverProgressDialog::setObserverMaximum(max);
-	_taskBarButton.progress()->setRange(0, max);
-	_taskBarButton.progress()->reset();
-	_taskBarButton.progress()->show();
+	_taskBarButton.setRange(0, max);
+	_taskBarButton.reset();
+	_taskBarButton.setState(QTaskBarButton::Normal);
 }
 
 void ProgressWidget::setObserverValue(int value)
 {
 	ArchiveObserverProgressDialog::setObserverValue(value);
-	_taskBarButton.progress()->setValue(value);
+	_taskBarButton.setValue(value);
 }

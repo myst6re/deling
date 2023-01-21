@@ -158,20 +158,20 @@ bool FieldArchivePC::openModels()
 	}
 
 	QByteArray fs;
-	QRegExp fileName("d(\\d\\d\\d)\\.mch$", Qt::CaseInsensitive);
+	QRegularExpression fileName("d(\\d\\d\\d)\\.mch$", QRegularExpression::CaseInsensitiveOption);
 	QStringList toc = mainModels.toc();
 	if (!toc.isEmpty()) {
 		fs = archive->fileData("*field\\model\\main_chr.fs");
 	}
 
 	for (const QString &entry: toc) {
-		if (fileName.indexIn(entry, -8) != -1) {
+		QRegularExpressionMatch match = fileName.match(entry, entry.size() - 9);
+		if (match.hasMatch()) {
 			bool ok;
-			QStringList capturedTexts = fileName.capturedTexts();
-			int id = capturedTexts.at(1).toInt(&ok);
+			int id = match.captured(1).toInt(&ok);
 			if (ok) {
 				MchFile mch;
-				if (mch.open(mainModels.fileData(entry, fs), capturedTexts.first().left(4)) && mch.hasModel()) {
+				if (mch.open(mainModels.fileData(entry, fs), match.captured(0).left(4)) && mch.hasModel()) {
 					models.insert(id, new CharaModel(*mch.model()));
 				}
 			}
@@ -201,7 +201,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 {
 	if (!archive)	return false;
 
-	QTime t;t.start();
+	QElapsedTimer t;t.start();
 	QStringList toc = archive->toc();
 //	QByteArray fs_data;
 	int pos, archiveSize;
@@ -393,7 +393,7 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 {
 	if (!archive)	return false;
 
-	QTime t;t.start();
+	QElapsedTimer t;t.start();
 	QStringList toc = archive->toc();
 	QByteArray fs_data;
 	int pos;
@@ -525,7 +525,6 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 QStringList FieldArchivePC::languages() const
 {
 	QStringList files = archive->toc();
-	QRegExp pathReg("_([a-z]+)\\.[a-z]+$", Qt::CaseInsensitive);
 	QStringList langs;
 	int stop = 10;
 
