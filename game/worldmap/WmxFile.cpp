@@ -118,7 +118,7 @@ bool WmxFile::canReadSegment() const
 
 bool WmxFile::readSegment(MapSegment &segment)
 {
-	QList<quint16> toc;
+	QList<quint32> toc;
 	qint64 initialPos = _io->pos();
 	quint32 groupId;
 
@@ -132,7 +132,7 @@ bool WmxFile::readSegment(MapSegment &segment)
 
 	QList<MapBlock> blocks;
 
-	foreach (quint16 pos, toc) {
+	foreach (quint32 pos, toc) {
 		/* // Check data between blocks
 			if (pos != _io->pos() - initialPos) {
 			if (pos > _io->pos() - initialPos) {
@@ -147,7 +147,7 @@ bool WmxFile::readSegment(MapSegment &segment)
 				_io->seek(initialPos + pos);
 			}
 		} */
-		if (!_io->seek(initialPos + pos)) {
+		if (!_io->seek(initialPos + pos / 4 * 4)) {
 			qWarning() << "WmxFile::readSegment cannot seek";
 			return false;
 		}
@@ -237,7 +237,7 @@ bool WmxFile::writeSegment(const MapSegment &segment)
 	return true;
 }
 
-bool WmxFile::readSegmentToc(QList<quint16> &toc)
+bool WmxFile::readSegmentToc(QList<quint32> &toc)
 {
 	for (quint8 i = 0; i < WMXFILE_BLOCK_COUNT; ++i) {
 		quint32 pos;

@@ -25,7 +25,7 @@ private:
 	bool canReadSegment() const;
 	bool readSegment(MapSegment &segment);
 	bool writeSegment(const MapSegment &segment);
-	bool readSegmentToc(QList<quint16> &toc);
+	bool readSegmentToc(QList<quint32> &toc);
 	bool writeSegmentToc(const QByteArray &toc);
 	bool readBlock(MapBlock &block);
 	bool writeBlock(const MapBlock &block);
