@@ -48,7 +48,7 @@ endif()
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOUIC OFF)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -65,10 +65,16 @@ add_compile_definitions(
     MAKOU_REACTOR_VERSION_TWEAK=0
 )
 
-find_package(QT NAMES Qt6 COMPONENTS Widgets OpenGLWidgets OpenGL REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets OpenGLWidgets OpenGL REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets OpenGLWidgets OpenGL LinguistTools REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(lz4 REQUIRED)
+
+set(LANGS
+    en
+    es
+    ja)
+list(TRANSFORM LANGS REPLACE ".+" "translations/${RELEASE_NAME}_\\0.ts" OUTPUT_VARIABLE TS_FILES)
+
 
 set(PROJECT_SOURCES
     "src/ArchiveObserver.h"
@@ -280,6 +286,20 @@ elseif (WIN32)
     set(EXTRA_RESOURCES_CLI "${EXTRA_RESOURCES_GUI}")
 endif()
 
+function(add_translations target)
+    set(oneValueArgs QM_FILES_OUTPUT_VARIABLE)
+    set(multiValueArgs TS_FILES)
+    cmake_parse_arguments(arg "" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+    set(qm_files "")
+    qt_add_translations(${target}
+        TS_FILES ${TS_FILES}
+        LUPDATE_OPTIONS -locations none
+        QM_FILES_OUTPUT_VARIABLE qm_files)
+    set("${arg_QM_FILES_OUTPUT_VARIABLE}" "${qm_files}" PARENT_SCOPE)
+    # Force lupdate
+    add_dependencies(${target}_lrelease ${target}_lupdate)
+endfunction()
+
 qt_add_executable(${GUI_TARGET} MANUAL_FINALIZATION MACOSX_BUNDLE WIN32 ${PROJECT_SOURCES} ${QM_FILES} ${RESOURCES} ${EXTRA_RESOURCES_GUI})
 target_include_directories(${GUI_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_link_libraries(${GUI_TARGET} PRIVATE
@@ -287,7 +307,7 @@ target_link_libraries(${GUI_TARGET} PRIVATE
 	Qt::Widgets
 	Qt::OpenGLWidgets
 	ZLIB::ZLIB
-	lz4::lz4
+	LZ4::lz4_static
 )
 
 if(${QT_VERSION_MAJOR} EQUAL 6)
@@ -309,6 +329,10 @@ if(APPLE OR WIN32)
 	set_target_properties(${GUI_TARGET} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
 endif()
 
+add_translations(${GUI_TARGET}
+    TS_FILES ${TS_FILES}
+    QM_FILES_OUTPUT_VARIABLE QM_FILES)
+
 include(GNUInstallDirs)
 
 if(APPLE)
@@ -326,44 +350,23 @@ elseif(WIN32)
     if(NOT QT_DEPLOY_TMP_DIR)
         set(QT_DEPLOY_TMP_DIR "${CMAKE_BINARY_DIR}/win32-deploy" CACHE PATH "Directory to run deployqt scripts")
     endif()
-    if(GUI)
-        install(TARGETS ${GUI_TARGET} RUNTIME DESTINATION "${QT_DEPLOY_TMP_DIR}")
-    endif()
-    if(CLI)
-        install(TARGETS ${CLI_TARGET} RUNTIME DESTINATION "${QT_DEPLOY_TMP_DIR}")
-    endif()
+    install(TARGETS ${GUI_TARGET} RUNTIME DESTINATION "${QT_DEPLOY_TMP_DIR}")
 endif()
 
-add_subdirectory(lang)
 add_subdirectory(deploy)
 
 if(APPLE)
-    if(GUI)
-        install(TARGETS ${GUI_TARGET} BUNDLE DESTINATION ".")
-    endif()
-    if(CLI)
-        install(TARGETS ${CLI_TARGET} RUNTIME EXCLUDE_FROM_ALL)
-    endif()
+    install(TARGETS ${GUI_TARGET} BUNDLE DESTINATION ".")
 elseif(WIN32)
     install(DIRECTORY "${QT_DEPLOY_TMP_DIR}/" DESTINATION ".")
     install(CODE "file(REMOVE_RECURSE \"${QT_DEPLOY_TMP_DIR}\")")
 else()
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/qt/images/deling.png DESTINATION share/icons/hicolor/256x256/apps RENAME Makou_Reactor.png)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/deploy/linux/Deling.desktop DESTINATION share/applications)
-    if(GUI)
-        install(TARGETS ${GUI_TARGET} RUNTIME)
-    endif()
-    if(CLI)
-        install(TARGETS ${CLI_TARGET} RUNTIME)
-    endif()
+    install(TARGETS ${GUI_TARGET} RUNTIME)
 endif()
 
-if(GUI)
-    qt_finalize_executable(${GUI_TARGET})
-endif()
-if(CLI)
-    qt_finalize_executable(${CLI_TARGET})
-endif()
+qt_finalize_executable(${GUI_TARGET})
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     set(CPACK_SYSTEM_NAME "macos")
@@ -374,7 +377,13 @@ else()
     set(CPACK_GENERATOR "TXZ")
 endif()
 
-set(CPACK_PACKAGE_NAME makoureactor)
+set(CPACK_DEBIAN_PACKAGE_NAME "deling")
+set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "myst6re@gmail.com")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "qt6-qpa-plugins")
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+
+set(CPACK_PACKAGE_NAME deling)
 set(CPACK_SOURCE_IGNORE_FILES ".git/*;*.user;*.yml;*.github/*")
 set(CPACK_SOURCE_GENERATOR "ZIP;TGZ")
 

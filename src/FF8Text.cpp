@@ -188,11 +188,11 @@ QByteArray FF8Text::toFF8() const
 	QString string = *this;
 	QByteArray ff8str;
 	QChar comp/*, comp2*/;
-	int stringSize = string.size(), i, table;
+	qsizetype stringSize = string.size();
 	bool ok, ok2, jp = tables.size() == 4;
 	ushort value, value2;
 
-	for(int c=0 ; c<stringSize ; ++c)
+	for(qsizetype c = 0; c < stringSize; ++c)
 	{
 		comp = string.at(c);
 		if(comp=='\n') {//\n{NewPage}\n,\n
@@ -206,7 +206,7 @@ QByteArray FF8Text::toFF8() const
 		}
 		else if(comp=='{') {
 			QString rest = string.mid(c);
-			for(i=0 ; i<11 ; ++i)
+			for(quint8 i=0 ; i<11 ; ++i)
 				if(rest.startsWith(names[i])) {//{Name}
 					ff8str.append('\x03').append(char(0x30 + i));
 					c += qstrlen(names[i])-1;
@@ -227,14 +227,14 @@ QByteArray FF8Text::toFF8() const
 				c += qstrlen(names[13])-1;
 				continue;
 			}
-			for(i=0 ; i<16 ; ++i) {
+			for(quint8 i=0 ; i<16 ; ++i) {
 				if(rest.startsWith(colors[i], Qt::CaseInsensitive)) {//{Color}
 					ff8str.append('\x06').append(char(0x20 + i));
 					c += qstrlen(colors[i])-1;
 					goto end;
 				}
 			}
-			for(i=0 ; i<8 ; ++i) {
+			for(quint8 i=0 ; i<8 ; ++i) {
 				if(rest.startsWith(locations[i], Qt::CaseInsensitive)) {//{Location}
 					ff8str.append('\x0e').append(char(0x20 + i));
 					c += qstrlen(locations[i])-1;
@@ -288,7 +288,7 @@ QByteArray FF8Text::toFF8() const
 			}
 
 			rest.truncate(4);
-			for(i=0xe8 ; i<=0xff ; ++i)
+			for(quint16 i=0xe8 ; i<=0xff ; ++i)
 			{
 				if(QString::compare(rest, caract(i))==0)
 				{
@@ -349,7 +349,7 @@ QByteArray FF8Text::toFF8() const
 //			else if(comp=='a' && comp2=='g') {	ff8str.append('\xff');++c;continue;		}
 //		}
 
-		for(i=0x20 ; i<=0xff ; ++i)
+		for(quint16 i=0x20 ; i<=0xff ; ++i)
 		{
 			if(QString::compare(comp, caract(i))==0)
 			{
@@ -359,9 +359,9 @@ QByteArray FF8Text::toFF8() const
 		}
 
 		if(jp) {
-			for(table=1 ; table<4 ; ++table)
+			for(quint8 table=1 ; table<4 ; ++table)
 			{
-				for(i=0x20 ; i<=0xff ; ++i)
+				for(quint16 i=0x20 ; i<=0xff ; ++i)
 				{
 					if(QString::compare(comp, caract(i, table))==0)
 					{
@@ -376,7 +376,7 @@ QByteArray FF8Text::toFF8() const
 							ff8str.append('\x1b');
 							break;
 						}
-						ff8str.append((char)i);
+						ff8str.append(char(i));
 						goto end;
 					}
 				}
