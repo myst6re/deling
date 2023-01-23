@@ -277,13 +277,11 @@ set(RESOURCES "src/qt/${RELEASE_NAME}.qrc")
 if(APPLE)
     set(ICON_FILE "deploy/macosx/${RELEASE_NAME}.icns")
     set(EXTRA_RESOURCES_GUI ${ICON_FILE})
-    set(EXTRA_RESOURCES_CLI "")
 
     set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 elseif (WIN32)
     set(ICON_FILE "src/qt/images/deling.ico")
     set(EXTRA_RESOURCES_GUI "src/qt/${RELEASE_NAME}.rc")
-    set(EXTRA_RESOURCES_CLI "${EXTRA_RESOURCES_GUI}")
 endif()
 
 function(add_translations target)
@@ -303,30 +301,30 @@ endfunction()
 qt_add_executable(${GUI_TARGET} MANUAL_FINALIZATION MACOSX_BUNDLE WIN32 ${PROJECT_SOURCES} ${QM_FILES} ${RESOURCES} ${EXTRA_RESOURCES_GUI})
 target_include_directories(${GUI_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_link_libraries(${GUI_TARGET} PRIVATE
-	Qt::OpenGL
-	Qt::Widgets
-	Qt::OpenGLWidgets
-	ZLIB::ZLIB
-	LZ4::lz4_static
+    Qt::OpenGL
+    Qt::Widgets
+    Qt::OpenGLWidgets
+    ZLIB::ZLIB
+    LZ4::lz4_static
 )
 
 if(${QT_VERSION_MAJOR} EQUAL 6)
-	target_compile_definitions(${GUI_TARGET}
-		PRIVATE TASKBAR_BUTTON=1
-	)
+    target_compile_definitions(${GUI_TARGET}
+        PRIVATE TASKBAR_BUTTON=1
+    )
 endif()
 
 set_target_properties(${GUI_TARGET} PROPERTIES
-	MACOSX_BUNDLE_BUNDLE_NAME "Deling"
-	MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-	MACOSX_BUNDLE_LONG_VERSION_STRING ${PROJECT_VERSION}
-	MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
-	MACOSX_BUNDLE_GUI_IDENTIFIER org.myst6re.deling
-	MACOSX_BUNDLE_ICON_FILE ${RELEASE_NAME}.icns
+    MACOSX_BUNDLE_BUNDLE_NAME "Deling"
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_LONG_VERSION_STRING ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
+    MACOSX_BUNDLE_GUI_IDENTIFIER org.myst6re.deling
+    MACOSX_BUNDLE_ICON_FILE ${RELEASE_NAME}.icns
 )
 
 if(APPLE OR WIN32)
-	set_target_properties(${GUI_TARGET} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
+    set_target_properties(${GUI_TARGET} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
 endif()
 
 add_translations(${GUI_TARGET}

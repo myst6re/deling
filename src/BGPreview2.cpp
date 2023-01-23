@@ -39,7 +39,7 @@ void BGPreview2::paintEvent(QPaintEvent *e)
 	}
 }
 
-void BGPreview2::enterEvent(QEvent *)
+void BGPreview2::enterEvent(QEnterEvent *)
 {
 	showSave = true;
 	update(0, 0, 32, 32);

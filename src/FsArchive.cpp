@@ -103,7 +103,9 @@ bool FsHeader::compressedSize(QFile *fs, quint32 *lzsSize) const
 bool FsHeader::compressedSize(const char *fs_data, int size, quint32 *lzsSize) const
 {
 	if (isCompressed()) {
-		if (size <= sizeof(quint32))	return false;
+		if (size <= int(sizeof(quint32))) {
+			return false;
+		}
 
 		memcpy(&lzsSize, fs_data + _position, sizeof(quint32));
 

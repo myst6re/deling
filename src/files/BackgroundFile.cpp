@@ -78,10 +78,10 @@ Tile1 Tile::toTile1(const Tile &tile)
 	tileType1.X = tile.X;
 	tileType1.Y = tile.Y;
 	tileType1.Z = tile.Z;
-	quint8 blend = tile.blend & 3;
+	/* quint8 blend = tile.blend & 3;
 	if (tile.blendType != 4) {
 		blend |= 1;
-	}
+	} */
 	tileType1.texID = quint16(tile.depth << 7)
 	                  | quint16(tile.blend << 5)
 	                  | quint16(tile.draw << 4)
@@ -224,15 +224,11 @@ bool BackgroundFile::openParameters()
 QImage BackgroundFile::background(bool hideBG) const
 {
 	int mimSize = mim.size(), palOffset = 4096, srcYWidth = 1664;
-	MapType mapType;
 
 	if (mimSize == 401408) {
-		mapType = TypeOld;
 		palOffset = 0;
 		srcYWidth = 1536;
-	} else if (mimSize == 438272) {
-		mapType = TypeNew;
-	} else {
+	} else if (mimSize != 438272) {
 		if (mimSize > 0) {
 			qDebug() << "Error BackgroundFile::background" << mimSize;
 		}

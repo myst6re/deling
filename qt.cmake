@@ -90,12 +90,13 @@ if(NOT QT_FOUND)
         set(QT_QMAKE_EXECUTABLE "${QT_PATH}/bin/qmake")
     endif()
 
-    set(CMAKE_PREFIX_PATH "${QT_PATH}")
+    set(Qt${QT_VERSION_TO_FIND}_DIR "${QT_PATH}/lib/cmake/Qt${QT_VERSION_TO_FIND}")
+    set(QT_DIR "${Qt${QT_VERSION_TO_FIND}_DIR}")
 
     find_package(QT NAMES Qt${QT_VERSION_TO_FIND} REQUIRED)
 
     message("-- Qt Auto-Detected at ${QT_PATH}")
-    message("-- CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
+    message("-- Qt${QT_VERSION_MAJOR}_DIR: ${Qt${QT_VERSION_MAJOR}_DIR}")
 endif()
 
 if(NOT DEFINED QT_QMAKE_EXECUTABLE OR QT_QMAKE_EXECUTABLE MATCHES "QT_QMAKE_EXECUTABLE-NOTFOUND")

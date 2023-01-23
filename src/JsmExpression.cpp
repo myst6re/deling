@@ -755,8 +755,8 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 		JsmExpression *leftOp = binaryExpr->leftOperand(),
 		        *rightOp = binaryExpr->rightOperand();
 		if (opExpr->type() == leftOp->type()
-		        && (opExpr->type() == JsmExpression::Var
-		        && ((JsmExpressionVar *)opExpr)->var() ==
+		        && opExpr->type() == JsmExpression::Var
+		        && (((JsmExpressionVar *)opExpr)->var() ==
 		            ((JsmExpressionVar *)leftOp)->var()
 		         || ((JsmExpressionTemp *)opExpr)->temp() ==
 		            ((JsmExpressionTemp *)leftOp)->temp())) {
@@ -777,8 +777,8 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 		} else if ((binaryExpr->operation() == JsmExpressionBinary::Add
 		          || binaryExpr->operation() == JsmExpressionBinary::Mul)
 		          && opExpr->type() == rightOp->type()
-		          && (opExpr->type() == JsmExpression::Var
-		          && ((JsmExpressionVar *)opExpr)->var() ==
+		          && opExpr->type() == JsmExpression::Var
+		          && (((JsmExpressionVar *)opExpr)->var() ==
 		              ((JsmExpressionVar *)rightOp)->var()
 		           || ((JsmExpressionTemp *)opExpr)->temp() ==
 		              ((JsmExpressionTemp *)rightOp)->temp())) {
