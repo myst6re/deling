@@ -129,7 +129,7 @@ jobs:
       if: (runner.os == 'Windows') && (steps.cache-lz4.outputs.cache-hit != 'true')
       run: |
         git clone -q --depth 1 --single-branch --branch=v${{ env.lz4_version }} https://github.com/lz4/lz4 ${{ env.lz4_path }}
-        cmake -S${{ env.lz4_path }} -B${{ env.lz4_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.lz4_installation_path }}
+        cmake -S${{ env.lz4_path }}/build/cmake -B${{ env.lz4_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.lz4_installation_path }}
         cmake --build ${{ env.lz4_build_path }} --target install -j3
 
 
