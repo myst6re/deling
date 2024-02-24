@@ -41,7 +41,7 @@ jobs:
           package_suffix: 'win64'
           win_arch: "x64"
           qt_arch: win64_msvc2019_64
-          cmake_extra_args: '-DZLIB_ROOT=C:/zlib'
+          cmake_extra_args: '-DZLIB_ROOT=C:/zlib -Dlz4_DIR=C:/lz4/lib/cmake/lz4'
           qt_tools: tools_ninja, tools_cmake
 
     env:
@@ -50,6 +50,10 @@ jobs:
       zlib_build_path: ${{ github.workspace }}/../build-zlib-git
       zlib_installation_path: C:/zlib
       zlib_version: "1.3"
+      lz4_path: ${{ github.workspace }}/../lz4-git
+      lz4_build_path: ${{ github.workspace }}/../build-lz4-git
+      lz4_installation_path: C:/lz4
+      lz4_version: "1.3"
       deling_build_path: ${{ github.workspace }}/../build-deling
       deling_installation_path: ${{ github.workspace }}/../installation-deling
       deling_appbundle_path: ${{ github.workspace }}/../appbundle-deling
@@ -106,6 +110,21 @@ jobs:
         git clone -q --depth 1 --single-branch --branch=v${{ env.zlib_version }} https://github.com/madler/zlib ${{ env.zlib_path }}
         cmake -S${{ env.zlib_path }} -B${{ env.zlib_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.zlib_installation_path }}
         cmake --build ${{ env.zlib_build_path }} --target install -j3
+
+    - name: Cache lz4
+      id: cache-lz4
+      if: runner.os == 'Windows'
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.lz4_installation_path }}
+        key: ${{ runner.os }}${{ matrix.win_arch }}-lz4-${{ env.lz4_version}}
+
+    - name: Install lz4
+      if: (runner.os == 'Windows') && (steps.cache-lz4.outputs.cache-hit != 'true')
+      run: |
+        git clone -q --depth 1 --single-branch --branch=v${{ env.lz4_version }} https://github.com/lz4/lz4 ${{ env.lz4_path }}
+        cmake -S${{ env.lz4_path }} -B${{ env.lz4_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.lz4_installation_path }}
+        cmake --build ${{ env.lz4_build_path }} --target install -j3
 
     - name: Download linuxdeployqt
       if: runner.os == 'Linux'
