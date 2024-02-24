@@ -119,15 +119,34 @@ int main(int argc, char *argv[])
 		for (const DrawPoint &dp: map1.drawPoints()) {
 			qDebug() << dp.x << dp.y << dp.magicID;
 		}
+		
+		int segmId = 0;
+		for (const MapSegment &segment: map1.segments()) {
+			int blockId = 0;
+			for (const MapBlock &block: segment.blocks()) {
+				int polyId = 0;
+				for (const MapPoly &poly: block.polygons()) {
+					if (segmId == 827) {
+						qDebug() << polyId << poly.texCoord(0).x << poly.texCoord(0).y << poly.texCoord(1).x << poly.texCoord(1).y << poly.texCoord(2).x << poly.texCoord(2).y;
+					}
+					polyId++;
+				}
+				blockId++;
+			}
+			segmId++;
+		}
+		
+		map1.debugTextureCoords(0).save("test.png");
 
 		WorldmapWidget *wmWidget = new WorldmapWidget();
 		wmWidget->resize(640, 480);
 		wmWidget->show();
 		wmWidget->setMap(&map1);
 
-		// wmWidget->scene()->setLimits(QRect(10, 0, 1, 1));
+		//wmWidget->scene()->setLimits(QRect(10, 0, 1, 1));
 
-		// wmWidget->scene()->setZTrans(-0.714249f);
+		wmWidget->scene()->setZTrans(-0.714249f);
+		wmWidget->scene()->setSegmentFiltering(Map::NoEsthar);
 
 		/* forever {
 			QImage pm = wmWidget->scene()->renderPixmap(4096, 4096).toImage();
@@ -141,10 +160,11 @@ int main(int argc, char *argv[])
 			}
 			break;
 		}
-		qDebug() << wmWidget->scene()->zTrans();
-
-		wmWidget->scene()->renderPixmap(4096, 4096).save("E:/Documents/Deling-build-desktop/wm/render.png");
-		*/
+		qDebug() << wmWidget->scene()->zTrans();*/
+        
+        wmWidget->scene()->resize(4096*3, 4096*3);
+        wmWidget->scene()->grabFramebuffer().save("E:/Documents/Deling-build-desktop/wm/render.png");
+		
 	/*
 		int scale = 128;
 		QPixmap pixmap(32 * scale,

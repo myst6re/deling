@@ -6,7 +6,8 @@ WorldmapGLWidget::WorldmapGLWidget(QWidget *parent,
     _distance(-0.714248f), _xRot(-90.0f), _yRot(180.0f), _zRot(180.0f),
     _xTrans(-0.5f), _yTrans(0.5f), _transStep(360.0f), _lastKeyPressed(-1),
     _texture(-1), _segmentGroupId(-1), _segmentId(-1), _blockId(-1),
-    _groundType(-1), _polyId(-1), _limits(QRect(0, 0, 32, 24))
+      _groundType(-1), _polyId(-1), _clutId(-1), _limits(QRect(0, 0, 32, 24)),
+	_segmentFiltering(Map::NoFiltering)
 {
 	/* _xTrans = 0;
 	_yTrans = .12f;
@@ -113,23 +114,27 @@ void WorldmapGLWidget::setMap(Map *map)
 void WorldmapGLWidget::setLimits(const QRect &rect)
 {
 	_limits = rect;
+	importVertices();
 	update();
 }
 
 void WorldmapGLWidget::setXTrans(float trans)
 {
+    qDebug() << "WorldmapGLWidget::setXTrans" << trans;
 	_xTrans = trans;
 	update();
 }
 
 void WorldmapGLWidget::setYTrans(float trans)
 {
+    qDebug() << "WorldmapGLWidget::setYTrans" << trans;
 	_yTrans = trans;
 	update();
 }
 
 void WorldmapGLWidget::setZTrans(float trans)
 {
+    qDebug() << "WorldmapGLWidget::setZTrans" << trans;
 	_distance = trans;
 	update();
 }
@@ -188,11 +193,31 @@ void WorldmapGLWidget::setPolyId(int polyId)
 	update();
 }
 
+void WorldmapGLWidget::setClutId(int clutId)
+{
+	_clutId = clutId;
+	update();
+}
+
+void WorldmapGLWidget::setSegmentFiltering(Map::SegmentFiltering filtering)
+{
+	_segmentFiltering = filtering;
+	
+	importVertices();
+	update();
+}
+
 void WorldmapGLWidget::dumpCurrent()
 {
 	const MapPoly &poly = _map->segments().at(_segmentId).blocks().at(_blockId).polygons().at(_polyId);
 	qDebug() << QString::number(poly.flags1(), 16) << QString::number(poly.flags2(), 16)
-	         << poly.groundType() << poly.texPage() << poly.clutId();
+	         << poly.groundType() << "texPage" << poly.texPage() << "clutId" << poly.clutId() << "hasTexture" << poly.hasTexture() << "isMonochrome" << poly.isMonochrome();
+	for (const TexCoord &coord: poly.texCoords()) {
+		qDebug() << "texcoord" << coord.x << coord.y;
+	}	
+	for (const Vertex &vertex: poly.vertices()) {
+		qDebug() << "vertex" << vertex.x << vertex.y << vertex.z;
+	}
 }
 
 void WorldmapGLWidget::initializeGL()
@@ -207,7 +232,7 @@ void WorldmapGLWidget::initializeGL()
 	glDisable(GL_LIGHTING);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//glEnable(GL_MULTISAMPLE);
+	glEnable(GL_MULTISAMPLE);
 
 #define PROGRAM_VERTEX_ATTRIBUTE 0
 #define PROGRAM_TEXCOORD_ATTRIBUTE 1
@@ -255,6 +280,7 @@ static QOpenGLTexture *textureFromImage(const QImage &image)
 	texture = new QOpenGLTexture(image);
 	texture->setMinificationFilter(QOpenGLTexture::NearestMipMapLinear);
 	texture->setMagnificationFilter(QOpenGLTexture::Nearest);
+	texture->setAutoMipMapGenerationEnabled(false);
 	//}
 
 	return texture;
@@ -272,19 +298,21 @@ void WorldmapGLWidget::importVertices()
 
 	// Set HasBlackPixels attribute on polys
 	//_map->searchBlackPixels(images, seaImage, roadImage);
-
-	for (const QList< QPair<QImage, bool> > &images : qAsConst(images)) {
-		QList< QPair<QOpenGLTexture *, bool> > texs;
-
-		for (const QPair<QImage, bool> &image : qAsConst(images)) {
-			texs.append(qMakePair(textureFromImage(image.first), image.second));
+	
+	if (_textures.empty()) {
+		for (const QList< QPair<QImage, bool> > &images : qAsConst(images)) {
+			QList< QPair<QOpenGLTexture *, bool> > texs;
+	
+			for (const QPair<QImage, bool> &image : qAsConst(images)) {
+				texs.append(qMakePair(textureFromImage(image.first), image.second));
+			}
+	
+			_textures.append(texs);
 		}
-
-		_textures.append(texs);
+	
+		_seaTexture = textureFromImage(seaImage);
+		_roadTexture = textureFromImage(roadImage);
 	}
-
-	_seaTexture = textureFromImage(seaImage);
-	_roadTexture = textureFromImage(roadImage);
 
 	QImage redImage(256, 256, QImage::Format_RGB32);
 	redImage.fill(Qt::red);
@@ -329,7 +357,8 @@ void WorldmapGLWidget::importVertices()
 	} */
 
 	QList< QVector<GLfloat> > drawAfter;
-	foreach (const MapSegment &segment, _map->segments()) {
+	QList<MapSegment> segments = _map->segments(_segmentFiltering);
+	foreach (const MapSegment &segment, segments) {
 		int xb = 0, yb = 0;
 		foreach (const MapBlock &block, segment.blocks()) {
 			foreach (const MapPoly &poly, block.polygons()) {
@@ -417,7 +446,10 @@ void WorldmapGLWidget::importVertices()
 	/* qDebug() << collect4.keys(); */
 	qDebug() << collect2.keys();
 	qDebug() << collect3.keys();
-
+	
+	if (buf.isCreated()) {
+		buf.destroy();
+	}
 	buf.create();
 	buf.bind();
 	buf.allocate(vertData.constData(), vertData.count() * int(sizeof(GLfloat)));
@@ -488,7 +520,8 @@ void WorldmapGLWidget::paintGL()
 
 	QList<MapPoly> drawAfter;
 	int segmentId = 0;
-	foreach (const MapSegment &segment, _map->segments()) {
+	QList<MapSegment> segments = _map->segments(_segmentFiltering);
+	foreach (const MapSegment &segment, segments) {
 		bool isInRegion = _texture >= 0 && regions.at(segmentId) == _texture;
 		int blockId = 0;
 		foreach (const MapBlock &block, segment.blocks()) {
@@ -550,6 +583,20 @@ void WorldmapGLWidget::paintGL()
 						program->setUniformValue(alphaLocation, 0.5f);
 					}
 				}
+				
+				if (_clutId >= 0) {
+					if (poly.clutId() == _clutId) {
+						program->setUniformValue(alphaLocation, 1.0f);
+					} else {
+						program->setUniformValue(alphaLocation, 0.5f);
+					}
+				}
+				
+				/* if ((poly.flags1() & 0x60) == 0x60) {
+					program->setUniformValue(alphaLocation, 0.5f);
+				} else {
+					program->setUniformValue(alphaLocation, 1.0f);
+				} */
 
 				/* if (poly.isTransparent()) {
 					program->setUniformValue(alphaLocation, 0.0f);

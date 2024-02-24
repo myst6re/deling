@@ -44,12 +44,25 @@ public:
 		Unknown15,
 		Unknown16
 	};
+	enum SegmentFiltering {
+		NoFiltering = 0,
+		NoEsthar = 1,
+		TGUAlternative = 2,
+		WithGGU = 4,
+		WithBGU = 8,
+		WithMissileBase = 16,
+		TrabiaCraterAlternative = 32,
+		WithDesertPrison = 64,
+		NoHiddenSegments = 128
+	};
 
 	Map();
 
 	inline const QList<MapSegment> &segments() const {
 		return _segments;
 	}
+    
+    QList<MapSegment> segments(SegmentFiltering filtering) const;
 
 	inline void setSegments(const QList<MapSegment> &segments) {
 		_segments = segments;
@@ -123,6 +136,8 @@ public:
 	}
 	void searchBlackPixels(const QList<QList<QImage> > &textures,
 	                       const QImage &seaTexture, const QImage &roadTexture);
+
+	QImage debugTextureCoords(int textureId) const;
 
 private:
 	QImage specialTextureImage(SpecialTextureName min, SpecialTextureName max) const;

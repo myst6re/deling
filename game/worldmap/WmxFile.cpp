@@ -51,7 +51,7 @@ struct MapBlockPolygon
 	 *  movability (1-bit) | walking area, except forests (1-bit)
 	 * | all, except mountains and rocks and Esthar and some grounds (?) (1-bit)
 	 * | most of continents, except northest galbadia peninsula, some mountains, Esthar City, South of Esthar (1-bit)
-	 * | unused (1-bit) | walking area, excep forests (1-bit)
+	 * | unused (1-bit) | walking area, except forests (1-bit)
 	 * | Galbadia, center of centra, trabia, balamb, horizon, some pieces of esthar (1-bit) | on walking area, except half-galbadia and balamb (1-bit)
 	 */
 
@@ -294,11 +294,31 @@ bool WmxFile::readBlock(MapBlock &block)
 			return false;
 		}
 		//if (!polys.contains(poly)) {
-			polys.append(poly);
+		polys.append(poly);
 		/* } else {
 			polys2.append(poly);
 			qDebug() << "Poly already exist" << i;
 		} */
+		if (_io->pos() / WMXFILE_SEGMENT_SIZE == 827) {
+			qDebug() << QString("%1 vi(%2, %3, %4) ni(%5, %6, %7) pos(%8, %9) (%10, %11) (%12, %13) texi=%14 groundType=%15 flags=%16 %17")
+			                .arg(i)
+			                .arg(poly.vi[0])
+			                .arg(poly.vi[1])
+			                .arg(poly.vi[2])
+			                .arg(poly.ni[0])
+			                .arg(poly.ni[1])
+			                .arg(poly.ni[2])
+			                .arg(poly.pos[0].x)
+			                .arg(poly.pos[0].y)
+			                .arg(poly.pos[1].x)
+			                .arg(poly.pos[1].y)
+			                .arg(poly.pos[2].x)
+			                .arg(poly.pos[2].y)
+			                .arg(poly.texi)
+			                .arg(poly.groundType)
+			                .arg(poly.flags1)
+			                .arg(poly.flags2).toLatin1().constData();
+		}
 	}
 
 	QList<Vertex> vertices;

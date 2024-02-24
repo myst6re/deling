@@ -40,6 +40,9 @@ WorldmapWidget::WorldmapWidget(QWidget *parent, Qt::WindowFlags f) :
 
 	_polyIdSpinBox = new QSpinBox(this);
 	_polyIdSpinBox->setRange(-1, 2147483647);
+	
+	_clutIdSpinBox = new QSpinBox(this);
+	_clutIdSpinBox->setRange(-1, 32);
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(_scene, 0, 0, 2, 1);
@@ -55,7 +58,8 @@ WorldmapWidget::WorldmapWidget(QWidget *parent, Qt::WindowFlags f) :
 	layout->addWidget(_blockSpinBox, 1, 4);
 	layout->addWidget(_groundTypeSpinBox, 1, 5);
 	layout->addWidget(_polyIdSpinBox, 1, 6);
-	layout->addWidget(butt, 1, 7);
+	layout->addWidget(_clutIdSpinBox, 1, 7);
+	layout->addWidget(butt, 1, 8);
 	layout->setColumnStretch(0, 1);
 
 	_xTransSlider->setValue((_scene->xTrans() + 1.0) * _xTransSlider->maximum() / 2.0);
@@ -72,6 +76,7 @@ WorldmapWidget::WorldmapWidget(QWidget *parent, Qt::WindowFlags f) :
 	_blockSpinBox->setValue(_scene->blockId());
 	_groundTypeSpinBox->setValue(_scene->groundType());
 	_polyIdSpinBox->setValue(_scene->polyId());
+	_clutIdSpinBox->setValue(_scene->clutId());
 
 	connect(_xTransSlider, SIGNAL(sliderMoved(int)), SLOT(setXTrans(int)));
 	connect(_yTransSlider, SIGNAL(sliderMoved(int)), SLOT(setYTrans(int)));
@@ -87,7 +92,8 @@ WorldmapWidget::WorldmapWidget(QWidget *parent, Qt::WindowFlags f) :
 	connect(_blockSpinBox, SIGNAL(valueChanged(int)), _scene, SLOT(setBlockId(int)));
 	connect(_groundTypeSpinBox, SIGNAL(valueChanged(int)), _scene, SLOT(setGroundType(int)));
 	connect(_polyIdSpinBox, SIGNAL(valueChanged(int)), _scene, SLOT(setPolyId(int)));
-	//connect(butt, SIGNAL(released()), _scene, SLOT(dumpCurrent()));
+	connect(_clutIdSpinBox, SIGNAL(valueChanged(int)), _scene, SLOT(setClutId(int)));
+	connect(butt, SIGNAL(released()), _scene, SLOT(dumpCurrent()));
 }
 
 void WorldmapWidget::setXTrans(int value)

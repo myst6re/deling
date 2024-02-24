@@ -34,7 +34,7 @@ private:
 	QSlider *_xTransSlider, *_yTransSlider, *_zTransSlider;
 	QSlider *_xRotSlider, *_yRotSlider, *_zRotSlider;
 	QSpinBox *_textureSpinBox, *_segmentGroupSpinBox, *_segmentSpinBox;
-	QSpinBox *_blockSpinBox, *_groundTypeSpinBox, *_polyIdSpinBox;
+	QSpinBox *_blockSpinBox, *_groundTypeSpinBox, *_polyIdSpinBox, *_clutIdSpinBox;
 };
 
 #endif // WORLDMAPWIDGET_H

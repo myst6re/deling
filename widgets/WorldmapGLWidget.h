@@ -79,6 +79,9 @@ public:
 	inline int polyId() const {
 		return _polyId;
 	}
+	inline int clutId() const {
+		return _clutId;
+	}
 	inline int groundType() const {
 		return _groundType;
 	}
@@ -91,6 +94,8 @@ public slots:
 	void setBlockId(int blockId);
 	void setGroundType(int groundType);
 	void setPolyId(int polyId);
+	void setClutId(int clutId);
+	void setSegmentFiltering(Map::SegmentFiltering filtering);
 	void dumpCurrent();
 protected:
 	virtual void initializeGL();
@@ -110,7 +115,7 @@ private:
 	float _xRot, _yRot, _zRot;
 	float _xTrans, _yTrans, _transStep;
 	int _lastKeyPressed, _texture, _segmentGroupId, _segmentId, _blockId;
-	int _groundType, _polyId;
+	int _groundType, _polyId, _clutId;
 	QRect _limits;
 	QPoint _moveStart;
 	QMap<int, QRgb> _colorRegions;
@@ -120,6 +125,7 @@ private:
 	QOpenGLBuffer buf;
 	QOpenGLShaderProgram *program;
 	QMatrix4x4 _matrixProj;
+	Map::SegmentFiltering _segmentFiltering;
 };
 
 #endif // WORLDMAPGLWIDGET_H
