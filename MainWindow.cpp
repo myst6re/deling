@@ -729,7 +729,7 @@ void MainWindow::exportCurrent()
 	QString selectedFilter;
 	path = QFileDialog::getSaveFileName(this, tr("Exporter"), path, filter.join(";;"), &selectedFilter);
 	if(path.isNull())		return;
-	
+
 	int type = typeList.at(filter.indexOf(selectedFilter));
 
 	switch(type) {

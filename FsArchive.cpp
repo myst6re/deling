@@ -288,9 +288,11 @@ FsArchive::FsArchive(const QByteArray &fl_data, const QByteArray &fi_data)
 }
 
 FsArchive::FsArchive(const QString &path)
-    : fromFile(true), _isOpen(false)
+    : fromFile(false), _isOpen(false)
 {
-	load(path);
+	if (!path.isEmpty()) {
+		open(path);
+	}
 }
 
 FsArchive::~FsArchive()
@@ -942,7 +944,7 @@ bool FsArchive::load(const QByteArray &fl_data, const QByteArray &fi_data)
 	return true;
 }
 
-bool FsArchive::load(const QString &path)
+bool FsArchive::open(const QString &path)
 {
 	if(_isOpen)	return false;
 
@@ -1266,11 +1268,9 @@ bool FsArchive::verify()
 			qWarning() << "FsArchive::verify io error" << fs.errorString();
 			return false;
 		}
-
 		if(size > 4478885) {
 			qWarning() << "FsArchive::verify strange size" << size;
 		}
-
 		if(guessPos != info->position()) {
 			qWarning() << "FsArchive::verify ko" << info->position() << guessPos << size << info->uncompressedSize() << quint32(info->compression());
 		} else {
@@ -1278,7 +1278,6 @@ bool FsArchive::verify()
 		}
 		guessPos += size;
 	}
-
 	return true;
 }
 
@@ -1368,7 +1367,6 @@ bool FsArchive::repair(FsArchive *other)
 		}
 		if(guessPos != info->position()) {
 			info->setPosition(guessPos);
-
 			changePositions(info, guessPos - info->position());
 		}
 		guessPos += size;

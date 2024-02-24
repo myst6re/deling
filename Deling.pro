@@ -23,6 +23,9 @@ HEADERS += MainWindow.h \
     BackgroundExporter.h \
     EncounterExporter.h \
     PreviewWidget.h \
+    game/worldmap/TexlFile.h \
+    game/worldmap/WmArchive.h \
+    game/worldmap/WmEncounter.h \
     QLZ4.h \
     ScriptExporter.h \
     SearchAll.h \
@@ -111,12 +114,24 @@ HEADERS += MainWindow.h \
     ArchiveObserverProgressDialog.h \
     ArchiveObservers.h \
     ProgressWidget.h \
-    JsmExpression.h
+    JsmExpression.h \
+    game/worldmap/WmxFile.h \
+    game/worldmap/Map.h \
+    game/worldmap/MapSegment.h \
+    game/worldmap/MapBlock.h \
+    Poly.h \
+    widgets/WorldmapWidget.h \
+    widgets/WorldmapGLWidget.h \
+    game/worldmap/MapPoly.h \
+    game/worldmap/WmsetFile.h
 
 SOURCES += MainWindow.cpp \
     BackgroundExporter.cpp \
     EncounterExporter.cpp \
     PreviewWidget.cpp \
+    game/worldmap/TexlFile.cpp \
+    game/worldmap/WmArchive.cpp \
+    game/worldmap/WmEncounter.cpp \
     QLZ4.cpp \
     ScriptExporter.cpp \
     SearchAll.cpp \
@@ -204,7 +219,16 @@ SOURCES += MainWindow.cpp \
     ArchiveObserverProgressDialog.cpp \
     ArchiveObservers.cpp \
     ProgressWidget.cpp \
-    JsmExpression.cpp
+    JsmExpression.cpp \
+    game/worldmap/WmxFile.cpp \
+    game/worldmap/Map.cpp \
+    game/worldmap/MapSegment.cpp \
+    game/worldmap/MapBlock.cpp \
+    Poly.cpp \
+    widgets/WorldmapWidget.cpp \
+    widgets/WorldmapGLWidget.cpp \
+    game/worldmap/MapPoly.cpp \
+    game/worldmap/WmsetFile.cpp
 
 TRANSLATIONS += deling_en.ts \
     deling_ja.ts \
@@ -269,7 +293,9 @@ OTHER_FILES += Deling.rc \
     appveyor.yml \
     fonts/sysfnt.txt \
     fonts/sysfnt_demo_jp.txt \
-    fonts/sysfnt_jp.txt
+    fonts/sysfnt_jp.txt \
+    shaders/vertex.glsl \
+    shaders/fragment.glsl
 DISTFILES += Deling.desktop
 
 # call lrelease to make the qm files.

@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "TimFile.h"
+#include "FF8Image.h"
 
 TimFile::TimFile(const QByteArray &data) :
 	TextureFile(), palX(0), palY(0), palW(0), palH(0), imgX(0), imgY(0)
@@ -298,4 +299,26 @@ bool TimFile::save(QByteArray &data)
 	}
 
 	return true;
+}
+
+QImage TimFile::palImage() const
+{
+	QImage img(palW, palH, QImage::Format_ARGB32);
+
+	int y = 0;
+	foreach(const QVector<QRgb> &colorTable, _colorTables) {
+		int x = 0;
+		foreach(const QRgb &color, colorTable) {
+			img.setPixel(x, y, color);
+
+			if(x == palW - 1) {
+				x = 0;
+				++y;
+			} else {
+				++x;
+			}
+		}
+	}
+
+	return img;
 }

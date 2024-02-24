@@ -248,6 +248,11 @@ const FF8DiscFile &FF8DiscArchive::fieldBinFile()
 	return rootFile(2);
 }
 
+const FF8DiscFile &FF8DiscArchive::worldBinFile()
+{
+	return rootFile(26);
+}
+
 const QList<FF8DiscFile> &FF8DiscArchive::fieldDirectory()
 {
 	if(!fieldFiles.isEmpty() || 2 >= rootCount())		return fieldFiles;
@@ -258,6 +263,7 @@ const QList<FF8DiscFile> &FF8DiscArchive::fieldDirectory()
 //	// nbSectorsLzs != nbSectors
 //	if((lzsSize + 4)/SECTOR_SIZE_DATA + (int)(lzsSize%SECTOR_SIZE_DATA != 0) != fieldbinFile.getSize()/SECTOR_SIZE_DATA + (int)(fieldbinFile.getSize()%SECTOR_SIZE_DATA != 0))
 //		return fieldFiles;
+	qDebug() << fieldbinFile.getPos();
 
 	const QByteArray fieldBin = !isDemo() ? fileLZS(fieldbinFile, false) : file(fieldbinFile);
 	if(fieldBin.isEmpty())

@@ -37,6 +37,7 @@ public:
 	bool isValid() const;
 	void clear();
 	const QImage &image() const;
+	QImage image(int colorTable) const;
 	QImage *imagePtr();
 	bool isPaletted() const;
 	const QList< QVector<QRgb> > &colorTables() const;
