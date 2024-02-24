@@ -866,7 +866,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 						return l;
 					}
 				}
-			} else if(key == JsmOpcode::PSHI_L) {
+			} else if(key == JsmOpcode::PSHI_L || key == JsmOpcode::POPI_L) {
 				if(second.startsWith("TEMP", Qt::CaseInsensitive)) {
 					param = second.mid(4).toInt(&ok);
 					if(!ok) {
