@@ -33,19 +33,24 @@ QWidget *FsPreviewWidget::imageWidget()
 
 	imageSelect = new QComboBox(ret);
 	palSelect = new QComboBox(ret);
+	exportAll = new QPushButton(tr("Exporter tout"), ret);
 
 	scrollArea = new QScrollArea(ret);
 	scrollArea->setAlignment(Qt::AlignCenter);
 	scrollArea->setFrameShape(QFrame::NoFrame);
 
+	QHBoxLayout *hlayout = new QHBoxLayout;
+	hlayout->addWidget(imageSelect, 1);
+	hlayout->addWidget(palSelect, 1);
+	hlayout->addWidget(exportAll);
+
 	QVBoxLayout *layout = new QVBoxLayout(ret);
-	layout->setContentsMargins(QMargins());
-	layout->addWidget(imageSelect, 0, Qt::AlignCenter);
-	layout->addWidget(palSelect, 0, Qt::AlignCenter);
-	layout->addWidget(scrollArea);
+	layout->addLayout(hlayout);
+	layout->addWidget(scrollArea, 1);
 
 	connect(imageSelect, SIGNAL(currentIndexChanged(int)), SIGNAL(currentImageChanged(int)));
 	connect(palSelect, SIGNAL(currentIndexChanged(int)), SIGNAL(currentPaletteChanged(int)));
+	connect(exportAll, SIGNAL(clicked(bool)), SIGNAL(exportAllClicked()));
 
 	return ret;
 }
@@ -67,15 +72,16 @@ void FsPreviewWidget::imagePreview(const QPixmap &image, const QString &name,
                                    int palID, int palCount, int imageID,
                                    int imageCount)
 {
+	QString imageName = name;
 	setCurrentIndex(ImagePage);
 	BGPreview2 *lbl = new BGPreview2();
 	lbl->setPixmap(image);
-	lbl->setName(name);
 	scrollArea->setWidget(lbl);
 
 	imageSelect->blockSignals(true);
 	imageSelect->clear();
 	if (imageCount > 1) {
+		imageName.append(QString("-%1").arg(imageID));
 		imageSelect->setVisible(true);
 		for (int i = 0; i < imageCount; ++i) {
 			imageSelect->addItem(tr("Image %1").arg(i));
@@ -89,6 +95,7 @@ void FsPreviewWidget::imagePreview(const QPixmap &image, const QString &name,
 	palSelect->blockSignals(true);
 	palSelect->clear();
 	if (palCount > 1) {
+		imageName.append(QString("-%1").arg(palID));
 		palSelect->setVisible(true);
 		for (int i = 0; i < palCount; ++i) {
 			palSelect->addItem(tr("Palette %1").arg(i));
@@ -98,6 +105,8 @@ void FsPreviewWidget::imagePreview(const QPixmap &image, const QString &name,
 		palSelect->setVisible(false);
 	}
 	palSelect->blockSignals(false);
+	lbl->setName(imageName);
+	exportAll->setVisible(imageSelect->isVisible() || palSelect->isVisible());
 }
 
 void FsPreviewWidget::textPreview(const QString &text)

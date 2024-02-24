@@ -64,6 +64,7 @@ FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	connect(pathWidget, SIGNAL(returnPressed()), SLOT(openDir()));
 	connect(preview, SIGNAL(currentImageChanged(int)), SLOT(changeImageInPreview(int)));
 	connect(preview, SIGNAL(currentPaletteChanged(int)), SLOT(changeImagePaletteInPreview(int)));
+	connect(preview, SIGNAL(exportAllClicked()), SLOT(exportImages()));
 
 	if (fsArchive!=nullptr && fsArchive->dirExists("c:\\ff8\\data\\"))
 		openDir("c:\\ff8\\data\\");
@@ -212,6 +213,61 @@ void FsDialog::generatePreview()
 			preview->clearPreview();
 		}
 	}
+}
+
+void FsDialog::exportImages()
+{
+	QList<QTreeWidgetItem *> items = list->selectedItems();
+
+	if (items.isEmpty()) {
+		return;
+	}
+	
+	QString fileName = items.first()->text(0),
+	    fileType = fileName.mid(fileName.lastIndexOf('.')+1).toLower(),
+	    filePath = currentPath % fileName;
+	QByteArray data = fsArchive->fileData(filePath);
+	
+	QString path = QFileDialog::getExistingDirectory(this, tr("Dossier cible"));
+	
+	if (path.isNull()) {
+		return;
+	}
+	
+	if (fileType == "tex")
+	{
+		TexFile texFile(data);
+		for (int i = 0; i < texFile.colorTableCount(); ++i) {
+			texFile.setCurrentColorTable(i);
+			texFile.image().save(QString("%1/%2-%3.png").arg(path, fileName).arg(i));
+		}
+	}
+	else if (fileType == "tim")
+	{
+		TimFile timFile(data);
+		for (int i = 0; i < timFile.colorTableCount(); ++i) {
+			timFile.setCurrentColorTable(i);
+			timFile.image().save(QString("%1/%2-%3.png").arg(path, fileName).arg(i));
+		}
+	}
+	else if (fileType == "tdw")
+	{
+		for (int i = 0; i < 8; ++i) {
+			TdwFile::image(data, TdwFile::Color(i)).save(QString("%1/%2-%3.png").arg(path, fileName).arg(i));
+		}
+	}
+	else
+	{
+		QList<int> indexes = FF8Image::findTims(data);
+		for (int j = 0; j < indexes.size(); ++j) {
+			TimFile timFile(data.mid(indexes.at(j)));
+			for (int i = 0; i < timFile.colorTableCount(); ++i) {
+				timFile.setCurrentColorTable(i);
+				timFile.image().save(QString("%1/%2-%3-%4.png").arg(path, fileName).arg(j).arg(i));
+			}
+		}
+	}
+	
 }
 
 void FsDialog::changeImageInPreview(int imageID)

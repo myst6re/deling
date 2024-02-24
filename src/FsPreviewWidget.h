@@ -34,11 +34,13 @@ public:
 signals:
 	void currentImageChanged(int);
 	void currentPaletteChanged(int);
+	void exportAllClicked();
 private:
 	QWidget *imageWidget();
 	QWidget *textWidget();
 	QScrollArea *scrollArea;
 	QComboBox *imageSelect, *palSelect;
+	QPushButton *exportAll;
 };
 
 #endif // FSPREVIEWWIDGET_H

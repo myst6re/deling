@@ -52,6 +52,7 @@ private slots:
 	void remove(QStringList destinations=QStringList());
 	void rename();
 	void renameOK(QTreeWidgetItem *, int);
+	void exportImages();
 private:
 	void generatePreview();
 	void add(QStringList sources, bool fromDir = false);
