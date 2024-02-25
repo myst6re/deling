@@ -16,7 +16,6 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "MainWindow.h"
-#include "parameters.h"
 #include "Config.h"
 #include "Data.h"
 #include "ProgressWidget.h"
@@ -569,7 +568,7 @@ int MainWindow::closeFiles(bool quit)
 		field = nullptr;
 	}
 
-	setWindowTitle("[*]"%PROG_FULLNAME);
+	setWindowTitle("[*]" % QString("%1 %2").arg(QLatin1String(DELING_NAME), QLatin1String(DELING_VERSION)));
 
 	return 0;
 }
@@ -609,7 +608,7 @@ void MainWindow::openFile(QString path)
 			ok = openIsoArchive(path);
 
 		if (ok) {
-			setWindowTitle(QString("[*]%1 - %2").arg(path.mid(path.lastIndexOf('/')+1), PROG_FULLNAME));
+			setWindowTitle(QString("[*]%1 - %2 %3").arg(path.mid(path.lastIndexOf('/')+1), QLatin1String(DELING_NAME), QLatin1String(DELING_VERSION)));
 			currentPath->setText(path);
 			actionClose->setEnabled(true);
 		}
@@ -663,7 +662,7 @@ void MainWindow::saveAs(QString path)
 	if (ok) {
 		setModified(false);
 		currentPath->setText(path);
-		setWindowTitle(QString("[*]%1 - %2").arg(path.mid(path.lastIndexOf('/')+1), PROG_FULLNAME));
+		setWindowTitle(QString("[*]%1 - %2 %3").arg(path.mid(path.lastIndexOf('/')+1), QLatin1String(DELING_NAME), QLatin1String(DELING_VERSION)));
 	} else {
 		QMessageBox::warning(this, tr("Erreur"), tr("Une erreur s'est produite lors de l'enregistrement."));
 	}

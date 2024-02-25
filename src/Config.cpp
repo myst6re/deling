@@ -16,9 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "Config.h"
-#include "parameters.h"
 
-QSettings *Config::settings = 0;
+QSettings *Config::settings = nullptr;
 
 QString Config::programResourceDir()
 {
@@ -34,9 +33,9 @@ QString Config::programResourceDir()
 void Config::set() {
 	if (!settings) {
 #ifdef Q_OS_WIN
-		settings = new QSettings(qApp->applicationDirPath()+"/"+PROG_NAME+".ini", QSettings::IniFormat);
+		settings = new QSettings(qApp->applicationDirPath()+"/"+DELING_NAME+".ini", QSettings::IniFormat);
 #else
-		settings = new QSettings(PROG_NAME, PROG_NAME);
+		settings = new QSettings(DELING_NAME, DELING_NAME);
 #endif
 	}
 }

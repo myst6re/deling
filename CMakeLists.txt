@@ -55,14 +55,14 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_compile_definitions(
     QT_DISABLE_DEPRECATED_BEFORE=0x050F00
     #QT_RESTRICTED_CAST_FROM_ASCII
-    MAKOU_REACTOR_NAME="${PROJECT_NAME}"
-    MAKOU_REACTOR_DESCRIPTION="${PROJECT_DESCRIPTION}"
-    MAKOU_REACTOR_COMPANY="myst6re"
-    MAKOU_REACTOR_VERSION="${PROJECT_VERSION}${PRERELEASE_STRING}"
-    MAKOU_REACTOR_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}
-    MAKOU_REACTOR_VERSION_MINOR=${PROJECT_VERSION_MINOR}
-    MAKOU_REACTOR_VERSION_PATCH=${PROJECT_VERSION_PATCH}
-    MAKOU_REACTOR_VERSION_TWEAK=0
+    DELING_NAME="${PROJECT_NAME}"
+    DELING_DESCRIPTION="${PROJECT_DESCRIPTION}"
+    DELING_COMPANY="myst6re"
+    DELING_VERSION="${PROJECT_VERSION}${PRERELEASE_STRING}"
+    DELING_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}
+    DELING_VERSION_MINOR=${PROJECT_VERSION_MINOR}
+    DELING_VERSION_PATCH=${PROJECT_VERSION_PATCH}
+    DELING_VERSION_TWEAK=0
 )
 
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets OpenGLWidgets OpenGL LinguistTools REQUIRED)
@@ -199,7 +199,6 @@ set(PROJECT_SOURCES
     "src/MsdHighlighter.h"
     "src/OrientationWidget.cpp"
     "src/OrientationWidget.h"
-    "src/parameters.h"
     "src/PlainTextEdit.cpp"
     "src/PlainTextEdit.h"
     "src/PreviewWidget.cpp"
@@ -359,7 +358,7 @@ elseif(WIN32)
     install(DIRECTORY "${QT_DEPLOY_TMP_DIR}/" DESTINATION ".")
     install(CODE "file(REMOVE_RECURSE \"${QT_DEPLOY_TMP_DIR}\")")
 else()
-    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/qt/images/deling.png DESTINATION share/icons/hicolor/256x256/apps RENAME Makou_Reactor.png)
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/qt/images/deling.png DESTINATION share/icons/hicolor/256x256/apps RENAME Deling.png)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/deploy/linux/Deling.desktop DESTINATION share/applications)
     install(TARGETS ${GUI_TARGET} RUNTIME)
 endif()
