@@ -32,7 +32,6 @@ jobs:
         - os: ubuntu-latest
           package_extension: 'tar.xz'
           package_suffix: 'linux64'
-          cmake_extra_args: '-Dlz4_DIR=C:/lz4/lib/cmake/lz4'
         - os: macos-latest
           package_extension: 'dmg'
           package_suffix: 'macos'
@@ -42,7 +41,7 @@ jobs:
           package_suffix: 'win64'
           win_arch: "x64"
           qt_arch: win64_msvc2019_64
-          cmake_extra_args: '-DZLIB_ROOT=C:/zlib -Dlz4_DIR=C:/lz4/lib/cmake/lz4 -DCMAKE_CXX_FLAGS="-I C:/lz4/include"'
+          cmake_extra_args: '-DZLIB_ROOT=C:/zlib' # -Dlz4_DIR=C:/lz4/lib/cmake/lz4 -DCMAKE_CXX_FLAGS="-I C:/lz4/include"'
           qt_tools: tools_ninja, tools_cmake
 
     env:
@@ -53,7 +52,7 @@ jobs:
       zlib_version: "1.3.1"
       lz4_path: ${{ github.workspace }}/../lz4-git
       lz4_build_path: ${{ github.workspace }}/../build-lz4-git
-      lz4_installation_path: C:/lz4
+      lz4_installation_path: ${{ github.workspace }}/../lz4
       lz4_version: "dev"
       deling_build_path: ${{ github.workspace }}/../build-deling
       deling_installation_path: ${{ github.workspace }}/../installation-deling
@@ -112,30 +111,19 @@ jobs:
         cmake -S${{ env.zlib_path }} -B${{ env.zlib_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.zlib_installation_path }}
         cmake --build ${{ env.zlib_build_path }} --target install -j3
 
-    - name: Install lz4
-      if: runner.os == 'Linux'
-      run: |
-        sudo apt-get update -qqq -y
-        sudo apt-get install -qqq liblz4-dev
-
     - name: Cache lz4
       id: cache-lz4
-      if: runner.os == 'Windows'
       uses: actions/cache@v4
       with:
         path: ${{ env.lz4_installation_path }}
         key: ${{ runner.os }}${{ matrix.win_arch }}-lz4-${{ env.lz4_version}}
 
-    - name: Install lz4 Windows
-      if: (runner.os == 'Windows') && (steps.cache-lz4.outputs.cache-hit != 'true')
+    - name: Install lz4
+      if: steps.cache-lz4.outputs.cache-hit != 'true')
       run: |
         git clone -q --depth 1 --single-branch --branch=${{ env.lz4_version }} https://github.com/lz4/lz4 ${{ env.lz4_path }}
-        cmake -S${{ env.lz4_path }}/build/cmake -B${{ env.lz4_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.lz4_installation_path }} -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=ON -DLZ4_BUILD_LEGACY_LZ4C:BOOL=OFF -DLZ4_POSITION_INDEPENDENT_LIB:BOOL=OFF -DLZ4_BUILD_CLI:BOOL=OFF
+        cmake -S${{ env.lz4_path }}/build/cmake -B${{ env.lz4_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.lz4_installation_path }} -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_STATIC_LIBS:BOOL=ON -DLZ4_BUILD_LEGACY_LZ4C:BOOL=OFF -DLZ4_POSITION_INDEPENDENT_LIB:BOOL=OFF -DLZ4_BUILD_CLI:BOOL=OFF
         cmake --build ${{ env.lz4_build_path }} --target install -j3
-        ls ${{ env.lz4_installation_path }}
-        ls ${{ env.lz4_installation_path }}/lib/cmake/lz4
-        cat ${{ env.lz4_installation_path }}/lib/cmake/lz4/lz4Targets.cmake
-        cat ${{ env.lz4_installation_path }}/lib/cmake/lz4/lz4Targets-release.cmake
 
     - name: Download linuxdeployqt
       if: runner.os == 'Linux'
@@ -150,7 +138,7 @@ jobs:
     - name: Build Deling
       id: main_build
       run: |
-        cmake -B ${{ env.deling_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.deling_installation_path }} -DPRERELEASE_STRING="$PRERELEASE_STRING" ${{ matrix.cmake_extra_args }}
+        cmake -B ${{ env.deling_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.deling_installation_path }} -DPRERELEASE_STRING="$PRERELEASE_STRING" -Dlz4_DIR=${{ env.lz4_installation_path }}/lib/cmake/lz4 ${{ matrix.cmake_extra_args }}
         cmake --build ${{ env.deling_build_path }} --target package -j3
 
     - name: Build AppImage (Linux)
