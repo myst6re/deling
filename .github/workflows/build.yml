@@ -54,7 +54,7 @@ jobs:
       lz4_path: ${{ github.workspace }}/../lz4-git
       lz4_build_path: ${{ github.workspace }}/../build-lz4-git
       lz4_installation_path: C:/lz4
-      lz4_version: "1.9.4"
+      lz4_version: "dev"
       deling_build_path: ${{ github.workspace }}/../build-deling
       deling_installation_path: ${{ github.workspace }}/../installation-deling
       deling_appbundle_path: ${{ github.workspace }}/../appbundle-deling
@@ -129,7 +129,7 @@ jobs:
     - name: Install lz4 Windows
       if: (runner.os == 'Windows') && (steps.cache-lz4.outputs.cache-hit != 'true')
       run: |
-        git clone -q --depth 1 --single-branch --branch=v${{ env.lz4_version }} https://github.com/lz4/lz4 ${{ env.lz4_path }}
+        git clone -q --depth 1 --single-branch --branch=${{ env.lz4_version }} https://github.com/lz4/lz4 ${{ env.lz4_path }}
         cmake -S${{ env.lz4_path }}/build/cmake -B${{ env.lz4_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.lz4_installation_path }} -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=ON -DLZ4_BUILD_LEGACY_LZ4C:BOOL=OFF -DLZ4_POSITION_INDEPENDENT_LIB:BOOL=OFF -DLZ4_BUILD_CLI:BOOL=OFF
         cmake --build ${{ env.lz4_build_path }} --target install -j3
         ls ${{ env.lz4_installation_path }}
