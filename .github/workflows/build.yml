@@ -42,7 +42,7 @@ jobs:
           package_suffix: 'win64'
           win_arch: "x64"
           qt_arch: win64_msvc2019_64
-          cmake_extra_args: '-DZLIB_ROOT=C:/zlib -Dlz4_DIR=C:/lz4/lib/cmake/lz4'
+          cmake_extra_args: '-DZLIB_ROOT=C:/zlib -Dlz4_DIR=C:/lz4/lib/cmake/lz4 -DCMAKE_CXX_FLAGS="-I C:/lz4/include"'
           qt_tools: tools_ninja, tools_cmake
 
     env:
