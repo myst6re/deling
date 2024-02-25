@@ -4,7 +4,7 @@ if(APPLE)
 elseif(WIN32)
     set(TRANSLATIONS_PATH translations)
 else()
-    set(TRANSLATIONS_PATH share/makoureactor/translations)
+    set(TRANSLATIONS_PATH share/deling/translations)
 endif()
 
 install(FILES ${QM_FILES} DESTINATION "${TRANSLATIONS_PATH}")
