@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Makou Reactor Final Fantasy VII Field Script Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  ** Copyright (C) 2020 Julian Xhokaxhiu <https://julianxhokaxhiu.com>
  **
  ** This program is free software: you can redistribute it and/or modify
@@ -17,8 +17,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef RENDERER_H
-#define RENDERER_H
+#pragma once
 
 #include <QMatrix4x4>
 #include <QOpenGLBuffer>
@@ -60,17 +59,13 @@ private:
 
 	QOpenGLWidget *mWidget;
 
-	QOpenGLDebugLogger mLogger;
-
 	QOpenGLFunctions mGL;
 
 	QOpenGLShaderProgram mProgram;
 	QOpenGLShader mVertexShader;
 	QOpenGLShader mFragmentShader;
-
-	QMatrix4x4 mModelMatrix;
-	QMatrix4x4 mProjectionMatrix;
-	QMatrix4x4 mViewMatrix;
+	
+	QOpenGLVertexArrayObject mVAO;
 
 	QOpenGLBuffer mVertex;
 	QOpenGLBuffer mIndex;
@@ -79,10 +74,20 @@ private:
 	std::vector<uint32_t> mIndexBuffer;
 
 	QOpenGLTexture mTexture;
-
+	bool _hasError;
+#ifdef QT_DEBUG
+	QOpenGLDebugLogger mLogger;
+#endif
+	
+	QMatrix4x4 mModelMatrix;
+	QMatrix4x4 mProjectionMatrix;
+	QMatrix4x4 mViewMatrix;
 public:
 	Renderer(QOpenGLWidget *_widget);
-
+	
+	inline bool hasError() const {
+		return _hasError;
+	}
 	void clear();
 	void show();
 	void reset();
@@ -106,5 +111,3 @@ protected slots:
 	void messageLogged(const QOpenGLDebugMessage &msg);
 #endif
 };
-
-#endif

@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef LISTWIDGET_H
-#define LISTWIDGET_H
+#pragma once
 
 #include <QtWidgets>
 
@@ -28,7 +27,7 @@ public:
 		Invisible, Add, Rem, Up, Down
     };
 
-    explicit ListWidget(QWidget *parent = 0);
+    explicit ListWidget(QWidget *parent = nullptr);
     QAction *addAction(ActionType type, const QString &text,
                        const QObject *receiver, const char *member);
 
@@ -41,5 +40,3 @@ private:
     QToolBar *_toolBar;
     QListWidget *_listWidget;
 };
-
-#endif // LISTWIDGET_H

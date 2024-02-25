@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef SOUNDWIDGET_H
-#define SOUNDWIDGET_H
+#pragma once
 
 #include "widgets/PageWidget.h"
 #include "Listwidget.h"
@@ -49,7 +48,4 @@ private:
 	// AkaoList
 	QWidget *akaoGroup;
 	QPushButton *exportButton, *importButton;
-
 };
-
-#endif // SOUNDWIDGET_H

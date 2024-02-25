@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef TDWMANAGERDIALOG_H
-#define TDWMANAGERDIALOG_H
+#pragma once
 
 #include <QtWidgets>
 #include "widgets/TdwWidget2.h"
@@ -26,7 +25,7 @@ class TdwManagerDialog : public QDialog
 {
 	Q_OBJECT
 public:
-	explicit TdwManagerDialog(QWidget *parent=0);
+	explicit TdwManagerDialog(QWidget *parent = nullptr);
 private slots:
 	void setTdw(int id);
 	void addFont();
@@ -39,5 +38,3 @@ private:
 	QListWidget *list1;
 	TdwWidget2 *tdwWidget;
 };
-
-#endif // TDWMANAGERDIALOG_H

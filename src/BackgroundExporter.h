@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2020 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef BACKGROUNDEXPORTER_H
-#define BACKGROUNDEXPORTER_H
+#pragma once
 
 #include "FieldArchive.h"
 
@@ -32,5 +31,3 @@ private:
 	FieldArchive *_archive;
 	QString _lastErrorString;
 };
-
-#endif // BACKGROUNDEXPORTER_H

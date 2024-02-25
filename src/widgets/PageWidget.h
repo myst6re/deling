@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef PAGEWIDGET_H
-#define PAGEWIDGET_H
+#pragma once
 
 #include <QtWidgets>
 #include "Field.h"
@@ -25,7 +24,7 @@ class PageWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	explicit PageWidget(QWidget *parent = 0);
+	explicit PageWidget(QWidget *parent = nullptr);
 	bool isBuilded() const;
 	virtual void build();
 	bool isFilled() const;
@@ -44,5 +43,3 @@ private:
 	bool builded, filled, readOnly;
 	Field *_field;
 };
-
-#endif // PAGEWIDGET_H

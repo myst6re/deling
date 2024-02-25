@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef FF8DISCARCHIVE_H
-#define FF8DISCARCHIVE_H
+#pragma once
 
 #include <QtCore>
 #include "IsoArchive.h"
@@ -46,10 +45,10 @@ public:
 	bool isJp() const;
 	bool isPAL() const;
 	QByteArray file(const FF8DiscFile &file);
-	QByteArray fileLZS(const FF8DiscFile &file, bool strict=true);
+	QByteArray fileLZS(const FF8DiscFile &file, bool strict = true);
 	QByteArray fileGZ(const FF8DiscFile &file);
 	bool extract(const FF8DiscFile &file, const QString &destination);
-	bool extractLZS(const FF8DiscFile &file, const QString &destination, bool strict=true);
+	bool extractLZS(const FF8DiscFile &file, const QString &destination, bool strict = true);
 	bool extractGZ(const FF8DiscFile &file, const QString &destination);
 	const QList<FF8DiscFile> &rootDirectory();
 	int rootCount();
@@ -72,5 +71,3 @@ private:
 	QList<FF8DiscFile> rootFiles, fieldFiles;
 	bool PAL;
 };
-
-#endif // FF8DISCARCHIVE_H

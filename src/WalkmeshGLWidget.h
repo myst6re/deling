@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef WALKMESHGLWIDGET_H
-#define WALKMESHGLWIDGET_H
+#pragma once
 
 #include <QtWidgets>
 #include "Field.h"
@@ -27,6 +26,7 @@ class WalkmeshGLWidget : public QOpenGLWidget
 	Q_OBJECT
 public:
 	explicit WalkmeshGLWidget(QWidget *parent=nullptr);
+	virtual ~WalkmeshGLWidget() override;
 	void clear();
 	void fill(Field *data);
 	void updatePerspective();
@@ -74,5 +74,3 @@ protected:
 	virtual void focusInEvent(QFocusEvent *event);
 	virtual void focusOutEvent(QFocusEvent *event);
 };
-
-#endif // WALKMESHGLWIDGET_H

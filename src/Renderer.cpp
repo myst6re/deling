@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Makou Reactor Final Fantasy VII Field Script Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  ** Copyright (C) 2020 Julian Xhokaxhiu <https://julianxhokaxhiu.com>
  **
  ** This program is free software: you can redistribute it and/or modify
@@ -27,11 +27,15 @@ size_t vectorSizeOf(const typename std::vector<T>& vec)
 }
 
 Renderer::Renderer(QOpenGLWidget *_widget) :
-    mWidget(_widget), mLogger(_widget), mProgram(_widget),
-    mVertexShader(QOpenGLShader::Vertex, _widget), mFragmentShader(QOpenGLShader::Fragment, _widget),
-    mVertex(QOpenGLBuffer::VertexBuffer), mIndex(QOpenGLBuffer::IndexBuffer),
-    mTexture(QOpenGLTexture::Target2D)
+    mProgram(_widget),  mVertexShader(QOpenGLShader::Vertex, _widget), mFragmentShader(QOpenGLShader::Fragment, _widget),
+    mVAO(this), mVertex(QOpenGLBuffer::VertexBuffer), mIndex(QOpenGLBuffer::IndexBuffer),
+    mTexture(QOpenGLTexture::Target2D), _hasError(false)
+#ifdef QT_DEBUG
+    , mLogger(_widget)
+#endif
 {
+	mWidget = _widget;
+
 	mGL.initializeOpenGLFunctions();
 
 #ifdef QT_DEBUG
@@ -49,16 +53,26 @@ Renderer::Renderer(QOpenGLWidget *_widget) :
 
 	if (!mVertexShader.compileSourceFile(":/shaders/main.vert")) {
 		qWarning() << "Cannot compile main.vert";
+		_hasError = true;
+	}
+	if (!mVertexShader.log().isEmpty()) {
+		qWarning() << "Warning during main.vert compilation" << mVertexShader.log();
 	}
 	if (!mFragmentShader.compileSourceFile(":/shaders/main.frag")) {
 		qWarning() << "Cannot compile main.frag";
+		_hasError = true;
+	}
+	if (!mFragmentShader.log().isEmpty()) {
+		qWarning() << "Warning during main.frag compilation" << mFragmentShader.log();
 	}
 
 	if (!mProgram.addShader(&mVertexShader)) {
 		qWarning() << "Cannot add the vertex shader";
+		_hasError = true;
 	}
 	if (!mProgram.addShader(&mFragmentShader)) {
 		qWarning() << "Cannot add the fragment shader";
+		_hasError = true;
 	}
 
 	mProgram.bindAttributeLocation("a_position", ShaderProgramAttributes::POSITION);
@@ -67,9 +81,11 @@ Renderer::Renderer(QOpenGLWidget *_widget) :
 
 	if (!mProgram.link()) {
 		qWarning() << "Cannot link the program" << mProgram.log();
+		_hasError = true;
 	}
 	if (!mProgram.bind()) {
 		qWarning() << "Cannot bind the program";
+		_hasError = true;
 	}
 
 	mProgram.setUniformValue("tex", 0);
@@ -82,6 +98,16 @@ Renderer::Renderer(QOpenGLWidget *_widget) :
 	mGL.glDisable(GL_CULL_FACE);
 
 	mGL.glDisable(GL_BLEND);
+	
+	// Vertex Array Object
+	if (!mVAO.isCreated() && !mVAO.create()) {
+#ifdef QT_DEBUG
+		qWarning() << "Cannot create the vertex array object";
+#endif
+		return;
+	}
+	
+	mVAO.bind();
 }
 
 void Renderer::clear()
@@ -108,18 +134,18 @@ void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
 	// --- Before Draw ---
 
 	// Vertex Buffer
-	if (!mVertex.isCreated()) {
-		if (!mVertex.create()) {
+	if (!mVertex.isCreated() && !mVertex.create()) {
 #ifdef QT_DEBUG
-			qWarning() << "QOpenGLBuffer buffers not supported (mVertex)";
+		qWarning() << "QOpenGLBuffer buffers not supported (mVertex)";
 #endif
-		}
+		return;
 	}
 
 	if (!mVertex.bind()) {
 #ifdef QT_DEBUG
 		qWarning() << "QOpenGLBuffer bind type not supported (mVertex)" << mVertex.type();
 #endif
+		return;
 	}
 	mVertex.allocate(mVertexBuffer.data(), int(vectorSizeOf(mVertexBuffer)));
 
@@ -134,25 +160,24 @@ void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
 	mProgram.setAttributeBuffer(ShaderProgramAttributes::TEXCOORD, GL_FLOAT, (4 * sizeof(GLfloat)) + (4 * sizeof(GLfloat)), 2, vertexStride);
 
 	// Index Buffer
-	if (mIndexBuffer.empty())
-	{
+	if (mIndexBuffer.empty()) {
 		for (uint32_t idx = 0; idx < mVertexBuffer.size(); idx++) {
 			mIndexBuffer.push_back(idx);
 		}
 	}
 
-	if (!mIndex.isCreated()) {
-		if (!mIndex.create()) {
+	if (!mIndex.isCreated() && !mIndex.create()) {
 #ifdef QT_DEBUG
-			qWarning() << "QOpenGLBuffer buffers not supported (mIndex)";
+		qWarning() << "QOpenGLBuffer buffers not supported (mIndex)";
 #endif
-		}
+		return;
 	}
 
 	if (!mIndex.bind()) {
 #ifdef QT_DEBUG
 		qWarning() << "QOpenGLBuffer bind type not supported (mIndex)" << mIndex.type();
 #endif
+		return;
 	}
 	mIndex.allocate(mIndexBuffer.data(), int(vectorSizeOf(mIndexBuffer)));
 
@@ -165,7 +190,7 @@ void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
 	mProgram.setUniformValue("viewMatrix", mViewMatrix);
 
 	// --- Draw ---
-	mGL.glDrawElements(_type, GLsizei(mIndexBuffer.size()), GL_UNSIGNED_INT, nullptr);
+	mGL.glDrawElements(GLenum(_type), GLsizei(mIndexBuffer.size()), GL_UNSIGNED_INT, nullptr);
 #ifdef QT_DEBUG
 	GLenum lastError = mGL.glGetError();
 	if (lastError != GL_NO_ERROR) {
@@ -178,8 +203,10 @@ void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
 	mIndex.release();
 	mVertexBuffer.clear();
 	mIndexBuffer.clear();
-
-	if (mTexture.isCreated() && mTexture.isBound()) mTexture.release();
+	
+	if (mTexture.isCreated() && mTexture.isBound()) {
+		mTexture.release();
+	}
 	mGL.glDisable(GL_BLEND);
 }
 
@@ -221,7 +248,9 @@ void Renderer::bindIndex(uint32_t *_index, uint32_t _count)
 
 void Renderer::bindTexture(QImage &_image, bool generateMipmaps)
 {
-	if (mTexture.isCreated()) mTexture.destroy();
+	if (mTexture.isCreated()) {
+		mTexture.destroy();
+	}
 
 	mTexture.create();
 	mTexture.setMinificationFilter(QOpenGLTexture::NearestMipMapLinear);

@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,12 +15,10 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef MSDFILE_H
-#define MSDFILE_H
+#pragma once
 
 #include "files/File.h"
 #include "FF8Text.h"
-#include "Data.h"
 
 class MsdFile : public File
 {
@@ -46,5 +44,3 @@ private:
 	QList<QByteArray> texts;
 	QList<bool> needEndOfString;
 };
-
-#endif // MSDFILE_H

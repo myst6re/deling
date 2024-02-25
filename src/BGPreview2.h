@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef BGPREVIEW2_H
-#define BGPREVIEW2_H
+#pragma once
 
 #include <QtWidgets>
 
@@ -24,7 +23,7 @@ class BGPreview2 : public QLabel
 {
     Q_OBJECT
 public:
-	explicit BGPreview2(QWidget *parent = 0);
+	explicit BGPreview2(QWidget *parent = nullptr);
 	void setName(const QString &);
 private:
 	bool showSave;
@@ -36,5 +35,3 @@ protected:
 	void leaveEvent(QEvent *);
 	void mousePressEvent(QMouseEvent *);
 };
-
-#endif // BGPREVIEW2_H

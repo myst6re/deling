@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef CHARAWIDGET_H
-#define CHARAWIDGET_H
+#pragma once
 
 #include <QtWidgets>
 #include "widgets/PageWidget.h"
@@ -26,7 +25,7 @@ class CharaWidget : public PageWidget
 {
 	Q_OBJECT
 public:
-	CharaWidget(QWidget *parent=0);
+	CharaWidget(QWidget *parent = nullptr);
 	void clear();
 	void fill();
 	inline QString tabName() const { return tr("Modèles 3D"); }
@@ -39,5 +38,3 @@ private:
 	CharaPreview *modelPreview;
 	QListWidget *modelList;
 };
-
-#endif // CHARAWIDGET_H

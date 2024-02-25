@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef TDWGRID_H
-#define TDWGRID_H
+#pragma once
 
 #include <QtWidgets>
 #include "widgets/TdwDisplay.h"
@@ -25,7 +24,7 @@ class TdwGrid : public TdwDisplay
 {
 	Q_OBJECT
 public:
-	explicit TdwGrid(QWidget *parent=0);
+	explicit TdwGrid(QWidget *parent = nullptr);
 	virtual ~TdwGrid();
 	//virtual void setTdwFile(TdwFile *tdwFile);
 	static QPoint getPos(int letter);
@@ -36,7 +35,7 @@ public slots:
 protected:
 	virtual QSize sizeHint() const;
 	virtual QSize minimumSizeHint() const;
-	virtual void mousePressEvent(QMouseEvent * e);
+	virtual void mousePressEvent(QMouseEvent *e);
 	virtual void keyPressEvent(QKeyEvent *e);
 	virtual void paintEvent(QPaintEvent *e);
 	virtual void focusInEvent(QFocusEvent *);
@@ -45,5 +44,3 @@ private:
 	static int getLetter(const QPoint &pos);
 	//QPixmap copyGrid;
 };
-
-#endif // TDWGRID_H

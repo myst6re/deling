@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -23,10 +23,17 @@ WalkmeshGLWidget::WalkmeshGLWidget(QWidget *parent)
       xTrans(0.0f), yTrans(0.0f), transStep(360.0f), lastKeyPressed(-1),
       camID(0), _selectedTriangle(-1), _selectedDoor(-1), _selectedGate(-1),
       _lineToDrawPoint1(Vertex_s()), _lineToDrawPoint2(Vertex_s()),
-      fovy(70.0), data(nullptr), curFrame(0), _drawLine(false)
+      fovy(70.0), data(nullptr), curFrame(0), gpuRenderer(nullptr), _drawLine(false)
 {
 	// setMouseTracking(true);
 	// startTimer(100);
+}
+
+WalkmeshGLWidget::~WalkmeshGLWidget()
+{
+	if (gpuRenderer) {
+		delete gpuRenderer;
+	}
 }
 
 void WalkmeshGLWidget::timerEvent(QTimerEvent *)
@@ -37,6 +44,11 @@ void WalkmeshGLWidget::timerEvent(QTimerEvent *)
 void WalkmeshGLWidget::clear()
 {
 	data = nullptr;
+	
+	if (gpuRenderer) {
+		gpuRenderer->reset();
+	}
+	
 	update();
 }
 
@@ -67,12 +79,15 @@ void WalkmeshGLWidget::updatePerspective()
 
 void WalkmeshGLWidget::initializeGL()
 {
-	gpuRenderer = new Renderer(this);
+	if (gpuRenderer == nullptr) {
+		gpuRenderer = new Renderer(this);
+	}
 }
 
 void WalkmeshGLWidget::resizeGL(int width, int height)
 {
-	gpuRenderer->setViewport(0, 0, width, height);
+	qDebug() << "WalkmeshGLWidget::resizeGL" << width << height;
+	//gpuRenderer->setViewport(0, 0, width, height);
 }
 
 void WalkmeshGLWidget::paintGL()

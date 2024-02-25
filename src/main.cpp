@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -31,16 +31,16 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	app.setWindowIcon(QIcon(":/images/deling.png"));
-
-	QSurfaceFormat glFormat;
+	
+	QSurfaceFormat format;
+	format.setOption(QSurfaceFormat::DeprecatedFunctions, false);
+	format.setProfile(QSurfaceFormat::CoreProfile);
+	format.setRenderableType(QSurfaceFormat::OpenGL);
+	format.setVersion(4, 1);
 #ifdef QT_DEBUG
-	glFormat.setVersion(4, 3);
-	glFormat.setOption(QSurfaceFormat::DebugContext);
-#else
-	glFormat.setVersion(3, 2);
+	format.setOption(QSurfaceFormat::DebugContext);
 #endif
-	glFormat.setProfile(QSurfaceFormat::CoreProfile);
-	QSurfaceFormat::setDefaultFormat(glFormat);
+	QSurfaceFormat::setDefaultFormat(format);;
 
 	Config::set();
 

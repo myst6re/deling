@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef ORIENTATIONWIDGET_H
-#define ORIENTATIONWIDGET_H
+#pragma once
 
 #include <QtWidgets>
 
@@ -24,8 +23,8 @@ class OrientationWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	explicit OrientationWidget(QWidget *parent = 0);
-	explicit OrientationWidget(quint8 value, QWidget *parent = 0);
+	explicit OrientationWidget(QWidget *parent = nullptr);
+	explicit OrientationWidget(quint8 value, QWidget *parent = nullptr);
 	quint8 value() const;
 	bool isReadOnly() const;
 	void setReadOnly(bool ro);
@@ -55,5 +54,3 @@ protected:
 		mouseEvent(e);
 	}
 };
-
-#endif // ORIENTATIONWIDGET_H

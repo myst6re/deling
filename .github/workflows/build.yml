@@ -168,7 +168,7 @@ jobs:
   pre_release_assets:
     name: Pre-Release
     needs: [main_build]
-    if: (github.event.ref_type != 'tag') && (github.ref == 'refs/heads/master')
+    if: (github.event.ref_type != 'tag') && (github.ref == 'refs/heads/develop')
     concurrency: pre-release-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:

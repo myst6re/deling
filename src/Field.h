@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#ifndef FIELD_H
-#define FIELD_H
+#pragma once
 
 #include <QtCore>
 #include "files/MsdFile.h"
@@ -108,7 +107,7 @@ protected:
 	void setName(const QString &name);
 
 	void openFile(FileType fileType, const QByteArray &data);
-	void openJsmFile(const QByteArray &jsm, const QByteArray &sym=QByteArray(), bool oldFormat = false);
+	void openJsmFile(const QByteArray &jsm, const QByteArray &sym = QByteArray(), bool oldFormat = false);
 	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
 	void openCharaFile(const QByteArray &one);
 	virtual void setFile(FileType fileType);
@@ -123,5 +122,3 @@ private:
 
 	QList<File *> files;
 };
-
-#endif // FIELD_H

@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2012 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -23,8 +23,7 @@
 		NIFTY-Serve	PAF01022
 		CompuServe	74050,1022
 **************************************************************/
-#ifndef DEF_LZS
-#define DEF_LZS
+#pragma once
 
 #include <QtCore>
 
@@ -47,5 +46,3 @@ private:
 	static unsigned char text_buf[4113];//ring buffer of size 4096, with extra 17 bytes to facilitate string comparison
 	static QByteArray result;
 };
-
-#endif
