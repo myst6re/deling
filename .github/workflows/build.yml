@@ -7,9 +7,6 @@ on:
     branches: [ master ]
   create: null
 
-env:
-  debianRequirements: "build-essential git zlib1g-dev liblz4-dev cmake qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools qt6-declarative-dev qt6-base-dev qt6-base-dev-tools qt6-translations-l10n libqt6opengl6-dev libgl1-mesa-dev wget curl devscripts"
-
 jobs:
   main_build:
     name: ${{ matrix.package_suffix }}
@@ -41,7 +38,7 @@ jobs:
           package_suffix: 'win64'
           win_arch: "x64"
           qt_arch: win64_msvc2019_64
-          cmake_extra_args: '-DZLIB_ROOT=C:/zlib' # -Dlz4_DIR=C:/lz4/lib/cmake/lz4 -DCMAKE_CXX_FLAGS="-I C:/lz4/include"'
+          cmake_extra_args: '-DZLIB_ROOT=C:/zlib'
           qt_tools: tools_ninja, tools_cmake
 
     env:
@@ -122,7 +119,7 @@ jobs:
       if: steps.cache-lz4.outputs.cache-hit != 'true'
       run: |
         git clone -q --depth 1 --single-branch --branch=${{ env.lz4_version }} https://github.com/lz4/lz4 ${{ env.lz4_path }}
-        cmake -S${{ env.lz4_path }}/build/cmake -B${{ env.lz4_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.lz4_installation_path }} -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_STATIC_LIBS:BOOL=ON -DLZ4_BUILD_LEGACY_LZ4C:BOOL=OFF -DLZ4_POSITION_INDEPENDENT_LIB:BOOL=OFF -DLZ4_BUILD_CLI:BOOL=OFF
+        cmake -S${{ env.lz4_path }}/build/cmake -B${{ env.lz4_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.lz4_installation_path }} -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_STATIC_LIBS:BOOL=ON -DLZ4_BUILD_LEGACY_LZ4C:BOOL=OFF -DLZ4_POSITION_INDEPENDENT_LIB:BOOL=OFF -DLZ4_BUILD_CLI:BOOL=OFF ${{ matrix.cmake_extra_args }}
         cmake --build ${{ env.lz4_build_path }} --target install -j3
 
     - name: Download linuxdeployqt
@@ -168,40 +165,9 @@ jobs:
         name: artifact-${{ matrix.package_suffix }}
         path: ${{ github.workspace }}/deling-continuous-*.*
 
-  deb_builder:
-    name: debianBuilder-${{matrix.config.name}}
-    runs-on: ${{matrix.config.os}}
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-        - {
-             name: jammy , os: ubuntu-22.04
-             , debArch: amd64
-          }
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - run: git fetch --tags --force
-    - name: Install Dependencies
-      run: |
-        sudo apt-get update -y > /dev/null
-        sudo apt-get install -qqq ${{env.debianRequirements}} > /dev/null
-    - name: Build
-      run: |
-        cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DQT_DEFAULT_MAJOR_VERSION=6 -DCPACK_DEBIAN_PACKAGE_RELEASE=${{github.run_attempt}}~${{matrix.config.name}}
-        cmake --build build
-        cpack -G DEB -C Release --config build/CPackConfig.cmake
-    - name: Upload
-      uses: actions/upload-artifact@v4
-      with:
-        name: debian-artifacts-${{ matrix.config.name }}}
-        path: deling*.deb
-
   pre_release_assets:
     name: Pre-Release
-    needs: [main_build, deb_builder]
+    needs: [main_build]
     if: (github.event.ref_type != 'tag') && (github.ref == 'refs/heads/master')
     concurrency: pre-release-${{ github.ref }}
     runs-on: ubuntu-latest
@@ -222,7 +188,7 @@ jobs:
 
   release_assets:
     name: Release
-    needs: [main_build, deb_builder]
+    needs: [main_build]
     if: github.event.ref_type == 'tag'
     concurrency: release-${{ github.ref }}
     runs-on: ubuntu-latest
