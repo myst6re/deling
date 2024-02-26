@@ -184,7 +184,6 @@ jobs:
        title: "Unstable Build"
        files: |
          artifact-*/*
-         debian-artifacts-*/*
 
   release_assets:
     name: Release
@@ -208,5 +207,4 @@ jobs:
        title: ${{ github.event.ref }}
        files: |
          artifact-*/*
-         debian-artifacts-*/*
 
