@@ -72,7 +72,7 @@ bool InfFile::open(const QByteArray &inf)
 		memcpy(&infStruct.cameraFocusHeight, &constInf[14], 2 + 10 * sizeof(Range));
 
 		for (int i = 0; i < 12; ++i) {
-			memcpy(&infStruct.gateways[i], &constInf[96 + i*24], 3 * sizeof(Vertex_s) + 2);
+			memcpy(&infStruct.gateways[i], &constInf[96 + i*24], 3 * sizeof(Vertex) + 2);
 			quint16 val = infStruct.gateways[i].fieldId == 0x7FFF ? 0x7FFF : 0;
 			infStruct.gateways[i].unknown1[0] = val;
 			infStruct.gateways[i].unknown1[1] = val;
@@ -99,7 +99,7 @@ bool InfFile::open(const QByteArray &inf)
 		infStruct.screenRange[1] = infStruct.screenRange[0];
 
 		for (int i = 0; i < 12; ++i) {
-			memcpy(&infStruct.gateways[i], &constInf[24 + i*24], 3 * sizeof(Vertex_s) + 2);
+			memcpy(&infStruct.gateways[i], &constInf[24 + i*24], 3 * sizeof(Vertex) + 2);
 			quint16 val = infStruct.gateways[i].fieldId == 0x7FFF ? 0x7FFF : 0;
 			infStruct.gateways[i].unknown1[0] = val;
 			infStruct.gateways[i].unknown1[1] = val;

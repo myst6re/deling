@@ -18,7 +18,7 @@
 #pragma once
 
 #include "files/File.h"
-#include "files/CaFile.h"
+#include "Poly.h"
 
 struct Range {
 	qint16 top;
@@ -28,15 +28,15 @@ struct Range {
 };
 
 struct Gateway {
-	Vertex_s exitLine[2];
-	Vertex_s destinationPoint;
+	Vertex exitLine[2];
+	Vertex destinationPoint;
 	quint16 fieldId;
 	quint16 unknown1[4];
 	quint32 unknown2;
 };
 
 struct Trigger {
-	Vertex_s trigger_line[2];
+	Vertex trigger_line[2];
 	quint8 doorID;
 	quint8 _blank[3];
 };

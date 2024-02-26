@@ -55,6 +55,7 @@ public:
 	const FF8DiscFile &fieldBinFile();
 //	QList<FF8DiscFile> worldmapDirectory();
 //	FF8DiscFile worldmapFile(int id);
+	const FF8DiscFile &worldBinFile();
 	const QList<FF8DiscFile> &fieldDirectory();
 	int fieldCount();
 	const FF8DiscFile &fieldFile(int id);

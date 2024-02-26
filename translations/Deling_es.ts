@@ -2824,6 +2824,34 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
         <source>Fichier map tiles écran PC (*.map)</source>
         <translation type="unfinished">Map Tiles PC Field File (*.map)</translation>
     </message>
+    <message>
+        <source>Pas une archive mappemonde.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (1).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (2).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (3).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (4).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (5).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (6).</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Search</name>
@@ -3526,6 +3554,13 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <source>Position %1</source>
         <translation>Maila %1</translation>
+    </message>
+</context>
+<context>
+    <name>WorldmapWidget</name>
+    <message>
+        <source>dump</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

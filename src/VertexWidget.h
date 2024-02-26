@@ -18,21 +18,21 @@
 #pragma once
 
 #include <QtWidgets>
-#include "files/CaFile.h"
+#include "Poly.h"
 
 class VertexWidget : public QWidget
 {
 	Q_OBJECT
 public:
 	explicit VertexWidget(QWidget *parent = nullptr);
-	Vertex_s values() const;
-	void setValues(const Vertex_s &v);
+	Vertex values() const;
+	void setValues(const Vertex &v);
 	bool isReadOnly() const;
 	void setReadOnly(bool ro);
 private slots:
 	void emitValuesChanged();
 signals:
-	void valuesChanged(const Vertex_s &v);
+	void valuesChanged(const Vertex &v);
 private:
 	QSpinBox *x, *y, *z;
 	bool dontEmit;

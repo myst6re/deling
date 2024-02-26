@@ -28,7 +28,7 @@ if(NOT PRERELEASE_STRING)
     set(PRERELEASE_STRING "")
 endif()
 
-project("Deling" VERSION 2.0.0 LANGUAGES CXX
+project("Deling" VERSION 1.0.0 LANGUAGES CXX
     DESCRIPTION "Final Fantasy VIII field archive editor"
     HOMEPAGE_URL "https://github.com/myst6re/deling"
 )
@@ -170,6 +170,26 @@ set(PROJECT_SOURCES
     "src/FsPreviewWidget.h"
     "src/FsWidget.cpp"
     "src/FsWidget.h"
+    "src/game/worldmap/Map.cpp"
+    "src/game/worldmap/Map.h"
+    "src/game/worldmap/MapBlock.cpp"
+    "src/game/worldmap/MapBlock.h"
+    "src/game/worldmap/MapPoly.cpp"
+    "src/game/worldmap/MapPoly.h"
+    "src/game/worldmap/MapSegment.cpp"
+    "src/game/worldmap/MapSegment.h"
+    "src/game/worldmap/ObjFile.cpp"
+    "src/game/worldmap/ObjFile.h"
+    "src/game/worldmap/TexlFile.cpp"
+    "src/game/worldmap/TexlFile.h"
+    "src/game/worldmap/WmArchive.cpp"
+    "src/game/worldmap/WmArchive.h"
+    "src/game/worldmap/WmEncounter.cpp"
+    "src/game/worldmap/WmEncounter.h"
+    "src/game/worldmap/WmsetFile.cpp"
+    "src/game/worldmap/WmsetFile.h"
+    "src/game/worldmap/WmxFile.cpp"
+    "src/game/worldmap/WmxFile.h"
     "src/GZIP.cpp"
     "src/GZIP.h"
     "src/HexLineEdit.cpp"
@@ -201,6 +221,8 @@ set(PROJECT_SOURCES
     "src/OrientationWidget.h"
     "src/PlainTextEdit.cpp"
     "src/PlainTextEdit.h"
+    "src/Poly.cpp"
+    "src/Poly.h"
     "src/PreviewWidget.cpp"
     "src/PreviewWidget.h"
     "src/ProgressWidget.cpp"
@@ -263,6 +285,10 @@ set(PROJECT_SOURCES
     "src/widgets/TdwWidget2.h"
     "src/widgets/WalkmeshWidget.cpp"
     "src/widgets/WalkmeshWidget.h"
+    "src/widgets/WorldmapGLWidget.cpp"
+    "src/widgets/WorldmapGLWidget.h"
+    "src/widgets/WorldmapWidget.cpp"
+    "src/widgets/WorldmapWidget.h"
 )
 
 if(APPLE)

@@ -493,7 +493,7 @@ void JsmFile::searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const
 	}
 }
 
-/*void JsmFile::searchLines(QMap<quint8, Vertex_s[2]> &lines) const
+/*void JsmFile::searchLines(QMap<quint8, Vertex[2]> &lines) const
 {
 //	qDebug() << "JsmFile::searchDefaultBGStates";
 	int nbGroup = scripts.nbGroup(), nbOpcode;
@@ -1340,7 +1340,7 @@ void JsmFile::searchAllOpcodeTypes(QMap<int, int> &ret/*, QMap<int, QString> &st
 	}
 }
 /*
-void JsmFile::searchAllSavePoints(QList<Vertex_s> &ret)
+void JsmFile::searchAllSavePoints(QList<Vertex> &ret)
 {
 	int nbOpcode = scripts.data().nbOpcode();
 	quint32 key;

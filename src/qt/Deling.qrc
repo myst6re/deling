@@ -64,5 +64,7 @@
         <file>fonts/sysfnt_jp.txt</file>
         <file>shaders/main.vert</file>
         <file>shaders/main.frag</file>
+        <file>shaders/vertex.glsl</file>
+        <file>shaders/fragment.glsl</file>
     </qresource>
 </RCC>

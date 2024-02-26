@@ -18,13 +18,10 @@
 #pragma once
 
 #include "files/File.h"
-
-struct Vertex_s {
-	qint16 x, y, z;
-};
+#include "Poly.h"
 
 struct Camera {
-	Vertex_s camera_axis[3];
+	Vertex camera_axis[3];
 	qint16 camera_axis2z;// copy (padding)
 	qint32 camera_position[3];
 	qint32 blank;

@@ -369,9 +369,9 @@ QMap<int, int> FieldArchive::searchAllOpcodeTypes() const
 	return ret;
 }
 
-QList<Vertex_s> FieldArchive::searchAllSavePoints() const
+QList<Vertex> FieldArchive::searchAllSavePoints() const
 {
-	QList<Vertex_s> ret;
+	QList<Vertex> ret;
 
 	for (Field *field: fields) {
 		if (field->hasJsmFile()) {

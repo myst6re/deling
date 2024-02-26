@@ -162,7 +162,7 @@ qint16 IdFile::unknown() const
 	return _unknown;
 }
 
-Vertex_sr IdFile::fromVertex_s(const Vertex_s &vertex_s)
+Vertex_sr IdFile::fromVertex_s(const Vertex &vertex_s)
 {
 	Vertex_sr vertex_sr;
 
@@ -174,9 +174,9 @@ Vertex_sr IdFile::fromVertex_s(const Vertex_s &vertex_s)
 	return vertex_sr;
 }
 
-Vertex_s IdFile::toVertex_s(const Vertex_sr &vertex_sr)
+Vertex IdFile::toVertex_s(const Vertex_sr &vertex_sr)
 {
-	Vertex_s vertex_s;
+	Vertex vertex_s;
 
 	vertex_s.x = vertex_sr.x;
 	vertex_s.y = vertex_sr.y;

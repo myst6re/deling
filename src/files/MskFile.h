@@ -18,7 +18,7 @@
 #pragma once
 
 #include "files/File.h"
-#include "files/CaFile.h"
+#include "Poly.h"
 
 class MskFile : public File
 {
@@ -31,10 +31,10 @@ public:
 		return QObject::tr("Fichier caméra cinématique écran PC (*.msk)");
 	}
 	int cameraPositionCount() const;
-	Vertex_s *cameraPosition(int frame) const;
-	void setCameraPosition(int frame, Vertex_s camPos[4]);
-	void insertCameraPosition(int frame, Vertex_s camPos[4]);
+	Vertex *cameraPosition(int frame) const;
+	void setCameraPosition(int frame, Vertex camPos[4]);
+	void insertCameraPosition(int frame, Vertex camPos[4]);
 	void removeCameraPosition(int frame);
 private:
-	QList<Vertex_s *> vertices;
+	QList<Vertex *> vertices;
 };

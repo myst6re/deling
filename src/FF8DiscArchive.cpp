@@ -250,6 +250,11 @@ const FF8DiscFile &FF8DiscArchive::fieldBinFile()
 	return rootFile(2);
 }
 
+const FF8DiscFile &FF8DiscArchive::worldBinFile()
+{
+	return rootFile(26);
+}
+
 const QList<FF8DiscFile> &FF8DiscArchive::fieldDirectory()
 {
 	if (!fieldFiles.isEmpty() || 2 >= rootCount())		return fieldFiles;

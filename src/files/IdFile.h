@@ -18,7 +18,7 @@
 #pragma once
 
 #include "files/File.h"
-#include "files/CaFile.h"
+#include "Poly.h"
 
 struct Vertex_sr {
 	qint16 x, y, z, res;// res = Triangle[0].z (padding)
@@ -52,8 +52,8 @@ public:
 	void setAccess(int triangleID, const Access &access);
 	bool hasUnknownData() const;
 	qint16 unknown() const;
-	static Vertex_sr fromVertex_s(const Vertex_s &vertex_s);
-	static Vertex_s toVertex_s(const Vertex_sr &vertex_sr);
+	static Vertex_sr fromVertex_s(const Vertex &vertex_s);
+	static Vertex toVertex_s(const Vertex_sr &vertex_sr);
 private:
 	QList<Triangle> triangles;
 	QList<Access> _access;

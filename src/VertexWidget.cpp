@@ -41,16 +41,16 @@ VertexWidget::VertexWidget(QWidget *parent) :
 	connect(z, SIGNAL(valueChanged(int)), SLOT(emitValuesChanged()));
 }
 
-Vertex_s VertexWidget::values() const
+Vertex VertexWidget::values() const
 {
-    Vertex_s v;
+    Vertex v;
 	v.x = x->value();
 	v.y = y->value();
 	v.z = z->value();
 	return v;
 }
 
-void VertexWidget::setValues(const Vertex_s &v)
+void VertexWidget::setValues(const Vertex &v)
 {
 	dontEmit = true;
 	x->setValue(v.x);

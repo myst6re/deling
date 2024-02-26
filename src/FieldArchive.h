@@ -19,7 +19,7 @@
 
 #include <QtCore>
 #include "files/JsmFile.h"
-#include "files/CaFile.h"
+#include "Poly.h"
 
 class Field;
 struct ArchiveObserver;
@@ -63,7 +63,7 @@ public:
 	QMap<Field *, QList<int> > searchAllBattles() const;
 	QMultiMap<int, Field *> searchAllMoments() const;
 	QMap<int, int> searchAllOpcodeTypes() const;
-	QList<Vertex_s> searchAllSavePoints() const;
+	QList<Vertex> searchAllSavePoints() const;
 	QStringList fieldList() const;
 	const QStringList &mapList() const;
 	void setMapList(const QStringList &mapList);

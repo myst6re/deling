@@ -383,7 +383,7 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 
 	if (posLine >= 0) {
 		QStringList texts = matchSetLine.capturedTexts();
-		Vertex_s vertex[2];
+		Vertex vertex[2];
 		vertex[0].x = qint16(texts.at(1).toInt());
 		vertex[0].y = qint16(texts.at(2).toInt());
 		vertex[0].z = qint16(texts.at(3).toInt());

@@ -22,7 +22,7 @@ WalkmeshGLWidget::WalkmeshGLWidget(QWidget *parent)
       distance(0.0), xRot(0.0f), yRot(0.0f), zRot(0.0f),
       xTrans(0.0f), yTrans(0.0f), transStep(360.0f), lastKeyPressed(-1),
       camID(0), _selectedTriangle(-1), _selectedDoor(-1), _selectedGate(-1),
-      _lineToDrawPoint1(Vertex_s()), _lineToDrawPoint2(Vertex_s()),
+      _lineToDrawPoint1(Vertex()), _lineToDrawPoint2(Vertex()),
       fovy(70.0), data(nullptr), curFrame(0), gpuRenderer(nullptr), _drawLine(false)
 {
 	// setMouseTracking(true);
@@ -462,7 +462,7 @@ void WalkmeshGLWidget::setSelectedGate(int gate)
 	update();
 }
 
-void WalkmeshGLWidget::setLineToDraw(const Vertex_s vertex[2])
+void WalkmeshGLWidget::setLineToDraw(const Vertex vertex[2])
 {
 	_lineToDrawPoint1 = vertex[0];
 	_lineToDrawPoint2 = vertex[1];

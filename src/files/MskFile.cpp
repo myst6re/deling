@@ -24,7 +24,7 @@ MskFile::MskFile()
 
 MskFile::~MskFile()
 {
-	for (Vertex_s *vertex: vertices) {
+	for (Vertex *vertex: vertices) {
 		delete[] vertex;
 	}
 }
@@ -34,7 +34,7 @@ bool MskFile::open(const QByteArray &msk)
 	const char *mskData = msk.constData();
 	quint32 count;
 
-	for (Vertex_s *vertex: vertices) {
+	for (Vertex *vertex: vertices) {
 		delete[] vertex;
 	}
 	vertices.clear();
@@ -56,7 +56,7 @@ bool MskFile::open(const QByteArray &msk)
 	}
 
 	for (quint32 i = 0; i < count; ++i) {
-		Vertex_s *vertex = new Vertex_s[4];
+		Vertex *vertex = new Vertex[4];
 
 		memcpy(vertex, &mskData[4 + i*24], 24);
 
@@ -71,7 +71,7 @@ bool MskFile::save(QByteArray &msk)
 	qint32 count = vertices.size();
 	msk.append((char *)&count, 4);
 
-	for (Vertex_s *vertex: vertices) {
+	for (Vertex *vertex: vertices) {
 		msk.append((char *)&vertex, 24);
 	}
 
@@ -83,12 +83,12 @@ int MskFile::cameraPositionCount() const
 	return vertices.size();
 }
 
-Vertex_s *MskFile::cameraPosition(int frame) const
+Vertex *MskFile::cameraPosition(int frame) const
 {
 	return vertices.value(frame, nullptr);
 }
 
-void MskFile::setCameraPosition(int frame, Vertex_s camPos[4])
+void MskFile::setCameraPosition(int frame, Vertex camPos[4])
 {
 	if (frame < vertices.size()) {
 		delete[] vertices.at(frame);
@@ -96,7 +96,7 @@ void MskFile::setCameraPosition(int frame, Vertex_s camPos[4])
 	}
 }
 
-void MskFile::insertCameraPosition(int frame, Vertex_s camPos[4])
+void MskFile::insertCameraPosition(int frame, Vertex camPos[4])
 {
 	vertices.insert(frame, camPos);
 }

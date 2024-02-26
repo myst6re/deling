@@ -139,9 +139,9 @@ QWidget *WalkmeshWidget::buildCameraPage()
 
 	connect(camList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentCamera(int)));
 
-	connect(caVectorXEdit, SIGNAL(valuesChanged(Vertex_s)), SLOT(editCaVector(Vertex_s)));
-	connect(caVectorYEdit, SIGNAL(valuesChanged(Vertex_s)), SLOT(editCaVector(Vertex_s)));
-	connect(caVectorZEdit, SIGNAL(valuesChanged(Vertex_s)), SLOT(editCaVector(Vertex_s)));
+	connect(caVectorXEdit, SIGNAL(valuesChanged(Vertex)), SLOT(editCaVector(Vertex)));
+	connect(caVectorYEdit, SIGNAL(valuesChanged(Vertex)), SLOT(editCaVector(Vertex)));
+	connect(caVectorZEdit, SIGNAL(valuesChanged(Vertex)), SLOT(editCaVector(Vertex)));
 
 	connect(caSpaceXEdit, SIGNAL(valueChanged(double)), SLOT(editCaPos(double)));
 	connect(caSpaceYEdit, SIGNAL(valueChanged(double)), SLOT(editCaPos(double)));
@@ -201,9 +201,9 @@ QWidget *WalkmeshWidget::buildWalkmeshPage()
 	layout->setRowStretch(6, 1);
 
 	connect(idList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentId(int)));
-	connect(idVertices[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
-	connect(idVertices[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
-	connect(idVertices[2], SIGNAL(valuesChanged(Vertex_s)), SLOT(editIdTriangle(Vertex_s)));
+	connect(idVertices[0], SIGNAL(valuesChanged(Vertex)), SLOT(editIdTriangle(Vertex)));
+	connect(idVertices[1], SIGNAL(valuesChanged(Vertex)), SLOT(editIdTriangle(Vertex)));
+	connect(idVertices[2], SIGNAL(valuesChanged(Vertex)), SLOT(editIdTriangle(Vertex)));
 	connect(idAccess[0], SIGNAL(valueChanged(int)), SLOT(editIdAccess(int)));
 	connect(idAccess[1], SIGNAL(valueChanged(int)), SLOT(editIdAccess(int)));
 	connect(idAccess[2], SIGNAL(valueChanged(int)), SLOT(editIdAccess(int)));
@@ -253,9 +253,9 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	layout->setRowStretch(4, 1);
 
 	connect(gateList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentGateway(int)));
-	connect(exitPoints[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editExitPoint(Vertex_s)));
-	connect(exitPoints[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editExitPoint(Vertex_s)));
-	connect(entryPoint, SIGNAL(valuesChanged(Vertex_s)), SLOT(editEntryPoint(Vertex_s)));
+	connect(exitPoints[0], SIGNAL(valuesChanged(Vertex)), SLOT(editExitPoint(Vertex)));
+	connect(exitPoints[1], SIGNAL(valuesChanged(Vertex)), SLOT(editExitPoint(Vertex)));
+	connect(entryPoint, SIGNAL(valuesChanged(Vertex)), SLOT(editEntryPoint(Vertex)));
 	connect(fieldId, SIGNAL(valueChanged(int)), SLOT(editFieldId(int)));
 	for (int i = 0; i < 4; ++i) {
 		connect(unknownGate1[i], SIGNAL(valueChanged(int)), SLOT(editUnknownGate(int)));
@@ -294,8 +294,8 @@ QWidget *WalkmeshWidget::buildDoorsPage()
 	layout->setRowStretch(3, 1);
 
 	connect(doorList, SIGNAL(currentRowChanged(int)), SLOT(setCurrentDoor(int)));
-	connect(doorPosition[0], SIGNAL(valuesChanged(Vertex_s)), SLOT(editDoorPoint(Vertex_s)));
-	connect(doorPosition[1], SIGNAL(valuesChanged(Vertex_s)), SLOT(editDoorPoint(Vertex_s)));
+	connect(doorPosition[0], SIGNAL(valuesChanged(Vertex)), SLOT(editDoorPoint(Vertex)));
+	connect(doorPosition[1], SIGNAL(valuesChanged(Vertex)), SLOT(editDoorPoint(Vertex)));
 	connect(doorUsed, SIGNAL(toggled(bool)), SLOT(editDoorUsed(bool)));
 	connect(doorId, SIGNAL(valueChanged(int)), SLOT(editDoorId(int)));
 
@@ -682,7 +682,7 @@ void WalkmeshWidget::removeCamera()
 	}
 }
 
-void WalkmeshWidget::editCaVector(const Vertex_s &values)
+void WalkmeshWidget::editCaVector(const Vertex &values)
 {
 	QObject *s = sender();
 
@@ -691,12 +691,12 @@ void WalkmeshWidget::editCaVector(const Vertex_s &values)
 	else if (s == caVectorZEdit)		editCaVector(2, values);
 }
 
-void WalkmeshWidget::editCaVector(int id, const Vertex_s &values)
+void WalkmeshWidget::editCaVector(int id, const Vertex &values)
 {
 	if (data()->hasCaFile() && data()->getCaFile()->cameraCount() > 0) {
 		const int camID = currentCamera();
 		Camera cam = data()->getCaFile()->camera(camID);
-		Vertex_s oldV = cam.camera_axis[id];
+		Vertex oldV = cam.camera_axis[id];
 
 		if (oldV.x != values.x || oldV.y != values.y || oldV.z != values.z) {
 			cam.camera_axis[id] = values;
@@ -806,7 +806,7 @@ void WalkmeshWidget::removeTriangle()
 	}
 }
 
-void WalkmeshWidget::editIdTriangle(const Vertex_s &values)
+void WalkmeshWidget::editIdTriangle(const Vertex &values)
 {
 	QObject *s = sender();
 
@@ -815,7 +815,7 @@ void WalkmeshWidget::editIdTriangle(const Vertex_s &values)
 	else if (s == idVertices[2])		editIdTriangle(2, values);
 }
 
-void WalkmeshWidget::editIdTriangle(int id, const Vertex_s &values)
+void WalkmeshWidget::editIdTriangle(int id, const Vertex &values)
 {
 	if (data()->hasIdFile()) {
 		const int triangleID = idList->currentRow();
@@ -904,7 +904,7 @@ void WalkmeshWidget::setCurrentDoor(int id)
 	walkmeshGL->setSelectedDoor(id);
 }
 
-void WalkmeshWidget::editExitPoint(const Vertex_s &values)
+void WalkmeshWidget::editExitPoint(const Vertex &values)
 {
 	QObject *s = sender();
 
@@ -912,12 +912,12 @@ void WalkmeshWidget::editExitPoint(const Vertex_s &values)
 	else if (s == exitPoints[1])		editExitPoint(1, values);
 }
 
-void WalkmeshWidget::editExitPoint(int id, const Vertex_s &values)
+void WalkmeshWidget::editExitPoint(int id, const Vertex &values)
 {
 	if (data()->hasInfFile()) {
 		int gateId = gateList->currentRow();
 		Gateway old = data()->getInfFile()->getGateway(gateId);
-		Vertex_s oldVertex = old.exitLine[id];
+		Vertex oldVertex = old.exitLine[id];
 		if (oldVertex.x != values.x || oldVertex.y != values.y || oldVertex.z != values.z) {
 			old.exitLine[id] = values;
 			data()->getInfFile()->setGateway(gateId, old);
@@ -927,12 +927,12 @@ void WalkmeshWidget::editExitPoint(int id, const Vertex_s &values)
 	}
 }
 
-void WalkmeshWidget::editEntryPoint(const Vertex_s &values)
+void WalkmeshWidget::editEntryPoint(const Vertex &values)
 {
 	if (data()->hasInfFile()) {
 		int gateId = gateList->currentRow();
 		Gateway old = data()->getInfFile()->getGateway(gateId);
-		Vertex_s oldVertex = old.destinationPoint;
+		Vertex oldVertex = old.destinationPoint;
 		if (oldVertex.x != values.x || oldVertex.y != values.y || oldVertex.z != values.z) {
 			old.destinationPoint = values;
 			data()->getInfFile()->setGateway(gateId, old);
@@ -941,7 +941,7 @@ void WalkmeshWidget::editEntryPoint(const Vertex_s &values)
 	}
 }
 
-void WalkmeshWidget::editDoorPoint(const Vertex_s &values)
+void WalkmeshWidget::editDoorPoint(const Vertex &values)
 {
 	QObject *s = sender();
 
@@ -949,12 +949,12 @@ void WalkmeshWidget::editDoorPoint(const Vertex_s &values)
 	else if (s == doorPosition[1])		editDoorPoint(1, values);
 }
 
-void WalkmeshWidget::editDoorPoint(int id, const Vertex_s &values)
+void WalkmeshWidget::editDoorPoint(int id, const Vertex &values)
 {
 	if (data()->hasInfFile()) {
 		int gateId = gateList->currentRow();
 		Trigger old = data()->getInfFile()->getTrigger(gateId);
-		Vertex_s oldVertex = old.trigger_line[id];
+		Vertex oldVertex = old.trigger_line[id];
 		if (oldVertex.x != values.x || oldVertex.y != values.y || oldVertex.z != values.z) {
 			old.trigger_line[id] = values;
 			data()->getInfFile()->setTrigger(gateId, old);
@@ -1184,9 +1184,9 @@ void WalkmeshWidget::addMovieCameraPosition()
 	int row = frameList->currentRow();
 	if (row < 0)	row = 0;
 
-	Vertex_s *camPos = new Vertex_s[4];
+	Vertex *camPos = new Vertex[4];
 
-	memset(camPos, 0, sizeof(Vertex_s) * 4);
+	memset(camPos, 0, sizeof(Vertex) * 4);
 
 	data()->getMskFile()->insertCameraPosition(row+1, camPos);
 
