@@ -18,6 +18,8 @@
 
 #include "FieldThread.h"
 #include "FF8Image.h"
+#include "FieldArchive.h"
+#include "Field.h"
 
 void FieldThread::run()
 {

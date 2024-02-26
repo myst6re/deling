@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "widgets/MsdWidget.h"
+#include "Data.h"
 
 MsdWidget::MsdWidget(QWidget *parent)
 	: PageWidget(parent)

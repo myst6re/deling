@@ -17,8 +17,10 @@
  ****************************************************************************/
 #pragma once
 
+#include <QtCore>
 #include "Field.h"
-#include "FsArchive.h"
+
+class FsArchive;
 
 class FieldPC : public Field
 {

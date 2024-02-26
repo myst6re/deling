@@ -19,8 +19,6 @@
 
 #include <QtWidgets>
 #include "widgets/TdwGrid.h"
-#include "FF8Font.h"
-#include "FF8Text.h"
 
 class SpecialCharactersDialog : public QDialog
 {

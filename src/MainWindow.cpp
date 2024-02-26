@@ -32,6 +32,12 @@
 #include "widgets/SoundWidget.h"
 #include "widgets/MiscWidget.h"
 #include "widgets/AboutDialog.h"
+#include "FieldArchivePC.h"
+#include "FieldArchivePS.h"
+#include "FieldPC.h"
+#include "TextPreview.h"
+#include "ConfigDialog.h"
+#include "FieldThread.h"
 
 MainWindow::MainWindow()
     : fieldArchive(nullptr), field(nullptr), currentField(nullptr),

@@ -17,6 +17,8 @@
  ****************************************************************************/
 #include "Search.h"
 #include "SearchAll.h"
+#include "Config.h"
+#include "Field.h"
 
 Search::Search(QTreeWidget *fieldList, SearchAll *searchAllDialog, QWidget *parent)
     : QDialog(parent, Qt::Tool), fieldArchive(nullptr), fieldList(fieldList),

@@ -22,6 +22,7 @@
 #include <QApplication>
 #include <QSurfaceFormat>
 #include "Config.h"
+#include "FF8Font.h"
 #include "MainWindow.h"
 
 // Only for static compilation

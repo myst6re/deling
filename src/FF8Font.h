@@ -17,7 +17,9 @@
  ****************************************************************************/
 #pragma once
 
-#include "files/TdwFile.h"
+#include <QtCore>
+
+class TdwFile;
 
 class FF8Font
 {

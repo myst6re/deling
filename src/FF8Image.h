@@ -18,7 +18,6 @@
 #pragma once
 
 #include <QtGui>
-#include "LZS.h"
 
 #define COEFF_COLOR	8.2258064516129032258064516129032 // 255/31
 

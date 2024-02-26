@@ -18,8 +18,9 @@
 #pragma once
 
 #include <QtCore>
-#include "FieldArchive.h"
-#include "Field.h"
+
+class FieldArchive;
+class Field;
 
 class FieldThread : public QThread
 {

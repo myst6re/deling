@@ -18,7 +18,6 @@
 #pragma once
 
 #include <QtWidgets>
-#include "FF8Text.h"
 
 class MsdHighlighter : public QSyntaxHighlighter
 {

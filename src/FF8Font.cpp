@@ -17,6 +17,7 @@
  ****************************************************************************/
 #include "FF8Font.h"
 #include "Config.h"
+#include "files/TdwFile.h"
 
 FF8Font::FF8Font(TdwFile *tdw, const QByteArray &txtFileData) :
 	_tdw(tdw), modified(false), readOnly(false)

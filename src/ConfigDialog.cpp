@@ -16,6 +16,9 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "ConfigDialog.h"
+#include "Config.h"
+#include "Data.h"
+#include "TdwManagerDialog.h"
 
 ConfigDialog::ConfigDialog(QWidget *parent)
 	: QDialog(parent, Qt::Dialog | Qt::WindowCloseButtonHint)

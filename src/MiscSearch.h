@@ -17,7 +17,10 @@
  ****************************************************************************/
 #pragma once
 
-#include "Search.h"
+#include <QtWidgets>
+
+class FieldArchive;
+class Field;
 
 class MiscSearch : public QDialog
 {

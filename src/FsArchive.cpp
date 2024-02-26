@@ -17,6 +17,9 @@
  ****************************************************************************/
 #include "FsArchive.h"
 #include "QLZ4.h"
+#include "Data.h"
+#include "LZS.h"
+#include "ArchiveObserver.h"
 
 FsHeader::FsHeader()
     : _uncompressedSize(0), _position(quint32(-1)), _compression(quint32(CompressionNone))

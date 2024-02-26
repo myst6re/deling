@@ -17,14 +17,16 @@
  ****************************************************************************/
 #pragma once
 
-#include "Search.h"
+#include <QtWidgets>
+
+class FieldArchive;
 
 class VarManager : public QWidget
 {
 	Q_OBJECT
 public:
 	explicit VarManager(FieldArchive *fieldArchive, QWidget *parent = nullptr);
-	void setFieldArchive(FieldArchive *);
+	void setFieldArchive(FieldArchive *fieldArchive);
 private slots:
 	void scrollToList(int);
 	void search();

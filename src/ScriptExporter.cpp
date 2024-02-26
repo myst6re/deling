@@ -16,6 +16,10 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "ScriptExporter.h"
+#include "FieldArchive.h"
+#include "Field.h"
+#include "ArchiveObserver.h"
+#include "files/JsmFile.h"
 
 ScriptExporter::ScriptExporter(FieldArchive *archive) :
     _archive(archive)

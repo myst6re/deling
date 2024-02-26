@@ -16,8 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "FieldArchive.h"
-#include "LZS.h"
 #include "Data.h"
+#include "Field.h"
 
 FieldArchive::FieldArchive()
 	: readOnly(false)

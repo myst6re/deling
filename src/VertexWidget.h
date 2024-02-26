@@ -25,8 +25,8 @@ class VertexWidget : public QWidget
 	Q_OBJECT
 public:
 	explicit VertexWidget(QWidget *parent = nullptr);
-    Vertex_s values() const;
-    void setValues(const Vertex_s &v);
+	Vertex_s values() const;
+	void setValues(const Vertex_s &v);
 	bool isReadOnly() const;
 	void setReadOnly(bool ro);
 private slots:

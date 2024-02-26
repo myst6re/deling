@@ -16,6 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "FF8DiscArchive.h"
+#include "LZS.h"
+#include "GZIP.h"
 
 FF8DiscFile::FF8DiscFile() :
 	size(0)

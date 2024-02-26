@@ -20,6 +20,7 @@
 #include <QtCore>
 #include "JsmData.h"
 #include "JsmExpression.h"
+#include "JsmOpcode.h"
 
 class JsmScript
 {

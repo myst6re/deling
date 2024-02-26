@@ -19,17 +19,13 @@
 
 #include <QtWidgets>
 #include "FsArchive.h"
-#include "Config.h"
-#include "FsWidget.h"
-#include "FsPreviewWidget.h"
-#include "FF8Image.h"
-#include "files/BackgroundFile.h"
-#include "files/TdwFile.h"
-#include "files/TexFile.h"
+
+class FsPreviewWidget;
+class FsWidget;
 
 class FsDialog : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 	explicit FsDialog(FsArchive *fsArchive, QWidget *parent = nullptr);
 	virtual ~FsDialog();
@@ -41,21 +37,21 @@ private slots:
 	void changePreview();
 	void changeImageInPreview(int imageID);
 	void changeImagePaletteInPreview(int palID);
-	void doubleClicked(QTreeWidgetItem *);
+	void doubleClicked(QTreeWidgetItem *item);
 	void openDir();
 	void parentDir();
-	void extract(QStringList sources=QStringList());
-	void replace(QString source=QString(), QString destination=QString());
-	void addFile(QStringList sources=QStringList());
-	void addDirectory(QString source=QString());
-	void remove(QStringList destinations=QStringList());
+	void extract(QStringList sources = QStringList());
+	void replace(QString source = QString(), QString destination = QString());
+	void addFile(QStringList sources = QStringList());
+	void addDirectory(QString source = QString());
+	void remove(QStringList destinations = QStringList());
 	void rename();
-	void renameOK(QTreeWidgetItem *, int);
+	void renameOK(QTreeWidgetItem *item, int row);
 	void exportImages();
 private:
 	void generatePreview();
 	void add(QStringList sources, bool fromDir = false);
-	void openDir(const QString &);
+	void openDir(const QString &dirPath);
 	QStringList listFilesInDir(QString dirPath);
 	static FiCompression compressionMessage(QWidget *parent);
 

@@ -17,6 +17,13 @@
  ****************************************************************************/
 #include "FsDialog.h"
 #include "ProgressWidget.h"
+#include "Config.h"
+#include "FF8Image.h"
+#include "files/BackgroundFile.h"
+#include "files/TdwFile.h"
+#include "files/TexFile.h"
+#include "FsPreviewWidget.h"
+#include "FsWidget.h"
 
 FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
     QWidget(parent), fsArchive(fsArchive), currentImage(0), currentPal(0)
@@ -317,7 +324,7 @@ void FsDialog::openDir(const QString &name)
 
 		if (header == nullptr) {
 			item = new TreeWidgetItem(QStringList() << file);
-			item->setData(0, FILE_TYPE_ROLE, DIR);
+			item->setData(0, FILE_TYPE_ROLE, DIRECTORY);
 			item->setData(0, FILE_NAME_ROLE, file);
 			item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 			item->setIcon(0, FsWidget::getDirIcon());
@@ -372,7 +379,7 @@ void FsDialog::openDir()
 
 void FsDialog::doubleClicked(QTreeWidgetItem *item)
 {
-	if (item->data(0, FILE_TYPE_ROLE).toInt() == DIR)
+	if (item->data(0, FILE_TYPE_ROLE).toInt() == DIRECTORY)
 		openDir(currentPath + item->text(0));
 	else
 		extract();
@@ -465,7 +472,7 @@ void FsDialog::replace(QString source, QString destination)
 
 	if (item == nullptr)	return;
 
-	bool isDir = item->data(0, FILE_TYPE_ROLE).toInt() == DIR;
+	bool isDir = item->data(0, FILE_TYPE_ROLE).toInt() == DIRECTORY;
 
 	if (destination.isEmpty()) {
 		destination = currentPath % item->text(0);

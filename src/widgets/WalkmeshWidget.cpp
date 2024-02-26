@@ -16,17 +16,17 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "widgets/WalkmeshWidget.h"
+#include "Data.h"
 
 WalkmeshWidget::WalkmeshWidget(QWidget *parent) :
 	PageWidget(parent)
 {
+	walkmeshGL = new WalkmeshGLWidget(this);
 }
 
 void WalkmeshWidget::build()
 {
 	if (isBuilded())		return;
-
-	walkmeshGL = new WalkmeshGLWidget(this);
 
 	slider1 = new QSlider(this);
 	slider2 = new QSlider(this);

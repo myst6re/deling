@@ -17,6 +17,7 @@
  ****************************************************************************/
 #pragma once
 
+#include <QtCore>
 #include "FieldArchive.h"
 
 class BackgroundExporter

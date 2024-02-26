@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "TdwWidget2.h"
+#include "FF8Text.h"
 
 TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 	QWidget(parent), isAdditionnalTable(isAdditionnalTable), ff8Font(0)

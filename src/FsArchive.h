@@ -18,9 +18,6 @@
 #pragma once
 
 #include <QtCore>
-#include "Data.h"
-#include "LZS.h"
-#include "ArchiveObserver.h"
 
 struct FsDiff {};
 
@@ -36,6 +33,8 @@ struct Fi_infos {
 	quint32 pos;
 	quint32 compression;
 };
+
+struct ArchiveObserver;
 
 class FsHeader
 {

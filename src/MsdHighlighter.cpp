@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "MsdHighlighter.h"
+#include "FF8Text.h"
 
 MsdHighlighter::MsdHighlighter(QTextDocument *parent) :
     QSyntaxHighlighter(parent)

@@ -31,7 +31,7 @@ public:
 	};
 
 	explicit Search(QTreeWidget *fieldList, SearchAll *searchAllDialog, QWidget *parent = nullptr);
-	void setFieldArchive(FieldArchive *);
+	void setFieldArchive(FieldArchive *fieldArchive);
 	void setSearchText(const QString &text);
 	void setSearchOpcode(int opcode);
 	void setCurrentIndex(int index);

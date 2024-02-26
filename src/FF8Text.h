@@ -18,8 +18,6 @@
 #pragma once
 
 #include <QtCore>
-#include "Config.h"
-#include "Data.h"
 
 class FF8Text : public QString
 {

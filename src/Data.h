@@ -18,8 +18,6 @@
 #pragma once
 
 #include <QtCore>
-#include "Config.h"
-#include "FF8Font.h"
 
 #define LOC_COUNT	256
 #define NAM_COUNT	16

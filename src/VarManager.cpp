@@ -16,6 +16,9 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "VarManager.h"
+#include "FieldArchive.h"
+#include "Config.h"
+#include "FF8Font.h"
 
 VarManager::VarManager(FieldArchive *fieldArchive, QWidget *parent)
 	: QWidget(parent, Qt::Tool)
@@ -23,7 +26,7 @@ VarManager::VarManager(FieldArchive *fieldArchive, QWidget *parent)
 	setWindowTitle(tr("Gestionnaire de variables"));
 	
 	var = new QSpinBox(this);
-	var->setRange(0, 1536);// Valid vars : 4 -> 1536
+	var->setRange(0, 1536); // Valid vars : 4 -> 1536
 
 	name = new QLineEdit(this);
 	list = new QTreeWidget(this);

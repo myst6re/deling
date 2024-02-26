@@ -18,9 +18,12 @@
 #pragma once
 
 #include <QtCore>
-#include "ArchiveObserver.h"
-#include "Field.h"
-#include "files/MchFile.h"
+#include "files/JsmFile.h"
+#include "files/CaFile.h"
+
+class Field;
+struct ArchiveObserver;
+class CharaModel;
 
 typedef QListIterator<Field *> FieldArchiveIterator;
 

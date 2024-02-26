@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "FieldPC.h"
+#include "FsArchive.h"
 
 FieldPC::FieldPC(const QString &name, const QString &path, FsArchive *archive, const QString &gameLang)
     : Field(name), _path(path), _gameLang(gameLang), header(nullptr)

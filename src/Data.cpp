@@ -16,6 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "Data.h"
+#include "Config.h"
+#include "FF8Font.h"
 
 QString Data::AppPathCache;
 

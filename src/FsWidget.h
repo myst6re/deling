@@ -21,7 +21,7 @@
 
 #define FILE_TYPE_ROLE		Qt::UserRole
 #define FILE_NAME_ROLE		Qt::UserRole + 1
-#define DIR		0
+#define DIRECTORY		0
 #define FILE	1
 
 class TreeWidgetItem : public QTreeWidgetItem {
@@ -33,8 +33,8 @@ private:
 
 		if (column == 0) {
 			int fileType = data(0, FILE_TYPE_ROLE).toInt(), otherFileType = other.data(0, FILE_TYPE_ROLE).toInt();
-			if (fileType == DIR && otherFileType == FILE)	return true;
-			if (fileType == FILE && otherFileType == DIR)	return false;
+			if (fileType == DIRECTORY && otherFileType == FILE)	return true;
+			if (fileType == FILE && otherFileType == DIRECTORY)	return false;
 		} else if (column == 1) {
 			return text(column).toInt() < other.text(column).toInt();
 		}

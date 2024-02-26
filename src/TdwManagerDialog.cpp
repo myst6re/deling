@@ -16,6 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "TdwManagerDialog.h"
+#include "Listwidget.h"
+#include "Config.h"
 
 TdwManagerDialog::TdwManagerDialog(QWidget *parent) :
 	QDialog(parent, Qt::Dialog | Qt::WindowCloseButtonHint)

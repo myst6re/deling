@@ -18,19 +18,18 @@
 #pragma once
 
 #include <QtWidgets>
-#include "files/MsdFile.h"
-#include "FieldArchivePC.h"
-#include "FieldArchivePS.h"
-#include "FieldThread.h"
 #include "Search.h"
 #include "SearchAll.h"
 #include "BGPreview.h"
-#include "TextPreview.h"
 #include "widgets/PageWidget.h"
 #include "VarManager.h"
 #include "MiscSearch.h"
 #include "FsDialog.h"
-#include "ConfigDialog.h"
+
+class FieldArchive;
+class FieldThread;
+class FieldPC;
+class Field;
 
 class MainWindow : public QMainWindow
 {
@@ -46,16 +45,16 @@ public:
 
 	MainWindow();
 public slots:
-	void openFile(QString path=QString());
+	void openFile(QString path = QString());
 private slots:
 	void filterMap();
 	void fillPage();
 	void fillBackground(const QImage &image);
 	void about();
-	int closeFiles(bool quit=false);
-	void setModified(bool modified=true);
+	int closeFiles(bool quit = false);
+	void setModified(bool modified = true);
 	void save();
-	void saveAs(QString path=QString());
+	void saveAs(QString path = QString());
 	void exportCurrent();
 	void exportAllScripts();
 	void exportAllEncounters();
@@ -79,11 +78,11 @@ signals:
 	void fieldIdChanged(int);
 private:
 	bool openArchive(const QString &path);
-	bool openFsArchive(const QString &);
-	bool openMsdFile(const QString &);
-	bool openJsmFile(const QString &);
-	bool openIsoArchive(const QString &);
-	void setReadOnly(bool);
+	bool openFsArchive(const QString &path);
+	bool openMsdFile(const QString &path);
+	bool openJsmFile(const QString &path);
+	bool openIsoArchive(const QString &path);
+	void setReadOnly(bool readOnly);
 	void buildGameLangMenu(const QStringList &langs);
 
 	FieldArchive *fieldArchive;
@@ -118,6 +117,6 @@ private:
 	VarManager *_varManager;
     bool firstShow;
 protected:
-    void showEvent(QShowEvent *);
-    void closeEvent(QCloseEvent *);
+    void showEvent(QShowEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
 };

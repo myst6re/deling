@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "FF8Text.h"
+#include "FF8Font.h"
 
 FF8Text::FF8Text() :
 	QString()

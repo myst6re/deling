@@ -16,6 +16,9 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "MiscSearch.h"
+#include "FieldArchive.h"
+#include "Field.h"
+#include "Data.h"
 
 MiscSearch::MiscSearch(FieldArchive *fieldArchive, QWidget *parent)
 	: QDialog(parent, Qt::Tool), fieldArchive(fieldArchive)

@@ -21,7 +21,7 @@
 #include "widgets/TdwGrid.h"
 #include "widgets/TdwLetter.h"
 #include "widgets/TdwPalette.h"
-#include "FF8Text.h"
+#include "FF8Font.h"
 
 class TdwWidget2 : public QWidget
 {

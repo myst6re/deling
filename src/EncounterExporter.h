@@ -17,7 +17,10 @@
  ****************************************************************************/
 #pragma once
 
-#include "FieldArchive.h"
+#include <QtCore>
+
+class FieldArchive;
+struct ArchiveObserver;
 
 class EncounterExporter
 {

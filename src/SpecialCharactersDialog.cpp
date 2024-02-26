@@ -16,6 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "SpecialCharactersDialog.h"
+#include "FF8Font.h"
+#include "FF8Text.h"
 
 SpecialCharactersDialog::SpecialCharactersDialog(QWidget *parent) :
 	QDialog(parent, Qt::Dialog | Qt::WindowCloseButtonHint)

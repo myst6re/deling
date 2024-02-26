@@ -21,22 +21,22 @@
 
 class ListWidget : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    enum ActionType {
+	enum ActionType {
 		Invisible, Add, Rem, Up, Down
-    };
-
-    explicit ListWidget(QWidget *parent = nullptr);
-    QAction *addAction(ActionType type, const QString &text,
-                       const QObject *receiver, const char *member);
-
-    QToolBar *toolBar() const;
-    QListWidget *listWidget() const;
+	};
+	
+	explicit ListWidget(QWidget *parent = nullptr);
+	QAction *addAction(ActionType type, const QString &text,
+	                   const QObject *receiver, const char *member);
+	
+	QToolBar *toolBar() const;
+	QListWidget *listWidget() const;
 signals:
-    
+	
 public slots:
 private:
-    QToolBar *_toolBar;
-    QListWidget *_listWidget;
+	QToolBar *_toolBar;
+	QListWidget *_listWidget;
 };

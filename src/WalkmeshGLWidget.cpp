@@ -86,8 +86,9 @@ void WalkmeshGLWidget::initializeGL()
 
 void WalkmeshGLWidget::resizeGL(int width, int height)
 {
-	qDebug() << "WalkmeshGLWidget::resizeGL" << width << height;
-	//gpuRenderer->setViewport(0, 0, width, height);
+	if (gpuRenderer != nullptr) {
+		gpuRenderer->setViewport(0, 0, width, height);
+	}
 }
 
 void WalkmeshGLWidget::paintGL()

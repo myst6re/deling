@@ -18,12 +18,10 @@
 #pragma once
 
 #include <QtWidgets>
-#include "FF8Text.h"
 #include "files/JsmFile.h"
 #include "files/TdwFile.h"
-#include "FF8Image.h"
+
 #define NOWIN	65535
-#include "Data.h"
 
 class TextPreview : public QWidget
 {
@@ -84,9 +82,9 @@ private:
 	static QList<QByteArray> locations;
 	static int locationsWidth[8];
 protected:
-	void paintEvent(QPaintEvent *event);
-	void timerEvent(QTimerEvent *event);
-	void mousePressEvent(QMouseEvent *event);
-	void mouseMoveEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *event);
+	void paintEvent(QPaintEvent *event) override;
+	void timerEvent(QTimerEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 };

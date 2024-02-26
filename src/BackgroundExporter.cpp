@@ -18,6 +18,7 @@
 #include "BackgroundExporter.h"
 #include "FieldPC.h"
 #include "FieldArchivePC.h"
+#include "ArchiveObserver.h"
 
 BackgroundExporter::BackgroundExporter(FieldArchive *archive) :
     _archive(archive)

@@ -25,7 +25,7 @@ class WalkmeshGLWidget : public QOpenGLWidget
 {
 	Q_OBJECT
 public:
-	explicit WalkmeshGLWidget(QWidget *parent=nullptr);
+	explicit WalkmeshGLWidget(QWidget *parent = nullptr);
 	virtual ~WalkmeshGLWidget() override;
 	void clear();
 	void fill(Field *data);
@@ -63,14 +63,14 @@ private:
 	bool _drawLine;
 
 protected:
-	virtual void timerEvent(QTimerEvent *);
-	virtual void initializeGL();
-	virtual void resizeGL(int w, int h);
-	virtual void paintGL();
-	virtual void wheelEvent(QWheelEvent *event);
-	virtual void mousePressEvent(QMouseEvent *event);
-	virtual void mouseMoveEvent(QMouseEvent *event);
-	virtual void keyPressEvent(QKeyEvent *event);
-	virtual void focusInEvent(QFocusEvent *event);
-	virtual void focusOutEvent(QFocusEvent *event);
+	virtual void timerEvent(QTimerEvent *event) override;
+	virtual void initializeGL() override;
+	virtual void resizeGL(int w, int h) override;
+	virtual void paintGL() override;
+	virtual void wheelEvent(QWheelEvent *event) override;
+	virtual void mousePressEvent(QMouseEvent *event) override;
+	virtual void mouseMoveEvent(QMouseEvent *event) override;
+	virtual void keyPressEvent(QKeyEvent *event) override;
+	virtual void focusInEvent(QFocusEvent *event) override;
+	virtual void focusOutEvent(QFocusEvent *event) override;
 };

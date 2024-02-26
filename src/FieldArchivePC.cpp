@@ -16,6 +16,10 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "FieldArchivePC.h"
+#include "ArchiveObserver.h"
+#include "files/MchFile.h"
+#include "Config.h"
+#include "Data.h"
 
 FieldArchivePC::FieldArchivePC()
     : FieldArchive(), archive(nullptr)

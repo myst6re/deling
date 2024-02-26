@@ -17,9 +17,11 @@
  ****************************************************************************/
 #pragma once
 
+#include <QtCore>
 #include "FieldArchive.h"
 #include "FieldPS.h"
-#include "FF8DiscArchive.h"
+
+class FF8DiscArchive;
 
 class FieldArchivePS : public FieldArchive
 {

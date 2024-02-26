@@ -16,6 +16,11 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "TextPreview.h"
+#include "FF8Text.h"
+#include "FF8Image.h"
+#include "Data.h"
+#include "Config.h"
+#include "FF8Font.h"
 
 bool TextPreview::curFrame = true;
 QImage TextPreview::iconImage;

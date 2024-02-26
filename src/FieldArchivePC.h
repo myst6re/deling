@@ -17,9 +17,12 @@
  ****************************************************************************/
 #pragma once
 
+#include <QtCore>
 #include "FieldArchive.h"
 #include "FieldPC.h"
 #include "FsArchive.h"
+
+class FsArchive;
 
 class FieldArchivePC : public FieldArchive
 {

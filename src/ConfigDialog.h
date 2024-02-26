@@ -18,9 +18,6 @@
 #pragma once
 
 #include <QtWidgets>
-#include "Config.h"
-#include "Data.h"
-#include "TdwManagerDialog.h"
 
 class ConfigDialog : public QDialog
 {

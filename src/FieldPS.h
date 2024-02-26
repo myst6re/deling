@@ -17,6 +17,7 @@
  ****************************************************************************/
 #pragma once
 
+#include <QtCore>
 #include "Field.h"
 
 class HeaderPS

@@ -18,6 +18,8 @@
 #include "EncounterExporter.h"
 #include "FieldPC.h"
 #include "FieldArchivePC.h"
+#include "FieldArchive.h"
+#include "ArchiveObserver.h"
 
 EncounterExporter::EncounterExporter(FieldArchive *archive) :
     _archive(archive)

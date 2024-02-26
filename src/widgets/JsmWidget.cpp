@@ -18,6 +18,7 @@
 #include "widgets/JsmWidget.h"
 #include "WalkmeshGLWidget.h"
 #include "Config.h"
+#include "Data.h"
 
 JsmWidget::JsmWidget(QWidget *parent)
     : PageWidget(parent), mainModels(nullptr), fieldArchive(nullptr),

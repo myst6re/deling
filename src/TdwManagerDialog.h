@@ -19,7 +19,6 @@
 
 #include <QtWidgets>
 #include "widgets/TdwWidget2.h"
-#include "Listwidget.h"
 
 class TdwManagerDialog : public QDialog
 {

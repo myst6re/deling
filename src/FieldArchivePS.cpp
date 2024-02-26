@@ -16,9 +16,15 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "FieldArchivePS.h"
+#include "FF8DiscArchive.h"
+#include "ArchiveObserver.h"
+#include "files/MchFile.h"
+#include "FF8Font.h"
+#include "Config.h"
+#include "Data.h"
 
 FieldArchivePS::FieldArchivePS()
-	: FieldArchive(), iso(0)
+	: FieldArchive(), iso(nullptr)
 {
 	readOnly = true;
 }
