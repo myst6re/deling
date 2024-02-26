@@ -48,13 +48,13 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 			toc.append(timOffset);
 		}
 
-		qDebug() << "tim offset" << QString::number(timOffset & 0xFFFFFF, 16) << QString::number((timOffset >> 24) & 0xFF, 16);
+		//qDebug() << "tim offset" << QString::number(timOffset & 0xFFFFFF, 16) << QString::number((timOffset >> 24) & 0xFF, 16);
 	} while (timOffset != 0xFFFFFFFF && constData - startData < 0x100);
 
 	if (timOffset == 0xFFFFFFFF) {
 		memcpy(&modelOffset, constData, 4);
 
-		qDebug() << "model data offset" << QString::number(modelOffset, 16);
+		//qDebug() << "model data offset" << QString::number(modelOffset, 16);
 
 		if (!toc.isEmpty()) {
 			toc.append(modelOffset);
@@ -83,7 +83,7 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 		return false;
 	}
 
-	qDebug() << "MchFile ouvert" << name;
+	//qDebug() << "MchFile ouvert" << name;
 
 	return true;
 }

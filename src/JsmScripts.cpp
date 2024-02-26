@@ -525,8 +525,8 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 							int lbl = labels.indexOf(pos + op->param());
 							if (lbl == -1) {
 								qDebug() << labels << op->toString();
-								qFatal(qPrintable(QString("JsmScripts::program 1 label for pos %1 + %2 not found")
-								                  .arg(pos).arg(op->param())));
+								qFatal() << QString("JsmScripts::program 1 label for pos %1 + %2 not found")
+								                .arg(pos).arg(op->param()).toLocal8Bit().constData();
 							}
 							JsmOpcodeGoto *jmp = new JsmOpcodeGoto(*op, lbl);
 							jmp->setKey(JsmOpcode::JMP);
@@ -542,8 +542,8 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 						int lbl = labels.indexOf(pos + op->param());
 						if (lbl == -1) {
 							qDebug() << labels << op->toString();
-							qFatal(qPrintable(QString("JsmScripts::program 3 label for pos %1 + %2 not found")
-							                  .arg(pos).arg(op->param())));
+							qFatal() << QString("JsmScripts::program 3 label for pos %1 + %2 not found")
+							                  .arg(pos).arg(op->param()).toLocal8Bit().constData();
 						}
 						JsmOpcode *toAppendOp = new JsmOpcodeGoto(*op, lbl);
 						ret.append(JsmInstruction(toAppendOp));
