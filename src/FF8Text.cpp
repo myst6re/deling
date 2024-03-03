@@ -242,25 +242,27 @@ QByteArray FF8Text::toFF8() const
 					goto end;
 				}
 			}
-			if(rest.startsWith("{Var0", Qt::CaseInsensitive) && rest.at(6)=='}') {//{Var00}
-				value = rest.mid(5,1).toUShort(&ok);
-				if(ok && value<8) {
-					ff8str.append('\x04');
-					ff8str.append((char)(value+0x30));
-					c += 6;
-					continue;
+			if (rest.size() >= 7) {
+				if(rest.startsWith("{Var0", Qt::CaseInsensitive) && rest.at(6)=='}') {//{Var00}
+					value = rest.mid(5,1).toUShort(&ok);
+					if(ok && value<8) {
+						ff8str.append('\x04');
+						ff8str.append((char)(value+0x30));
+						c += 6;
+						continue;
+					}
+				}
+				if(rest.startsWith("{Varb", Qt::CaseInsensitive) && rest.at(6)=='}') {//{Varb0}
+					value = rest.mid(5,1).toUShort(&ok);
+					if(ok && value<8) {
+						ff8str.append('\x04');
+						ff8str.append((char)(value+0x40));
+						c += 6;
+						continue;
+					}
 				}
 			}
-			if(rest.startsWith("{Varb", Qt::CaseInsensitive) && rest.at(6)=='}') {//{Varb0}
-				value = rest.mid(5,1).toUShort(&ok);
-				if(ok && value<8) {
-					ff8str.append('\x04');
-					ff8str.append((char)(value+0x40));
-					c += 6;
-					continue;
-				}
-			}
-			if(rest.startsWith("{Var", Qt::CaseInsensitive) && rest.at(5)=='}') {//{Var0}
+			if(rest.startsWith("{Var", Qt::CaseInsensitive) && rest.size() >= 6 && rest.at(5)=='}') {//{Var0}
 				value = rest.mid(4,1).toUShort(&ok);
 				if(ok && value<8) {
 					ff8str.append('\x04');
@@ -269,7 +271,7 @@ QByteArray FF8Text::toFF8() const
 					continue;
 				}
 			}
-			if(rest.startsWith("{Wait", Qt::CaseInsensitive) && rest.at(8)=='}') {//{Wait000}
+			if(rest.startsWith("{Wait", Qt::CaseInsensitive) && rest.size() >= 9 && rest.at(8)=='}') {//{Wait000}
 				value = rest.mid(5,3).toUShort(&ok);
 				if(ok) {
 					ff8str.append('\x09');
@@ -278,7 +280,7 @@ QByteArray FF8Text::toFF8() const
 					continue;
 				}
 			}
-			if(rest.startsWith("{Jp", Qt::CaseInsensitive) && rest.at(6)=='}') {//{Jp000}
+			if(rest.startsWith("{Jp", Qt::CaseInsensitive) && rest.size() >= 7 && rest.at(6)=='}') {//{Jp000}
 				value = rest.mid(3,3).toUShort(&ok);
 				if(ok) {
 					ff8str.append('\x1c');
@@ -300,7 +302,7 @@ QByteArray FF8Text::toFF8() const
 			}
 
 			if(string.at(c+1)=='x') {
-				if(string.at(c+4)=='}') {//{xff}
+				if(string.size() >= c + 5 && string.at(c+4)=='}') {//{xff}
 					value = string.mid(c+2,2).toUShort(&ok,16);
 					if(ok) {
 						ff8str.append((char)value);
@@ -308,7 +310,7 @@ QByteArray FF8Text::toFF8() const
 						continue;
 					}
 				}
-				else if(string.at(c+6)=='}') {//{xffff}
+				else if(string.size() >= c + 7 && string.at(c+6)=='}') {//{xffff}
 					value = string.mid(c+2,2).toUShort(&ok,16);
 					value2 = string.mid(c+4,2).toUShort(&ok2,16);
 					if(ok && ok2) {

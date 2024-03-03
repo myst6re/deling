@@ -25,7 +25,7 @@
 bool TextPreview::curFrame = true;
 QImage TextPreview::iconImage;
 TdwFile *TextPreview::font;
-TdwFile *TextPreview::tdwFile = NULL;
+TdwFile *TextPreview::tdwFile = nullptr;
 
 TextPreview::TextPreview(QWidget *parent)
 	: QWidget(parent), currentPage(0), currentWin(0), useTimer(false), acceptMove(false), fontColor(TdwFile::White)
@@ -82,7 +82,7 @@ TextPreview::TextPreview(QWidget *parent)
 
 void TextPreview::setFontImageAdd(TdwFile *tdwFile)
 {
-	if (tdwFile == NULL || tdwFile->tableCount() < 1)	return;
+	if (tdwFile == nullptr || tdwFile->tableCount() < 1)	return;
 
 	TextPreview::tdwFile = tdwFile;
 }

@@ -344,7 +344,7 @@ void Search::setSearchOpcode(int opcode)
 void Search::findNext()
 {
 	bool found = false;
-	if (fieldArchive==NULL)	return;
+	if (fieldArchive==nullptr)	return;
 
 	buttonNext->setEnabled(false);
 	buttonNext->setDefault(true);
@@ -369,7 +369,7 @@ void Search::findNext()
 void Search::findPrev()
 {
 	bool found = false;
-	if (fieldArchive==NULL)	return;
+	if (fieldArchive==nullptr)	return;
 
 	buttonPrev->setEnabled(false);
 	buttonPrev->setDefault(true);

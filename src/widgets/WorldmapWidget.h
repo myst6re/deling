@@ -19,25 +19,25 @@
 
 #include <QtWidgets>
 #include "widgets/WorldmapGLWidget.h"
+#include "widgets/PageWidget.h"
 
-class WorldmapWidget : public QWidget
+class WorldmapWidget : public PageWidget
 {
 	Q_OBJECT
 public:
-	explicit WorldmapWidget(QWidget *parent = Q_NULLPTR,
-	                        Qt::WindowFlags f = Qt::WindowFlags());
+	explicit WorldmapWidget(QWidget *parent = nullptr);
 	inline void setMap(Map *map) {
-		if (map) {
-			_segmentSpinBox->setMaximum(map->segments().size());
-		}
-		_scene->setMap(map);
+		_map = map;
 	}
 	inline const Map *map() const {
-		return _scene->map();
+		return _map;
 	}
 	inline WorldmapGLWidget *scene() const {
 		return _scene;
 	}
+	void fill() override;
+	inline QString tabName() const override { return tr("Mappemonde"); }
+	void clear() override;
 private slots:
 	void setXTrans(int value);
 	void setYTrans(int value);
@@ -46,7 +46,9 @@ private slots:
 	void setYRot(int value);
 	void setZRot(int value);
 private:
+	void build() override;
 	WorldmapGLWidget *_scene;
+	Map *_map;
 	QSlider *_xTransSlider, *_yTransSlider, *_zTransSlider;
 	QSlider *_xRotSlider, *_yRotSlider, *_zRotSlider;
 	QSpinBox *_textureSpinBox, *_segmentGroupSpinBox, *_segmentSpinBox;

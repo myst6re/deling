@@ -18,9 +18,10 @@
 #include "FieldArchive.h"
 #include "Data.h"
 #include "Field.h"
+#include "game/worldmap/Map.h"
 
 FieldArchive::FieldArchive()
-	: readOnly(false)
+    : _worldMap(nullptr), readOnly(false)
 {
 }
 
@@ -28,6 +29,9 @@ FieldArchive::~FieldArchive()
 {
 	for (Field *field: fields)		delete field;
 	for (CharaModel *model: models)	delete model;
+	if (_worldMap != nullptr) {
+		delete _worldMap;
+	}
 }
 
 void FieldArchive::clearFields()
@@ -39,6 +43,9 @@ void FieldArchive::clearFields()
 	fieldsSortByName.clear();
 	fieldsSortByDesc.clear();
 	fieldsSortByMapId.clear();
+	if (_worldMap != nullptr) {
+		delete _worldMap;
+	}
 }
 
 const QString &FieldArchive::errorMessage() const
@@ -48,12 +55,12 @@ const QString &FieldArchive::errorMessage() const
 
 Field *FieldArchive::getField(int id) const
 {
-//	Field *field = fields.value(id, NULL);
-//	if (field == NULL)	return NULL;
+//	Field *field = fields.value(id, nullptr);
+//	if (field == nullptr)	return nullptr;
 //	if (!field->isOpen() && openField(field)) {
 //		return field;
 //	}
-//	if (!field->isOpen())	return NULL;
+//	if (!field->isOpen())	return nullptr;
 
 	return fields.value(id, nullptr);
 }

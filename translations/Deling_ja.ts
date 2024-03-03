@@ -2379,6 +2379,22 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
         <translatorcomment>Close</translatorcomment>
         <translation type="vanished">閉じる</translation>
     </message>
+    <message>
+        <source>Importer tout</source>
+        <translation type="unfinished">Import all</translation>
+    </message>
+    <message>
+        <source>Fichier CSV (*.csv)</source>
+        <translation type="unfinished">CSV File (*.csv)</translation>
+    </message>
+    <message>
+        <source>Import...</source>
+        <translation type="unfinished">Importing...</translation>
+    </message>
+    <message>
+        <source>Textes...</source>
+        <translation type="unfinished">Texts...</translation>
+    </message>
 </context>
 <context>
     <name>MiscSearch</name>
@@ -2977,31 +2993,31 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     </message>
     <message>
         <source>Pas une archive mappemonde.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Not a worldmap archive.</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (1).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (1).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (2).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (2).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (3).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (3).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (4).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (4).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (5).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (5).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (6).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (6).</translation>
     </message>
 </context>
 <context>
@@ -3422,6 +3438,53 @@ poursuite de la recherche dans le dernier fichier.</source>
     </message>
 </context>
 <context>
+    <name>TextExporterWidget</name>
+    <message>
+        <source>Format CSV</source>
+        <translation type="unfinished">CSV format</translation>
+    </message>
+    <message>
+        <source>Jeu de caractères</source>
+        <translation type="unfinished">Character encoding</translation>
+    </message>
+    <message>
+        <source>Séparateur de champ</source>
+        <translation type="unfinished">Field separator</translation>
+    </message>
+    <message>
+        <source>Séparateur de chaîne de caractères</source>
+        <translation type="unfinished">String separator</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="obsolete">Error</translation>
+    </message>
+    <message>
+        <source>Le séparateur de champ ne doit pas être le même que le séparateur de chaînes de caractères</source>
+        <translation type="unfinished">The field separator must be different than the string separator</translation>
+    </message>
+    <message>
+        <source>Le séparateur de champ ne doit pas être un retour à la ligne</source>
+        <translation type="unfinished">The field separator cannot be a line break</translation>
+    </message>
+    <message>
+        <source>Le séparateur de chaînes de caractères ne doit pas être un retour à la ligne</source>
+        <translation type="unfinished">The string separator cannot be a line break</translation>
+    </message>
+    <message>
+        <source>Colonne contenant les textes à importer</source>
+        <translation type="unfinished">Column that contains the texts to import</translation>
+    </message>
+    <message>
+        <source>Sélectionnez le numéro de la colonne qui contient les textes à importer, entre 1 et 100</source>
+        <translation type="unfinished">Select the column number that contains the texts to import, between 1 and 100</translation>
+    </message>
+    <message>
+        <source>Erreur</source>
+        <translation>エラー</translation>
+    </message>
+</context>
+<context>
     <name>TextPreview</name>
     <message>
         <source>false</source>
@@ -3743,7 +3806,15 @@ poursuite de la recherche dans le dernier fichier.</source>
     <name>WorldmapWidget</name>
     <message>
         <source>dump</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">dump</translation>
+    </message>
+    <message>
+        <source>Worldmap</source>
+        <translation type="obsolete">Worldmap</translation>
+    </message>
+    <message>
+        <source>Mappemonde</source>
+        <translation type="unfinished">Worldmap</translation>
     </message>
 </context>
 </TS>

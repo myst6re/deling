@@ -17,6 +17,7 @@
  ****************************************************************************/
 #include "widgets/WalkmeshWidget.h"
 #include "Data.h"
+#include "Listwidget.h"
 
 WalkmeshWidget::WalkmeshWidget(QWidget *parent) :
 	PageWidget(parent)

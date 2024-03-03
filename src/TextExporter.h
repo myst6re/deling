@@ -18,25 +18,21 @@
 #pragma once
 
 #include <QtCore>
-#include "game/worldmap/Map.h"
-#include "files/TimFile.h"
+#include "CsvFile.h"
 
-#define TEXLFILE_TEXTURE_SIZE 0x12800
-#define TEXLFILE_TEXTURE_COUNT 20
+class FieldArchive;
+struct ArchiveObserver;
 
-class TexlFile
+class TextExporter
 {
 public:
-	explicit TexlFile(QIODevice *io = nullptr);
-	inline void setDevice(QIODevice *device) {
-		_io = device;
+	explicit TextExporter(FieldArchive *archive);
+	bool toCsv(const QString &fileName, const QStringList &langs, QChar fieldSeparator, QChar quoteCharacter, CsvFile::CsvEncoding encoding, ArchiveObserver *observer = nullptr);
+	bool fromCsv(const QString &fileName, quint8 column, ArchiveObserver *observer = nullptr);
+	inline const QString &errorString() const {
+		return _lastErrorString;
 	}
-
-	bool readTextures(Map &map);
-
 private:
-	bool seekTexture(quint8 id);
-	bool readTexture(TimFile &tim);
-
-	QIODevice *_io;
+	FieldArchive *_archive;
+	QString _lastErrorString;
 };

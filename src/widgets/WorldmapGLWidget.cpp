@@ -16,19 +16,16 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "WorldmapGLWidget.h"
-#include <QOpenGLVersionFunctionsFactory>
 
 WorldmapGLWidget::WorldmapGLWidget(QWidget *parent,
                                    Qt::WindowFlags f) :
-    QOpenGLWidget(parent, f), _map(Q_NULLPTR),
+    QOpenGLWidget(parent, f), _map(nullptr),
     _distance(-0.714248f), _xRot(-90.0f), _yRot(180.0f), _zRot(180.0f),
     _xTrans(-0.5f), _yTrans(0.5f), _transStep(360.0f), _lastKeyPressed(-1),
     _texture(-1), _segmentGroupId(-1), _segmentId(-1), _blockId(-1),
-      _groundType(-1), _polyId(-1), _clutId(-1), _limits(QRect(0, 0, 32, 24)),
-	_segmentFiltering(Map::NoFiltering)
+    _groundType(-1), _polyId(-1), _clutId(-1), _limits(QRect(0, 0, 32, 24)),
+    _segmentFiltering(Map::NoFiltering), gpuRenderer(nullptr)
 {
-	mGL.initializeOpenGLFunctions();
-	//extraGL = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_4_1_Core *>();
 	/* _xTrans = 0;
 	_yTrans = .12f;
 	_distance = -0.011123f;
@@ -39,6 +36,10 @@ WorldmapGLWidget::WorldmapGLWidget(QWidget *parent,
 
 WorldmapGLWidget::~WorldmapGLWidget()
 {
+	if (gpuRenderer) {
+		delete gpuRenderer;
+	}
+
 	makeCurrent();
 	buf.destroy();
 
@@ -81,17 +82,17 @@ QImage WorldmapGLWidget::toImage(int w, int h)
 	const int nrPics = 360 / DEGREES_BETWEEN_PICTURES;
 	for (int i = 0; i < nrPics; i++) {
 		catchFbo->bind();
-		mGL.glColorMask(true, true, true, true);
-		mGL.glClearColor(0,0,0,0);
-		mGL.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		mGL.glEnable(GL_DEPTH_TEST);
-		mGL.glDepthFunc(GL_LESS);
-		mGL.glEnable(GL_MULTISAMPLE);
-		mGL.glLoadIdentity();
+		glColorMask(true, true, true, true);
+		glClearColor(0,0,0,0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+		glEnable(GL_MULTISAMPLE);
+		glLoadIdentity();
 
 		GLfloat x = GLfloat(PICTURE_SIZE) / PICTURE_SIZE;
-		mGL.glFrustum(-x, +x, -1.0, +1.0, 1.0, 1000.0);
-		mGL.glViewport(0, 0, PICTURE_SIZE, PICTURE_SIZE);
+		glFrustum(-x, +x, -1.0, +1.0, 1.0, 1000.0);
+		glViewport(0, 0, PICTURE_SIZE, PICTURE_SIZE);
 
 		drawScreenshot(i);
 		catchFbo->release();
@@ -99,7 +100,7 @@ QImage WorldmapGLWidget::toImage(int w, int h)
 		QImage catchImage = catchFbo->toImage();
 		catchImage.save("object/test" + QString::number(i) + ".png");
 	}
-	mGL.glDisable(GL_MULTISAMPLE);
+	glDisable(GL_MULTISAMPLE);
 
 	restoreGLState();
 }
@@ -242,37 +243,9 @@ void WorldmapGLWidget::dumpCurrent()
 
 void WorldmapGLWidget::initializeGL()
 {
-	initializeOpenGLFunctions();
-
-	importVertices();
-
-	mGL.glEnable(GL_DEPTH_TEST);
-	mGL.glDepthFunc(GL_LEQUAL);
-	mGL.glDisable(GL_CULL_FACE);
-	mGL.glDisable(GL_LIGHTING);
-	mGL.glEnable(GL_BLEND);
-	mGL.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	mGL.glEnable(GL_MULTISAMPLE);
-
-#define PROGRAM_VERTEX_ATTRIBUTE 0
-#define PROGRAM_TEXCOORD_ATTRIBUTE 1
-
-	QOpenGLShader *vshader = new QOpenGLShader(QOpenGLShader::Vertex, this);
-	vshader->compileSourceFile(":/shaders/vertex.glsl");
-
-	QOpenGLShader *fshader = new QOpenGLShader(QOpenGLShader::Fragment, this);
-	fshader->compileSourceFile(":/shaders/fragment.glsl");
-
-	program = new QOpenGLShaderProgram;
-	program->addShader(vshader);
-	program->addShader(fshader);
-	program->bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
-	program->bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
-	program->link();
-
-	program->bind();
-	program->setUniformValue("texture", 0);
-	program->setUniformValue("palettes", 1);
+	if (gpuRenderer == nullptr) {
+		gpuRenderer = new Renderer(this);
+	}
 }
 
 static quint16 normalizeY(qint16 y)
@@ -308,7 +281,7 @@ static QOpenGLTexture *textureFromImage(const QImage &image)
 
 void WorldmapGLWidget::importVertices()
 {
-	if (Q_NULLPTR == _map) {
+	if (nullptr == _map) {
 		return;
 	}
 
@@ -376,8 +349,8 @@ void WorldmapGLWidget::importVertices()
 		}
 	} */
 
-	QList< QVector<GLfloat> > drawAfter;
 	QList<MapSegment> segments = _map->segments(_segmentFiltering);
+	QRgba64 color = QRgba64::fromArgb32(0x00000000);
 	foreach (const MapSegment &segment, segments) {
 		int xb = 0, yb = 0;
 		foreach (const MapBlock &block, segment.blocks()) {
@@ -394,25 +367,23 @@ void WorldmapGLWidget::importVertices()
 				for (quint8 i = 0; i < 3; ++i) {
 					const Vertex &v = poly.vertex(i);
 					const TexCoord &tc = poly.texCoord(i);
-					vertDataPoly.append((xShift + x + v.x / scaleVect) / scale);
-					vertDataPoly.append(normalizeY(v.y) / scaleVect / scale);
-					vertDataPoly.append((zShift + z - v.z / scaleVect) / scale);
+					
+					QVector3D position((xShift + x + v.x / scaleVect) / scale,
+					                   normalizeY(v.y) / scaleVect / scale,
+					                   (zShift + z - v.z / scaleVect) / scale);
+					QVector2D texcoord;
+					
 					if (poly.isRoadTexture()) {
-						vertDataPoly.append(tc.x / float(_roadTexture->width() - 1));
-						vertDataPoly.append(tc.y / float(_roadTexture->height() - 1));
+						texcoord.setX(tc.x / float(_roadTexture->width() - 1));
+						texcoord.setY(tc.y / float(_roadTexture->height() - 1));
 					} else if (poly.isWaterTexture()) {
-						vertDataPoly.append(tc.x / float(_seaTexture->width() - 1));
-						vertDataPoly.append(tc.y / float(_seaTexture->height() - 1));
+						texcoord.setX(tc.x / float(_seaTexture->width() - 1));
+						texcoord.setY(tc.y / float(_seaTexture->height() - 1));
 					} else {
-						vertDataPoly.append(tc.x / scaleTex);
-						vertDataPoly.append(tc.y / scaleTex);
+						texcoord.setX(tc.x / scaleTex);
+						texcoord.setY(tc.y / scaleTex);
 					}
-				}
-
-				if (false && poly.isTransparent()) {
-					drawAfter.append(vertDataPoly);
-				} else {
-					vertData.append(vertDataPoly);
+					gpuRenderer->bufferVertex(position, color, texcoord);
 				}
 
 				/* for (quint8 i = 0; i < 16; ++i) {
@@ -454,10 +425,6 @@ void WorldmapGLWidget::importVertices()
 		}
 	}
 
-	foreach (const QVector<GLfloat> &floats, drawAfter) {
-		vertData.append(floats);
-	}
-
 	QMapIterator<QPair<quint8, quint8>, QList<quint8> > it(collect1);
 	while(it.hasNext()) {
 		it.next();
@@ -466,63 +433,39 @@ void WorldmapGLWidget::importVertices()
 	/* qDebug() << collect4.keys(); */
 	qDebug() << collect2.keys();
 	qDebug() << collect3.keys();
-	
-	if (buf.isCreated()) {
-		buf.destroy();
+}
+
+void WorldmapGLWidget::resizeGL(int width, int height)
+{
+	if (gpuRenderer != nullptr) {
+		gpuRenderer->setViewport(0, 0, width, height);
 	}
-	buf.create();
-	buf.bind();
-	buf.allocate(vertData.constData(), vertData.count() * int(sizeof(GLfloat)));
-}
-
-static GLdouble deg2rad(GLdouble deg)
-{
-	const GLdouble pi = 3.1415926535897932384626433832795;
-	return deg / 360 * pi;
-}
-
-void WorldmapGLWidget::resizeGL(int w, int h)
-{
-	//mGL.glViewport(0, 0, GLint(w), GLint(h));
-
-	//extraGL->glMatrixMode(GL_PROJECTION);
-	//extraGL->glLoadIdentity();
-
-	_matrixProj.setToIdentity();
-	_matrixProj.perspective(70.0f, GLfloat(w) / h, 0.000001f, 1000.0f);
-
-	//mGL.glMatrixMode(GL_MODELVIEW);
 }
 
 void WorldmapGLWidget::paintGL()
 {
-	//extraGL->glMatrixMode(GL_MODELVIEW);
-	mGL.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//extraGL->glLoadIdentity();
-
-	if (Q_NULLPTR == _map) {
+	if (nullptr == _map) {
 		return;
 	}
+	
+	gpuRenderer->bindProjectionMatrix(_matrixProj);
 
-	QMatrix4x4 m;
-	//m.ortho(-1.0f, 1.0f, -1.0f, 1.0f, 4.0f, 15.0f);
-	m.translate(_xTrans, _yTrans, _distance);
-	m.rotate(_xRot, 1.0f, 0.0f, 0.0f);
-	m.rotate(_yRot, 0.0f, 1.0f, 0.0f);
-	m.rotate(_zRot, 0.0f, 0.0f, 1.0f);
+	QMatrix4x4 mModel;
+	mModel.translate(_xTrans, _yTrans, _distance);
+	mModel.rotate(_xRot, 1.0f, 0.0f, 0.0f);
+	mModel.rotate(_yRot, 0.0f, 1.0f, 0.0f);
+	mModel.rotate(_zRot, 0.0f, 0.0f, 1.0f);
+	
+	QMatrix4x4 mView;
 
-	program->setUniformValue("projMatrix", _matrixProj);
-	program->setUniformValue("mvMatrix", m);
-	program->enableAttributeArray(PROGRAM_VERTEX_ATTRIBUTE);
-	program->enableAttributeArray(PROGRAM_TEXCOORD_ATTRIBUTE);
-	program->setAttributeBuffer(PROGRAM_VERTEX_ATTRIBUTE, GL_FLOAT, 0, 3, 5 * sizeof(GLfloat));
-	program->setAttributeBuffer(PROGRAM_TEXCOORD_ATTRIBUTE, GL_FLOAT, 3 * sizeof(GLfloat), 2, 5 * sizeof(GLfloat));
-
-	int bufIndex = 0, alphaLocation = program->uniformLocation("alpha");
+	gpuRenderer->bindModelMatrix(mModel);
+	gpuRenderer->bindViewMatrix(mView);
+	
+	int bufIndex = 0; //, alphaLocation = program->uniformLocation("alpha");
 	QElapsedTimer t;
 	t.start();
 
-	program->setUniformValue(alphaLocation, 1.0f);
+	//program->setUniformValue(alphaLocation, 1.0f);
 	const QList<quint8> &regions = _map->encounterRegions();
 
 	QList<MapPoly> drawAfter;
@@ -535,7 +478,7 @@ void WorldmapGLWidget::paintGL()
 			int polyId = 0;
 			foreach (const MapPoly &poly, block.polygons()) {
 
-				if (_texture >= 0) {
+				/* if (_texture >= 0) {
 					program->setUniformValue(alphaLocation, 0.5f);
 
 					if (poly.isTransparent()) {
@@ -552,7 +495,7 @@ void WorldmapGLWidget::paintGL()
 				}
 
 				if (_segmentGroupId >= 0) {
-					if (_segmentGroupId == segment.groupId()) {
+					if (quint32(_segmentGroupId) == segment.groupId()) {
 						program->setUniformValue(alphaLocation, 1.0f);
 					} else {
 						program->setUniformValue(alphaLocation, 0.5f);
@@ -597,7 +540,7 @@ void WorldmapGLWidget::paintGL()
 					} else {
 						program->setUniformValue(alphaLocation, 0.5f);
 					}
-				}
+				} */
 				
 				/* if ((poly.flags1() & 0x60) == 0x60) {
 					program->setUniformValue(alphaLocation, 0.5f);
@@ -612,28 +555,28 @@ void WorldmapGLWidget::paintGL()
 				polyId += 1;
 
 				if (poly.isRoadTexture()) {
-					_roadTexture->bind();
+					gpuRenderer->bindTexture(_roadTexture);
 				} else if (poly.isWaterTexture()) {
-					_seaTexture->bind();
+					gpuRenderer->bindTexture(_seaTexture);
 				} else if (poly.texPage() < _textures.size() && poly.clutId() < _textures.at(poly.texPage()).size()) {
 					QPair<QOpenGLTexture *, bool> p = _textures.at(poly.texPage()).at(poly.clutId());
-					p.first->bind();
+					gpuRenderer->bindTexture(p.first);
 					/* const OpenGLPalettedTexture &paltex = _textures.at(poly.texPage());
 					program->setUniformValue(palIdLocation, (poly.clutId() + 0.5f) / paltex.palettes()->height());
 					program->setUniformValue(palMultiplierLocation, paltex.paletteMultiplier());
-					mGL.glActiveTexture(GL_TEXTURE0);
+					glActiveTexture(GL_TEXTURE0);
 					paltex.texture()->bind();
-					mGL.glActiveTexture(GL_TEXTURE1);
+					glActiveTexture(GL_TEXTURE1);
 					paltex.palettes()->bind(); */
 				} else {
 					qDebug() << poly.texPage() << poly.clutId();
-					//mGL.glActiveTexture(GL_TEXTURE0);
-					_redTexture->bind();
-					/* mGL.glActiveTexture(GL_TEXTURE1);
+					//glActiveTexture(GL_TEXTURE0);
+					gpuRenderer->bindTexture(_redTexture);
+					/* glActiveTexture(GL_TEXTURE1);
 					_redTexture->bind(); */
 				}
 
-				mGL.glDrawArrays(GL_TRIANGLES, bufIndex * 3, 3);
+				glDrawArrays(GL_TRIANGLES, bufIndex * 3, 3);
 
 				bufIndex += 1;
 			}
@@ -642,8 +585,8 @@ void WorldmapGLWidget::paintGL()
 		segmentId += 1;
 	}
 
-	//mGL.glEnable(GL_BLEND);
-	//mGL.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//program->setUniformValue(alphaLocation, 0.5f);
 
@@ -659,7 +602,7 @@ void WorldmapGLWidget::paintGL()
 			_redTexture->bind();
 		}
 
-		mGL.glDrawArrays(GL_TRIANGLES, bufIndex * 3, 3);
+		glDrawArrays(GL_TRIANGLES, bufIndex * 3, 3);
 
 		bufIndex += 1;
 	} */
@@ -777,14 +720,6 @@ void WorldmapGLWidget::focusOutEvent(QFocusEvent *event)
 {
 	releaseKeyboard();
 	QWidget::focusOutEvent(event);
-}
-
-static void qNormalizeAngle(int &angle)
-{
-	while (angle < 0)
-		angle += 360 * 16;
-	while (angle > 360 * 16)
-		angle -= 360 * 16;
 }
 
 QRgb WorldmapGLWidget::groundColor(quint8 groundType, quint8 region,

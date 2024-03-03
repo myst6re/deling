@@ -17,7 +17,6 @@
  ****************************************************************************/
 #include "FsArchive.h"
 #include "QLZ4.h"
-#include "Data.h"
 #include "LZS.h"
 #include "ArchiveObserver.h"
 
@@ -354,8 +353,26 @@ FsHeader *FsArchive::getFile(const QString &path) const
 
 	if (path.startsWith('*'))
 	{
-		QString path2 = path.mid(1);
+		QString path2 = path.sliced(1);
 		QMapIterator<QString, FsHeader *> i(toc_access);
+
+		if (path2.contains('*') || path2.contains('?'))
+		{
+			QRegularExpression expr = QRegularExpression::fromWildcard(path2, Qt::CaseInsensitive, QRegularExpression::WildcardConversionOptions(QRegularExpression::UnanchoredWildcardConversion | QRegularExpression::NonPathWildcardConversion));
+			expr.setPattern(expr.pattern().append("$"));
+			
+			while (i.hasNext())
+			{
+				i.next();
+				if (i.key().contains(expr))
+				{
+					return i.value();
+				}
+			}
+			
+			return nullptr;
+		}
+
 		while (i.hasNext())
 		{
 			i.next();
@@ -364,14 +381,11 @@ FsHeader *FsArchive::getFile(const QString &path) const
 				return i.value();
 			}
 		}
+		
+		return nullptr;
 	}
-	else {
-		return toc_access.value(path.toLower(), nullptr);
-	}
-
-	//	qDebug() << path << "non trouvé";
-
-	return nullptr;
+	
+	return toc_access.value(path.toLower(), nullptr);
 }
 
 bool FsArchive::fileExists(const QString &path) const

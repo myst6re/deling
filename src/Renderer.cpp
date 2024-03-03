@@ -268,6 +268,14 @@ void Renderer::bindTexture(QImage &_image, bool generateMipmaps)
 	mGL.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+void Renderer::bindTexture(QOpenGLTexture *texture)
+{
+	texture->bind();
+	
+	mGL.glEnable(GL_BLEND);
+	mGL.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
 void Renderer::bufferVertex(QVector3D _position, QRgba64 _color, QVector2D _texcoord)
 {
 	mVertexBuffer.push_back(

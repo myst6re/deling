@@ -32,6 +32,10 @@ public:
 	QByteArray data(int id) const;
 	FF8Text text(int) const;
 	void setText(int, const FF8Text &);
+	void setTexts(const QList<QByteArray> &texts);
+	inline const QList<QByteArray> &getTexts() const {
+		return texts;
+	}
 	void insertText(int);
 	void removeText(int);
 	inline int nbText() const {

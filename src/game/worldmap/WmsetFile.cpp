@@ -195,7 +195,7 @@ bool WmsetFile::readEncounters(Map &map)
 		if (regionId == 10) { // Esthar
 			esi -= 80;
 
-			if (esi >= sizeSection5 || esi * 16 >= sizeSection6 || int(offsetSection5 + esi) < 0) {
+			if (esi >= sizeSection5 || quint32(esi) * 16 >= sizeSection6 || int(offsetSection5 + esi) < 0) {
 				qDebug() << "Warning: Bad ESI lunar cry" << esi;
 				continue;
 			}

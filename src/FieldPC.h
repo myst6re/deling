@@ -46,6 +46,7 @@ public:
 	void optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
 	bool isMultiLanguage() const;
 	QStringList languages() const;
+	bool changeGameLang(const QString &gameLang, FsArchive *archive = nullptr);
 protected:
 	virtual void setFile(FileType fileType);
 private:

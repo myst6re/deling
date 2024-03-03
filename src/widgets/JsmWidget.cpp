@@ -679,7 +679,7 @@ int JsmWidget::currentItem(QTreeWidget *list)
 //{
 //	QList<QTreeWidgetItem *> items;
 
-//	if (item==NULL)	return;
+//	if (item==nullptr)	return;
 //	bool ok;
 //	uint pos, raw, key;
 

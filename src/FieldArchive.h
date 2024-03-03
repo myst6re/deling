@@ -24,6 +24,7 @@
 class Field;
 struct ArchiveObserver;
 class CharaModel;
+class Map;
 
 typedef QListIterator<Field *> FieldArchiveIterator;
 
@@ -40,6 +41,9 @@ public:
 	const QString &errorMessage() const;
 	virtual QString archivePath() const=0;
 	virtual Field *getField(int id) const;
+	Map *getWorldMap() const {
+		return _worldMap;
+	}
 	Field *getFieldFromMapId(int mapId) const;
 	const QList<Field *> &getFields() const;
 	int nbFields() const;
@@ -78,6 +82,7 @@ protected:
 	QMultiMap<QString, int> fieldsSortByName;
 	QMultiMap<QString, int> fieldsSortByDesc;
 	QMultiMap<QString, int> fieldsSortByMapId;
+	Map *_worldMap;
 	bool readOnly;
 private:
 	bool searchIterators(QMultiMap<QString, int>::const_iterator &i, QMultiMap<QString, int>::const_iterator &end, int fieldID, Sorting sorting) const;

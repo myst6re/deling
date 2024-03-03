@@ -134,6 +134,7 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data, bool old_f
 
 	QList<JsmGroup> groupList = linkGroupList.values();
 	QList<JsmScript> scriptList;
+	scriptList.reserve(scriptCount);
 
 	// verification no-paddings between groups
 	for(int i=0 ; i<groupCount-1 ; ++i) {

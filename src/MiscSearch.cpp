@@ -88,7 +88,7 @@ void MiscSearch::fillList()
 //		for (int id: spellsId) {
 //			QStringList curList = spells.value(id, QStringList());
 //			Field *f = fieldArchive->getField(i);
-//			if (f == NULL)	continue;
+//			if (f == nullptr)	continue;
 //			if (f->hasJsmFile()) {
 //				curList.append(f->getJsmFile()->mapID() != -1 ? QString::number(f->getJsmFile()->mapID()) : f->name());
 //			} else {

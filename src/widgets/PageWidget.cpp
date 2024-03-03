@@ -18,7 +18,7 @@
 #include "widgets/PageWidget.h"
 
 PageWidget::PageWidget(QWidget *parent) :
-	QWidget(parent), builded(false), filled(false), readOnly(false), _field(NULL)
+	QWidget(parent), builded(false), filled(false), readOnly(false), _field(nullptr)
 {
 	setEnabled(false);
 }
@@ -79,12 +79,12 @@ void PageWidget::setData(Field *field)
 
 void PageWidget::cleanData()
 {
-	_field = NULL;
+	_field = nullptr;
 }
 
 bool PageWidget::hasData() const
 {
-	return _field != NULL;
+	return _field != nullptr;
 }
 
 Field *PageWidget::data() const

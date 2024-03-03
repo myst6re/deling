@@ -380,7 +380,7 @@ void MsdWidget::fill()
 
 void MsdWidget::fillTextEdit(QListWidgetItem *item)
 {
-	if (item==NULL || !data()->hasMsdFile())	return;
+	if (item==nullptr || !data()->hasMsdFile())	return;
 
 	textList->scrollToItem(item);
 	if (!hasData() || !data()->hasMsdFile())	return;

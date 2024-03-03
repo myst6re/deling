@@ -30,7 +30,7 @@ struct MapBlockVertex;
 class WmxFile
 {
 public:
-	explicit WmxFile(QIODevice *io = Q_NULLPTR);
+	explicit WmxFile(QIODevice *io = nullptr);
 	inline void setDevice(QIODevice *device) {
 		_io = device;
 	}

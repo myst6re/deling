@@ -20,6 +20,8 @@
 #include "files/MchFile.h"
 #include "Config.h"
 #include "Data.h"
+#include "game/worldmap/Map.h"
+#include "game/worldmap/WmArchive.h"
 
 FieldArchivePC::FieldArchivePC()
     : FieldArchive(), archive(nullptr)
@@ -137,10 +139,9 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 //			break;
 		}
 	}
-
+	
 	if (fields.isEmpty()) {
-		errorMsg = QObject::tr("Aucun écran trouvé.");
-		return 3;
+		return openWorld();
 	}
 
 	openModels();
@@ -149,6 +150,26 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 		Config::setValue("encoding", "00");
 	}
 
+	return 0;
+}
+
+int FieldArchivePC::openWorld()
+{
+	Map *map = new Map();
+	WmArchive wmArchive;
+	int err = wmArchive.open(archive, *map);
+	
+	if (err != 0) {
+		errorMsg = wmArchive.errorString();
+		delete map;
+		
+		qWarning() << errorMsg;
+
+		return err == 1 ? 0 : 1;
+	}
+	
+	_worldMap = map;
+	
 	return 0;
 }
 
@@ -431,7 +452,7 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 //		}
 
 		FsArchive *fieldHeader = ((FieldPC *)field)->getArchiveHeader();
-		if (fieldHeader != NULL) {
+		if (fieldHeader != nullptr) {
 			oldFields.insert(field, fieldHeader->getHeader());
 		}
 
@@ -548,6 +569,10 @@ QStringList FieldArchivePC::languages() const
 				if (stop <= 0) {
 					break;
 				}
+			} else {
+				langs = fieldPC->languages();
+				
+				break;
 			}
 		}
 	}

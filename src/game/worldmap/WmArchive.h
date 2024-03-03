@@ -25,12 +25,11 @@ class WmArchive
 {
 public:
 	WmArchive();
-	bool open(const QString &filename, Map &map, ArchiveObserver *progress);
+	int open(FsArchive *fsArchive, Map &map, ArchiveObserver *progress = nullptr);
 	inline const QString &errorString() const {
 		return _errorString;
 	}
 private:
 	bool _isOpen;
 	QString _errorString;
-	FsArchive _fsArchive;
 };

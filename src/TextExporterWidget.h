@@ -17,26 +17,38 @@
  ****************************************************************************/
 #pragma once
 
-#include <QtCore>
-#include "game/worldmap/Map.h"
-#include "files/TimFile.h"
+#include <QtWidgets>
+#include "CsvFile.h"
 
-#define TEXLFILE_TEXTURE_SIZE 0x12800
-#define TEXLFILE_TEXTURE_COUNT 20
+class ListWidget;
 
-class TexlFile
+class TextExporterWidget : public QDialog
 {
+	Q_OBJECT
 public:
-	explicit TexlFile(QIODevice *io = nullptr);
-	inline void setDevice(QIODevice *device) {
-		_io = device;
+	TextExporterWidget(const QStringList &langs, QWidget *parent = nullptr);
+	TextExporterWidget(QWidget *parent = nullptr);
+	QStringList langs() const;
+	CsvFile::CsvEncoding encoding() const {
+		return CsvFile::CsvEncoding(_encoding->currentData().toInt());
 	}
-
-	bool readTextures(Map &map);
-
+	QChar fieldSeparator() const {
+		return TextExporterWidget::lineEditChar(_fieldSeparator);
+	}
+	QChar quoteCharater() const {
+		return TextExporterWidget::lineEditChar(_quoteCharater);
+	}
+	quint8 column() const {
+		return quint8(_column->value() - 1);
+	}
+protected slots:
+	void accept() override;
 private:
-	bool seekTexture(quint8 id);
-	bool readTexture(TimFile &tim);
-
-	QIODevice *_io;
+	void build(const QStringList &langs, bool onlyOne);
+	QString validate() const;
+	static QChar lineEditChar(QLineEdit *lineEdit);
+	ListWidget *_langs;
+	QSpinBox *_column;
+	QLineEdit *_fieldSeparator, *_quoteCharater;
+	QComboBox *_encoding;
 };

@@ -104,6 +104,7 @@ public:
 	void bindIndex(uint32_t *_index, uint32_t _count = 1);
 
 	void bindTexture(QImage &_image, bool generateMipmaps = false);
+	void bindTexture(QOpenGLTexture *texture);
 
 	void bufferVertex(QVector3D _position, QRgba64 _color, QVector2D _texcoord);
 #ifdef QT_DEBUG

@@ -23,6 +23,7 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
 #include "game/worldmap/Map.h"
+#include "Renderer.h"
 
 class OpenGLPalettedTexture {
 public:
@@ -49,7 +50,7 @@ class WorldmapGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
 	Q_OBJECT
 public:
-	explicit WorldmapGLWidget(QWidget *parent = Q_NULLPTR,
+	explicit WorldmapGLWidget(QWidget *parent = nullptr,
 	                          Qt::WindowFlags f = Qt::WindowFlags());
 
 	virtual ~WorldmapGLWidget();
@@ -143,7 +144,7 @@ private:
 	QOpenGLTexture *_seaTexture, *_roadTexture, *_redTexture;
 	QOpenGLBuffer buf;
 	QOpenGLShaderProgram *program;
-	QOpenGLFunctions mGL;
+	Renderer *gpuRenderer;
 	QMatrix4x4 _matrixProj;
 	Map::SegmentFiltering _segmentFiltering;
 };

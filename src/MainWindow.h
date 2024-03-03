@@ -36,7 +36,16 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 public:
 	enum Pages {
-		TextPage, ScriptPage, ModelPage, WalkmeshPage, BackgroundPage, EncounterPage, FontPage, MiscPage
+		TextPage,
+		ScriptPage,
+		ModelPage,
+		WalkmeshPage,
+		BackgroundPage,
+		EncounterPage,
+		FontPage,
+		SoundPage,
+		MiscPage,
+		WorldMapPage
 	};
 
 	enum ExportType {
@@ -56,6 +65,8 @@ private slots:
 	void save();
 	void saveAs(QString path = QString());
 	void exportCurrent();
+	void exportAllTexts();
+	void importAllTexts();
 	void exportAllScripts();
 	void exportAllEncounters();
 	void exportAllBackground();
@@ -97,7 +108,7 @@ private:
 	SearchAll *searchAllDialog;
 	QAction *actionSave;
 	QAction *actionSaveAs;
-	QMenu *menuExportAll;
+	QMenu *menuExportAll, *menuImportAll;
 	QAction *actionExport, *actionImport;
 	QAction *actionOpti;
 	QAction *actionClose;

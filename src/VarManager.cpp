@@ -64,7 +64,7 @@ VarManager::VarManager(FieldArchive *fieldArchive, QWidget *parent)
 void VarManager::setFieldArchive(FieldArchive *fieldArchive)
 {
 	this->fieldArchive = fieldArchive;
-	searchButton->setEnabled(fieldArchive!=NULL);
+	searchButton->setEnabled(fieldArchive!=nullptr);
 }
 
 void VarManager::updateName(QTreeWidgetItem *item)
@@ -75,7 +75,7 @@ void VarManager::updateName(QTreeWidgetItem *item)
 
 void VarManager::editName()
 {
-	if (list->currentItem()==NULL)	return;
+	if (list->currentItem()==nullptr)	return;
 	list->currentItem()->setText(2, name->text());
 }
 

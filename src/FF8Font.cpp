@@ -233,7 +233,7 @@ bool FF8Font::listFonts()
 
 	for (const QString &str: stringList) {
 		int index = str.lastIndexOf('.');
-		fonts.insert(str.left(index), NULL);
+		fonts.insert(str.left(index), nullptr);
 	}
 
 	return true;
@@ -246,21 +246,21 @@ QStringList FF8Font::fontList()
 
 FF8Font *FF8Font::openFont(const QString &tdwPath, const QString &txtPath)
 {
-	FF8Font *ff8Font = NULL;
-	TdwFile *tdw = NULL;
+	FF8Font *ff8Font = nullptr;
+	TdwFile *tdw = nullptr;
 	QFile f(tdwPath);
 	if (f.open(QIODevice::ReadOnly)) {
 		tdw = new TdwFile();
 		if (!tdw->open(f.readAll())) {
 			qWarning() << "Cannot open tdw file!" << f.fileName();
 			delete tdw;
-			tdw = NULL;
+			tdw = nullptr;
 		}
 		f.close();
 	}
 
 	if (!tdw) {
-		return NULL;
+		return nullptr;
 	} else {
 		QFile f2(txtPath);
 		if (f2.open(QIODevice::ReadOnly)) {
@@ -305,7 +305,7 @@ FF8Font *FF8Font::font(QString name)
 		return ff8Font;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 FF8Font *FF8Font::getCurrentConfigFont()
@@ -394,7 +394,7 @@ bool FF8Font::copyFont(const QString &name, const QString &from, const QString &
 	ftdw.close();
 	ftdw2.close();
 
-	fonts.insert(name, NULL);
+	fonts.insert(name, nullptr);
 
 	ff8Font = font(name);
 	if (!ff8Font) {

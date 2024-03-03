@@ -272,7 +272,7 @@ public:
 	IsoArchive(const QString &name);
 	virtual ~IsoArchive();
 
-	bool pack(IsoArchive *destination, IsoControl *control, IsoDirectory *directory=NULL);
+	bool pack(IsoArchive *destination, IsoControl *control, IsoDirectory *directory=nullptr);
 	void applyModifications(IsoDirectory *directory);
 
 	QByteArray file(const QString &path, quint32 maxSize=0);

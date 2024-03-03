@@ -161,17 +161,17 @@ IsoFileOrDirectory *IsoDirectory::fileOrDirectory(const QString &path) const
 	int index;
 
 	if ((index = path.indexOf("/")) != -1) {
-		IsoFileOrDirectory *fOrD = _filesAndDirectories.value(path.left(index).toUpper(), NULL);
+		IsoFileOrDirectory *fOrD = _filesAndDirectories.value(path.left(index).toUpper(), nullptr);
 
-		if (fOrD == NULL)	return NULL;
+		if (fOrD == nullptr)	return nullptr;
 
 		if (fOrD->isDirectory()) {
 			return ((IsoDirectory *)fOrD)->fileOrDirectory(path.mid(index+1));
 		} else {
-			return NULL;
+			return nullptr;
 		}
 	} else {
-		return _filesAndDirectories.value(path.toUpper(), NULL);
+		return _filesAndDirectories.value(path.toUpper(), nullptr);
 	}
 
 }
@@ -180,10 +180,10 @@ IsoFile *IsoDirectory::file(const QString &path) const
 {
 	IsoFileOrDirectory *fOrD = fileOrDirectory(path);
 
-	if (fOrD == NULL)	return NULL;
+	if (fOrD == nullptr)	return nullptr;
 
 	if (fOrD->isDirectory()) {
-		return NULL;
+		return nullptr;
 	}
 
 	return (IsoFile *)fOrD;
@@ -193,10 +193,10 @@ IsoDirectory *IsoDirectory::directory(const QString &path) const
 {
 	IsoFileOrDirectory *fOrD = fileOrDirectory(path);
 
-	if (fOrD == NULL)	return NULL;
+	if (fOrD == nullptr)	return nullptr;
 
 	if (fOrD->isFile()) {
-		return NULL;
+		return nullptr;
 	}
 
 	return (IsoDirectory *)fOrD;
@@ -485,13 +485,13 @@ int IsoArchiveIO::copyBytes(QIODevice *out, int size, int last_esti, IsoControl 
 }
 
 IsoArchive::IsoArchive(const QString &name) :
-	IsoArchiveIO(name), _rootDirectory(NULL)
+	IsoArchiveIO(name), _rootDirectory(nullptr)
 {
 }
 
 IsoArchive::~IsoArchive()
 {
-	if (_rootDirectory != NULL)		delete _rootDirectory;
+	if (_rootDirectory != nullptr)		delete _rootDirectory;
 }
 
 bool IsoArchive::_open()
@@ -552,7 +552,7 @@ bool IsoArchive::pack(IsoArchive *destination, IsoControl *control, IsoDirectory
 	int last_esti = control->baseEstimation, index;
 	QList<IsoFileOrDirectory *> orderedFileList = getIntegrity();
 
-	if (directory == NULL) {
+	if (directory == nullptr) {
 		directory = _rootDirectory;
 	}
 
@@ -865,7 +865,7 @@ IsoDirectory *IsoArchive::_openDirectoryRecord(IsoDirectory *directories, QList<
 	}
 _openDirectoryRecordError:
 	delete directories;
-	return NULL;
+	return nullptr;
 }
 
 QList<PathTable> IsoArchive::pathTable(quint32 sector, quint32 dataSize)
@@ -907,7 +907,7 @@ QByteArray IsoArchive::file(const QString &path, quint32 maxSize)
 
 QByteArray IsoArchive::file(IsoFile *isoFile, quint32 maxSize)
 {
-	if (isoFile == NULL)		return QByteArray();
+	if (isoFile == nullptr)		return QByteArray();
 
 	seekToFile(isoFile);
 
@@ -921,7 +921,7 @@ bool IsoArchive::extract(const QString &path, const QString &destination, quint3
 
 bool IsoArchive::extract(IsoFile *isoFile, const QString &destination, quint32 maxSize)
 {
-	if (isoFile == NULL)		return false;
+	if (isoFile == nullptr)		return false;
 
 //	QElapsedTimer t;t.start();
 
@@ -982,7 +982,7 @@ bool IsoArchive::seekToFile(const QString &path)
 
 bool IsoArchive::seekToFile(IsoFileOrDirectory *isoFile)
 {
-	if (isoFile == NULL)		return false;
+	if (isoFile == nullptr)		return false;
 	return seekToSector(isoFile->location());
 }
 
@@ -994,7 +994,7 @@ IsoFile *IsoArchive::fileInfos(const QString &path)
 qint32 IsoArchive::diffCountSectors(const QString &path, quint32 newSize) const
 {
 	IsoFileOrDirectory *isoFile = _rootDirectory->fileOrDirectory(path);
-	if (isoFile == NULL) {
+	if (isoFile == nullptr) {
 		return false;
 	}
 
@@ -1006,7 +1006,7 @@ qint32 IsoArchive::diffCountSectors(const QString &path, quint32 newSize) const
 //	QElapsedTimer t;t.start();
 
 //	IsoFile *isoFile = _rootDirectory->file(path);
-//	if (isoFile == NULL) {
+//	if (isoFile == nullptr) {
 //		return false;
 //	}
 	
@@ -1116,21 +1116,21 @@ QList<IsoFileOrDirectory *> IsoArchive::getIntegrity() const
 	_getIntegrity(files, _rootDirectory);
 
 	quint32 cur=0;
-	IsoFileOrDirectory *prevFile = NULL;
+	IsoFileOrDirectory *prevFile = nullptr;
 
 	QMapIterator<quint32, IsoFileOrDirectory *> i(files);
 	while (i.hasNext()) {
 		i.next();
 		IsoFileOrDirectory *file = i.value();
 
-		if (prevFile != NULL) {
+		if (prevFile != nullptr) {
 			prevFile->setPaddingAfter(i.key() - (prevFile->location() + prevFile->sectorCount()));
 			if (prevFile->paddingAfter() > 0) {
 				filesWithPadding.append(prevFile);
 			}
 		}
 
-        if (i.key() != cur && prevFile != NULL) {
+        if (i.key() != cur && prevFile != nullptr) {
             qDebug() << QString("%1 -> %2 (%3 sectors) : padding after %4 (%5 sectors)").arg(prevFile->location() + prevFile->sectorCount())
                     .arg(i.key()).arg(i.key() - (prevFile->location() + prevFile->sectorCount())).arg(prevFile->name()).arg(prevFile->sectorCount());
         }
@@ -1139,7 +1139,7 @@ QList<IsoFileOrDirectory *> IsoArchive::getIntegrity() const
 		prevFile = file;
 	}
 
-	if (prevFile != NULL) {
+	if (prevFile != nullptr) {
 		prevFile->setPaddingAfter(sectorCount() - (prevFile->location() + prevFile->sectorCount()));
         qDebug() << QString("%1 -> %2 (%3 sectors) : padding after %4 (%5 sectors)").arg(prevFile->location() + prevFile->sectorCount())
                     .arg(sectorCount()).arg(sectorCount() - (prevFile->location() + prevFile->sectorCount()))

@@ -19,6 +19,8 @@
 #include "Config.h"
 #include "Data.h"
 #include "ProgressWidget.h"
+#include "TextExporter.h"
+#include "TextExporterWidget.h"
 #include "ScriptExporter.h"
 #include "EncounterExporter.h"
 #include "BackgroundExporter.h"
@@ -32,6 +34,7 @@
 #include "widgets/SoundWidget.h"
 #include "widgets/MiscWidget.h"
 #include "widgets/AboutDialog.h"
+#include "widgets/WorldmapWidget.h"
 #include "FieldArchivePC.h"
 #include "FieldArchivePS.h"
 #include "FieldPC.h"
@@ -65,10 +68,13 @@ MainWindow::MainWindow()
 	actionSaveAs = menu->addAction(tr("Enre&gistrer Sous..."), this, SLOT(saveAs()), QKeySequence::SaveAs);
 	actionExport = menu->addAction(tr("Exporter..."), this, SLOT(exportCurrent()));
 	menuExportAll = menu->addMenu(tr("Exporter tout"));
+	menuExportAll->addAction(tr("Textes..."), this, SLOT(exportAllTexts()));
 	menuExportAll->addAction(tr("Scripts..."), this, SLOT(exportAllScripts()));
 	menuExportAll->addAction(tr("Rencontres aléatoires..."), this, SLOT(exportAllEncounters()));
 	menuExportAll->addAction(tr("Décors..."), this, SLOT(exportAllBackground()));
 	actionImport = menu->addAction(tr("Importer..."), this, SLOT(importCurrent()));
+	menuImportAll = menu->addMenu(tr("Importer tout"));
+	menuImportAll->addAction(tr("Textes..."), this, SLOT(importAllTexts()));
 	actionOpti = menu->addAction(tr("Optimiser l'archive..."), this, SLOT(optimizeArchive()));
 	menu->addSeparator();
 	menu->addAction(tr("Plein écran"), this, SLOT(fullScreen()), Qt::Key_F11);
@@ -132,6 +138,7 @@ MainWindow::MainWindow()
 	pageWidgets.append(new TdwWidget());
 	pageWidgets.append(new SoundWidget());
 	pageWidgets.append(new MiscWidget());
+	//pageWidgets.append(new WorldmapWidget());
 
 	tabBar = new QTabBar();
 	for (PageWidget *pageWidget: pageWidgets)
@@ -338,6 +345,11 @@ bool MainWindow::openFsArchive(const QString &path)
 		actionOpti->setEnabled(true);
 		actionSaveAs->setEnabled(true);
 		buildGameLangMenu(fieldArchivePc->languages());
+	} else if (fieldArchive->getWorldMap() != nullptr) {
+		manageArchive();
+		actionSaveAs->setEnabled(false);
+		//((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(fieldArchive->getWorldMap());
+		//((WorldmapWidget *)pageWidgets.at(WorldMapPage))->fill();
 	} else {
 		field = new FieldPC(path, Config::value("gameLang", "en").toString());
 		if (field->hasFiles()) {
@@ -394,7 +406,7 @@ bool MainWindow::openJsmFile(const QString &)
 //	if (!jsmFile->open(path)) {
 //		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, jsmFile->lastError));
 //		delete jsmFile;
-//		jsmFile = NULL;
+//		jsmFile = nullptr;
 //		return false;
 //	}
 //	list1->setEnabled(false);
@@ -412,6 +424,7 @@ void MainWindow::setReadOnly(bool readOnly)
 		pageWidget->setReadOnly(readOnly);
 
 	actionImport->setDisabled(readOnly);
+	menuImportAll->setDisabled(readOnly);
 }
 
 void MainWindow::buildGameLangMenu(const QStringList &langs)
@@ -422,7 +435,7 @@ void MainWindow::buildGameLangMenu(const QStringList &langs)
 		connect(menuGameLang, SIGNAL(triggered(QAction*)), SLOT(setGameLang(QAction*)));
 	}
 
-	actionGameLang->setVisible(!langs.empty());
+	actionGameLang->setVisible(langs.size() > 1);
 	menuGameLang->clear();
 
 	QString currentLang = Config::value("gameLang", "en").toString();
@@ -537,6 +550,7 @@ int MainWindow::closeFiles(bool quit)
 	actionExport->setEnabled(false);
 	menuExportAll->setEnabled(false);
 	actionImport->setEnabled(false);
+	menuImportAll->setEnabled(false);
 	actionOpti->setEnabled(false);
 	tabBar->setTabEnabled(tabBar->count()-1, false);
 	actionClose->setEnabled(false);
@@ -549,8 +563,9 @@ int MainWindow::closeFiles(bool quit)
 	}
 	((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(nullptr);
 	((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(nullptr);
+	//((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(nullptr);
 	currentPath->setText(QString());
-	setReadOnly(false);
+	setReadOnly(true);
 
 	searchDialog->setFieldArchive(nullptr);
 	searchAllDialog->setFieldArchive(nullptr);
@@ -748,6 +763,69 @@ void MainWindow::exportCurrent()
 			QMessageBox::warning(this, tr("Erreur"), currentField->getFile(Field::FileType(type))->errorString());
 		}
 	}
+}
+
+void MainWindow::exportAllTexts()
+{
+	if (!fieldArchive)	return;
+	
+	QString oldPath = Config::value("export_path").toString();
+	
+	QString path = QFileDialog::getSaveFileName(this, tr("Exporter"), oldPath, tr("Fichier CSV (*.csv)"));
+	if (path.isNull()) {
+		return;
+	}
+	
+	Config::setValue("export_path", path);
+	
+	QStringList langs;
+	if (actionOpti->isEnabled()) {
+		langs = ((FieldArchivePC *)fieldArchive)->languages();
+	}
+	
+	TextExporterWidget dialog(langs, this);
+	
+	if (dialog.exec() == QDialog::Rejected) {
+		return;
+	}
+	
+	ProgressWidget progress(tr("Export..."), ProgressWidget::Cancel, this);
+	
+	TextExporter exporter(fieldArchive);
+	
+	if (!exporter.toCsv(path, dialog.langs(), dialog.fieldSeparator(), dialog.quoteCharater(), dialog.encoding(), &progress) && !progress.observerWasCanceled()) {
+		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
+	}
+}
+
+void MainWindow::importAllTexts()
+{
+	if (!fieldArchive)	return;
+	
+	QString oldPath = Config::value("export_path").toString();
+	
+	QString path = QFileDialog::getOpenFileName(this, tr("Importer"), oldPath, tr("Fichier CSV (*.csv)"));
+	if (path.isNull()) {
+		return;
+	}
+	
+	Config::setValue("export_path", path);
+	
+	TextExporterWidget dialog(this);
+	
+	if (dialog.exec() == QDialog::Rejected) {
+		return;
+	}
+	
+	ProgressWidget progress(tr("Import..."), ProgressWidget::Cancel, this);
+	
+	TextExporter exporter(fieldArchive);
+	
+	if (!exporter.fromCsv(path, dialog.column(), &progress) && !progress.observerWasCanceled()) {
+		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
+	}
+	
+	setModified(true);
 }
 
 void MainWindow::exportAllScripts()

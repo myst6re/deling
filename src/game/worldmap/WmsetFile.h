@@ -27,7 +27,7 @@
 class WmsetFile
 {
 public:
-	explicit WmsetFile(QIODevice *io = Q_NULLPTR);
+	explicit WmsetFile(QIODevice *io = nullptr);
 	inline void setDevice(QIODevice *device) {
 		_io = device;
 	}

@@ -122,7 +122,7 @@ void FsWidget::dropEvent(QDropEvent *event)
 {
 	if (event->button() == Qt::LeftButton) {
 		QTreeWidgetItem *item = itemAt(event->pos());
-		if (item == NULL)	return;
+		if (item == nullptr)	return;
 
 		QFile tempFile(item->text(0));
 		tempFile.open(QIODevice::WriteOnly);

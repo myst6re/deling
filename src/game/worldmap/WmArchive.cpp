@@ -25,23 +25,15 @@ WmArchive::WmArchive() :
 {
 }
 
-bool WmArchive::open(const QString &filename, Map &map, ArchiveObserver *progress)
+int WmArchive::open(FsArchive *fsArchive, Map &map, ArchiveObserver *progress)
 {
 	if (progress) {
 		progress->setObserverMaximum(3);
 	}
-
-	QString archivePath = filename;
-	archivePath.chop(1);
-
-	if (!_fsArchive.open(archivePath)) {
-		_errorString = QObject::tr("Impossible d'ouvrir l'archive.");
-		return false;
-	}
-
-	if (!_fsArchive.fileExists("*world\\dat\\wmx.obj")) {
+	
+	if (!fsArchive->fileExists("*world\\dat\\wmx.obj")) {
 		_errorString = QObject::tr("Pas une archive mappemonde.");
-		return false;
+		return 1;
 	}
 
 	_isOpen = false;
@@ -49,15 +41,15 @@ bool WmArchive::open(const QString &filename, Map &map, ArchiveObserver *progres
 	WmxFile wmx;
 	WmsetFile wmset;
 	TexlFile texl;
-
-	QByteArray wmxData = _fsArchive.fileData("*world\\dat\\wmx.obj");
+	
+	QByteArray wmxData = fsArchive->fileData("*world\\dat\\wmx.obj");
 	QBuffer wmxBuffer(&wmxData);
 	wmxBuffer.open(QIODevice::ReadOnly);
 	wmx.setDevice(&wmxBuffer);
 
 	if(!wmx.readSegments(map, 768)) {
 		_errorString = QObject::tr("Impossible de lire la mappemonde (1).");
-		return false;
+		return 2;
 	}
 
 	wmxData.clear();
@@ -66,34 +58,34 @@ bool WmArchive::open(const QString &filename, Map &map, ArchiveObserver *progres
 		progress->setObserverValue(1);
 	}
 
-	QByteArray wmsetData = _fsArchive.fileData("*world\\dat\\wmsetfr.obj");
+	QByteArray wmsetData = fsArchive->fileData("*world\\dat\\wmset??.obj");
 	QBuffer wmsetBuffer(&wmsetData);
 	wmsetBuffer.open(QIODevice::ReadOnly);
 	wmset.setDevice(&wmsetBuffer);
 
 	if (!wmset.readEncounterRegions(map)) {
 		_errorString = QObject::tr("Impossible de lire la mappemonde (2).");
-		return false;
+		return 3;
 	}
 
 	if (!wmset.readEncounters(map)) {
 		_errorString = QObject::tr("Impossible de lire la mappemonde (3).");
-		return false;
+		return 4;
 	}
 
 	if (!wmset.readSpecialTextures(map)) {
 		_errorString = QObject::tr("Impossible de lire la mappemonde (4).");
-		return false;
+		return 5;
 	}
 
 	if (!wmset.readRoadTextures(map)) {
 		_errorString = QObject::tr("Impossible de lire la mappemonde (4).");
-		return false;
+		return 6;
 	}
 
 	if (!wmset.readDrawPoints(map)) {
 		_errorString = QObject::tr("Impossible de lire la mappemonde (5).");
-		return false;
+		return 7;
 	}
 
 	wmsetData.clear();
@@ -102,14 +94,14 @@ bool WmArchive::open(const QString &filename, Map &map, ArchiveObserver *progres
 		progress->setObserverValue(2);
 	}
 
-	QByteArray texlData = _fsArchive.fileData("*world\\dat\\texl.obj");
+	QByteArray texlData = fsArchive->fileData("*world\\dat\\texl.obj");
 	QBuffer texlBuffer(&texlData);
 	texlBuffer.open(QIODevice::ReadOnly);
 	texl.setDevice(&texlBuffer);
 
 	if (!texl.readTextures(map)) {
 		_errorString = QObject::tr("Impossible de lire la mappemonde (6).");
-		return false;
+		return 8;
 	}
 
 	if (progress) {
@@ -118,5 +110,5 @@ bool WmArchive::open(const QString &filename, Map &map, ArchiveObserver *progres
 
 	_isOpen = true;
 
-	return true;
+	return 0;
 }

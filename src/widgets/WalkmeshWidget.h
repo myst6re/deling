@@ -23,7 +23,6 @@
 #include "VertexWidget.h"
 #include "OrientationWidget.h"
 #include "HexLineEdit.h"
-#include "Listwidget.h"
 
 class WalkmeshWidget : public PageWidget
 {

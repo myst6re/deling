@@ -42,6 +42,8 @@ bool MsdFile::open(const QByteArray &msd)
 	}
 
 	nbText = textPos/4;
+	needEndOfString.reserve(nbText);
+	texts.reserve(nbText);
 	for (int i = 1; i < nbText; ++i) {
 		memcpy(&nextTextPos, &msd_data[i*4], 4);
 		if (nextTextPos>=dataSize || nextTextPos<textPos) {
@@ -89,10 +91,17 @@ FF8Text MsdFile::text(int id) const
 
 void MsdFile::setText(int id, const FF8Text &text)
 {
-	if (id>=0 && id<nbText()) {
+	if (id >= 0 && id < nbText()) {
 		texts.replace(id, text.toFF8());
 		modified = true;
 	}
+}
+
+void MsdFile::setTexts(const QList<QByteArray> &texts)
+{
+	this->texts = texts;
+	needEndOfString = QList<bool>(texts.size(), true);
+	modified = true;
 }
 
 void MsdFile::insertText(int id)

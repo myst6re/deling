@@ -420,6 +420,10 @@ bool FieldPC::isMultiLanguage() const
 
 QStringList FieldPC::languages() const
 {
+	if (!isMultiLanguage()) {
+		return QStringList(_lang);
+	}
+
 	QStringList files = header->toc();
 	QRegularExpression pathReg("_([a-z]+)\\.[a-z]+$", QRegularExpression::CaseInsensitiveOption);
 	QStringList langs;
@@ -436,6 +440,35 @@ QStringList FieldPC::languages() const
 	}
 
 	return langs;
+}
+
+bool FieldPC::changeGameLang(const QString &gameLang, FsArchive *archive)
+{
+	if (_gameLang == gameLang) {
+		return true;
+	}
+	
+	QList<FileExt> selectedExts;
+
+	for (FileType t: fileTypes()) {
+		File *f = getFile(t);
+		if (f == nullptr) {
+			continue;
+		}
+		
+		FileExt ext = typeToExt(t, nullptr);
+		if (filePath(ext).contains(QString("_%1.").arg(_gameLang))) {
+			selectedExts.append(ext);
+		}
+	}
+	
+	_gameLang = gameLang;
+	
+	if (!selectedExts.empty()) {
+		return openOptimized(selectedExts, archive);
+	}
+	
+	return true;
 }
 
 QString FieldPC::fileName(FileExt fileExt, bool useGameLang) const

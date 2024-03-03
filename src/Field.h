@@ -43,6 +43,12 @@ public:
 	enum FileType {
 		Msd, Jsm, Id, Ca, Rat, Mrt, Inf, Pmp, Pmd, Pvp, Background, Tdw, Msk, Sfx, AkaoList
 	};
+	
+	inline static QList<FileType> fileTypes() {
+		return QList<FileType>() << Msd << Jsm << Id << Ca << Rat << Mrt
+		                         << Inf << Pmp << Pmd << Pvp << Background << Tdw
+		                         << Msk << Sfx << AkaoList;
+	}
 
 	Field(const QString &name);
 	virtual ~Field();

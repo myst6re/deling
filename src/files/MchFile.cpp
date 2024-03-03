@@ -66,7 +66,7 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 
 			for (int i = 0; i < toc.size()-2; ++i) {
 				quint32 pos = toc.at(i) & 0xFFFFFF;
-				qDebug() << "ouverture tim" << pos << ((toc.at(i+1) & 0xFFFFFF) - pos);
+				//qDebug() << "ouverture tim" << pos << ((toc.at(i+1) & 0xFFFFFF) - pos);
 				textures.append(TimFile(mch.mid(pos, (toc.at(i+1) & 0xFFFFFF) - pos)));
 				if (!textures.last().isValid()) {
 					qWarning() << "CharaModel::open tim error: unknown format!" << name << i;

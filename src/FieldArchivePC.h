@@ -32,13 +32,15 @@ public:
 	QString archivePath() const;
 	FieldPC *getField(int id) const;
 	FsArchive *getFsArchive() const;
-	int open(const QString &, ArchiveObserver *progress);
+	int open(const QString &path, ArchiveObserver *progress);
 	bool save(ArchiveObserver *progress, QString save_path=QString());
 	bool openModels();
 	bool openBG(Field *field) const;
 	void restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHeader> > &oldFields) const;
 	bool optimiseArchive(ArchiveObserver *progress);
 	QStringList languages() const;
+protected:
+	int openWorld();
 private:
 	FsArchive *archive;
 };

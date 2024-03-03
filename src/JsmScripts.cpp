@@ -600,7 +600,7 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 			// FIXME: only pop what will be used by the game for this application
 			invertedStack.push(stack.pop());
 		}
-		JsmApplication *application = new JsmApplication(invertedStack, NULL);
+		JsmApplication *application = new JsmApplication(invertedStack, nullptr);
 		ret.append(JsmInstruction(application));
 		collectPointers.insert(application);
 	}
