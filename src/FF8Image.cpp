@@ -102,7 +102,7 @@ QByteArray FF8Image::toLzs(const QImage &image, quint16 u1, quint16 u2)
 
 QList<int> FF8Image::findTims(const QByteArray &data)
 {
-	int indexInData = -1, dataSize = data.size();
+	int indexInData = -4, dataSize = data.size();
 	qint32 palSize, imgSize;
 	quint16 w, h;
 	quint8 bpp;

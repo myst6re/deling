@@ -167,12 +167,6 @@ void FsDialog::generatePreview()
 		texFile.setCurrentColorTable(currentPal);
 		preview->imagePreview(QPixmap::fromImage(texFile.image()), fileName, currentPal, texFile.colorTableCount());
 	}
-	else if (fileType == "tim")
-	{
-		TimFile timFile(data);
-		timFile.setCurrentColorTable(currentPal);
-		preview->imagePreview(QPixmap::fromImage(timFile.image()), fileName, currentPal, timFile.colorTableCount());
-	}
 	else if (fileType == "tdw")
 	{
 		preview->imagePreview(QPixmap::fromImage(TdwFile::image(data, TdwFile::Color(currentPal))), fileName, currentPal, 8);
@@ -247,14 +241,6 @@ void FsDialog::exportImages()
 		for (int i = 0; i < texFile.colorTableCount(); ++i) {
 			texFile.setCurrentColorTable(i);
 			texFile.image().save(QString("%1/%2-%3.png").arg(path, fileName).arg(i));
-		}
-	}
-	else if (fileType == "tim")
-	{
-		TimFile timFile(data);
-		for (int i = 0; i < timFile.colorTableCount(); ++i) {
-			timFile.setCurrentColorTable(i);
-			timFile.image().save(QString("%1/%2-%3.png").arg(path, fileName).arg(i));
 		}
 	}
 	else if (fileType == "tdw")
