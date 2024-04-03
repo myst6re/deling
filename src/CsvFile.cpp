@@ -128,12 +128,15 @@ bool CsvFile::readLine(QStringList &line)
 
 bool CsvFile::writeLine(const QStringList &line)
 {
-	QString l;
+	QString l, esc = QString().append(_quoteCharacter).append(_quoteCharacter);
 
-	for (const QString &field: line) {
-		l.append(_quoteCharacter).append(field).append(_quoteCharacter).append(_fieldSeparator);
+	for (QString field: line) {
+		l.append(_quoteCharacter)
+		        .append(field.replace(_quoteCharacter, esc))
+		        .append(_quoteCharacter)
+		        .append(_fieldSeparator);
 	}
-	
+
 	l[l.size() - 1] = '\r';
 	l.append('\n');
 	
