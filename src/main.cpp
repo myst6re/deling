@@ -19,17 +19,34 @@
 //#define QT_NO_DEBUG_OUTPUT 1
 //#define QT_NO_WARNING_OUTPUT 1
 
+#ifdef DELING_CONSOLE
+#include <QCoreApplication>
+#include "CLI.h"
+#else
 #include <QApplication>
 #include <QSurfaceFormat>
+#include "MainWindow.h"
+#endif
 #include "Config.h"
 #include "FF8Font.h"
-#include "MainWindow.h"
 
 // Only for static compilation
 //Q_IMPORT_PLUGIN(qjpcodecs) // jp encoding
 
 int main(int argc, char *argv[])
 {
+#ifdef DELING_CONSOLE
+	QCoreApplication app(argc, argv);
+	QCoreApplication::setApplicationName(DELING_NAME);
+	QCoreApplication::setApplicationVersion(DELING_VERSION);
+#ifdef Q_OS_WIN
+	// QTextCodec::setCodecForLocale(QTextCodec::codecForName("IBM 850"));
+#endif
+	Config::set();
+	CLI::exec();
+	
+	QTimer::singleShot(0, &app, &QCoreApplication::quit);
+#else
 	QApplication app(argc, argv);
 	app.setWindowIcon(QIcon(":/images/deling.png"));
 	
@@ -72,6 +89,7 @@ int main(int argc, char *argv[])
 	if (argc > 1) {
 		window->openFile(argv[1]);
 	}
+#endif
 
 	return app.exec();
 }

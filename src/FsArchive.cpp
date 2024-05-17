@@ -629,7 +629,7 @@ FsArchive::Error FsArchive::extractFiles(const QStringList &fileNames, const QSt
 		fic.write(fileData(fileName, uncompress));
 		fic.close();
 
-		progress->setObserverValue(++i);
+		progress->setObserverValue(i++);
 	}
 
 	return Ok;
@@ -681,7 +681,7 @@ FsArchive::Error FsArchive::replaceFile(const QString &source, const QString &de
 		}
 
 		setFilePosition(entry, pos);
-		progress->setObserverValue(++i);
+		progress->setObserverValue(i++);
 	}
 
 	if (!saveAs(temp_path)) {
@@ -863,7 +863,7 @@ FsArchive::Error FsArchive::remove(QStringList destinations, ArchiveObserver *pr
 		}
 
 		setFilePosition(entry, pos);
-		progress->setObserverValue(++i);
+		progress->setObserverValue(i++);
 	}
 
 	rebuildInfos();
@@ -970,6 +970,7 @@ bool FsArchive::open(const QString &path)
 	fl.setFileName(FsArchive::flPath(path));
 	fi.setFileName(FsArchive::fiPath(path));
 	fs.setFileName(FsArchive::fsPath(path));
+	qDebug() << fl.fileName() << fi.fileName() << fs.fileName();
 	if (!fl.open(QIODevice::ReadWrite)) {
 		if (!fl.open(QIODevice::ReadOnly))
 			return false;

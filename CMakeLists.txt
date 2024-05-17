@@ -24,6 +24,7 @@ cmake_policy(SET CMP0091 NEW)
 
 set(RELEASE_NAME "Deling")
 set(GUI_TARGET "${RELEASE_NAME}")
+set(CLI_TARGET "deling-cli")
 if(NOT PRERELEASE_STRING)
     set(PRERELEASE_STRING "")
 endif()
@@ -51,6 +52,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC OFF)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+option(GUI "Build the gui executable" ON)
+option(CLI "Build the cli executable" OFF)
 
 add_compile_definitions(
     QT_DISABLE_DEPRECATED_BEFORE=0x050F00
@@ -94,8 +98,8 @@ set(PROJECT_SOURCES
     "src/Config.h"
     "src/ConfigDialog.cpp"
     "src/ConfigDialog.h"
-	"src/CsvFile.cpp"
-	"src/CsvFile.h"
+    "src/CsvFile.cpp"
+    "src/CsvFile.h"
     "src/Data.cpp"
     "src/Data.h"
     "src/EncounterExporter.cpp"
@@ -245,10 +249,10 @@ set(PROJECT_SOURCES
     "src/SpecialCharactersDialog.h"
     "src/TdwManagerDialog.cpp"
     "src/TdwManagerDialog.h"
-	"src/TextExporter.cpp"
-	"src/TextExporter.h"
-	"src/TextExporterWidget.cpp"
-	"src/TextExporterWidget.h"
+    "src/TextExporter.cpp"
+    "src/TextExporter.h"
+    "src/TextExporterWidget.cpp"
+    "src/TextExporterWidget.h"
     "src/TextPreview.cpp"
     "src/TextPreview.h"
     "src/VarManager.cpp"
@@ -303,16 +307,39 @@ if(APPLE)
     )
 endif()
 
+set(PROJECT_CLI_SOURCES
+    "src/main.cpp"
+    "src/ArchiveObserver.h"
+    "src/Arguments.cpp"
+    "src/Arguments.h"
+    "src/ArgumentsExport.cpp"
+    "src/ArgumentsExport.h"
+    "src/ArgumentsImport.cpp"
+    "src/ArgumentsImport.h"
+    "src/CLI.cpp"
+    "src/CLI.h"
+    "src/Config.cpp"
+    "src/Config.h"
+    "src/FsArchive.cpp"
+    "src/FsArchive.h"
+    "src/LZS.cpp"
+    "src/LZS.h"
+    "src/QLZ4.cpp"
+    "src/QLZ4.h"
+)
+
 set(RESOURCES "src/qt/${RELEASE_NAME}.qrc")
 
 if(APPLE)
     set(ICON_FILE "deploy/macosx/${RELEASE_NAME}.icns")
     set(EXTRA_RESOURCES_GUI ${ICON_FILE})
+    set(EXTRA_RESOURCES_CLI "")
 
     set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 elseif (WIN32)
     set(ICON_FILE "src/qt/images/deling.ico")
     set(EXTRA_RESOURCES_GUI "src/qt/${RELEASE_NAME}.rc")
+    set(EXTRA_RESOURCES_CLI "${EXTRA_RESOURCES_GUI}")
 endif()
 
 function(add_translations target)
@@ -329,38 +356,52 @@ function(add_translations target)
     add_dependencies(${target}_lrelease ${target}_lupdate)
 endfunction()
 
-qt_add_executable(${GUI_TARGET} MANUAL_FINALIZATION MACOSX_BUNDLE WIN32 ${PROJECT_SOURCES} ${QM_FILES} ${RESOURCES} ${EXTRA_RESOURCES_GUI})
-target_include_directories(${GUI_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_link_libraries(${GUI_TARGET} PRIVATE
-    Qt::OpenGL
-    Qt::Widgets
-    Qt::OpenGLWidgets
-    ZLIB::ZLIB
-    LZ4::lz4_static
-)
+if(GUI)
+	qt_add_executable(${GUI_TARGET} MANUAL_FINALIZATION MACOSX_BUNDLE WIN32 ${PROJECT_SOURCES} ${QM_FILES} ${RESOURCES} ${EXTRA_RESOURCES_GUI})
+	target_include_directories(${GUI_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/src")
+	target_link_libraries(${GUI_TARGET} PRIVATE
+		Qt::OpenGL
+		Qt::Widgets
+		Qt::OpenGLWidgets
+		ZLIB::ZLIB
+		LZ4::lz4_static
+	)
+	
+	if(${QT_VERSION_MAJOR} EQUAL 6)
+		target_compile_definitions(${GUI_TARGET}
+			PRIVATE TASKBAR_BUTTON=1
+		)
+	endif()
+	
+	set_target_properties(${GUI_TARGET} PROPERTIES
+		MACOSX_BUNDLE_BUNDLE_NAME "Deling"
+		MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+		MACOSX_BUNDLE_LONG_VERSION_STRING ${PROJECT_VERSION}
+		MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
+		MACOSX_BUNDLE_GUI_IDENTIFIER org.myst6re.deling
+		MACOSX_BUNDLE_ICON_FILE ${RELEASE_NAME}.icns
+	)
+	
+	if(APPLE OR WIN32)
+		set_target_properties(${GUI_TARGET} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
+	endif()
+	
+	add_translations(${GUI_TARGET}
+		TS_FILES ${TS_FILES}
+		QM_FILES_OUTPUT_VARIABLE QM_FILES)
+endif()
 
-if(${QT_VERSION_MAJOR} EQUAL 6)
-    target_compile_definitions(${GUI_TARGET}
-        PRIVATE TASKBAR_BUTTON=1
+if(CLI)
+    qt_add_executable(${CLI_TARGET} MANUAL_FINALIZATION ${PROJECT_CLI_SOURCES} ${RESOURCES} ${EXTRA_RESOURCES_CLI})
+    target_include_directories(${CLI_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/src")
+    target_link_libraries(${CLI_TARGET} PRIVATE
+        ZLIB::ZLIB
+        LZ4::lz4_static
+    )
+    target_compile_definitions(${CLI_TARGET}
+        PRIVATE DELING_CONSOLE=1 QT_NO_DEBUG_OUTPUT=1
     )
 endif()
-
-set_target_properties(${GUI_TARGET} PROPERTIES
-    MACOSX_BUNDLE_BUNDLE_NAME "Deling"
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_LONG_VERSION_STRING ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
-    MACOSX_BUNDLE_GUI_IDENTIFIER org.myst6re.deling
-    MACOSX_BUNDLE_ICON_FILE ${RELEASE_NAME}.icns
-)
-
-if(APPLE OR WIN32)
-    set_target_properties(${GUI_TARGET} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
-endif()
-
-add_translations(${GUI_TARGET}
-    TS_FILES ${TS_FILES}
-    QM_FILES_OUTPUT_VARIABLE QM_FILES)
 
 include(GNUInstallDirs)
 
@@ -379,13 +420,23 @@ elseif(WIN32)
     if(NOT QT_DEPLOY_TMP_DIR)
         set(QT_DEPLOY_TMP_DIR "${CMAKE_BINARY_DIR}/win32-deploy" CACHE PATH "Directory to run deployqt scripts")
     endif()
-    install(TARGETS ${GUI_TARGET} RUNTIME DESTINATION "${QT_DEPLOY_TMP_DIR}")
+    if(GUI)
+        install(TARGETS ${GUI_TARGET} RUNTIME DESTINATION "${QT_DEPLOY_TMP_DIR}")
+    endif()
+    if(CLI)
+        install(TARGETS ${CLI_TARGET} RUNTIME DESTINATION "${QT_DEPLOY_TMP_DIR}")
+    endif()
 endif()
 
 add_subdirectory(deploy)
 
 if(APPLE)
-    install(TARGETS ${GUI_TARGET} BUNDLE DESTINATION ".")
+    if(GUI)
+        install(TARGETS ${GUI_TARGET} BUNDLE DESTINATION ".")
+    endif()
+    if(CLI)
+        install(TARGETS ${CLI_TARGET} RUNTIME EXCLUDE_FROM_ALL)
+    endif()
 elseif(WIN32)
     install(DIRECTORY "${QT_DEPLOY_TMP_DIR}/" DESTINATION ".")
     install(CODE "file(REMOVE_RECURSE \"${QT_DEPLOY_TMP_DIR}\")")
@@ -393,10 +444,20 @@ else()
     install(FILES ${CMAKE_SOURCE_DIR}/src/qt/images/Deling.png DESTINATION share/icons/hicolor/256x256/apps RENAME io.github.myst6re.deling.png)
     install(FILES ${CMAKE_SOURCE_DIR}/deploy/linux/io.github.myst6re.deling.desktop DESTINATION share/applications)
     install(FILES ${QM_FILES} DESTINATION share/deling/translations)
-    install(TARGETS ${GUI_TARGET} RUNTIME)
+    if(GUI)
+        install(TARGETS ${GUI_TARGET} RUNTIME)
+    endif()
+    if(CLI)
+        install(TARGETS ${CLI_TARGET} RUNTIME)
+    endif()
 endif()
 
-qt_finalize_executable(${GUI_TARGET})
+if(GUI)
+    qt_finalize_executable(${GUI_TARGET})
+endif()
+if(CLI)
+    qt_finalize_executable(${CLI_TARGET})
+endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     set(CPACK_SYSTEM_NAME "macos")
