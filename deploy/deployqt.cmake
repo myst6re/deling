@@ -6,7 +6,7 @@ if(APPLE)
 elseif(WIN32)
     set(DEPLOYQT_NAME win)
     list(JOIN LANGS "," QT_LANGS)
-    set(DEPLOYQT_ARGS --no-quick-import -xml -qml --translations ${QT_LANGS})
+    set(DEPLOYQT_ARGS --no-quick-import -xml --translations ${QT_LANGS})
 endif()
 
 if(APPLE OR WIN32)
