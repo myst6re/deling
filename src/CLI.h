@@ -36,6 +36,9 @@ struct CLIObserver : public ArchiveObserver
 	}
 	virtual void setObserverValue(int value) override;
 	virtual void setObserverCanCancel(bool canCancel) const override;
+	virtual void flush() override {
+		setPercent(_lastPercent);
+	}
 private:
 	void setPercent(quint8 percent);
 	qint64 _maximum;

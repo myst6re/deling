@@ -26,6 +26,7 @@ public:
 	ArgumentsImport();
 	bool force() const;
 	FiCompression compressionFormat() const;
+	QString prefix() const;
 	inline QString source() const {
 		return _directory;
 	}

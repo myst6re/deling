@@ -39,7 +39,7 @@ void CLIObserver::setObserverValue(int value)
 
 void CLIObserver::setPercent(quint8 percent)
 {
-	printf("[%d%%] %s\r", percent, qPrintable(_filename));
+	printf("[%d%%] %s\r", percent, qPrintable(_filename.leftJustified(40, ' ', true)));
 	fflush(stdout);
 }
 
@@ -65,7 +65,7 @@ void CLI::commandExport()
 	QString commonPath = "c:\\ff8\\data\\";
 	QStringList fileList = archive->tocInDirectory(commonPath);
 	QStringList selectedFiles = filteredFiles(fileList, commonPath.size(), args.includes(), args.excludes());
-	FsArchive::Error error = archive->extractFiles(selectedFiles, commonPath, args.destination(), &observer);
+	FsArchive::Error error = archive->extractFiles(selectedFiles, commonPath, args.destination(), args.noProgress() ? nullptr : &observer);
 	if (error != FsArchive::Ok) {
 		qWarning() << qPrintable(QCoreApplication::translate("CLI", "An error occured when exporting")) << qPrintable(FsArchive::errorString(error, args.path()));
 	}
@@ -90,12 +90,13 @@ void CLI::commandImport()
 		return;
 	}
 	
-	QString commonPath = "c:\\ff8\\data\\";
+	QString commonPath = args.prefix().replace('/', '\\');
 	QStringList fileList;
+	QDir dir(args.source());
 	QDirIterator it(args.source(), QDir::Files, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
 		it.next();
-		fileList.append(it.filePath());
+		fileList.append(dir.relativeFilePath(it.fileInfo().canonicalFilePath()));
 	}
 	QStringList selectedFiles = filteredFiles(fileList, 0, args.includes(), args.excludes());
 	QSaveFile fsFile(fsPath), fiFile(fiPath), flFile(flPath);
@@ -103,19 +104,23 @@ void CLI::commandImport()
 		qWarning() << qPrintable(QCoreApplication::translate("CLI", "An error occured when opening target files")) << qPrintable(fsFile.errorString()) << qPrintable(fiFile.errorString()) << qPrintable(flFile.errorString());
 		return;
 	}
-	qDebug() << selectedFiles << fileList << args.source() << QDir::tempPath();
-	observer.setObserverMaximum(selectedFiles.size());
+
+	if (!args.noProgress()) {
+		observer.setObserverMaximum(selectedFiles.size());
+	}
 	int i = 0;
 	for (QString fileName: selectedFiles) {
-		observer.setFilename(fileName);
-		if (observer.observerWasCanceled()) {
-			return;
+		if (!args.noProgress()) {
+			observer.setFilename(fileName);
+			if (observer.observerWasCanceled()) {
+				return;
+			}
+			observer.setObserverValue(i++);
 		}
-		observer.setObserverValue(i++);
 		QString fullName = commonPath + fileName.replace('/', '\\');
 		flFile.write(fullName.toLatin1() + "\r\n");
 		quint32 pos = quint32(fsFile.pos());
-		QFile f(fileName);
+		QFile f(dir.filePath(fileName));
 		if (!f.open(QIODevice::ReadOnly)) {
 			qWarning() << qPrintable(QCoreApplication::translate("CLI", "An error occured when exporting")) << qPrintable(f.errorString());
 			return;
@@ -151,12 +156,21 @@ void CLI::commandImport()
 		fiFile.write((const char *)&compression, 4);
 	}
 	
-	if (observer.observerWasCanceled()) {
-		return;
+	if (!args.noProgress()) {
+		if (observer.observerWasCanceled()) {
+			return;
+		}
+		observer.setFilename(QCoreApplication::translate("CLI", "Apply changes..."));
+		observer.flush();
 	}
 	
 	if (!fsFile.commit() || !fiFile.commit() || !flFile.commit()) {
 		qWarning() << qPrintable(QCoreApplication::translate("CLI", "An error occured when exporting")) << qPrintable(fsFile.errorString()) << qPrintable(fiFile.errorString()) << qPrintable(flFile.errorString());
+	}
+	
+	if (!args.noProgress()) {
+		observer.setFilename(QCoreApplication::translate("CLI", "Done"));
+		observer.setObserverValue(i);
 	}
 }
 

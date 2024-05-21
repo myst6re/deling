@@ -20,7 +20,8 @@ ArgumentsImport::ArgumentsImport() : CommonArguments()
 {
 	_ADD_FLAG(_OPTION_NAMES("f", "force"),
 	          "Overwrite destination file if exists.");
-	_ADD_ARGUMENT(_OPTION_NAMES("c", "compression"), "Compression format (lzs, lz4, none).", "compression-format", "lzs");
+	_ADD_ARGUMENT(_OPTION_NAMES("c", "compression"), "Compression format ([lzs], lz4, none).", "compression-format", "lzs");
+	_ADD_ARGUMENT("prefix", "Custom directory prefix inside the target archive (default \"c:\\ff8\\data\\\")", "prefix", "c:\\ff8\\data\\");
 
 	_parser.addPositionalArgument("directory", QCoreApplication::translate("ArgumentsImport", "Input directory."));
 	_parser.addPositionalArgument("file", QCoreApplication::translate("Arguments", "Input file or directory."));
@@ -31,6 +32,17 @@ ArgumentsImport::ArgumentsImport() : CommonArguments()
 bool ArgumentsImport::force() const
 {
 	return _parser.isSet("force");
+}
+
+QString ArgumentsImport::prefix() const
+{
+	QString pre = _parser.value("prefix");
+	
+	if (pre.isEmpty()) {
+		return "c:\\ff8\\data\\";
+	}
+	
+	return pre;
 }
 
 FiCompression ArgumentsImport::compressionFormat() const

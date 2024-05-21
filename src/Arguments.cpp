@@ -43,6 +43,7 @@ CommonArguments::CommonArguments()
 	                         "Exclude has the priority over the --include argument.", "exclude", "");
 	_ADD_ARGUMENT("include-from", "Include file names from file. The file format is one name per line.", "include", "");
 	_ADD_ARGUMENT("exclude-from", "Exclude file names from file. The file format is one name per line.", "exclude", "");
+	_ADD_FLAG("no-progress", "Hide progress bar.");
 }
 
 QString CommonArguments::inputFormat() const
@@ -66,6 +67,11 @@ QStringList CommonArguments::includes() const
 QStringList CommonArguments::excludes() const
 {
 	return _parser.values("exclude") + _excludesFromFile;
+}
+
+bool CommonArguments::noProgress() const
+{
+	return _parser.isSet("no-progress");
 }
 
 QStringList CommonArguments::searchFiles(const QString &path)
@@ -153,7 +159,8 @@ Arguments::Arguments() :
 	    QCoreApplication::translate(
 	        "Arguments",
 	        "\nList of available commands:\n"
-	        "  export           Export various assets from archive to files\n"
+	        "  export           Export files from FS archive\n"
+	        "  import           Import files to FS archive\n"
 	        "\n"
 	        "\"%1 export --help\" to see help of the specific subcommand"
 	    ).arg(QFileInfo(qApp->arguments().first()).fileName())

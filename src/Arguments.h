@@ -47,6 +47,7 @@ public:
 	QString inputFormat() const;
 	QStringList includes() const;
 	QStringList excludes() const;
+	bool noProgress() const;
 protected:
 	QStringList wilcardParse();
 	void mapNamesFromFiles();
