@@ -127,14 +127,18 @@ void CLI::commandImport()
 		}
 		QByteArray data = f.readAll(), compressedData;
 		f.close();
-		quint32 uncompressedSize = quint32(data.size());
+		quint32 uncompressedSize = quint32(data.size()), compressedSize = 0;
 		
 		switch (compressionFormat) {
 		case FiCompression::CompressionLzs:
 			compressedData = LZS::compress(data);
+			compressedSize = quint32(data.size());
+			compressedData.prepend((const char *)&compressedSize, 4);
 			break;
 		case FiCompression::CompressionLz4:
 			compressedData = QLZ4::compress(data);
+			compressedSize = quint32(data.size());
+			compressedData.prepend((const char *)&compressedSize, 4);
 			break;
 		case FiCompression::CompressionNone:
 		case FiCompression::CompressionUnknown:
