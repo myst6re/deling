@@ -55,8 +55,8 @@ public:
 
 	bool isOpen() const;
 
-	virtual bool isPc() const=0;
-	bool isPs() const;
+	virtual bool isPc() const;
+	virtual bool isPs() const;
 
 	bool isModified() const;
 	void setModified(bool modified);
@@ -80,7 +80,7 @@ public:
 	bool hasSfxFile() const;
 	bool hasAkaoListFile() const;
 
-	virtual bool hasFiles2() const=0;
+	bool hasFiles2() const;
 	bool hasFiles() const;
 
 	File *getFile(FileType fileType) const;
@@ -102,14 +102,15 @@ public:
 	AkaoListFile *getAkaoListFile() const;
 
 	void addMsdFile();
+	void addJsmFile();
 	void addRatFile();
 	void addMrtFile();
 	void addPvpFile();
 	void addMskFile();
 	void addSfxFile();
 	void addAkaoListFile();
-protected:
 	void setOpen(bool open);
+protected:
 	void setName(const QString &name);
 
 	void openFile(FileType fileType, const QByteArray &data);

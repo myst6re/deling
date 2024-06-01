@@ -95,12 +95,15 @@ private:
 	bool openIsoArchive(const QString &path);
 	void setReadOnly(bool readOnly);
 	void buildGameLangMenu(const QStringList &langs);
+	QString savePath() const;
 
 	FieldArchive *fieldArchive;
-	FieldPC *field;
+	Field *field;
 	Field *currentField;
 	FieldThread *fieldThread;//TODO
-	File *file;
+	MsdFile *msdFile;
+	JsmFile *jsmFile;
+	QString filePath;
 
 	MiscSearch *miscSearchD;
 	QLabel *currentPath;

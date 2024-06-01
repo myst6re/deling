@@ -40,6 +40,11 @@ bool FieldPC::isPc() const
 	return true;
 }
 
+bool FieldPC::isPs() const
+{
+	return false;
+}
+
 bool FieldPC::hasFiles2() const
 {
 	return header &&

@@ -2167,7 +2167,7 @@
     </message>
     <message>
         <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)</source>
-        <translation>Ongi ibiliko fitxak (*.fs *.iso *.bin);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin)</translation>
+        <translation type="vanished">Ongi ibiliko fitxak (*.fs *.iso *.bin);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin)</translation>
     </message>
     <message>
         <source>Une erreur s&apos;est produite lors de l&apos;enregistrement.</source>
@@ -2327,6 +2327,26 @@ Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino 
     <message>
         <source>Textes...</source>
         <translation type="unfinished">Texts...</translation>
+    </message>
+    <message>
+        <source>Impossible d&apos;ouvrir le fichier
+&apos;%1&apos;
+Message d&apos;erreur :
+%2</source>
+        <translation type="unfinished">Unable to open the file
+&apos;%1&apos;
+Error message:
+%2</translation>
+    </message>
+    <message>
+        <source>Impossible d&apos;ouvrir le fichier
+&apos;%1&apos;</source>
+        <translation type="unfinished">Unable to open the file
+&apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>Fichiers compatibles (*.fs *.iso *.bin *.msd *.jsm);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin);;Fichiers FF8 text (*.msd);;Fichiers FF8 field script (*.jsm)</source>
+        <translation type="unfinished">Ongi ibiliko fitxak (*.fs *.iso *.bin *.msd *.jsm);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin);;FF8 text files (*.msd);;FF8 field script files (*.jsm)</translation>
     </message>
 </context>
 <context>

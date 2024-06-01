@@ -44,9 +44,14 @@ void Field::setOpen(bool open)
 	_isOpen = open;
 }
 
+bool Field::isPc() const
+{
+	return false;
+}
+
 bool Field::isPs() const
 {
-	return !isPc();
+	return false;
 }
 
 void Field::openFile(FileType fileType, const QByteArray &data)
@@ -257,6 +262,11 @@ bool Field::hasFiles() const
 	return hasFiles2() || hasCharaFile();
 }
 
+bool Field::hasFiles2() const
+{
+	return false;
+}
+
 File *Field::getFile(FileType fileType) const
 {
 	return files.at(fileType);
@@ -345,6 +355,11 @@ AkaoListFile *Field::getAkaoListFile() const
 void Field::addMsdFile()
 {
 	setFile(Msd);
+}
+
+void Field::addJsmFile()
+{
+	setFile(Jsm);
 }
 
 void Field::addRatFile()

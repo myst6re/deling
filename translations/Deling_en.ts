@@ -2214,7 +2214,7 @@ Dollet Harbor</translation>
     </message>
     <message>
         <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)</source>
-        <translation>Compatible File (*.fs *.iso *.bin);;FS Archive (*.fs);;Image Disk File (*.iso *.bin)</translation>
+        <translation type="vanished">Compatible File (*.fs *.iso *.bin);;FS Archive (*.fs);;Image Disk File (*.iso *.bin)</translation>
     </message>
     <message>
         <source>Enregistrer Sous</source>
@@ -2300,6 +2300,26 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <source>Textes...</source>
         <translation>Texts...</translation>
+    </message>
+    <message>
+        <source>Impossible d&apos;ouvrir le fichier
+&apos;%1&apos;
+Message d&apos;erreur :
+%2</source>
+        <translation>Unable to open the file
+&apos;%1&apos;
+Error message:
+%2</translation>
+    </message>
+    <message>
+        <source>Impossible d&apos;ouvrir le fichier
+&apos;%1&apos;</source>
+        <translation>Unable to open the file
+&apos;%1&apos;</translation>
+    </message>
+    <message>
+        <source>Fichiers compatibles (*.fs *.iso *.bin *.msd *.jsm);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin);;Fichiers FF8 text (*.msd);;Fichiers FF8 field script (*.jsm)</source>
+        <translation>Compatible File (*.fs *.iso *.bin *.msd *.jsm);;FS Archive (*.fs);;Image Disk File (*.iso *.bin);;FF8 text files (*.msd);;FF8 field script files (*.jsm)</translation>
     </message>
 </context>
 <context>

@@ -44,7 +44,7 @@
 
 MainWindow::MainWindow()
     : fieldArchive(nullptr), field(nullptr), currentField(nullptr),
-      fieldThread(new FieldThread), file(nullptr), menuGameLang(nullptr),
+      fieldThread(new FieldThread), msdFile(nullptr), jsmFile(nullptr), menuGameLang(nullptr),
       fsDialog(nullptr), _varManager(nullptr), firstShow(true)
 {
 	setMinimumSize(700, 600);
@@ -246,7 +246,7 @@ void MainWindow::setGameLang(QAction *action)
 	if (fieldArchive != nullptr && actionOpti->isEnabled()) {
 		path = ((FieldArchivePC *)fieldArchive)->getFsArchive()->path();
 	} else if (field != nullptr) {
-		path = field->path();
+		path = ((FieldPC *)field)->path();
 	}
 
 	closeFiles();
@@ -358,7 +358,7 @@ bool MainWindow::openFsArchive(const QString &path)
 			list1->setEnabled(false);
 			lineSearch->setEnabled(false);
 			bgPreview->setEnabled(true);
-			buildGameLangMenu(field->languages());
+			buildGameLangMenu(((FieldPC *)field)->languages());
 			fillPage();
 		} else {
 			delete field;
@@ -373,49 +373,74 @@ bool MainWindow::openFsArchive(const QString &path)
 	return true;
 }
 
-bool MainWindow::openMsdFile(const QString &)
+bool MainWindow::openMsdFile(const QString &path)
 {
 //	qDebug() << QString("MainWindow::openMsdFile(%1)").arg(path);
+	
+	QFile f(path);
+	if (!f.open(QIODevice::ReadOnly)) {
+		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, f.errorString()));
+		return false;
+	}
+	
+	field = new Field(QFileInfo(path).baseName());
+	field->addMsdFile();
 
-	return false;
+	msdFile = field->getMsdFile();
+	if (!msdFile->open(f.readAll())) {
+		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'").arg(path));
+		delete field;
+		field = nullptr;
 
-//	file = new MsdFile();
-//	if (!file->open(path)) {
-//		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, file->lastError));
-//		delete file;
-//		file = 0;
-//		return false;
-//	}
+		return false;
+	}
+	f.close();
 
-//	list1->setEnabled(false);
-//	lineSearch->setEnabled(false);
-//	pageWidgets.at(TextPage)->setData(file);
-//	pageWidgets.at(TextPage)->setFocus();
-//	setCurrentPage(TextPage);
+	field->setOpen(true);
+	filePath = path;
+	currentField = field;
+	list1->setEnabled(false);
+	lineSearch->setEnabled(false);
+	pageWidgets.at(TextPage)->setData(field);
+	pageWidgets.at(TextPage)->setFocus();
+	setCurrentPage(TextPage);
+	setReadOnly(false);
 
-//	return true;
+	return true;
 }
 
-bool MainWindow::openJsmFile(const QString &)
+bool MainWindow::openJsmFile(const QString &path)
 {
-//	qDebug() << QString("MainWindow::openJsmFile(%1)").arg(path);
+	QFile f(path);
+	if (!f.open(QIODevice::ReadOnly)) {
+		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, f.errorString()));
+		return false;
+	}
+	
+	field = new Field(QFileInfo(path).baseName());
+	field->addJsmFile();
+
+	jsmFile = field->getJsmFile();
+	if (!jsmFile->open(f.readAll())) {
+		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'").arg(path));
+		delete field;
+		field = nullptr;
+
+		return false;
+	}
+	f.close();
+
+	field->setOpen(true);
+	filePath = path;
+	currentField = field;
+	list1->setEnabled(false);
+	lineSearch->setEnabled(false);
+	pageWidgets.at(ScriptPage)->setData(field);
+	pageWidgets.at(ScriptPage)->setFocus();
+	setCurrentPage(ScriptPage);
+	setReadOnly(false);
 
 	return false;
-
-//	jsmFile = new JsmFile();
-//	if (!jsmFile->open(path)) {
-//		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, jsmFile->lastError));
-//		delete jsmFile;
-//		jsmFile = nullptr;
-//		return false;
-//	}
-//	list1->setEnabled(false);
-//	lineSearch->setEnabled(false);
-////	pageWidgets.at(ScriptPage)->setData(jsmFile);//TODO
-//	pageWidgets.at(ScriptPage)->setFocus();
-//	setCurrentPage(ScriptPage);
-
-//	return false;
 }
 
 void MainWindow::setReadOnly(bool readOnly)
@@ -466,12 +491,14 @@ void MainWindow::fillPage()
 	if (this->field != nullptr) {
 		currentField = this->field;
 
-		this->field->open2();
+		if (this->field->isPc()) {
+			((FieldPC *)this->field)->open2();
+		}
 	} else {
 		QTreeWidgetItem *item = list1->currentItem();
-		if (item==nullptr)	return;
+		if (item == nullptr)	return;
 		list1->scrollToItem(item);
-		if (fieldArchive==nullptr)	return;
+		if (fieldArchive == nullptr)	return;
 
 		int fieldID = item->data(0, Qt::UserRole).toInt();
 		currentField = fieldArchive->getField(fieldID);
@@ -533,9 +560,9 @@ int MainWindow::closeFiles(bool quit)
 	if (list1->currentItem() != nullptr)
 		Config::setValue("currentField", list1->currentItem()->text(0));
 
-	if (actionSave->isEnabled() && fieldArchive!=nullptr)
+	if (actionSave->isEnabled() && (fieldArchive != nullptr || field != nullptr))
 	{
-		int reponse = QMessageBox::warning(this, tr("Sauvegarder"), tr("Voulez-vous enregistrer les changements de %1 ?").arg(fieldArchive->archivePath()), tr("Oui"), tr("Non"), tr("Annuler"));
+		int reponse = QMessageBox::warning(this, tr("Sauvegarder"), tr("Voulez-vous enregistrer les changements de %1 ?").arg(savePath()), tr("Oui"), tr("Non"), tr("Annuler"));
 		if (reponse == 0)				save();
 		if (quit || reponse == 2)	return reponse;
 	}
@@ -579,12 +606,12 @@ int MainWindow::closeFiles(bool quit)
 
 	currentField = nullptr;
 
-	if (fieldArchive!=nullptr) {
+	if (fieldArchive != nullptr) {
 		delete fieldArchive;
 		fieldArchive = nullptr;
 		field = nullptr;
 	}
-	if (field!=nullptr) {
+	if (field != nullptr) {
 		delete field;
 		field = nullptr;
 	}
@@ -605,7 +632,7 @@ void MainWindow::openFile(QString path)
 				path.append("/Data");
 		}
 
-		path = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), path, tr("Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)"));
+		path = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), path, tr("Fichiers compatibles (*.fs *.iso *.bin *.msd *.jsm);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin);;Fichiers FF8 text (*.msd);;Fichiers FF8 field script (*.jsm)"));
 	}
 
 	if (!path.isEmpty())
@@ -621,10 +648,10 @@ void MainWindow::openFile(QString path)
 		bool ok = false;
 		if (ext == "fs")
 			ok = openFsArchive(path);
-//		else if (ext == "msd")
-//			ok = openMsdFile(path);
-//		else if (ext == "jsm")
-//			ok = openJsmFile(path);
+		else if (ext == "msd")
+			ok = openMsdFile(path);
+		else if (ext == "jsm")
+			ok = openJsmFile(path);
 		else if (ext == "iso" || ext == "bin")
 			ok = openIsoArchive(path);
 
@@ -638,9 +665,24 @@ void MainWindow::openFile(QString path)
 
 void MainWindow::save()
 {
-	if (fieldArchive == nullptr && (field == nullptr || !field->isOpen()))	return;
+	QString path = savePath();
+	
+	if (!path.isEmpty()) {
+		saveAs(path);
+	}
+}
 
-	saveAs(fieldArchive != nullptr ? fieldArchive->archivePath() : field->getArchiveHeader()->path());
+QString MainWindow::savePath() const
+{
+	if (!filePath.isNull()) {
+		return filePath;
+	} else if (fieldArchive != nullptr) {
+		return fieldArchive->archivePath();
+	} else if (field != nullptr && field->isPc()) {
+		return ((FieldPC *)field)->getArchiveHeader()->path();
+	}
+	
+	return QString();
 }
 
 void MainWindow::saveAs(QString path)
@@ -664,8 +706,7 @@ void MainWindow::saveAs(QString path)
 
 	if (path.isEmpty())
 	{
-		path = fieldArchive != nullptr ? fieldArchive->archivePath() : field->getArchiveHeader()->path();
-		path = QFileDialog::getSaveFileName(this, tr("Enregistrer Sous"), path, tr("Archive FS (*.fs)"));
+		path = QFileDialog::getSaveFileName(this, tr("Enregistrer Sous"), savePath(), tr("Archive FS (*.fs)"));
 		if (path.isNull())		return;
 	}
 
@@ -675,8 +716,28 @@ void MainWindow::saveAs(QString path)
 		ProgressWidget progress(tr("Enregistrement..."), ProgressWidget::Cancel, this);
 
 		ok = ((FieldArchivePC *)fieldArchive)->save(&progress, path);
-	} else {
-		ok = field->save(path);
+	} else if (msdFile != nullptr) {
+		QByteArray data;
+		msdFile->save(data);
+		QFile f(path);
+		if (!f.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+			ok = false;
+		} else {
+			f.write(data);
+			f.close();
+		}
+	} else if (jsmFile != nullptr) {
+		QByteArray data;
+		jsmFile->save(data);
+		QFile f(path);
+		if (!f.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+			ok = false;
+		} else {
+			f.write(data);
+			f.close();
+		}
+	} else if (field != nullptr && field->isPc()) {
+		ok = ((FieldPC *)field)->save(path);
 		field->setModified(false);
 	}
 
@@ -693,7 +754,7 @@ void MainWindow::exportCurrent()
 {
     if (!currentField)	return;
 
-	QString path = fieldArchive != nullptr ? fieldArchive->archivePath() : field->path();
+	QString path = savePath();
 	QStringList filter;
 	QList<int> typeList;
 
@@ -898,7 +959,7 @@ void MainWindow::importCurrent()
 {
     if (!currentField)	return;
 
-	QString path = fieldArchive != nullptr ? fieldArchive->archivePath() : field->path();
+	QString path = savePath();
     QStringList filter;
     QList<int> typeList;
 
@@ -1001,8 +1062,8 @@ void MainWindow::setCurrentPage(int index)
 		FsArchive *fsArchive;
 		if (fieldArchive) {
 			fsArchive = ((FieldArchivePC *)fieldArchive)->getFsArchive();
-		} else if (field) {
-			fsArchive = field->getArchiveHeader();
+		} else if (field != nullptr && field->isPc()) {
+			fsArchive = ((FieldPC *)field)->getArchiveHeader();
 		} else {
 			return;
 		}

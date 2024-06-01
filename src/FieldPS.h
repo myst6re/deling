@@ -105,8 +105,9 @@ public:
 
 	FieldPS(quint32 isoFieldID);
 	virtual ~FieldPS();
-
+	
 	bool isPc() const;
+	bool isPs() const;
 	bool hasFiles2() const;
 //	void setIsoFieldID(quint32 isoFieldID);
 	quint32 isoFieldID() const;

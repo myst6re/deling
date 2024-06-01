@@ -119,6 +119,11 @@ bool FieldPS::isPc() const
 	return false;
 }
 
+bool FieldPS::isPs() const
+{
+	return true;
+}
+
 bool FieldPS::hasFiles2() const
 {
 	return true;
