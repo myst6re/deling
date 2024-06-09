@@ -95,7 +95,7 @@ void CLI::commandExport()
 			QFile::remove(fileName % "l");
 			QFile::remove(fileName % "i");
 		}
-		selectedFiles = filteredFiles(fileList, QStringList(), QStringList() << "*.fs" << "*.fi" << "*.fl");
+		selectedFiles = filteredFiles(selectedFiles, QStringList(), QStringList() << "*.fs" << "*.fi" << "*.fl");
 	}
 	FsArchive::Error error = archive->extractFiles(selectedFiles, commonPath, args.destination(), args.noProgress() ? nullptr : &observer);
 	if (error != FsArchive::Ok) {
