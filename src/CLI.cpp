@@ -64,7 +64,39 @@ void CLI::commandExport()
 	
 	QString commonPath = "c:\\ff8\\data\\";
 	QStringList fileList = archive->tocInDirectory(commonPath);
-	QStringList selectedFiles = filteredFiles(fileList, commonPath.size(), args.includes(), args.excludes());
+	QStringList selectedFiles = filteredFiles(fileList, args.includes(), args.excludes());
+	if (args.recursive()) {
+		QStringList archiveFiles = filteredFiles(fileList, QStringList() << "*.fs" << "*.fi" << "*.fl", QStringList());
+
+		FsArchive::Error error = archive->extractFiles(archiveFiles, commonPath, args.destination());
+		if (error != FsArchive::Ok) {
+			qWarning() << qPrintable(QCoreApplication::translate("CLI", "An error occured when exporting inner FS/FL/FI")) << qPrintable(FsArchive::errorString(error, args.path()));
+		}
+		
+		for (const QString &archiveFile: archiveFiles) {
+			if (!archiveFile.endsWith(".fs")) {
+				continue;
+			}
+			
+			QString fileName = QDir::cleanPath(args.destination() + QDir::separator() + archiveFile.mid(commonPath.size()).replace('\\', '/'));
+			fileName.chop(1);
+			{
+				FsArchive subArchive(fileName);
+				if (subArchive.isOpen()) {
+					QStringList fileList2 = subArchive.tocInDirectory(commonPath);
+					FsArchive::Error error = subArchive.extractFiles(filteredFiles(fileList2, args.includes(), args.excludes()), commonPath, args.destination());
+					if (error != FsArchive::Ok) {
+						qWarning() << qPrintable(QCoreApplication::translate("CLI", "An error occured when exporting file inside inner FS/FL/FI")) << fileName << qPrintable(FsArchive::errorString(error, args.path()));
+					}
+				}
+			}
+			
+			QFile::remove(fileName % "s");
+			QFile::remove(fileName % "l");
+			QFile::remove(fileName % "i");
+		}
+		selectedFiles = filteredFiles(fileList, QStringList(), QStringList() << "*.fs" << "*.fi" << "*.fl");
+	}
 	FsArchive::Error error = archive->extractFiles(selectedFiles, commonPath, args.destination(), args.noProgress() ? nullptr : &observer);
 	if (error != FsArchive::Ok) {
 		qWarning() << qPrintable(QCoreApplication::translate("CLI", "An error occured when exporting")) << qPrintable(FsArchive::errorString(error, args.path()));
@@ -98,7 +130,7 @@ void CLI::commandImport()
 		it.next();
 		fileList.append(dir.relativeFilePath(it.fileInfo().canonicalFilePath()));
 	}
-	QStringList selectedFiles = filteredFiles(fileList, 0, args.includes(), args.excludes());
+	QStringList selectedFiles = filteredFiles(fileList, args.includes(), args.excludes());
 	QSaveFile fsFile(fsPath), fiFile(fiPath), flFile(flPath);
 	if (!fsFile.open(QIODevice::WriteOnly | QIODevice::Truncate) || !fiFile.open(QIODevice::WriteOnly | QIODevice::Truncate) || !flFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
 		qWarning() << qPrintable(QCoreApplication::translate("CLI", "An error occured when opening target files")) << qPrintable(fsFile.errorString()) << qPrintable(fiFile.errorString()) << qPrintable(flFile.errorString());
@@ -191,28 +223,28 @@ FsArchive *CLI::openArchive(const QString &ext, const QString &path)
 	return archive;
 }
 
-QStringList CLI::filteredFiles(const QStringList &fileList, int offset, const QStringList &includePatterns, const QStringList &excludePatterns)
+QStringList CLI::filteredFiles(const QStringList &fileList, const QStringList &includePatterns, const QStringList &excludePatterns)
 {
 	QStringList selectedFiles;
 	QList<QRegularExpression> includes, excludes;
 
 	for (const QString &pattern: includePatterns) {
-		includes.append(QRegularExpression(QRegularExpression::anchoredPattern(QRegularExpression::wildcardToRegularExpression(pattern))));
+		includes.append(QRegularExpression(QRegularExpression::wildcardToRegularExpression(pattern, QRegularExpression::NonPathWildcardConversion)));
 	}
 	for (const QString &pattern: excludePatterns) {
-		excludes.append(QRegularExpression(QRegularExpression::anchoredPattern(QRegularExpression::wildcardToRegularExpression(pattern))));
+		excludes.append(QRegularExpression(QRegularExpression::wildcardToRegularExpression(pattern, QRegularExpression::NonPathWildcardConversion)));
 	}
 
 	for (const QString &entry: fileList) {
 		bool found = includes.isEmpty();
 		for (const QRegularExpression &regExp: includes) {
-			if (regExp.match(entry, offset).hasMatch()) {
+			if (regExp.match(entry).hasMatch()) {
 				found = true;
 				break;
 			}
 		}
 		for (const QRegularExpression &regExp: excludes) {
-			if (regExp.match(entry, offset).hasMatch()) {
+			if (regExp.match(entry).hasMatch()) {
 				found = false;
 				break;
 			}

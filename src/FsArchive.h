@@ -101,7 +101,7 @@ public:
 	QStringList dirs() const;
 	bool extractFile(const QString &fileName, const QByteArray &fs_data, const QString &filePath, bool uncompress=true);
 	bool extractFile(const QString &fileName, const QString &filePath, bool uncompress=true);
-	FsArchive::Error extractFiles(const QStringList &fileNames, const QString &baseFileName, const QString &fileDir, ArchiveObserver *progress, bool uncompress=true);
+	FsArchive::Error extractFiles(const QStringList &fileNames, const QString &baseFileName, const QString &fileDir, ArchiveObserver *progress = nullptr, bool uncompress = true);
 	Error replaceFile(const QString &source, const QString &destination, ArchiveObserver *progress);
 	QList<FsArchive::Error> replaceDir(const QString &source, const QString &destination, FiCompression compression, ArchiveObserver *progress);
 	QList<FsArchive::Error> appendFiles(const QStringList &sources, const QStringList &destinations, FiCompression compression, ArchiveObserver *progress);

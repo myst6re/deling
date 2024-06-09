@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 #ifdef QT_DEBUG
 	format.setOption(QSurfaceFormat::DebugContext);
 #endif
-	QSurfaceFormat::setDefaultFormat(format);;
+	QSurfaceFormat::setDefaultFormat(format);
 
 	Config::set();
 

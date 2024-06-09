@@ -603,7 +603,9 @@ FsArchive::Error FsArchive::extractFiles(const QStringList &fileNames, const QSt
 
 	// qDebug() << "extractFiles" << fileNames << fileDir << uncompress;
 
-	progress->setObserverMaximum(fileNames.size());
+	if (progress != nullptr) {
+		progress->setObserverMaximum(fileNames.size());
+	}
 
 	QDir dir(fileDir);
 	int i=0, sizeOfBaseFileName = baseFileName.size();
@@ -611,7 +613,7 @@ FsArchive::Error FsArchive::extractFiles(const QStringList &fileNames, const QSt
 	for (QString fileName: fileNames) {
 		QCoreApplication::processEvents();
 
-		if (progress->observerWasCanceled()) {
+		if (progress != nullptr && progress->observerWasCanceled()) {
 			return Canceled;
 		}
 
@@ -629,7 +631,9 @@ FsArchive::Error FsArchive::extractFiles(const QStringList &fileNames, const QSt
 		fic.write(fileData(fileName, uncompress));
 		fic.close();
 
-		progress->setObserverValue(i++);
+		if (progress != nullptr) {
+			progress->setObserverValue(i++);
+		}
 	}
 
 	return Ok;

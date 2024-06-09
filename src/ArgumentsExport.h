@@ -23,6 +23,7 @@ class ArgumentsExport : public CommonArguments
 {
 public:
 	ArgumentsExport();
+	bool recursive() const;
 	inline QString destination() const {
 		return _directory;
 	}
