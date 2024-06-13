@@ -275,8 +275,8 @@ public:
 		Add = 0,
 		Sub = 1,
 		Mul = 2,
-		Mod = 3,
-		Div = 4,
+		Div = 3,
+		Mod = 4,
 		// Min
 		Eq = 6,
 		Gt = 7,
@@ -288,6 +288,8 @@ public:
 		Or = 13,
 		Eor = 14,
 		// Not
+		Rsh = 16,
+		Lsh = 17,
 		LogAnd = 0x1000000,
 		LogOr = 0x1000001
 		// LogNot

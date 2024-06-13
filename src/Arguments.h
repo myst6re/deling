@@ -41,7 +41,7 @@ class CommonArguments : public HelpArguments
 {
 public:
 	CommonArguments();
-	inline QString path() const {
+	inline const QString &path() const {
 		return _path;
 	}
 	QString inputFormat() const;

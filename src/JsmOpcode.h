@@ -448,7 +448,7 @@ public:
 	virtual bool hasParam() const;
 	virtual int popCount() const;
 	virtual QString paramStr() const;
-	static const char *cal_table[16];
+	static const char *cal_table[18];
 };
 
 class JsmOpcodePsh : public JsmOpcode

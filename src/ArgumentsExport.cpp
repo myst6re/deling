@@ -21,7 +21,7 @@ ArgumentsExport::ArgumentsExport() : CommonArguments()
 	_ADD_FLAG(_OPTION_NAMES("r", "recursive"),
 	          "Extract FS archives recursively.");
 
-	_parser.addPositionalArgument("file", QCoreApplication::translate("Arguments", "Input file or directory."));
+	_parser.addPositionalArgument("file", QCoreApplication::translate("ArgumentsExport", "Input file or directory."));
 	_parser.addPositionalArgument("directory", QCoreApplication::translate("ArgumentsExport", "Output directory."));
 
 	parse();

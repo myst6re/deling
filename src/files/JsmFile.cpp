@@ -26,7 +26,7 @@ JsmFile::JsmFile() :
     groupItem(0), _oldFormat(false)
 {
 	if(opcodeNameCalc.isEmpty()) {
-		for(int i=0 ; i<16 ; ++i)
+		for(int i=0 ; i<18 ; ++i)
 			opcodeNameCalc.append(JsmOpcodeCal::cal_table[i]);
 
 		for(int i=0 ; i<JSM_OPCODE_COUNT ; ++i)

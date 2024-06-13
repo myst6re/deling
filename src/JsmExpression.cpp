@@ -127,7 +127,7 @@ JsmExpression *JsmExpression::factory(const JsmOpcode *op,
 				            JsmExpressionUnary::Operation(op->param()),
 				            stack.pop());
 			}
-		} else if (op->param() <= JsmExpressionBinary::Eor) {
+		} else if (op->param() <= JsmExpressionBinary::Lsh) {
 			if (stack.size() >= 2) {
 				ret = new JsmExpressionBinary(
 				            JsmExpressionBinary::Operation(op->param()),
@@ -314,7 +314,9 @@ QString JsmExpressionBinary::toString(const Field *field, int base) const
 {
 	if (_op == And
 	        || _op == Or
-	        || _op == Eor) {
+	        || _op == Eor
+	        || _op == Lsh
+	        || _op == Rsh) {
 		base = 16;
 	}
 	return QString("(%1 %2 %3)")
@@ -358,6 +360,10 @@ int JsmExpressionBinary::eval(bool *ok) const
 				return v1 | v2;
 			case Eor:
 				return v1 ^ v2;
+			case Rsh:
+				return v1 >> v2;
+			case Lsh:
+				return v1 << v2;
 			case LogAnd:
 				return int(v1 && v2);
 			case LogOr:
@@ -437,6 +443,10 @@ QString JsmExpressionBinary::operationToString(Operation op)
 		return "|";
 	case Eor:
 		return "^";
+	case Rsh:
+		return ">>";
+	case Lsh:
+		return "<<";
 	case LogAnd:
 		return "and";
 	case LogOr:
@@ -780,7 +790,9 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 			int base = 10;
 			if (binaryExpr->operation() == JsmExpressionBinary::And
 			        || binaryExpr->operation() == JsmExpressionBinary::Or
-			        || binaryExpr->operation() == JsmExpressionBinary::Eor) {
+			        || binaryExpr->operation() == JsmExpressionBinary::Eor
+			        || binaryExpr->operation() == JsmExpressionBinary::Rsh
+			        || binaryExpr->operation() == JsmExpressionBinary::Lsh) {
 				base = 16;
 			}
 			delete opExpr;

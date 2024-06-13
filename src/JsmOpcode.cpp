@@ -121,7 +121,7 @@ int JsmOpcodeCal::popCount() const
 	if (param() == 5 || param() == 15) {
 		return 1;
 	}
-	if (param() < 15) {
+	if (param() < 18) {
 		return 2;
 	}
 	return -1;
@@ -130,15 +130,15 @@ int JsmOpcodeCal::popCount() const
 QString JsmOpcodeCal::paramStr() const
 {
 	const int p = param();
-	return p < 16 ? cal_table[p] : JsmOpcode::paramStr();
+	return p < 18 ? cal_table[p] : JsmOpcode::paramStr();
 }
 
-const char *JsmOpcodeCal::cal_table[16] = {
+const char *JsmOpcodeCal::cal_table[18] = {
 	"ADD",
 	"SUB",
 	"MUL",
-	"MOD",
 	"DIV",
+	"MOD",
 	"MIN",
 	"EQ",
 	"GT",
@@ -149,7 +149,9 @@ const char *JsmOpcodeCal::cal_table[16] = {
 	"AND",
 	"OR",
 	"EOR",
-    "NOT"
+	"NOT",
+	"RSH",
+	"LSH"
 };
 
 JsmOpcodePsh::JsmOpcodePsh(const JsmOpcode &other) :

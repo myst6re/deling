@@ -24,7 +24,7 @@ ArgumentsImport::ArgumentsImport() : CommonArguments()
 	_ADD_ARGUMENT("prefix", "Custom directory prefix inside the target archive (default \"c:\\ff8\\data\\\")", "prefix", "c:\\ff8\\data\\");
 
 	_parser.addPositionalArgument("directory", QCoreApplication::translate("ArgumentsImport", "Input directory."));
-	_parser.addPositionalArgument("file", QCoreApplication::translate("Arguments", "Input file or directory."));
+	_parser.addPositionalArgument("file", QCoreApplication::translate("ArgumentsImport", "Input file or directory."));
 
 	parse();
 }
