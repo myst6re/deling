@@ -15,7 +15,8 @@ instructions below.
 ### Requirements
 
  - CMake
- - Qt 5.5+
+ - Qt 6.5+
+ - LZ4
 
 ### Windows
 
@@ -24,13 +25,14 @@ instructions below.
 0) Download the online installer from https://www.qt.io/download-qt-installer ( remember to click the Download button )
 1) Install Qt with these items checked:
    - **Packages categories:** `Latest release`
-   - **Components:** Uncheck everything and pick only `MSVC 2019 32-bit`
+   - **Components:** Uncheck everything and pick only `MSVC 2019 64-bit`
+2) You can now open the project with Qt Creator
 
 #### Visual Studio
 
 > **Please note:**
 >
-> By default Visual Studio will pick the **x86-Release** build configuration, but you can choose any other profile available.
+> By default Visual Studio will pick the **x64-Release** build configuration, but you can choose any other profile available.
 
 0) **REQUIRED!** Follow the steps to install Qt, if you didn't already
 0) Download the the latest [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) installer
@@ -56,7 +58,7 @@ In order to continue please make sure you have `brew` installed. See https://bre
 #### Install dependencies
 ```sh
 $ brew install cmake
-$ brew install qt5
+$ brew install qt6
 ```
 Close and reopen your terminal.
 
@@ -76,12 +78,12 @@ $ cmake --build .dist/build --config Debug
 
 ##### Debian/Ubuntu
 ```sh
-$ apt-get install build-essential cmake qt5-default qttools5-dev
+$ apt-get install build-essential cmake qt6-default qttools6-dev
 ```
 
 ##### Arch Linux
 ```sh
-$ pacman -S --needed base-devel cmake qt5
+$ pacman -S --needed base-devel cmake qt6
 ```
 
 #### Build
