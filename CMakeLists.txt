@@ -45,7 +45,7 @@ if (MSVC)
     add_compile_options(/W3)
     set(lz4_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lz4/lib/cmake/lz4")
     set(ZLIB_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/zlib/include")
-    set(ZLIB_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/zlib/lib/zlib.lib")
+    set(ZLIB_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/zlib/lib/zlibstatic.lib")
 else()
     add_compile_options(-Wall -Wextra -pedantic)
 endif()
@@ -73,6 +73,7 @@ add_compile_definitions(
 )
 
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets OpenGLWidgets OpenGL LinguistTools REQUIRED)
+set(ZLIB_USE_STATIC_LIBS ON)
 find_package(ZLIB REQUIRED)
 find_package(lz4 REQUIRED)
 
@@ -356,7 +357,7 @@ function(add_translations target)
         QM_FILES_OUTPUT_VARIABLE qm_files)
     set("${arg_QM_FILES_OUTPUT_VARIABLE}" "${qm_files}" PARENT_SCOPE)
     # Force lupdate
-    add_dependencies(${target}_lrelease ${target}_lupdate)
+    add_custom_target(app_translations ALL DEPENDS ${qm_files})
 endfunction()
 
 if(GUI)

@@ -24,9 +24,15 @@ instructions below.
 
 0) Download the online installer from https://www.qt.io/download-qt-installer ( remember to click the Download button )
 1) Install Qt with these items checked:
-   - **Packages categories:** `Latest release`
-   - **Components:** Uncheck everything and pick only `MSVC 2019 64-bit`
-2) You can now open the project with Qt Creator
+   - **Packages categories:** `Latest supported releases`
+   - **Components:** Uncheck everything and pick `Qt/Qt 6.*.*/MSVC 20?? 64-bit`
+   - [Optionnal] To open the project with Qt Creator (easier), check `Developer and Designer Tools/Qt Creator`, `Developer and Designer Tools/CMake` and `Developer and Designer Tools/Ninja`
+
+#### Qt Creator
+
+Open the project and setup Qt. Select Debug or Release build and then run the project (CTRL + R).
+
+To deploy the project with Qt dependencies you can add an extra "cmake install" step in "Run settings" of the project.
 
 #### Visual Studio
 
@@ -39,6 +45,15 @@ instructions below.
 1) Run the installer and import this [.vsconfig](.vsconfig) file in the installer to pick the required components to build this project
 2) Once installed, open this repository **as a folder** in Visual Studio 2019 and click the build button.
 
+To execute the project you need Qt dependencies where the exe is created. You can either:
+```sh
+cmake --install {cmake_build_dir}
+```
+Or
+```sh
+{QT_DIR}/*/msvc2019_64/bin/windeployqt --no-quick-import -xml --translations en {build_dir}
+```
+
 #### Optional: Visual Studio Code
 
 0) **REQUIRED!** Follow the steps to install Qt, if you didn't already
@@ -50,6 +65,8 @@ instructions below.
 3) Open this repository as a folder in Visual Studio code
 4) Choose as build profile in the status bar `CMake: [Release]` ( or one of the aforementioned profiles )
 5) Click the button on the status bar `Build`
+
+To execute the project, follow the instructions from "Visual Studio" section.
 
 ### macOS
 
