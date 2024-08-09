@@ -73,7 +73,6 @@ add_compile_definitions(
 )
 
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets OpenGLWidgets OpenGL LinguistTools REQUIRED)
-set(ZLIB_USE_STATIC_LIBS ON)
 find_package(ZLIB REQUIRED)
 find_package(lz4 REQUIRED)
 
