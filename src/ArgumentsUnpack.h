@@ -19,15 +19,15 @@
 #include <QtCore>
 #include "Arguments.h"
 
-class ArgumentsExport : public CommonArguments
+class ArgumentsUnpack : public CommonArguments
 {
 public:
-	ArgumentsExport();
-	bool force() const;
+	ArgumentsUnpack();
+	bool recursive() const;
 	inline QString destination() const {
-		return _destination;
+		return _directory;
 	}
 private:
 	void parse();
-	QString _destination;
+	QString _directory;
 };

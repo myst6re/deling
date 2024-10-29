@@ -18,7 +18,7 @@
 #pragma once
 
 #include "files/File.h"
-#include "Poly.h"
+#include "Vertex.h"
 
 struct Range {
 	qint16 top;

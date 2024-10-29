@@ -17,6 +17,7 @@
  ****************************************************************************/
 #include "FF8Image.h"
 #include "LZS.h"
+#include "FF8Color.h"
 
 QPixmap FF8Image::lzs(const QByteArray &data)
 {
@@ -54,7 +55,7 @@ QPixmap FF8Image::lzs(const QByteArray &data)
 		// if(color>>15)
 		// image.setPixel(QPoint(x, y), qRgb(0, 255, 0));
 		// else
-		pixels[x + y*l] = fromPsColor(color);
+		pixels[x + y*l] = FF8Color::fromPsColor(color);
 
 		++x;
 		if(x==l)
@@ -84,7 +85,7 @@ QByteArray FF8Image::toLzs(const QImage &image, quint16 u1, quint16 u2)
 	const QRgb *pixels = (QRgb *)image.constBits();
 
 	while(image.valid(x, y)) {
-		quint16 color = toPsColor(pixels[x + y * w]);
+		quint16 color = FF8Color::toPsColor(pixels[x + y * w]);
 		data.append((char *)&color, 2);
 
 		++x;

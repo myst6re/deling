@@ -16,7 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "files/PmpFile.h"
-#include "FF8Image.h"
+#include "FF8Color.h"
 
 QString PmpFile::currentFieldName;
 
@@ -77,7 +77,7 @@ QImage PmpFile::palette() const
 	for(int i=0 ; i<pal.width()*pal.height() ; ++i) {
 		quint16 color;
 		memcpy(&color, &constPmp[4+i*2], 2);
-		pxPal[i] = FF8Image::fromPsColor(color);
+		pxPal[i] = FF8Color::fromPsColor(color);
 	}
 
 	return pal;
@@ -101,12 +101,12 @@ QImage PmpFile::image(quint8 deph, quint8 palID) const
 			quint16 color;
 			memcpy(&color, &constPmp[4 + palID * 32 + ((quint8)pmp.at(516 + j/2) & 0xF)*2], 2);
 
-			px[j] = FF8Image::fromPsColor(color);
+			px[j] = FF8Color::fromPsColor(color);
 
 			++j;
 			memcpy(&color, &constPmp[4 + palID * 32 + ((quint8)pmp.at(516 + j/2) >> 4)*2], 2);
 
-			px[j] = FF8Image::fromPsColor(color);
+			px[j] = FF8Color::fromPsColor(color);
 		}
 
 		return img;
@@ -124,7 +124,7 @@ QImage PmpFile::image(quint8 deph, quint8 palID) const
 			quint16 color;
 			memcpy(&color, &constPmp[4 + (quint8)pmp.at(516 + j)*2], 2);
 
-			px[j] = FF8Image::fromPsColor(color);
+			px[j] = FF8Color::fromPsColor(color);
 		}
 
 		return img;
@@ -142,7 +142,7 @@ QImage PmpFile::image(quint8 deph, quint8 palID) const
 			quint16 color;
 			memcpy(&color, &constPmp[516 + j*2], 2);
 
-			px[j] = FF8Image::fromPsColor(color);
+			px[j] = FF8Color::fromPsColor(color);
 		}
 
 		return img;

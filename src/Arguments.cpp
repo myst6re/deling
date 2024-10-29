@@ -159,10 +159,12 @@ Arguments::Arguments() :
 	    QCoreApplication::translate(
 	        "Arguments",
 	        "\nList of available commands:\n"
-	        "  export           Export files from FS archive\n"
-	        "  import           Import files to FS archive\n"
+	        "  unpack           Unpack files from FS archive\n"
+	        "  pack             Pack files from directory to FS archive\n"
+	        "  export-texts     Export texts to CSV from FIELD FS archive\n"
+	        "  import-texts     Import texts from a CSV file to existing FIELD FS archive\n"
 	        "\n"
-	        "\"%1 export --help\" to see help of the specific subcommand"
+	        "\"%1 unpack --help\" to see help of the specific subcommand"
 	    ).arg(QFileInfo(qApp->arguments().first()).fileName())
 	);
 
@@ -182,10 +184,14 @@ void Arguments::parse()
 
 	const QString &command = args.first();
 
-	if (command == "export") {
+	if (command == "export-texts") {
 		_command = Export;
-	} else if (command == "import") {
+	} else if (command == "import-texts") {
 		_command = Import;
+	} else if (command == "unpack") {
+		_command = Unpack;
+	} else if (command == "pack") {
+		_command = Pack;
 	} else {
 		qWarning() << qPrintable(QCoreApplication::translate("Arguments", "Unknown command type:")) << qPrintable(command);
 		return;

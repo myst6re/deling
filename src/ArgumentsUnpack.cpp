@@ -14,38 +14,25 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "ArgumentsImport.h"
+#include "ArgumentsUnpack.h"
 
-ArgumentsImport::ArgumentsImport() : CommonArguments()
+ArgumentsUnpack::ArgumentsUnpack() : CommonArguments()
 {
-	_ADD_FLAG(_OPTION_NAMES("c", "column"),
-	          "Column (starting at 1) to use as text (default=2).");
+	_ADD_FLAG(_OPTION_NAMES("r", "recursive"),
+	          "Extract FS archives recursively.");
 
-	_parser.addPositionalArgument("archive", QCoreApplication::translate("ArgumentsImport", "Input Field FS archive."));
-	_parser.addPositionalArgument("file", QCoreApplication::translate("ArgumentsImport", "Input CSV file path."));
+	_parser.addPositionalArgument("file", QCoreApplication::translate("ArgumentsUnpack", "Input file or directory."));
+	_parser.addPositionalArgument("directory", QCoreApplication::translate("ArgumentsUnpack", "Output directory."));
 
 	parse();
 }
 
-int ArgumentsImport::column() const
+bool ArgumentsUnpack::recursive() const
 {
-	if (!_parser.isSet("column")) {
-		return 2;
-	}
-	
-	bool ok = false;
-	int ret = _parser.value("column").toInt(&ok);
-	
-	if (!ok || ret <= 0) {
-		qWarning() << qPrintable(
-		    QCoreApplication::translate("Arguments", "Error: column should be an integer value >= 1"));
-		exit(1);
-	}
-	
-	return ret;
+	return _parser.isSet("recursive");
 }
 
-void ArgumentsImport::parse()
+void ArgumentsUnpack::parse()
 {
 	_parser.process(*qApp);
 
@@ -57,13 +44,13 @@ void ArgumentsImport::parse()
 
 	QStringList paths = wilcardParse();
 	if (paths.size() == 2) {
-		// Source directory
-		if (QDir(paths.first()).exists()) {
-			_destination = paths.takeFirst();
+		// Output directory
+		if (QDir(paths.last()).exists()) {
+			_directory = paths.takeLast();
 		} else {
 			qWarning() << qPrintable(
-			    QCoreApplication::translate("Arguments", "Error: source directory does not exist:"))
-			           << qPrintable(paths.first());
+			    QCoreApplication::translate("Arguments", "Error: target directory does not exist:"))
+			           << qPrintable(paths.last());
 			exit(1);
 		}
 

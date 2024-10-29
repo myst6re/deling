@@ -18,7 +18,7 @@
 #pragma once
 
 #include "files/File.h"
-#include "Poly.h"
+#include "Vertex.h"
 
 struct Vertex_sr {
 	qint16 x, y, z, res;// res = Triangle[0].z (padding)

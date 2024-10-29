@@ -18,6 +18,7 @@
 #pragma once
 
 #include "files/File.h"
+#include <QImage>
 
 class PmpFile : public File
 {

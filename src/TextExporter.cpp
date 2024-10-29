@@ -22,6 +22,7 @@
 #include "ArchiveObserver.h"
 #include "files/MsdFile.h"
 #include "Config.h"
+#include "FF8Text.h"
 
 TextExporter::TextExporter(FieldArchive *archive) :
       _archive(archive)
@@ -130,7 +131,7 @@ bool TextExporter::toCsv(const QString &fileName, const QStringList &langs, QCha
 	return true;
 }
 
-bool TextExporter::fromCsv(const QString &fileName, quint8 column, ArchiveObserver *observer)
+bool TextExporter::fromCsv(const QString &fileName, quint8 column, QChar fieldSeparator, QChar quoteCharacter, CsvFile::CsvEncoding encoding, ArchiveObserver *observer)
 {
 	if (!_archive) {
 		return false;
@@ -147,7 +148,7 @@ bool TextExporter::fromCsv(const QString &fileName, quint8 column, ArchiveObserv
 		return false;
 	}
 	
-	CsvFile csv(&io);
+	CsvFile csv(&io, fieldSeparator, quoteCharacter, encoding);
 	const QStringList &mapList = _archive->mapList();
 	QStringList line;
 	MsdFile *msd = nullptr;

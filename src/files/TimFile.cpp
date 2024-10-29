@@ -16,7 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "TimFile.h"
-#include "FF8Image.h"
+#include "FF8Color.h"
 
 TimFile::TimFile(const QByteArray &data) :
 	TextureFile(), palX(0), palY(0), palW(0), palH(0), imgX(0), imgY(0)
@@ -83,7 +83,7 @@ bool TimFile::open(const QByteArray &data)
 
 				for (quint16 j = 0; j < onePalSize; ++j) {
 					memcpy(&color, &constData[20+pos*2+j*2], 2);
-					pal.append(FF8Image::fromPsColor(color, true));
+					pal.append(FF8Color::fromPsColor(color, true));
 				}
 
 				_colorTables.append(pal);
@@ -184,7 +184,7 @@ bool TimFile::open(const QByteArray &data)
 		while (i<size && y<h)
 		{
 			memcpy(&color, &constData[20+palSize+i], 2);
-			pixels[x + y*w] = FF8Image::fromPsColor(color, true);
+			pixels[x + y*w] = FF8Color::fromPsColor(color, true);
 
 			++x;
 			if (x==w)
@@ -238,7 +238,7 @@ bool TimFile::save(QByteArray &data)
 		for (const QVector<QRgb> &colorTable: _colorTables) {
 			int i;
 			for (i = 0; i<colorTable.size() && i < colorPerPal; ++i) {
-				quint16 psColor = FF8Image::toPsColor(colorTable.at(i));
+				quint16 psColor = FF8Color::toPsColor(colorTable.at(i));
 				data.append((char *)&psColor, 2);
 			}
 			if (i<colorPerPal) {
@@ -287,7 +287,7 @@ bool TimFile::save(QByteArray &data)
 		for (int y = 0; y < height; ++y) {
 			for (int x = 0; x < width; ++x) {
 				if (bpp == 2) {
-					quint16 color = FF8Image::toPsColor(_image.pixel(x, y));
+					quint16 color = FF8Color::toPsColor(_image.pixel(x, y));
 					data.append((char *)&color, 2);
 				} else {
 					QRgb c = _image.pixel(x, y);

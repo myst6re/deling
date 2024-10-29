@@ -41,6 +41,7 @@
 #include "TextPreview.h"
 #include "ConfigDialog.h"
 #include "FieldThread.h"
+#include "FF8Image.h"
 
 MainWindow::MainWindow()
     : fieldArchive(nullptr), field(nullptr), currentField(nullptr),
@@ -882,7 +883,7 @@ void MainWindow::importAllTexts()
 	
 	TextExporter exporter(fieldArchive);
 	
-	if (!exporter.fromCsv(path, dialog.column(), &progress) && !progress.observerWasCanceled()) {
+	if (!exporter.fromCsv(path, dialog.column(), QChar(','), QChar('"'), CsvFile::Utf8, &progress) && !progress.observerWasCanceled()) {
 		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
 	}
 	

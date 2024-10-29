@@ -16,7 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "TexFile.h"
-#include "FF8Image.h"
+#include "FF8Color.h"
 
 TexFile::TexFile(const QByteArray &data) :
       TextureFile()
@@ -108,7 +108,7 @@ bool TexFile::open(const QByteArray &data)
 		for (i = 0; i < imageSectionSize; i+=header.bytesPerPixel) {
 			if (header.bytesPerPixel == 2) {
 				memcpy(&color, &constData[headerSize+i], 2);
-				pixels[i/2] = FF8Image::fromPsColor(color);
+				pixels[i/2] = FF8Color::fromPsColor(color);
 			} else if (header.bytesPerPixel == 3) {
 				pixels[i/3] = qRgb(constData[headerSize+i], constData[headerSize+i+1], constData[headerSize+i+2]);
 			} else if (header.bytesPerPixel == 4) {
@@ -176,7 +176,7 @@ bool TexFile::save(QByteArray &data)
 	} else {
 		QRgb *pixels = (QRgb *)_image.bits();
 		for (int i = 0; i < _image.width()*_image.height(); ++i) {
-			quint16 color = FF8Image::toPsColor(pixels[i]);
+			quint16 color = FF8Color::toPsColor(pixels[i]);
 			data.append((char *)&color, 2);
 		}
 

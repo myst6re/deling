@@ -19,9 +19,13 @@
 #include "Arguments.h"
 #include "ArgumentsExport.h"
 #include "ArgumentsImport.h"
+#include "ArgumentsUnpack.h"
+#include "ArgumentsPack.h"
 #include "FsArchive.h"
+#include "TextExporter.h"
 #include "LZS.h"
 #include "QLZ4.h"
+#include "FieldArchivePC.h"
 #include <iostream>
 #include <QCoreApplication>
 
@@ -53,6 +57,58 @@ CLIObserver CLI::observer;
 void CLI::commandExport()
 {
 	ArgumentsExport args;
+	if (args.help() || args.destination().isEmpty()) {
+		args.showHelp();
+	}
+
+	FsArchive *archive = openArchive(args.inputFormat(), args.path());
+	if (archive == nullptr) {
+		return;
+	}
+	
+	FieldArchivePC fieldArchive;
+	if (fieldArchive.open(args.path(), &observer) != 0) {
+		qWarning() << fieldArchive.errorMessage();
+		return;
+	}
+	QStringList langs = fieldArchive.languages();
+	
+	TextExporter exporter(&fieldArchive);
+	
+	if (!exporter.toCsv(args.destination(), langs, QChar(','), QChar('"'), CsvFile::Utf8, &observer) && !observer.observerWasCanceled()) {
+		return;
+	}
+}
+
+void CLI::commandImport()
+{
+	ArgumentsImport args;
+	if (args.help() || args.source().isEmpty()) {
+		args.showHelp();
+	}
+	FsArchive *archive = openArchive(args.inputFormat(), args.path());
+	if (archive == nullptr) {
+		return;
+	}
+	
+	FieldArchivePC fieldArchive;
+	if (fieldArchive.open(args.path(), &observer) != 0) {
+		qWarning() << fieldArchive.errorMessage();
+		return;
+	}
+
+	TextExporter exporter(&fieldArchive);
+	if (!exporter.fromCsv(args.source(), args.column(), QChar(','), QChar('"'), CsvFile::Utf8, &observer) && !observer.observerWasCanceled()) {
+		return;
+	}
+	
+	fieldArchive.save(&observer);
+}
+
+
+void CLI::commandUnpack()
+{
+	ArgumentsUnpack args;
 	if (args.help() || args.destination().isEmpty()) {
 		args.showHelp();
 	}
@@ -105,9 +161,9 @@ void CLI::commandExport()
 	delete archive;
 }
 
-void CLI::commandImport()
+void CLI::commandPack()
 {
-	ArgumentsImport args;
+	ArgumentsPack args;
 	if (args.help() || args.source().isEmpty()) {
 		args.showHelp();
 	}
@@ -273,6 +329,12 @@ void CLI::exec()
 		break;
 	case Arguments::Import:
 		commandImport();
+		break;
+	case Arguments::Unpack:
+		commandUnpack();
+		break;
+	case Arguments::Pack:
+		commandPack();
 		break;
 	}
 }

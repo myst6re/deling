@@ -24,13 +24,11 @@ class ArgumentsImport : public CommonArguments
 {
 public:
 	ArgumentsImport();
-	bool force() const;
-	FiCompression compressionFormat() const;
-	QString prefix() const;
+	int column() const;
 	inline QString source() const {
-		return _directory;
+		return _destination;
 	}
 private:
 	void parse();
-	QString _directory;
+	QString _destination;
 };

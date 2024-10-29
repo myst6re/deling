@@ -16,6 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "files/BackgroundFile.h"
+#include "FF8Color.h"
+#include "FF8Image.h"
 
 QByteArray BackgroundFile::mim = QByteArray();
 
@@ -454,7 +456,7 @@ void BackgroundFile::BGcolor(quint16 value, quint8 blendType, QRgb *pixels,
 	if (forceBlack) {
 		color = 0;
 	} else {
-		color = FF8Image::fromPsColor(value);
+		color = FF8Color::fromPsColor(value);
 	}
 
 	if (blendType == 4) {
@@ -517,7 +519,7 @@ QImage BackgroundFile::mimToImage(MapDepth depth)
 			quint16 color;
 			memcpy(&color, data + 0x3000 + j*2, 2);
 
-			px[j] = FF8Image::fromPsColor(color);
+			px[j] = FF8Color::fromPsColor(color);
 		}
 
 		return img;

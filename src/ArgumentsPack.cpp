@@ -14,38 +14,56 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "ArgumentsImport.h"
+#include "ArgumentsPack.h"
 
-ArgumentsImport::ArgumentsImport() : CommonArguments()
+ArgumentsPack::ArgumentsPack() : CommonArguments()
 {
-	_ADD_FLAG(_OPTION_NAMES("c", "column"),
-	          "Column (starting at 1) to use as text (default=2).");
+	_ADD_FLAG(_OPTION_NAMES("f", "force"),
+	          "Overwrite destination file if exists.");
+	_ADD_ARGUMENT(_OPTION_NAMES("c", "compression"), "Compression format ([lzs], lz4, none).", "compression-format", "lzs");
+	_ADD_ARGUMENT("prefix", "Custom directory prefix inside the target archive (default \"c:\\ff8\\data\\\")", "prefix", "c:\\ff8\\data\\");
 
-	_parser.addPositionalArgument("archive", QCoreApplication::translate("ArgumentsImport", "Input Field FS archive."));
-	_parser.addPositionalArgument("file", QCoreApplication::translate("ArgumentsImport", "Input CSV file path."));
+	_parser.addPositionalArgument("directory", QCoreApplication::translate("ArgumentsPack", "Input directory."));
+	_parser.addPositionalArgument("file", QCoreApplication::translate("ArgumentsPack", "Input file or directory."));
 
 	parse();
 }
 
-int ArgumentsImport::column() const
+bool ArgumentsPack::force() const
 {
-	if (!_parser.isSet("column")) {
-		return 2;
-	}
-	
-	bool ok = false;
-	int ret = _parser.value("column").toInt(&ok);
-	
-	if (!ok || ret <= 0) {
-		qWarning() << qPrintable(
-		    QCoreApplication::translate("Arguments", "Error: column should be an integer value >= 1"));
-		exit(1);
-	}
-	
-	return ret;
+	return _parser.isSet("force");
 }
 
-void ArgumentsImport::parse()
+QString ArgumentsPack::prefix() const
+{
+	QString pre = _parser.value("prefix");
+	
+	if (pre.isEmpty()) {
+		return "c:\\ff8\\data\\";
+	}
+	
+	return pre;
+}
+
+FiCompression ArgumentsPack::compressionFormat() const
+{
+	QString compression = _parser.value("compression");
+	if (compression.isEmpty() || compression.toLower() == "lzs") {
+		return FiCompression::CompressionLzs;
+	}
+	if (compression.toLower() == "lz4") {
+		return FiCompression::CompressionLz4;
+	}
+	if (compression.toLower() == "none") {
+		return FiCompression::CompressionNone;
+	}
+	
+	qWarning() << qPrintable(
+	    QCoreApplication::translate("Arguments", "Error: unknown compression, available values: lzs, lz4, none"));
+	exit(1);
+}
+
+void ArgumentsPack::parse()
 {
 	_parser.process(*qApp);
 
@@ -59,7 +77,7 @@ void ArgumentsImport::parse()
 	if (paths.size() == 2) {
 		// Source directory
 		if (QDir(paths.first()).exists()) {
-			_destination = paths.takeFirst();
+			_directory = paths.takeFirst();
 		} else {
 			qWarning() << qPrintable(
 			    QCoreApplication::translate("Arguments", "Error: source directory does not exist:"))

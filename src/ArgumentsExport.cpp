@@ -18,18 +18,18 @@
 
 ArgumentsExport::ArgumentsExport() : CommonArguments()
 {
-	_ADD_FLAG(_OPTION_NAMES("r", "recursive"),
-	          "Extract FS archives recursively.");
+	_ADD_FLAG(_OPTION_NAMES("f", "force"),
+	          "Overwrite destination file if exists.");
 
-	_parser.addPositionalArgument("file", QCoreApplication::translate("ArgumentsExport", "Input file or directory."));
-	_parser.addPositionalArgument("directory", QCoreApplication::translate("ArgumentsExport", "Output directory."));
+	_parser.addPositionalArgument("archive", QCoreApplication::translate("ArgumentsExport", "Input Field FS archive."));
+	_parser.addPositionalArgument("output", QCoreApplication::translate("ArgumentsExport", "Output CSV file path."));
 
 	parse();
 }
 
-bool ArgumentsExport::recursive() const
+bool ArgumentsExport::force() const
 {
-	return _parser.isSet("recursive");
+	return _parser.isSet("force");
 }
 
 void ArgumentsExport::parse()
@@ -44,16 +44,15 @@ void ArgumentsExport::parse()
 
 	QStringList paths = wilcardParse();
 	if (paths.size() == 2) {
-		// Output directory
-		if (QDir(paths.last()).exists()) {
-			_directory = paths.takeLast();
-		} else {
+		// Output file
+		_destination = paths.takeLast();
+		
+		if (!_parser.isSet("force") && QFile::exists(_destination)) {
 			qWarning() << qPrintable(
-			    QCoreApplication::translate("Arguments", "Error: target directory does not exist:"))
-			           << qPrintable(paths.last());
+			    QCoreApplication::translate("Arguments", "Error: target file already exist, use --force to override the file"));
 			exit(1);
 		}
-
+		
 		if (!paths.isEmpty()) {
 			_path = paths.first();
 		}

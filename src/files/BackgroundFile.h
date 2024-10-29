@@ -18,7 +18,7 @@
 #pragma once
 
 #include "files/File.h"
-#include "FF8Image.h"
+#include <QtGui>
 
 // Please do not use bitfields here
 

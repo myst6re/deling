@@ -53,6 +53,8 @@ public:
 private:
 	static void commandExport();
 	static void commandImport();
+	static void commandUnpack();
+	static void commandPack();
 	static FsArchive *openArchive(const QString &ext, const QString &path);
 	static QStringList filteredFiles(const QStringList &fileList, const QStringList &includePatterns, const QStringList &excludePatterns);
 	static CLIObserver observer;

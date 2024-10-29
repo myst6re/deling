@@ -18,16 +18,19 @@
 
 #include <QtCore>
 #include "Arguments.h"
+#include "FsArchive.h"
 
-class ArgumentsExport : public CommonArguments
+class ArgumentsPack : public CommonArguments
 {
 public:
-	ArgumentsExport();
+	ArgumentsPack();
 	bool force() const;
-	inline QString destination() const {
-		return _destination;
+	FiCompression compressionFormat() const;
+	QString prefix() const;
+	inline QString source() const {
+		return _directory;
 	}
 private:
 	void parse();
-	QString _destination;
+	QString _directory;
 };

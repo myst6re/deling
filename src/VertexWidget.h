@@ -18,7 +18,7 @@
 #pragma once
 
 #include <QtWidgets>
-#include "Poly.h"
+#include "Vertex.h"
 
 class VertexWidget : public QWidget
 {

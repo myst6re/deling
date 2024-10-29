@@ -63,7 +63,9 @@ public:
 	enum Command {
 		None,
 		Export,
-		Import
+		Import,
+		Unpack,
+		Pack
 	};
 	Arguments();
 	inline Command command() const {

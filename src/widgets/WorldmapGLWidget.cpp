@@ -43,8 +43,8 @@ WorldmapGLWidget::~WorldmapGLWidget()
 	makeCurrent();
 	buf.destroy();
 
-	for (const QList<QPair<QOpenGLTexture *, bool>> &texs : qAsConst(_textures)) {
-		for (const QPair<QOpenGLTexture *, bool> &tex : qAsConst(texs)) {
+	for (const QList<QPair<QOpenGLTexture *, bool>> &texs : std::as_const(_textures)) {
+		for (const QPair<QOpenGLTexture *, bool> &tex : std::as_const(texs)) {
 			delete tex.first;
 		}
 	}
@@ -293,10 +293,10 @@ void WorldmapGLWidget::importVertices()
 	//_map->searchBlackPixels(images, seaImage, roadImage);
 	
 	if (_textures.empty()) {
-		for (const QList< QPair<QImage, bool> > &images : qAsConst(images)) {
+		for (const QList< QPair<QImage, bool> > &images : std::as_const(images)) {
 			QList< QPair<QOpenGLTexture *, bool> > texs;
 	
-			for (const QPair<QImage, bool> &image : qAsConst(images)) {
+			for (const QPair<QImage, bool> &image : std::as_const(images)) {
 				texs.append(qMakePair(textureFromImage(image.first), image.second));
 			}
 	

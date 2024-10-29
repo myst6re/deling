@@ -18,7 +18,7 @@
 #pragma once
 
 #include "files/File.h"
-#include "Poly.h"
+#include "Vertex.h"
 
 struct Camera {
 	Vertex camera_axis[3];

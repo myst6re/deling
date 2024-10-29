@@ -16,7 +16,6 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "TextureFile.h"
-#include "FF8Image.h"
 
 TextureFile::TextureFile() :
 	File(), _currentColorTable(0)

@@ -171,13 +171,19 @@ void FsDialog::generatePreview()
 	{
 		preview->imagePreview(QPixmap::fromImage(TdwFile::image(data, TdwFile::Color(currentPal))), fileName, currentPal, 8);
 	}
-	else if (fileType == "map" || fileType == "mim")
+	else if (fileType == "map")
 	{
 		QString filePathWithoutExt = filePath.left(filePath.size()-3);
 		BackgroundFile backgroundFile;
-		backgroundFile.open(fileType == "map" ? data : fsArchive->fileData(filePathWithoutExt+"map"),
-		             fileType == "mim" ? data : fsArchive->fileData(filePathWithoutExt+"mim"));
+		backgroundFile.open(data, fsArchive->fileData(filePathWithoutExt+"mim"));
 		preview->imagePreview(QPixmap::fromImage(backgroundFile.background()), fileName);
+	}
+	else if (fileType == "mim")
+	{
+		QString filePathWithoutExt = filePath.left(filePath.size()-3);
+		BackgroundFile backgroundFile;
+		backgroundFile.open(fsArchive->fileData(filePathWithoutExt+"map"), data);
+		preview->imagePreview(QPixmap::fromImage(BackgroundFile::mimToImage(BackgroundFile::DepthColor)), fileName);
 	}
 	else if (fileType == "cnf")
 	{

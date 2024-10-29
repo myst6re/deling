@@ -1,5 +1,6 @@
 /****************************************************************************
- ** Copyright (C) 2009-2021 Arzel Jérôme <myst6re@gmail.com>
+ ** Deling Final Fantasy VIII Field Editor
+ ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -16,18 +17,21 @@
  ****************************************************************************/
 #pragma once
 
-#include <QtCore>
-#include "Arguments.h"
+#include <QRgb>
 
-class ArgumentsExport : public CommonArguments
+#define COEFF_COLOR	8.2258064516129032258064516129032 // 255/31
+
+class FF8Color
 {
 public:
-	ArgumentsExport();
-	bool force() const;
-	inline QString destination() const {
-		return _destination;
+	static inline quint16 toPsColor(const QRgb &color) {
+		return (qRound(qRed(color)/COEFF_COLOR) & 31) | ((qRound(qGreen(color)/COEFF_COLOR) & 31) << 5) | ((qRound(qBlue(color)/COEFF_COLOR) & 31) << 10) | ((qAlpha(color)==255) << 15);
 	}
-private:
-	void parse();
-	QString _destination;
+	static inline QRgb fromPsColor(quint16 color, bool useAlpha = false) {
+		quint8 r = color & 31,
+		        g = (color >> 5) & 31,
+		        b = (color >> 10) & 31;
+
+		return qRgba((r << 3) + (r >> 2), (g << 3) + (g >> 2), (b << 3) + (b >> 2), color == 0 && useAlpha ? 0 : 255);
+	}
 };

@@ -19,7 +19,7 @@
 
 #include <QtCore>
 #include "files/JsmFile.h"
-#include "Poly.h"
+#include "Vertex.h"
 
 class Field;
 struct ArchiveObserver;

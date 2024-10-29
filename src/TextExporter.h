@@ -28,7 +28,7 @@ class TextExporter
 public:
 	explicit TextExporter(FieldArchive *archive);
 	bool toCsv(const QString &fileName, const QStringList &langs, QChar fieldSeparator, QChar quoteCharacter, CsvFile::CsvEncoding encoding, ArchiveObserver *observer = nullptr);
-	bool fromCsv(const QString &fileName, quint8 column, ArchiveObserver *observer = nullptr);
+	bool fromCsv(const QString &fileName, quint8 column, QChar fieldSeparator, QChar quoteCharacter, CsvFile::CsvEncoding encoding, ArchiveObserver *observer = nullptr);
 	inline const QString &errorString() const {
 		return _lastErrorString;
 	}

@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 	lang = Config::value("lang", lang.left(lang.indexOf("_"))).toString();
 
 	QTranslator qtTranslator;
-	if (qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+	if (qtTranslator.load("qt_" + lang, QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
 		app.installTranslator(&qtTranslator);
 	}
 
