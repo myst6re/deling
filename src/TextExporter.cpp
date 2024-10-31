@@ -193,7 +193,7 @@ bool TextExporter::fromCsv(const QString &fileName, quint8 column, QChar fieldSe
 			if (column < line.size()) {
 				texts.append(FF8Text(line.at(column)).toFF8());
 			} else {
-				qWarning() << "TextExporter::fromCsv invalid CSV" << line << "at line" << currentLine;
+				qWarning() << "TextExporter::fromCsv column" << column << " is asked, but line" << currentLine << "has only" << line.size() << "columns";
 			}
 		}
 	}

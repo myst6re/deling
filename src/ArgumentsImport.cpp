@@ -19,7 +19,7 @@
 ArgumentsImport::ArgumentsImport() : ArgumentsImportExport()
 {
 	_ADD_ARGUMENT(_OPTION_NAMES("c", "column"),
-	          "Column (starting at 1) to use as text.", "COLUMN", "2");
+	          "Column (starting at 1) to use as text.", "COLUMN", "1");
 
 	_parser.addPositionalArgument("archive", QCoreApplication::translate("ArgumentsImport", "Input Field FS archive."));
 	_parser.addPositionalArgument("file", QCoreApplication::translate("ArgumentsImport", "Input CSV file path."));
@@ -32,19 +32,19 @@ ArgumentsImport::ArgumentsImport() : ArgumentsImportExport()
 int ArgumentsImport::column() const
 {
 	if (!_parser.isSet("column")) {
-		return 2;
+		return 0;
 	}
-	
+
 	bool ok = false;
 	int ret = _parser.value("column").toInt(&ok);
-	
+
 	if (!ok || ret <= 0) {
 		qWarning() << qPrintable(
 		    QCoreApplication::translate("Arguments", "Error: column should be an integer value >= 1"));
 		exit(1);
 	}
-	
-	return ret;
+
+	return ret - 1;
 }
 
 void ArgumentsImport::parse()
@@ -59,18 +59,20 @@ void ArgumentsImport::parse()
 
 	QStringList paths = wilcardParse();
 	if (paths.size() == 2) {
-		// Source directory
-		if (QDir(paths.first()).exists()) {
-			_destination = paths.takeFirst();
-		} else {
+		_destination = paths.last();
+		
+		if (!QFile::exists(_destination)) {
 			qWarning() << qPrintable(
-			    QCoreApplication::translate("Arguments", "Error: source directory does not exist:"))
-			           << qPrintable(paths.first());
+			    QCoreApplication::translate("Arguments", "Error: CSV file does not exist"));
 			exit(1);
 		}
 
-		if (!paths.isEmpty()) {
-			_path = paths.first();
+		_path = paths.first();
+		
+		if (!QFile::exists(_path)) {
+			qWarning() << qPrintable(
+			    QCoreApplication::translate("Arguments", "Error: Field archive does not exist"));
+			exit(1);
 		}
 	}
 }

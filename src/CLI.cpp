@@ -86,25 +86,24 @@ void CLI::commandImport()
 	if (args.help() || args.source().isEmpty()) {
 		args.showHelp();
 	}
-	FsArchive *archive = openArchive(args.inputFormat(), args.path());
-	if (archive == nullptr) {
-		return;
-	}
-	
+
 	FieldArchivePC fieldArchive;
 	if (fieldArchive.open(args.path(), &observer) != 0) {
-		qWarning() << fieldArchive.errorMessage();
+		qWarning() << "Cannot open field archive" << fieldArchive.errorMessage();
 		return;
 	}
 
 	TextExporter exporter(&fieldArchive);
 	if (!exporter.fromCsv(args.source(), args.column(), args.separator(), args.quoteCharacter(), CsvFile::Utf8, &observer) && !observer.observerWasCanceled()) {
+		qWarning() << "Cannot import CSV file" << exporter.errorString();
 		return;
 	}
-	
-	fieldArchive.save(&observer);
-}
 
+	if (!fieldArchive.save(&observer)) {
+		qWarning() << "Cannot save field archive" << fieldArchive.errorMessage();
+		return;
+	}
+}
 
 void CLI::commandUnpack()
 {
