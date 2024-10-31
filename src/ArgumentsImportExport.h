@@ -17,18 +17,14 @@
 #pragma once
 
 #include <QtCore>
-#include "ArgumentsImportExport.h"
-#include "FsArchive.h"
+#include "Arguments.h"
 
-class ArgumentsImport : public ArgumentsImportExport
+class ArgumentsImportExport : public CommonArguments
 {
 public:
-	ArgumentsImport();
-	int column() const;
-	inline QString source() const {
-		return _destination;
-	}
-private:
-	void parse();
-	QString _destination;
+	ArgumentsImportExport();
+	QChar separator() const;
+	QChar quoteCharacter() const;
+protected:
+	void assertParameters() const;
 };

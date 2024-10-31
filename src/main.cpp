@@ -43,6 +43,12 @@ int main(int argc, char *argv[])
 	// QTextCodec::setCodecForLocale(QTextCodec::codecForName("IBM 850"));
 #endif
 	Config::set();
+	
+	if (!FF8Font::listFonts()) {
+		qWarning() << "Font could not be loaded!";
+		return -1;
+	}
+	
 	CLI::exec();
 	
 	QTimer::singleShot(0, &app, &QCoreApplication::quit);

@@ -17,10 +17,10 @@
 #pragma once
 
 #include <QtCore>
-#include "Arguments.h"
+#include "ArgumentsPackUnpack.h"
 #include "FsArchive.h"
 
-class ArgumentsPack : public CommonArguments
+class ArgumentsPack : public ArgumentsPackUnpack
 {
 public:
 	ArgumentsPack();

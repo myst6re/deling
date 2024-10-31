@@ -316,7 +316,7 @@ FF8Font *FF8Font::getCurrentConfigFont()
 	if (fontL.contains(fnt)) {
 		return font(fnt);
 	}
-	return font(fontL.first());
+	return font(fontL.isEmpty() ? QString() : fontL.first());
 }
 
 bool FF8Font::saveFonts()

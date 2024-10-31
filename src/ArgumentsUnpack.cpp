@@ -16,7 +16,7 @@
  ****************************************************************************/
 #include "ArgumentsUnpack.h"
 
-ArgumentsUnpack::ArgumentsUnpack() : CommonArguments()
+ArgumentsUnpack::ArgumentsUnpack() : ArgumentsPackUnpack()
 {
 	_ADD_FLAG(_OPTION_NAMES("r", "recursive"),
 	          "Extract FS archives recursively.");

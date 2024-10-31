@@ -17,9 +17,9 @@
 #pragma once
 
 #include <QtCore>
-#include "Arguments.h"
+#include "ArgumentsImportExport.h"
 
-class ArgumentsExport : public CommonArguments
+class ArgumentsExport : public ArgumentsImportExport
 {
 public:
 	ArgumentsExport();

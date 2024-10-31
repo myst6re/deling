@@ -16,7 +16,7 @@
  ****************************************************************************/
 #include "ArgumentsPack.h"
 
-ArgumentsPack::ArgumentsPack() : CommonArguments()
+ArgumentsPack::ArgumentsPack() : ArgumentsPackUnpack()
 {
 	_ADD_FLAG(_OPTION_NAMES("f", "force"),
 	          "Overwrite destination file if exists.");

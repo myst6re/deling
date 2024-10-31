@@ -16,15 +16,17 @@
  ****************************************************************************/
 #include "ArgumentsImport.h"
 
-ArgumentsImport::ArgumentsImport() : CommonArguments()
+ArgumentsImport::ArgumentsImport() : ArgumentsImportExport()
 {
-	_ADD_FLAG(_OPTION_NAMES("c", "column"),
-	          "Column (starting at 1) to use as text (default=2).");
+	_ADD_ARGUMENT(_OPTION_NAMES("c", "column"),
+	          "Column (starting at 1) to use as text.", "COLUMN", "2");
 
 	_parser.addPositionalArgument("archive", QCoreApplication::translate("ArgumentsImport", "Input Field FS archive."));
 	_parser.addPositionalArgument("file", QCoreApplication::translate("ArgumentsImport", "Input CSV file path."));
 
 	parse();
+	
+	assertParameters();
 }
 
 int ArgumentsImport::column() const
@@ -71,5 +73,4 @@ void ArgumentsImport::parse()
 			_path = paths.first();
 		}
 	}
-	mapNamesFromFiles();
 }

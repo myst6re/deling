@@ -37,12 +37,6 @@ bool HelpArguments::help() const
 CommonArguments::CommonArguments()
 {
 	_ADD_ARGUMENT("input-format", "Input format (fs).", "input-format", "");
-	_ADD_ARGUMENT("include", "Include file name (without prefix c:\\ff8\\data\\). Repeat this argument to include multiple names. "
-	                         "If empty, all will be included by default.", "include", "");
-	_ADD_ARGUMENT("exclude", "Exclude file name (without prefix c:\\ff8\\data\\). Repeat this argument to exclude multiple names. "
-	                         "Exclude has the priority over the --include argument.", "exclude", "");
-	_ADD_ARGUMENT("include-from", "Include file names from file. The file format is one name per line.", "include", "");
-	_ADD_ARGUMENT("exclude-from", "Exclude file names from file. The file format is one name per line.", "exclude", "");
 	_ADD_FLAG("no-progress", "Hide progress bar.");
 }
 
@@ -57,16 +51,6 @@ QString CommonArguments::inputFormat() const
 		return QString();
 	}
 	return inputFormat;
-}
-
-QStringList CommonArguments::includes() const
-{
-	return _parser.values("include") + _includesFromFile;
-}
-
-QStringList CommonArguments::excludes() const
-{
-	return _parser.values("exclude") + _excludesFromFile;
 }
 
 bool CommonArguments::noProgress() const
@@ -110,40 +94,6 @@ QStringList CommonArguments::wilcardParse()
 	}
 
 	return paths;
-}
-
-QStringList CommonArguments::mapNamesFromFile(const QString &path)
-{
-	QFile f(path);
-	if (!f.open(QIODevice::ReadOnly)) {
-		qWarning() << qPrintable(
-		    QCoreApplication::translate("Arguments", "Warning: cannot open file"))
-		           << qPrintable(path) << qPrintable(f.errorString());
-		exit(1);
-	}
-
-	QStringList ret;
-
-	while (f.canReadLine()) {
-		ret.append(QString::fromUtf8(f.readLine()));
-	}
-
-	return ret;
-}
-
-void CommonArguments::mapNamesFromFiles()
-{
-	QStringList pathsInclude = _parser.values("include-from");
-
-	for (const QString &path: pathsInclude) {
-		_includesFromFile.append(mapNamesFromFile(path));
-	}
-
-	QStringList pathsExclude = _parser.values("exclude-from");
-
-	for (const QString &path: pathsExclude) {
-		_excludesFromFile.append(mapNamesFromFile(path));
-	}
 }
 
 Arguments::Arguments() :

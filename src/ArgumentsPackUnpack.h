@@ -17,18 +17,16 @@
 #pragma once
 
 #include <QtCore>
-#include "ArgumentsImportExport.h"
-#include "FsArchive.h"
+#include "Arguments.h"
 
-class ArgumentsImport : public ArgumentsImportExport
+class ArgumentsPackUnpack : public CommonArguments
 {
 public:
-	ArgumentsImport();
-	int column() const;
-	inline QString source() const {
-		return _destination;
-	}
-private:
-	void parse();
-	QString _destination;
+	ArgumentsPackUnpack();
+	QStringList includes() const;
+	QStringList excludes() const;
+protected:
+	void mapNamesFromFiles();
+	static QStringList mapNamesFromFile(const QString &path);
+	QStringList _includesFromFile, _excludesFromFile;
 };

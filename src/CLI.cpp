@@ -75,7 +75,7 @@ void CLI::commandExport()
 	
 	TextExporter exporter(&fieldArchive);
 	
-	if (!exporter.toCsv(args.destination(), langs, QChar(','), QChar('"'), CsvFile::Utf8, &observer) && !observer.observerWasCanceled()) {
+	if (!exporter.toCsv(args.destination(), langs, args.separator(), args.quoteCharacter(), CsvFile::Utf8, &observer) && !observer.observerWasCanceled()) {
 		return;
 	}
 }
@@ -98,7 +98,7 @@ void CLI::commandImport()
 	}
 
 	TextExporter exporter(&fieldArchive);
-	if (!exporter.fromCsv(args.source(), args.column(), QChar(','), QChar('"'), CsvFile::Utf8, &observer) && !observer.observerWasCanceled()) {
+	if (!exporter.fromCsv(args.source(), args.column(), args.separator(), args.quoteCharacter(), CsvFile::Utf8, &observer) && !observer.observerWasCanceled()) {
 		return;
 	}
 	

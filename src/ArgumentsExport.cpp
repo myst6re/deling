@@ -16,7 +16,7 @@
  ****************************************************************************/
 #include "ArgumentsExport.h"
 
-ArgumentsExport::ArgumentsExport() : CommonArguments()
+ArgumentsExport::ArgumentsExport() : ArgumentsImportExport()
 {
 	_ADD_FLAG(_OPTION_NAMES("f", "force"),
 	          "Overwrite destination file if exists.");
@@ -25,6 +25,8 @@ ArgumentsExport::ArgumentsExport() : CommonArguments()
 	_parser.addPositionalArgument("output", QCoreApplication::translate("ArgumentsExport", "Output CSV file path."));
 
 	parse();
+	
+	assertParameters();
 }
 
 bool ArgumentsExport::force() const
@@ -57,5 +59,4 @@ void ArgumentsExport::parse()
 			_path = paths.first();
 		}
 	}
-	mapNamesFromFiles();
 }

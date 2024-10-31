@@ -45,16 +45,11 @@ public:
 		return _path;
 	}
 	QString inputFormat() const;
-	QStringList includes() const;
-	QStringList excludes() const;
 	bool noProgress() const;
 protected:
 	QStringList wilcardParse();
-	void mapNamesFromFiles();
-	static QStringList mapNamesFromFile(const QString &path);
 	static QStringList searchFiles(const QString &path);
 	QString _path;
-	QStringList _includesFromFile, _excludesFromFile;
 };
 
 class Arguments : public HelpArguments

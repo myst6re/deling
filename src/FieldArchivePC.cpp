@@ -549,7 +549,6 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 
 QStringList FieldArchivePC::languages() const
 {
-	QStringList files = archive->toc();
 	QStringList langs;
 	int stop = 10;
 

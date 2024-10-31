@@ -316,10 +316,14 @@ set(PROJECT_CLI_SOURCES
     "src/ArchiveObserver.h"
     "src/Arguments.cpp"
     "src/Arguments.h"
+	"src/ArgumentsImportExport.cpp"
+    "src/ArgumentsImportExport.h"
     "src/ArgumentsExport.cpp"
     "src/ArgumentsExport.h"
     "src/ArgumentsImport.cpp"
     "src/ArgumentsImport.h"
+	"src/ArgumentsPackUnpack.cpp"
+    "src/ArgumentsPackUnpack.h"
     "src/ArgumentsPack.cpp"
     "src/ArgumentsPack.h"
     "src/ArgumentsUnpack.cpp"
@@ -479,8 +483,7 @@ function(add_translations target)
 endfunction()
 
 if(GUI)
-	qt_add_executable(${GUI_TARGET} MANUAL_FINALIZATION MACOSX_BUNDLE WIN32 ${PROJECT_SOURCES} ${QM_FILES} ${RESOURCES} ${EXTRA_RESOURCES_GUI}
-		src/FF8Color.h )
+	qt_add_executable(${GUI_TARGET} MANUAL_FINALIZATION MACOSX_BUNDLE WIN32 ${PROJECT_SOURCES} ${QM_FILES} ${RESOURCES} ${EXTRA_RESOURCES_GUI})
 	target_include_directories(${GUI_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/src")
 	target_link_libraries(${GUI_TARGET} PRIVATE
 		Qt::OpenGL

@@ -17,9 +17,9 @@
 #pragma once
 
 #include <QtCore>
-#include "Arguments.h"
+#include "ArgumentsPackUnpack.h"
 
-class ArgumentsUnpack : public CommonArguments
+class ArgumentsUnpack : public ArgumentsPackUnpack
 {
 public:
 	ArgumentsUnpack();
