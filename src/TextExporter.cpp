@@ -35,7 +35,7 @@ bool TextExporter::toCsv(const QString &fileName, const QStringList &langs, QCha
 		return false;
 	}
 	
-	FieldArchiveIterator it = _archive->iterator();
+	QList<Field *> fields = _archive->sortedByMapId();
 	
 	if (observer) {
 		observer->setObserverMaximum(quint32(_archive->nbFields()));
@@ -56,9 +56,7 @@ bool TextExporter::toCsv(const QString &fileName, const QStringList &langs, QCha
 	
 	int i = 0;
 	
-	while (it.hasNext()) {
-		Field *f = it.next();
-		
+	for (Field *f: fields) {
 		if (observer) {
 			if (observer->observerWasCanceled()) {
 				return false;

@@ -74,6 +74,7 @@ public:
 	inline FieldArchiveIterator iterator() const {
 		return QListIterator<Field *>(fields);
 	}
+	QList<Field *> sortedByMapId() const;
 protected:
 	QString errorMsg;
 	QList<Field *> fields;

@@ -409,3 +409,16 @@ void FieldArchive::setMapList(const QStringList &mapList)
 {
 	_mapList = mapList.isEmpty() ? Data::maplist() : mapList;
 }
+
+QList<Field *> FieldArchive::sortedByMapId() const
+{
+	QList<Field *> ret;
+	
+	for (int fieldId: fieldsSortByMapId) {
+		if (fieldId >= 0 && fieldId < fields.size()) {
+			ret.append(fields.at(fieldId));
+		}
+	}
+	
+	return ret;
+}
