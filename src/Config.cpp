@@ -39,13 +39,13 @@ QString Config::programLanguagesDir()
 		if (translationDir.entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
 			translationDir.setPath(QStringLiteral("%1/../translations").arg(QCoreApplication::applicationDirPath()));
 			if (translationDir.entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
-				translationDir.setPath(QStringLiteral("%1/../share/makoureactor/translations").arg(QCoreApplication::applicationDirPath()));
+				translationDir.setPath(QStringLiteral("%1/../share/deling/translations").arg(QCoreApplication::applicationDirPath()));
 				if (translationDir.entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
-					translationDir.setPath(QStringLiteral("%1/%2").arg(QDir::homePath(), QStringLiteral(".local/share/makoureactor/translations")));
+					translationDir.setPath(QStringLiteral("%1/%2").arg(QDir::homePath(), QStringLiteral(".local/share/deling/translations")));
 					if (translationDir.entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
-						translationDir.setPath(QStringLiteral("/usr/local/share/makourector/translations"));
+						translationDir.setPath(QStringLiteral("/usr/local/share/deling/translations"));
 						if (translationDir.entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
-							translationDir.setPath(QStringLiteral("/usr/share/makoureactor/translations"));
+							translationDir.setPath(QStringLiteral("/usr/share/deling/translations"));
 						}
 					}
 				}

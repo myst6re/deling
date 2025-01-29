@@ -100,8 +100,8 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 
 void ConfigDialog::fillMenuLang()
 {
-	QDir dir(Config::programResourceDir());
-	QStringList stringList = dir.entryList(QStringList("deling_*.qm"), QDir::Files, QDir::Name);
+	QDir dir(Config::programLanguagesDir());
+	QStringList stringList = dir.entryList(QStringList("Deling_*.qm"), QDir::Files, QDir::Name);
 	langComboBox->addItem(QString::fromUtf8("Français"));
 	langComboBox->setItemData(0, "fr");
 
