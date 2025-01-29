@@ -129,7 +129,18 @@ void Renderer::reset()
 	mModelMatrix.setToIdentity();
 }
 
-void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
+void Renderer::drawArrays(RendererPrimitiveType _type, int first, int count)
+{
+	mGL.glDrawArrays(GLenum(_type), first, count);
+#ifdef QT_DEBUG
+	GLenum lastError = mGL.glGetError();
+	if (lastError != GL_NO_ERROR) {
+		qDebug() << "mGL.glDrawArrays(_type, first, count)" << lastError << _type << first << count;
+	}
+#endif
+}
+
+void Renderer::drawStart(float _pointSize)
 {
 	// --- Before Draw ---
 
@@ -147,6 +158,7 @@ void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
 #endif
 		return;
 	}
+
 	mVertex.allocate(mVertexBuffer.data(), int(vectorSizeOf(mVertexBuffer)));
 
 	mProgram.enableAttributeArray(ShaderProgramAttributes::POSITION);
@@ -188,6 +200,11 @@ void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
 	mProgram.setUniformValue("modelMatrix", mModelMatrix);
 	mProgram.setUniformValue("projectionMatrix", mProjectionMatrix);
 	mProgram.setUniformValue("viewMatrix", mViewMatrix);
+}
+
+void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
+{
+	drawStart(_pointSize);
 
 	// --- Draw ---
 	mGL.glDrawElements(GLenum(_type), GLsizei(mIndexBuffer.size()), GL_UNSIGNED_INT, nullptr);
@@ -198,6 +215,11 @@ void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
 	}
 #endif
 
+	drawEnd();
+}
+
+void Renderer::drawEnd()
+{
 	// --- After Draw ---
 	mVertex.release();
 	mIndex.release();

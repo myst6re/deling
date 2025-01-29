@@ -245,6 +245,7 @@ void WorldmapGLWidget::initializeGL()
 {
 	if (gpuRenderer == nullptr) {
 		gpuRenderer = new Renderer(this);
+		importVertices();
 	}
 }
 
@@ -281,7 +282,7 @@ static QOpenGLTexture *textureFromImage(const QImage &image)
 
 void WorldmapGLWidget::importVertices()
 {
-	if (nullptr == _map) {
+	if (nullptr == _map || gpuRenderer == nullptr) {
 		return;
 	}
 
@@ -350,7 +351,7 @@ void WorldmapGLWidget::importVertices()
 	} */
 
 	QList<MapSegment> segments = _map->segments(_segmentFiltering);
-	QRgba64 color = QRgba64::fromArgb32(0x00000000);
+	QRgba64 color = QRgba64::fromRgba(0xFF, 0xFF, 0xFF, 0xFF);
 	foreach (const MapSegment &segment, segments) {
 		int xb = 0, yb = 0;
 		foreach (const MapBlock &block, segment.blocks()) {
@@ -460,6 +461,8 @@ void WorldmapGLWidget::paintGL()
 
 	gpuRenderer->bindModelMatrix(mModel);
 	gpuRenderer->bindViewMatrix(mView);
+	
+	gpuRenderer->drawStart();
 	
 	int bufIndex = 0; //, alphaLocation = program->uniformLocation("alpha");
 	QElapsedTimer t;
@@ -576,7 +579,7 @@ void WorldmapGLWidget::paintGL()
 					_redTexture->bind(); */
 				}
 
-				glDrawArrays(GL_TRIANGLES, bufIndex * 3, 3);
+				gpuRenderer->drawArrays(RendererPrimitiveType::PT_TRIANGLES, bufIndex * 3, 3);
 
 				bufIndex += 1;
 			}
@@ -585,6 +588,7 @@ void WorldmapGLWidget::paintGL()
 		segmentId += 1;
 	}
 
+	gpuRenderer->drawEnd();
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

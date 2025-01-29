@@ -92,7 +92,10 @@ public:
 	void show();
 	void reset();
 
+	void drawStart(float _pointSize = 1.0f);
+	void drawArrays(RendererPrimitiveType _type, int first, int count);
 	void draw(RendererPrimitiveType _type, float _pointSize = 1.0f);
+	void drawEnd();
 
 	void setViewport(int32_t _x, int32_t _y, int32_t _width, int32_t _height);
 

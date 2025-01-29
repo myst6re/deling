@@ -265,25 +265,39 @@ bool FieldPC::open2(FsArchive *archive)
 
 bool FieldPC::save(const QString &path)
 {
+	QString oldArchivePath = _path;
+	oldArchivePath.chop(1);
+	
 	QString archivePath = path;
 	archivePath.chop(1);
+	
+	bool saveAs = QFileInfo(FsArchive::fsPath(oldArchivePath)) != QFileInfo(FsArchive::fsPath(archivePath));
 
 	QFile fs(FsArchive::fsPath(archivePath));
-	if (fs.open(QIODevice::ReadWrite)) {
+	if (fs.open(saveAs ? (QIODevice::WriteOnly | QIODevice::Truncate) : QIODevice::ReadWrite)) {
 		QFile fl(FsArchive::flPath(archivePath));
 		if (fl.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
 			QFile fi(FsArchive::fiPath(archivePath));
 			if (fi.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+				QByteArray fs_data, fl_data, fi_data;
 
-				QByteArray fs_data=fs.readAll(), fl_data, fi_data;
+				if (saveAs) {
+					QFile oldFs(FsArchive::fsPath(oldArchivePath));
+					if (!oldFs.open(QIODevice::ReadOnly)) {
+						return false;
+					}
+					fs_data = oldFs.readAll();
+				} else {
+					fs_data = fs.readAll();
+					fs.resize(0);
+					fs.reset();
+				}
 
 				/* fs_data must be filled by the file contents
 				 * fl_data and fi_data are rebuilt
 				 */
 				save(fs_data, fl_data, fi_data);
 
-				fs.resize(0);
-				fs.reset();
 				fs.write(fs_data);
 				fl.write(fl_data);
 				fi.write(fi_data);

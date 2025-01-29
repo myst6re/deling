@@ -129,7 +129,7 @@ MainWindow::MainWindow()
 	bgPreview = new BGPreview();
 	bgPreview->setFixedHeight(224);
 	bgPreview->setFixedWidth(320);
-
+	
 	pageWidgets.append(new MsdWidget());
 	pageWidgets.append(new JsmWidget());
 	pageWidgets.append(new CharaWidget());
@@ -142,8 +142,9 @@ MainWindow::MainWindow()
 	//pageWidgets.append(new WorldmapWidget());
 
 	tabBar = new QTabBar();
-	for (PageWidget *pageWidget: pageWidgets)
+	for (PageWidget *pageWidget: pageWidgets) {
 		tabBar->addTab(pageWidget->tabName());
+	}
 	tabBar->addTab(tr("Import/Export"));
 	tabBar->setDrawBase(false);
 	QWidget *tabBarWidget = new QWidget();
@@ -163,8 +164,9 @@ MainWindow::MainWindow()
 	addToolBar(toolbarArea, toolBar);
 
 	stackedWidget = new QStackedWidget();
-	for (PageWidget *pageWidget: pageWidgets)
+	for (PageWidget *pageWidget: pageWidgets) {
 		stackedWidget->addWidget(pageWidget);
+	}
 
 	QWidget *tempW = new QWidget();
 	QGridLayout *mainLayout = new QGridLayout(tempW);
@@ -196,8 +198,9 @@ MainWindow::MainWindow()
 	connect(pageWidgets.at(TextPage), SIGNAL(fromChanged(int)), searchDialog, SLOT(setFrom(int)));
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillPage()));
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(setCurrentPage(int)));
-	for (PageWidget *pageWidget: pageWidgets)
+	for (PageWidget *pageWidget: pageWidgets) {
 		connect(pageWidget, SIGNAL(modified()), SLOT(setModified()));
+	}
 	connect(bgPreview, SIGNAL(triggered()), SLOT(bgPage()));
 	connect(fieldThread, SIGNAL(background(QImage)), SLOT(fillBackground(QImage)));
 }
@@ -346,17 +349,17 @@ bool MainWindow::openFsArchive(const QString &path)
 		actionOpti->setEnabled(true);
 		actionSaveAs->setEnabled(true);
 		buildGameLangMenu(fieldArchivePc->languages());
-	} else if (fieldArchive->getWorldMap() != nullptr) {
-		manageArchive();
+	} else if (false && fieldArchive->getWorldMap() != nullptr) {
 		actionSaveAs->setEnabled(false);
-		//((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(fieldArchive->getWorldMap());
-		//((WorldmapWidget *)pageWidgets.at(WorldMapPage))->fill();
+		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(fieldArchive->getWorldMap());
+		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->fill();
 	} else {
 		field = new FieldPC(path, Config::value("gameLang", "en").toString());
 		if (field->hasFiles()) {
 			delete fieldArchive;
 			fieldArchive = nullptr;
 			list1->setEnabled(false);
+			actionSaveAs->setEnabled(true);
 			lineSearch->setEnabled(false);
 			bgPreview->setEnabled(true);
 			buildGameLangMenu(((FieldPC *)field)->languages());
@@ -401,6 +404,7 @@ bool MainWindow::openMsdFile(const QString &path)
 	filePath = path;
 	currentField = field;
 	list1->setEnabled(false);
+	actionSaveAs->setEnabled(true);
 	lineSearch->setEnabled(false);
 	pageWidgets.at(TextPage)->setData(field);
 	pageWidgets.at(TextPage)->setFocus();
@@ -436,6 +440,7 @@ bool MainWindow::openJsmFile(const QString &path)
 	currentField = field;
 	list1->setEnabled(false);
 	lineSearch->setEnabled(false);
+	actionSaveAs->setEnabled(true);
 	pageWidgets.at(ScriptPage)->setData(field);
 	pageWidgets.at(ScriptPage)->setFocus();
 	setCurrentPage(ScriptPage);
@@ -688,7 +693,17 @@ QString MainWindow::savePath() const
 
 void MainWindow::saveAs(QString path)
 {
-	if (fieldArchive == nullptr && (field == nullptr || !field->isOpen()))	return;
+	QString filter;
+	
+	if (fieldArchive != nullptr || field != nullptr && field->isOpen() && field->isPc()) {
+		filter = tr("Archive FS (*.fs)");
+	} else if (msdFile != nullptr) {
+		filter = tr("Fichiers FF8 text (*.msd)");
+	} else if (jsmFile != nullptr) {
+		filter = tr("Fichiers FF8 field script (*.jsm)");
+	} else {
+		return;
+	}
 
 	/* int errorFieldID, errorGroupID, errorMethodID, errorLine;
 	QString errorStr;
@@ -707,7 +722,7 @@ void MainWindow::saveAs(QString path)
 
 	if (path.isEmpty())
 	{
-		path = QFileDialog::getSaveFileName(this, tr("Enregistrer Sous"), savePath(), tr("Archive FS (*.fs)"));
+		path = QFileDialog::getSaveFileName(this, tr("Enregistrer Sous"), savePath(), filter);
 		if (path.isNull())		return;
 	}
 

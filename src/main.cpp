@@ -77,10 +77,13 @@ int main(int argc, char *argv[])
 	}
 
 	QTranslator translator;
-	if (translator.load("deling_" % lang, Config::programResourceDir())) {
+	if (translator.load("Deling_" % lang, Config::programLanguagesDir()) || translator.load("Deling_" % lang)) {
 		app.installTranslator(&translator);
 		Config::setValue("lang", lang);
-	} else{
+	} else if (lang != "fr" && (translator.load("Deling_en", Config::programLanguagesDir()) || translator.load("Deling_en"))) {
+		app.installTranslator(&translator);
+		Config::setValue("lang", "en");
+	} else {
 		Config::setValue("lang", "fr");
 	}
 
