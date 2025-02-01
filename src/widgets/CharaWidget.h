@@ -34,7 +34,7 @@ public slots:
 	void setModel(int modelID);
 private:
 	void build();
-	QHash<int, CharaModel *> *mainModels;
-	CharaPreview *modelPreview;
-	QListWidget *modelList;
+	QHash<int, CharaModel *> *_mainModels;
+	CharaPreview *_modelPreview;
+	QListWidget *_modelList;
 };

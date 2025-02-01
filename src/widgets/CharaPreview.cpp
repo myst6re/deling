@@ -18,7 +18,7 @@
 #include "CharaPreview.h"
 
 CharaPreview::CharaPreview(QWidget *parent) :
-	BGPreview2(parent), mainModels(0)
+	BGPreview2(parent), _mainModels(nullptr)
 {
 	setAutoFillBackground(true);
 	setAlignment(Qt::AlignCenter);
@@ -43,15 +43,15 @@ void CharaPreview::fill(const QPixmap &background)
 
 void CharaPreview::setMainModels(QHash<int, CharaModel *> *mainModels)
 {
-	this->mainModels = mainModels;
+	_mainModels = mainModels;
 }
 
 void CharaPreview::setModel(const CharaModel &model)
 {
 	const CharaModel *m;
 
-	if (model.isEmpty() && mainModels && mainModels->contains(model.id())) {
-		m = mainModels->value(model.id());
+	if (model.isEmpty() && _mainModels && _mainModels->contains(model.id())) {
+		m = _mainModels->value(model.id());
 	} else {
 		m = &model;
 	}

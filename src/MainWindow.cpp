@@ -358,6 +358,12 @@ bool MainWindow::openFsArchive(const QString &path)
 		if (field->hasFiles()) {
 			delete fieldArchive;
 			fieldArchive = nullptr;
+			((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(nullptr);
+			((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(nullptr);
+			((JsmWidget *)pageWidgets.at(ScriptPage))->setFieldArchive(nullptr);
+			searchDialog->setFieldArchive(nullptr);
+			searchAllDialog->setFieldArchive(nullptr);
+			if (_varManager != nullptr)		_varManager->setFieldArchive(nullptr);
 			list1->setEnabled(false);
 			actionSaveAs->setEnabled(true);
 			lineSearch->setEnabled(false);
@@ -596,6 +602,7 @@ int MainWindow::closeFiles(bool quit)
 	}
 	((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(nullptr);
 	((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(nullptr);
+	((JsmWidget *)pageWidgets.at(ScriptPage))->setFieldArchive(fieldArchive);
 	//((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(nullptr);
 	currentPath->setText(QString());
 	setReadOnly(true);

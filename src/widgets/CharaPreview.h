@@ -37,5 +37,5 @@ protected:
 		return w;
 	}
 private:
-	QHash<int, CharaModel *> *mainModels;
+	QHash<int, CharaModel *> *_mainModels;
 };

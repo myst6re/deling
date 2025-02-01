@@ -18,7 +18,7 @@
 #include "CharaWidget.h"
 
 CharaWidget::CharaWidget(QWidget *parent)
-	: PageWidget(parent), mainModels(0)
+	: PageWidget(parent), _mainModels(nullptr)
 {
 }
 
@@ -26,18 +26,18 @@ void CharaWidget::build()
 {
 	if (isBuilded())	return;
 
-	modelList = new QListWidget(this);
-	modelList->setFixedWidth(200);
-	modelPreview = new CharaPreview(this);
-	modelPreview->setMainModels(mainModels);
+	_modelList = new QListWidget(this);
+	_modelList->setFixedWidth(200);
+	_modelPreview = new CharaPreview(this);
+	_modelPreview->setMainModels(_mainModels);
 
 	QGridLayout *layout = new QGridLayout(this);
-	layout->addWidget(modelList, 0, 0);
-	layout->addWidget(modelPreview, 0, 1);
+	layout->addWidget(_modelList, 0, 0);
+	layout->addWidget(_modelPreview, 0, 1);
 	layout->setColumnStretch(1, 1);
 	layout->setContentsMargins(QMargins());
 
-	connect(modelList, SIGNAL(currentRowChanged(int)), SLOT(setModel(int)));
+	connect(_modelList, SIGNAL(currentRowChanged(int)), SLOT(setModel(int)));
 
 	PageWidget::build();
 }
@@ -46,10 +46,10 @@ void CharaWidget::clear()
 {
 	if (!isFilled())	return;
 
-	modelList->blockSignals(true);
-	modelList->clear();
-	modelPreview->clear();
-	modelList->blockSignals(false);
+	_modelList->blockSignals(true);
+	_modelList->clear();
+	_modelPreview->clear();
+	_modelList->blockSignals(false);
 
 	PageWidget::clear();
 }
@@ -61,32 +61,33 @@ void CharaWidget::fill()
 
 	if (!hasData() || !data()->hasCharaFile())		return;
 
-	modelList->blockSignals(true);
+	_modelList->blockSignals(true);
 	for (int i = 0; i < data()->getCharaFile()->modelCount(); ++i) {
 		QString name = data()->getCharaFile()->model(i).name();
-		modelList->addItem(name.isEmpty() ? tr("(Sans nom)") : name);
+		_modelList->addItem(name.isEmpty() ? tr("(Sans nom)") : name);
 	}
-	modelList->blockSignals(false);
+	_modelList->blockSignals(false);
 
-	modelList->setCurrentRow(0);
+	_modelList->setCurrentRow(0);
 
 	PageWidget::fill();
 }
 
 void CharaWidget::setMainModels(QHash<int, CharaModel *> *mainModels)
 {
-	this->mainModels = mainModels;
-	if (isBuilded())
-		modelPreview->setMainModels(mainModels);
+	_mainModels = mainModels;
+	if (isBuilded()) {
+		_modelPreview->setMainModels(mainModels);
+	}
 }
 
 void CharaWidget::setModel(int modelID)
 {
 	if (!hasData() || !data()->hasCharaFile()
 			|| modelID >= data()->getCharaFile()->modelCount()) {
-		modelPreview->clear();
+		_modelPreview->clear();
 		return;
 	}
 
-	modelPreview->setModel(data()->getCharaFile()->model(modelID));
+	_modelPreview->setModel(data()->getCharaFile()->model(modelID));
 }
