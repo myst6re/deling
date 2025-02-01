@@ -139,7 +139,7 @@ MainWindow::MainWindow()
 	pageWidgets.append(new TdwWidget());
 	pageWidgets.append(new SoundWidget());
 	pageWidgets.append(new MiscWidget());
-	//pageWidgets.append(new WorldmapWidget());
+	pageWidgets.append(new WorldmapWidget());
 
 	tabBar = new QTabBar();
 	for (PageWidget *pageWidget: pageWidgets) {
@@ -344,15 +344,18 @@ bool MainWindow::openFsArchive(const QString &path)
 	FieldArchivePC *fieldArchivePc = new FieldArchivePC();
 	fieldArchive = fieldArchivePc;
 	openArchive(path);
+	
+	tabBar->setTabEnabled(WorldMapPage, false);
 
 	if (fieldArchive->nbFields() > 0) {
 		actionOpti->setEnabled(true);
 		actionSaveAs->setEnabled(true);
 		buildGameLangMenu(fieldArchivePc->languages());
-	} else if (false && fieldArchive->getWorldMap() != nullptr) {
+	} else if (fieldArchive->getWorldMap() != nullptr) {
 		actionSaveAs->setEnabled(false);
 		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(fieldArchive->getWorldMap());
 		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->fill();
+		tabBar->setTabEnabled(WorldMapPage, true);
 	} else {
 		field = new FieldPC(path, Config::value("gameLang", "en").toString());
 		if (field->hasFiles()) {

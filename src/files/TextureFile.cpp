@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "TextureFile.h"
+#include <QPainter>
 
 TextureFile::TextureFile() :
 	File(), _currentColorTable(0)
@@ -62,6 +63,33 @@ QImage TextureFile::image(int colorTable) const
 	return ret;
 }
 
+QImage TextureFile::gridImage(int cols, int rows) const
+{
+	if (_image.width() % cols != 0 || _image.height() % rows != 0 || _image.colorTable().size() < cols * rows) {
+		qWarning() << "TextureFile::gridImage invalid cols/rows for image size" << cols << rows << _image.size() << _image.colorTable().size();
+		return QImage();
+	}
+	
+	int colFactor = _image.width() / cols, rowFactor = _image.height() / rows;
+	QImage copy = _image;
+	
+	QImage ret(_image.size(), QImage::Format_ARGB32_Premultiplied);
+	ret.fill(qRgba(0, 0, 0, 0xFF));
+	
+	QPainter p(&ret);
+	
+	for (int row = 0; row < rows; ++row) {
+		for (int col = 0; col < cols; ++col) {
+			copy.setColorTable(_colorTables.at(row * cols + col));
+			p.drawImage(QPoint(col * colFactor, row * rowFactor), copy, QRect(QPoint(col * colFactor, row * rowFactor), QSize(colFactor, rowFactor)));
+		}
+	}
+	
+	p.end();
+
+	return ret;
+}
+
 QImage *TextureFile::imagePtr()
 {
 	return &_image;
@@ -90,7 +118,8 @@ QVector<QRgb> TextureFile::colorTable(int id) const
 void TextureFile::setCurrentColorTable(int id)
 {
 	if (id < _colorTables.size() && _currentColorTable != id) {
-		_image.setColorTable(_colorTables.at(_currentColorTable = id));
+		_currentColorTable = id;
+		_image.setColorTable(_colorTables.at(id));
 	}
 }
 

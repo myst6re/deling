@@ -124,7 +124,6 @@ void WorldmapWidget::build()
 
 void WorldmapWidget::clear()
 {
-	qDebug() << "clear()";
 	if (!isFilled()) {
 		return;
 	}
@@ -136,7 +135,6 @@ void WorldmapWidget::clear()
 
 void WorldmapWidget::fill()
 {
-	qDebug() << "fill" << isBuilded() << isFilled() << quint64(_map) << tabName();
 	if (!isBuilded())	build();
 	if (isFilled())		clear();
 	

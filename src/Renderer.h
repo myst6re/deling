@@ -95,8 +95,8 @@ public:
 
 	bool drawStart(float _pointSize = 1.0f);
 	void drawArrays(RendererPrimitiveType _type, int first, int count);
-	void draw(RendererPrimitiveType _type, float _pointSize = 1.0f);
-	void drawEnd();
+	void draw(RendererPrimitiveType _type, float _pointSize = 1.0f, bool clear = true);
+	void drawEnd(bool clear);
 
 	void setViewport(int32_t _x, int32_t _y, int32_t _width, int32_t _height);
 

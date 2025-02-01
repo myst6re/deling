@@ -141,7 +141,7 @@ private:
 	QMap<int, QRgb> _colorRegions;
 	QList< QList< QPair<QOpenGLTexture *, bool> > > _textures;
 	QList< QList<QOpenGLTexture *> > _specialTextures;
-	QOpenGLTexture *_seaTexture, *_roadTexture, *_redTexture;
+	QOpenGLTexture *_seaTexture, *_roadTexture, *_redTexture, *_megaTexture;
 	QOpenGLBuffer buf;
 	QOpenGLShaderProgram *program;
 	Renderer *gpuRenderer;

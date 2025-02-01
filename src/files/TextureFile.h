@@ -36,6 +36,7 @@ public:
 	void clear();
 	const QImage &image() const;
 	QImage image(int colorTable) const;
+	QImage gridImage(int cols, int rows) const;
 	QImage *imagePtr();
 	bool isPaletted() const;
 	const QList< QVector<QRgb> > &colorTables() const;

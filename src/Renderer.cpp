@@ -106,8 +106,6 @@ Renderer::Renderer(QOpenGLWidget *_widget) :
 #endif
 		return;
 	}
-	
-	mVAO.bind();
 }
 
 void Renderer::clear()
@@ -204,7 +202,7 @@ bool Renderer::drawStart(float _pointSize)
 	return true;
 }
 
-void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
+void Renderer::draw(RendererPrimitiveType _type, float _pointSize, bool clear)
 {
 	if (!drawStart(_pointSize)) {
 		return;
@@ -219,16 +217,18 @@ void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
 	}
 #endif
 
-	drawEnd();
+	drawEnd(clear);
 }
 
-void Renderer::drawEnd()
+void Renderer::drawEnd(bool clear)
 {
 	// --- After Draw ---
 	mVertex.release();
 	mIndex.release();
-	mVertexBuffer.clear();
-	mIndexBuffer.clear();
+	if (clear) {
+		mVertexBuffer.clear();
+		mIndexBuffer.clear();
+	}
 	
 	if (mTexture.isCreated() && mTexture.isBound()) {
 		mTexture.release();

@@ -150,6 +150,7 @@ public:
 	QImage roadTextureImage() const {
 		return composeTextureImage(_roadTextures);
 	}
+	QImage megaImage() const;
 	void searchBlackPixels(const QList<QList<QImage> > &textures,
 	                       const QImage &seaTexture, const QImage &roadTexture);
 

@@ -131,7 +131,7 @@ QImage Map::composeTextureImage(const QList<TimFile> &tims)
 	QPainter pImg(&retImg);
 	
 	foreach (const TimFile &tim, tims) {
-		pImg.drawImage(tim.imgPos() - maxImgRect.topLeft(), tim.image());
+		pImg.drawImage(tim.imgPos() - maxImgRect.topLeft(), tim.colorTableCount() == 16 && tim.image().size() == QSize(256, 256) ? tim.gridImage(4, 4) : tim.image());
 	}
 	
 	pImg.end();
@@ -178,6 +178,38 @@ QImage Map::specialTextureImage(SpecialTextureName min, SpecialTextureName max) 
 	}
 	
 	return composeTextureImage(tims);
+}
+
+QImage Map::megaImage() const
+{
+	int row = 0, col = 0;
+
+	QImage retImg(QSize(5, 5) * 256, QImage::Format_RGB32);
+	retImg.fill(qRgb(0, 0, 0));
+	QPainter pImg(&retImg);
+	
+	for (const TimFile &tim: _textures) {
+		pImg.drawImage(QPoint(col, row) * 256, tim.gridImage(4, 4));
+		
+		row += 1;
+		
+		if (row >= 5) {
+			row = 0;
+			col += 1;
+		}
+	}
+	
+	pImg.drawImage(QPoint(col, row) * 256, seaTextureImage());
+	row += 1;
+	if (row >= 5) {
+		row = 0;
+		col += 1;
+	}
+	
+	pImg.drawImage(QPoint(col, row) * 256, roadTextureImage());
+	pImg.end();
+
+	return retImg;
 }
 
 static double triangleArea(const TexCoord &a, const TexCoord &b, const TexCoord &c)
