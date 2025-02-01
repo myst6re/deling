@@ -91,6 +91,7 @@ private:
 	void editUnknownGate(int id, int val);
 
 	WalkmeshGLWidget *walkmeshGL;
+	QCheckBox *showBackground;
 	QSlider *slider1, *slider2, *slider3;
 	QTabWidget *tabWidget;
 	//CamPage

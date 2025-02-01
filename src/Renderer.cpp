@@ -27,7 +27,7 @@ size_t vectorSizeOf(const typename std::vector<T>& vec)
 }
 
 Renderer::Renderer(QOpenGLWidget *_widget) :
-    mProgram(_widget),  mVertexShader(QOpenGLShader::Vertex, _widget), mFragmentShader(QOpenGLShader::Fragment, _widget),
+    mProgram(_widget), mVertexShader(QOpenGLShader::Vertex, _widget), mFragmentShader(QOpenGLShader::Fragment, _widget),
     mVAO(this), mVertex(QOpenGLBuffer::VertexBuffer), mIndex(QOpenGLBuffer::IndexBuffer),
     mTexture(QOpenGLTexture::Target2D), _hasError(false)
 #ifdef QT_DEBUG
@@ -140,23 +140,25 @@ void Renderer::drawArrays(RendererPrimitiveType _type, int first, int count)
 #endif
 }
 
-void Renderer::drawStart(float _pointSize)
+bool Renderer::drawStart(float _pointSize)
 {
 	// --- Before Draw ---
+	mVAO.bind();
+	mProgram.bind();
 
 	// Vertex Buffer
 	if (!mVertex.isCreated() && !mVertex.create()) {
 #ifdef QT_DEBUG
 		qWarning() << "QOpenGLBuffer buffers not supported (mVertex)";
 #endif
-		return;
+		return false;
 	}
 
 	if (!mVertex.bind()) {
 #ifdef QT_DEBUG
 		qWarning() << "QOpenGLBuffer bind type not supported (mVertex)" << mVertex.type();
 #endif
-		return;
+		return false;
 	}
 
 	mVertex.allocate(mVertexBuffer.data(), int(vectorSizeOf(mVertexBuffer)));
@@ -164,12 +166,10 @@ void Renderer::drawStart(float _pointSize)
 	mProgram.enableAttributeArray(ShaderProgramAttributes::POSITION);
 	mProgram.enableAttributeArray(ShaderProgramAttributes::COLOR);
 	mProgram.enableAttributeArray(ShaderProgramAttributes::TEXCOORD);
-
-	const int vertexStride = sizeof(RendererVertex);
-
-	mProgram.setAttributeBuffer(ShaderProgramAttributes::POSITION, GL_FLOAT, 0, 4, vertexStride);
-	mProgram.setAttributeBuffer(ShaderProgramAttributes::COLOR, GL_FLOAT, 4 * sizeof(GLfloat), 4, vertexStride);
-	mProgram.setAttributeBuffer(ShaderProgramAttributes::TEXCOORD, GL_FLOAT, (4 * sizeof(GLfloat)) + (4 * sizeof(GLfloat)), 2, vertexStride);
+	
+	mProgram.setAttributeBuffer(ShaderProgramAttributes::POSITION, GL_FLOAT, 0, 4, sizeof(RendererVertex));
+	mProgram.setAttributeBuffer(ShaderProgramAttributes::COLOR, GL_FLOAT, 4 * sizeof(GLfloat), 4, sizeof(RendererVertex));
+	mProgram.setAttributeBuffer(ShaderProgramAttributes::TEXCOORD, GL_FLOAT, (4 * sizeof(GLfloat)) + (4 * sizeof(GLfloat)), 2, sizeof(RendererVertex));
 
 	// Index Buffer
 	if (mIndexBuffer.empty()) {
@@ -182,17 +182,17 @@ void Renderer::drawStart(float _pointSize)
 #ifdef QT_DEBUG
 		qWarning() << "QOpenGLBuffer buffers not supported (mIndex)";
 #endif
-		return;
+		return false;
 	}
 
 	if (!mIndex.bind()) {
 #ifdef QT_DEBUG
 		qWarning() << "QOpenGLBuffer bind type not supported (mIndex)" << mIndex.type();
 #endif
-		return;
+		return false;
 	}
 	mIndex.allocate(mIndexBuffer.data(), int(vectorSizeOf(mIndexBuffer)));
-
+	
 	// Set Point Size
 	mProgram.setUniformValue("pointSize", _pointSize);
 
@@ -200,12 +200,16 @@ void Renderer::drawStart(float _pointSize)
 	mProgram.setUniformValue("modelMatrix", mModelMatrix);
 	mProgram.setUniformValue("projectionMatrix", mProjectionMatrix);
 	mProgram.setUniformValue("viewMatrix", mViewMatrix);
+	
+	return true;
 }
 
 void Renderer::draw(RendererPrimitiveType _type, float _pointSize)
 {
-	drawStart(_pointSize);
-
+	if (!drawStart(_pointSize)) {
+		return;
+	}
+	
 	// --- Draw ---
 	mGL.glDrawElements(GLenum(_type), GLsizei(mIndexBuffer.size()), GL_UNSIGNED_INT, nullptr);
 #ifdef QT_DEBUG
@@ -230,6 +234,9 @@ void Renderer::drawEnd()
 		mTexture.release();
 	}
 	mGL.glDisable(GL_BLEND);
+
+	mVAO.release();
+	mProgram.release();
 }
 
 void Renderer::setViewport(int32_t _x, int32_t _y, int32_t _width, int32_t _height)
@@ -254,16 +261,14 @@ void Renderer::bindViewMatrix(QMatrix4x4 _matrix)
 
 void Renderer::bindVertex(const RendererVertex *_vertex, uint32_t _count)
 {
-	for (uint32_t idx = 0; idx < _count; idx++)
-	{
+	for (uint32_t idx = 0; idx < _count; idx++) {
 		mVertexBuffer.push_back(_vertex[idx]);
 	}
 }
 
 void Renderer::bindIndex(uint32_t *_index, uint32_t _count)
 {
-	for (uint32_t idx = 0; idx < _count; idx++)
-	{
+	for (uint32_t idx = 0; idx < _count; idx++) {
 		mIndexBuffer.push_back(_index[idx]);
 	}
 }

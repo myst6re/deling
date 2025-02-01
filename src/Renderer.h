@@ -44,7 +44,8 @@ enum RendererPrimitiveType {
 	PT_TRIANGLE_STRIP = GL_TRIANGLE_STRIP,
 	PT_TRIANGLE_FAN = GL_TRIANGLE_FAN,
 	PT_QUADS = GL_QUADS,
-	PT_QUAD_STRIP = GL_QUAD_STRIP
+	PT_QUAD_STRIP = GL_QUAD_STRIP,
+	PT_POLYGON = GL_POLYGON
 };
 
 class Renderer : public QObject
@@ -92,7 +93,7 @@ public:
 	void show();
 	void reset();
 
-	void drawStart(float _pointSize = 1.0f);
+	bool drawStart(float _pointSize = 1.0f);
 	void drawArrays(RendererPrimitiveType _type, int first, int count);
 	void draw(RendererPrimitiveType _type, float _pointSize = 1.0f);
 	void drawEnd();

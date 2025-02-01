@@ -23,7 +23,8 @@ WalkmeshGLWidget::WalkmeshGLWidget(QWidget *parent)
       xTrans(0.0f), yTrans(0.0f), transStep(360.0f), lastKeyPressed(-1),
       camID(0), _selectedTriangle(-1), _selectedDoor(-1), _selectedGate(-1),
       _lineToDrawPoint1(Vertex()), _lineToDrawPoint2(Vertex()),
-      fovy(70.0), data(nullptr), curFrame(0), gpuRenderer(nullptr), _drawLine(false)
+      fovy(70.0), data(nullptr), curFrame(0), gpuRenderer(nullptr), _drawLine(false),
+      _backgroundVisible(true)
 {
 	// setMouseTracking(true);
 	// startTimer(100);
@@ -31,7 +32,7 @@ WalkmeshGLWidget::WalkmeshGLWidget(QWidget *parent)
 
 WalkmeshGLWidget::~WalkmeshGLWidget()
 {
-	if (gpuRenderer) {
+	if (gpuRenderer != nullptr) {
 		delete gpuRenderer;
 	}
 }
@@ -44,18 +45,21 @@ void WalkmeshGLWidget::timerEvent(QTimerEvent *)
 void WalkmeshGLWidget::clear()
 {
 	data = nullptr;
+	tex = QImage();
+	
+	update();
 	
 	if (gpuRenderer) {
 		gpuRenderer->reset();
 	}
-	
-	update();
 }
 
 void WalkmeshGLWidget::fill(Field *data)
 {
 	this->data = data;
+	tex = data->getBackgroundFile()->background();
 	updatePerspective();
+	resetCamera();
 }
 
 void WalkmeshGLWidget::computeFov()
@@ -79,9 +83,6 @@ void WalkmeshGLWidget::updatePerspective()
 
 void WalkmeshGLWidget::initializeGL()
 {
-	if (gpuRenderer == nullptr) {
-		gpuRenderer = new Renderer(this);
-	}
 }
 
 void WalkmeshGLWidget::resizeGL(int width, int height)
@@ -93,9 +94,23 @@ void WalkmeshGLWidget::resizeGL(int width, int height)
 
 void WalkmeshGLWidget::paintGL()
 {
-	if (!data)	return;
+	if (!data) {
+		return;
+	}
 
-	drawBackground();
+	if (gpuRenderer == nullptr) {
+		gpuRenderer = new Renderer(this);
+	}
+
+	if (gpuRenderer->hasError()) {
+		return;
+	}
+
+	gpuRenderer->clear();
+
+	if (_backgroundVisible) {
+		drawBackground();
+	}
 
 	mProjection.setToIdentity();
 	mProjection.perspective(fovy, (float)width() / (float)height(), 0.001f, 1000.0f);
@@ -302,7 +317,6 @@ void WalkmeshGLWidget::drawBackground()
 
 		gpuRenderer->bindVertex(vertices, 4);
 		gpuRenderer->bindIndex(indices, 6);
-		QImage tex = data->getBackgroundFile()->background();
 		gpuRenderer->bindTexture(tex);
 		gpuRenderer->draw(RendererPrimitiveType::PT_TRIANGLES);
 	}
@@ -474,4 +488,12 @@ void WalkmeshGLWidget::clearLineToDraw()
 {
 	_drawLine = false;
 	update();
+}
+
+void WalkmeshGLWidget::setBackgroundVisible(bool show)
+{
+	if (_backgroundVisible != show) {
+		_backgroundVisible = show;
+		update();
+	}
 }

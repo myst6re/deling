@@ -37,6 +37,7 @@ public slots:
 	void setZoom(int);
 	void resetCamera();
 	void setCurrentFieldCamera(int camID);
+	void setBackgroundVisible(bool show);
 	void setSelectedTriangle(int triangle);
 	void setSelectedDoor(int door);
 	void setSelectedGate(int gate);
@@ -60,7 +61,9 @@ private:
 	int curFrame;
 	Renderer *gpuRenderer;
 	QMatrix4x4 mProjection;
+	QImage tex;
 	bool _drawLine;
+	bool _backgroundVisible;
 
 protected:
 	virtual void timerEvent(QTimerEvent *event) override;

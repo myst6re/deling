@@ -17,6 +17,7 @@
  ****************************************************************************/
 #include "widgets/WalkmeshWidget.h"
 #include "Data.h"
+#include "Config.h"
 #include "Listwidget.h"
 
 WalkmeshWidget::WalkmeshWidget(QWidget *parent) :
@@ -47,6 +48,9 @@ void WalkmeshWidget::build()
 
 	QPushButton *resetCamera = new QPushButton(tr("Remettre à 0"));
 
+	showBackground = new QCheckBox(tr("Afficher décor"));
+	showBackground->setChecked(Config::value("fieldBackgroundVisible", true).toBool());
+
 	tabWidget = new QTabWidget(this);
 	tabWidget->addTab(buildCameraPage(), tr("Caméra"));
 	tabWidget->addTab(buildWalkmeshPage(), tr("Walkmesh"));
@@ -58,19 +62,22 @@ void WalkmeshWidget::build()
 	tabWidget->setFixedHeight(250);
 
 	QGridLayout *layout = new QGridLayout(this);
-	layout->addWidget(walkmeshGL, 0, 0, 3, 1);
-	layout->addWidget(slider1, 0, 1);
-	layout->addWidget(slider2, 0, 2);
-	layout->addWidget(slider3, 0, 3);
+	layout->addWidget(walkmeshGL, 0, 0, 4, 1);
+	layout->addWidget(slider1, 0, 1, Qt::AlignLeft);
+	layout->addWidget(slider2, 0, 2, Qt::AlignHCenter);
+	layout->addWidget(slider3, 0, 3, Qt::AlignRight);
 	layout->addWidget(keyInfos, 1, 1, 1, 3);
 	layout->addWidget(resetCamera, 2, 1, 1, 3);
-	layout->addWidget(tabWidget, 3, 0, 1, 4);
+	layout->addWidget(showBackground, 3, 1, 1, 3);
+	layout->addWidget(tabWidget, 4, 0, 1, 4);
+	layout->setColumnStretch(0, 1);
 	layout->setContentsMargins(QMargins());
 
 	connect(slider1, SIGNAL(valueChanged(int)), walkmeshGL, SLOT(setXRotation(int)));
 	connect(slider2, SIGNAL(valueChanged(int)), walkmeshGL, SLOT(setYRotation(int)));
 	connect(slider3, SIGNAL(valueChanged(int)), walkmeshGL, SLOT(setZRotation(int)));
 	connect(resetCamera, SIGNAL(clicked()), SLOT(resetCamera()));
+	connect(showBackground, SIGNAL(toggled(bool)), walkmeshGL, SLOT(setBackgroundVisible(bool)));
 
 	PageWidget::build();
 }
