@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         qt:
-          - 6.8.2
+          - 6.6.3
         os:
           - ubuntu-latest
           - macos-latest
