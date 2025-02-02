@@ -13,6 +13,132 @@
     </message>
 </context>
 <context>
+    <name>Arguments</name>
+    <message>
+        <source>Command to execute</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>
+List of available commands:
+  unpack           Unpack files from FS archive
+  pack             Pack files from directory to FS archive
+  export-texts     Export texts to CSV from FIELD FS archive
+  import-texts     Import texts from a CSV file to existing FIELD FS archive
+
+&quot;%1 unpack --help&quot; to see help of the specific subcommand</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Please specify a command</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Unknown command type:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: too much parameters</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: target file already exist, use --force to override the file</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: column should be an integer value &gt;= 1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: CSV file does not exist</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: Field archive does not exist</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: separator value should be specified with exactly one character</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: separator value cannot be a line break character</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: quote character value should be specified with exactly one character</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: quote value cannot be a line break character</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: separator and quote character cannot be the same character</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: unknown compression, available values: lzs, lz4, none</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: source directory does not exist:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Warning: cannot open file</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error: target directory does not exist:</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>ArgumentsExport</name>
+    <message>
+        <source>Input Field FS archive.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Output CSV file path.</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>ArgumentsImport</name>
+    <message>
+        <source>Input Field FS archive.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Input CSV file path.</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>ArgumentsPack</name>
+    <message>
+        <source>Input directory.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Input file or directory.</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>ArgumentsUnpack</name>
+    <message>
+        <source>Input file or directory.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Output directory.</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>BGPreview2</name>
     <message>
         <source>Enregistrer l&apos;image</source>
@@ -117,6 +243,45 @@
     <message>
         <source>Décors</source>
         <translation>Hondoa</translation>
+    </message>
+</context>
+<context>
+    <name>CLI</name>
+    <message>
+        <source>An error occured when exporting inner FS/FL/FI</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>An error occured when exporting file inside inner FS/FL/FI</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>An error occured when exporting</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Destination file already exist, use --force to override</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>An error occured when opening target files</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Apply changes...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Done</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Error</translation>
+    </message>
+    <message>
+        <source>Cannot open archive</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2348,6 +2513,18 @@ Error message:
         <source>Fichiers compatibles (*.fs *.iso *.bin *.msd *.jsm);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin);;Fichiers FF8 text (*.msd);;Fichiers FF8 field script (*.jsm)</source>
         <translation type="unfinished">Ongi ibiliko fitxak (*.fs *.iso *.bin *.msd *.jsm);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin);;FF8 text files (*.msd);;FF8 field script files (*.jsm)</translation>
     </message>
+    <message>
+        <source>Fichiers &amp;récents</source>
+        <translation type="unfinished">&amp;Recent Files</translation>
+    </message>
+    <message>
+        <source>Fichiers FF8 text (*.msd)</source>
+        <translation type="unfinished">FF8 text files (*.msd)</translation>
+    </message>
+    <message>
+        <source>Fichiers FF8 field script (*.jsm)</source>
+        <translation type="unfinished">FF8 field script files (*.jsm)</translation>
+    </message>
 </context>
 <context>
     <name>MiscSearch</name>
@@ -3638,12 +3815,16 @@ poursuite de la recherche dans le dernier fichier.</source>
         <source>Position %1</source>
         <translation>Maila %1</translation>
     </message>
+    <message>
+        <source>Afficher décor</source>
+        <translation type="unfinished">Show background</translation>
+    </message>
 </context>
 <context>
     <name>WorldmapWidget</name>
     <message>
         <source>dump</source>
-        <translation type="unfinished">dump</translation>
+        <translation type="obsolete">dump</translation>
     </message>
     <message>
         <source>Worldmap</source>
@@ -3652,6 +3833,10 @@ poursuite de la recherche dans le dernier fichier.</source>
     <message>
         <source>Mappemonde</source>
         <translation type="unfinished">Worldmap</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished">Reset</translation>
     </message>
 </context>
 </TS>

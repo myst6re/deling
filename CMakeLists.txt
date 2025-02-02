@@ -79,9 +79,9 @@ find_package(lz4 REQUIRED)
 set(LANGS
     en
     es
-    ja)
+    ja
+    ru)
 list(TRANSFORM LANGS REPLACE ".+" "translations/${RELEASE_NAME}_\\0.ts" OUTPUT_VARIABLE TS_FILES)
-
 
 set(PROJECT_SOURCES
     "src/ArchiveObserver.h"
@@ -468,20 +468,6 @@ elseif (WIN32)
     set(EXTRA_RESOURCES_CLI "${EXTRA_RESOURCES_GUI}")
 endif()
 
-function(add_translations target)
-    set(oneValueArgs QM_FILES_OUTPUT_VARIABLE)
-    set(multiValueArgs TS_FILES)
-    cmake_parse_arguments(arg "" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-    set(qm_files "")
-    qt_add_translations(${target}
-        TS_FILES ${TS_FILES}
-        LUPDATE_OPTIONS -locations none
-        QM_FILES_OUTPUT_VARIABLE qm_files)
-    set("${arg_QM_FILES_OUTPUT_VARIABLE}" "${qm_files}" PARENT_SCOPE)
-    # Force lupdate
-    add_custom_target(app_translations ALL DEPENDS ${qm_files})
-endfunction()
-
 if(GUI)
 	qt_add_executable(${GUI_TARGET} MANUAL_FINALIZATION MACOSX_BUNDLE WIN32 ${PROJECT_SOURCES} ${QM_FILES} ${RESOURCES} ${EXTRA_RESOURCES_GUI})
 	target_include_directories(${GUI_TARGET} PRIVATE "${CMAKE_SOURCE_DIR}/src")
@@ -511,10 +497,10 @@ if(GUI)
 	if(APPLE OR WIN32)
 		set_target_properties(${GUI_TARGET} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
 	endif()
-	
-	add_translations(${GUI_TARGET}
-		TS_FILES ${TS_FILES}
-		QM_FILES_OUTPUT_VARIABLE QM_FILES)
+
+    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES} OPTIONS -no-ui-lines -locations none)
+    # Force lupdate
+    add_custom_target(app_translations ALL DEPENDS ${QM_FILES})
 endif()
 
 if(CLI)
