@@ -63,6 +63,10 @@ MainWindow::MainWindow()
 	QMenu *menu = menuBar->addMenu(tr("&Fichier"));
 
 	QAction *actionOpen = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogOpenButton), tr("&Ouvrir..."), this, SLOT(openFile()), QKeySequence::Open);
+	_recentMenu = new QMenu(tr("Fichiers &récents"), this);
+	fillRecentMenu();
+	connect(_recentMenu, SIGNAL(triggered(QAction*)), SLOT(openRecentFile(QAction*)));
+	menu->addMenu(_recentMenu);
 	actionGameLang = menu->addAction(tr("Changer la langue du jeu"));
 	actionGameLang->setVisible(false);
 	actionSave = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton), tr("Enregi&strer"), this, SLOT(save()), QKeySequence::Save);
@@ -205,6 +209,19 @@ MainWindow::MainWindow()
 	connect(fieldThread, SIGNAL(background(QImage)), SLOT(fillBackground(QImage)));
 }
 
+void MainWindow::fillRecentMenu()
+{
+	_recentMenu->clear();
+
+	for (const QString &recentFile : Config::value("recentFiles").toStringList()) {
+		if (!recentFile.isEmpty()) {
+			_recentMenu->addAction(QDir::toNativeSeparators(recentFile));
+		}
+	}
+
+	_recentMenu->setDisabled(_recentMenu->actions().isEmpty());
+}
+
 void MainWindow::showEvent(QShowEvent *)
 {
 	if (firstShow) {
@@ -255,6 +272,11 @@ void MainWindow::setGameLang(QAction *action)
 
 	closeFiles();
 	openFsArchive(path);
+}
+
+void MainWindow::openRecentFile(QAction *action)
+{
+	openFile(QDir::fromNativeSeparators(action->text()));
 }
 
 void MainWindow::filterMap()
@@ -659,6 +681,16 @@ void MainWindow::openFile(QString path)
 		if ((index = path.lastIndexOf('/')) == -1)
 			index = path.size();
 		Config::setValue("open_path", path.left(index));
+		
+		QStringList recentFiles = Config::value("recentFiles").toStringList();
+		if (!recentFiles.contains(path)) {
+			recentFiles.prepend(path);
+			if (recentFiles.size() > 20) {
+				recentFiles.removeLast();
+			}
+			Config::setValue("recentFiles", recentFiles);
+			fillRecentMenu();
+		}
 
 		closeFiles();
 

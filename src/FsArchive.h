@@ -133,6 +133,7 @@ public:
 	static QString cleanPath(QString path);
 
 	static QString errorString(Error, const QString &fileName=QString());
+	QString mostCommonPrefixPath() const;
 private:
 	void addFile(const QString &path, quint32 uncompressedSize, quint32 position, quint32 compression);
 	bool removeFile(QString);

@@ -73,8 +73,8 @@ FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	connect(preview, SIGNAL(currentPaletteChanged(int)), SLOT(changeImagePaletteInPreview(int)));
 	connect(preview, SIGNAL(exportAllClicked()), SLOT(exportImages()));
 
-	if (fsArchive!=nullptr && fsArchive->dirExists("c:\\ff8\\data\\"))
-		openDir("c:\\ff8\\data\\");
+	if (fsArchive != nullptr)
+		openDir(fsArchive->mostCommonPrefixPath());
 	else
 		openDir(QString());
 	setButtonsEnabled();

@@ -1414,3 +1414,41 @@ bool FsArchive::searchData(const QMultiMap<quint32, FsHeader *> &headers,
 	}
 	return false;
 }
+
+QString FsArchive::mostCommonPrefixPath() const
+{
+	QString minPath;
+
+	for (const FsHeader *header: sortedByPosition) {
+		if (minPath.isNull() || minPath.size() < header->path().size()) {
+			minPath = header->path();
+		}
+	}
+	
+	int minSize = minPath.size();
+	
+	for (const FsHeader *header: sortedByPosition) {
+		const QString &path = header->path();
+		
+		int i = 0;
+		while (i < minSize) {
+			if (minPath.at(i).toLower() != path.at(i).toLower()) {
+				break;
+			}
+			
+			++i;
+		}
+		
+		if (i < minSize) {
+			minSize = i;
+		}
+	}
+	
+	QString ret = minPath.left(minSize);
+	
+	if (!ret.endsWith('\\')) {
+		return ret.left(ret.lastIndexOf('\\') + 1);
+	}
+	
+	return ret;
+}

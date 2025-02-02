@@ -85,6 +85,7 @@ private slots:
 	void setCurrentPage(int index);
 	void fullScreen();
 	void setGameLang(QAction *action);
+	void openRecentFile(QAction *action);
 signals:
 	void fieldIdChanged(int);
 private:
@@ -96,6 +97,7 @@ private:
 	void setReadOnly(bool readOnly);
 	void buildGameLangMenu(const QStringList &langs);
 	QString savePath() const;
+	void fillRecentMenu();
 
 	FieldArchive *fieldArchive;
 	Field *field;
@@ -109,6 +111,7 @@ private:
 	QLabel *currentPath;
 	Search *searchDialog;
 	SearchAll *searchAllDialog;
+	QMenu *_recentMenu;
 	QAction *actionSave;
 	QAction *actionSaveAs;
 	QMenu *menuExportAll, *menuImportAll;
