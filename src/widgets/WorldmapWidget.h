@@ -39,18 +39,13 @@ public:
 	inline QString tabName() const override { return tr("Mappemonde"); }
 	void clear() override;
 private slots:
-	void setXTrans(int value);
-	void setYTrans(int value);
-	void setZTrans(int value);
 	void setXRot(int value);
 	void setYRot(int value);
 	void setZRot(int value);
+	void resetCamera();
 private:
 	void build() override;
 	WorldmapGLWidget *_scene;
 	Map *_map;
-	QSlider *_xTransSlider, *_yTransSlider, *_zTransSlider;
 	QSlider *_xRotSlider, *_yRotSlider, *_zRotSlider;
-	QSpinBox *_textureSpinBox, *_segmentGroupSpinBox, *_segmentSpinBox;
-	QSpinBox *_blockSpinBox, *_groundTypeSpinBox, *_polyIdSpinBox, *_clutIdSpinBox;
 };

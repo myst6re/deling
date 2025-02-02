@@ -344,19 +344,21 @@ bool MainWindow::openFsArchive(const QString &path)
 	FieldArchivePC *fieldArchivePc = new FieldArchivePC();
 	fieldArchive = fieldArchivePc;
 	openArchive(path);
-	
-	tabBar->setTabEnabled(WorldMapPage, false);
 
 	if (fieldArchive->nbFields() > 0) {
 		actionOpti->setEnabled(true);
 		actionSaveAs->setEnabled(true);
 		buildGameLangMenu(fieldArchivePc->languages());
+		tabBar->setTabEnabled(WorldMapPage, false);
 	} else if (fieldArchive->getWorldMap() != nullptr) {
 		actionSaveAs->setEnabled(false);
-		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(fieldArchive->getWorldMap());
-		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->fill();
 		tabBar->setTabEnabled(WorldMapPage, true);
+		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(fieldArchive->getWorldMap());
+		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setFocus();
+		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->fill();
+		setCurrentPage(WorldMapPage);
 	} else {
+		tabBar->setTabEnabled(WorldMapPage, false);
 		field = new FieldPC(path, Config::value("gameLang", "en").toString());
 		if (field->hasFiles()) {
 			delete fieldArchive;

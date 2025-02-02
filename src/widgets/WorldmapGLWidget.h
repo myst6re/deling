@@ -25,27 +25,6 @@
 #include "game/worldmap/Map.h"
 #include "Renderer.h"
 
-class OpenGLPalettedTexture {
-public:
-	OpenGLPalettedTexture() :
-	    _texture(nullptr), _palettes(nullptr), _paletteMultiplier(1.0f) {}
-	OpenGLPalettedTexture(QOpenGLTexture *tex, QOpenGLTexture *pal) :
-	    _texture(tex), _palettes(pal),
-	    _paletteMultiplier(256.0f / float(pal->width())) {}
-	inline QOpenGLTexture *texture() const {
-		return _texture;
-	}
-	inline QOpenGLTexture *palettes() const {
-		return _palettes;
-	}
-	inline float paletteMultiplier() const {
-		return _paletteMultiplier;
-	}
-private:
-	QOpenGLTexture *_texture, *_palettes;
-	float _paletteMultiplier;
-};
-
 class WorldmapGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
 	Q_OBJECT
@@ -108,6 +87,7 @@ public:
 	QRgb groundColor(quint8 groundType, quint8 region,
 	                 const QSet<quint8> &grounds);
 public slots:
+	void resetCamera();
 	void setTexture(int texture);
 	void setSegmentGroupId(int segmentGroupId);
 	void setSegmentId(int segmentId);
@@ -124,6 +104,7 @@ protected:
 	virtual void wheelEvent(QWheelEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
+	virtual void mouseReleaseEvent(QMouseEvent *event);
 	virtual void keyPressEvent(QKeyEvent *event);
 	virtual void focusInEvent(QFocusEvent *event);
 	virtual void focusOutEvent(QFocusEvent *event);
@@ -137,11 +118,8 @@ private:
 	int _lastKeyPressed, _texture, _segmentGroupId, _segmentId, _blockId;
 	int _groundType, _polyId, _clutId;
 	QRect _limits;
-	QPoint _moveStart;
-	QMap<int, QRgb> _colorRegions;
-	QList< QList< QPair<QOpenGLTexture *, bool> > > _textures;
-	QList< QList<QOpenGLTexture *> > _specialTextures;
-	QOpenGLTexture *_seaTexture, *_roadTexture, *_redTexture, *_megaTexture;
+	QPointF _moveStart;
+	QOpenGLTexture *_megaTexture;
 	QOpenGLBuffer buf;
 	QOpenGLShaderProgram *program;
 	Renderer *gpuRenderer;

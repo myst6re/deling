@@ -74,7 +74,7 @@ QImage TextureFile::gridImage(int cols, int rows) const
 	QImage copy = _image;
 	
 	QImage ret(_image.size(), QImage::Format_ARGB32_Premultiplied);
-	ret.fill(qRgba(0, 0, 0, 0xFF));
+	ret.fill(qRgba(0, 0, 0, 0));
 	
 	QPainter p(&ret);
 	

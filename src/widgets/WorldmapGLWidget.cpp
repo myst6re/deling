@@ -26,12 +26,7 @@ WorldmapGLWidget::WorldmapGLWidget(QWidget *parent,
     _groundType(-1), _polyId(-1), _clutId(-1), _limits(QRect(0, 0, 32, 24)),
     _segmentFiltering(Map::NoFiltering), gpuRenderer(nullptr)
 {
-	/* _xTrans = 0;
-	_yTrans = .12f;
-	_distance = -0.011123f;
-	_xRot = -90;
-	_yRot = 180;
-	_zRot = 180; */
+	setMouseTracking(true);
 }
 
 WorldmapGLWidget::~WorldmapGLWidget()
@@ -42,93 +37,25 @@ WorldmapGLWidget::~WorldmapGLWidget()
 
 	makeCurrent();
 	buf.destroy();
-
-	for (const QList<QPair<QOpenGLTexture *, bool>> &texs : std::as_const(_textures)) {
-		for (const QPair<QOpenGLTexture *, bool> &tex : std::as_const(texs)) {
-			delete tex.first;
-		}
+	
+	if (_megaTexture) {
+		delete _megaTexture;
 	}
-
-	delete _seaTexture;
-	delete _roadTexture;
-	delete _redTexture;
 }
 
-/*
-QImage WorldmapGLWidget::toImage(int w, int h)
+void WorldmapGLWidget::resetCamera()
 {
-	QSize sz = size();
-	if ((w > 0) && (h > 0))
-		sz = QSize(w, h);
-
-	QImage pm;
-	if (context()->isValid()) {
-		context()->makeCurrent();
-		QGLFramebufferObject fbo(sz, QGLFramebufferObject::CombinedDepthStencil);
-		fbo.bind();
-		context()->setInitialized(false);
-		uint prevDefaultFbo = d->glcx->d_ptr->default_fbo;
-		d->glcx->d_ptr->default_fbo = fbo.handle();
-		d->glcx->d_ptr->readback_target_size = sz;
-		updateGL();
-		fbo.release();
-		pm = fbo.toImage();
-		d->glcx->d_ptr->default_fbo = prevDefaultFbo;
-		d->glcx->setInitialized(false);
-		d->glcx->d_ptr->readback_target_size = QSize();
-	}
-
-	saveGLState();
-	const int nrPics = 360 / DEGREES_BETWEEN_PICTURES;
-	for (int i = 0; i < nrPics; i++) {
-		catchFbo->bind();
-		glColorMask(true, true, true, true);
-		glClearColor(0,0,0,0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LESS);
-		glEnable(GL_MULTISAMPLE);
-		glLoadIdentity();
-
-		GLfloat x = GLfloat(PICTURE_SIZE) / PICTURE_SIZE;
-		glFrustum(-x, +x, -1.0, +1.0, 1.0, 1000.0);
-		glViewport(0, 0, PICTURE_SIZE, PICTURE_SIZE);
-
-		drawScreenshot(i);
-		catchFbo->release();
-
-		QImage catchImage = catchFbo->toImage();
-		catchImage.save("object/test" + QString::number(i) + ".png");
-	}
-	glDisable(GL_MULTISAMPLE);
-
-	restoreGLState();
+	_xRot = -90.0f;
+	_yRot = 180.0f;
+	_zRot = 180.0f;
+	update();
 }
-*/
+
 void WorldmapGLWidget::setMap(Map *map)
 {
 	_map = map;
 
-	_colorRegions[0] = qRgb(128, 0, 0);
-	//_colorRegions[1] = qRgb(128, 0, 128);
-	//_colorRegions[2] = qRgb(128, 0, 0);
-	/* _colorRegions[3] = qRgb(0, 128, 0);
-	_colorRegions[4] = qRgb(0, 0, 255);
-	_colorRegions[6] = qRgb(128, 128, 128);
-	_colorRegions[15] = qRgb(0, 128, 128);
-	_colorRegions[19] = qRgb(128, 128, 0); */
-	/* _colorRegions[5] = qRgb(255, 0, 255);
-	_colorRegions[6] = qRgb(255, 255, 255);
-	_colorRegions[7] = qRgb(128, 0, 0);
-	_colorRegions[8] = qRgb(0, 128, 0);
-	_colorRegions[9] = qRgb(0, 0, 128);
-	_colorRegions[10] = qRgb(128, 128, 0);
-	_colorRegions[11] = qRgb(0, 128, 128);
-	_colorRegions[12] = qRgb(128, 0, 128);
-	_colorRegions[13] = qRgb(128, 128, 128); */
-
 	importVertices();
-
 	update();
 }
 
@@ -141,21 +68,18 @@ void WorldmapGLWidget::setLimits(const QRect &rect)
 
 void WorldmapGLWidget::setXTrans(float trans)
 {
-    qDebug() << "WorldmapGLWidget::setXTrans" << trans;
 	_xTrans = trans;
 	update();
 }
 
 void WorldmapGLWidget::setYTrans(float trans)
 {
-    qDebug() << "WorldmapGLWidget::setYTrans" << trans;
 	_yTrans = trans;
 	update();
 }
 
 void WorldmapGLWidget::setZTrans(float trans)
 {
-    qDebug() << "WorldmapGLWidget::setZTrans" << trans;
 	_distance = trans;
 	update();
 }
@@ -353,6 +277,24 @@ void WorldmapGLWidget::paintGL()
 	gpuRenderer->clear();
 	gpuRenderer->bindProjectionMatrix(_matrixProj);
 
+	if (_distance > -0.011124f) {
+		_distance = -0.011124f;
+	} else if (_distance < -1.78358f) {
+		_distance = -1.78358f;
+	}
+	
+	if (_xTrans > 0.0115338f) {
+		_xTrans = 0.0115338f;
+	} else if (_xTrans < -1.01512f) {
+		_xTrans = -1.01512f;
+	}
+	
+	if (_yTrans < 0.116807f) {
+		_yTrans = 0.116807f;
+	} else if (_yTrans > 0.892654f) {
+		_yTrans = 0.892654f;
+	}
+
 	QMatrix4x4 mModel;
 	mModel.translate(_xTrans, _yTrans, _distance);
 	mModel.rotate(_xRot, 1.0f, 0.0f, 0.0f);
@@ -371,38 +313,47 @@ void WorldmapGLWidget::paintGL()
 void WorldmapGLWidget::wheelEvent(QWheelEvent *event)
 {
 	setFocus();
-	_distance += double(event->angleDelta().y()) / 4096.0;
+	_distance += double(event->angleDelta().y()) / 8192.0;
 	update();
 }
 
 void WorldmapGLWidget::mousePressEvent(QMouseEvent *event)
 {
 	setFocus();
-	_moveStart = event->pos();
-	if(event->button() == Qt::MiddleButton)
-	{
-		_distance = -35;
+
+	if (event->button() == Qt::MiddleButton) {
+		_distance = -0.714248f;
 		update();
+	} else if (event->button() == Qt::LeftButton) {
+		_moveStart = event->position();
 	}
+}
+
+void WorldmapGLWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+	_moveStart = QPointF();
 }
 
 void WorldmapGLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	/* if(event->modifiers() == Qt::CTRL) {
-		if(event->button() == Qt::LeftButton)
-		{
-			_xRot += fmod((event->pos().x() - _moveStart.x()) / 4096.0f, 360.0f);
-		}
-		else if(event->button() == Qt::RightButton)
-		{
-			_yRot -= fmod((event->pos().y() - _moveStart.y()) / 4096.0f, 360.0f);
-		}
-	} else if(event->button() == Qt::LeftButton) {
-		_xTrans += (event->pos().x() - _moveStart.x()) / 4096.0;
-		_yTrans -= (event->pos().y() - _moveStart.y()) / 4096.0;
+	if (_moveStart.isNull()) {
+		return;
 	}
-	_moveStart = event->pos();
-	updateGL(); */
+
+	QPointF diff = event->position() - _moveStart;
+	bool toUpdate = false;
+	
+	if (abs(diff.x()) >= 4.0f) {
+		_xTrans += (diff.x() > 0.0f ? 1.0f : -1.0f) / 360.0f;
+		toUpdate = true;
+	}
+	if (abs(diff.y()) >= 4.0f) {
+		_yTrans -= (diff.y() > 0.0f ? 1.0f : -1.0f) / 360.0f;
+		toUpdate = true;
+	}
+	if (toUpdate) {
+		update();
+	}
 }
 
 void WorldmapGLWidget::keyPressEvent(QKeyEvent *event)
@@ -416,26 +367,26 @@ void WorldmapGLWidget::keyPressEvent(QKeyEvent *event)
 			_transStep *= 0.90f; // accelerator
 		}
 	} else {
-		_transStep = 360.0f;
+		_transStep = 180.0f;
 	}
 	_lastKeyPressed = event->key();
 
 	switch(event->key())
 	{
 	case Qt::Key_Left:
-		_xTrans += 1.0f/_transStep;
+		_xTrans += 1.0f / _transStep;
 		update();
 		break;
 	case Qt::Key_Right:
-		_xTrans -= 1.0f/_transStep;
+		_xTrans -= 1.0f / _transStep;
 		update();
 		break;
 	case Qt::Key_Down:
-		_yTrans += 1.0f/_transStep;
+		_yTrans += 1.0f / _transStep;
 		update();
 		break;
 	case Qt::Key_Up:
-		_yTrans -= 1.0f/_transStep;
+		_yTrans -= 1.0f / _transStep;
 		update();
 		break;
 	case Qt::Key_7:
@@ -478,99 +429,4 @@ void WorldmapGLWidget::focusOutEvent(QFocusEvent *event)
 {
 	releaseKeyboard();
 	QWidget::focusOutEvent(event);
-}
-
-QRgb WorldmapGLWidget::groundColor(quint8 groundType, quint8 region,
-                                   const QSet<quint8> &grounds)
-{
-	QRgb c;
-
-	switch(groundType) {
-	case 0:
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-		c = qRgb(57, 71, 45);
-		break;
-	case 6:
-	case 15:
-	case 24:
-		c = qRgb(75, 80, 55);
-		break;
-	case 7:
-		c = qRgb(106, 78, 63);
-		break;
-	case 8:
-		c = qRgb(145, 124, 109);
-		break;
-	case 9:
-		c = qRgb(144, 157, 164);
-		break;
-	case 10:
-		//c = qRgb(122, 143, 158);
-		//c = qRgb(0xD0, 0xD0, 0xBA); // yellow
-		c = qRgb(0xA1, 0xA1, 0x8C);
-		break;
-	case 14:
-		c = qRgb(116, 100, 90);
-		break;
-	case 16:
-	case 25:
-		c = qRgb(103, 85, 72);
-		break;
-	case 17:
-	case 18:
-	case 23:
-		c = qRgb(57, 60, 53);
-		break;
-	case 27:
-		c = qRgb(112, 97, 86);
-		break;
-	case 28:
-		c = qRgb(69, 65, 64);
-		break;
-	case 29:
-		c = qRgb(133, 108, 91);
-		break;
-	case 31:
-		c = qRgb(53, 74, 75);
-		break;
-	case 32:
-		c = qRgb(56, 88, 99);
-		break;
-	case 33:
-		c = qRgb(40, 65, 81);
-		break;
-	case 34:
-		c = qRgb(35, 60, 75);// 56, 88, 99
-		break;
-	default:
-		const quint8 grey = 55 + groundType * 200 / 34;
-		c = qRgb(grey, grey, grey);
-		break;
-	}
-
-	if (/* grounds.contains(groundType) &&*/groundType >= 29 || !_colorRegions.contains(region)) {
-		//QRgb cRegion = _colorRegions.value(region, Qt::transparent);
-		QRgb cRegion = qRgb(128, 128, 128);
-		/* int r = qRed(cRegion) * .5 + qRed(c),
-			g = qGreen(cRegion) * .5 + qGreen(c),
-			b = qBlue(cRegion) * .5 + qBlue(c); */
-		int r = qRed(c) - qRed(cRegion) * .33,
-		    g = qGreen(c) - qGreen(cRegion) * .33,
-		    b = qBlue(c) - qBlue(cRegion) * .33;
-
-		if (r > 255) r = 255;
-		if (g > 255) g = 255;
-		if (b > 255) b = 255;
-		if (r < 0) r = 0;
-		if (g < 0) g = 0;
-		if (b < 0) b = 0;
-
-		c = qRgb(r, g, b);
-	}
-
-	return c;
 }

@@ -184,8 +184,8 @@ QImage Map::megaImage() const
 {
 	int row = 0, col = 0;
 
-	QImage retImg(QSize(5, 5) * 256, QImage::Format_RGB32);
-	retImg.fill(qRgb(0, 0, 0));
+	QImage retImg(QSize(5, 5) * 256, QImage::Format_ARGB32);
+	retImg.fill(qRgba(0, 0, 0, 0));
 	QPainter pImg(&retImg);
 	
 	for (const TimFile &tim: _textures) {
