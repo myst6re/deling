@@ -32,27 +32,23 @@ QString Config::programResourceDir()
 
 QString Config::programLanguagesDir()
 {
-	QDir translationDir(QStringLiteral("%1").arg(QCoreApplication::applicationDirPath()));
+	QStringList lookupPaths;
+	lookupPaths << QStringLiteral("%1/%2").arg(QCoreApplication::applicationDirPath(), QStringLiteral("translations"))
+	            << QCoreApplication::applicationDirPath()
+	            << QStringLiteral("%1/../translations").arg(QCoreApplication::applicationDirPath())
+	            << QStringLiteral("%1/../share/deling/translations").arg(QCoreApplication::applicationDirPath())
+	            << QStringLiteral("%1/%2").arg(QDir::homePath(), QStringLiteral(".local/share/deling/translations"))
+	            << QStringLiteral("/usr/local/share/deling/translations")
+	            << QStringLiteral("/usr/share/deling/translations");
 	QStringList nameFilter{QStringLiteral("Deling_*.qm")};
-	if (translationDir.entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
-		translationDir.setPath(QStringLiteral("%1/%2").arg(QCoreApplication::applicationDirPath(), QStringLiteral("translations")));
-		if (translationDir.entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
-			translationDir.setPath(QStringLiteral("%1/../translations").arg(QCoreApplication::applicationDirPath()));
-			if (translationDir.entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
-				translationDir.setPath(QStringLiteral("%1/../share/deling/translations").arg(QCoreApplication::applicationDirPath()));
-				if (translationDir.entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
-					translationDir.setPath(QStringLiteral("%1/%2").arg(QDir::homePath(), QStringLiteral(".local/share/deling/translations")));
-					if (translationDir.entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
-						translationDir.setPath(QStringLiteral("/usr/local/share/deling/translations"));
-						if (translationDir.entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
-							translationDir.setPath(QStringLiteral("/usr/share/deling/translations"));
-						}
-					}
-				}
-			}
+
+	for (const QString &path: lookupPaths) {
+		if (!QDir(path).entryList(nameFilter, QDir::Files, QDir::Name).isEmpty()) {
+			return QDir(path).absolutePath();
 		}
 	}
-	return translationDir.absolutePath();
+	
+	return QCoreApplication::applicationDirPath();
 }
 
 void Config::set() {
