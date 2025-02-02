@@ -608,7 +608,7 @@ int MainWindow::closeFiles(bool quit)
 	((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(nullptr);
 	((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(nullptr);
 	((JsmWidget *)pageWidgets.at(ScriptPage))->setFieldArchive(fieldArchive);
-	//((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(nullptr);
+	((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(nullptr);
 	currentPath->setText(QString());
 	setReadOnly(true);
 

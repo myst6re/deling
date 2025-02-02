@@ -271,10 +271,11 @@ void WorldmapGLWidget::resizeGL(int width, int height)
 
 void WorldmapGLWidget::paintGL()
 {
+	gpuRenderer->clear();
+
 	if (nullptr == _map || gpuRenderer->hasError()) {
 		return;
 	}
-	gpuRenderer->clear();
 	gpuRenderer->bindProjectionMatrix(_matrixProj);
 
 	if (_distance > -0.011124f) {
