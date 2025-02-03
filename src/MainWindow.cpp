@@ -328,16 +328,18 @@ bool MainWindow::openArchive(const QString &path)
 			items.append(item);
 		}
 
-		list1->setEnabled(true);
-		lineSearch->setEnabled(true);
-		bgPreview->setEnabled(true);
-		list1->addTopLevelItems(items);
-		list1->resizeColumnToContents(0);
-		list1->resizeColumnToContents(1);
-		list1->resizeColumnToContents(2);
-
-		actionExport->setEnabled(true);
-		menuExportAll->setEnabled(true);
+		if (!items.isEmpty()) {
+			list1->setEnabled(true);
+			lineSearch->setEnabled(true);
+			bgPreview->setEnabled(true);
+			list1->addTopLevelItems(items);
+			list1->resizeColumnToContents(0);
+			list1->resizeColumnToContents(1);
+			list1->resizeColumnToContents(2);
+	
+			actionExport->setEnabled(true);
+			menuExportAll->setEnabled(true);
+		}
 
 		((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(fieldArchive->getModels());
 		((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(fieldArchive->getModels());
@@ -379,6 +381,7 @@ bool MainWindow::openFsArchive(const QString &path)
 		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setFocus();
 		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->fill();
 		setCurrentPage(WorldMapPage);
+		setReadOnly(true);
 	} else {
 		tabBar->setTabEnabled(WorldMapPage, false);
 		field = new FieldPC(path, Config::value("gameLang", "en").toString());
@@ -1088,13 +1091,14 @@ void MainWindow::configDialog()
 	dialog.addAction(actionRun);
 	if (dialog.exec() == QDialog::Accepted) {
 		((MsdWidget *)pageWidgets.at(TextPage))->updateText();
+		actionRun->setEnabled(Data::ff8Found());
 	}
 }
 
 void MainWindow::runFF8()
 {
-	if (!QProcess::startDetached("\"" % Data::AppPath() % "/FF8.exe\"", QStringList(), Data::AppPath())) {
-		QMessageBox::warning(this, tr("Erreur"), tr("Final Fantasy VIII n'a pas pu être lancé.\n%1").arg(Data::AppPath() % "/FF8.exe"));
+	if (!QProcess::startDetached("\"" % Data::ff8ExePath() % "\"", QStringList(), Data::AppPath())) {
+		QMessageBox::warning(this, tr("Erreur"), tr("Final Fantasy VIII n'a pas pu être lancé.\n%1").arg(Data::ff8ExePath()));
 	}
 }
 

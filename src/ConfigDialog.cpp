@@ -77,7 +77,8 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 	if (appPath.isEmpty()) {
 		appPath = Data::AppPath();
 	}
-	appPathLine->setText(appPath);
+	QString ff8ExeName = Config::value("ff8ExeName", "FF8.exe").toString();
+	appPathLine->setText(appPath + "/" + ff8ExeName);
 
 	for (const QString &fontName: FF8Font::fontList()) {
 		if (fontName == "00" || fontName == "01")	continue;
@@ -124,7 +125,7 @@ void ConfigDialog::fillMenuLang()
 
 void ConfigDialog::setAppPath()
 {
-	QString appPath = QFileDialog::getExistingDirectory(this, tr("Chemin d'installation de Final Fantasy VIII PC"), Data::AppPath());
+	QString appPath = QFileDialog::getOpenFileName(this, tr("Chemin de l'executable de Final Fantasy VIII PC"), appPathLine->text(), tr("FF8 exe (*.exe);;All files (*)"));
 	if (!appPath.isNull()) {
 		appPathLine->setText(appPath);
 	}
@@ -158,7 +159,9 @@ void ConfigDialog::saveConfig()
 
 	Config::setValue("lang", langComboBox->itemData(langComboBox->currentIndex()));
 	Config::setValue("dontUseRegAppPath", !useRegAppPath->isChecked());
-	Config::setValue("appPath", appPathLine->text());
+	QFileInfo fullFF8ExePath(appPathLine->text());
+	Config::setValue("appPath", fullFF8ExePath.absolutePath());
+	Config::setValue("ff8ExeName", fullFF8ExePath.fileName());
 	Config::setValue("encoding", encodingComboBox->itemData(encodingComboBox->currentIndex()));
 //	Config::setValue("hideUnusedTexts", hideUnusedTexts->isChecked());
 

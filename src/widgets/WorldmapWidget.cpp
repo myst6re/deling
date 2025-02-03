@@ -48,6 +48,7 @@ void WorldmapWidget::build()
 	layout->addWidget(resetButton, 1, 1, 1, 3);
 	layout->setRowStretch(0, 1);
 	layout->setColumnStretch(0, 1);
+	layout->setContentsMargins(QMargins());
 	
 	_xRotSlider->setValue(_scene->xRot());
 	_yRotSlider->setValue(_scene->yRot());

@@ -23,7 +23,12 @@ QString Data::AppPathCache;
 
 bool Data::ff8Found()
 {
-	return QFile::exists(AppPath() % "/FF8.exe");
+	return QFile::exists(ff8ExePath());
+}
+
+QString Data::ff8ExePath()
+{
+	return AppPath() % "/" % Config::value("ff8ExeName", "FF8.exe").toString();
 }
 
 QString Data::AppPath()

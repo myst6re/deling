@@ -356,7 +356,15 @@ List of available commands:
     <message>
         <source>Chemin d&apos;installation de Final Fantasy VIII PC</source>
         <translatorcomment>Final Fantasy VIII PC install path</translatorcomment>
-        <translation>PC 版 Final Fantasy VIII インストール パス</translation>
+        <translation type="vanished">PC 版 Final Fantasy VIII インストール パス</translation>
+    </message>
+    <message>
+        <source>Chemin de l&apos;executable de Final Fantasy VIII PC</source>
+        <translation type="unfinished">Executable path of Final Fantasy VIII PC</translation>
+    </message>
+    <message>
+        <source>FF8 exe (*.exe);;All files (*)</source>
+        <translation type="unfinished">FF8 exe (*.exe);;All files (*)</translation>
     </message>
 </context>
 <context>

@@ -34,6 +34,7 @@ class Data : public QObject
 	Q_OBJECT
 public:
     static bool ff8Found();
+	static QString ff8ExePath();
 	static QString AppPath();
 	static QString location(int i);
 	static QString name(int i);
