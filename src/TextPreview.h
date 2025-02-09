@@ -66,7 +66,7 @@ private:
 	int maxW, maxH;
 	static bool curFrame;
 	bool useTimer, acceptMove, readOnly;
-	QPoint moveStartPosition;
+	QPointF moveStartPosition;
 	TdwFile::Color fontColor;
 
 	static TdwFile *font;

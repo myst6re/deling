@@ -554,13 +554,14 @@ void TextPreview::mousePressEvent(QMouseEvent *event)
 	if (!readOnly && event->button() == Qt::LeftButton) {
 		FF8Window ff8Window = getWindow();
 		if (ff8Window.type != NOWIN) {
-			QPoint real = realPos(ff8Window);
+			QPointF real = realPos(ff8Window).toPointF();
+			QPointF position = event->position();
 
-			acceptMove = event->x() >= real.x() && event->x() < real.x()+maxW
-						 && event->y() >= real.y() && event->y() < real.y()+maxH;
+			acceptMove = position.x() >= real.x() && position.x() < real.x() + maxW
+						 && position.y() >= real.y() && position.y() < real.y() + maxH;
 
 			if (acceptMove) {
-				moveStartPosition = event->pos();
+				moveStartPosition = position;
 				setCursor(QCursor(Qt::ClosedHandCursor));
 			}
 		}
@@ -579,9 +580,10 @@ void TextPreview::mouseMoveEvent(QMouseEvent *event)
 	if (ff8Window.type == NOWIN)	return;
 
 	FF8Window originalWindow = ff8Window;
+	QPointF position = event->position();
 
-	int x = qMax(0, ff8Window.x) + event->x() - moveStartPosition.x();
-	int y = qMax(0, ff8Window.y) + event->y() - moveStartPosition.y();
+	int x = qMax(0, ff8Window.x) + position.x() - moveStartPosition.x();
+	int y = qMax(0, ff8Window.y) + position.y() - moveStartPosition.y();
 
 	if (x<0)	x = 0;
 	if (y<0)	y = 0;
@@ -603,7 +605,7 @@ void TextPreview::mouseMoveEvent(QMouseEvent *event)
 
 		emit positionChanged(real);
 
-		moveStartPosition = event->pos();
+		moveStartPosition = event->position();
 
 		ff8Windows.replace(currentWin, ff8Window);
 

@@ -53,17 +53,24 @@ void BGPreview2::leaveEvent(QEvent *)
 
 void BGPreview2::mousePressEvent(QMouseEvent *event)
 {
-	if (event->button() != Qt::LeftButton)	return;
+	if (event->button() != Qt::LeftButton) {
+		return;
+	}
 
-	if (event->x()>=0 && event->x()<32 && event->y()>=0 && event->y()<32) {
+	QPointF position = event->position();
+
+	if (position.x() >= 0.0 && position.x() < 32.0 && position.y() >= 0.0 && position.y() < 32.0) {
 		savePixmap();
 	}
 }
 
 void BGPreview2::savePixmap()
 {
-	QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), name + ".png", tr("Image PNG (*.png);;Image JPG (*.jpg);;Image BMP (*.bmp);;Portable Pixmap (*.ppm)"));
-	if (path.isEmpty())	return;
+	QString path = QFileDialog::getSaveFileName(this, tr("Enregistrer l'image"), name + ".png",
+	                                            tr("Image PNG (*.png);;Image JPG (*.jpg);;Image BMP (*.bmp);;Portable Pixmap (*.ppm)"));
+	if (path.isEmpty()) {
+		return;
+	}
 
 	pixmap().save(path);
 }

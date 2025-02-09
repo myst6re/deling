@@ -105,7 +105,7 @@ void OrientationWidget::mouseEvent(QMouseEvent *e)
 		return;
 	}
 
-	const QPointF &relativePos = e->localPos();
+	QPointF relativePos = e->position();
 
 	if(isInCircle(relativePos)) {
 		moveCursor(relativePos);
