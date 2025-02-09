@@ -24,7 +24,7 @@ WorldmapGLWidget::WorldmapGLWidget(QWidget *parent,
     _xTrans(-0.5f), _yTrans(0.5f), _transStep(360.0f), _lastKeyPressed(-1),
     _texture(-1), _segmentGroupId(-1), _segmentId(-1), _blockId(-1),
     _groundType(-1), _polyId(-1), _clutId(-1), _limits(QRect(0, 0, 32, 24)),
-    _segmentFiltering(Map::NoFiltering), gpuRenderer(nullptr)
+    _megaTexture(nullptr), gpuRenderer(nullptr), _segmentFiltering(Map::NoFiltering)
 {
 	setMouseTracking(true);
 }
@@ -195,6 +195,9 @@ void WorldmapGLWidget::importVertices()
 	}
 	
 	QImage megaImage = _map->megaImage();
+	if (_megaTexture) {
+		delete _megaTexture;
+	}
 	_megaTexture = textureFromImage(megaImage);
 
 	const int segmentPerLine = 32, blocksPerLine = 4,

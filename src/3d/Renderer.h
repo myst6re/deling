@@ -93,10 +93,7 @@ public:
 	void show();
 	void reset();
 
-	bool drawStart(float _pointSize = 1.0f);
-	void drawArrays(RendererPrimitiveType _type, int first, int count);
 	void draw(RendererPrimitiveType _type, float _pointSize = 1.0f, bool clear = true);
-	void drawEnd(bool clear);
 
 	void setViewport(int32_t _x, int32_t _y, int32_t _width, int32_t _height);
 
@@ -107,7 +104,7 @@ public:
 	void bindVertex(const RendererVertex *_vertex, uint32_t _count = 1);
 	void bindIndex(uint32_t *_index, uint32_t _count = 1);
 
-	void bindTexture(QImage &_image, bool generateMipmaps = false);
+	void bindTexture(const QImage &_image, bool generateMipmaps = false);
 	void bindTexture(QOpenGLTexture *texture);
 
 	void bufferVertex(QVector3D _position, QRgba64 _color, QVector2D _texcoord);
@@ -115,4 +112,9 @@ public:
 protected slots:
 	void messageLogged(const QOpenGLDebugMessage &msg);
 #endif
+private:	
+	bool updateBuffers();
+	void drawStart(float _pointSize);
+	void drawEnd(bool clear);
+	bool _buffersHaveChanged;
 };

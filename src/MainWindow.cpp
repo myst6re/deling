@@ -273,7 +273,7 @@ void MainWindow::setGameLang(QAction *action)
 
 	if (fieldArchive != nullptr && actionOpti->isEnabled()) {
 		path = ((FieldArchivePC *)fieldArchive)->getFsArchive()->path();
-	} else if (field != nullptr) {
+	} else if (field != nullptr && field->isPc()) {
 		path = ((FieldPC *)field)->path();
 	}
 
@@ -377,17 +377,15 @@ bool MainWindow::openFsArchive(const QString &path)
 	openArchive(path);
 	actionSaveAs->setEnabled(true);
 
-	if (fieldArchive->nbFields() > 0) {
-		actionOpti->setEnabled(true);
-		buildGameLangMenu(fieldArchivePc->languages());
-		tabBar->setTabEnabled(WorldMapPage, false);
-	} else if (fieldArchive->getWorldMap() != nullptr) {
+	if (fieldArchive->getWorldMap() != nullptr) {
 		tabBar->setTabEnabled(WorldMapPage, true);
-		field = new Field(tr("mappemonde"));
-		field->setWorldmapFile(fieldArchive->getWorldMap());
 		setCurrentPage(WorldMapPage);
 		setReadOnly(true);
 		fillPage();
+	} else if (fieldArchive->nbFields() > 0) {
+		actionOpti->setEnabled(true);
+		buildGameLangMenu(fieldArchivePc->languages());
+		tabBar->setTabEnabled(WorldMapPage, false);
 	} else {
 		tabBar->setTabEnabled(WorldMapPage, false);
 		field = new FieldPC(path, Config::value("gameLang", "en").toString());
@@ -527,7 +525,7 @@ bool MainWindow::openIsoArchive(const QString &path)
 
 void MainWindow::fillPage()
 {
-	if (tabBar->currentIndex() >= tabBar->count()-1)
+	if (tabBar->currentIndex() >= tabBar->count() - 1)
 		return;
 
 	bgPreview->clear();
@@ -569,7 +567,8 @@ void MainWindow::fillPage()
 	if (currentField->hasBackgroundFile())
 		bgPreview->fill(QPixmap::fromImage(currentField->getBackgroundFile()->background()));
 	else
-		bgPreview->fill(FF8Image::errorPixmap());
+		bgPreview->fill(QPixmap());
+	bgPreview->setEnabled(currentField->hasBackgroundFile());
 
 //	qDebug() << "BG" << t.elapsed();
 

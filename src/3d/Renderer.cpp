@@ -29,7 +29,7 @@ size_t vectorSizeOf(const typename std::vector<T>& vec)
 Renderer::Renderer(QOpenGLWidget *_widget) :
     mProgram(_widget), mVertexShader(QOpenGLShader::Vertex, _widget), mFragmentShader(QOpenGLShader::Fragment, _widget),
     mVAO(this), mVertex(QOpenGLBuffer::VertexBuffer), mIndex(QOpenGLBuffer::IndexBuffer),
-    mTexture(QOpenGLTexture::Target2D), _hasError(false)
+    mTexture(QOpenGLTexture::Target2D), _hasError(false), _buffersHaveChanged(true)
 #ifdef QT_DEBUG
     , mLogger(_widget)
 #endif
@@ -127,18 +127,7 @@ void Renderer::reset()
 	mModelMatrix.setToIdentity();
 }
 
-void Renderer::drawArrays(RendererPrimitiveType _type, int first, int count)
-{
-	mGL.glDrawArrays(GLenum(_type), first, count);
-#ifdef QT_DEBUG
-	GLenum lastError = mGL.glGetError();
-	if (lastError != GL_NO_ERROR) {
-		qDebug() << "mGL.glDrawArrays(_type, first, count)" << lastError << _type << first << count;
-	}
-#endif
-}
-
-bool Renderer::drawStart(float _pointSize)
+bool Renderer::updateBuffers()
 {
 	// --- Before Draw ---
 	mVAO.bind();
@@ -159,7 +148,9 @@ bool Renderer::drawStart(float _pointSize)
 		return false;
 	}
 
-	mVertex.allocate(mVertexBuffer.data(), int(vectorSizeOf(mVertexBuffer)));
+	if (_buffersHaveChanged) {
+		mVertex.allocate(mVertexBuffer.data(), int(vectorSizeOf(mVertexBuffer)));
+	}
 
 	mProgram.enableAttributeArray(ShaderProgramAttributes::POSITION);
 	mProgram.enableAttributeArray(ShaderProgramAttributes::COLOR);
@@ -174,6 +165,7 @@ bool Renderer::drawStart(float _pointSize)
 		for (uint32_t idx = 0; idx < mVertexBuffer.size(); idx++) {
 			mIndexBuffer.push_back(idx);
 		}
+		_buffersHaveChanged = true;
 	}
 
 	if (!mIndex.isCreated() && !mIndex.create()) {
@@ -189,7 +181,20 @@ bool Renderer::drawStart(float _pointSize)
 #endif
 		return false;
 	}
-	mIndex.allocate(mIndexBuffer.data(), int(vectorSizeOf(mIndexBuffer)));
+	if (_buffersHaveChanged) {
+		mIndex.allocate(mIndexBuffer.data(), int(vectorSizeOf(mIndexBuffer)));
+	}
+	
+	_buffersHaveChanged = false;
+	
+	return true;
+}
+
+void Renderer::drawStart(float _pointSize)
+{
+	// --- Before Draw ---
+	mVAO.bind();
+	mProgram.bind();
 	
 	// Set Point Size
 	mProgram.setUniformValue("pointSize", _pointSize);
@@ -198,16 +203,16 @@ bool Renderer::drawStart(float _pointSize)
 	mProgram.setUniformValue("modelMatrix", mModelMatrix);
 	mProgram.setUniformValue("projectionMatrix", mProjectionMatrix);
 	mProgram.setUniformValue("viewMatrix", mViewMatrix);
-	
-	return true;
 }
 
 void Renderer::draw(RendererPrimitiveType _type, float _pointSize, bool clear)
 {
-	if (!drawStart(_pointSize)) {
+	if (!updateBuffers()) {
 		return;
 	}
-	
+
+	drawStart(_pointSize);
+
 	// --- Draw ---
 	mGL.glDrawElements(GLenum(_type), GLsizei(mIndexBuffer.size()), GL_UNSIGNED_INT, nullptr);
 #ifdef QT_DEBUG
@@ -223,11 +228,12 @@ void Renderer::draw(RendererPrimitiveType _type, float _pointSize, bool clear)
 void Renderer::drawEnd(bool clear)
 {
 	// --- After Draw ---
-	mVertex.release();
-	mIndex.release();
 	if (clear) {
+		mVertex.release();
+		mIndex.release();
 		mVertexBuffer.clear();
 		mIndexBuffer.clear();
+		_buffersHaveChanged = true;
 	}
 	
 	if (mTexture.isCreated() && mTexture.isBound()) {
@@ -264,6 +270,7 @@ void Renderer::bindVertex(const RendererVertex *_vertex, uint32_t _count)
 	for (uint32_t idx = 0; idx < _count; idx++) {
 		mVertexBuffer.push_back(_vertex[idx]);
 	}
+	_buffersHaveChanged = _count > 0;
 }
 
 void Renderer::bindIndex(uint32_t *_index, uint32_t _count)
@@ -271,9 +278,10 @@ void Renderer::bindIndex(uint32_t *_index, uint32_t _count)
 	for (uint32_t idx = 0; idx < _count; idx++) {
 		mIndexBuffer.push_back(_index[idx]);
 	}
+	_buffersHaveChanged = _count > 0;
 }
 
-void Renderer::bindTexture(QImage &_image, bool generateMipmaps)
+void Renderer::bindTexture(const QImage &_image, bool generateMipmaps)
 {
 	if (mTexture.isCreated()) {
 		mTexture.destroy();

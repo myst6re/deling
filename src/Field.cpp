@@ -267,7 +267,7 @@ bool Field::hasFiles() const
 		}
 	}
 
-	return hasFiles2() || hasCharaFile();
+	return hasFiles2() || hasCharaFile() || hasWorldmapFile();
 }
 
 bool Field::hasFiles2() const

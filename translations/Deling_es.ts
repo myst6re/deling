@@ -2533,10 +2533,6 @@ Error message:
         <source>Fichiers FF8 field script (*.jsm)</source>
         <translation type="unfinished">FF8 field script files (*.jsm)</translation>
     </message>
-    <message>
-        <source>mappemonde</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>MiscSearch</name>
@@ -3079,35 +3075,35 @@ Error message:
     </message>
     <message>
         <source>Impossible de lire la mappemonde (readSegments).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (readSegments).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (readEncounterRegions).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (readEncounterRegions).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (readEncounters).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (readEncounters).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (readSpecialTextures).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (readSpecialTextures).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (readRoadTextures).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (readRoadTextures).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (readDrawPoints).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (readDrawPoints).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (readTexts).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (readTexts).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (readTextures).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unable to read the worldmap (readTextures).</translation>
     </message>
 </context>
 <context>

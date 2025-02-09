@@ -170,6 +170,13 @@ int FieldArchivePC::openWorld()
 	
 	_worldMap = map;
 	
+	Field *field = new Field("worldmap");
+	field->setWorldmapFile(_worldMap);
+	fields.append(field);
+	fieldsSortByName.insert(QString(), 0);
+	fieldsSortByDesc.insert(QString(), 0);
+	fieldsSortByMapId.insert(QString(), 0);
+	
 	return 0;
 }
 
@@ -210,7 +217,7 @@ bool FieldArchivePC::openBG(Field *field) const
 {
 	if (!archive)	return false;
 
-	return ((FieldPC *)field)->open2(archive);
+	return field->isPc() && ((FieldPC *)field)->open2(archive);
 }
 
 void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHeader> > &oldFields) const
@@ -218,7 +225,9 @@ void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHea
 	QMapIterator<Field *, QMap<QString, FsHeader> > i(oldFields);
 	while (i.hasNext()) {
 		i.next();
-		((FieldPC *)i.key())->getArchiveHeader()->setHeader(i.value());
+		if (i.key()->isPc()) {
+			((FieldPC *)i.key())->getArchiveHeader()->setHeader(i.value());
+		}
 	}
 }
 
@@ -263,7 +272,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 	QMap<Field *, QMap<QString, FsHeader> > oldFields;
 
 	for (Field *field: fields) {
-		if (field->isModified()) {
+		if (field->isModified() && field->isPc()) {
 			QCoreApplication::processEvents();
 			if (progress->observerWasCanceled()) {
 				temp.remove();
@@ -438,6 +447,9 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 	QMap<Field *, QMap<QString, FsHeader> > oldFields;
 
 	for (Field *field: fields) {
+		if (! field->isPc()) {
+			continue;
+		}
 		QCoreApplication::processEvents();
 
 		if (progress->observerWasCanceled()) {
