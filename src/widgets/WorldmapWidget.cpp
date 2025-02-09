@@ -16,9 +16,10 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "WorldmapWidget.h"
+#include "Field.h"
 
 WorldmapWidget::WorldmapWidget(QWidget *parent) :
-      PageWidget(parent), _map(nullptr)
+      PageWidget(parent)
 {
 }
 
@@ -78,11 +79,11 @@ void WorldmapWidget::fill()
 	if (!isBuilded())	build();
 	if (isFilled())		clear();
 	
-	if (_map == nullptr) {
+	if (!data()->hasWorldmapFile()) {
 		return;
 	}
 
-	_scene->setMap(_map);
+	_scene->setMap(data()->getWorldmapFile());
 	_scene->setZTrans(-0.714249f);
 	_scene->setFocus();
 	

@@ -17,6 +17,7 @@
  ****************************************************************************/
 #include "widgets/MsdWidget.h"
 #include "Data.h"
+#include "Field.h"
 
 MsdWidget::MsdWidget(QWidget *parent)
 	: PageWidget(parent)
@@ -504,7 +505,7 @@ void MsdWidget::changeYCoord(int y)
 
 void MsdWidget::insertTag(QAction *action)
 {
-	if (sender() != action->parentWidget())	return;// toolBar/Menu signals hack
+	if (sender() != action->parent())	return;// toolBar/Menu signals hack
 	textEdit->insertPlainText(action->data().toString());
 	textEdit->setFocus();
 }

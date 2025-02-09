@@ -19,6 +19,7 @@
 #include "MainWindow.h"
 #include "FieldArchive.h"
 #include "Config.h"
+#include "Field.h"
 
 SearchAll::SearchAll(QWidget *parent) :
     QDialog(parent, Qt::Tool), _fieldArchive(nullptr)
@@ -146,7 +147,7 @@ QTreeWidgetItem *SearchAll::createItemOpcode(int mapID, int groupID, int methodI
 	if(_fieldArchive) {
 		Field *f = _fieldArchive->getField(mapID);
 		if (f) {
-			const JsmScripts &s =  f->getJsmFile()->getScripts();
+			const JsmScripts &s = f->getJsmFile()->getScripts();
 			const QString &groupName = s.group(groupID).name();
 			const QString &scriptName = s.script(groupID, methodID).name();
 			item->setText(0, groupName.isEmpty() ? QString("%1").arg(groupID, 3) : QString("%1 : %2").arg(groupID, 3).arg(groupName));

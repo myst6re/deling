@@ -2036,7 +2036,7 @@ List of available commands:
         <source>Oui</source>
         <oldsource>oui</oldsource>
         <translatorcomment>Yes</translatorcomment>
-        <translation>はい</translation>
+        <translation type="vanished">はい</translation>
     </message>
     <message>
         <source>Non</source>
@@ -2432,17 +2432,17 @@ List of available commands:
     <message>
         <source>Oui</source>
         <translatorcomment>Yes</translatorcomment>
-        <translation>はい</translation>
+        <translation type="vanished">はい</translation>
     </message>
     <message>
         <source>Non</source>
         <translatorcomment>No</translatorcomment>
-        <translation>いいえ</translation>
+        <translation type="vanished">いいえ</translation>
     </message>
     <message>
         <source>Annuler</source>
         <translatorcomment>Cancel</translatorcomment>
-        <translation>キャンセル</translation>
+        <translation type="vanished">キャンセル</translation>
     </message>
     <message>
         <source>Import/Export</source>
@@ -2527,7 +2527,7 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     <message>
         <source>Lancer l&apos;optimisation !</source>
         <translatorcomment>Start optimizing!</translatorcomment>
-        <translation>最適化を開始！</translation>
+        <translation type="vanished">最適化を開始！</translation>
     </message>
     <message>
         <source>Optimisation...</source>
@@ -2599,6 +2599,10 @@ Error message:
     <message>
         <source>Fichiers FF8 field script (*.jsm)</source>
         <translation type="unfinished">FF8 field script files (*.jsm)</translation>
+    </message>
+    <message>
+        <source>mappemonde</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3202,27 +3206,59 @@ Error message:
     </message>
     <message>
         <source>Impossible de lire la mappemonde (1).</source>
-        <translation type="unfinished">Unable to read the worldmap (1).</translation>
+        <translation type="obsolete">Unable to read the worldmap (1).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (2).</source>
-        <translation type="unfinished">Unable to read the worldmap (2).</translation>
+        <translation type="obsolete">Unable to read the worldmap (2).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (3).</source>
-        <translation type="unfinished">Unable to read the worldmap (3).</translation>
+        <translation type="obsolete">Unable to read the worldmap (3).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (4).</source>
-        <translation type="unfinished">Unable to read the worldmap (4).</translation>
+        <translation type="obsolete">Unable to read the worldmap (4).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (5).</source>
-        <translation type="unfinished">Unable to read the worldmap (5).</translation>
+        <translation type="obsolete">Unable to read the worldmap (5).</translation>
     </message>
     <message>
         <source>Impossible de lire la mappemonde (6).</source>
-        <translation type="unfinished">Unable to read the worldmap (6).</translation>
+        <translation type="obsolete">Unable to read the worldmap (6).</translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (readSegments).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (readEncounterRegions).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (readEncounters).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (readSpecialTextures).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (readRoadTextures).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (readDrawPoints).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (readTexts).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (readTextures).</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

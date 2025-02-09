@@ -18,8 +18,8 @@
 #include "files/MsdFile.h"
 #include "Data.h"
 
-MsdFile::MsdFile() :
-	File()
+MsdFile::MsdFile(bool paddedFormat) :
+	File(), _paddedFormat(paddedFormat)
 {
 }
 
@@ -32,11 +32,13 @@ bool MsdFile::open(const QByteArray &msd)
 
 	modified = false;
 
-	if (dataSize==0)	return true;
+	if (dataSize == 0) {
+		return true;
+	}
 
 	memcpy(&textPos, msd_data, 4);
 
-	if (textPos%4 != 0) {
+	if (textPos % 4 != 0) {
 		lastError = QObject::tr("Format de fichier invalide");
 		return false;
 	}
@@ -45,17 +47,22 @@ bool MsdFile::open(const QByteArray &msd)
 	needEndOfString.reserve(nbText);
 	texts.reserve(nbText);
 	for (int i = 1; i < nbText; ++i) {
-		memcpy(&nextTextPos, &msd_data[i*4], 4);
-		if (nextTextPos>=dataSize || nextTextPos<textPos) {
+		memcpy(&nextTextPos, &msd_data[i * 4], 4);
+		if (_paddedFormat && nextTextPos == 0) {
+			continue;
+		}
+		if (nextTextPos >= dataSize || nextTextPos < textPos) {
 			lastError = QObject::tr("Format de fichier invalide");
 			return false;
 		}
-		texts.append(QByteArray(&msd_data[textPos], nextTextPos-textPos));
-		needEndOfString.append(nextTextPos-textPos > 0 && msd_data[nextTextPos-1] == '\x00');
+		bool needEOS = nextTextPos - textPos > 0 && msd_data[nextTextPos - 1] == '\x00';
+		texts.append(QByteArray(&msd_data[textPos], (nextTextPos - textPos) - (needEOS ? 1 : 0)));
+		needEndOfString.append(needEOS);
 		textPos = nextTextPos;
 	}
-	texts.append(QByteArray(&msd_data[textPos], dataSize-textPos));
-	needEndOfString.append(dataSize-textPos > 0 && msd_data[dataSize-1] == '\x00');
+	bool needEOS = dataSize-textPos > 0 && msd_data[dataSize - 1] == '\x00';
+	texts.append(QByteArray(&msd_data[textPos], (dataSize - textPos) - (needEOS ? 1 : 0)));
+	needEndOfString.append(needEOS);
 
 	return true;
 }
@@ -64,14 +71,33 @@ bool MsdFile::save(QByteArray &msd)
 {
 	QByteArray msd_data;
 	int headerSize = nbText()*4, pos, i=0;
+	
+	if (_paddedFormat) {
+		headerSize += 4;
+	}
 
 	for (const QByteArray &text: texts) {
 		pos = headerSize + msd_data.size();
 		msd.append((char *)&pos, 4);
-		msd_data.append(text);
-		if (!text.isEmpty() || needEndOfString.at(i++)) {
-			msd_data.append('\x00');
+		if (_paddedFormat) {
+			QByteArray timmedText = FF8Text(text).toFF8();
+			msd_data.append(timmedText);
+			if (timmedText.size() % 4 != 0) {
+				// Padding
+				msd_data.append(4 - timmedText.size() % 4, '\0');
+			}
+		} else {
+			msd_data.append(text);
 		}
+		
+		if (!_paddedFormat && (!text.isEmpty() || needEndOfString.at(i++))) {
+			msd_data.append('\0');
+		}
+	}
+
+	if (_paddedFormat) {
+		msd.append(4, '\0');
+		msd_data.append(4, '\0');
 	}
 
 	msd.append(msd_data);

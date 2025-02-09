@@ -16,6 +16,9 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "Field.h"
+#include "game/worldmap/Map.h"
+
+Map *Field::worldmapFile = nullptr;
 
 Field::Field(const QString &name)
 	: _isOpen(false), _name(name)
@@ -173,7 +176,7 @@ bool Field::hasFile(FileType fileType) const
 
 bool Field::hasMsdFile() const
 {
-	return hasFile(Msd);
+	return hasFile(Msd) || hasWorldmapFile();
 }
 
 bool Field::hasJsmFile() const
@@ -251,6 +254,11 @@ bool Field::hasAkaoListFile() const
 	return hasFile(AkaoList);
 }
 
+bool Field::hasWorldmapFile() const
+{
+	return worldmapFile != nullptr;
+}
+
 bool Field::hasFiles() const
 {
 	for (int i = 0; i < files.size(); ++i) {
@@ -274,7 +282,17 @@ File *Field::getFile(FileType fileType) const
 
 MsdFile *Field::getMsdFile() const
 {
-	return (MsdFile *)getFile(Msd);
+	MsdFile *ret = (MsdFile *)getFile(Msd);
+	
+	if (ret != nullptr) {
+		return ret;
+	}
+	
+	if (hasWorldmapFile()) {
+		return worldmapFile->textsPtr();
+	}
+	
+	return nullptr;
 }
 
 JsmFile *Field::getJsmFile() const
@@ -350,6 +368,16 @@ SfxFile *Field::getSfxFile() const
 AkaoListFile *Field::getAkaoListFile() const
 {
 	return (AkaoListFile *)getFile(AkaoList);
+}
+
+Map *Field::getWorldmapFile() const
+{
+	return worldmapFile;
+}
+
+void Field::setWorldmapFile(Map *mapFile)
+{
+	worldmapFile = mapFile;
 }
 
 void Field::addMsdFile()

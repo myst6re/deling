@@ -373,6 +373,34 @@ bool WmsetFile::readRoadTextures(Map &map)
 	return true;
 }
 
+bool WmsetFile::readTexts(Map &map)
+{
+	if ((_toc.isEmpty() && !openToc()) || _toc.size() < 39) {
+		return false;
+	}
+	
+	const quint32 sizeSection14 = _toc.at(14) - _toc.at(13);
+	
+	if (!_io->seek(_toc.at(13))) {
+		return false;
+	}
+	
+	QByteArray data = _io->read(sizeSection14);
+	
+	if (data.size() != sizeSection14) {
+		return false;
+	}
+	
+	MsdFile msd(true);
+	if (!msd.open(data)) {
+		return false;
+	}
+	
+	map.setTexts(msd);
+	
+	return true;
+}
+
 bool WmsetFile::openToc()
 {
 	_io->reset();

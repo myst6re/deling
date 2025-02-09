@@ -19,7 +19,7 @@
 
 #include <QtWidgets>
 #include "widgets/PageWidget.h"
-#include "WalkmeshGLWidget.h"
+#include "3d/WalkmeshGLWidget.h"
 #include "VertexWidget.h"
 #include "OrientationWidget.h"
 #include "HexLineEdit.h"

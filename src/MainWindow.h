@@ -18,18 +18,20 @@
 #pragma once
 
 #include <QtWidgets>
-#include "Search.h"
-#include "SearchAll.h"
-#include "BGPreview.h"
-#include "widgets/PageWidget.h"
-#include "VarManager.h"
-#include "MiscSearch.h"
-#include "FsDialog.h"
 
 class FieldArchive;
 class FieldThread;
 class FieldPC;
 class Field;
+class MsdFile;
+class JsmFile;
+class PageWidget;
+class Search;
+class SearchAll;
+class BGPreview;
+class VarManager;
+class MiscSearch;
+class FsDialog;
 
 class MainWindow : public QMainWindow
 {

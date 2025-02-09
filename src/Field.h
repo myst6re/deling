@@ -37,6 +37,8 @@
 
 #define FILE_COUNT		15
 
+class Map;
+
 class Field
 {
 public:
@@ -79,6 +81,7 @@ public:
 	bool hasMskFile() const;
 	bool hasSfxFile() const;
 	bool hasAkaoListFile() const;
+	bool hasWorldmapFile() const;
 
 	bool hasFiles2() const;
 	bool hasFiles() const;
@@ -100,6 +103,8 @@ public:
 	MskFile *getMskFile() const;
 	SfxFile *getSfxFile() const;
 	AkaoListFile *getAkaoListFile() const;
+	Map *getWorldmapFile() const;
+	void setWorldmapFile(Map *mapFile);
 
 	void addMsdFile();
 	void addJsmFile();
@@ -126,6 +131,7 @@ private:
 	bool _isOpen;
 	QString _name;
 	static CharaFile *charaFile;
+	static Map *worldmapFile;
 
 	QList<File *> files;
 };

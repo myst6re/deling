@@ -24,6 +24,7 @@
 #include "ScriptExporter.h"
 #include "EncounterExporter.h"
 #include "BackgroundExporter.h"
+#include "widgets/PageWidget.h"
 #include "widgets/MsdWidget.h"
 #include "widgets/JsmWidget.h"
 #include "widgets/CharaWidget.h"
@@ -42,6 +43,12 @@
 #include "ConfigDialog.h"
 #include "FieldThread.h"
 #include "FF8Image.h"
+#include "Search.h"
+#include "SearchAll.h"
+#include "BGPreview.h"
+#include "VarManager.h"
+#include "MiscSearch.h"
+#include "FsDialog.h"
 
 MainWindow::MainWindow()
     : fieldArchive(nullptr), field(nullptr), currentField(nullptr),
@@ -62,15 +69,15 @@ MainWindow::MainWindow()
 	/* Menu 'Fichier' */
 	QMenu *menu = menuBar->addMenu(tr("&Fichier"));
 
-	QAction *actionOpen = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogOpenButton), tr("&Ouvrir..."), this, SLOT(openFile()), QKeySequence::Open);
+	QAction *actionOpen = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogOpenButton), tr("&Ouvrir..."), QKeySequence::Open, this, SLOT(openFile()));
 	_recentMenu = new QMenu(tr("Fichiers &récents"), this);
 	fillRecentMenu();
 	connect(_recentMenu, SIGNAL(triggered(QAction*)), SLOT(openRecentFile(QAction*)));
 	menu->addMenu(_recentMenu);
 	actionGameLang = menu->addAction(tr("Changer la langue du jeu"));
 	actionGameLang->setVisible(false);
-	actionSave = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton), tr("Enregi&strer"), this, SLOT(save()), QKeySequence::Save);
-	actionSaveAs = menu->addAction(tr("Enre&gistrer Sous..."), this, SLOT(saveAs()), QKeySequence::SaveAs);
+	actionSave = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton), tr("Enregi&strer"), QKeySequence::Save, this, SLOT(save()));
+	actionSaveAs = menu->addAction(tr("Enre&gistrer Sous..."), QKeySequence::SaveAs, this, SLOT(saveAs()));
 	actionExport = menu->addAction(tr("Exporter..."), this, SLOT(exportCurrent()));
 	menuExportAll = menu->addMenu(tr("Exporter tout"));
 	menuExportAll->addAction(tr("Textes..."), this, SLOT(exportAllTexts()));
@@ -82,15 +89,15 @@ MainWindow::MainWindow()
 	menuImportAll->addAction(tr("Textes..."), this, SLOT(importAllTexts()));
 	actionOpti = menu->addAction(tr("Optimiser l'archive..."), this, SLOT(optimizeArchive()));
 	menu->addSeparator();
-	menu->addAction(tr("Plein écran"), this, SLOT(fullScreen()), Qt::Key_F11);
+	menu->addAction(tr("Plein écran"), Qt::Key_F11, this, SLOT(fullScreen()));
 	actionClose = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Fe&rmer"), this, SLOT(closeFiles()));
 	menu->addAction(tr("&Quitter"), this, SLOT(close()))->setMenuRole(QAction::QuitRole);
 
 	menu = menuBar->addMenu(tr("&Outils"));
-	actionFind = menu->addAction(QIcon(":/images/find.png"), tr("Rec&hercher..."), this, SLOT(search()), QKeySequence::Find);
+	actionFind = menu->addAction(QIcon(":/images/find.png"), tr("Rec&hercher..."), QKeySequence::Find, this, SLOT(search()));
 	menu->addAction(tr("&Var manager..."), this, SLOT(varManager()));
 	//menu->addAction(tr("&Rechercher tout..."), this, SLOT(miscSearch()));
-	actionRun = menu->addAction(QIcon(":/images/ff8.png"), tr("&Lancer FF8..."), this, SLOT(runFF8()), Qt::Key_F8);
+	actionRun = menu->addAction(QIcon(":/images/ff8.png"), tr("&Lancer FF8..."), Qt::Key_F8, this, SLOT(runFF8()));
 	actionRun->setShortcutContext(Qt::ApplicationShortcut);
 	actionRun->setEnabled(Data::ff8Found());
 	addAction(actionRun);
@@ -368,20 +375,19 @@ bool MainWindow::openFsArchive(const QString &path)
 	FieldArchivePC *fieldArchivePc = new FieldArchivePC();
 	fieldArchive = fieldArchivePc;
 	openArchive(path);
+	actionSaveAs->setEnabled(true);
 
 	if (fieldArchive->nbFields() > 0) {
 		actionOpti->setEnabled(true);
-		actionSaveAs->setEnabled(true);
 		buildGameLangMenu(fieldArchivePc->languages());
 		tabBar->setTabEnabled(WorldMapPage, false);
 	} else if (fieldArchive->getWorldMap() != nullptr) {
-		actionSaveAs->setEnabled(false);
 		tabBar->setTabEnabled(WorldMapPage, true);
-		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(fieldArchive->getWorldMap());
-		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setFocus();
-		((WorldmapWidget *)pageWidgets.at(WorldMapPage))->fill();
+		field = new Field(tr("mappemonde"));
+		field->setWorldmapFile(fieldArchive->getWorldMap());
 		setCurrentPage(WorldMapPage);
 		setReadOnly(true);
+		fillPage();
 	} else {
 		tabBar->setTabEnabled(WorldMapPage, false);
 		field = new FieldPC(path, Config::value("gameLang", "en").toString());
@@ -395,7 +401,6 @@ bool MainWindow::openFsArchive(const QString &path)
 			searchAllDialog->setFieldArchive(nullptr);
 			if (_varManager != nullptr)		_varManager->setFieldArchive(nullptr);
 			list1->setEnabled(false);
-			actionSaveAs->setEnabled(true);
 			lineSearch->setEnabled(false);
 			bgPreview->setEnabled(true);
 			buildGameLangMenu(((FieldPC *)field)->languages());
@@ -404,11 +409,10 @@ bool MainWindow::openFsArchive(const QString &path)
 			delete field;
 			field = nullptr;
 			manageArchive();
-			actionSaveAs->setEnabled(false);
 		}
 	}
 
-	tabBar->setTabEnabled(tabBar->count()-1, true);
+	tabBar->setTabEnabled(tabBar->count() - 1, true);
 
 	return true;
 }
@@ -604,9 +608,11 @@ int MainWindow::closeFiles(bool quit)
 
 	if (actionSave->isEnabled() && (fieldArchive != nullptr || field != nullptr))
 	{
-		int reponse = QMessageBox::warning(this, tr("Sauvegarder"), tr("Voulez-vous enregistrer les changements de %1 ?").arg(savePath()), tr("Oui"), tr("Non"), tr("Annuler"));
-		if (reponse == 0)				save();
-		if (quit || reponse == 2)	return reponse;
+		QMessageBox::StandardButton reponse = QMessageBox::warning(this, tr("Sauvegarder"),
+		                                   tr("Voulez-vous enregistrer les changements de %1 ?").arg(savePath()),
+		                                   QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+		if (reponse == QMessageBox::Yes)				save();
+		if (quit || reponse == QMessageBox::Cancel)	return reponse;
 	}
 
 	if (quit)	return 0;
@@ -633,7 +639,6 @@ int MainWindow::closeFiles(bool quit)
 	((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(nullptr);
 	((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(nullptr);
 	((JsmWidget *)pageWidgets.at(ScriptPage))->setFieldArchive(fieldArchive);
-	((WorldmapWidget *)pageWidgets.at(WorldMapPage))->setMap(nullptr);
 	currentPath->setText(QString());
 	setReadOnly(true);
 
@@ -1051,10 +1056,10 @@ void MainWindow::importCurrent()
 
 void MainWindow::optimizeArchive()
 {
-	int reponse = QMessageBox::information(this, tr("À propos de l'optimisation"),
+	QMessageBox::StandardButton reponse = QMessageBox::information(this, tr("À propos de l'optimisation"),
 							 tr("L'optimiseur d'archive va modifier l'ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.\nIl est vivement conseillé de sauvegarder l'archive (fs, fi et fl) avant de continuer."),
-							 tr("Lancer l'optimisation !"), tr("Annuler"));
-	if (reponse!=0)	return;
+							 QMessageBox::Apply | QMessageBox::Cancel);
+	if (reponse != QMessageBox::Apply)	return;
 
 	ProgressWidget progress(tr("Optimisation..."), ProgressWidget::Cancel, this);
 

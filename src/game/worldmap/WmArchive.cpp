@@ -48,7 +48,7 @@ int WmArchive::open(FsArchive *fsArchive, Map &map, ArchiveObserver *progress)
 	wmx.setDevice(&wmxBuffer);
 
 	if(!wmx.readSegments(map, 768)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (1).");
+		_errorString = QObject::tr("Impossible de lire la mappemonde (readSegments).");
 		return 2;
 	}
 
@@ -64,28 +64,33 @@ int WmArchive::open(FsArchive *fsArchive, Map &map, ArchiveObserver *progress)
 	wmset.setDevice(&wmsetBuffer);
 
 	if (!wmset.readEncounterRegions(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (2).");
+		_errorString = QObject::tr("Impossible de lire la mappemonde (readEncounterRegions).");
 		return 3;
 	}
 
 	if (!wmset.readEncounters(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (3).");
+		_errorString = QObject::tr("Impossible de lire la mappemonde (readEncounters).");
 		return 4;
 	}
 
 	if (!wmset.readSpecialTextures(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (4).");
+		_errorString = QObject::tr("Impossible de lire la mappemonde (readSpecialTextures).");
 		return 5;
 	}
 
 	if (!wmset.readRoadTextures(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (4).");
+		_errorString = QObject::tr("Impossible de lire la mappemonde (readRoadTextures).");
 		return 6;
 	}
 
 	if (!wmset.readDrawPoints(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (5).");
+		_errorString = QObject::tr("Impossible de lire la mappemonde (readDrawPoints).");
 		return 7;
+	}
+	
+	if (!wmset.readTexts(map)) {
+		_errorString = QObject::tr("Impossible de lire la mappemonde (readTexts).");
+		return 8;
 	}
 
 	wmsetData.clear();
@@ -100,8 +105,8 @@ int WmArchive::open(FsArchive *fsArchive, Map &map, ArchiveObserver *progress)
 	texl.setDevice(&texlBuffer);
 
 	if (!texl.readTextures(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (6).");
-		return 8;
+		_errorString = QObject::tr("Impossible de lire la mappemonde (readTextures).");
+		return 9;
 	}
 
 	if (progress) {

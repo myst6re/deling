@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "TdwWidget.h"
+#include "Field.h"
 
 TdwWidget::TdwWidget(QWidget *parent) :
 	PageWidget(parent)

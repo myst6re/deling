@@ -18,7 +18,7 @@
 #pragma once
 
 #include <QtWidgets>
-#include "widgets/WorldmapGLWidget.h"
+#include "3d/WorldmapGLWidget.h"
 #include "widgets/PageWidget.h"
 
 class WorldmapWidget : public PageWidget
@@ -26,12 +26,6 @@ class WorldmapWidget : public PageWidget
 	Q_OBJECT
 public:
 	explicit WorldmapWidget(QWidget *parent = nullptr);
-	inline void setMap(Map *map) {
-		_map = map;
-	}
-	inline const Map *map() const {
-		return _map;
-	}
 	inline WorldmapGLWidget *scene() const {
 		return _scene;
 	}
@@ -46,6 +40,5 @@ private slots:
 private:
 	void build() override;
 	WorldmapGLWidget *_scene;
-	Map *_map;
 	QSlider *_xRotSlider, *_yRotSlider, *_zRotSlider;
 };

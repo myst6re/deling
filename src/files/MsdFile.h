@@ -23,7 +23,7 @@
 class MsdFile : public File
 {
 public:
-	MsdFile();
+	MsdFile(bool paddedFormat = false);
 	bool open(const QByteArray &msd);
 	bool save(QByteArray &msd);
 	inline QString filterText() const {
@@ -47,4 +47,5 @@ public:
 private:
 	QList<QByteArray> texts;
 	QList<bool> needEndOfString;
+	bool _paddedFormat;
 };

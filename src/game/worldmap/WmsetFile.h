@@ -39,6 +39,7 @@ public:
 	bool readDrawPoints(Map &map);
 	bool readSpecialTextures(Map &map);
 	bool readRoadTextures(Map &map);
+	bool readTexts(Map &map);
 private:
 	bool extract(quint32 offset, quint32 size, const QString &fileName);
 	bool openToc();

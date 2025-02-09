@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "widgets/MiscWidget.h"
+#include "Field.h"
 
 MiscWidget::MiscWidget(QWidget *parent)
 	: PageWidget(parent)

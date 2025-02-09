@@ -2020,7 +2020,7 @@ Dollet Harbor</translation>
     <message>
         <source>Oui</source>
         <oldsource>oui</oldsource>
-        <translation>Да</translation>
+        <translation type="vanished">Да</translation>
     </message>
     <message>
         <source>Non</source>
@@ -2358,15 +2358,15 @@ Dollet Harbor</translation>
     </message>
     <message>
         <source>Oui</source>
-        <translation>Да</translation>
+        <translation type="vanished">Да</translation>
     </message>
     <message>
         <source>Non</source>
-        <translation>Нет</translation>
+        <translation type="vanished">Нет</translation>
     </message>
     <message>
         <source>Annuler</source>
-        <translation>Отмена</translation>
+        <translation type="vanished">Отмена</translation>
     </message>
     <message>
         <source>Import/Export</source>
@@ -2440,7 +2440,7 @@ Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de
     </message>
     <message>
         <source>Lancer l&apos;optimisation !</source>
-        <translation>Начнало оптимизимизации !</translation>
+        <translation type="vanished">Начнало оптимизимизации !</translation>
     </message>
     <message>
         <source>Optimisation...</source>
@@ -2503,6 +2503,10 @@ Message d&apos;erreur :
     </message>
     <message>
         <source>Import...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mappemonde</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3035,27 +3039,35 @@ Message d&apos;erreur :
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (1).</source>
+        <source>Impossible de lire la mappemonde (readSegments).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (2).</source>
+        <source>Impossible de lire la mappemonde (readEncounterRegions).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (3).</source>
+        <source>Impossible de lire la mappemonde (readEncounters).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (4).</source>
+        <source>Impossible de lire la mappemonde (readSpecialTextures).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (5).</source>
+        <source>Impossible de lire la mappemonde (readRoadTextures).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (6).</source>
+        <source>Impossible de lire la mappemonde (readDrawPoints).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (readTexts).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Impossible de lire la mappemonde (readTextures).</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

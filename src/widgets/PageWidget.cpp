@@ -16,6 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "widgets/PageWidget.h"
+#include "Field.h"
+#include "game/worldmap/Map.h"
 
 PageWidget::PageWidget(QWidget *parent) :
 	QWidget(parent), builded(false), filled(false), readOnly(false), _field(nullptr)

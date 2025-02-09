@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "widgets/BackgroundWidget.h"
+#include "Field.h"
 
 BackgroundWidget::BackgroundWidget(QWidget *parent)
 	: PageWidget(parent)

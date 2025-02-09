@@ -21,6 +21,7 @@
 #include "game/worldmap/MapSegment.h"
 #include "game/worldmap/WmEncounter.h"
 #include "files/TimFile.h"
+#include "files/MsdFile.h"
 
 struct DrawPoint {
 	quint8 x, y;
@@ -141,6 +142,18 @@ public:
 	inline void setDrawPoints(const QList<DrawPoint> &drawPoints) {
 		_drawPoints = drawPoints;
 	}
+	
+	inline const MsdFile &texts() const {
+		return _texts;
+	}
+	
+	inline MsdFile *textsPtr() {
+		return &_texts;
+	}
+
+	inline void setTexts(const MsdFile &texts) {
+		_texts = texts;
+	}
 
 	QList<QList<QPair<QImage, bool> > > textureImages() const;
 	QImage specialTextureImage(SpecialTextureName name) const;
@@ -169,4 +182,5 @@ private:
 	QMap<SpecialTextureName, TimFile> _specialTextures;
 	QList<TimFile> _roadTextures;
 	QList<DrawPoint> _drawPoints;
+	MsdFile _texts;
 };

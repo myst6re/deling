@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "CharaWidget.h"
+#include "Field.h"
 
 CharaWidget::CharaWidget(QWidget *parent)
 	: PageWidget(parent), _mainModels(nullptr)

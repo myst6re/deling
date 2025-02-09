@@ -560,7 +560,7 @@ void FsDialog::add(QStringList sources, bool fromDir)
 	QStringList errorOut;
 	for (i = 0; i < errors.size() && errorOut.size() < 20; ++i) {
 		if (errors.at(i) == FsArchive::FileExists) {
-			if (QMessageBox::question(this, tr("Le fichier existe déjà"), tr("Le fichier existe déjà, voulez-vous le remplacer ?"), tr("Oui"), tr("Non")) == 0) {
+			if (QMessageBox::question(this, tr("Le fichier existe déjà"), tr("Le fichier existe déjà, voulez-vous le remplacer ?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
 				replace(sources.at(i), destinations.at(i));
 				continue;
 			}
@@ -598,7 +598,7 @@ void FsDialog::remove(QStringList destinations)
 		if (destinations.isEmpty())	return;
 	}
 
-	if (QMessageBox::question(this, tr("Supprimer"), tr("Voulez-vous supprimer les éléments sélectionnés ?"), tr("Oui"), tr("Non")) != 0)
+	if (QMessageBox::question(this, tr("Supprimer"), tr("Voulez-vous supprimer les éléments sélectionnés ?"), QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes)
 		return;
 
 	ProgressWidget progress(tr("Suppression..."), ProgressWidget::Cancel, this);

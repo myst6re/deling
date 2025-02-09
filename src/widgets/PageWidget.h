@@ -18,7 +18,9 @@
 #pragma once
 
 #include <QtWidgets>
-#include "Field.h"
+
+class Field;
+class Map;
 
 class PageWidget : public QWidget
 {
