@@ -17,28 +17,30 @@
  ****************************************************************************/
 #pragma once
 
-#include <QtWidgets>
-#include "3d/WorldmapGLWidget.h"
-#include "widgets/PageWidget.h"
+#include <QtCore>
 
-class WorldmapWidget : public PageWidget
+struct BattleModelBone
 {
-	Q_OBJECT
+	quint16 parent;
+	qint16 size;
+};
+
+class BattleModelSkeleton
+{
 public:
-	explicit WorldmapWidget(QWidget *parent = nullptr);
-	inline WorldmapGLWidget *scene() const {
-		return _scene;
+	BattleModelSkeleton();
+	inline void setScale(qint16 x, qint16 y, quint16 z) {
+		_scaleX = x;
+		_scaleY = y;
+		_scaleZ = z;
 	}
-	void fill() override;
-	inline QString tabName() const override { return tr("Worldmap"); }
-	void clear() override;
-private slots:
-	void setXRot(int value);
-	void setYRot(int value);
-	void setZRot(int value);
-	void resetCamera();
+	inline void setBones(const QList<BattleModelBone> &bones) {
+		_bones = bones;
+	}
 private:
-	void build() override;
-	WorldmapGLWidget *_scene;
-	QSlider *_xRotSlider, *_yRotSlider, *_zRotSlider;
+	bool openToc();
+	
+	qint16 _scaleX, _scaleY;
+	quint16 _scaleZ;
+	QList<BattleModelBone> _bones;
 };

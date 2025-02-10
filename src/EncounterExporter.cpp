@@ -56,7 +56,7 @@ bool EncounterExporter::toDir(const QDir &dir, ArchiveObserver *observer)
 			QString fieldName = f->name();
 
 			if (fieldName.isEmpty()) {
-				fieldName = QObject::tr("sans-nom");
+				fieldName = QObject::tr("Unamed");
 			}
 
 			QFile file(dir.filePath(fieldName + ".txt"));

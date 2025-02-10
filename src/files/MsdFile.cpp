@@ -39,7 +39,7 @@ bool MsdFile::open(const QByteArray &msd)
 	memcpy(&textPos, msd_data, 4);
 
 	if (textPos % 4 != 0) {
-		lastError = QObject::tr("Format de fichier invalide");
+		lastError = QObject::tr("Invalid file format");
 		return false;
 	}
 
@@ -52,7 +52,7 @@ bool MsdFile::open(const QByteArray &msd)
 			continue;
 		}
 		if (nextTextPos >= dataSize || nextTextPos < textPos) {
-			lastError = QObject::tr("Format de fichier invalide");
+			lastError = QObject::tr("Invalid file format");
 			return false;
 		}
 		bool needEOS = nextTextPos - textPos > 0 && msd_data[nextTextPos - 1] == '\x00';

@@ -23,7 +23,7 @@
 MiscSearch::MiscSearch(FieldArchive *fieldArchive, QWidget *parent)
 	: QDialog(parent, Qt::Tool), fieldArchive(fieldArchive)
 {
-	setWindowTitle(tr("Rechercher tout"));
+	setWindowTitle(tr("Find All"));
 	setWindowModality(Qt::NonModal);
 	setSizeGripEnabled(true);
 

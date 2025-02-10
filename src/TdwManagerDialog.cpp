@@ -22,12 +22,12 @@
 TdwManagerDialog::TdwManagerDialog(QWidget *parent) :
 	QDialog(parent, Qt::Dialog | Qt::WindowCloseButtonHint)
 {
-	setWindowTitle(tr("Gestionnaire de police"));
+	setWindowTitle(tr("Font manager"));
 	setSizeGripEnabled(true);
 
     ListWidget *listWidget = new ListWidget(this);
-    plusAction = listWidget->addAction(ListWidget::Add, tr("Copier"), this, SLOT(addFont()));
-    minusAction = listWidget->addAction(ListWidget::Rem, tr("Effacer"), this, SLOT(removeFont()));
+    plusAction = listWidget->addAction(ListWidget::Add, tr("Copy"), this, SLOT(addFont()));
+    minusAction = listWidget->addAction(ListWidget::Rem, tr("Remove"), this, SLOT(removeFont()));
     toolbar1 = listWidget->toolBar();
     list1 = listWidget->listWidget();
 
@@ -51,7 +51,7 @@ void TdwManagerDialog::fillList1()
 		QListWidgetItem *item;
 
 		if (fontName == "00" || fontName == "01") {
-			item = new QListWidgetItem(fontName == "00" ? tr("Latin") : tr("Japonais"));
+			item = new QListWidgetItem(fontName == "00" ? tr("Latin") : tr("Japanese"));
 			item->setData(Qt::UserRole, fontName);
 			list1->addItem(item);
 		} else {
@@ -115,8 +115,8 @@ bool TdwManagerDialog::newNameDialog(QString &name, QString &nameId)
 	ok->setDefault(true);
 
 	QFormLayout *formLayout = new QFormLayout;
-	formLayout->addRow(tr("Nom &affiché :"), nameEdit);
-	formLayout->addRow(tr("Nom du &fichier :"), fileNameEdit);
+	formLayout->addRow(tr("N&ame displayed:"), nameEdit);
+	formLayout->addRow(tr("&File name:"), fileNameEdit);
 
 	QVBoxLayout *layout = new QVBoxLayout(&dialog);
 	layout->addLayout(formLayout, 1);
@@ -132,7 +132,7 @@ bool TdwManagerDialog::newNameDialog(QString &name, QString &nameId)
 		if (name1.isEmpty() || name2.isEmpty()
 				|| fontList.contains(name1)
 				|| QFile::exists(FF8Font::fontDirPath()+"/"+name2)) {
-			QMessageBox::warning(this, tr("Choisissez un autre nom"), tr("Ce nom existe déjà ou est invalide, veuillez en choisir un autre."));
+			QMessageBox::warning(this, tr("Choose another name"), tr("That name already exists or is invalid, please choose another."));
 			return false;
 		}
 
@@ -148,7 +148,7 @@ void TdwManagerDialog::removeFont()
 	QList<QListWidgetItem *> items = list1->selectedItems();
 	if (items.isEmpty())		return;
 
-	if (QMessageBox::Yes != QMessageBox::question(this, tr("Supprimer une police"), tr("Voulez-vous vraiment supprimer la police sélectionnée ?"), QMessageBox::Yes | QMessageBox::Cancel)) {
+	if (QMessageBox::Yes != QMessageBox::question(this, tr("Remove a font"), tr("Do you really want to delete the selected font?"), QMessageBox::Yes | QMessageBox::Cancel)) {
 		return;
 	}
 

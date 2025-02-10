@@ -50,7 +50,7 @@ void BackgroundWidget::build()
 	layersWidget = new QListWidget(page1);
 	layersWidget->setFixedWidth(150);
 
-	hideBack = new QCheckBox(tr("Cacher background"), page1);
+	hideBack = new QCheckBox(tr("Hide background"), page1);
 	hideBack->setChecked(false);
 
 	QVBoxLayout *layout1 = new QVBoxLayout(page1);
@@ -101,13 +101,13 @@ void BackgroundWidget::build()
 	layout2->addRow(tr("Source Y"), tileSrcY);
 	layout2->addRow(tr("Texture"), tileTexID);
 	layout2->addRow(tr("Palette"), tilePalID);
-	layout2->addRow(tr("Transparence"), tileBlend);
-	layout2->addRow(tr("Dessiner"), tileDraw);
-	layout2->addRow(tr("Type transparence"), tileBlendType);
-	layout2->addRow(tr("Type couleur"), tileDepth);
-	layout2->addRow(tr("Couche"), tileLayerID);
-	layout2->addRow(tr("Paramètre"), tileParameter);
-	layout2->addRow(tr("État"), tileState);
+	layout2->addRow(tr("Alpha"), tileBlend);
+	layout2->addRow(tr("Draw"), tileDraw);
+	layout2->addRow(tr("Alpha Type"), tileBlendType);
+	layout2->addRow(tr("Color Type"), tileDepth);
+	layout2->addRow(tr("Layer"), tileLayerID);
+	layout2->addRow(tr("Parameter"), tileParameter);
+	layout2->addRow(tr("State"), tileState);
 	layout2->setContentsMargins(QMargins());
 
 	stackedLayout = new QStackedLayout;
@@ -115,8 +115,8 @@ void BackgroundWidget::build()
 	stackedLayout->addWidget(page2);
 
 	QTabBar *tabBar = new QTabBar(this);
-	tabBar->addTab(tr("Paramètres"));
-	tabBar->addTab(tr("Tuiles"));
+	tabBar->addTab(tr("Parameters"));
+	tabBar->addTab(tr("Tiles"));
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(scrollArea, 0, 0, 2, 1);
@@ -214,7 +214,7 @@ void BackgroundWidget::parameterChanged(int index)
 	statesWidget->clear();
 	for (quint8 state: states)
 	{
-		item = new QListWidgetItem(tr("État %1").arg(state));
+		item = new QListWidgetItem(tr("State %1").arg(state));
 		item->setData(Qt::UserRole, state);
 		item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
 		item->setCheckState(data()->getBackgroundFile()->params.contains(parameter, state) ? Qt::Checked : Qt::Unchecked);
@@ -607,7 +607,7 @@ void BackgroundWidget::fill()
 	parametersWidget->clear();
 	QList<quint8> parameters = bgFile->allparams.uniqueKeys();
 	for (quint8 parameter: parameters)
-		parametersWidget->addItem(tr("Paramètre %1").arg(parameter), parameter);
+		parametersWidget->addItem(tr("Parameter %1").arg(parameter), parameter);
 
 	QList<quint8> layerIDs = bgFile->layers.keys();
 	QListWidgetItem *item;
@@ -615,7 +615,7 @@ void BackgroundWidget::fill()
 	layersWidget->clear();
 	for (quint8 layerID: layerIDs)
 	{
-		item = new QListWidgetItem(tr("Couche %1").arg(layerID));
+		item = new QListWidgetItem(tr("Layer %1").arg(layerID));
 		item->setData(Qt::UserRole, layerID);
 		item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
 		item->setCheckState(bgFile->layers.value(layerID, false) ? Qt::Checked : Qt::Unchecked);

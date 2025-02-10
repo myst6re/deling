@@ -27,22 +27,22 @@ void MiscWidget::build()
 {
 	if (isBuilded())	return;
 
-	QLabel *nameLbl = new QLabel(tr("Nom :"), this);
+	QLabel *nameLbl = new QLabel(tr("Name:"), this);
 	nameEdit = new QLineEdit(this);
     nameEdit->setMaxLength(8);
-	QLabel *pmpLbl = new QLabel(tr("PMP :"), this);
+	QLabel *pmpLbl = new QLabel(tr("PMP:"), this);
 	pmpEdit = new QLineEdit(this);
-	QLabel *pmdLbl = new QLabel(tr("PMD :"), this);
+	QLabel *pmdLbl = new QLabel(tr("PMD:"), this);
 	pmdEdit = new QLineEdit(this);
-	QLabel *pvpLbl = new QLabel(tr("PVP (1) :"), this);
+	QLabel *pvpLbl = new QLabel(tr("PVP (1):"), this);
 	pvpEdit = new QDoubleSpinBox(this);
 	pvpEdit->setDecimals(0);
 	pvpEdit->setRange(0, (quint32)-1);
-	QLabel *pvpLbl2 = new QLabel(tr("PVP (2) :"), this);
+	QLabel *pvpLbl2 = new QLabel(tr("PVP (2):"), this);
 	pvpEdit2 = new QSpinBox(this);
 	pvpEdit2->setRange(0, (quint16)-1);
 
-	pmpGroup = new QGroupBox(tr("PMP : données particules"), this);
+	pmpGroup = new QGroupBox(tr("PMP: particles data"), this);
 	pmpView = new QLabel(pmpGroup);
 	pmpPaletteView = new QLabel(pmpGroup);
 	pmpPaletteBox = new QComboBox(pmpGroup);

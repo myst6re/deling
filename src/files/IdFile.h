@@ -39,7 +39,7 @@ public:
 	bool open(const QByteArray &id);
 	bool save(QByteArray &id);
 	inline QString filterText() const {
-		return QObject::tr("Fichier walkmesh écran PC (*.id)");
+		return QObject::tr("Field walkmesh PC File (*.id)");
 	}
 	bool hasTriangle() const;
 	int triangleCount() const;

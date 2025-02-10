@@ -15,30 +15,9 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#pragma once
+#include "ModelGeometry.h"
 
-#include <QtWidgets>
-#include "3d/WorldmapGLWidget.h"
-#include "widgets/PageWidget.h"
-
-class WorldmapWidget : public PageWidget
+BattleModelObject::BattleModelObject()
 {
-	Q_OBJECT
-public:
-	explicit WorldmapWidget(QWidget *parent = nullptr);
-	inline WorldmapGLWidget *scene() const {
-		return _scene;
-	}
-	void fill() override;
-	inline QString tabName() const override { return tr("Worldmap"); }
-	void clear() override;
-private slots:
-	void setXRot(int value);
-	void setYRot(int value);
-	void setZRot(int value);
-	void resetCamera();
-private:
-	void build() override;
-	WorldmapGLWidget *_scene;
-	QSlider *_xRotSlider, *_yRotSlider, *_zRotSlider;
-};
+	
+}

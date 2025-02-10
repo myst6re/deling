@@ -55,11 +55,11 @@ bool BackgroundExporter::toDir(const QDir &dir, ArchiveObserver *observer)
 			QString fieldName = f->name();
 
 			if (fieldName.isEmpty()) {
-				fieldName = QObject::tr("sans-nom");
+				fieldName = QObject::tr("Unamed");
 			}
 
 			if (!background->background().save(dir.filePath(fieldName + ".png"))) {
-				_lastErrorString = QObject::tr("Impossible d'exporter '%1' en image").arg(fieldName);
+				_lastErrorString = QObject::tr("Unable to export '%1' to image").arg(fieldName);
 			}
 		}
 	}

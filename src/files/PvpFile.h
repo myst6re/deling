@@ -26,7 +26,7 @@ public:
 	bool open(const QByteArray &pvp);
 	bool save(QByteArray &pvp);
 	inline QString filterText() const {
-		return QObject::tr("Fichier inconnu écran PC (*.pvp)");
+		return QObject::tr("Field unknown PC file (*.pvp)");
 	}
 	quint32 value() const;
 	void setValue(quint32 value);

@@ -1232,29 +1232,29 @@ QString FsArchive::errorString(Error error, const QString &fileName)
 {
 	switch (error) {
 	case Ok:
-		return QObject::tr("Opération réalisée avec succès !");
+		return QObject::tr("Operation successfully completed!");
 	case NonWritable:
-		return QObject::tr("L'archive Fs ne peut pas être modifiée, vérifiez vos droits en écriture.");
+		return QObject::tr("The Fs archive can not be modified, check your rights in writing.");
 	case SourceCantBeOpened:
-		return QObject::tr("Le fichier source ne peut pas être ouvert%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
+		return QObject::tr("The source file cannot be opened%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case TempCantBeOpened:
-		return QObject::tr("Le fichier temp ne peut pas être ouvert%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
+		return QObject::tr("The temps file cannont be opened%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case TargetCantBeOpened:
-		return QObject::tr("Le fichier cible ne peut pas être ouvert%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
+		return QObject::tr("The target file cannot be opened%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case Canceled:
-		return QObject::tr("Opération annulée.");
+		return QObject::tr("Operation canceled.");
 	case SaveHeaderError:
-		return QObject::tr("Erreur lors de la création des fichiers '*.fi' et '*.fl'.");
+		return QObject::tr("Error while creating files '*.fi' and '*.fl'.");
 	case ReplaceArchiveError:
-		return QObject::tr("Erreur lors de la sauvegarde de l'archive Fs%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
+		return QObject::tr("Error while saving the archive Fs%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case FileExists:
-		return QObject::tr("Ce fichier existe déjà dans l'archive%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
+		return QObject::tr("This file already exists in the archive%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case FileDontExists:
-		return QObject::tr("Ce fichier n'existe pas dans l'archive%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
+		return QObject::tr("This file does not exists in the archive%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	case EmptyFile:
-		return QObject::tr("Ce fichier est vide%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
+		return QObject::tr("This file is empty%1.").arg(fileName.isEmpty() ? "" : " ("+fileName+")");
 	}
-	return QObject::tr("Erreur inconnue.");
+	return QObject::tr("Unknown error.");
 }
 
 /*QString FsArchive::toString()

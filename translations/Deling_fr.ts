@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ja_JP">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>AboutDialog</name>
     <message>
         <source>By Jérôme &amp;lt;myst6re&amp;gt; Arzel &lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;</source>
-        <translation type="unfinished">By Jérôme &amp;lt;myst6re&amp;gt; Arzel &lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;</translation>
+        <translation>Par Jérôme &amp;lt;myst6re&amp;gt; Arzel &lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</source>
-        <translation type="unfinished">Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</translation>
+        <translation>Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -143,107 +143,102 @@ List of available commands:
     <message>
         <source>Save image</source>
         <oldsource>Enregistrer le background</oldsource>
-        <translatorcomment>Save image</translatorcomment>
-        <translation>背景を保存</translation>
+        <translation>Enregistrer l&apos;image</translation>
     </message>
     <message>
         <source>PNG image (*.png);;JPG image (*.jpg);;BMP image (*.bmp);;Portable Pixmap (*.ppm)</source>
-        <translatorcomment>PNG image (*.png);;JPG image (*.jpg);;BMP image (*.bmp);;Portable Pixmap (*.ppm)</translatorcomment>
-        <translation>PNG 画像 (*.png);;JPG 画像 (*.jpg);;BMP 画像 (*.bmp);;Portable Pixmap (*.ppm)</translation>
+        <translation>Image PNG (*.png);;Image JPG (*.jpg);;Image BMP (*.bmp);;Portable Pixmap (*.ppm)</translation>
     </message>
 </context>
 <context>
     <name>BackgroundWidget</name>
     <message>
         <source>Hide background</source>
-        <translation>Hide background</translation>
+        <translation>Cacher background</translation>
     </message>
     <message>
         <source>Tile ID</source>
-        <translation type="unfinished">Tile ID</translation>
+        <translation>Tile ID</translation>
     </message>
     <message>
         <source>Destination X</source>
-        <translation type="unfinished">Destination X</translation>
+        <translation>Destination X</translation>
     </message>
     <message>
         <source>Destination Y</source>
-        <translation type="unfinished">Destination Y</translation>
+        <translation>Destination Y</translation>
     </message>
     <message>
         <source>Destination Z</source>
-        <translation type="unfinished">Destination Z</translation>
+        <translation>Destination Z</translation>
     </message>
     <message>
         <source>Source X</source>
-        <translation type="unfinished">Source X</translation>
+        <translation>Source X</translation>
     </message>
     <message>
         <source>Source Y</source>
-        <translation type="unfinished">Source Y</translation>
+        <translation>Source Y</translation>
     </message>
     <message>
         <source>Texture</source>
-        <translation type="unfinished">Texture</translation>
+        <translation>Texture</translation>
     </message>
     <message>
         <source>Palette</source>
-        <translation type="unfinished">Palette</translation>
+        <translation>Palette</translation>
     </message>
     <message>
         <source>Alpha</source>
-        <translation type="unfinished">Alpha</translation>
+        <translation>Transparence</translation>
     </message>
     <message>
         <source>Draw</source>
-        <translation type="unfinished">Draw</translation>
+        <translation>Dessiner</translation>
     </message>
     <message>
         <source>Alpha Type</source>
-        <translation type="unfinished">Alpha Type</translation>
+        <translation>Type transparence</translation>
     </message>
     <message>
         <source>Color Type</source>
-        <translation type="unfinished">Color Type</translation>
+        <translation>Type couleur</translation>
     </message>
     <message>
         <source>Layer</source>
-        <translation type="unfinished">Layer</translation>
+        <translation>Couche</translation>
     </message>
     <message>
         <source>Parameter</source>
-        <translation type="unfinished">Parameter</translation>
+        <translation>Paramètre</translation>
     </message>
     <message>
         <source>State</source>
-        <translation type="unfinished">State</translation>
+        <translation>État</translation>
     </message>
     <message>
         <source>Parameters</source>
-        <translation type="unfinished">Parameters</translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <source>Tiles</source>
-        <translation type="unfinished">Tiles</translation>
+        <translation>Tuiles</translation>
     </message>
     <message>
         <source>State %1</source>
-        <translatorcomment>State %1</translatorcomment>
-        <translation>ステート %1</translation>
+        <translation>État %1</translation>
     </message>
     <message>
         <source>Parameter %1</source>
-        <translatorcomment>Parameter %1</translatorcomment>
-        <translation>パラメータ %1</translation>
+        <translation>Paramètre %1</translation>
     </message>
     <message>
         <source>Layer %1</source>
-        <translatorcomment>Layer %1</translatorcomment>
-        <translation>レイヤー %1</translation>
+        <translation>Couche %1</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished">Background</translation>
+        <translation>Décors</translation>
     </message>
 </context>
 <context>
@@ -289,77 +284,67 @@ List of available commands:
     <name>CharaWidget</name>
     <message>
         <source>3D Model</source>
-        <translation type="unfinished">3D Model</translation>
+        <translation>Modèles 3D</translation>
     </message>
     <message>
         <source>(No Name)</source>
-        <translation type="unfinished">(No Name)</translation>
+        <translation>(Sans nom)</translation>
     </message>
 </context>
 <context>
     <name>ConfigDialog</name>
     <message>
         <source>Configuration</source>
-        <translatorcomment>Configuration</translatorcomment>
-        <translation>構成設定</translation>
+        <translation>Configuration</translation>
     </message>
     <message>
         <source>Language</source>
-        <translatorcomment>Language</translatorcomment>
-        <translation>表示言語</translation>
+        <translation>Langue</translation>
     </message>
     <message>
         <source>FF8 path</source>
-        <translatorcomment>FF8 path</translatorcomment>
-        <translation>FF8 パス</translation>
+        <translation>Chemin de FF8</translation>
     </message>
     <message>
         <source>Auto</source>
-        <translatorcomment>Auto</translatorcomment>
-        <translation>オート</translation>
+        <translation>Auto</translation>
     </message>
     <message>
         <source>Browse...</source>
         <oldsource>Parcourir</oldsource>
-        <translatorcomment>Browse...</translatorcomment>
-        <translation>参照...</translation>
+        <translation>Parcourir...</translation>
     </message>
     <message>
         <source>Text encoding</source>
-        <translatorcomment>text encoding</translatorcomment>
-        <translation>テキスト エンコード</translation>
+        <translation>Encodage des textes</translation>
     </message>
     <message>
         <source>Latin</source>
-        <translatorcomment>Latin</translatorcomment>
-        <translation>ラテン文字</translation>
+        <translation>Latin</translation>
     </message>
     <message>
         <source>Japanese</source>
-        <translatorcomment>Japanese</translatorcomment>
-        <translation>日本語</translation>
+        <translation>Japonais</translation>
     </message>
     <message>
         <source>Manage</source>
-        <translation type="unfinished">Manage</translation>
+        <translation>Gérer</translation>
     </message>
     <message>
         <source>Save</source>
-        <translatorcomment>Save</translatorcomment>
-        <translation>保存</translation>
+        <translation>Enregistrer</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translatorcomment>Cancel</translatorcomment>
-        <translation>キャンセル</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Executable path of Final Fantasy VIII PC</source>
-        <translation type="unfinished">Executable path of Final Fantasy VIII PC</translation>
+        <translation>Chemin de l&apos;executable de Final Fantasy VIII PC</translation>
     </message>
     <message>
         <source>FF8 exe (*.exe);;All files (*)</source>
-        <translation type="unfinished">FF8 exe (*.exe);;All files (*)</translation>
+        <translation>FF8 exe (*.exe);;All files (*)</translation>
     </message>
 </context>
 <context>
@@ -367,78 +352,78 @@ List of available commands:
     <message>
         <source>Balamb- Alcauld Plains</source>
         <comment>1</comment>
-        <translation>バラム・アルクラド平野</translation>
+        <translation>Plaines d&apos;Arkland - Balamb</translation>
     </message>
     <message>
         <source>Balamb- Gaulg Mountains</source>
         <comment>2</comment>
-        <translation>バラム・グアルグ山脈</translation>
+        <translation>Monts Gaulg - Balamb</translation>
     </message>
     <message>
         <source>Balamb- Rinaul Coast</source>
         <comment>3</comment>
-        <translation>バラム・リナール海岸</translation>
+        <translation>Baie de Rinaul - Balamb</translation>
     </message>
     <message>
         <source>Balamb- Raha Cape</source>
         <comment>4</comment>
-        <translation>バラム・ラハ岬</translation>
+        <translation>Cap Raha - Balamb</translation>
     </message>
     <message>
         <source>Timber- Roshfall Forest</source>
         <comment>5</comment>
-        <translation>ティンバー・ロスフォールの森</translation>
+        <translation>Forêt de Rosfall - Timber</translation>
     </message>
     <message>
         <source>Timber- Mandy Beach</source>
         <comment>6</comment>
-        <translation>ティンバー・マンデービーチ</translation>
+        <translation>Mandy Beach - Timber</translation>
     </message>
     <message>
         <source>Timber- Obel Lake</source>
         <comment>7</comment>
-        <translation>ティンバー・オーベール湖</translation>
+        <translation>Lac Obel - Timber</translation>
     </message>
     <message>
         <source>Timber- Lanker Plains</source>
         <comment>8</comment>
-        <translation>ティンバー・ランカー平原</translation>
+        <translation>Vallée de Lanker - Timber</translation>
     </message>
     <message>
         <source>Timber- Nanchucket Island</source>
         <comment>9</comment>
-        <translation>ティンバー・ナンタケット島</translation>
+        <translation>Ile Nantakhet - Timber</translation>
     </message>
     <message>
         <source>Timber- Yaulny Canyon</source>
         <comment>10</comment>
-        <translation>ティンバー・ヤルニ渓谷</translation>
+        <translation>Yaulny Canyon - Timber</translation>
     </message>
     <message>
         <source>Dollet- Hasberry Plains</source>
         <comment>11</comment>
-        <translation>ドール・ヘスペリデス平原</translation>
+        <translation>Val Hasberry - Dollet</translation>
     </message>
     <message>
         <source>Dollet- Holy Glory Cape</source>
         <comment>12</comment>
-        <translation>ドール・ホーリーグローリー岬</translation>
+        <translation>Cap Holy Glory - Dollet</translation>
     </message>
     <message>
         <source>Dollet- Long Horn Island</source>
         <comment>13</comment>
-        <translation>ドール・ロングホーン島</translation>
+        <translation>Longhorn Island - Dollet</translation>
     </message>
     <message>
         <source>Dollet- Malgo Peninsula</source>
         <comment>14</comment>
-        <translation>ドール・マルゴー半島</translation>
+        <translation>Péninsule Malgo - Dollet</translation>
     </message>
     <message>
         <source>Galbadia- Monterosa Plateau</source>
         <oldsource>Plateau Monterosa -Galbadia</oldsource>
         <comment>15</comment>
-        <translation>ガルバディア・モンテローザ高原</translation>
+        <translation>Plateau Monterosa - Galbadia</translation>
     </message>
     <message>
         <source>???</source>
@@ -448,1573 +433,1543 @@ List of available commands:
     <message>
         <source>Galbadia- Lallapalooza Canyon</source>
         <comment>16</comment>
-        <translation>ガルバディア・ロラパルーザ渓谷</translation>
+        <translation>Lallapalooza Canyon - Galbadia</translation>
     </message>
     <message>
         <source>Timber- Shenand Hill</source>
         <comment>17</comment>
-        <translation>ティンバー・シェナンドー丘陵</translation>
+        <translation>Shenand Hill - Timber</translation>
     </message>
     <message>
         <source>Galbadia- Gotland Peninsula</source>
         <comment>18</comment>
-        <translation>ガルバディア・ゴートランド半島</translation>
+        <translation>Péninsule Gotland - Galbadia</translation>
     </message>
     <message>
         <source>Island Closest to Hell</source>
         <comment>19</comment>
-        <translation>ガルバディア・地獄に一番近い島</translation>
+        <translation>Ile de l&apos;Enfer - Galbadia</translation>
     </message>
     <message>
         <source>Great Plains of Galbadia</source>
         <comment>20</comment>
-        <translation>ガルバディア大平原</translation>
+        <translation>Plaine Galbadienne</translation>
     </message>
     <message>
         <source>Galbadia- Wilburn Hill</source>
         <comment>21</comment>
-        <translation>ガルバディア・ウィルバーン丘陵</translation>
+        <translation>Wilburn Hill - Galbadia</translation>
     </message>
     <message>
         <source>Galbadia- Rem Archipelago</source>
         <comment>22</comment>
-        <translation>ガルバディア・レム諸島</translation>
+        <translation>Archipel Rem - Galbadia</translation>
     </message>
     <message>
         <source>Galbadia- Dingo Desert</source>
         <comment>23</comment>
-        <translation>ガルバディア・ディンゴー砂漠</translation>
+        <translation>Dingo Désert - Galbadia</translation>
     </message>
     <message>
         <source>Winhill- Winhill Bluffs</source>
         <comment>24</comment>
-        <translation>ウィンヒル・ウィンヒル丘陵</translation>
+        <translation>Cap Winhill</translation>
     </message>
     <message>
         <source>Winhill- Humphrey Archipelago</source>
         <comment>25</comment>
-        <translation>ウィンヒル・ハンフリー諸島</translation>
+        <translation>Archipel Humphrey - Winhill</translation>
     </message>
     <message>
         <source>Trabia- Winter Island</source>
         <comment>26</comment>
-        <translation>トラビア・ヴィンター島</translation>
+        <translation>Ile Winter - Trabia</translation>
     </message>
     <message>
         <source>Trabia- Sorbald Snowfield</source>
         <comment>27</comment>
-        <translation>トラビア・ソルバールド雪原</translation>
+        <translation>Val de Solvard - Trabia</translation>
     </message>
     <message>
         <source>Trabia- Eldbeak Peninsula</source>
         <comment>28</comment>
-        <translation>トラビア・エルドビーク半島</translation>
+        <translation>Crête d&apos;Eldbeak - Trabia</translation>
     </message>
     <message>
         <source>Trabia- Hawkwind Plains</source>
         <comment>30</comment>
-        <translation>トラビア・ホークウィンド平原</translation>
+        <translation>Plaine d&apos;Hawkind - Trabia</translation>
     </message>
     <message>
         <source>Trabia- Albatross Archipelago</source>
         <oldsource>Atoll Albatross -Trabia</oldsource>
         <comment>31</comment>
-        <translation>トラビア・アルバトロス諸島</translation>
+        <translation>Atoll Albatross - Trabia</translation>
     </message>
     <message>
         <source>Trabia- Bika Snowfield</source>
         <comment>32</comment>
-        <translation>トラビア・ビッケ雪原</translation>
+        <translation>Vallon de Bika - Trabia</translation>
     </message>
     <message>
         <source>Trabia- Thor Peninsula</source>
         <comment>33</comment>
-        <translation>トラビア・トール半島</translation>
+        <translation>Péninsule Thor - Trabia</translation>
     </message>
     <message>
         <source>Trabia- Heath Peninsula</source>
         <comment>35</comment>
-        <translation>トラビア・ヒアデス半島</translation>
+        <translation>Crête d&apos;Heath - Trabia</translation>
     </message>
     <message>
         <source>Trabia- Trabia Crater</source>
         <comment>36</comment>
-        <translation>トラビア・トラビアクレーター</translation>
+        <translation>Trabia Crater - Trabia</translation>
     </message>
     <message>
         <source>Trabia- Vienne Mountains</source>
         <comment>37</comment>
-        <translation>トラビア・ヴェーン山脈</translation>
+        <translation>Mont Vienne - Trabia</translation>
     </message>
     <message>
         <source>Esthar- Mordred Plains</source>
         <comment>38</comment>
-        <translation>エスタ・モルドレット平原</translation>
+        <translation>Plaine de Mordor - Esthar</translation>
     </message>
     <message>
         <source>Esthar- Nortes Mountains</source>
         <comment>39</comment>
-        <translation>エスタ・ノルテス山脈</translation>
+        <translation>Mont Nortes - Esthar</translation>
     </message>
     <message>
         <source>Esthar- Fulcura Archipelago</source>
         <comment>40</comment>
-        <translation>エスタ・フニクリフニクラ諸島</translation>
+        <translation>Atoll Fulcura - Esthar</translation>
     </message>
     <message>
         <source>Esthar- Grandidi Forest</source>
         <comment>41</comment>
-        <translation>エスタ・グランディディエリの森</translation>
+        <translation>Forêt Grandidi - Esthar</translation>
     </message>
     <message>
         <source>Esthar- Millefeuille Archipelago</source>
         <comment>42</comment>
-        <translation>エスタ・ミルフィーユ諸島</translation>
+        <translation>Iles Millefeuilles - Esthar</translation>
     </message>
     <message>
         <source>Great Plains of Esthar</source>
         <comment>43</comment>
-        <translation>エスタ大平原</translation>
+        <translation>Grandes plaines d&apos;Esthar</translation>
     </message>
     <message>
         <source>Esthar City</source>
         <comment>44</comment>
-        <translation>エスタシティ</translation>
+        <translation>Esthar City</translation>
     </message>
     <message>
         <source>Esthar- Great Salt Lake</source>
         <comment>45</comment>
-        <translation>エスタ・大塩湖</translation>
+        <translation>Salt Lake - Esthar</translation>
     </message>
     <message>
         <source>Esthar- West Coast</source>
         <comment>46</comment>
-        <translation>エスタ・ウェストコースト</translation>
+        <translation>Côte Ouest - Esthar</translation>
     </message>
     <message>
         <source>Esthar- Sollet Mountains</source>
         <oldsource>Mont Sollet -Esthar</oldsource>
         <comment>47</comment>
-        <translation>エスタ・スール山脈</translation>
+        <translation>Mont Sollet - Esthar</translation>
     </message>
     <message>
         <source>Esthar- Abadan Plains</source>
         <comment>48</comment>
-        <translation>エスタ・アバンダン平原</translation>
+        <translation>Vallée d&apos;Abadan - Esthar</translation>
     </message>
     <message>
         <source>Esthar- Minde Island</source>
         <comment>49</comment>
-        <translation>エスタ・スカラマンガ島</translation>
+        <translation>Ile Minde - Esthar</translation>
     </message>
     <message>
         <source>Esthar- Kashkabald Desert</source>
         <comment>50</comment>
-        <translation>エスタ・カシュクバール砂漠</translation>
+        <translation>Désert Kashkabald - Esthar</translation>
     </message>
     <message>
         <source>Island Closest to Heaven</source>
         <comment>51</comment>
-        <translation>エスタ・天国に一番近い島</translation>
+        <translation>Ile Paradisiaque - Esthar</translation>
     </message>
     <message>
         <source>Esthar- Talle Mountains</source>
         <comment>52</comment>
-        <translation>エスタ・タル山脈</translation>
+        <translation>Pic de Talle - Esthar</translation>
     </message>
     <message>
         <source>Esthar- Shalmal Peninsula</source>
         <comment>53</comment>
-        <translation>エスタ・シャルマール半島</translation>
+        <translation>Atoll Shalmal - Esthar</translation>
     </message>
     <message>
         <source>Centra- Lolestern Plains</source>
         <comment>54</comment>
-        <translation>セントラ・ロレスターン平原</translation>
+        <translation>Vallée de Lolestern - Centra</translation>
     </message>
     <message>
         <source>Centra- Almaj Mountains</source>
         <comment>55</comment>
-        <translation>セントラ・アルマージ山脈</translation>
+        <translation>Aiguille d&apos;Almage - Centra</translation>
     </message>
     <message>
         <source>Centra- Lenown Plains</source>
         <comment>56</comment>
-        <translation>セントラ・レナーン平原</translation>
+        <translation>Vallon Lenown - Centra</translation>
     </message>
     <message>
         <source>Centra- Cape of Good Hope</source>
         <comment>57</comment>
-        <translation>セントラ・グッドホープ岬</translation>
+        <translation>Cap de l&apos;espoir - Centra</translation>
     </message>
     <message>
         <source>Centra- Yorn Mountains</source>
         <comment>58</comment>
-        <translation>セントラ・ヨーン山脈</translation>
+        <translation>Mont Yorn - Centra</translation>
     </message>
     <message>
         <source>Esthar- Cactuar Island</source>
         <comment>59</comment>
-        <translation>エスタ・サボテンダーアイランド</translation>
+        <translation>Ile Pampa - Esthar</translation>
     </message>
     <message>
         <source>Centra- Serengetti Plains</source>
         <comment>60</comment>
-        <translation>セントラ・セレンゲッティ平原</translation>
+        <translation>Val Serengetti - Centra</translation>
     </message>
     <message>
         <source>Centra- Nectar Peninsula</source>
         <comment>61</comment>
-        <translation>セントラ・ネクタール半島</translation>
+        <translation>Péninsule Nectalle - Centra</translation>
     </message>
     <message>
         <source>Centra- Centra Crater</source>
         <comment>62</comment>
-        <translation>セントラ・セントラクレーター</translation>
+        <translation>Centra Crater - Centra</translation>
     </message>
     <message>
         <source>Centra- Poccarahi Island</source>
         <oldsource>Ile Poccarahi -Centra</oldsource>
         <comment>63</comment>
-        <translation>セントラ・ポッカラヒレリア島</translation>
+        <translation>Ile Poccarahi - Centra</translation>
     </message>
     <message>
         <source>B-Garden- Library</source>
         <comment>64</comment>
-        <translation>Ｂガーデン・図書館</translation>
+        <translation>Bibliothèque - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Front Gate</source>
         <comment>65</comment>
-        <translation>バラムガーデン・正門</translation>
+        <translation>Entrée - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Classroom</source>
         <comment>66</comment>
-        <translation>Ｂガーデン・教室</translation>
+        <translation>Salle de cours - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Cafeteria</source>
         <comment>67</comment>
-        <translation>Ｂガーデン・学生食堂</translation>
+        <translation>Cafétéria - BGU</translation>
     </message>
     <message>
         <source>B-Garden- MD Level</source>
         <comment>68</comment>
-        <translation>Ｂガーデン・ＭＤ層</translation>
+        <translation>Niveau MD - BGU</translation>
     </message>
     <message>
         <source>B-Garden- 2F Hallway</source>
         <comment>69</comment>
-        <translation>Ｂガーデン・２階ろうか</translation>
+        <translation>Hall 1er étage - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Hall</source>
         <comment>70</comment>
-        <translation>Ｂガーデン・ホール</translation>
+        <translation>Hall - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Infirmary</source>
         <comment>71</comment>
-        <translation>Ｂガーデン・保健室</translation>
+        <translation>Infirmerie - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Dormitory Double</source>
         <comment>72</comment>
-        <translation>Ｂガーデン・学生寮大部屋</translation>
+        <translation>Dortoirs doubles - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Dormitory Single</source>
         <comment>73</comment>
-        <translation>Ｂガーデン・学生寮個室</translation>
+        <translation>Dortoirs simples - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Headmaster&apos;s Office</source>
         <comment>74</comment>
-        <translation>Ｂガーデン・学園長室</translation>
+        <translation>Bureau proviseur - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Parking Lot</source>
         <comment>75</comment>
-        <translation>Ｂガーデン・駐車場</translation>
+        <translation>Parking - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Ballroom</source>
         <comment>76</comment>
-        <translation>Ｂガーデン・パーティ会場</translation>
+        <translation>Salle de bal - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Quad</source>
         <comment>77</comment>
-        <translation>Ｂガーデン・校庭</translation>
+        <translation>Campus - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Training Center</source>
         <comment>78</comment>
-        <translation>Ｂガーデン・訓練施設</translation>
+        <translation>Serre de combat - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Secret Area</source>
         <oldsource>Zone secrète -BGU</oldsource>
         <comment>79</comment>
-        <translation>Ｂガーデン・秘密の場所</translation>
+        <translation>Zone secrète - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Hallway</source>
         <comment>80</comment>
-        <translation>Ｂガーデン・ろうか</translation>
+        <translation>Corridor - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Master Room</source>
         <comment>81</comment>
-        <translation>Ｂガーデン・マスタールーム</translation>
+        <translation>Temple - BGU</translation>
     </message>
     <message>
         <source>B-Garden- Deck</source>
         <comment>82</comment>
-        <translation>Ｂガーデン・デッキ</translation>
+        <translation>Pont - BGU</translation>
     </message>
     <message>
         <source>Balamb- The Dincht&apos;s</source>
         <comment>83</comment>
-        <translation>バラム・ディン邸</translation>
+        <translation>Villa Dincht - Balamb</translation>
     </message>
     <message>
         <source>Balamb Hotel</source>
         <comment>84</comment>
-        <translation>バラム・ホテル</translation>
+        <translation>Hôtel - Balamb</translation>
     </message>
     <message>
         <source>Balamb- Town Square</source>
         <comment>85</comment>
-        <translation>バラム・市街</translation>
+        <translation>Place centrale - Balamb</translation>
     </message>
     <message>
         <source>Balamb- Station Yard</source>
         <comment>86</comment>
-        <translation>バラム・駅構内</translation>
+        <translation>Place de la gare - Balamb</translation>
     </message>
     <message>
         <source>Balamb Harbor</source>
         <comment>87</comment>
-        <translation>バラム・港</translation>
+        <translation>Port - Balamb</translation>
     </message>
     <message>
         <source>Balamb- Residence</source>
         <comment>88</comment>
-        <translation>バラム・民家</translation>
+        <translation>Résidence - Balamb</translation>
     </message>
     <message>
         <source>Train</source>
         <comment>89</comment>
-        <translation>列車内</translation>
+        <translation>Train</translation>
     </message>
     <message>
         <source>Car</source>
         <comment>90</comment>
-        <translation>車両</translation>
+        <translation>Voiture</translation>
     </message>
     <message>
         <source>Inside Ship</source>
         <comment>91</comment>
-        <translation>上陸艇内</translation>
+        <translation>Vaisseau</translation>
     </message>
     <message>
         <source>Fire Cavern</source>
         <comment>92</comment>
-        <translation>炎の洞窟</translation>
+        <translation>Mine de souffre</translation>
     </message>
     <message>
         <source>Dollet- Town Square</source>
         <comment>93</comment>
-        <translation>ドール・市街</translation>
+        <translation>Place du village - Dollet</translation>
     </message>
     <message>
         <source>Dollet- Lapin Beach</source>
         <comment>94</comment>
-        <translation>ドール・ルプタンビーチ</translation>
+        <translation>Zuma Beach</translation>
     </message>
     <message>
         <source>
 Dollet Harbor</source>
         <comment>95</comment>
-        <translation>ドール・港</translation>
+        <translation>Port -Dollet</translation>
     </message>
     <message>
         <source>Dollet Pub</source>
         <comment>96</comment>
-        <translation>ドール・パブ</translation>
+        <translation>Pub - Dollet</translation>
     </message>
     <message>
         <source>Dollet Hotel</source>
         <comment>97</comment>
-        <translation>ドール・ホテル</translation>
+        <translation>Hôtel - Dollet</translation>
     </message>
     <message>
         <source>Dollet- Residence</source>
         <comment>98</comment>
-        <translation>ドール・民家</translation>
+        <translation>Résidence - Dollet</translation>
     </message>
     <message>
         <source>Dollet- Comm Tower</source>
         <comment>99</comment>
-        <translation>ドール・電波塔</translation>
+        <translation>Tour satellite - Dollet</translation>
     </message>
     <message>
         <source>Dollet- Mountain Hideout</source>
         <comment>100</comment>
-        <translation>ドール・山間部</translation>
+        <translation>Refuge montagneux - Dollet</translation>
     </message>
     <message>
         <source>Timber- City Square</source>
         <comment>101</comment>
-        <translation>ティンバー・市街</translation>
+        <translation>Centre ville - Timber</translation>
     </message>
     <message>
         <source>Timber TV Station</source>
         <comment>102</comment>
-        <translation>ティンバー・ＴＶ局</translation>
+        <translation>Chaîne de TV - Timber</translation>
     </message>
     <message>
         <source>Timber- Forest Owls&apos; Base</source>
         <comment>103</comment>
-        <translation>ティンバー・森のフクロウアジト</translation>
+        <translation>Base des Hiboux - Timber</translation>
     </message>
     <message>
         <source>Timber Pub</source>
         <comment>104</comment>
-        <translation>ティンバー・パブ</translation>
+        <translation>Pub - Timber</translation>
     </message>
     <message>
         <source>Timber Hotel</source>
         <comment>105</comment>
-        <translation>ティンバー・ホテル</translation>
+        <translation>Hôtel - Timber</translation>
     </message>
     <message>
         <source>Timber- Train</source>
         <comment>106</comment>
-        <translation>ティンバー・列車</translation>
+        <translation>Train - Timber</translation>
     </message>
     <message>
         <source>Timber- Residence</source>
         <comment>107</comment>
-        <translation>ティンバー・民家</translation>
+        <translation>Résidence - Timber</translation>
     </message>
     <message>
         <source>Timber- TV Screen</source>
         <comment>108</comment>
-        <translation>ティンバー・ＴＶ画面</translation>
+        <translation>Ecran géant - Timber</translation>
     </message>
     <message>
         <source>Timber- Editorial Department</source>
         <comment>109</comment>
-        <translation>ティンバー・編集部</translation>
+        <translation>Centre de presse - Timber</translation>
     </message>
     <message>
         <source>Timber Forest</source>
         <comment>110</comment>
-        <translation>ティンバーの森</translation>
+        <translation>Forêt de Timber</translation>
     </message>
     <message>
         <source>Galbadia Garden- Front Gate</source>
         <comment>111</comment>
-        <translation>ガルバディアガーデン・正門</translation>
+        <translation>Entrée - Fac deGalbadia</translation>
     </message>
     <message>
         <source>G-Garden- Station</source>
         <comment>112</comment>
-        <translation>Ｇガーデン・駅</translation>
+        <translation>Station Fac de Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Hall</source>
         <comment>113</comment>
-        <translation>Ｇガーデン・ホール</translation>
+        <translation>Hall - Fac de Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Hallway</source>
         <comment>114</comment>
-        <translation>Ｇガーデン・ろうか</translation>
+        <translation>Corridor - Fac de Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Reception Room</source>
         <comment>115</comment>
-        <translation>Ｇガーデン・応接室</translation>
+        <translation>Salle d&apos;attente - Fac Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Classroom</source>
         <comment>116</comment>
-        <translation>Ｇガーデン・教室</translation>
+        <translation>Salle de cours - Fac Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Clubroom</source>
         <comment>117</comment>
-        <translation>Ｇガーデン・部室</translation>
+        <translation>Salle de réunion - Fac Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Dormitory</source>
         <comment>118</comment>
-        <translation>Ｇガーデン・学生寮</translation>
+        <translation>Dortoirs - Fac de Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Elevator Hall</source>
         <comment>119</comment>
-        <translation>Ｇガーデン・エレベーターホール</translation>
+        <translation>Ascenseur - Fac de Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Master Room</source>
         <comment>120</comment>
-        <translation>Ｇガーデン・マスタールーム</translation>
+        <translation>Salle recteur - Fac Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Auditorium</source>
         <comment>121</comment>
-        <translation>Ｇガーデン・大講堂</translation>
+        <translation>Auditorium - Fac de Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Athletic Track</source>
         <comment>122</comment>
-        <translation>Ｇガーデン・グラウンド</translation>
+        <translation>Stade - Fac de Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Stand</source>
         <comment>123</comment>
-        <translation>Ｇガーデン・スタンド</translation>
+        <translation>Stand - Fac de Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Back Entrance</source>
         <comment>124</comment>
-        <translation>Ｇガーデン・裏口</translation>
+        <translation>2nde entrée - Fac Galbadia</translation>
     </message>
     <message>
         <source>G-Garden- Gymnasium</source>
         <comment>125</comment>
-        <translation>Ｇガーデン・体育館</translation>
+        <translation>Gymnase - Fac de Galbadia</translation>
     </message>
     <message>
         <source>Deling- Presidential Residence</source>
         <comment>126</comment>
-        <translation>デリングシティ・大統領官邸</translation>
+        <translation>Palais président - Deling City</translation>
     </message>
     <message>
         <source>Deling City- Caraway&apos;s Mansion</source>
         <oldsource>Manoir Caraway - DelingCity</oldsource>
         <comment>127</comment>
-        <translation>デリングシティ・カーウェイ邸</translation>
+        <translation>Manoir Caraway - Deling City</translation>
     </message>
     <message>
         <source>Deling City- Station Yard</source>
         <comment>128</comment>
-        <translation>デリングシティ・駅構内</translation>
+        <translation>Gare - Deling City</translation>
     </message>
     <message>
         <source>Deling City- City Square</source>
         <comment>129</comment>
-        <translation>デリングシティ・市街</translation>
+        <translation>Place centrale - Deling City</translation>
     </message>
     <message>
         <source>Deling City- Hotel</source>
         <comment>130</comment>
-        <translation>デリングシティ・ホテル</translation>
+        <translation>Hôtel - Deling City</translation>
     </message>
     <message>
         <source>Deling City- Club</source>
         <comment>131</comment>
-        <translation>デリングシティ・クラブ</translation>
+        <translation>Bar - Deling City</translation>
     </message>
     <message>
         <source>Deling City- Gateway</source>
         <comment>132</comment>
-        <translation>デリングシティ・凱旋門</translation>
+        <translation>Sortie - Deling City</translation>
     </message>
     <message>
         <source>Deling City- Parade</source>
         <comment>133</comment>
-        <translation>デリングシティ・パレード</translation>
+        <translation>Parade - Deling City</translation>
     </message>
     <message>
         <source>Deling City- Sewer</source>
         <comment>134</comment>
-        <translation>デリングシティ・地下水路</translation>
+        <translation>Egout - Deling City</translation>
     </message>
     <message>
         <source>Galbadia D-District Prison</source>
         <comment>135</comment>
-        <translation>ガルバディアＤ地区収容所</translation>
+        <translation>Prison du désert - Galbadia</translation>
     </message>
     <message>
         <source>Desert</source>
         <comment>136</comment>
-        <translation>砂漠</translation>
+        <translation>Désert</translation>
     </message>
     <message>
         <source>Galbadia Missile Base</source>
         <comment>137</comment>
-        <translation>ガルバディア軍ミサイル基地</translation>
+        <translation>Base des missiles</translation>
     </message>
     <message>
         <source>Winhill Village</source>
         <comment>138</comment>
-        <translation>ウィンヒル・村</translation>
+        <translation>Village de Winhill</translation>
     </message>
     <message>
         <source>Winhill Pub</source>
         <comment>139</comment>
-        <translation>ウィンヒル・パブ</translation>
+        <translation>Pub - Winhill</translation>
     </message>
     <message>
         <source>Winhill- Vacant House</source>
         <comment>140</comment>
-        <translation>ウィンヒル・空き家</translation>
+        <translation>Maison vide - Winhill</translation>
     </message>
     <message>
         <source>Winhill- Mansion</source>
         <comment>141</comment>
-        <translation>ウィンヒル・やしき</translation>
+        <translation>Manoir - Winhill</translation>
     </message>
     <message>
         <source>Winhill- Residence</source>
         <comment>142</comment>
-        <translation>ウィンヒル・民家</translation>
+        <translation>Résidence - Winhill</translation>
     </message>
     <message>
         <source>Winhill- Hotel</source>
         <oldsource>Hôtel -Winhill</oldsource>
         <comment>143</comment>
-        <translation>ウィンヒル・ホテル</translation>
+        <translation>Hôtel - Winhill</translation>
     </message>
     <message>
         <source>Winhill- Car</source>
         <comment>144</comment>
-        <translation>ウィンヒル・車内</translation>
+        <translation>Voiture - Winhill</translation>
     </message>
     <message>
         <source>Tomb of the Unknown King</source>
         <comment>145</comment>
-        <translation>名もなき王の墓</translation>
+        <translation>Tombe du roi inconnu</translation>
     </message>
     <message>
         <source>Fishermans Horizon</source>
         <comment>146</comment>
-        <translation>フィッシャーマンズ・ホライズン</translation>
+        <translation>Horizon</translation>
     </message>
     <message>
         <source>FH- Residential Area</source>
         <comment>147</comment>
-        <translation>Ｆ．Ｈ．・居住区</translation>
+        <translation>Habitations - Horizon</translation>
     </message>
     <message>
         <source>FH- Sun Panel</source>
         <comment>148</comment>
-        <translation>Ｆ．Ｈ．・ミラーパネル</translation>
+        <translation>Ecrans solaires - Horizon</translation>
     </message>
     <message>
         <source>FH- Mayor&apos;s Residence</source>
         <comment>149</comment>
-        <translation>Ｆ．Ｈ．・駅長邸</translation>
+        <translation>Villa du maire - Horizon</translation>
     </message>
     <message>
         <source>FH- Factory</source>
         <comment>150</comment>
-        <translation>Ｆ．Ｈ．・工場</translation>
+        <translation>Usine - Horizon</translation>
     </message>
     <message>
         <source>FH- Festival Grounds</source>
         <comment>151</comment>
-        <translation>Ｆ．Ｈ．・学園祭会場</translation>
+        <translation>Salle des fêtes - Horizon</translation>
     </message>
     <message>
         <source>FH- Hotel</source>
         <comment>152</comment>
-        <translation>Ｆ．Ｈ．・ホテル</translation>
+        <translation>Hôtel - Horizon</translation>
     </message>
     <message>
         <source>FH- Residence</source>
         <comment>153</comment>
-        <translation>Ｆ．Ｈ．・民家</translation>
+        <translation>Résidence - Horizon</translation>
     </message>
     <message>
         <source>FH- Station Yard</source>
         <comment>154</comment>
-        <translation>Ｆ．Ｈ．・駅構内</translation>
+        <translation>Gare - Horizon</translation>
     </message>
     <message>
         <source>FH- Horizon Bridge</source>
         <comment>155</comment>
-        <translation>ホライズン・ブリッジ</translation>
+        <translation>Aqueduc d&apos;Horizon</translation>
     </message>
     <message>
         <source>FH- Seaside Station</source>
         <comment>156</comment>
-        <translation>海岸駅</translation>
+        <translation>Station balnéaire</translation>
     </message>
     <message>
         <source>FH- Geat Salt Lake</source>
         <comment>157</comment>
-        <translation>大塩湖</translation>
+        <translation>Salt Lake</translation>
     </message>
     <message>
         <source>FH- Mystery Building</source>
         <comment>158</comment>
-        <translation>なぞの建造物</translation>
+        <translation>Bâtiment mystérieux</translation>
     </message>
     <message>
         <source>Esthar- City</source>
         <oldsource>EstharCity</oldsource>
         <comment>159</comment>
-        <translation>エスタ・市街</translation>
+        <translation>Esthar City</translation>
     </message>
     <message>
         <source>Esthar- Odine&apos;s Laboratory</source>
         <comment>160</comment>
-        <translation>エスタ・オダイン博士の研究所</translation>
+        <translation>Laboratoire Geyser - Esthar</translation>
     </message>
     <message>
         <source>Esthar- Airstation</source>
         <comment>161</comment>
-        <translation>エスタ・エアステーション</translation>
+        <translation>Aérodrome - Esthar</translation>
     </message>
     <message>
         <source>Lunatic Pandora Approaching</source>
         <comment>162</comment>
-        <translation>エスタ・大石柱接近</translation>
+        <translation>Lunatic Pandora approche</translation>
     </message>
     <message>
         <source>Esthar- Presidential Palace</source>
         <comment>163</comment>
-        <translation>エスタ・大統領官邸</translation>
+        <translation>Résidence président - Esthar</translation>
     </message>
     <message>
         <source>Presidential Palace- Hall</source>
         <comment>164</comment>
-        <translation>大統領官邸・ホール</translation>
+        <translation>Hall - Résidence président</translation>
     </message>
     <message>
         <source>Presidential Palace- Hallway</source>
         <comment>165</comment>
-        <translation>大統領官邸・ろうか</translation>
+        <translation>Couloir - Résidence président</translation>
     </message>
     <message>
         <source>Presidential Palace- Office</source>
         <comment>166</comment>
-        <translation>大統領官邸・大統領の部屋</translation>
+        <translation>Bureau - Résidence président</translation>
     </message>
     <message>
         <source>Dr. Odine&apos;s Laboratory- Lobby</source>
         <comment>167</comment>
-        <translation>オダイン博士の研究所・ロビー</translation>
+        <translation>Accueil - Labo Geyser</translation>
     </message>
     <message>
         <source>Dr. Odine&apos;s Laboratory- Lab</source>
         <comment>168</comment>
-        <translation>オダイン博士の研究所・研究室</translation>
+        <translation>Laboratoire Geyser</translation>
     </message>
     <message>
         <source>Deleted</source>
         <comment>169</comment>
-        <translation>さくじょされました</translation>
+        <translation>Deleted</translation>
     </message>
     <message>
         <source>Lunar Gate</source>
         <comment>170</comment>
-        <translation>ルナゲート</translation>
+        <translation>Lunar Gate</translation>
     </message>
     <message>
         <source>Lunar Gate- Concourse</source>
         <comment>171</comment>
-        <translation>ルナゲート・コンコース</translation>
+        <translation>Parvis - Lunar Gate</translation>
     </message>
     <message>
         <source>Lunar Gate- Deep Freeze</source>
         <comment>172</comment>
-        <translation>ルナゲート・フリージングルーム</translation>
+        <translation>Glacière - Lunar gate</translation>
     </message>
     <message>
         <source>Esthar Sorceress Memorial</source>
         <comment>173</comment>
-        <translation>エスタ国立魔女記念館</translation>
+        <translation>Mausolée - Esthar</translation>
     </message>
     <message>
         <source>Sorceress Memorial- Entrance</source>
         <comment>174</comment>
-        <translation>エスタ国立魔女記念館・入口</translation>
+        <translation>Entrée - Mausolée</translation>
     </message>
     <message>
         <source>Sorceress Memorial- Pod</source>
         <comment>175</comment>
-        <translation>エスタ国立魔女記念館・ポッド</translation>
+        <translation>Pod de confinement -Mausolée</translation>
     </message>
     <message>
         <source>Sorceress Memorial- Ctrl Room</source>
         <comment>176</comment>
-        <translation>エスタ国立魔女記念館・制御室</translation>
+        <translation>Salle de contrôle - Mausolée</translation>
     </message>
     <message>
         <source>Tears&apos; Point</source>
         <comment>177</comment>
-        <translation>ティアーズポイント</translation>
+        <translation>Tears Point</translation>
     </message>
     <message>
         <source>Lunatic Pandora Laboratory</source>
         <comment>178</comment>
-        <translation>ルナティックパンドラ研究所</translation>
+        <translation>Labo Lunatic Pandora</translation>
     </message>
     <message>
         <source>Emergency Landing Zone</source>
         <comment>179</comment>
-        <translation>不時着地点</translation>
+        <translation>Zone d&apos;atterrissage de secours</translation>
     </message>
     <message>
         <source>Spaceship Landing Zone</source>
         <comment>180</comment>
-        <translation>飛空艇不時着地点</translation>
+        <translation>Zone d&apos;atterrissage officielle</translation>
     </message>
     <message>
         <source>Lunatic Pandora</source>
         <comment>181</comment>
-        <translation>ルナティックパンドラ</translation>
+        <translation>Lunatic Pandora</translation>
     </message>
     <message>
         <source>Centra- Excavation Site</source>
         <comment>182</comment>
-        <translation>セントラ・発掘現場</translation>
+        <translation>Site des fouilles - Centra</translation>
     </message>
     <message>
         <source>Edea&apos;s House</source>
         <comment>183</comment>
-        <translation>イデアの家</translation>
+        <translation>Orphelinat</translation>
     </message>
     <message>
         <source>Edea&apos;s House- Playroom</source>
         <comment>184</comment>
-        <translation>イデアの家・こども部屋</translation>
+        <translation>Salle de jeux - Orphelinat</translation>
     </message>
     <message>
         <source>Edea&apos;s House- Bedroom</source>
         <comment>185</comment>
-        <translation>イデアの家・イデアの部屋</translation>
+        <translation>Dortoir - Orphelinat</translation>
     </message>
     <message>
         <source>Edea&apos;s House- Backyard</source>
         <comment>186</comment>
-        <translation>イデアの家・裏庭</translation>
+        <translation>Jardin - Orphelinat</translation>
     </message>
     <message>
         <source>Edea&apos;s House- Oceanside</source>
         <comment>187</comment>
-        <translation>イデアの家・海岸</translation>
+        <translation>Front de mer - Orphelinat</translation>
     </message>
     <message>
         <source>Edea&apos;s House- Flower Field</source>
         <comment>188</comment>
-        <translation>イデアの家・花畑</translation>
+        <translation>Champ - Orphelinat</translation>
     </message>
     <message>
         <source>Centra Ruins</source>
         <comment>189</comment>
-        <translation>セントラ遺跡</translation>
+        <translation>Ruines de Centra</translation>
     </message>
     <message>
         <source>Trabia Garden- Front Gate</source>
         <comment>190</comment>
-        <translation>トラビアガーデン・正門</translation>
+        <translation>Entrée - Fac de Trabia</translation>
     </message>
     <message>
         <source>T-Garden- Cemetery</source>
         <comment>191</comment>
-        <translation>Ｔガーデン・墓地</translation>
+        <translation>Cimetière - Fac deTrabia</translation>
     </message>
     <message>
         <source>T-Garden- Garage</source>
         <comment>192</comment>
-        <translation>Ｔガーデン・ガレージ</translation>
+        <translation>Garage - Fac de Trabia</translation>
     </message>
     <message>
         <source>T-Garden- Festival Stage</source>
         <comment>193</comment>
-        <translation>Ｔガーデン・学園祭ステージ</translation>
+        <translation>Campus - Fac Trabia</translation>
     </message>
     <message>
         <source>T-Garden- Classroom</source>
         <comment>194</comment>
-        <translation>Ｔガーデン・教室</translation>
+        <translation>Amphithéatre - Fac de Trabia</translation>
     </message>
     <message>
         <source>T-Garden- Athletic Ground</source>
         <comment>195</comment>
-        <translation>Ｔガーデン・グラウンド</translation>
+        <translation>Stade - Fac de Trabia</translation>
     </message>
     <message>
         <source>Mystery Dome</source>
         <comment>196</comment>
-        <translation>なぞのドーム</translation>
+        <translation>Dôme mystérieux</translation>
     </message>
     <message>
         <source>Shumi Village- Desert Village</source>
         <comment>197</comment>
-        <translation>シュミ族の村・砂漠化村</translation>
+        <translation>Ville du désert - Shumi Village</translation>
     </message>
     <message>
         <source>Shumi Village- Elevator</source>
         <comment>198</comment>
-        <translation>シュミ族の村・エレベーター</translation>
+        <translation>Ascenseur - Shumi Village</translation>
     </message>
     <message>
         <source>Shumi Village- Village</source>
         <comment>199</comment>
-        <translation>シュミ族の村・村</translation>
+        <translation>Shumi Village</translation>
     </message>
     <message>
         <source>Shumi Village- Residence</source>
         <comment>200</comment>
-        <translation>シュミ族の村・民家</translation>
+        <translation>Habitation - Shumi Village</translation>
     </message>
     <message>
         <source>Shumi Village- Residence</source>
         <comment>201</comment>
-        <translation>シュミ族の村・民家</translation>
+        <translation>Résidence - Shumi Village</translation>
     </message>
     <message>
         <source>Shumi Village- Residence</source>
         <comment>202</comment>
-        <translation>シュミ族の村・民家</translation>
+        <translation>Habitat - Shumi Village</translation>
     </message>
     <message>
         <source>Shumi Village- Hotel</source>
         <comment>203</comment>
-        <translation>シュミ族の村・ホテル</translation>
+        <translation>Hôtel - Shumi Village</translation>
     </message>
     <message>
         <source>Trabia Canyon</source>
         <comment>204</comment>
-        <translation>トラビア渓谷</translation>
+        <translation>Trabia canyon</translation>
     </message>
     <message>
         <source>White SeeD Ship</source>
         <comment>205</comment>
-        <translation>白いＳｅｅＤの船</translation>
+        <translation>Vaisseau des Seeds blancs</translation>
     </message>
     <message>
         <source>White SeeD Ship</source>
         <comment>206</comment>
-        <translation>白いＳｅｅＤの船</translation>
+        <translation>Navire des Seeds Blancs</translation>
     </message>
     <message>
         <source>White SeeD Ship- Cabin</source>
         <oldsource>Cabine - Navire Seedsblancs</oldsource>
         <comment>207</comment>
-        <translation>白いＳｅｅＤの船・キャビン</translation>
+        <translation>Cabine - Navire Seeds blancs</translation>
     </message>
     <message>
         <source>Ragnarok- Cockpit</source>
         <comment>208</comment>
-        <translation>飛空艇ラグナロク・コクピット</translation>
+        <translation>Cockpit - Hydre</translation>
     </message>
     <message>
         <source>Ragnarok- Passenger Seat</source>
         <comment>209</comment>
-        <translation>飛空艇ラグナロク・客席</translation>
+        <translation>Siège passager - Hydre</translation>
     </message>
     <message>
         <source>Ragnarok- Aisle</source>
         <comment>210</comment>
-        <translation>飛空艇ラグナロク・通路</translation>
+        <translation>Couloir - Hydre</translation>
     </message>
     <message>
         <source>Ragnarok- Hangar</source>
         <comment>211</comment>
-        <translation>飛空艇ラグナロク・ハンガー</translation>
+        <translation>Hangar - Hydre</translation>
     </message>
     <message>
         <source>Ragnarok- Entrance</source>
         <comment>212</comment>
-        <translation>飛空艇ラグナロク・乗降口</translation>
+        <translation>Accès - Hydre</translation>
     </message>
     <message>
         <source>Ragnarok- Air Room</source>
         <comment>213</comment>
-        <translation>飛空艇ラグナロク・エアールーム</translation>
+        <translation>Air Room - Hydre</translation>
     </message>
     <message>
         <source>Ragnarok- Space Hatch</source>
         <comment>214</comment>
-        <translation>飛空艇ラグナロク・宇宙用ハッチ</translation>
+        <translation>Salle de pression - Hydre</translation>
     </message>
     <message>
         <source>Deep Sea Research Center</source>
         <comment>215</comment>
-        <translation>海洋探査人工島</translation>
+        <translation>Centre de recherches Deep Sea</translation>
     </message>
     <message>
         <source>Deep Sea Research Center- Lb</source>
         <comment>216</comment>
-        <translation>海洋探査人工島・研究所</translation>
+        <translation>Laboratoire - Deep Sea</translation>
     </message>
     <message>
         <source>Deep Sea Research Center- Lv</source>
         <comment>217</comment>
-        <translation>海洋探査人工島・作業区</translation>
+        <translation>Salle de travail - Deep Sea</translation>
     </message>
     <message>
         <source>Deep Sea Deposit</source>
         <comment>218</comment>
-        <translation>大海のよどみ</translation>
+        <translation>Fouilles - Deep Sea</translation>
     </message>
     <message>
         <source>Lunar Base- Control Room</source>
         <comment>219</comment>
-        <translation>ルナサイドベース・制御室</translation>
+        <translation>Salle de contrôle - Base lunaire</translation>
     </message>
     <message>
         <source>Lunar Base- Medical Room</source>
         <comment>220</comment>
-        <translation>ルナサイドベース・医務室</translation>
+        <translation>Centre médical - Base lunaire</translation>
     </message>
     <message>
         <source>Lunar Base- Pod</source>
         <comment>221</comment>
-        <translation>ルナサイドベース・ポッド</translation>
+        <translation>Pod - Base lunaire</translation>
     </message>
     <message>
         <source>Lunar Base- Dock</source>
         <comment>222</comment>
-        <translation>ルナサイドベース・ドック</translation>
+        <translation>Dock - Base lunaire</translation>
     </message>
     <message>
         <source>Lunar Base- Passageway</source>
         <oldsource>Passage - Baselunaire</oldsource>
         <comment>223</comment>
-        <translation>ルナサイドベース・通路</translation>
+        <translation>Passage - Base lunaire</translation>
     </message>
     <message>
         <source>Lunar Base- Locker</source>
         <comment>224</comment>
-        <translation>ルナサイドベース・ロッカー</translation>
+        <translation>Vestiaire - Base lunaire</translation>
     </message>
     <message>
         <source>Lunar Base- Residential Zone</source>
         <comment>225</comment>
-        <translation>ルナサイドベース・居住区</translation>
+        <translation>Habitats - Base lunaire</translation>
     </message>
     <message>
         <source>Outer Space</source>
         <comment>226</comment>
-        <translation>宇宙空間</translation>
+        <translation>Hyper Espace</translation>
     </message>
     <message>
         <source>Chocobo Forest</source>
         <comment>227</comment>
-        <translation>チョコボの森</translation>
+        <translation>Forêt Chocobo</translation>
     </message>
     <message>
         <source>Wilderness</source>
         <comment>228</comment>
-        <translation>荒野</translation>
+        <translation>Jungle</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Hall</source>
         <comment>229</comment>
-        <translation>アルティミシア城・ホール</translation>
+        <translation>Citadelle d&apos;Ultimecia - Vestibule</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Grand Hall</source>
         <comment>230</comment>
-        <translation>アルティミシア城・大広間</translation>
+        <translation>Citadelle d&apos;Ultimecia - Hall</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Terrace</source>
         <comment>231</comment>
-        <translation>アルティミシア城・テラス</translation>
+        <translation>Citadelle d&apos;Ultimecia - Terrasse</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Wine Cellar</source>
         <comment>232</comment>
-        <translation>アルティミシア城・ワインセラー</translation>
+        <translation>Citadelle d&apos;Ultimecia - Cave</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Passageway</source>
         <comment>233</comment>
-        <translation>アルティミシア城・通路</translation>
+        <translation>Citadelle d&apos;Ultimecia - Couloir</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Elevator Hall</source>
         <comment>234</comment>
-        <translation>アルティミシア城・昇降機ホール</translation>
+        <translation>Elévateur - Citadelle</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Stairway Hall</source>
         <comment>235</comment>
-        <translation>アルティミシア城・階段ホール</translation>
+        <translation>Escalier - Citadelle d&apos;Ultimecia</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Treasure Rm</source>
         <comment>236</comment>
-        <translation>アルティミシア城・宝物庫</translation>
+        <translation>Salle du trésor - Citadelle</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Storage Room</source>
         <comment>237</comment>
-        <translation>アルティミシア城・倉庫</translation>
+        <translation>Salle de rangement - Citadelle</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Art Gallery</source>
         <comment>238</comment>
-        <translation>アルティミシア城・画廊</translation>
+        <translation>Citadelle d&apos;Ultimecia - Galerie</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Flood Gate</source>
         <oldsource>Citadelle d&apos;Ultimecia -Ecluse</oldsource>
         <comment>239</comment>
-        <translation>アルティミシア城・水門</translation>
+        <translation>Citadelle d&apos;Ultimecia - Ecluse</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Armory</source>
         <comment>240</comment>
-        <translation>アルティミシア城・武器庫</translation>
+        <translation>Citadelle - Armurerie</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Prison Cell</source>
         <comment>241</comment>
-        <translation>アルティミシア城・牢獄</translation>
+        <translation>Citadelle d&apos;Ultimecia - Prison</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Waterway</source>
         <comment>242</comment>
-        <translation>アルティミシア城・水路</translation>
+        <translation>Citadelle d&apos;Ultimecia - Fossé</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Courtyard</source>
         <comment>243</comment>
-        <translation>アルティミシア城・中庭</translation>
+        <translation>Citadelle d&apos;Ultimecia - Jardin</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Chapel</source>
         <comment>244</comment>
-        <translation>アルティミシア城・礼拝堂</translation>
+        <translation>Citadelle d&apos;Ultimecia - Chapelle</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Clock Tower</source>
         <comment>245</comment>
-        <translation>アルティミシア城・時計塔</translation>
+        <translation>Clocher - Citadelle d&apos;Ultimecia</translation>
     </message>
     <message>
         <source>Ultimecia Castle- Master Room</source>
         <comment>246</comment>
-        <translation>アルティミシア城・主の間</translation>
+        <translation>Chambre d&apos;Ultimecia - Citadelle</translation>
     </message>
     <message>
         <source>Ultimecia Castle</source>
         <comment>248</comment>
-        <translation>アルティミシア城</translation>
+        <translation>Citadelle d&apos;Ultimecia</translation>
     </message>
     <message>
         <source>Commencement Room</source>
         <comment>249</comment>
-        <translation>はじまりの部屋</translation>
+        <translation>Salle d&apos;initiation</translation>
     </message>
     <message>
         <source>Queen</source>
         <comment>250</comment>
-        <translation>クィーン</translation>
+        <translation>Reine des cartes</translation>
     </message>
     <message>
         <source>???</source>
         <comment>247</comment>
-        <translation></translation>
+        <translation>???</translation>
     </message>
     <message>
         <source>???</source>
         <comment>251</comment>
-        <translation></translation>
+        <translation>???</translation>
     </message>
     <message>
         <source>???</source>
         <comment>252</comment>
-        <translation></translation>
+        <translation>???</translation>
     </message>
     <message>
         <source>???</source>
         <comment>253</comment>
-        <translation></translation>
+        <translation>???</translation>
     </message>
     <message>
         <source>???</source>
         <comment>254</comment>
-        <translation></translation>
+        <translation>???</translation>
     </message>
     <message>
         <source>???</source>
         <comment>255</comment>
-        <translation></translation>
+        <translation>???</translation>
     </message>
     <message>
         <source>Squall</source>
-        <translation>スコール</translation>
+        <translation>Squall</translation>
     </message>
     <message>
         <source>Zell</source>
-        <translation>ゼル</translation>
+        <translation>Zell</translation>
     </message>
     <message>
         <source>Irvine</source>
-        <translation>アーヴァイン</translation>
+        <translation>Irvine</translation>
     </message>
     <message>
         <source>Quistis</source>
-        <translation>キスティス</translation>
+        <translation>Quistis</translation>
     </message>
     <message>
         <source>Rinoa</source>
-        <translation>リノア</translation>
+        <translation>Linoa</translation>
     </message>
     <message>
         <source>Selphie</source>
-        <translation>セルフィー</translation>
+        <translation>Selphie</translation>
     </message>
     <message>
         <source>Seifer</source>
-        <translation>サイファー</translation>
+        <translation>Seifer</translation>
     </message>
     <message>
         <source>Edea</source>
-        <translation>イデア</translation>
+        <translation>Edea</translation>
     </message>
     <message>
         <source>Laguna</source>
-        <translation>ラグナ</translation>
+        <translation>Laguna</translation>
     </message>
     <message>
         <source>Kiros</source>
-        <translation>キロス</translation>
+        <translation>Kiros</translation>
     </message>
     <message>
         <source>Ward</source>
-        <translation>ウォード</translation>
+        <translation>Ward</translation>
     </message>
     <message>
         <source>Griever</source>
-        <translation>グリーヴァ</translation>
+        <translation>Cronos</translation>
     </message>
     <message>
         <source>MiniMog</source>
-        <translation>コモーグリ</translation>
+        <translation>MiniMog</translation>
     </message>
     <message>
         <source>Boko</source>
-        <translation>コチョコボ</translation>
+        <translation>Boko</translation>
     </message>
     <message>
         <source>Angelo</source>
-        <translation>アンジェロ</translation>
+        <translation>Angel</translation>
     </message>
     <message>
         <source>Fire</source>
-        <translation>ファイア</translation>
+        <translation>Brasier</translation>
     </message>
     <message>
         <source>Fira</source>
-        <translation>ファイラ</translation>
+        <translation>Brasier+</translation>
     </message>
     <message>
         <source>Firaga</source>
-        <translation>ファイガ</translation>
+        <translation>BrasierX</translation>
     </message>
     <message>
         <source>Blizzard</source>
-        <translation>ブリザド</translation>
+        <translation>Glacier</translation>
     </message>
     <message>
         <source>Blizzara</source>
-        <translation>ブリザラ</translation>
+        <translation>Glacier+</translation>
     </message>
     <message>
         <source>Blizzaga</source>
-        <translation>ブリザガ</translation>
+        <translation>GlacierX</translation>
     </message>
     <message>
         <source>Thunder</source>
-        <translation>サンダー</translation>
+        <translation>Foudre</translation>
     </message>
     <message>
         <source>Thundara</source>
-        <translation>サンダラ</translation>
+        <translation>Foudre+</translation>
     </message>
     <message>
         <source>Thundaga</source>
-        <translation>サンダガ</translation>
+        <translation>FoudreX</translation>
     </message>
     <message>
         <source>Water</source>
-        <translation>ウォータ</translation>
+        <translation>H2O</translation>
     </message>
     <message>
         <source>Aero</source>
-        <translation>エアロ</translation>
+        <translation>Rafale</translation>
     </message>
     <message>
         <source>Bio</source>
-        <translation>バイオ</translation>
+        <translation>Cyanure</translation>
     </message>
     <message>
         <source>Demi</source>
-        <translation>グラビデ</translation>
+        <translation>Quart</translation>
     </message>
     <message>
         <source>Holy</source>
-        <translation>ホーリー</translation>
+        <translation>Sidéral</translation>
     </message>
     <message>
         <source>Flare</source>
-        <translation>フレア</translation>
+        <translation>Fournaise</translation>
     </message>
     <message>
         <source>Meteor</source>
-        <translation>メテオ</translation>
+        <translation>Météore</translation>
     </message>
     <message>
         <source>Quake</source>
-        <translation>クエイク</translation>
+        <translation>Quake</translation>
     </message>
     <message>
         <source>Tornado</source>
-        <translation>トルネド</translation>
+        <translation>Tornade</translation>
     </message>
     <message>
         <source>Ultima</source>
-        <translation>アルテマ</translation>
+        <translation>Ultima</translation>
     </message>
     <message>
         <source>Apocalypse</source>
-        <translation>アポカリプス</translation>
+        <translation>Apocalypse</translation>
     </message>
     <message>
         <source>Cure</source>
-        <translation>ケアル</translation>
+        <translation>Soin</translation>
     </message>
     <message>
         <source>Cura</source>
-        <translation>ケアルラ</translation>
+        <translation>Soin+</translation>
     </message>
     <message>
         <source>Curaga</source>
-        <translation>ケアルガ</translation>
+        <translation>Soin Max</translation>
     </message>
     <message>
         <source>Life</source>
-        <translation>レイズ</translation>
+        <translation>Vie</translation>
     </message>
     <message>
         <source>Full-life</source>
-        <translation>アレイズ</translation>
+        <translation>Vie Max</translation>
     </message>
     <message>
         <source>Regen</source>
-        <translation>リジェネ</translation>
+        <translation>Récup</translation>
     </message>
     <message>
         <source>Esuna</source>
-        <translation>エスナ</translation>
+        <translation>Esuna</translation>
     </message>
     <message>
         <source>Dispel</source>
-        <translation>デスペル</translation>
+        <translation>Anti-sort</translation>
     </message>
     <message>
         <source>Protect</source>
-        <translation>プロテス</translation>
+        <translation>Carapace</translation>
     </message>
     <message>
         <source>Shell</source>
-        <translation>シェル</translation>
+        <translation>Blindage</translation>
     </message>
     <message>
         <source>Reflect</source>
-        <translation>リフレク</translation>
+        <translation>Boormg</translation>
     </message>
     <message>
         <source>Aura</source>
-        <translation>オーラ</translation>
+        <translation>Aura</translation>
     </message>
     <message>
         <source>Double</source>
-        <translation>ダブル</translation>
+        <translation>Double</translation>
     </message>
     <message>
         <source>Triple</source>
-        <translation>トリプル</translation>
+        <translation>Triple</translation>
     </message>
     <message>
         <source>Haste</source>
-        <translation>ヘイスト</translation>
+        <translation>Booster</translation>
     </message>
     <message>
         <source>Slow</source>
-        <translation>スロウ</translation>
+        <translation>Somni</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>ストップ</translation>
+        <translation>Stop</translation>
     </message>
     <message>
         <source>Blind</source>
-        <translation>ブライン</translation>
+        <translation>Cécité</translation>
     </message>
     <message>
         <source>Confuse</source>
-        <translation>コンフュ</translation>
+        <translation>Folie</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation>スリプル</translation>
+        <translation>Morphée</translation>
     </message>
     <message>
         <source>Silence</source>
-        <translation>サイレス</translation>
+        <translation>Aphasie</translation>
     </message>
     <message>
         <source>Break</source>
-        <translation>ブレイク</translation>
+        <translation>Mégalith</translation>
     </message>
     <message>
         <source>Death</source>
-        <translation>デス</translation>
+        <translation>Ankou</translation>
     </message>
     <message>
         <source>Drain</source>
-        <translation>ドレイン</translation>
+        <translation>Saignée</translation>
     </message>
     <message>
         <source>Pain</source>
-        <translation>ペイン</translation>
+        <translation>Supplice</translation>
     </message>
     <message>
         <source>Berserk</source>
-        <translation>バーサク</translation>
+        <translation>Furie</translation>
     </message>
     <message>
         <source>Float</source>
-        <translation>レビテト</translation>
+        <translation>Décubitus</translation>
     </message>
     <message>
         <source>Zombie</source>
-        <translation>ゾンビー</translation>
+        <translation>Zombie</translation>
     </message>
     <message>
         <source>Meltdown</source>
-        <translation>メルトン</translation>
+        <translation>Meltdown</translation>
     </message>
     <message>
         <source>Scan</source>
-        <translation>ライブラ</translation>
+        <translation>Scan</translation>
     </message>
     <message>
         <source>Full-cure</source>
-        <translation>フルケア</translation>
+        <translation>Joobu</translation>
     </message>
     <message>
         <source>Wall</source>
-        <translation>ウォール</translation>
+        <translation>Wall</translation>
     </message>
     <message>
         <source>Rapture</source>
-        <translation>レビテガ</translation>
+        <translation>Arkange</translation>
     </message>
     <message>
         <source>Percent</source>
-        <translation>パセント</translation>
+        <translation>Percent</translation>
     </message>
     <message>
         <source>Catastrophe</source>
-        <translation>カタスト</translation>
+        <translation>Catastrophe</translation>
     </message>
     <message>
         <source>The End</source>
-        <translation>ジエンド</translation>
+        <translation>The End</translation>
     </message>
 </context>
 <context>
     <name>EncounterWidget</name>
     <message>
+        <source>Formation</source>
+        <translation type="vanished">Formation</translation>
+    </message>
+    <message>
+        <source>Mode?</source>
+        <translation type="vanished">Mode ?</translation>
+    </message>
+    <message>
         <source>Encounters</source>
-        <translation type="unfinished">Encounters</translation>
+        <translation>Rencontres aléatoires</translation>
     </message>
     <message>
         <source>Formations</source>
-        <translation type="unfinished">Formations</translation>
+        <translation>Formations</translation>
     </message>
     <message>
         <source>Rate</source>
-        <translation type="unfinished">Rate</translation>
+        <translation>Fréquence</translation>
     </message>
     <message>
         <source>Low</source>
-        <translation type="unfinished">Low</translation>
+        <translation>Basse</translation>
     </message>
     <message>
         <source>High</source>
-        <translation type="unfinished">High</translation>
+        <translation>Haute</translation>
     </message>
     <message>
         <source>No fights</source>
-        <translation type="unfinished">No fights</translation>
+        <translation>Pas de combats</translation>
     </message>
 </context>
 <context>
     <name>FsDialog</name>
     <message>
         <source>Extract</source>
-        <translatorcomment>Extract</translatorcomment>
-        <translation>解凍</translation>
+        <translation>Extraire</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
         <comment>Extract</comment>
-        <translatorcomment>Ctrl+E</translatorcomment>
         <translation>Ctrl+E</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translatorcomment>Replace</translatorcomment>
-        <translation>上書き</translation>
+        <translation>Remplacer</translation>
     </message>
     <message>
         <source>Ctrl+R</source>
         <comment>Replace</comment>
-        <translatorcomment>Ctrl+R</translatorcomment>
         <translation>Ctrl+R</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translatorcomment>Add</translatorcomment>
-        <translation>追加</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translatorcomment>Remove</translatorcomment>
-        <translation>削除</translation>
-    </message>
-    <message>
-        <source>Add File</source>
-        <translation type="unfinished">Add File</translation>
-    </message>
-    <message>
-        <source>Add Directory</source>
-        <translation type="unfinished">Add Director</translation>
-    </message>
-    <message>
-        <source>Rename</source>
-        <translatorcomment>Rename</translatorcomment>
-        <translation>リネーム</translation>
-    </message>
-    <message>
-        <source>F2</source>
-        <comment>Rename</comment>
-        <translatorcomment>F2</translatorcomment>
-        <translation>F2</translation>
-    </message>
-    <message>
-        <source>Parent</source>
-        <translatorcomment>Parent</translatorcomment>
-        <translation>上へ</translation>
     </message>
     <message>
         <source>LZ4</source>
@@ -2025,1578 +1980,1462 @@ Dollet Harbor</source>
         <translation></translation>
     </message>
     <message>
+        <source>Add</source>
+        <translation>Ajouter</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Supprimer</translation>
+    </message>
+    <message>
+        <source>Add File</source>
+        <translation>Ajouter fichier</translation>
+    </message>
+    <message>
+        <source>Add Directory</source>
+        <translation>Ajouter dossier</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation>Renommer</translation>
+    </message>
+    <message>
+        <source>F2</source>
+        <comment>Rename</comment>
+        <translation>F2</translation>
+    </message>
+    <message>
+        <source>Parent</source>
+        <translation>Parent</translation>
+    </message>
+    <message>
         <source>Unknown</source>
-        <translation type="unfinished">Unknown</translation>
+        <translation>Inconnu</translation>
     </message>
     <message>
         <source>No</source>
-        <translatorcomment>No</translatorcomment>
-        <translation>いいえ</translation>
+        <translation>Non</translation>
     </message>
     <message>
         <source>Error</source>
-        <translatorcomment>Error</translatorcomment>
-        <translation>エラー</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>The file was not extracted!</source>
-        <translatorcomment>The file was not extracted!</translatorcomment>
-        <translation>ファイルを解凍できませんでした！</translation>
+        <translation>Le fichier n&apos;a pas été extrait !</translation>
     </message>
     <message>
         <source>The files were not extracted!</source>
-        <translatorcomment>The files were not extracted!</translatorcomment>
-        <translation>ファイルを解凍できませんでした！</translation>
+        <translation>Les fichiers n&apos;ont pas été extraits !</translation>
     </message>
     <message>
         <source>Would you compress file(s)?</source>
-        <translatorcomment>Would you compress file(s)?</translatorcomment>
-        <translation>ファイルを圧縮しますか？</translation>
+        <translation>Voulez-vous compresser le(s) fichier(s) ?</translation>
     </message>
     <message>
         <source>LZ4 (FF8 Remaster</source>
-        <translation type="obsolete">LZ4 (FF8 Remaster</translation>
+        <translation type="vanished">LZ4 (FF8 Remaster)</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translatorcomment>Cancel</translatorcomment>
-        <translation>キャンセル</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Extract...</source>
-        <translatorcomment>Extract...</translatorcomment>
-        <translation>解凍...</translation>
+        <translation>Extraction...</translation>
     </message>
     <message>
         <source>Replace...</source>
-        <translatorcomment>Replace...</translatorcomment>
-        <translation>上書き...</translation>
+        <translation>Remplacement...</translation>
     </message>
     <message>
         <source>Replacement error</source>
-        <translatorcomment>Replacement error</translatorcomment>
-        <translation>上書きエラー</translation>
+        <translation>Erreur de remplacement</translation>
     </message>
     <message>
         <source>Compression</source>
-        <translatorcomment>Compression</translatorcomment>
-        <translation>圧縮</translation>
+        <translation>Compression</translation>
+    </message>
+    <message>
+        <source>Would you compress the file?</source>
+        <translation type="vanished">Voulez-vous compresser le fichier ?</translation>
     </message>
     <message>
         <source>Add...</source>
-        <translatorcomment>Add...</translatorcomment>
-        <translation>追加...</translation>
+        <translation>Ajout...</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="vanished">Arrêter</translation>
     </message>
     <message>
         <source>Add error</source>
-        <translatorcomment>Add error</translatorcomment>
-        <translation>追加のエラー</translation>
+        <translation>Erreur d&apos;ajout</translation>
     </message>
     <message>
         <source>The file already exists</source>
-        <translatorcomment>The file already exists</translatorcomment>
-        <translation>同名ファイルが存在します</translation>
+        <translation>Le fichier existe déjà</translation>
     </message>
     <message>
         <source>The file already exists, do you want to replace it?</source>
-        <translatorcomment>The file already exists, do you want to replace it?</translatorcomment>
-        <translation>同名ファイルが存在します。上書きしますか？</translation>
+        <translation>Le fichier existe déjà, voulez-vous le remplacer ?</translation>
     </message>
     <message>
         <source>There was a problem for one or more files to add:
  - %1</source>
-        <translatorcomment>There was a problem for one or more files to add:
- - %1</translatorcomment>
-        <translation>ファイルの追加時に問題が発生しました:
+        <translation>Un problème est survenu pour un ou plusieurs des fichiers à ajouter :
  - %1</translation>
     </message>
     <message>
         <source>Do you want to delete the selected items?</source>
-        <translatorcomment>Do you want to delete the selected items?</translatorcomment>
-        <translation>選択アイテムを削除しますか？</translation>
+        <translation>Voulez-vous supprimer les éléments sélectionnés ?</translation>
     </message>
     <message>
         <source>Deleting...</source>
-        <translatorcomment>Deleting...</translatorcomment>
-        <translation>削除中...</translation>
+        <translation>Suppression...</translation>
     </message>
     <message>
         <source>Deleting error</source>
-        <translatorcomment>Deleting error</translatorcomment>
-        <translation>削除のエラー</translation>
+        <translation>Erreur de suppression</translation>
     </message>
     <message>
         <source>Rename error</source>
-        <translatorcomment>Rename error</translatorcomment>
-        <translation>リネームのエラー</translation>
+        <translation>Erreur de renommage</translation>
     </message>
     <message>
         <source>Illegal characters used (eg &apos;\&apos; or &apos;/&apos;)</source>
-        <translatorcomment>Illegal characters used (eg &apos;\&apos; or &apos;/&apos;)</translatorcomment>
-        <translation>不正な文字が使用されています (例 : &apos;\&apos; または &apos;/&apos;)</translation>
+        <translation>Caractères interdits utilisés (par exemple : &apos;\&apos; ou &apos;/&apos;)</translation>
     </message>
     <message>
         <source>Target directory</source>
-        <translation type="unfinished">Target directory</translation>
+        <translation>Dossier cible</translation>
     </message>
     <message>
         <source>LZ4 (FF8 Remaster)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>FsPreviewWidget</name>
     <message>
         <source>Image %1</source>
-        <translation type="unfinished">Image %1</translation>
+        <translation>Image %1</translation>
     </message>
     <message>
         <source>Palette %1</source>
-        <translation type="unfinished">Palette %1</translation>
+        <translation>Palette %1</translation>
     </message>
     <message>
         <source>Export All</source>
-        <translation type="unfinished">Export All</translation>
+        <translation>Exporter tout</translation>
     </message>
 </context>
 <context>
     <name>FsWidget</name>
     <message>
         <source>Files</source>
-        <translatorcomment>Files</translatorcomment>
-        <translation>ファイル</translation>
+        <translation>Fichiers</translation>
     </message>
     <message>
         <source>Size</source>
-        <translatorcomment>Size</translatorcomment>
-        <translation>サイズ</translation>
+        <translation>Taille</translation>
     </message>
     <message>
         <source>Compression</source>
-        <translation>圧縮</translation>
+        <translation>Compression</translation>
     </message>
 </context>
 <context>
     <name>JsmWidget</name>
     <message>
         <source>Warning: On this field scripts are in an old poorly recognized format. What you will read here may did not make sense.</source>
-        <translation type="unfinished">Warning: On this field scripts are in an old poorly recognized format. What you will read here may did not make sense.</translation>
+        <translation>Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n&apos;aura peut-être aucun sens.</translation>
     </message>
     <message>
         <source>Id</source>
-        <translatorcomment>Id</translatorcomment>
-        <translation>ID</translation>
+        <translation>Id</translation>
     </message>
     <message>
         <source>Entity</source>
-        <translatorcomment>Entity</translatorcomment>
-        <translation>グループ</translation>
+        <translation>Groupe</translation>
     </message>
     <message>
         <source>Exec</source>
-        <translation type="unfinished">Exec</translation>
+        <translation>Exec</translation>
     </message>
     <message>
         <source>Script</source>
-        <translatorcomment>Script</translatorcomment>
-        <translation>スクリプト</translation>
+        <translation>Script</translation>
     </message>
     <message>
         <source>Script label</source>
-        <translatorcomment>Script label</translatorcomment>
-        <translation>スクリプト ラベル</translation>
+        <translation>Script label</translation>
     </message>
     <message>
         <source>Instructions</source>
-        <translation type="unfinished">Instructions</translation>
+        <translation>Instructions</translation>
     </message>
     <message>
         <source>Pseudo-code</source>
-        <translation type="unfinished">Pseudo-code</translation>
+        <translation>Pseudo-code</translation>
     </message>
     <message>
         <source>Compile</source>
-        <translatorcomment>Compile</translatorcomment>
-        <translation>コンパイル</translation>
+        <translation>Compiler</translation>
     </message>
     <message>
         <source>Compile (Ctrl+B)</source>
-        <translatorcomment>Compile (Ctrl+B)</translatorcomment>
-        <translation>コンパイル (Ctrl+B)</translation>
+        <translation>Compiler (Ctrl+B)</translation>
     </message>
     <message>
         <source>Line %1 -&gt; %2</source>
-        <translatorcomment>Line %1 -&gt; %2</translatorcomment>
-        <translation>行 %1 -&gt; %2</translation>
+        <translation>Ligne %1 -&gt; %2</translation>
     </message>
     <message>
         <source>Successfully compiled</source>
-        <translatorcomment>Successfully compiled</translatorcomment>
-        <translation>コンパイルを完了しました</translation>
+        <translation>Compilé avec succès</translation>
     </message>
     <message>
         <source>Scripts</source>
-        <translation>スクリプト</translation>
+        <translation>Scripts</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>&amp;File</source>
-        <translatorcomment>&amp;File</translatorcomment>
-        <translation>ファイル(&amp;F)</translation>
+        <translation>&amp;Fichier</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
-        <translatorcomment>&amp;Open...</translatorcomment>
-        <translation>開く(&amp;O)...</translation>
+        <translation>&amp;Ouvrir...</translation>
     </message>
     <message>
         <source>Change game language</source>
-        <translation type="unfinished">Change game language</translation>
+        <translation>Changer la langue du jeu</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translatorcomment>&amp;Save</translatorcomment>
-        <translation>保存(&amp;S)</translation>
+        <translation>Enregi&amp;strer</translation>
     </message>
     <message>
         <source>Sa&amp;ve As...</source>
-        <translatorcomment>Sa&amp;ve As...</translatorcomment>
-        <translation>名前を付けて保存(&amp;A)...</translation>
+        <translation>Enre&amp;gistrer Sous...</translation>
     </message>
     <message>
         <source>Export...</source>
-        <translation type="unfinished">Export...</translation>
+        <translation>Exporter...</translation>
     </message>
     <message>
         <source>Export All</source>
-        <translation type="unfinished">Export All</translation>
+        <translation>Exporter tout</translation>
     </message>
     <message>
         <source>Scripts...</source>
-        <translation type="unfinished">Scripts...</translation>
+        <translation>Scripts...</translation>
     </message>
     <message>
         <source>Random Encounters...</source>
-        <translation type="unfinished">Random Encounters...</translation>
+        <translation>Rencontres aléatoires...</translation>
     </message>
     <message>
         <source>Backgrounds...</source>
-        <translation type="unfinished">Backgrounds...</translation>
+        <translation>Décors...</translation>
     </message>
     <message>
         <source>Import...</source>
-        <translation type="obsolete">Import...</translation>
+        <translation type="vanished">Importer...</translation>
     </message>
     <message>
         <source>Optimize the archive...</source>
-        <translatorcomment>Optimize the archive...</translatorcomment>
-        <translation>アーカイブの最適化...</translation>
+        <translation>Optimiser l&apos;archive...</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translatorcomment>Fullscreen</translatorcomment>
-        <translation>フルスクリーン</translation>
+        <translation>Plein écran</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translatorcomment>C&amp;lose</translatorcomment>
-        <translation>閉じる(&amp;L)</translation>
+        <translation>Fe&amp;rmer</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translatorcomment>&amp;Quit</translatorcomment>
-        <translation>終了(&amp;Q)</translation>
+        <translation>&amp;Quitter</translation>
     </message>
     <message>
         <source>T&amp;ools</source>
-        <translatorcomment>T&amp;ools</translatorcomment>
-        <translation>ツール(&amp;O)</translation>
+        <translation>&amp;Outils</translation>
     </message>
     <message>
         <source>Fi&amp;nd...</source>
-        <translatorcomment>Fi&amp;nd...</translatorcomment>
-        <translation>検索(&amp;F)...</translation>
+        <translation>Rec&amp;hercher...</translation>
     </message>
     <message>
         <source>&amp;Var manager...</source>
-        <translatorcomment>&amp;Var manager...</translatorcomment>
-        <translation>変数マネージャー(&amp;V)...</translation>
+        <translation>&amp;Var manager...</translation>
     </message>
     <message>
         <source>&amp;Launch FF8...</source>
-        <translatorcomment>&amp;Launch FF8...</translatorcomment>
-        <translation>FF8 の起動(&amp;L)...</translation>
+        <translation>&amp;Lancer FF8...</translation>
     </message>
     <message>
         <source>Op&amp;tions</source>
-        <translatorcomment>Op&amp;tions</translatorcomment>
-        <translation>オプション(&amp;T)</translation>
+        <translation>Op&amp;tions</translation>
     </message>
     <message>
         <source>&amp;Main Toolbar</source>
-        <translatorcomment>&amp;Main Toolbar</translatorcomment>
-        <translation>メイン ツールバー(&amp;T)</translation>
+        <translation>Barre d&apos;outils &amp;principale</translation>
     </message>
     <message>
         <source>#</source>
-        <translatorcomment>#</translatorcomment>
         <translation>#</translation>
     </message>
     <message>
         <source>File</source>
-        <translatorcomment>File</translatorcomment>
-        <translation>ファイル</translation>
+        <translation>Fichier</translation>
     </message>
     <message>
         <source>Description</source>
-        <translatorcomment>Description</translatorcomment>
-        <translation>説明</translation>
+        <translation>Description</translation>
     </message>
     <message>
         <source>Quick Search</source>
-        <translatorcomment>Quick Search</translatorcomment>
-        <translation>クイック検索</translation>
+        <translation>Recherche rapide</translation>
     </message>
     <message>
         <source>An error occurred when saving.</source>
-        <translation type="unfinished">An error occurred when saving.</translation>
+        <translation>Une erreur s&apos;est produite lors de l&apos;enregistrement.</translation>
     </message>
     <message>
         <source>Script names field PC file (*.sym)</source>
-        <translation type="unfinished">Script names field PC file (*.sym)</translation>
+        <translation>Fichier nom des scripts écran PC (*.sym)</translation>
+    </message>
+    <message>
+        <source>By myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;li&gt;MaKiPL&lt;/li&gt;&lt;/ul&gt;</source>
+        <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;/ul&gt;</oldsource>
+        <translation type="vanished">Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;li&gt;MaKiPL&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
         <source>English</source>
         <comment>Your translation language</comment>
-        <translatorcomment>English</translatorcomment>
-        <translation>Japanese (日本語)</translation>
+        <translation>Français</translation>
     </message>
     <message>
         <source>Settings changed</source>
-        <translatorcomment>Settings changed</translatorcomment>
-        <translation>設定の変更</translation>
+        <translation>Paramètres modifiés</translation>
     </message>
     <message>
         <source>Restart the program for the settings to take effect.</source>
-        <translatorcomment>Restart the program for the settings to take effect.</translatorcomment>
-        <translation>設定の変更を有効化するためにプログラムを再起動してください。</translation>
+        <translation>Relancez le programme pour que les paramètres prennent effet.</translation>
     </message>
     <message>
         <source>Error</source>
-        <translatorcomment>Error</translatorcomment>
-        <translation>エラー</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>Save</source>
-        <translatorcomment>Save</translatorcomment>
-        <translation>保存</translation>
+        <translation>Sauvegarder</translation>
     </message>
     <message>
         <source>Would you like to save changes of %1?</source>
-        <translatorcomment>Would you like to save changes of %1?</translatorcomment>
-        <translation>%1 の変更を保存しますか？</translation>
+        <translation>Voulez-vous enregistrer les changements de %1 ?</translation>
     </message>
     <message>
         <source>Import/Export</source>
-        <translatorcomment>Import/Export</translatorcomment>
-        <translation>インポート/エクスポート</translation>
+        <translation>Import/Export</translation>
     </message>
     <message>
         <source>&amp;?</source>
-        <translation type="unfinished">&amp;?</translation>
+        <translation>&amp;?</translation>
     </message>
     <message>
         <source>Opening...</source>
-        <translatorcomment>Opening...</translatorcomment>
-        <translation>読み込んでいます...</translation>
+        <translation>Ouverture...</translation>
     </message>
     <message>
         <source>Opening error</source>
-        <translation type="unfinished">Opening error</translation>
+        <translation>Erreur d&apos;ouverture</translation>
     </message>
     <message>
         <source>Open a file</source>
-        <translatorcomment>Open a file</translatorcomment>
-        <translation>ファイルを開く</translation>
+        <translation>Ouvrir un fichier</translation>
     </message>
     <message>
         <source>Save As</source>
-        <translatorcomment>Save As</translatorcomment>
-        <translation>名前を付けて保存</translation>
+        <translation>Enregistrer Sous</translation>
     </message>
     <message>
         <source>FS Archive (*.fs)</source>
-        <translatorcomment>FS Archive (*.fs)</translatorcomment>
-        <translation>FS アーカイブ (*.fs)</translation>
+        <translation>Archive FS (*.fs)</translation>
     </message>
     <message>
         <source>Save...</source>
-        <translatorcomment>Save...</translatorcomment>
-        <translation>保存...</translation>
+        <translation>Enregistrement...</translation>
+    </message>
+    <message>
+        <source>An error occurred when saving the archive.</source>
+        <translation type="vanished">Une erreur s&apos;est produite lors de l&apos;enregistrement de l&apos;archive.</translation>
     </message>
     <message>
         <source>This field does not contains enough information to be exported.</source>
-        <translation type="unfinished">This field does not contains enough information to be exported.</translation>
+        <translation>Cet écran ne contient pas assez d&apos;éléments pour être exporté.</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished">Export</translation>
+        <translation>Exporter</translation>
     </message>
     <message>
         <source>This field does not contains enough information to be imported.</source>
-        <translation type="unfinished">This field does not contains enough information to be imported.</translation>
+        <translation>Cet écran ne contient pas assez d&apos;éléments pour être importé.</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished">Import</translation>
+        <translation>Importer</translation>
     </message>
     <message>
         <source>About optimization</source>
-        <translatorcomment>About optimization</translatorcomment>
-        <translation>最適化について</translation>
+        <translation>À propos de l&apos;optimisation</translation>
     </message>
     <message>
         <source>The optimizer will modify the archive file order to allow an opening much faster with Deling.
 It is strongly recommended to save the archive (fs, fi and fl) before continuing.</source>
-        <translatorcomment>The optimizer will modify the archive file order to allow an opening much faster with Deling.
-It is strongly recommended to save the archive (fs, fi and fl) before continuing.</translatorcomment>
-        <translation>最適化はアーカイブ ファイルの順序を変更して Deling がより高速にファイルを読み込めるようにします。
-続行する前にアーカイブ (fs, fi, fl ファイル) をいったん保存しておくことを推奨します。</translation>
+        <translation>L&apos;optimiseur d&apos;archive va modifier l&apos;ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.
+Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de continuer.</translation>
     </message>
     <message>
         <source>Optimization...</source>
-        <translatorcomment>Optimization...</translatorcomment>
-        <translation>最適化...</translation>
+        <translation>Optimisation...</translation>
     </message>
     <message>
         <source>Final Fantasy VIII could not be launched.
 %1</source>
-        <translatorcomment>Final Fantasy VIII could not be launched.
-%1</translatorcomment>
-        <translation>Final Fantasy VIII を起動できませんでした。
+        <translation>Final Fantasy VIII n&apos;a pas pu être lancé.
 %1</translation>
     </message>
     <message>
         <source>Import all</source>
-        <translation type="unfinished">Import all</translation>
+        <translation>Importer tout</translation>
     </message>
     <message>
         <source>CSV File (*.csv)</source>
-        <translation type="unfinished">CSV File (*.csv)</translation>
+        <translation>Fichier CSV (*.csv)</translation>
     </message>
     <message>
         <source>Importing...</source>
-        <translation type="unfinished">Importing...</translation>
+        <translation>Import...</translation>
     </message>
     <message>
         <source>Texts...</source>
-        <translation type="unfinished">Texts...</translation>
+        <translation>Textes...</translation>
     </message>
     <message>
         <source>Unable to open the file
 &apos;%1&apos;
 Error message:
 %2</source>
-        <translation type="unfinished">Unable to open the file
+        <translation>Impossible d&apos;ouvrir le fichier
 &apos;%1&apos;
-Error message:
+Message d&apos;erreur :
 %2</translation>
     </message>
     <message>
         <source>Unable to open the file
 &apos;%1&apos;</source>
-        <translation type="unfinished">Unable to open the file
+        <translation>Impossible d&apos;ouvrir le fichier
 &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Compatible File (*.fs *.iso *.bin *.msd *.jsm);;FS Archive (*.fs);;Image Disk File (*.iso *.bin);;FF8 text files (*.msd);;FF8 field script files (*.jsm)</source>
-        <translation type="unfinished">Compatible File (*.fs *.iso *.bin *.msd *.jsm);;FS Archive (*.fs);;Image Disk File (*.iso *.bin);;FF8 text files (*.msd);;FF8 field script files (*.jsm)</translation>
+        <translation>Fichiers compatibles (*.fs *.iso *.bin *.msd *.jsm);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin);;Fichiers FF8 text (*.msd);;Fichiers FF8 field script (*.jsm)</translation>
     </message>
     <message>
         <source>&amp;Recent Files</source>
-        <translation type="unfinished">&amp;Recent Files</translation>
+        <translation>Fichiers &amp;récents</translation>
     </message>
     <message>
         <source>FF8 text files (*.msd)</source>
-        <translation type="unfinished">FF8 text files (*.msd)</translation>
+        <translation>Fichiers FF8 text (*.msd)</translation>
     </message>
     <message>
         <source>FF8 field script files (*.jsm)</source>
-        <translation type="unfinished">FF8 field script files (*.jsm)</translation>
+        <translation>Fichiers FF8 field script (*.jsm)</translation>
     </message>
 </context>
 <context>
     <name>MiscSearch</name>
     <message>
         <source>Find All</source>
-        <translatorcomment>Find All</translatorcomment>
-        <translation>すべて検索</translation>
+        <translation>Rechercher tout</translation>
     </message>
 </context>
 <context>
     <name>MiscWidget</name>
     <message>
         <source>Name:</source>
-        <translatorcomment>Name:</translatorcomment>
-        <translation>名称 :</translation>
+        <translation>Nom :</translation>
     </message>
     <message>
         <source>PMP:</source>
-        <translatorcomment>PMP:</translatorcomment>
-        <translation>PMP:</translation>
+        <translation>PMP :</translation>
     </message>
     <message>
         <source>PMD:</source>
-        <translatorcomment>PMD:</translatorcomment>
-        <translation>PMD:</translation>
+        <translation>PMD :</translation>
     </message>
     <message>
         <source>PVP (1):</source>
         <oldsource>PVP :</oldsource>
-        <translatorcomment>PVP (1):</translatorcomment>
-        <translation>PVP (1):</translation>
+        <translation>PVP (1) :</translation>
     </message>
     <message>
         <source>PVP (2):</source>
-        <translatorcomment>PVP (2):</translatorcomment>
-        <translation>PVP (2):</translation>
+        <translation>PVP (2) :</translation>
     </message>
     <message>
         <source>PMP: particles data</source>
-        <translatorcomment>PMP: particles data</translatorcomment>
-        <translation type="unfinished">PMP: particles data</translation>
+        <translation>PMP : données particules</translation>
     </message>
     <message>
         <source>Palette %1</source>
-        <translatorcomment>Palette %1</translatorcomment>
-        <translation type="unfinished">Palette %1</translation>
+        <translation>Palette %1</translation>
     </message>
     <message>
         <source>Miscellaneous</source>
-        <translatorcomment>Miscellaneous</translatorcomment>
-        <translation type="unfinished">Miscellaneous</translation>
+        <translation>Divers</translation>
     </message>
 </context>
 <context>
     <name>MsdWidget</name>
     <message>
         <source>New page</source>
-        <translatorcomment>New page</translatorcomment>
-        <translation>新しいページ</translation>
+        <translation>Nouvelle page</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translatorcomment>Pause</translatorcomment>
-        <translation>ポーズ</translation>
+        <translation>Pause</translation>
     </message>
     <message>
         <source>Dark grey</source>
-        <translatorcomment>Dark grey</translatorcomment>
-        <translation>ダーク グレイ</translation>
+        <translation>Gris foncé</translation>
     </message>
     <message>
         <source>Grey</source>
-        <translatorcomment>Grey</translatorcomment>
-        <translation>グレイ</translation>
+        <translation>Gris</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translatorcomment>Yellow</translatorcomment>
-        <translation>黄色</translation>
+        <translation>Jaune</translation>
     </message>
     <message>
         <source>Red</source>
-        <translatorcomment>Red</translatorcomment>
-        <translation>赤</translation>
+        <translation>Rouge</translation>
     </message>
     <message>
         <source>Green</source>
-        <translatorcomment>Green</translatorcomment>
-        <translation>緑</translation>
+        <translation>Vert</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translatorcomment>Blue</translatorcomment>
-        <translation>青</translation>
+        <translation>Bleu</translation>
     </message>
     <message>
         <source>Purple</source>
-        <translatorcomment>Purple</translatorcomment>
-        <translation>紫</translation>
+        <translation>Violet</translation>
     </message>
     <message>
         <source>White</source>
-        <translatorcomment>White</translatorcomment>
-        <translation>白</translation>
+        <translation>Blanc</translation>
     </message>
     <message>
         <source>Dark grey blink</source>
-        <translatorcomment>Dark grey blink</translatorcomment>
-        <translation>点滅 (ダーク グレー)</translation>
+        <translation>Gris foncé clignotant</translation>
     </message>
     <message>
         <source>Grey blink</source>
-        <translatorcomment>Grey blink</translatorcomment>
-        <translation>点滅 (グレー)</translation>
+        <translation>Gris clignotant</translation>
     </message>
     <message>
         <source>Yellow blink</source>
-        <translatorcomment>Yellow blink</translatorcomment>
-        <translation>点滅 (黄)</translation>
+        <translation>Jaune clignotant</translation>
     </message>
     <message>
         <source>Red blink</source>
-        <translatorcomment>Red blink</translatorcomment>
-        <translation>点滅 (赤)</translation>
+        <translation>Rouge clignotant</translation>
     </message>
     <message>
         <source>Green blink</source>
-        <translatorcomment>Green blink</translatorcomment>
-        <translation>点滅 (緑)</translation>
+        <translation>Vert clignotant</translation>
     </message>
     <message>
         <source>Blue blink</source>
-        <translatorcomment>Blue blink</translatorcomment>
-        <translation>点滅 (青)</translation>
+        <translation>Bleu clignotant</translation>
     </message>
     <message>
         <source>Purple blink</source>
-        <translatorcomment>Purple blink</translatorcomment>
-        <translation>点滅 (紫)</translation>
+        <translation>Violet clignotant</translation>
     </message>
     <message>
         <source>White blink</source>
-        <translatorcomment>White blink</translatorcomment>
-        <translation>点滅 (白)</translation>
+        <translation>Blanc clignotant</translation>
     </message>
     <message>
         <source>Locations</source>
-        <translatorcomment>Locations</translatorcomment>
-        <translation>場所</translation>
+        <translation>Lieux</translation>
     </message>
     <message>
         <source>Galbadia</source>
-        <translatorcomment>Galbadia</translatorcomment>
-        <translation>ガルバディア</translation>
+        <translation>Galbadia</translation>
     </message>
     <message>
         <source>Insert text above</source>
-        <translation type="unfinished">Insert text above</translation>
+        <translation>Insérer un texte au-dessus</translation>
     </message>
     <message>
         <source>Insert text below</source>
-        <translation type="unfinished">Insert text below</translation>
+        <translation>Insérer un texte en dessous</translation>
     </message>
     <message>
         <source>Esthar</source>
-        <translatorcomment>Esthar</translatorcomment>
-        <translation>エスタ</translation>
+        <translation>Esthar</translation>
     </message>
     <message>
         <source>Balamb</source>
-        <translatorcomment>Balamb</translatorcomment>
-        <translation>バラム</translation>
+        <translation>Balamb</translation>
     </message>
     <message>
         <source>Timber</source>
-        <translatorcomment>Timber</translatorcomment>
-        <translation>ティンバー</translation>
+        <translation>Timber</translation>
     </message>
     <message>
         <source>Trabia</source>
-        <translatorcomment>Trabia</translatorcomment>
-        <translation>トラビア</translation>
+        <translation>Trabia</translation>
     </message>
     <message>
         <source>Centra</source>
-        <translatorcomment>Centra</translatorcomment>
-        <translation>セントラ</translation>
+        <translation>Centra</translation>
     </message>
     <message>
         <source>F. Horizon</source>
-        <translatorcomment>F. Horizon</translatorcomment>
-        <translation>Ｆ．Ｈ．</translation>
+        <translation>Horizon</translation>
     </message>
     <message>
         <source>Var</source>
-        <translatorcomment>Var</translatorcomment>
-        <translation>変数</translation>
+        <translation>Var</translation>
     </message>
     <message>
         <source>Var0</source>
-        <translatorcomment>Var0</translatorcomment>
         <translation>Var0</translation>
     </message>
     <message>
         <source>Var00</source>
-        <translatorcomment>Var00</translatorcomment>
         <translation>Var00</translation>
     </message>
     <message>
         <source>Varb0</source>
-        <translatorcomment>Varb0</translatorcomment>
         <translation>Varb0</translation>
     </message>
     <message>
         <source>Keys</source>
-        <translatorcomment>Keys</translatorcomment>
-        <translation>キー</translation>
+        <translation>Touches</translation>
     </message>
     <message>
         <source>L2</source>
-        <translatorcomment>L2</translatorcomment>
         <translation>L2</translation>
     </message>
     <message>
+        <source>Add text</source>
+        <translation type="vanished">Ajouter un texte</translation>
+    </message>
+    <message>
         <source>Remove text</source>
-        <translatorcomment>Remove text</translatorcomment>
-        <translation>テキストの削除</translation>
+        <translation>Supprimer un texte</translation>
     </message>
     <message>
         <source>R2</source>
-        <translatorcomment>R2</translatorcomment>
         <translation>R2</translation>
     </message>
     <message>
         <source>L1</source>
-        <translatorcomment>L1</translatorcomment>
         <translation>L1</translation>
     </message>
     <message>
         <source>R1</source>
-        <translatorcomment>R1</translatorcomment>
         <translation>R1</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translatorcomment>Triangle</translatorcomment>
-        <translation>△</translation>
+        <translation>Triangle</translation>
     </message>
     <message>
         <source>Circle</source>
-        <translatorcomment>Circle</translatorcomment>
-        <translation>○</translation>
+        <translation>Rond</translation>
     </message>
     <message>
         <source>Cross</source>
-        <translatorcomment>Cross</translatorcomment>
-        <translation>×</translation>
+        <translation>Croix</translation>
     </message>
     <message>
         <source>Square</source>
-        <translatorcomment>Square</translatorcomment>
-        <translation>□</translation>
+        <translation>Carré</translation>
     </message>
     <message>
         <source>Select</source>
-        <translatorcomment>Select</translatorcomment>
         <translation>Select</translation>
     </message>
     <message>
         <source>Start</source>
-        <translatorcomment>Start</translatorcomment>
         <translation>Start</translation>
     </message>
     <message>
         <source>Up</source>
-        <translatorcomment>Up</translatorcomment>
-        <translation>上</translation>
+        <translation>Haut</translation>
     </message>
     <message>
         <source>Right</source>
-        <translatorcomment>Right</translatorcomment>
-        <translation>右</translation>
+        <translation>Droite</translation>
     </message>
     <message>
         <source>Down</source>
-        <translatorcomment>Down</translatorcomment>
-        <translation>下</translation>
+        <translation>Bas</translation>
     </message>
     <message>
         <source>left</source>
-        <translatorcomment>left</translatorcomment>
-        <translation>左</translation>
+        <translation>Gauche</translation>
     </message>
     <message>
         <source>Special Characters</source>
-        <translation type="unfinished">Special Characters</translation>
+        <translation>Caractères spéciaux</translation>
     </message>
     <message>
         <source>X</source>
-        <translatorcomment>X</translatorcomment>
         <translation>X</translation>
     </message>
     <message>
         <source>Y</source>
-        <translatorcomment>Y</translatorcomment>
         <translation>Y</translation>
     </message>
     <message>
         <source>Text %1</source>
-        <translatorcomment>Text %1</translatorcomment>
-        <translation>テキスト %1</translation>
+        <translation>Texte %1</translation>
     </message>
     <message>
         <source>Page %1/%2</source>
-        <translatorcomment>Page %1/%2</translatorcomment>
-        <translation>ページ %1/%2</translation>
+        <translation>Page %1/%2</translation>
     </message>
     <message>
         <source>Window %1/%2</source>
-        <translatorcomment>Window %1/%2</translatorcomment>
-        <translation>ウィンドウ %1/%2</translation>
+        <translation>Fenêtre %1/%2</translation>
     </message>
     <message>
         <source>Texts</source>
-        <translation>テキスト</translation>
+        <translation>Textes</translation>
     </message>
 </context>
 <context>
     <name>OrientationWidget</name>
     <message>
         <source>Right</source>
-        <translation type="unfinished">右</translation>
+        <translation>Droite</translation>
     </message>
 </context>
 <context>
     <name>ProgressWidget</name>
     <message>
         <source>Cancel</source>
-        <translation>キャンセル</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>中止</translation>
+        <translation>Arrêter</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Invalid file format</source>
-        <translatorcomment>Invalid file format</translatorcomment>
-        <translation>無効なファイル フォーマット</translation>
+        <translation>Format de fichier invalide</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation>不明なエラー</translation>
+        <translation>Erreur inconnue</translation>
     </message>
     <message>
         <source>Error</source>
-        <translatorcomment>Error</translatorcomment>
-        <translation>エラー</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>Operation successfully completed!</source>
-        <translatorcomment>Operation successfully completed!</translatorcomment>
-        <translation>操作を完了しました！</translation>
+        <translation>Opération réalisée avec succès !</translation>
     </message>
     <message>
         <source>The Fs archive can not be modified, check your rights in writing.</source>
-        <translatorcomment>The Fs archive can not be modified, check your rights in writing.</translatorcomment>
-        <translation>FS アーカイブの書き換えができません！ 書き込み権限を確認してください。</translation>
+        <translation>L&apos;archive Fs ne peut pas être modifiée, vérifiez vos droits en écriture.</translation>
     </message>
     <message>
         <source>The source file cannot be opened%1.</source>
-        <translatorcomment>The source file cannot be opened%1.</translatorcomment>
-        <translation>ソース ファイルが開けません %1。</translation>
+        <translation>Le fichier source ne peut pas être ouvert%1.</translation>
     </message>
     <message>
         <source>The temps file cannont be opened%1.</source>
-        <translatorcomment>The temps file cannont be opened%1.</translatorcomment>
-        <translation>一時ファイルが開けません %1。</translation>
+        <translation>Le fichier temp ne peut pas être ouvert%1.</translation>
     </message>
     <message>
         <source>The target file cannot be opened%1.</source>
-        <translatorcomment>The target file cannot be opened%1.</translatorcomment>
-        <translation>ターゲット ファイルが開けません %1。</translation>
+        <translation>Le fichier cible ne peut pas être ouvert%1.</translation>
     </message>
     <message>
         <source>Error while creating files &apos;*.fi&apos; and &apos;*.fl&apos;.</source>
-        <translatorcomment>Error while creating files &apos;*.fi&apos; and &apos;*.fl&apos;.</translatorcomment>
-        <translation>&apos;*.fi&apos; ファイル, &apos;*.fl&apos; ファイルの作成エラー。</translation>
+        <translation>Erreur lors de la création des fichiers &apos;*.fi&apos; et &apos;*.fl&apos;.</translation>
     </message>
     <message>
         <source>Error while saving the archive Fs%1.</source>
-        <translatorcomment>Error while saving the archive Fs%1.</translatorcomment>
-        <translation>FS アーカイブの保存エラーが発生しました %1.</translation>
+        <translation>Erreur lors de la sauvegarde de l&apos;archive Fs%1.</translation>
     </message>
     <message>
         <source>This file already exists in the archive%1.</source>
-        <translatorcomment>This file already exists in the archive%1.</translatorcomment>
-        <translation>このファイルはすでにアーカイブに存在します %1。</translation>
+        <translation>Ce fichier existe déjà dans l&apos;archive%1.</translation>
     </message>
     <message>
         <source>This file does not exists in the archive%1.</source>
-        <translatorcomment>This file does not exists in the archive%1.</translatorcomment>
-        <translation>このファイルはすでにアーカイブには存在しません %1。</translation>
+        <translation>Ce fichier n&apos;existe pas dans l&apos;archive%1.</translation>
     </message>
     <message>
         <source>This file is empty%1.</source>
-        <translatorcomment>This file is empty%1.</translatorcomment>
-        <translation>このファイルは空ファイルです %1.</translation>
+        <translation>Ce fichier est vide%1.</translation>
     </message>
     <message>
         <source>Operation canceled.</source>
-        <translatorcomment>Operation canceled.</translatorcomment>
-        <translation>操作をキャンセルしました。</translation>
+        <translation>Opération annulée.</translation>
     </message>
     <message>
         <source>Unknown error.</source>
-        <translatorcomment>Unknown error.</translatorcomment>
-        <translation>不明なエラー。</translation>
+        <translation>Erreur inconnue.</translation>
     </message>
     <message>
         <source>Too many arguments</source>
-        <translatorcomment>Too many arguments</translatorcomment>
-        <translation>引数が多すぎます</translation>
+        <translation>Trop d&apos;arguments</translation>
     </message>
     <message>
         <source>Unable to convert to integer after &apos;LABEL&apos;: %1</source>
-        <translatorcomment>Unable to convert to integer after &apos;LABEL&apos;: %1</translatorcomment>
-        <translation>&apos;LABEL&apos; のあとに整数への変換はできません : %1</translation>
+        <translation>Conversion en entier impossible après &apos;LABEL&apos; : %1</translation>
     </message>
     <message>
         <source>&apos;LABEL %1&apos; already declared.</source>
-        <translatorcomment>&apos;LABEL %1&apos; already declared.</translatorcomment>
-        <translation>&apos;LABEL %1&apos; はすでに宣言されています。</translation>
+        <translation>&apos;LABEL%1&apos; déjà déclaré précédemment.</translation>
     </message>
     <message>
         <source>Unknown opcode: %1</source>
-        <translatorcomment>Unknown opcode: %1</translatorcomment>
-        <translation>不明なオプコード: %1</translation>
+        <translation>Opcode non reconnu : %1</translation>
     </message>
     <message>
         <source>This opcode can not have parameters: %1</source>
-        <translatorcomment>This opcode can not have parameters: %1</translatorcomment>
-        <translation>このオプコードにはパラメータを渡せません: %1</translation>
+        <translation>Cet opcode ne peut pas avoir de paramètre : %1</translation>
     </message>
     <message>
         <source>Unknown operation: %1</source>
-        <translatorcomment>Unknown operation: %1</translatorcomment>
-        <translation>不明なオペレーション: %1</translation>
+        <translation>Opération non reconnue : %1</translation>
     </message>
     <message>
         <source>Unable to convert to integer: %1</source>
-        <translatorcomment>Unable to convert to integer: %1</translatorcomment>
-        <translation>整数に変換できません: %1</translation>
+        <translation>Conversion en entier impossible : %1</translation>
     </message>
     <message>
         <source>Unable to convert to integer after &apos;VAR&apos;: %1</source>
-        <translation type="unfinished">整数に変換できません: %1</translation>
+        <translation>Conversion en entier impossible après &apos;VAR&apos; : %1</translation>
     </message>
     <message>
         <source>Unable to convert to integer after &apos;TEMP&apos;: %1</source>
-        <translation type="unfinished">整数に変換できません: %1</translation>
+        <translation>Conversion en entier impossible après &apos;TEMP&apos; : %1</translation>
     </message>
     <message>
         <source>Unable to convert to integer after &apos;MODEL&apos;: %1</source>
-        <translation type="unfinished">Unable to convert to integer after &apos;MODEL&apos;: %1</translation>
+        <translation>Conversion en entier impossible après &apos;MODEL&apos; : %1</translation>
     </message>
     <message>
         <source>&apos;LABEL %1&apos; undefined.</source>
-        <translatorcomment>&apos;LABEL %1&apos; undefined.</translatorcomment>
-        <translation>&apos;LABEL %1&apos; が未定義です。</translation>
+        <translation>&apos;LABEL%1&apos; indéfini.</translation>
     </message>
     <message>
         <source>Unable to open the archive.</source>
-        <translation type="unfinished">Unable to open the archive.</translation>
+        <translation>Impossible d&apos;ouvrir l&apos;archive.</translation>
     </message>
     <message>
         <source>Opening canceled.</source>
-        <translation type="unfinished">Opening canceled.</translation>
+        <translation>Ouverture annulée.</translation>
     </message>
     <message>
         <source>No field found.</source>
-        <translation type="unfinished">No field found.</translation>
+        <translation>Aucun écran trouvé.</translation>
     </message>
     <message>
         <source>Can not open the disk image file. (%1)</source>
-        <translation type="unfinished">Can not open the disk image file. (%1)</translation>
+        <translation>Impossible d&apos;ouvrir le fichier image disque. (%1)</translation>
     </message>
     <message>
         <source>FF8DISC?.IMG File not found.</source>
-        <translation type="unfinished">FF8DISC?.IMG File not found.</translation>
+        <translation>Fichier FF8DISC?.IMG introuvable.</translation>
     </message>
     <message>
         <source>Unable to open the field dir.</source>
-        <translation type="unfinished">Unable to open the field dir.</translation>
+        <translation>Impossible d&apos;ouvrir le dossier field.</translation>
     </message>
     <message>
         <source>Saving data</source>
-        <translation type="unfinished">Saving data</translation>
+        <translation>Enregistrement des données</translation>
     </message>
     <message>
         <source>Fonts could not be saved!</source>
-        <translation type="unfinished">Fonts could not be saved!</translation>
+        <translation>Les polices de caractères n&apos;ont pas pu être enregistrées !</translation>
     </message>
     <message>
         <source>Field camera PC File (*.ca)</source>
-        <translation type="unfinished">Field camera PC File (*.ca)</translation>
+        <translation>Fichier caméra écran PC (*.ca)</translation>
     </message>
     <message>
         <source>Field walkmesh PC File (*.id)</source>
-        <translation type="unfinished">Field walkmesh PC File (*.id)</translation>
+        <translation>Fichier walkmesh écran PC (*.id)</translation>
     </message>
     <message>
         <source>Field gate and doors PC File (*.inf)</source>
-        <translation type="unfinished">Field gate and doors PC File (*.inf)</translation>
+        <translation>Fichier passages et portes écran PC (*.inf)</translation>
     </message>
     <message>
         <source>Field Script PC file (*.jsm)</source>
-        <translation type="unfinished">Field Script PC file (*.jsm)</translation>
+        <translation>Fichier scripts écran PC (*.jsm)</translation>
     </message>
     <message>
         <source>Field 3D model file (*.mch)</source>
-        <translation type="unfinished">Field 3D model file (*.mch)</translation>
+        <translation>Fichier modèle 3D écran (*.mch)</translation>
     </message>
     <message>
         <source>Field battle formation PC file (*.mrt)</source>
-        <translation type="unfinished">Field battle formation PC file (*.mrt)</translation>
+        <translation>Fichier formations combat écran PC (*.mrt)</translation>
     </message>
     <message>
         <source>Field dialogs PC file (*.msd)</source>
-        <translation type="unfinished">Field dialogs PC file (*.msd)</translation>
+        <translation>Fichier dialogues écran PC (*.msd)</translation>
     </message>
     <message>
         <source>Field movie camera PC file (*.msk)</source>
-        <translation type="unfinished">Field movie camera PC file (*.msk)</translation>
+        <translation>Fichier caméra cinématique écran PC (*.msk)</translation>
     </message>
     <message>
         <source>Field particles infos PC file (*.pmd)</source>
-        <translation type="unfinished">Field particles infos PC file (*.pmd)</translation>
+        <translation>Fichier informations particules écran PC (*.pmd)</translation>
     </message>
     <message>
         <source>Field particles data PC file (*.pmp)</source>
-        <translation type="unfinished">Field particles data PC file (*.pmp)</translation>
+        <translation>Fichier données particules écran PC (*.pmp)</translation>
     </message>
     <message>
         <source>Field unknown PC file (*.pvp)</source>
-        <translation type="unfinished">Field unknown PC file (*.pvp)</translation>
+        <translation>Fichier inconnu écran PC (*.pvp)</translation>
     </message>
     <message>
         <source>Field battle rate PC file (*.rat)</source>
         <oldsource>Fichier inconnu combat écran PC (*.rat)</oldsource>
-        <translation type="unfinished">Field battle rate PC file (*.rat)</translation>
+        <translation>Fichier fréquence combat écran PC (*.rat)</translation>
     </message>
     <message>
         <source>Field sounds PC file (*.sfx)</source>
-        <translation type="unfinished">Field sounds PC file (*.sfx)</translation>
+        <translation>Fichier sons écran PC (*.sfx)</translation>
     </message>
     <message>
         <source>Field additionnal fonts PC file (*.tdw)</source>
-        <translation type="unfinished">Field additionnal fonts PC file (*.tdw)</translation>
+        <translation>Fichier caractères additionnels écran PC (*.tdw)</translation>
     </message>
     <message>
         <source>Loading data</source>
-        <translation type="unfinished">Loading data</translation>
+        <translation>Chargement des données</translation>
     </message>
     <message>
         <source>Fonts could not be loaded!</source>
-        <translation type="unfinished">Fonts could not be loaded!</translation>
+        <translation>Les polices de caractères n&apos;ont pas pu être chargées !</translation>
     </message>
     <message>
         <source>Unamed</source>
-        <translation type="unfinished">Unamed</translation>
+        <translation>sans-nom</translation>
     </message>
     <message>
         <source>Unable to export &apos;%1&apos; to image</source>
-        <translation type="unfinished">Unable to export &apos;%1&apos; to image</translation>
+        <translation>Impossible d&apos;exporter &apos;%1&apos; en image</translation>
     </message>
     <message>
         <source>Map Tiles PC Field File (*.map)</source>
-        <translation type="unfinished">Map Tiles PC Field File (*.map)</translation>
+        <translation>Fichier map tiles écran PC (*.map)</translation>
     </message>
     <message>
         <source>Not a worldmap archive.</source>
-        <translation type="unfinished">Not a worldmap archive.</translation>
+        <translation>Pas une archive mappemonde.</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readSegments).</source>
-        <translation type="unfinished">Unable to read the worldmap (readSegments).</translation>
+        <translation>Impossible de lire la mappemonde (readSegments).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readEncounterRegions).</source>
-        <translation type="unfinished">Unable to read the worldmap (readEncounterRegions).</translation>
+        <translation>Impossible de lire la mappemonde (readEncounterRegions).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readEncounters).</source>
-        <translation type="unfinished">Unable to read the worldmap (readEncounters).</translation>
+        <translation>Impossible de lire la mappemonde (readEncounters).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readSpecialTextures).</source>
-        <translation type="unfinished">Unable to read the worldmap (readSpecialTextures).</translation>
+        <translation>Impossible de lire la mappemonde (readSpecialTextures).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readRoadTextures).</source>
-        <translation type="unfinished">Unable to read the worldmap (readRoadTextures).</translation>
+        <translation>Impossible de lire la mappemonde (readRoadTextures).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readDrawPoints).</source>
-        <translation type="unfinished">Unable to read the worldmap (readDrawPoints).</translation>
+        <translation>Impossible de lire la mappemonde (readDrawPoints).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readTexts).</source>
-        <translation type="unfinished">Unable to read the worldmap (readTexts).</translation>
+        <translation>Impossible de lire la mappemonde (readTexts).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readTextures).</source>
-        <translation type="unfinished">Unable to read the worldmap (readTextures).</translation>
+        <translation>Impossible de lire la mappemonde (readTextures).</translation>
     </message>
 </context>
 <context>
     <name>Search</name>
     <message>
         <source>Find</source>
-        <translatorcomment>Find</translatorcomment>
-        <translation>検索</translation>
+        <translation>Rechercher</translation>
     </message>
     <message>
         <source>Texts</source>
-        <translatorcomment>Texts</translatorcomment>
-        <translation>テキスト</translation>
+        <translation>Textes</translation>
     </message>
     <message>
         <source>Scripts</source>
-        <translatorcomment>Scripts</translatorcomment>
-        <translation>スクリプト</translation>
+        <translation>Scripts</translation>
     </message>
     <message>
         <source>Find next</source>
-        <translatorcomment>Find next</translatorcomment>
-        <translation>次を検索</translation>
+        <translation>Chercher le suivant</translation>
     </message>
     <message>
         <source>Find previous</source>
-        <translatorcomment>Find previous</translatorcomment>
-        <translation>前を検索</translation>
+        <translation>Chercher le précédent</translation>
     </message>
     <message>
         <source>Search All</source>
-        <translation type="unfinished">Search All</translation>
+        <translation>Chercher tout</translation>
     </message>
     <message>
         <source>Case sensitive</source>
-        <translatorcomment>Case sensitive</translatorcomment>
-        <translation>大文字と小文字を区別</translation>
+        <translation>Sensible à la casse</translation>
     </message>
     <message>
         <source>Regular Expression</source>
-        <translatorcomment>Regular Expression</translatorcomment>
-        <translation>正規表現</translation>
+        <translation>Expression régulière</translation>
     </message>
     <message>
         <source>Text</source>
-        <translatorcomment>Text</translatorcomment>
-        <translation>テキスト</translation>
+        <translation>Texte</translation>
     </message>
     <message>
         <source>Opcode</source>
-        <translatorcomment>Opcode</translatorcomment>
-        <translation>オプコード</translation>
+        <translation>Opcode</translation>
     </message>
     <message>
         <source>Var pool</source>
-        <translatorcomment>Var pool</translatorcomment>
-        <translation>変数</translation>
+        <translation>Variable</translation>
     </message>
     <message>
         <source>Execution</source>
-        <translatorcomment>Execution</translatorcomment>
-        <translation>実行</translation>
+        <translation>Exécution</translation>
     </message>
     <message>
         <source>Map jump</source>
-        <translation type="unfinished">Map jump</translation>
+        <translation>Saut d&apos;écran</translation>
     </message>
     <message>
         <source>Parameter:</source>
-        <translatorcomment>Parameter:</translatorcomment>
-        <translation>パラメータ :</translation>
+        <translation>Paramètre :</translation>
     </message>
     <message>
         <source>All</source>
-        <translation type="unfinished">All</translation>
+        <translation>Tout</translation>
     </message>
     <message>
         <source>Pop only</source>
-        <translatorcomment>Pop only</translatorcomment>
-        <translation>ポップのみ</translation>
+        <translation>Pop uniquement</translation>
     </message>
     <message>
         <source>Push only</source>
-        <translation type="unfinished">Push only</translation>
+        <translation>Push uniquement</translation>
     </message>
     <message>
         <source>Entity id</source>
-        <translatorcomment>Entity id</translatorcomment>
-        <translation>グループ ID</translation>
+        <translation>Groupe id</translation>
     </message>
     <message>
         <source>Label</source>
-        <translatorcomment>Label</translatorcomment>
-        <translation>ラベル</translation>
+        <translation>Label</translation>
     </message>
     <message>
         <source>Map ID</source>
-        <translation type="unfinished">Map ID</translation>
+        <translation>Écran id</translation>
     </message>
     <message>
         <source>Last file.</source>
-        <translatorcomment>Last file.</translatorcomment>
-        <translation>最後のファイルまで検索しました。
-</translation>
+        <translation>Dernier fichier,
+poursuite de la recherche dans le premier fichier.</translation>
     </message>
     <message>
         <source>First file.</source>
-        <translatorcomment>First file.</translatorcomment>
-        <translation>最初のファイルまで検索しました。
-</translation>
+        <translation>Premier fichier,
+poursuite de la recherche dans le dernier fichier.</translation>
     </message>
 </context>
 <context>
     <name>SearchAll</name>
     <message>
         <source>Search All</source>
-        <translation type="unfinished">Search All</translation>
+        <translation>Chercher tout</translation>
     </message>
     <message>
         <source>Copy</source>
         <oldsource>Copy</oldsource>
-        <translation type="unfinished">Copy</translation>
+        <translation>Copier</translation>
     </message>
     <message>
         <source>Group</source>
         <oldsource>Group</oldsource>
-        <translation type="unfinished">Group</translation>
+        <translation>Groupe</translation>
     </message>
     <message>
         <source>Script</source>
-        <translation type="unfinished">スクリプト</translation>
+        <translation>Script</translation>
     </message>
     <message>
         <source>Instruction</source>
-        <translation type="unfinished">Instruction</translation>
+        <translation>Instruction</translation>
     </message>
     <message>
         <source>Lines</source>
-        <translation type="unfinished">Lines</translation>
+        <translation>Lignes</translation>
     </message>
     <message>
         <source>Text #</source>
         <oldsource>Text #</oldsource>
-        <translation type="unfinished">Text #</translation>
+        <translation>N° de texte</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">テキスト</translation>
+        <translation>Texte</translation>
     </message>
 </context>
 <context>
     <name>SoundWidget</name>
     <message>
         <source>Add sound</source>
-        <translation type="unfinished">Add sound</translation>
+        <translation>Ajouter son</translation>
     </message>
     <message>
         <source>Remove sound</source>
-        <translation type="unfinished">Remove sound</translation>
+        <translation>Supprimer son</translation>
     </message>
     <message>
         <source>ID:</source>
-        <translation type="unfinished">ID:</translation>
+        <translation>Identifiant :</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished">Export</translation>
+        <translation>Exporter</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished">Import</translation>
+        <translation>Importer</translation>
     </message>
     <message>
         <source>Sound %1</source>
-        <translation type="unfinished">Sound %1</translation>
+        <translation>Son %1</translation>
     </message>
     <message>
         <source>AKAO file (*.akao)</source>
-        <translation type="unfinished">AKAO file (*.akao)</translation>
+        <translation>Fichier AKAO (*.akao)</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>エラー</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>Invalid file.</source>
-        <translation type="unfinished">Invalid file.</translation>
+        <translation>Fichier invalide.</translation>
     </message>
     <message>
         <source>Unable to add sound (%1).</source>
-        <translation type="unfinished">Unable to add sound (%1).</translation>
+        <translation>Impossible d&apos;ajouter le son (%1).</translation>
     </message>
     <message>
         <source>Export sound</source>
-        <translation type="unfinished">Export sound</translation>
+        <translation>Exporter son</translation>
     </message>
     <message>
         <source>sound%1</source>
-        <translation type="unfinished">sound%1</translation>
+        <translation>son%1</translation>
     </message>
     <message>
         <source>Unable to export sound (%1).</source>
-        <translation type="unfinished">Unable to export sound (%1).</translation>
+        <translation>Impossible d&apos;exporter le son (%1).</translation>
     </message>
     <message>
         <source>Import sound</source>
-        <translation type="unfinished">Import sound</translation>
+        <translation>Importer son</translation>
     </message>
     <message>
         <source>Unable to import sound (%1).</source>
-        <translation type="unfinished">Unable to import sound (%1).</translation>
+        <translation>Impossible d&apos;importer le son (%1).</translation>
     </message>
     <message>
         <source>Sounds</source>
-        <translation type="unfinished">Sounds</translation>
+        <translation>Sons</translation>
     </message>
 </context>
 <context>
     <name>SpecialCharactersDialog</name>
     <message>
         <source>Special Characters</source>
-        <translation type="unfinished">Special Characters</translation>
+        <translation>Caractères spéciaux</translation>
     </message>
     <message>
         <source>Table %1</source>
-        <translation type="unfinished">Table %1</translation>
+        <translation>Table %1</translation>
     </message>
     <message>
         <source>Insert</source>
-        <translation type="unfinished">Insert</translation>
+        <translation>Insérer</translation>
     </message>
     <message>
         <source>Table</source>
-        <translation type="unfinished">Table</translation>
+        <translation>Table</translation>
     </message>
 </context>
 <context>
     <name>TdwManagerDialog</name>
     <message>
         <source>Font manager</source>
-        <translation type="unfinished">Font manager</translation>
+        <translation>Gestionnaire de police</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished">Copy</translation>
+        <translation>Copier</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Remove</translation>
+        <translation>Effacer</translation>
     </message>
     <message>
         <source>Latin</source>
-        <translation>ラテン文字</translation>
+        <translation>Latin</translation>
     </message>
     <message>
         <source>Japanese</source>
-        <translation>日本語</translation>
+        <translation>Japonais</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>N&amp;ame displayed:</source>
-        <translation type="unfinished">N&amp;ame displayed:</translation>
+        <translation>Nom &amp;affiché :</translation>
     </message>
     <message>
         <source>&amp;File name:</source>
-        <translation type="unfinished">&amp;File name:</translation>
+        <translation>Nom du &amp;fichier :</translation>
     </message>
     <message>
         <source>Choose another name</source>
-        <translation type="unfinished">Choose another name</translation>
+        <translation>Choisissez un autre nom</translation>
     </message>
     <message>
         <source>That name already exists or is invalid, please choose another.</source>
-        <translation type="unfinished">That name already exists or is invalid, please choose another.</translation>
+        <translation>Ce nom existe déjà ou est invalide, veuillez en choisir un autre.</translation>
     </message>
     <message>
         <source>Remove a font</source>
-        <translation type="unfinished">Remove a font</translation>
+        <translation>Supprimer une police</translation>
     </message>
     <message>
         <source>Do you really want to delete the selected font?</source>
-        <translation type="unfinished">Do you really want to delete the selected font?</translation>
+        <translation>Voulez-vous vraiment supprimer la police sélectionnée ?</translation>
     </message>
 </context>
 <context>
     <name>TdwWidget</name>
     <message>
         <source>Additional characters</source>
-        <translation type="unfinished">Additional characters</translation>
+        <translation>Caractères additionnels</translation>
     </message>
 </context>
 <context>
     <name>TdwWidget2</name>
     <message>
         <source>Dark grey</source>
-        <translation>ダーク グレイ</translation>
+        <translation>Gris foncé</translation>
     </message>
     <message>
         <source>Grey</source>
-        <translation>グレイ</translation>
+        <translation>Gris</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation>黄色</translation>
+        <translation>Jaune</translation>
     </message>
     <message>
         <source>Red</source>
-        <translation>赤</translation>
+        <translation>Rouge</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation>緑</translation>
+        <translation>Vert</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation>青</translation>
+        <translation>Bleu</translation>
     </message>
     <message>
         <source>Purple</source>
-        <translation>紫</translation>
+        <translation>Violet</translation>
     </message>
     <message>
         <source>White</source>
-        <translation>白</translation>
+        <translation>Blanc</translation>
     </message>
     <message>
         <source>Export...</source>
-        <translation type="unfinished">Export...</translation>
+        <translation>Exporter...</translation>
     </message>
     <message>
         <source>Import...</source>
-        <translation type="obsolete">Import...</translation>
-    </message>
-    <message>
-        <source>Cancel Changes</source>
-        <translation type="unfinished">Cancel Changes</translation>
-    </message>
-    <message>
-        <source>Text:</source>
-        <translation type="unfinished">Text:</translation>
-    </message>
-    <message>
-        <source>Width:</source>
-        <translation type="unfinished">Width:</translation>
-    </message>
-    <message>
-        <source>Table %1</source>
-        <translation type="unfinished">Table %1</translation>
-    </message>
-    <message>
-        <source>FF8 Texture File (*.tex)</source>
-        <translation type="unfinished">FF8 Texture File (*.tex)</translation>
-    </message>
-    <message>
-        <source>FF8 Font File (*.tdw)</source>
-        <translation type="unfinished">FF8 Font File (*.tdw)</translation>
-    </message>
-    <message>
-        <source>PNG image File (*.png)</source>
-        <translation type="unfinished">PNG image File (*.png)</translation>
-    </message>
-    <message>
-        <source>JPG image File (*.jpg)</source>
-        <translation type="unfinished">JPG image File (*.jpg)</translation>
-    </message>
-    <message>
-        <source>BMP image File (*.bmp)</source>
-        <translation type="unfinished">BMP image File (*.bmp)</translation>
-    </message>
-    <message>
-        <source>Deling translation File (*.txt)</source>
-        <translation type="unfinished">Deling translation File (*.txt)</translation>
-    </message>
-    <message>
-        <source>Export font</source>
-        <translation type="unfinished">Export font</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>エラー</translation>
-    </message>
-    <message>
-        <source>Error when opening file. (%1)</source>
-        <translation type="unfinished">Error when opening file. (%1)</translation>
-    </message>
-    <message>
-        <source>Error when saving.</source>
-        <translation type="unfinished">Error when saving.</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation type="unfinished">Information</translation>
-    </message>
-    <message>
-        <source>Font format unexportable.</source>
-        <translation type="unfinished">Font format unexportable.</translation>
-    </message>
-    <message>
-        <source>Import font</source>
-        <translation type="unfinished">Import font</translation>
-    </message>
-    <message>
-        <source>Invalid File</source>
-        <translation type="unfinished">Invalid File</translation>
+        <translation type="vanished">Importer...</translation>
     </message>
     <message>
         <source>Importing...</source>
-        <translation type="unfinished">Importing...</translation>
+        <translation>Import...</translation>
+    </message>
+    <message>
+        <source>Cancel Changes</source>
+        <translation>Annuler les modifications</translation>
+    </message>
+    <message>
+        <source>Text:</source>
+        <translation>Texte :</translation>
+    </message>
+    <message>
+        <source>Width:</source>
+        <translation>Largeur :</translation>
+    </message>
+    <message>
+        <source>Table %1</source>
+        <translation>Table %1</translation>
+    </message>
+    <message>
+        <source>FF8 Texture File (*.tex)</source>
+        <translation>Fichier texture FF8 (*.tex)</translation>
+    </message>
+    <message>
+        <source>FF8 Font File (*.tdw)</source>
+        <translation>Fichier police FF8 (*.tdw)</translation>
+    </message>
+    <message>
+        <source>PNG image File (*.png)</source>
+        <translation>Fichier image PNG (*.png)</translation>
+    </message>
+    <message>
+        <source>JPG image File (*.jpg)</source>
+        <translation>Fichier image JPG (*.jpg)</translation>
+    </message>
+    <message>
+        <source>BMP image File (*.bmp)</source>
+        <translation>Fichier image BMP (*.bmp)</translation>
+    </message>
+    <message>
+        <source>Deling translation File (*.txt)</source>
+        <translation>Fichier traduction Deling (*.txt)</translation>
+    </message>
+    <message>
+        <source>Export font</source>
+        <translation>Exporter police de caractère</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation>Erreur</translation>
+    </message>
+    <message>
+        <source>Error when opening file. (%1)</source>
+        <translation>Erreur d&apos;ouverture du fichier. (%1)</translation>
+    </message>
+    <message>
+        <source>Error when saving.</source>
+        <translation>Erreur lors de l&apos;enregistrement.</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation>Information</translation>
+    </message>
+    <message>
+        <source>Font format unexportable.</source>
+        <translation>Format de police de caractère inexportable.</translation>
+    </message>
+    <message>
+        <source>Import font</source>
+        <translation>Importer police de caractère</translation>
+    </message>
+    <message>
+        <source>Invalid File</source>
+        <translation>Fichier invalide</translation>
     </message>
 </context>
 <context>
     <name>TextExporterWidget</name>
     <message>
         <source>CSV format</source>
-        <translation type="unfinished">CSV format</translation>
+        <translation>Format CSV</translation>
     </message>
     <message>
         <source>Character encoding</source>
-        <translation type="unfinished">Character encoding</translation>
+        <translation>Jeu de caractères</translation>
     </message>
     <message>
         <source>Field separator</source>
-        <translation type="unfinished">Field separator</translation>
+        <translation>Séparateur de champ</translation>
     </message>
     <message>
         <source>String separator</source>
-        <translation type="unfinished">String separator</translation>
+        <translation>Séparateur de chaîne de caractères</translation>
     </message>
     <message>
         <source>The field separator must be different than the string separator</source>
-        <translation type="unfinished">The field separator must be different than the string separator</translation>
+        <translation>Le séparateur de champ ne doit pas être le même que le séparateur de chaînes de caractères</translation>
     </message>
     <message>
         <source>The field separator cannot be a line break</source>
-        <translation type="unfinished">The field separator cannot be a line break</translation>
+        <translation>Le séparateur de champ ne doit pas être un retour à la ligne</translation>
     </message>
     <message>
         <source>The string separator cannot be a line break</source>
-        <translation type="unfinished">The string separator cannot be a line break</translation>
+        <translation>Le séparateur de chaînes de caractères ne doit pas être un retour à la ligne</translation>
     </message>
     <message>
         <source>Column that contains the texts to import</source>
-        <translation type="unfinished">Column that contains the texts to import</translation>
+        <translation>Colonne contenant les textes à importer</translation>
     </message>
     <message>
         <source>Select the column number that contains the texts to import, between 1 and 100</source>
-        <translation type="unfinished">Select the column number that contains the texts to import, between 1 and 100</translation>
+        <translation>Sélectionnez le numéro de la colonne qui contient les textes à importer, entre 1 et 100</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>エラー</translation>
+        <translation>Erreur</translation>
     </message>
 </context>
 <context>
@@ -3604,99 +3443,82 @@ Error message:
     <message>
         <source>false</source>
         <comment>Use Japanese Encoding</comment>
-        <translation>true</translation>
+        <translation>false</translation>
     </message>
     <message>
         <source>Galbadia</source>
-        <translatorcomment>Galbadia</translatorcomment>
-        <translation>ガルバディア</translation>
+        <translation>Galbadia</translation>
     </message>
     <message>
         <source>Esthar</source>
-        <translatorcomment>Esthar</translatorcomment>
-        <translation>エスタ</translation>
+        <translation>Esthar</translation>
     </message>
     <message>
         <source>Balamb</source>
-        <translatorcomment>Balamb</translatorcomment>
-        <translation>バラム</translation>
+        <translation>Balamb</translation>
     </message>
     <message>
         <source>Dollet</source>
-        <translatorcomment>Dollet</translatorcomment>
-        <translation>ドール</translation>
+        <translation>Dollet</translation>
     </message>
     <message>
         <source>Timber</source>
-        <translatorcomment>Timber</translatorcomment>
-        <translation>ティンバー</translation>
+        <translation>Timber</translation>
     </message>
     <message>
         <source>Trabia</source>
-        <translatorcomment>Trabia</translatorcomment>
-        <translation>トラビア</translation>
+        <translation>Trabia</translation>
     </message>
     <message>
         <source>Centra</source>
-        <translatorcomment>Centra</translatorcomment>
-        <translation>セントラ</translation>
+        <translation>Centra</translation>
     </message>
     <message>
         <source>F. Horizon</source>
-        <translatorcomment>F. Horizon</translatorcomment>
-        <translation>Ｆ．Ｈ．</translation>
+        <translation>Horizon</translation>
     </message>
 </context>
 <context>
     <name>VarManager</name>
     <message>
         <source>Var manager</source>
-        <translatorcomment>Var manager</translatorcomment>
-        <translation>変数マネージャー</translation>
+        <translation>Gestionnaire de variables</translation>
     </message>
     <message>
         <source>Var</source>
-        <translatorcomment>Var</translatorcomment>
-        <translation>変数</translation>
+        <translation>Var</translation>
     </message>
     <message>
         <source>Field</source>
-        <translatorcomment>Field</translatorcomment>
-        <translation>フィールド</translation>
+        <translation>Écran</translation>
     </message>
     <message>
         <source>MEM fr</source>
-        <translatorcomment>MEM fr</translatorcomment>
         <translation>MEM fr</translation>
     </message>
     <message>
         <source>MEM us</source>
-        <translatorcomment>MEM us</translatorcomment>
         <translation>MEM us</translation>
     </message>
     <message>
         <source>Type</source>
-        <translatorcomment>Type</translatorcomment>
-        <translation>タイプ</translation>
+        <translation>Type</translation>
     </message>
     <message>
         <source>Adresses used</source>
-        <translatorcomment>Adresses used</translatorcomment>
-        <translation>アドレスに適用</translation>
+        <translation>Adresses utilisées</translation>
     </message>
     <message>
         <source>Save</source>
-        <translatorcomment>Save</translatorcomment>
-        <translation>保存</translation>
+        <translation>Sauver</translation>
     </message>
     <message>
         <source>Used vars: %1/1536</source>
-        <translation type="unfinished">Used vars: %1/1536</translation>
+        <translation>Vars utilisés : %1/1536</translation>
     </message>
     <message>
         <source>Name</source>
-        <translatorcomment>Name</translatorcomment>
-        <translation>名称</translation>
+        <translation>Nom</translation>
     </message>
 </context>
 <context>
@@ -3718,59 +3540,59 @@ Error message:
     <name>WalkmeshWidget</name>
     <message>
         <source>Use the arrow keys to move the camera.</source>
-        <translation type="unfinished">Use the arrow keys to move the camera.</translation>
+        <translation>Utilisez les touches directionnelles pour déplacer la caméra.</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Reset</translation>
+        <translation>Remettre à 0</translation>
     </message>
     <message>
         <source>Camera</source>
-        <translation type="unfinished">Camera</translation>
+        <translation>Caméra</translation>
     </message>
     <message>
         <source>Walkmesh</source>
-        <translation>ウォークメッシュ</translation>
+        <translation>Walkmesh</translation>
     </message>
     <message>
         <source>Exits</source>
-        <translation type="unfinished">Exits</translation>
+        <translation>Sorties</translation>
     </message>
     <message>
         <source>Doors</source>
-        <translation type="unfinished">Doors</translation>
+        <translation>Portes</translation>
     </message>
     <message>
         <source>Camera Ranges</source>
-        <translation type="unfinished">Camera Ranges</translation>
+        <translation>Limites caméra</translation>
     </message>
     <message>
         <source>Movie Camera</source>
-        <translation type="unfinished">Movie Camera</translation>
+        <translation>Caméra cinématique</translation>
     </message>
     <message>
         <source>Miscellaneous</source>
-        <translation type="unfinished">Miscellaneous</translation>
+        <translation>Divers</translation>
     </message>
     <message>
         <source>Add camera</source>
-        <translation type="unfinished">Add camera</translation>
+        <translation>Ajouter caméra</translation>
     </message>
     <message>
         <source>Remove camera</source>
-        <translation type="unfinished">Remove camera</translation>
+        <translation>Supprimer caméra</translation>
     </message>
     <message>
         <source>Zoom:</source>
-        <translation type="unfinished">Zoom:</translation>
+        <translation>Distance (zoom) :</translation>
     </message>
     <message>
         <source>Camera axis:</source>
-        <translation type="unfinished">Camera axis:</translation>
+        <translation>Axes de la caméra :</translation>
     </message>
     <message>
         <source>Camera position:</source>
-        <translation type="unfinished">Camera position:</translation>
+        <translation>Position de la caméra :</translation>
     </message>
     <message>
         <source>X</source>
@@ -3786,146 +3608,146 @@ Error message:
     </message>
     <message>
         <source>Add triangle</source>
-        <translation type="unfinished">Add triangle</translation>
+        <translation>Ajouter triangle</translation>
     </message>
     <message>
         <source>Remove triangle</source>
-        <translation type="unfinished">Remove triangle</translation>
+        <translation>Supprimer triangle</translation>
     </message>
     <message>
         <source>Triangle accessible via the line 1-2:</source>
-        <translation type="unfinished">Triangle accessible via the line 1-2:</translation>
+        <translation>Triangle accessible via la ligne 1-2 :</translation>
     </message>
     <message>
         <source>Triangle accessible via la ligne 2-3:</source>
-        <translation type="unfinished">Triangle accessible via la ligne 2-3:</translation>
+        <translation>Triangle accessible via la ligne 2-3 :</translation>
     </message>
     <message>
         <source>Triangle accessible via la ligne 3-1:</source>
-        <translation type="unfinished">Triangle accessible via la ligne 3-1:</translation>
+        <translation>Triangle accessible via la ligne 3-1 :</translation>
     </message>
     <message>
         <source>Point 1:</source>
-        <translation type="unfinished">Point 1:</translation>
+        <translation>Point 1 :</translation>
     </message>
     <message>
         <source>Point 2:</source>
-        <translation type="unfinished">Point 2:</translation>
+        <translation>Point 2 :</translation>
     </message>
     <message>
         <source>Point 3:</source>
-        <translation type="unfinished">Point 3:</translation>
+        <translation>Point 3 :</translation>
     </message>
     <message>
         <source>Field ID:</source>
-        <translation type="unfinished">Field ID:</translation>
+        <translation>Id écran :</translation>
     </message>
     <message>
         <source>Unknown 1:</source>
-        <translation type="unfinished">Unknown 1:</translation>
+        <translation>Inconnu 1 :</translation>
     </message>
     <message>
         <source>Unknown 2:</source>
-        <translation type="unfinished">Unknown 2:</translation>
+        <translation>Inconnu 2 :</translation>
     </message>
     <message>
         <source>Exit Line:</source>
-        <translation type="unfinished">Exit Line:</translation>
+        <translation>Ligne de sortie :</translation>
     </message>
     <message>
         <source>Destination point:</source>
-        <translation type="unfinished">Destination point:</translation>
+        <translation>Point de destination :</translation>
     </message>
     <message>
         <source>Used</source>
-        <translation type="unfinished">Used</translation>
+        <translation>Utilisé</translation>
     </message>
     <message>
         <source>Door ID:</source>
-        <translation type="unfinished">Door ID:</translation>
+        <translation>Id porte :</translation>
     </message>
     <message>
         <source>Trigger Line Door:</source>
-        <translation type="unfinished">Trigger Line Door:</translation>
+        <translation>Ligne déclench. porte :</translation>
     </message>
     <message>
         <source>Camera Range %1</source>
-        <translation type="unfinished">Camera Range %1</translation>
+        <translation>Limite caméra %1</translation>
     </message>
     <message>
         <source>Screen Range %1</source>
-        <translation type="unfinished">Screen Range %1</translation>
+        <translation>Limite écran %1</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation>上</translation>
+        <translation>Haut</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation>下</translation>
+        <translation>Bas</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>右</translation>
+        <translation>Droite</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>左</translation>
+        <translation>Gauche</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>追加</translation>
+        <translation>Ajouter</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Remove</translation>
+        <translation>Effacer</translation>
     </message>
     <message>
         <source>Movements orientation:</source>
-        <translation type="unfinished">Movements orientation:</translation>
+        <translation>Orientation des mouvements :</translation>
     </message>
     <message>
         <source>Unknown:</source>
-        <translation type="unfinished">Unknown:</translation>
+        <translation>Inconnu :</translation>
     </message>
     <message>
         <source>Camera Focus Height on the playable character:</source>
-        <translation type="unfinished">Camera Focus Height on the playable character:</translation>
+        <translation>Hauteur focus caméra sur le personnage :</translation>
     </message>
     <message>
         <source>Camera %1</source>
-        <translation type="unfinished">Camera %1</translation>
+        <translation>Caméra %1</translation>
     </message>
     <message>
         <source>Triangle %1</source>
-        <translation type="unfinished">Triangle %1</translation>
+        <translation>Triangle %1</translation>
     </message>
     <message>
         <source>Unused</source>
-        <translation type="unfinished">Unused</translation>
+        <translation>Inutilisé</translation>
     </message>
     <message>
         <source>Door %1</source>
-        <translation type="unfinished">Door %1</translation>
+        <translation>Porte %1</translation>
     </message>
     <message>
         <source>Position %1</source>
-        <translation type="unfinished">Position %1</translation>
+        <translation>Position %1</translation>
     </message>
     <message>
         <source>Show background</source>
-        <translation type="unfinished">Show background</translation>
+        <translation>Afficher décor</translation>
     </message>
 </context>
 <context>
     <name>WorldmapWidget</name>
     <message>
         <source>Worldmap</source>
-        <translation type="unfinished">Worldmap</translation>
+        <translation>Mappemonde</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Reset</translation>
+        <translation>Reset</translation>
     </message>
 </context>
 </TS>

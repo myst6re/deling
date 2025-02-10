@@ -26,23 +26,23 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 	setWindowTitle(tr("Configuration"));
 	setSizeGripEnabled(true);
 
-	QLabel *langLabel = new QLabel(tr("Langue"), this);
+	QLabel *langLabel = new QLabel(tr("Language"), this);
 	langComboBox = new QComboBox(this);
 
-	QLabel *appPathLabel = new QLabel(tr("Chemin de FF8"), this);
+	QLabel *appPathLabel = new QLabel(tr("FF8 path"), this);
 	useRegAppPath = new QCheckBox(tr("Auto"), this);
 	appPathLine = new QLineEdit(this);
-	QPushButton *appPathButton = new QPushButton(tr("Parcourir..."), this);
+	QPushButton *appPathButton = new QPushButton(tr("Browse..."), this);
 	QHBoxLayout *appPathLayout = new QHBoxLayout;
 	appPathLayout->addWidget(useRegAppPath);
 	appPathLayout->addWidget(appPathLine);
 	appPathLayout->addWidget(appPathButton);
 
-	QLabel *encodingLabel = new QLabel(tr("Encodage des textes"), this);
+	QLabel *encodingLabel = new QLabel(tr("Text encoding"), this);
 	encodingComboBox = new QComboBox(this);
 	encodingComboBox->addItem(tr("Latin"), "00");
-	encodingComboBox->addItem(tr("Japonais"), "01");
-	QPushButton *encodingManage = new QPushButton(tr("Gérer"), this);
+	encodingComboBox->addItem(tr("Japanese"), "01");
+	QPushButton *encodingManage = new QPushButton(tr("Manage"), this);
 	QHBoxLayout *encodingLayout = new QHBoxLayout();
 	encodingLayout->addWidget(encodingComboBox, 1);
 	encodingLayout->addWidget(encodingManage);
@@ -50,9 +50,9 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 
 //	hideUnusedTexts = new QCheckBox(tr("Cacher les textes inutilisés"), this);
 
-	QPushButton *okButton = new QPushButton(tr("Enregistrer"), this);
+	QPushButton *okButton = new QPushButton(tr("Save"), this);
 	okButton->setDefault(true);
-	QPushButton *cancelButton = new QPushButton(tr("Annuler"), this);
+	QPushButton *cancelButton = new QPushButton(tr("Cancel"), this);
 	QHBoxLayout *buttonsLayout = new QHBoxLayout;
 	buttonsLayout->addWidget(okButton);
 	buttonsLayout->addWidget(cancelButton);
@@ -103,14 +103,14 @@ void ConfigDialog::fillMenuLang()
 {
 	QDir dir(Config::programLanguagesDir());
 	QStringList stringList = dir.entryList(QStringList("Deling_*.qm"), QDir::Files, QDir::Name);
-	langComboBox->addItem(QString::fromUtf8("Français"));
-	langComboBox->setItemData(0, "fr");
+	langComboBox->addItem(QString::fromUtf8("English"));
+	langComboBox->setItemData(0, "en");
 
 	QTranslator translator;
 	int i=1;
 	for (const QString &str: stringList) {
 		if (translator.load(dir.filePath(str))) {
-			langComboBox->addItem(translator.translate("MainWindow", "Français", "Your translation language"));
+			langComboBox->addItem(translator.translate("MainWindow", "English", "Your translation language"));
 			langComboBox->setItemData(i++, str.right(5).left(2));
 		}
 	}
@@ -125,7 +125,7 @@ void ConfigDialog::fillMenuLang()
 
 void ConfigDialog::setAppPath()
 {
-	QString appPath = QFileDialog::getOpenFileName(this, tr("Chemin de l'executable de Final Fantasy VIII PC"), appPathLine->text(), tr("FF8 exe (*.exe);;All files (*)"));
+	QString appPath = QFileDialog::getOpenFileName(this, tr("Executable path of Final Fantasy VIII PC"), appPathLine->text(), tr("FF8 exe (*.exe);;All files (*)"));
 	if (!appPath.isNull()) {
 		appPathLine->setText(appPath);
 	}
@@ -144,11 +144,11 @@ void ConfigDialog::restartNow()
 	if (translator.load(QString("deling_%1")
 	                   .arg(Config::value("lang").toString()),
 	                   Config::programResourceDir())) {
-		title = translator.translate("MainWindow", "Paramètres modifiés");
-		text = translator.translate("MainWindow", "Relancez le programme pour que les paramètres prennent effet.");
+		title = translator.translate("MainWindow", "Settings changed");
+		text = translator.translate("MainWindow", "Restart the program for the settings to take effect.");
 	} else {
-		title = "Paramètres modifiés";
-		text = "Relancez le programme pour que les paramètres prennent effet.";
+		title = "Settings changed";
+		text = "Restart the program for the settings to take effect.";
 	}
 	QMessageBox::information(this, title, text);
 }

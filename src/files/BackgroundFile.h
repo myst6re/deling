@@ -79,7 +79,7 @@ public:
 	BackgroundFile();
 	bool open(const QByteArray &map, const QByteArray &mim, const QMultiMap<quint8, quint8> *defaultParams = nullptr);
 	inline QString filterText() const {
-		return QObject::tr("Fichier map tiles écran PC (*.map)");
+		return QObject::tr("Map Tiles PC Field File (*.map)");
 	}
 	bool save(QByteArray &map);
 

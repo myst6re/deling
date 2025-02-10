@@ -60,7 +60,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 	if (archive)		delete archive;
 	archive = new FsArchive(archivePath);
 	if (!archive->isOpen()) {
-		errorMsg = QObject::tr("Impossible d'ouvrir l'archive.");
+		errorMsg = QObject::tr("Unable to open the archive.");
 		return 1;
 	}
 	if (!archive->isWritable()) {
@@ -101,7 +101,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 
 		if (progress->observerWasCanceled()) {
 			clearFields();
-			errorMsg = QObject::tr("Ouverture annulée.");
+			errorMsg = QObject::tr("Opening canceled.");
 			return 2;
 		}
 

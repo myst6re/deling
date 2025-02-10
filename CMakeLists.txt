@@ -78,7 +78,7 @@ find_package(ZLIB REQUIRED)
 find_package(lz4 REQUIRED)
 
 set(LANGS
-    en
+    fr
     es
     ja
     ru)

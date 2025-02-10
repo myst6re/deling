@@ -30,7 +30,7 @@ public:
 	void clear();
 	void setReadOnly(bool ro);
 	void fill();
-	inline QString tabName() const { return tr("Décors"); }
+	inline QString tabName() const { return tr("Background"); }
 private slots:
 	void parameterChanged(int index);
 	void enableState(QListWidgetItem *item);

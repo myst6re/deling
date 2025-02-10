@@ -28,7 +28,7 @@ public:
 	CharaWidget(QWidget *parent = nullptr);
 	void clear();
 	void fill();
-	inline QString tabName() const { return tr("Modèles 3D"); }
+	inline QString tabName() const { return tr("3D Model"); }
 	void setMainModels(QHash<int, CharaModel *> *mainModels);
 public slots:
 	void setModel(int modelID);

@@ -4,11 +4,11 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <source>Par Jérôme &amp;lt;myst6re&amp;gt; Arzel &lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;</source>
+        <source>By Jérôme &amp;lt;myst6re&amp;gt; Arzel &lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;</source>
         <translation type="unfinished">By Jérôme &amp;lt;myst6re&amp;gt; Arzel &lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;</translation>
     </message>
     <message>
-        <source>Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</source>
+        <source>Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</source>
         <translation type="unfinished">Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
 </context>
@@ -141,23 +141,19 @@ List of available commands:
 <context>
     <name>BGPreview2</name>
     <message>
-        <source>Enregistrer l&apos;image</source>
+        <source>Save image</source>
         <oldsource>Enregistrer l&apos;irudia</oldsource>
         <translation>Gorde irudia</translation>
     </message>
     <message>
-        <source>Image PNG (*.png);;Image JPG (*.jpg);;Image BMP (*.bmp);;Portable Pixmap (*.ppm)</source>
+        <source>PNG image (*.png);;JPG image (*.jpg);;BMP image (*.bmp);;Portable Pixmap (*.ppm)</source>
         <translation>PNG irudia (*.png);;JPG irudia (*.jpg);;BMP irudia (*.bmp);;Portable Pixmap (*.ppm)</translation>
-    </message>
-    <message>
-        <source>image PNG (*.png);;image JPG (*.jpg);;image BMP (*.bmp);;Portable Pixmap (*.ppm)</source>
-        <translation type="obsolete">PNG irudia (*.png);;JPG irudia (*.jpg);;BMP irudia (*.bmp);;Portable Pixmap (*.ppm)</translation>
     </message>
 </context>
 <context>
     <name>BackgroundWidget</name>
     <message>
-        <source>Cacher background</source>
+        <source>Hide background</source>
         <translation>Hondoa ezkutatu</translation>
     </message>
     <message>
@@ -193,55 +189,55 @@ List of available commands:
         <translation type="unfinished">Palette</translation>
     </message>
     <message>
-        <source>Transparence</source>
+        <source>Alpha</source>
         <translation type="unfinished">Alpha</translation>
     </message>
     <message>
-        <source>Dessiner</source>
+        <source>Draw</source>
         <translation type="unfinished">Draw</translation>
     </message>
     <message>
-        <source>Type transparence</source>
+        <source>Alpha Type</source>
         <translation type="unfinished">Alpha Type</translation>
     </message>
     <message>
-        <source>Type couleur</source>
+        <source>Color Type</source>
         <translation type="unfinished">Color Type</translation>
     </message>
     <message>
-        <source>Couche</source>
+        <source>Layer</source>
         <translation type="unfinished">Layer</translation>
     </message>
     <message>
-        <source>Paramètre</source>
+        <source>Parameter</source>
         <translation type="unfinished">Parameter</translation>
     </message>
     <message>
-        <source>État</source>
+        <source>State</source>
         <translation type="unfinished">State</translation>
     </message>
     <message>
-        <source>Paramètres</source>
+        <source>Parameters</source>
         <translation type="unfinished">Parameters</translation>
     </message>
     <message>
-        <source>Tuiles</source>
+        <source>Tiles</source>
         <translation type="unfinished">Tiles</translation>
     </message>
     <message>
-        <source>État %1</source>
+        <source>State %1</source>
         <translation>Egoera %1</translation>
     </message>
     <message>
-        <source>Paramètre %1</source>
+        <source>Parameter %1</source>
         <translation>Parametroa %1</translation>
     </message>
     <message>
-        <source>Couche %1</source>
+        <source>Layer %1</source>
         <translation>Geruza %1</translation>
     </message>
     <message>
-        <source>Décors</source>
+        <source>Background</source>
         <translation>Hondoa</translation>
     </message>
 </context>
@@ -287,11 +283,11 @@ List of available commands:
 <context>
     <name>CharaWidget</name>
     <message>
-        <source>Modèles 3D</source>
+        <source>3D Model</source>
         <translation>Modelo 3D-a</translation>
     </message>
     <message>
-        <source>(Sans nom)</source>
+        <source>(No Name)</source>
         <translation type="unfinished">(No Name)</translation>
     </message>
 </context>
@@ -302,11 +298,11 @@ List of available commands:
         <translation>Konfigurazio</translation>
     </message>
     <message>
-        <source>Langue</source>
+        <source>Language</source>
         <translation>Hizkuntza</translation>
     </message>
     <message>
-        <source>Chemin de FF8</source>
+        <source>FF8 path</source>
         <translation>FF8 bidea</translation>
     </message>
     <message>
@@ -314,12 +310,12 @@ List of available commands:
         <translation>Auto</translation>
     </message>
     <message>
-        <source>Parcourir...</source>
+        <source>Browse...</source>
         <oldsource>Parcourir</oldsource>
         <translation>Arakatu...</translation>
     </message>
     <message>
-        <source>Encodage des textes</source>
+        <source>Text encoding</source>
         <translation>Testu kodeketa</translation>
     </message>
     <message>
@@ -327,27 +323,23 @@ List of available commands:
         <translation>Latina</translation>
     </message>
     <message>
-        <source>Japonais</source>
+        <source>Japanese</source>
         <translation>Japoniera</translation>
     </message>
     <message>
-        <source>Gérer</source>
+        <source>Manage</source>
         <translation>Zuzendu</translation>
     </message>
     <message>
-        <source>Enregistrer</source>
+        <source>Save</source>
         <translation>Gorde</translation>
     </message>
     <message>
-        <source>Annuler</source>
+        <source>Cancel</source>
         <translation>Ezeztatu</translation>
     </message>
     <message>
-        <source>Chemin d&apos;installation de Final Fantasy VIII PC</source>
-        <translation type="vanished">Final Fantasy VIII PC bide instalatua</translation>
-    </message>
-    <message>
-        <source>Chemin de l&apos;executable de Final Fantasy VIII PC</source>
+        <source>Executable path of Final Fantasy VIII PC</source>
         <translation type="unfinished">Executable path of Final Fantasy VIII PC</translation>
     </message>
     <message>
@@ -358,79 +350,79 @@ List of available commands:
 <context>
     <name>Data</name>
     <message>
-        <source>Plaines d&apos;Arkland - Balamb</source>
+        <source>Balamb- Alcauld Plains</source>
         <comment>1</comment>
         <translation>Balamb- Alcauld Ordokiak</translation>
     </message>
     <message>
-        <source>Monts Gaulg - Balamb</source>
+        <source>Balamb- Gaulg Mountains</source>
         <comment>2</comment>
         <translation>Balamb- Gaulg Mendiak</translation>
     </message>
     <message>
-        <source>Baie de Rinaul - Balamb</source>
+        <source>Balamb- Rinaul Coast</source>
         <comment>3</comment>
         <translation>Balamb- Rinaul Kostaldea</translation>
     </message>
     <message>
-        <source>Cap Raha - Balamb</source>
+        <source>Balamb- Raha Cape</source>
         <comment>4</comment>
         <translation>Balamb- Raha Lurmuturra</translation>
     </message>
     <message>
-        <source>Forêt de Rosfall - Timber</source>
+        <source>Timber- Roshfall Forest</source>
         <comment>5</comment>
         <translation>Timber- Roshfall Oihana</translation>
     </message>
     <message>
-        <source>Mandy Beach - Timber</source>
+        <source>Timber- Mandy Beach</source>
         <oldsource>Mandy Hondartza - Timber</oldsource>
         <comment>6</comment>
         <translation type="unfinished">Timber- Mandy Hondartza</translation>
     </message>
     <message>
-        <source>Lac Obel - Timber</source>
+        <source>Timber- Obel Lake</source>
         <comment>7</comment>
         <translation>Timber- Obel Aintzira</translation>
     </message>
     <message>
-        <source>Vallée de Lanker - Timber</source>
+        <source>Timber- Lanker Plains</source>
         <comment>8</comment>
         <translation>Timber- Lanker Ordokiak</translation>
     </message>
     <message>
-        <source>Ile Nantakhet - Timber</source>
+        <source>Timber- Nanchucket Island</source>
         <comment>9</comment>
         <translation>Timber- Nanchucket Uhartea</translation>
     </message>
     <message>
-        <source>Yaulny Canyon - Timber</source>
+        <source>Timber- Yaulny Canyon</source>
         <comment>10</comment>
         <translation>Timber- Yaulny Arroila</translation>
     </message>
     <message>
-        <source>Val Hasberry - Dollet</source>
+        <source>Dollet- Hasberry Plains</source>
         <comment>11</comment>
         <translation>Dollet- Hasberry Ordokiak</translation>
     </message>
     <message>
-        <source>Cap Holy Glory - Dollet</source>
+        <source>Dollet- Holy Glory Cape</source>
         <comment>12</comment>
         <translation>Dollet- Holy Glory Lurmuturra</translation>
     </message>
     <message>
-        <source>Longhorn Island - Dollet</source>
+        <source>Dollet- Long Horn Island</source>
         <oldsource>Longhorn Uhartea - Dollet</oldsource>
         <comment>13</comment>
         <translation type="unfinished">Dollet- Longhorn Uhartea</translation>
     </message>
     <message>
-        <source>Péninsule Malgo - Dollet</source>
+        <source>Dollet- Malgo Peninsula</source>
         <comment>14</comment>
         <translation>Dollet- Malgo Penintsula</translation>
     </message>
     <message>
-        <source>Plateau Monterosa - Galbadia</source>
+        <source>Galbadia- Monterosa Plateau</source>
         <oldsource>Plateau Monterosa -Galbadia</oldsource>
         <comment>15</comment>
         <translation>Galbadia- Monterosa Goi-ordokia</translation>
@@ -441,133 +433,133 @@ List of available commands:
         <translation>???</translation>
     </message>
     <message>
-        <source>Lallapalooza Canyon - Galbadia</source>
+        <source>Galbadia- Lallapalooza Canyon</source>
         <comment>16</comment>
         <translation>Galbadia- Lallapalooza Arroila</translation>
     </message>
     <message>
-        <source>Shenand Hill - Timber</source>
+        <source>Timber- Shenand Hill</source>
         <comment>17</comment>
         <translation>Timber- Shenand Mendixka</translation>
     </message>
     <message>
-        <source>Péninsule Gotland - Galbadia</source>
+        <source>Galbadia- Gotland Peninsula</source>
         <comment>18</comment>
         <translation>Galbadia- Gotland Penintsula</translation>
     </message>
     <message>
-        <source>Ile de l&apos;Enfer - Galbadia</source>
+        <source>Island Closest to Hell</source>
         <comment>19</comment>
         <translation>Ia-ia Infernu Uhartea</translation>
     </message>
     <message>
-        <source>Plaine Galbadienne</source>
+        <source>Great Plains of Galbadia</source>
         <comment>20</comment>
         <translation>Galbadiako Ordoki Handiak</translation>
     </message>
     <message>
-        <source>Wilburn Hill - Galbadia</source>
+        <source>Galbadia- Wilburn Hill</source>
         <comment>21</comment>
         <translation>Galbadia- Wilburn Mendixka</translation>
     </message>
     <message>
-        <source>Archipel Rem - Galbadia</source>
+        <source>Galbadia- Rem Archipelago</source>
         <comment>22</comment>
         <translation>Galbadia- Rem Uhartedia</translation>
     </message>
     <message>
-        <source>Dingo Désert - Galbadia</source>
+        <source>Galbadia- Dingo Desert</source>
         <comment>23</comment>
         <translation>Galbadia- Dingo Basamortua</translation>
     </message>
     <message>
-        <source>Cap Winhill</source>
+        <source>Winhill- Winhill Bluffs</source>
         <comment>24</comment>
         <translation>Winhill- Winhill Amildegiak</translation>
     </message>
     <message>
-        <source>Archipel Humphrey - Winhill</source>
+        <source>Winhill- Humphrey Archipelago</source>
         <comment>25</comment>
         <translation>Winhill- Humphrey Uhartedia</translation>
     </message>
     <message>
-        <source>Ile Winter - Trabia</source>
+        <source>Trabia- Winter Island</source>
         <comment>26</comment>
         <translation>Trabia- Winter Uhartea</translation>
     </message>
     <message>
-        <source>Val de Solvard - Trabia</source>
+        <source>Trabia- Sorbald Snowfield</source>
         <comment>27</comment>
         <translation>Trabia- Sorbald Elursoroa</translation>
     </message>
     <message>
-        <source>Crête d&apos;Eldbeak - Trabia</source>
+        <source>Trabia- Eldbeak Peninsula</source>
         <comment>28</comment>
         <translation>Trabia- Eldbeak Penintsula</translation>
     </message>
     <message>
-        <source>Plaine d&apos;Hawkind - Trabia</source>
+        <source>Trabia- Hawkwind Plains</source>
         <comment>30</comment>
         <translation>Trabia- Hawkwind Ordokiak</translation>
     </message>
     <message>
-        <source>Atoll Albatross - Trabia</source>
+        <source>Trabia- Albatross Archipelago</source>
         <oldsource>Atoll Albatross -Trabia</oldsource>
         <comment>31</comment>
         <translation>Trabia- Albatross Uhartedia</translation>
     </message>
     <message>
-        <source>Vallon de Bika - Trabia</source>
+        <source>Trabia- Bika Snowfield</source>
         <comment>32</comment>
         <translation>Trabia- Bika Elursoroa</translation>
     </message>
     <message>
-        <source>Péninsule Thor - Trabia</source>
+        <source>Trabia- Thor Peninsula</source>
         <comment>33</comment>
         <translation>Trabia- Thor Penintsula</translation>
     </message>
     <message>
-        <source>Crête d&apos;Heath - Trabia</source>
+        <source>Trabia- Heath Peninsula</source>
         <comment>35</comment>
         <translation>Trabia- Heath Penintsula</translation>
     </message>
     <message>
-        <source>Trabia Crater - Trabia</source>
+        <source>Trabia- Trabia Crater</source>
         <comment>36</comment>
         <translation>Trabia- Trabia Zulogunea</translation>
     </message>
     <message>
-        <source>Mont Vienne - Trabia</source>
+        <source>Trabia- Vienne Mountains</source>
         <comment>37</comment>
         <translation>Trabia- Vienne Mendiak</translation>
     </message>
     <message>
-        <source>Plaine de Mordor - Esthar</source>
+        <source>Esthar- Mordred Plains</source>
         <comment>38</comment>
         <translation>Esthar- Mordred Ordokiak</translation>
     </message>
     <message>
-        <source>Mont Nortes - Esthar</source>
+        <source>Esthar- Nortes Mountains</source>
         <comment>39</comment>
         <translation>Esthar- Nortes Mendiak</translation>
     </message>
     <message>
-        <source>Atoll Fulcura - Esthar</source>
+        <source>Esthar- Fulcura Archipelago</source>
         <comment>40</comment>
         <translation>Esthar- Fulcura Uhartedia</translation>
     </message>
     <message>
-        <source>Forêt Grandidi - Esthar</source>
+        <source>Esthar- Grandidi Forest</source>
         <comment>41</comment>
         <translation>Esthar- Grandidi Oihana</translation>
     </message>
     <message>
-        <source>Iles Millefeuilles - Esthar</source>
+        <source>Esthar- Millefeuille Archipelago</source>
         <comment>42</comment>
         <translation>Esthar- Millefeuille Uhartedia</translation>
     </message>
     <message>
-        <source>Grandes plaines d&apos;Esthar</source>
+        <source>Great Plains of Esthar</source>
         <comment>43</comment>
         <translation>Estharko Ordoki Handiak</translation>
     </message>
@@ -578,226 +570,226 @@ List of available commands:
         <translation type="unfinished">Esthar Hiria</translation>
     </message>
     <message>
-        <source>Salt Lake - Esthar</source>
+        <source>Esthar- Great Salt Lake</source>
         <oldsource>Salt Aintzira - Esthar</oldsource>
         <comment>45</comment>
         <translation type="unfinished">Esthar- Aintzira Gatz Handia</translation>
     </message>
     <message>
-        <source>Côte Ouest - Esthar</source>
+        <source>Esthar- West Coast</source>
         <comment>46</comment>
         <translation>Esthar- Mendebaldeko Kostaldea</translation>
     </message>
     <message>
-        <source>Mont Sollet - Esthar</source>
+        <source>Esthar- Sollet Mountains</source>
         <oldsource>Mont Sollet -Esthar</oldsource>
         <comment>47</comment>
         <translation>Esthar- Sollet Mendiak</translation>
     </message>
     <message>
-        <source>Vallée d&apos;Abadan - Esthar</source>
+        <source>Esthar- Abadan Plains</source>
         <comment>48</comment>
         <translation>Esthar- Abadan Ordokiak</translation>
     </message>
     <message>
-        <source>Ile Minde - Esthar</source>
+        <source>Esthar- Minde Island</source>
         <comment>49</comment>
         <translation>Esthar- Minde Uhartea</translation>
     </message>
     <message>
-        <source>Désert Kashkabald - Esthar</source>
+        <source>Esthar- Kashkabald Desert</source>
         <comment>50</comment>
         <translation>Esthar- Kashkabald Desert</translation>
     </message>
     <message>
-        <source>Ile Paradisiaque - Esthar</source>
+        <source>Island Closest to Heaven</source>
         <comment>51</comment>
         <translation>Ia-ia Zeru Uhartea </translation>
     </message>
     <message>
-        <source>Pic de Talle - Esthar</source>
+        <source>Esthar- Talle Mountains</source>
         <comment>52</comment>
         <translation>Esthar- Talle Mendiak</translation>
     </message>
     <message>
-        <source>Atoll Shalmal - Esthar</source>
+        <source>Esthar- Shalmal Peninsula</source>
         <comment>53</comment>
         <translation>Esthar- Shalmal Penintsula</translation>
     </message>
     <message>
-        <source>Vallée de Lolestern - Centra</source>
+        <source>Centra- Lolestern Plains</source>
         <comment>54</comment>
         <translation>Centra- Lolestern Ordokiak</translation>
     </message>
     <message>
-        <source>Aiguille d&apos;Almage - Centra</source>
+        <source>Centra- Almaj Mountains</source>
         <comment>55</comment>
         <translation>Centra- Almaj Mendiak</translation>
     </message>
     <message>
-        <source>Vallon Lenown - Centra</source>
+        <source>Centra- Lenown Plains</source>
         <comment>56</comment>
         <translation>Centra- Lenown Ordokiak</translation>
     </message>
     <message>
-        <source>Cap de l&apos;espoir - Centra</source>
+        <source>Centra- Cape of Good Hope</source>
         <comment>57</comment>
         <translation>Centra- Itxaropen Onako Lurmuturra</translation>
     </message>
     <message>
-        <source>Mont Yorn - Centra</source>
+        <source>Centra- Yorn Mountains</source>
         <comment>58</comment>
         <translation>Centra- Yorn Mendiak</translation>
     </message>
     <message>
-        <source>Ile Pampa - Esthar</source>
+        <source>Esthar- Cactuar Island</source>
         <comment>59</comment>
         <translation>Esthar- Cactuar Uhartea</translation>
     </message>
     <message>
-        <source>Val Serengetti - Centra</source>
+        <source>Centra- Serengetti Plains</source>
         <comment>60</comment>
         <translation>Centra- Serengetti Ordokiak</translation>
     </message>
     <message>
-        <source>Péninsule Nectalle - Centra</source>
+        <source>Centra- Nectar Peninsula</source>
         <comment>61</comment>
         <translation>Centra- Nektar Penintsula</translation>
     </message>
     <message>
-        <source>Centra Crater - Centra</source>
+        <source>Centra- Centra Crater</source>
         <comment>62</comment>
         <translation>Centra- Centra Zulogunea</translation>
     </message>
     <message>
-        <source>Ile Poccarahi - Centra</source>
+        <source>Centra- Poccarahi Island</source>
         <oldsource>Ile Poccarahi -Centra</oldsource>
         <comment>63</comment>
         <translation>Centra- Poccarahi Uhartea</translation>
     </message>
     <message>
-        <source>Bibliothèque - BGU</source>
+        <source>B-Garden- Library</source>
         <comment>64</comment>
         <translation>B-Barazte- Liburutegia</translation>
     </message>
     <message>
-        <source>Entrée - BGU</source>
+        <source>B-Garden- Front Gate</source>
         <comment>65</comment>
         <translation>B-Barazte- Aurreko Atea</translation>
     </message>
     <message>
-        <source>Salle de cours - BGU</source>
+        <source>B-Garden- Classroom</source>
         <comment>66</comment>
         <translation>B-Barazte- Ikasgela</translation>
     </message>
     <message>
-        <source>Cafétéria - BGU</source>
+        <source>B-Garden- Cafeteria</source>
         <comment>67</comment>
         <translation>B-Barazte- Autozerbitzu-jatetxea </translation>
     </message>
     <message>
-        <source>Niveau MD - BGU</source>
+        <source>B-Garden- MD Level</source>
         <comment>68</comment>
         <translation>B-Barazte- MD Maila</translation>
     </message>
     <message>
-        <source>Hall 1er étage - BGU</source>
+        <source>B-Garden- 2F Hallway</source>
         <comment>69</comment>
         <translation>B-Barazte- 2S Atondoa</translation>
     </message>
     <message>
-        <source>Hall - BGU</source>
+        <source>B-Garden- Hall</source>
         <comment>70</comment>
         <translation>B-Barazte- Korridorea</translation>
     </message>
     <message>
-        <source>Infirmerie - BGU</source>
+        <source>B-Garden- Infirmary</source>
         <comment>71</comment>
         <translation>B-Barazte- Eritegia</translation>
     </message>
     <message>
-        <source>Dortoirs doubles - BGU</source>
+        <source>B-Garden- Dormitory Double</source>
         <comment>72</comment>
         <translation>B-Barazte- Biko Logela</translation>
     </message>
     <message>
-        <source>Dortoirs simples - BGU</source>
+        <source>B-Garden- Dormitory Single</source>
         <comment>73</comment>
         <translation>B-Barazte- Banakako Logela</translation>
     </message>
     <message>
-        <source>Bureau proviseur - BGU</source>
+        <source>B-Garden- Headmaster&apos;s Office</source>
         <comment>74</comment>
         <translation>B-Barazte- Zuzendariaren Bulegoa</translation>
     </message>
     <message>
-        <source>Parking - BGU</source>
+        <source>B-Garden- Parking Lot</source>
         <comment>75</comment>
         <translation>B-Barazte- Aparkalekua</translation>
     </message>
     <message>
-        <source>Salle de bal - BGU</source>
+        <source>B-Garden- Ballroom</source>
         <comment>76</comment>
         <translation>B-Barazte- Dantza-aretoa</translation>
     </message>
     <message>
-        <source>Campus - BGU</source>
+        <source>B-Garden- Quad</source>
         <comment>77</comment>
         <translation>B-Barazte- Patioa</translation>
     </message>
     <message>
-        <source>Serre de combat - BGU</source>
+        <source>B-Garden- Training Center</source>
         <comment>78</comment>
         <translation>B-Barazte- Entrenatzeko Zentroa</translation>
     </message>
     <message>
-        <source>Zone secrète - BGU</source>
+        <source>B-Garden- Secret Area</source>
         <oldsource>Zone secrète -BGU</oldsource>
         <comment>79</comment>
         <translation>B-Barazte- Gune Ezkutua</translation>
     </message>
     <message>
-        <source>Corridor - BGU</source>
+        <source>B-Garden- Hallway</source>
         <comment>80</comment>
         <translation>B-Barazte- Atondoa</translation>
     </message>
     <message>
-        <source>Temple - BGU</source>
+        <source>B-Garden- Master Room</source>
         <comment>81</comment>
         <translation>B-Barazte- Gela Nagusia</translation>
     </message>
     <message>
-        <source>Pont - BGU</source>
+        <source>B-Garden- Deck</source>
         <comment>82</comment>
         <translation>B-Barazte- Bizkarra</translation>
     </message>
     <message>
-        <source>Villa Dincht - Balamb</source>
+        <source>Balamb- The Dincht&apos;s</source>
         <comment>83</comment>
         <translation>Balamb- Dintchena</translation>
     </message>
     <message>
-        <source>Hôtel - Balamb</source>
+        <source>Balamb Hotel</source>
         <comment>84</comment>
         <translation>Balamb Hotela</translation>
     </message>
     <message>
-        <source>Place centrale - Balamb</source>
+        <source>Balamb- Town Square</source>
         <comment>85</comment>
         <translation>Balamb- Plaza</translation>
     </message>
     <message>
-        <source>Place de la gare - Balamb</source>
+        <source>Balamb- Station Yard</source>
         <comment>86</comment>
         <translation>Balamb- Tren-geltokia</translation>
     </message>
     <message>
-        <source>Port - Balamb</source>
+        <source>Balamb Harbor</source>
         <comment>87</comment>
         <translation>Balamb Portua</translation>
     </message>
     <message>
-        <source>Résidence - Balamb</source>
+        <source>Balamb- Residence</source>
         <comment>88</comment>
         <translation>Balamb- Bizitokia</translation>
     </message>
@@ -807,400 +799,401 @@ List of available commands:
         <translation>Trena</translation>
     </message>
     <message>
-        <source>Voiture</source>
+        <source>Car</source>
         <comment>90</comment>
         <translation>Autoa</translation>
     </message>
     <message>
-        <source>Vaisseau</source>
+        <source>Inside Ship</source>
         <comment>91</comment>
         <translation>Itsas-ontzi Barnea</translation>
     </message>
     <message>
-        <source>Mine de souffre</source>
+        <source>Fire Cavern</source>
         <comment>92</comment>
         <translation>Su Kobazuloa</translation>
     </message>
     <message>
-        <source>Place du village - Dollet</source>
+        <source>Dollet- Town Square</source>
         <comment>93</comment>
         <translation>Dollet- Plaza</translation>
     </message>
     <message>
-        <source>Zuma Beach</source>
+        <source>Dollet- Lapin Beach</source>
         <comment>94</comment>
         <translation>Dollet- Lapin Hondartza</translation>
     </message>
     <message>
-        <source>Port -Dollet</source>
+        <source>
+Dollet Harbor</source>
         <comment>95</comment>
         <translation>Dollet Portua</translation>
     </message>
     <message>
-        <source>Pub - Dollet</source>
+        <source>Dollet Pub</source>
         <comment>96</comment>
         <translation>Dollet Taberna</translation>
     </message>
     <message>
-        <source>Hôtel - Dollet</source>
+        <source>Dollet Hotel</source>
         <comment>97</comment>
         <translation>Dollet Hotela</translation>
     </message>
     <message>
-        <source>Résidence - Dollet</source>
+        <source>Dollet- Residence</source>
         <comment>98</comment>
         <translation>Dollet- Bizitokia</translation>
     </message>
     <message>
-        <source>Tour satellite - Dollet</source>
+        <source>Dollet- Comm Tower</source>
         <comment>99</comment>
         <translation>Dollet- Satelite Dorrea</translation>
     </message>
     <message>
-        <source>Refuge montagneux - Dollet</source>
+        <source>Dollet- Mountain Hideout</source>
         <comment>100</comment>
         <translation>Dollet- Mendi Ezkutalekua</translation>
     </message>
     <message>
-        <source>Centre ville - Timber</source>
+        <source>Timber- City Square</source>
         <comment>101</comment>
         <translation>Timber- Plaza</translation>
     </message>
     <message>
-        <source>Chaîne de TV - Timber</source>
+        <source>Timber TV Station</source>
         <comment>102</comment>
         <translation>Timber- TV Geltokia</translation>
     </message>
     <message>
-        <source>Base des Hiboux - Timber</source>
+        <source>Timber- Forest Owls&apos; Base</source>
         <comment>103</comment>
         <translation>Timber- Oihan-Hontzaren Basea</translation>
     </message>
     <message>
-        <source>Pub - Timber</source>
+        <source>Timber Pub</source>
         <comment>104</comment>
         <translation>Timber Taberna</translation>
     </message>
     <message>
-        <source>Hôtel - Timber</source>
+        <source>Timber Hotel</source>
         <comment>105</comment>
         <translation>Timber Hotela</translation>
     </message>
     <message>
-        <source>Train - Timber</source>
+        <source>Timber- Train</source>
         <comment>106</comment>
         <translation>Timber- Trena</translation>
     </message>
     <message>
-        <source>Résidence - Timber</source>
+        <source>Timber- Residence</source>
         <comment>107</comment>
         <translation>Timber- Bizitokia</translation>
     </message>
     <message>
-        <source>Ecran géant - Timber</source>
+        <source>Timber- TV Screen</source>
         <comment>108</comment>
         <translation>Timber- TV Screen</translation>
     </message>
     <message>
-        <source>Centre de presse - Timber</source>
+        <source>Timber- Editorial Department</source>
         <comment>109</comment>
         <translation>Timber- Departamentu Editoriala</translation>
     </message>
     <message>
-        <source>Forêt de Timber</source>
+        <source>Timber Forest</source>
         <comment>110</comment>
         <translation>Timber Oihana</translation>
     </message>
     <message>
-        <source>Entrée - Fac deGalbadia</source>
+        <source>Galbadia Garden- Front Gate</source>
         <comment>111</comment>
         <translation>Galbadia Barazte- Aurreko Atea</translation>
     </message>
     <message>
-        <source>Station Fac de Galbadia</source>
+        <source>G-Garden- Station</source>
         <comment>112</comment>
         <translation>G-Barazte- Geltokia</translation>
     </message>
     <message>
-        <source>Hall - Fac de Galbadia</source>
+        <source>G-Garden- Hall</source>
         <comment>113</comment>
         <translation>G-Barazte- Korridorea</translation>
     </message>
     <message>
-        <source>Corridor - Fac de Galbadia</source>
+        <source>G-Garden- Hallway</source>
         <comment>114</comment>
         <translation>G-Barazte- Atondoa</translation>
     </message>
     <message>
-        <source>Salle d&apos;attente - Fac Galbadia</source>
+        <source>G-Garden- Reception Room</source>
         <comment>115</comment>
         <translation>G-Barazte- Harrera-lekua</translation>
     </message>
     <message>
-        <source>Salle de cours - Fac Galbadia</source>
+        <source>G-Garden- Classroom</source>
         <comment>116</comment>
         <translation>G-Barazte- Ikasgela</translation>
     </message>
     <message>
-        <source>Salle de réunion - Fac Galbadia</source>
+        <source>G-Garden- Clubroom</source>
         <comment>117</comment>
         <translation>G-Barazte- Aretoa</translation>
     </message>
     <message>
-        <source>Dortoirs - Fac de Galbadia</source>
+        <source>G-Garden- Dormitory</source>
         <comment>118</comment>
         <translation>G-Barazte- Logela</translation>
     </message>
     <message>
-        <source>Ascenseur - Fac de Galbadia</source>
+        <source>G-Garden- Elevator Hall</source>
         <comment>119</comment>
         <translation>G-Barazte- Igogailua</translation>
     </message>
     <message>
-        <source>Salle recteur - Fac Galbadia</source>
+        <source>G-Garden- Master Room</source>
         <comment>120</comment>
         <translation>G-Barazte- Gela Nagusia</translation>
     </message>
     <message>
-        <source>Auditorium - Fac de Galbadia</source>
+        <source>G-Garden- Auditorium</source>
         <comment>121</comment>
         <translation>G-Barazte- Auditorio</translation>
     </message>
     <message>
-        <source>Stade - Fac de Galbadia</source>
+        <source>G-Garden- Athletic Track</source>
         <comment>122</comment>
         <translation>G-Barazte- Ibilbide Atletikoa</translation>
     </message>
     <message>
-        <source>Stand - Fac de Galbadia</source>
+        <source>G-Garden- Stand</source>
         <comment>123</comment>
         <translation>G-Barazte- Saltokia</translation>
     </message>
     <message>
-        <source>2nde entrée - Fac Galbadia</source>
+        <source>G-Garden- Back Entrance</source>
         <comment>124</comment>
         <translation>G-Barazte- Atzeko Sarrera</translation>
     </message>
     <message>
-        <source>Gymnase - Fac de Galbadia</source>
+        <source>G-Garden- Gymnasium</source>
         <comment>125</comment>
         <translation>G-Barazte- Gimnasioa</translation>
     </message>
     <message>
-        <source>Palais président - Deling City</source>
+        <source>Deling- Presidential Residence</source>
         <comment>126</comment>
         <translation>Deling- Errege-jauregia</translation>
     </message>
     <message>
-        <source>Manoir Caraway - Deling City</source>
+        <source>Deling City- Caraway&apos;s Mansion</source>
         <oldsource>Manoir Caraway - DelingCity</oldsource>
         <comment>127</comment>
         <translation>Deling Hiria- Carawayen Jauretxea</translation>
     </message>
     <message>
-        <source>Gare - Deling City</source>
+        <source>Deling City- Station Yard</source>
         <comment>128</comment>
         <translation>Deling City- Geltokia</translation>
     </message>
     <message>
-        <source>Place centrale - Deling City</source>
+        <source>Deling City- City Square</source>
         <comment>129</comment>
         <translation>Deling City- Plaza</translation>
     </message>
     <message>
-        <source>Hôtel - Deling City</source>
+        <source>Deling City- Hotel</source>
         <comment>130</comment>
         <translation>Deling City- Hotela</translation>
     </message>
     <message>
-        <source>Bar - Deling City</source>
+        <source>Deling City- Club</source>
         <comment>131</comment>
         <translation>Deling City- Kluba</translation>
     </message>
     <message>
-        <source>Sortie - Deling City</source>
+        <source>Deling City- Gateway</source>
         <comment>132</comment>
         <translation>Deling City- Sarrera</translation>
     </message>
     <message>
-        <source>Parade - Deling City</source>
+        <source>Deling City- Parade</source>
         <comment>133</comment>
         <translation>Deling City- Desfilea</translation>
     </message>
     <message>
-        <source>Egout - Deling City</source>
+        <source>Deling City- Sewer</source>
         <comment>134</comment>
         <translation>Deling City- Estolda</translation>
     </message>
     <message>
-        <source>Prison du désert - Galbadia</source>
+        <source>Galbadia D-District Prison</source>
         <comment>135</comment>
         <translation>Galbadia D-Barruti Espetxea</translation>
     </message>
     <message>
-        <source>Désert</source>
+        <source>Desert</source>
         <comment>136</comment>
         <translation>Basamortua</translation>
     </message>
     <message>
-        <source>Base des missiles</source>
+        <source>Galbadia Missile Base</source>
         <comment>137</comment>
         <translation>Galbadia Misil Basea</translation>
     </message>
     <message>
-        <source>Village de Winhill</source>
+        <source>Winhill Village</source>
         <comment>138</comment>
         <translation>Winhill Herrixka</translation>
     </message>
     <message>
-        <source>Pub - Winhill</source>
+        <source>Winhill Pub</source>
         <comment>139</comment>
         <translation>Winhill Taberna</translation>
     </message>
     <message>
-        <source>Maison vide - Winhill</source>
+        <source>Winhill- Vacant House</source>
         <comment>140</comment>
         <translation>Winhill- Etxe Librea</translation>
     </message>
     <message>
-        <source>Manoir - Winhill</source>
+        <source>Winhill- Mansion</source>
         <comment>141</comment>
         <translation>Winhill- Jauretxea</translation>
     </message>
     <message>
-        <source>Résidence - Winhill</source>
+        <source>Winhill- Residence</source>
         <comment>142</comment>
         <translation>Winhill- Bizitokia</translation>
     </message>
     <message>
-        <source>Hôtel - Winhill</source>
+        <source>Winhill- Hotel</source>
         <oldsource>Hôtel -Winhill</oldsource>
         <comment>143</comment>
         <translation>Winhill- Hotela</translation>
     </message>
     <message>
-        <source>Voiture - Winhill</source>
+        <source>Winhill- Car</source>
         <comment>144</comment>
         <translation>Winhill- Autoa</translation>
     </message>
     <message>
-        <source>Tombe du roi inconnu</source>
+        <source>Tomb of the Unknown King</source>
         <comment>145</comment>
         <translation>Errege Ezezaguneko Hilobia</translation>
     </message>
     <message>
-        <source>Horizon</source>
+        <source>Fishermans Horizon</source>
         <comment>146</comment>
         <translation>Arrantzalearen Zerumua</translation>
     </message>
     <message>
-        <source>Habitations - Horizon</source>
+        <source>FH- Residential Area</source>
         <comment>147</comment>
         <translation>AZ- Bizitegi-auzoa</translation>
     </message>
     <message>
-        <source>Ecrans solaires - Horizon</source>
+        <source>FH- Sun Panel</source>
         <comment>148</comment>
         <translation>AZ- Eguzki-panela</translation>
     </message>
     <message>
-        <source>Villa du maire - Horizon</source>
+        <source>FH- Mayor&apos;s Residence</source>
         <comment>149</comment>
         <translation>AZ- Alkatearen Bizitokia</translation>
     </message>
     <message>
-        <source>Usine - Horizon</source>
+        <source>FH- Factory</source>
         <comment>150</comment>
         <translation>AZ- Fabrika</translation>
     </message>
     <message>
-        <source>Salle des fêtes - Horizon</source>
+        <source>FH- Festival Grounds</source>
         <comment>151</comment>
         <translation>AZ- Azoka</translation>
     </message>
     <message>
-        <source>Hôtel - Horizon</source>
+        <source>FH- Hotel</source>
         <comment>152</comment>
         <translation>AZ- Hotela</translation>
     </message>
     <message>
-        <source>Résidence - Horizon</source>
+        <source>FH- Residence</source>
         <comment>153</comment>
         <translation>AZ- Bizitokia</translation>
     </message>
     <message>
-        <source>Gare - Horizon</source>
+        <source>FH- Station Yard</source>
         <comment>154</comment>
         <translation>AZ- Geltokia</translation>
     </message>
     <message>
-        <source>Aqueduc d&apos;Horizon</source>
+        <source>FH- Horizon Bridge</source>
         <comment>155</comment>
         <translation>AZ- Zubia</translation>
     </message>
     <message>
-        <source>Station balnéaire</source>
+        <source>FH- Seaside Station</source>
         <comment>156</comment>
         <translation>AZ- Geltoki Itsasaldea</translation>
     </message>
     <message>
-        <source>Salt Lake</source>
+        <source>FH- Geat Salt Lake</source>
         <comment>157</comment>
         <translation>AZ- Aintzira Gatz Handia</translation>
     </message>
     <message>
-        <source>Bâtiment mystérieux</source>
+        <source>FH- Mystery Building</source>
         <comment>158</comment>
         <translation>AZ- Eraikin Misterioa</translation>
     </message>
     <message>
-        <source>Esthar City</source>
+        <source>Esthar- City</source>
         <oldsource>EstharCity</oldsource>
         <comment>159</comment>
         <translation>Esthar- Hiria</translation>
     </message>
     <message>
-        <source>Laboratoire Geyser - Esthar</source>
+        <source>Esthar- Odine&apos;s Laboratory</source>
         <comment>160</comment>
         <translation>Esthar- Odinen Laborategia</translation>
     </message>
     <message>
-        <source>Aérodrome - Esthar</source>
+        <source>Esthar- Airstation</source>
         <comment>161</comment>
         <translation>Esthar- Aireportua</translation>
     </message>
     <message>
-        <source>Lunatic Pandora approche</source>
+        <source>Lunatic Pandora Approaching</source>
         <comment>162</comment>
         <translation>Lunatic Pandora hurbiltzen da</translation>
     </message>
     <message>
-        <source>Résidence président - Esthar</source>
+        <source>Esthar- Presidential Palace</source>
         <comment>163</comment>
         <translation>Esthar- Lehendakari-jauretxea</translation>
     </message>
     <message>
-        <source>Hall - Résidence président</source>
+        <source>Presidential Palace- Hall</source>
         <comment>164</comment>
         <translation>Lehendakari-jauretxea- Korridorea</translation>
     </message>
     <message>
-        <source>Couloir - Résidence président</source>
+        <source>Presidential Palace- Hallway</source>
         <comment>165</comment>
         <translation>Lehendakari-jauretxea- Atondoa</translation>
     </message>
     <message>
-        <source>Bureau - Résidence président</source>
+        <source>Presidential Palace- Office</source>
         <comment>166</comment>
         <translation>Lehendakari-jauretxea- Office</translation>
     </message>
     <message>
-        <source>Accueil - Labo Geyser</source>
+        <source>Dr. Odine&apos;s Laboratory- Lobby</source>
         <comment>167</comment>
         <translation>Dr. Odinen Laborategia- Itxaongela</translation>
     </message>
     <message>
-        <source>Laboratoire Geyser</source>
+        <source>Dr. Odine&apos;s Laboratory- Lab</source>
         <comment>168</comment>
         <translation>Dr. Odinen Laborategia- Laba</translation>
     </message>
@@ -1215,52 +1208,52 @@ List of available commands:
         <translation>Ilargiko Atea</translation>
     </message>
     <message>
-        <source>Parvis - Lunar Gate</source>
+        <source>Lunar Gate- Concourse</source>
         <comment>171</comment>
         <translation>Ilargiko Atea- Elkargune</translation>
     </message>
     <message>
-        <source>Glacière - Lunar gate</source>
+        <source>Lunar Gate- Deep Freeze</source>
         <comment>172</comment>
         <translation>Ilargiko Atea- Hotzaro Sakona</translation>
     </message>
     <message>
-        <source>Mausolée - Esthar</source>
+        <source>Esthar Sorceress Memorial</source>
         <comment>173</comment>
         <translation>Esthar Mausoleo</translation>
     </message>
     <message>
-        <source>Entrée - Mausolée</source>
+        <source>Sorceress Memorial- Entrance</source>
         <comment>174</comment>
         <translation>Mausoleo- Sarrera</translation>
     </message>
     <message>
-        <source>Pod de confinement -Mausolée</source>
+        <source>Sorceress Memorial- Pod</source>
         <comment>175</comment>
         <translation>Mausoleo- Leka</translation>
     </message>
     <message>
-        <source>Salle de contrôle - Mausolée</source>
+        <source>Sorceress Memorial- Ctrl Room</source>
         <comment>176</comment>
         <translation>Sausoleo- Kontrol-gela</translation>
     </message>
     <message>
-        <source>Tears Point</source>
+        <source>Tears&apos; Point</source>
         <comment>177</comment>
         <translation>Negarren Puntua</translation>
     </message>
     <message>
-        <source>Labo Lunatic Pandora</source>
+        <source>Lunatic Pandora Laboratory</source>
         <comment>178</comment>
         <translation>Lunatic Pandora Laborategia</translation>
     </message>
     <message>
-        <source>Zone d&apos;atterrissage de secours</source>
+        <source>Emergency Landing Zone</source>
         <comment>179</comment>
         <translation>Larrialdiko Lurreratze-eremua</translation>
     </message>
     <message>
-        <source>Zone d&apos;atterrissage officielle</source>
+        <source>Spaceship Landing Zone</source>
         <comment>180</comment>
         <translation>Espazionttziko Lurreratze-eremua</translation>
     </message>
@@ -1270,346 +1263,346 @@ List of available commands:
         <translation>Lunatic Pandora</translation>
     </message>
     <message>
-        <source>Site des fouilles - Centra</source>
+        <source>Centra- Excavation Site</source>
         <comment>182</comment>
         <translation>Centra- Aztarnategia</translation>
     </message>
     <message>
-        <source>Orphelinat</source>
+        <source>Edea&apos;s House</source>
         <comment>183</comment>
         <translation>Edearen Etxea</translation>
     </message>
     <message>
-        <source>Salle de jeux - Orphelinat</source>
+        <source>Edea&apos;s House- Playroom</source>
         <comment>184</comment>
         <translation>Edearen Etxea- Jokaldi-gela</translation>
     </message>
     <message>
-        <source>Dortoir - Orphelinat</source>
+        <source>Edea&apos;s House- Bedroom</source>
         <comment>185</comment>
         <translation>Edearen Etxea- Logela</translation>
     </message>
     <message>
-        <source>Jardin - Orphelinat</source>
+        <source>Edea&apos;s House- Backyard</source>
         <comment>186</comment>
         <translation>Edearen Etxea- Atzealdea</translation>
     </message>
     <message>
-        <source>Front de mer - Orphelinat</source>
+        <source>Edea&apos;s House- Oceanside</source>
         <comment>187</comment>
         <translation>Edearen Etxea- Itsasaldea</translation>
     </message>
     <message>
-        <source>Champ - Orphelinat</source>
+        <source>Edea&apos;s House- Flower Field</source>
         <comment>188</comment>
         <translation>Edearen Etxea- Zelaia</translation>
     </message>
     <message>
-        <source>Ruines de Centra</source>
+        <source>Centra Ruins</source>
         <comment>189</comment>
         <translation>Centra Aurriak</translation>
     </message>
     <message>
-        <source>Entrée - Fac de Trabia</source>
+        <source>Trabia Garden- Front Gate</source>
         <comment>190</comment>
         <translation>Trabia Barazte- Aurreko Atea</translation>
     </message>
     <message>
-        <source>Cimetière - Fac deTrabia</source>
+        <source>T-Garden- Cemetery</source>
         <comment>191</comment>
         <translation>T-Barazte- Hilerria</translation>
     </message>
     <message>
-        <source>Garage - Fac de Trabia</source>
+        <source>T-Garden- Garage</source>
         <comment>192</comment>
         <translation>T-Barazte- Garajea</translation>
     </message>
     <message>
-        <source>Campus - Fac Trabia</source>
+        <source>T-Garden- Festival Stage</source>
         <comment>193</comment>
         <translation>T-Barazte- Antzeztokia</translation>
     </message>
     <message>
-        <source>Amphithéatre - Fac de Trabia</source>
+        <source>T-Garden- Classroom</source>
         <comment>194</comment>
         <translation>T-Barazte- Ikasgela</translation>
     </message>
     <message>
-        <source>Stade - Fac de Trabia</source>
+        <source>T-Garden- Athletic Ground</source>
         <comment>195</comment>
         <translation>T-Barazte- Atletiko Inguruak</translation>
     </message>
     <message>
-        <source>Dôme mystérieux</source>
+        <source>Mystery Dome</source>
         <comment>196</comment>
         <translation>Kupula Misterioa</translation>
     </message>
     <message>
-        <source>Ville du désert - Shumi Village</source>
+        <source>Shumi Village- Desert Village</source>
         <comment>197</comment>
         <translation>Shumi Herrixka- Basamortu Herrixka</translation>
     </message>
     <message>
-        <source>Ascenseur - Shumi Village</source>
+        <source>Shumi Village- Elevator</source>
         <comment>198</comment>
         <translation>Shumi Herrixka- Igogailua</translation>
     </message>
     <message>
-        <source>Shumi Village</source>
+        <source>Shumi Village- Village</source>
         <comment>199</comment>
         <translation>Shumi Herrixka- Herrixka</translation>
     </message>
     <message>
-        <source>Habitation - Shumi Village</source>
+        <source>Shumi Village- Residence</source>
         <comment>200</comment>
         <translation>Shumi Village- Bizitokia</translation>
     </message>
     <message>
-        <source>Résidence - Shumi Village</source>
+        <source>Shumi Village- Residence</source>
         <comment>201</comment>
         <translation>Shumi Village- Bizitokia</translation>
     </message>
     <message>
-        <source>Habitat - Shumi Village</source>
+        <source>Shumi Village- Residence</source>
         <comment>202</comment>
         <translation>Shumi Village- Bizitokia</translation>
     </message>
     <message>
-        <source>Hôtel - Shumi Village</source>
+        <source>Shumi Village- Hotel</source>
         <comment>203</comment>
         <translation>Shumi Village- Hotela</translation>
     </message>
     <message>
-        <source>Trabia canyon</source>
+        <source>Trabia Canyon</source>
         <comment>204</comment>
         <translation>Trabia Zulogunea</translation>
     </message>
     <message>
-        <source>Vaisseau des Seeds blancs</source>
+        <source>White SeeD Ship</source>
         <comment>205</comment>
         <translation>Itsasontzi SeeD Zuria</translation>
     </message>
     <message>
-        <source>Navire des Seeds Blancs</source>
+        <source>White SeeD Ship</source>
         <comment>206</comment>
         <translation>Itsasontzi SeeD Zuria</translation>
     </message>
     <message>
-        <source>Cabine - Navire Seeds blancs</source>
+        <source>White SeeD Ship- Cabin</source>
         <oldsource>Cabine - Navire Seedsblancs</oldsource>
         <comment>207</comment>
         <translation>Itsasontzi SeeD Zuria- Kabina</translation>
     </message>
     <message>
-        <source>Cockpit - Hydre</source>
+        <source>Ragnarok- Cockpit</source>
         <comment>208</comment>
         <translation>Ragnarok- Kabina</translation>
     </message>
     <message>
-        <source>Siège passager - Hydre</source>
+        <source>Ragnarok- Passenger Seat</source>
         <comment>209</comment>
         <translation>Ragnarok- Bidaiadeko Aulkia</translation>
     </message>
     <message>
-        <source>Couloir - Hydre</source>
+        <source>Ragnarok- Aisle</source>
         <comment>210</comment>
         <translation>Ragnarok- Pasabide</translation>
     </message>
     <message>
-        <source>Hangar - Hydre</source>
+        <source>Ragnarok- Hangar</source>
         <comment>211</comment>
         <translation>Ragnarok- Hangarra</translation>
     </message>
     <message>
-        <source>Accès - Hydre</source>
+        <source>Ragnarok- Entrance</source>
         <comment>212</comment>
         <translation>Ragnarok- Sarrera</translation>
     </message>
     <message>
-        <source>Air Room - Hydre</source>
+        <source>Ragnarok- Air Room</source>
         <oldsource>Air Gela - Hydre</oldsource>
         <comment>213</comment>
         <translation type="unfinished">Ragnarok- Aire-gela</translation>
     </message>
     <message>
-        <source>Salle de pression - Hydre</source>
+        <source>Ragnarok- Space Hatch</source>
         <comment>214</comment>
         <translation>Ragnarok- Espazio-eskotila</translation>
     </message>
     <message>
-        <source>Centre de recherches Deep Sea</source>
+        <source>Deep Sea Research Center</source>
         <comment>215</comment>
         <translation>Aintzira-sakon Ikerkuntzarentzako Zentroa</translation>
     </message>
     <message>
-        <source>Laboratoire - Deep Sea</source>
+        <source>Deep Sea Research Center- Lb</source>
         <comment>216</comment>
         <translation>ASIZ- Laborategia</translation>
     </message>
     <message>
-        <source>Salle de travail - Deep Sea</source>
+        <source>Deep Sea Research Center- Lv</source>
         <comment>217</comment>
         <translation>ASIZ- Lantegia</translation>
     </message>
     <message>
-        <source>Fouilles - Deep Sea</source>
+        <source>Deep Sea Deposit</source>
         <comment>218</comment>
         <translation>Aintzira-sakon Depositua</translation>
     </message>
     <message>
-        <source>Salle de contrôle - Base lunaire</source>
+        <source>Lunar Base- Control Room</source>
         <comment>219</comment>
         <translation>Ilargiko Gela- Kontrol Gela</translation>
     </message>
     <message>
-        <source>Centre médical - Base lunaire</source>
+        <source>Lunar Base- Medical Room</source>
         <comment>220</comment>
         <translation>Ilargiko Gela- Medikuntzako Gela</translation>
     </message>
     <message>
-        <source>Pod - Base lunaire</source>
+        <source>Lunar Base- Pod</source>
         <comment>221</comment>
         <translation>Ilargiko Gela- Leka</translation>
     </message>
     <message>
-        <source>Dock - Base lunaire</source>
+        <source>Lunar Base- Dock</source>
         <comment>222</comment>
         <translation>Ilargiko Gela- Kaia</translation>
     </message>
     <message>
-        <source>Passage - Base lunaire</source>
+        <source>Lunar Base- Passageway</source>
         <oldsource>Passage - Baselunaire</oldsource>
         <comment>223</comment>
         <translation>Ilargiko Gela- Pasabidea</translation>
     </message>
     <message>
-        <source>Vestiaire - Base lunaire</source>
+        <source>Lunar Base- Locker</source>
         <comment>224</comment>
         <translation>Ilargiko Gela- Armairua</translation>
     </message>
     <message>
-        <source>Habitats - Base lunaire</source>
+        <source>Lunar Base- Residential Zone</source>
         <comment>225</comment>
         <translation>Ilargiko Gela- Bizitegi-auzoa</translation>
     </message>
     <message>
-        <source>Hyper Espace</source>
+        <source>Outer Space</source>
         <comment>226</comment>
         <translation>Kanpoko Espazioa</translation>
     </message>
     <message>
-        <source>Forêt Chocobo</source>
+        <source>Chocobo Forest</source>
         <comment>227</comment>
         <translation>Chocobo Oihana</translation>
     </message>
     <message>
-        <source>Jungle</source>
+        <source>Wilderness</source>
         <comment>228</comment>
         <translation>Mortua</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia - Vestibule</source>
+        <source>Ultimecia Castle- Hall</source>
         <comment>229</comment>
         <translation>Ultimeciaren Gaztelua- Korridorea</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia - Hall</source>
+        <source>Ultimecia Castle- Grand Hall</source>
         <comment>230</comment>
         <translation>Ultimeciaren Gaztelua- Korridore Handia</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia - Terrasse</source>
+        <source>Ultimecia Castle- Terrace</source>
         <comment>231</comment>
         <translation>Ultimeciaren Gaztelua- Terraza</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia - Cave</source>
+        <source>Ultimecia Castle- Wine Cellar</source>
         <comment>232</comment>
         <translation>Ultimeciaren Gaztelua- Sotoa</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia - Couloir</source>
+        <source>Ultimecia Castle- Passageway</source>
         <comment>233</comment>
         <translation>Ultimeciaren Gaztelua- Pasabidea</translation>
     </message>
     <message>
-        <source>Elévateur - Citadelle</source>
+        <source>Ultimecia Castle- Elevator Hall</source>
         <comment>234</comment>
         <translation>Ultimeciaren Gaztelua- Igogailua</translation>
     </message>
     <message>
-        <source>Escalier - Citadelle d&apos;Ultimecia</source>
+        <source>Ultimecia Castle- Stairway Hall</source>
         <comment>235</comment>
         <translation>Ultimeciaren Gaztelua- Eskailera-atondoa</translation>
     </message>
     <message>
-        <source>Salle du trésor - Citadelle</source>
+        <source>Ultimecia Castle- Treasure Rm</source>
         <comment>236</comment>
         <translation>Ultimeciaren Gaztelua- Altxorgela</translation>
     </message>
     <message>
-        <source>Salle de rangement - Citadelle</source>
+        <source>Ultimecia Castle- Storage Room</source>
         <comment>237</comment>
         <translation>Ultimeciaren Gaztelua- Bilketa-gela</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia - Galerie</source>
+        <source>Ultimecia Castle- Art Gallery</source>
         <comment>238</comment>
         <translation>Ultimeciaren Gaztelua- Arte-museo</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia - Ecluse</source>
+        <source>Ultimecia Castle- Flood Gate</source>
         <oldsource>Citadelle d&apos;Ultimecia -Ecluse</oldsource>
         <comment>239</comment>
         <translation>Ultimeciaren Gaztelua- Uhatea</translation>
     </message>
     <message>
-        <source>Citadelle - Armurerie</source>
+        <source>Ultimecia Castle- Armory</source>
         <comment>240</comment>
         <translation>Ultimeciaren Gaztelua- Armategia</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia - Prison</source>
+        <source>Ultimecia Castle- Prison Cell</source>
         <comment>241</comment>
         <translation>Ultimeciaren Gaztelua- Ziega</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia - Fossé</source>
+        <source>Ultimecia Castle- Waterway</source>
         <comment>242</comment>
         <translation>Ultimeciaren Gaztelua- Ubidea</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia - Jardin</source>
+        <source>Ultimecia Castle- Courtyard</source>
         <comment>243</comment>
         <translation>Ultimeciaren Gaztelua- Patioa</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia - Chapelle</source>
+        <source>Ultimecia Castle- Chapel</source>
         <comment>244</comment>
         <translation>Ultimeciaren Gaztelua- Kapera</translation>
     </message>
     <message>
-        <source>Clocher - Citadelle d&apos;Ultimecia</source>
+        <source>Ultimecia Castle- Clock Tower</source>
         <comment>245</comment>
         <translation>Ultimeciaren Gaztelua- Erloju-dorrea</translation>
     </message>
     <message>
-        <source>Chambre d&apos;Ultimecia - Citadelle</source>
+        <source>Ultimecia Castle- Master Room</source>
         <comment>246</comment>
         <translation>Ultimeciaren Gaztelua- Gela Nagusia</translation>
     </message>
     <message>
-        <source>Citadelle d&apos;Ultimecia</source>
+        <source>Ultimecia Castle</source>
         <comment>248</comment>
         <translation>Ultimeciaren Gaztelua</translation>
     </message>
     <message>
-        <source>Salle d&apos;initiation</source>
+        <source>Commencement Room</source>
         <comment>249</comment>
         <translation>Hastapen-gela</translation>
     </message>
     <message>
-        <source>Reine des cartes</source>
+        <source>Queen</source>
         <comment>250</comment>
         <translation>Karta-erregina</translation>
     </message>
@@ -1660,7 +1653,7 @@ List of available commands:
         <translation>Quistis</translation>
     </message>
     <message>
-        <source>Linoa</source>
+        <source>Rinoa</source>
         <translation>Rinoa</translation>
     </message>
     <message>
@@ -1688,7 +1681,7 @@ List of available commands:
         <translation>Ward</translation>
     </message>
     <message>
-        <source>Cronos</source>
+        <source>Griever</source>
         <translation>Griever</translation>
     </message>
     <message>
@@ -1700,71 +1693,71 @@ List of available commands:
         <translation>Boko</translation>
     </message>
     <message>
-        <source>Angel</source>
+        <source>Angelo</source>
         <translation>Angelo</translation>
     </message>
     <message>
-        <source>Brasier</source>
+        <source>Fire</source>
         <translation>Sua</translation>
     </message>
     <message>
-        <source>Brasier+</source>
+        <source>Fira</source>
         <translation>Suagoa</translation>
     </message>
     <message>
-        <source>BrasierX</source>
+        <source>Firaga</source>
         <translation>Suena</translation>
     </message>
     <message>
-        <source>Glacier</source>
+        <source>Blizzard</source>
         <translation>Bisutsa</translation>
     </message>
     <message>
-        <source>Glacier+</source>
+        <source>Blizzara</source>
         <translation>Bisutsagoa</translation>
     </message>
     <message>
-        <source>GlacierX</source>
+        <source>Blizzaga</source>
         <translation>Bisutsena</translation>
     </message>
     <message>
-        <source>Foudre</source>
+        <source>Thunder</source>
         <translation>Dunbotsa</translation>
     </message>
     <message>
-        <source>Foudre+</source>
+        <source>Thundara</source>
         <translation>Dunbotsagoa</translation>
     </message>
     <message>
-        <source>FoudreX</source>
+        <source>Thundaga</source>
         <translation>Dunbotsena</translation>
     </message>
     <message>
-        <source>H2O</source>
+        <source>Water</source>
         <translation>Ura</translation>
     </message>
     <message>
-        <source>Rafale</source>
+        <source>Aero</source>
         <translation>Airea</translation>
     </message>
     <message>
-        <source>Cyanure</source>
+        <source>Bio</source>
         <translation>Pozoia</translation>
     </message>
     <message>
-        <source>Quart</source>
+        <source>Demi</source>
         <translation>Erdia</translation>
     </message>
     <message>
-        <source>Sidéral</source>
+        <source>Holy</source>
         <translation>Santua</translation>
     </message>
     <message>
-        <source>Fournaise</source>
+        <source>Flare</source>
         <translation>Garra</translation>
     </message>
     <message>
-        <source>Météore</source>
+        <source>Meteor</source>
         <translation>Meteoroa</translation>
     </message>
     <message>
@@ -1772,7 +1765,7 @@ List of available commands:
         <translation>Lurrikara</translation>
     </message>
     <message>
-        <source>Tornade</source>
+        <source>Tornado</source>
         <translation>Tornadoa</translation>
     </message>
     <message>
@@ -1784,27 +1777,27 @@ List of available commands:
         <translation>Apokalipsia</translation>
     </message>
     <message>
-        <source>Soin</source>
+        <source>Cure</source>
         <translation>Sendagaia</translation>
     </message>
     <message>
-        <source>Soin+</source>
+        <source>Cura</source>
         <translation>Sendagaiagoa</translation>
     </message>
     <message>
-        <source>Soin Max</source>
+        <source>Curaga</source>
         <translation>Sendagaiena</translation>
     </message>
     <message>
-        <source>Vie</source>
+        <source>Life</source>
         <translation>Bizitza</translation>
     </message>
     <message>
-        <source>Vie Max</source>
+        <source>Full-life</source>
         <translation>Bizitza-betea</translation>
     </message>
     <message>
-        <source>Récup</source>
+        <source>Regen</source>
         <translation>Birsortu</translation>
     </message>
     <message>
@@ -1812,19 +1805,19 @@ List of available commands:
         <translation>Esuna</translation>
     </message>
     <message>
-        <source>Anti-sort</source>
+        <source>Dispel</source>
         <translation>Barreiatu</translation>
     </message>
     <message>
-        <source>Carapace</source>
+        <source>Protect</source>
         <translation>Babestu</translation>
     </message>
     <message>
-        <source>Blindage</source>
+        <source>Shell</source>
         <translation>Azala</translation>
     </message>
     <message>
-        <source>Boormg</source>
+        <source>Reflect</source>
         <translation>Isladatu</translation>
     </message>
     <message>
@@ -1840,11 +1833,11 @@ List of available commands:
         <translation>Hiruko</translation>
     </message>
     <message>
-        <source>Booster</source>
+        <source>Haste</source>
         <translation>Lehia</translation>
     </message>
     <message>
-        <source>Somni</source>
+        <source>Slow</source>
         <translation>Mantsoa</translation>
     </message>
     <message>
@@ -1852,43 +1845,43 @@ List of available commands:
         <translation>Gelditu</translation>
     </message>
     <message>
-        <source>Cécité</source>
+        <source>Blind</source>
         <translation>Itsutu</translation>
     </message>
     <message>
-        <source>Folie</source>
+        <source>Confuse</source>
         <translation>nahasi</translation>
     </message>
     <message>
-        <source>Morphée</source>
+        <source>Sleep</source>
         <translation>Lo</translation>
     </message>
     <message>
-        <source>Aphasie</source>
+        <source>Silence</source>
         <translation>Isila</translation>
     </message>
     <message>
-        <source>Mégalith</source>
+        <source>Break</source>
         <translation>Hautsi</translation>
     </message>
     <message>
-        <source>Ankou</source>
+        <source>Death</source>
         <translation>Heriotza</translation>
     </message>
     <message>
-        <source>Saignée</source>
+        <source>Drain</source>
         <translation>Agortu</translation>
     </message>
     <message>
-        <source>Supplice</source>
+        <source>Pain</source>
         <translation>Mina</translation>
     </message>
     <message>
-        <source>Furie</source>
+        <source>Berserk</source>
         <translation>Bortiztasuna</translation>
     </message>
     <message>
-        <source>Décubitus</source>
+        <source>Float</source>
         <translation>Flotatu</translation>
     </message>
     <message>
@@ -1904,7 +1897,7 @@ List of available commands:
         <translation>Eskaneatu</translation>
     </message>
     <message>
-        <source>Joobu</source>
+        <source>Full-cure</source>
         <translation>FSendagai-betea</translation>
     </message>
     <message>
@@ -1912,7 +1905,7 @@ List of available commands:
         <translation>Horma</translation>
     </message>
     <message>
-        <source>Arkange</source>
+        <source>Rapture</source>
         <translation>Eroaldia</translation>
     </message>
     <message>
@@ -1931,15 +1924,7 @@ List of available commands:
 <context>
     <name>EncounterWidget</name>
     <message>
-        <source>Formation</source>
-        <translation type="obsolete">Eratzea</translation>
-    </message>
-    <message>
-        <source>Mode ?</source>
-        <translation type="obsolete">Modua?</translation>
-    </message>
-    <message>
-        <source>Rencontres aléatoires</source>
+        <source>Encounters</source>
         <translation>Topaketak</translation>
     </message>
     <message>
@@ -1947,90 +1932,70 @@ List of available commands:
         <translation>Eratzeak</translation>
     </message>
     <message>
-        <source>Fréquence</source>
+        <source>Rate</source>
         <translation>Heina</translation>
     </message>
     <message>
-        <source>Basse</source>
+        <source>Low</source>
         <translation>Motza</translation>
     </message>
     <message>
-        <source>Haute</source>
+        <source>High</source>
         <translation>Garaia</translation>
     </message>
     <message>
-        <source>Pas de combats</source>
+        <source>No fights</source>
         <translation>Ez borrokarik</translation>
     </message>
 </context>
 <context>
     <name>FsDialog</name>
     <message>
-        <source>Extraire</source>
+        <source>Extract</source>
         <translation>Atera</translation>
     </message>
     <message>
-        <source>Ctrl+E</source>
-        <comment>Atera</comment>
-        <translation type="obsolete">Ctrl+E</translation>
-    </message>
-    <message>
-        <source>Remplacer</source>
+        <source>Replace</source>
         <translation>Birjarri</translation>
     </message>
     <message>
-        <source>Ctrl+R</source>
-        <comment>Birjarri</comment>
-        <translation type="obsolete">Ctrl+R</translation>
-    </message>
-    <message>
-        <source>Ajouter</source>
+        <source>Add</source>
         <translation>Gehitu</translation>
     </message>
     <message>
-        <source>Supprimer</source>
+        <source>Remove</source>
         <translation>Kendu</translation>
     </message>
     <message>
-        <source>Renommer</source>
+        <source>Rename</source>
         <translation>Berriz izendatu</translation>
-    </message>
-    <message>
-        <source>F2</source>
-        <comment>Berriz izendatu</comment>
-        <translation type="obsolete">F2</translation>
     </message>
     <message>
         <source>Parent</source>
         <translation>Gurasoa</translation>
     </message>
     <message>
-        <source>Oui</source>
-        <oldsource>oui</oldsource>
-        <translation type="vanished">Bai</translation>
-    </message>
-    <message>
-        <source>Non</source>
+        <source>No</source>
         <translation>Ez</translation>
     </message>
     <message>
-        <source>Erreur</source>
+        <source>Error</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <source>Le fichier n&apos;a pas été extrait !</source>
+        <source>The file was not extracted!</source>
         <translation>Fitxa ez atera ahal du!</translation>
     </message>
     <message>
-        <source>Les fichiers n&apos;ont pas été extraits !</source>
+        <source>The files were not extracted!</source>
         <translation>Fitxak ez atera ahal ditu!</translation>
     </message>
     <message>
-        <source>LZ4 (FF8 Remaster)</source>
-        <translation type="unfinished">LZ4 (FF8 Remaster</translation>
+        <source>LZ4 (FF8 Remaster</source>
+        <translation type="obsolete">LZ4 (FF8 Remaster</translation>
     </message>
     <message>
-        <source>Annuler</source>
+        <source>Cancel</source>
         <translation>Ezeztatu</translation>
     </message>
     <message>
@@ -2044,11 +2009,11 @@ List of available commands:
         <translation>Ctrl+R</translation>
     </message>
     <message>
-        <source>Ajouter fichier</source>
+        <source>Add File</source>
         <translation type="unfinished">Add File</translation>
     </message>
     <message>
-        <source>Ajouter dossier</source>
+        <source>Add Directory</source>
         <translation type="unfinished">Add Director</translation>
     </message>
     <message>
@@ -2065,19 +2030,19 @@ List of available commands:
         <translation></translation>
     </message>
     <message>
-        <source>Inconnu</source>
+        <source>Unknown</source>
         <translation type="unfinished">Ezezaguna</translation>
     </message>
     <message>
-        <source>Extraction...</source>
+        <source>Extract...</source>
         <translation>Atera aritzen...</translation>
     </message>
     <message>
-        <source>Remplacement...</source>
+        <source>Replace...</source>
         <translation>Birjartzen...</translation>
     </message>
     <message>
-        <source>Erreur de remplacement</source>
+        <source>Replacement error</source>
         <translation>Birjartze-hutsa</translation>
     </message>
     <message>
@@ -2085,62 +2050,58 @@ List of available commands:
         <translation>Tinkatzea</translation>
     </message>
     <message>
-        <source>Voulez-vous compresser le fichier ?</source>
-        <translation type="obsolete">Fitxa tinkatuko al zenuke?</translation>
-    </message>
-    <message>
-        <source>Voulez-vous compresser le(s) fichier(s) ?</source>
+        <source>Would you compress file(s)?</source>
         <translation>Fitxa tinkatuko al zenuke?</translation>
     </message>
     <message>
-        <source>Ajout...</source>
+        <source>Add...</source>
         <translation>Gehitzen...</translation>
     </message>
     <message>
-        <source>Arrêter</source>
-        <translation type="obsolete">Gelditu</translation>
-    </message>
-    <message>
-        <source>Erreur d&apos;ajout</source>
+        <source>Add error</source>
         <translation>Gehitze-hutsa</translation>
     </message>
     <message>
-        <source>Le fichier existe déjà</source>
+        <source>The file already exists</source>
         <translation>Fitxa jadanik egoten da</translation>
     </message>
     <message>
-        <source>Le fichier existe déjà, voulez-vous le remplacer ?</source>
+        <source>The file already exists, do you want to replace it?</source>
         <translation>Fitxa jadanik egoten da, birjartzen nahi al duzu?</translation>
     </message>
     <message>
-        <source>Un problème est survenu pour un ou plusieurs des fichiers à ajouter :
+        <source>There was a problem for one or more files to add:
  - %1</source>
         <translation>Bat edo gehiago fitxa gehitzerakoan hutsa zegoen:
  - %1</translation>
     </message>
     <message>
-        <source>Voulez-vous supprimer les éléments sélectionnés ?</source>
+        <source>Do you want to delete the selected items?</source>
         <translation>Aukeratutako gaiak kentzen ahal duzu?</translation>
     </message>
     <message>
-        <source>Suppression...</source>
+        <source>Deleting...</source>
         <translation>Kentzen...</translation>
     </message>
     <message>
-        <source>Erreur de suppression</source>
+        <source>Deleting error</source>
         <translation>Kentze-hutsa</translation>
     </message>
     <message>
-        <source>Erreur de renommage</source>
+        <source>Rename error</source>
         <translation>Berriz izendatze-hutsa</translation>
     </message>
     <message>
-        <source>Caractères interdits utilisés (par exemple : &apos;\&apos; ou &apos;/&apos;)</source>
+        <source>Illegal characters used (eg &apos;\&apos; or &apos;/&apos;)</source>
         <translation>Legez kanpoko karakterrak erabili dituzu (eg &apos;\&apos; or &apos;/&apos;)</translation>
     </message>
     <message>
-        <source>Dossier cible</source>
+        <source>Target directory</source>
         <translation type="unfinished">Target directory</translation>
+    </message>
+    <message>
+        <source>LZ4 (FF8 Remaster)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2154,33 +2115,29 @@ List of available commands:
         <translation type="unfinished">Paleta %1</translation>
     </message>
     <message>
-        <source>Exporter tout</source>
+        <source>Export All</source>
         <translation type="unfinished">Export All</translation>
     </message>
 </context>
 <context>
     <name>FsWidget</name>
     <message>
-        <source>Fichiers</source>
+        <source>Files</source>
         <translation>Fitxak</translation>
     </message>
     <message>
-        <source>Taille</source>
+        <source>Size</source>
         <translation>Neurria</translation>
     </message>
     <message>
         <source>Compression</source>
         <translation>Tinkatzea</translation>
     </message>
-    <message>
-        <source>Compressé ?</source>
-        <translation type="vanished">Tinkatua?</translation>
-    </message>
 </context>
 <context>
     <name>JsmWidget</name>
     <message>
-        <source>Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n&apos;aura peut-être aucun sens.</source>
+        <source>Warning: On this field scripts are in an old poorly recognized format. What you will read here may did not make sense.</source>
         <translation type="unfinished">Warning: On this field scripts are in an old poorly recognized format. What you will read here may did not make sense.</translation>
     </message>
     <message>
@@ -2188,7 +2145,7 @@ List of available commands:
         <translation>Id</translation>
     </message>
     <message>
-        <source>Groupe</source>
+        <source>Entity</source>
         <translation>Erakundea</translation>
     </message>
     <message>
@@ -2212,19 +2169,19 @@ List of available commands:
         <translation type="unfinished">Pseudo-code</translation>
     </message>
     <message>
-        <source>Compiler</source>
+        <source>Compile</source>
         <translation>Bildumaratu</translation>
     </message>
     <message>
-        <source>Compiler (Ctrl+B)</source>
+        <source>Compile (Ctrl+B)</source>
         <translation>Bildumaratu (Ctrl+B)</translation>
     </message>
     <message>
-        <source>Ligne %1 -&gt; %2</source>
+        <source>Line %1 -&gt; %2</source>
         <translation>Lerro %1 -&gt; %2</translation>
     </message>
     <message>
-        <source>Compilé avec succès</source>
+        <source>Successfully compiled</source>
         <translation>Bildumaratua arrakastaz</translation>
     </message>
     <message>
@@ -2235,31 +2192,31 @@ List of available commands:
 <context>
     <name>MainWindow</name>
     <message>
-        <source>&amp;Fichier</source>
+        <source>&amp;File</source>
         <translation>&amp;Fitxa</translation>
     </message>
     <message>
-        <source>&amp;Ouvrir...</source>
+        <source>&amp;Open...</source>
         <translation>&amp;Ireki...</translation>
     </message>
     <message>
-        <source>Changer la langue du jeu</source>
+        <source>Change game language</source>
         <translation type="unfinished">Change game language</translation>
     </message>
     <message>
-        <source>Enregi&amp;strer</source>
+        <source>&amp;Save</source>
         <translation>&amp;Gorde</translation>
     </message>
     <message>
-        <source>Enre&amp;gistrer Sous...</source>
+        <source>Sa&amp;ve As...</source>
         <translation>Gor&amp;de honela...</translation>
     </message>
     <message>
-        <source>Exporter...</source>
+        <source>Export...</source>
         <translation>Exportatu...</translation>
     </message>
     <message>
-        <source>Exporter tout</source>
+        <source>Export All</source>
         <translation type="unfinished">Export All</translation>
     </message>
     <message>
@@ -2267,39 +2224,39 @@ List of available commands:
         <translation type="unfinished">Scripts...</translation>
     </message>
     <message>
-        <source>Rencontres aléatoires...</source>
+        <source>Random Encounters...</source>
         <translation type="unfinished">Random Encounters...</translation>
     </message>
     <message>
-        <source>Décors...</source>
+        <source>Backgrounds...</source>
         <translation type="unfinished">Backgrounds...</translation>
     </message>
     <message>
-        <source>Importer...</source>
-        <translation>Inportatu...</translation>
+        <source>Import...</source>
+        <translation type="vanished">Inportatu...</translation>
     </message>
     <message>
-        <source>Optimiser l&apos;archive...</source>
+        <source>Optimize the archive...</source>
         <translation>Agiritegia optimizatu...</translation>
     </message>
     <message>
-        <source>Plein écran</source>
+        <source>Fullscreen</source>
         <translation>Paintaila osoa</translation>
     </message>
     <message>
-        <source>Fe&amp;rmer</source>
+        <source>C&amp;lose</source>
         <translation>I&amp;txi</translation>
     </message>
     <message>
-        <source>&amp;Quitter</source>
+        <source>&amp;Quit</source>
         <translation>&amp;Utzi</translation>
     </message>
     <message>
-        <source>&amp;Outils</source>
+        <source>T&amp;ools</source>
         <translation>T&amp;resnak</translation>
     </message>
     <message>
-        <source>Rec&amp;hercher...</source>
+        <source>Fi&amp;nd...</source>
         <translation>Aur&amp;kitu...</translation>
     </message>
     <message>
@@ -2307,7 +2264,7 @@ List of available commands:
         <translation>&amp;Var zuzendaria...</translation>
     </message>
     <message>
-        <source>&amp;Lancer FF8...</source>
+        <source>&amp;Launch FF8...</source>
         <translation>Ha&amp;si FF8...</translation>
     </message>
     <message>
@@ -2315,11 +2272,7 @@ List of available commands:
         <translation>A&amp;ukerak</translation>
     </message>
     <message>
-        <source>?</source>
-        <translation type="vanished">?</translation>
-    </message>
-    <message>
-        <source>Barre d&apos;outils &amp;principale</source>
+        <source>&amp;Main Toolbar</source>
         <translation>Tres&amp;na-barra nagusia</translation>
     </message>
     <message>
@@ -2327,7 +2280,7 @@ List of available commands:
         <translation>#</translation>
     </message>
     <message>
-        <source>Fichier</source>
+        <source>File</source>
         <translation>Fitxa</translation>
     </message>
     <message>
@@ -2335,45 +2288,36 @@ List of available commands:
         <translation>Deskripzioa</translation>
     </message>
     <message>
-        <source>Recherche rapide</source>
+        <source>Quick Search</source>
         <translation>Bila lasterra</translation>
     </message>
     <message>
-        <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin)</source>
-        <translation type="vanished">Ongi ibiliko fitxak (*.fs *.iso *.bin);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin)</translation>
-    </message>
-    <message>
-        <source>Une erreur s&apos;est produite lors de l&apos;enregistrement.</source>
+        <source>An error occurred when saving.</source>
         <translation>Hutsa gertatu da gorde egiterakoan.</translation>
     </message>
     <message>
-        <source>Fichier nom des scripts écran PC (*.sym)</source>
+        <source>Script names field PC file (*.sym)</source>
         <translation>Gidoi-izenak gunea PC fitxa (*.sym)</translation>
     </message>
     <message>
-        <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;li&gt;MaKiPL&lt;/li&gt;&lt;/ul&gt;</source>
-        <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;/ul&gt;</oldsource>
-        <translation type="obsolete">Myst6re-k&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;li&gt;MaKiPL&lt;/li&gt;&lt;/ul&gt;</translation>
-    </message>
-    <message>
-        <source>Français</source>
+        <source>English</source>
         <comment>Your translation language</comment>
         <translation>Euskara</translation>
     </message>
     <message>
-        <source>Paramètres modifiés</source>
+        <source>Settings changed</source>
         <translation>Ezarpenak aldatuak</translation>
     </message>
     <message>
-        <source>Relancez le programme pour que les paramètres prennent effet.</source>
+        <source>Restart the program for the settings to take effect.</source>
         <translation>Hasi berriz programa ondorioa ekartzeko.</translation>
     </message>
     <message>
-        <source>Erreur</source>
+        <source>Error</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <source>Sauvegarder</source>
+        <source>Save</source>
         <translation>Gorde</translation>
     </message>
     <message>
@@ -2381,130 +2325,93 @@ List of available commands:
         <translation type="unfinished">&amp;?</translation>
     </message>
     <message>
-        <source>Voulez-vous enregistrer les changements de %1 ?</source>
+        <source>Would you like to save changes of %1?</source>
         <translation>%1-(e)ko aldaketak gorde egin nahiko zenituzke?</translation>
-    </message>
-    <message>
-        <source>Oui</source>
-        <translation type="vanished">Bai</translation>
-    </message>
-    <message>
-        <source>Non</source>
-        <translation type="vanished">Ez</translation>
-    </message>
-    <message>
-        <source>Annuler</source>
-        <translation type="vanished">Ezeztatu</translation>
     </message>
     <message>
         <source>Import/Export</source>
         <translation>Inportatu/Exportatu</translation>
     </message>
     <message>
-        <source>Ouverture...</source>
+        <source>Opening...</source>
         <translation>Irekitzen...</translation>
     </message>
     <message>
-        <source>Erreur d&apos;ouverture</source>
+        <source>Opening error</source>
         <translation>Irekitze-hutsa</translation>
     </message>
     <message>
-        <source>Ouvrir un fichier</source>
+        <source>Open a file</source>
         <translation>Fitxa ireki</translation>
     </message>
     <message>
-        <source>Fichiers compatibles (*.fs *.iso *.bin);;Archives FS (*.fs);;Fichiers image Disque (*.iso *.bin)</source>
-        <translation type="obsolete">Ongi ibiliko fitxak (*.fs *.iso *.bin);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin)</translation>
-    </message>
-    <message>
-        <source>Enregistrer Sous</source>
+        <source>Save As</source>
         <translation>Gorde honela</translation>
     </message>
     <message>
-        <source>Archive FS (*.fs)</source>
+        <source>FS Archive (*.fs)</source>
         <translation>FS Artxiboa (*.fs)</translation>
     </message>
     <message>
-        <source>Enregistrement...</source>
+        <source>Save...</source>
         <translation>Gorde...</translation>
     </message>
     <message>
-        <source>Une erreur s&apos;est produite lors de l&apos;enregistrement de l&apos;archive.</source>
-        <translation type="obsolete">Hutsa gertatu da artxiboa gorde egiterakoan.</translation>
-    </message>
-    <message>
-        <source>Cet écran ne contient pas assez d&apos;éléments pour être exporté.</source>
+        <source>This field does not contains enough information to be exported.</source>
         <translation>Gune honek ez du nahiko informazioa exportatzeko eduki.</translation>
     </message>
     <message>
-        <source>Exporter</source>
+        <source>Export</source>
         <translation>Exportatu</translation>
     </message>
     <message>
-        <source>Export...</source>
-        <translation type="unfinished">Export...</translation>
-    </message>
-    <message>
-        <source>Cet écran ne contient pas assez d&apos;éléments pour être importé.</source>
+        <source>This field does not contains enough information to be imported.</source>
         <translation>Gune honek ez du nahiko informazioa inportatzeko eduki.</translation>
     </message>
     <message>
-        <source>Importer</source>
+        <source>Import</source>
         <translation>Import</translation>
     </message>
     <message>
-        <source>À propos de l&apos;optimisation</source>
+        <source>About optimization</source>
         <translation>Optimizatzeari buruz</translation>
     </message>
     <message>
-        <source>L&apos;optimiseur d&apos;archive va modifier l&apos;ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.
-Il est vivement conseillé de sauvegarder l&apos;archive (fs, fi et fl) avant de continuer.</source>
+        <source>The optimizer will modify the archive file order to allow an opening much faster with Deling.
+It is strongly recommended to save the archive (fs, fi and fl) before continuing.</source>
         <translation>Optimizagailuak artxibo-fitxa aldatuko du Deling-ek askoz lasterrago fitxa ireki dezala.
 Indarrez gomendatzen zaitu artxiboa (fs, fi and fl) gorde egitea jarraitu baino lehen.</translation>
     </message>
     <message>
-        <source>Lancer l&apos;optimisation !</source>
-        <translation type="vanished">Optimizatzen hasi!</translation>
-    </message>
-    <message>
-        <source>Optimisation...</source>
+        <source>Optimization...</source>
         <translation>Optimizatzen...</translation>
     </message>
     <message>
-        <source>Final Fantasy VIII n&apos;a pas pu être lancé.
+        <source>Final Fantasy VIII could not be launched.
 %1</source>
         <translation>Final Fantasy VIII ezin du hasten.
 %1</translation>
     </message>
     <message>
-        <source>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</source>
-        <oldsource>Par myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Merci à :&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;/ul&gt;</oldsource>
-        <translation type="vanished">Myst6re-k&lt;br/&gt;&lt;a href=&quot;https://github.com/myst6re/deling/&quot;&gt;github.com/myst6re/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Maki&lt;/li&gt;&lt;li&gt;kruci&lt;/li&gt;&lt;/ul&gt;</translation>
-    </message>
-    <message>
-        <source>Fermer</source>
-        <translation type="vanished">Itxi</translation>
-    </message>
-    <message>
-        <source>Importer tout</source>
+        <source>Import all</source>
         <translation type="unfinished">Import all</translation>
     </message>
     <message>
-        <source>Fichier CSV (*.csv)</source>
+        <source>CSV File (*.csv)</source>
         <translation type="unfinished">CSV File (*.csv)</translation>
     </message>
     <message>
-        <source>Import...</source>
+        <source>Importing...</source>
         <translation type="unfinished">Importing...</translation>
     </message>
     <message>
-        <source>Textes...</source>
+        <source>Texts...</source>
         <translation type="unfinished">Texts...</translation>
     </message>
     <message>
-        <source>Impossible d&apos;ouvrir le fichier
+        <source>Unable to open the file
 &apos;%1&apos;
-Message d&apos;erreur :
+Error message:
 %2</source>
         <translation type="unfinished">Unable to open the file
 &apos;%1&apos;
@@ -2512,60 +2419,60 @@ Error message:
 %2</translation>
     </message>
     <message>
-        <source>Impossible d&apos;ouvrir le fichier
+        <source>Unable to open the file
 &apos;%1&apos;</source>
         <translation type="unfinished">Unable to open the file
 &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>Fichiers compatibles (*.fs *.iso *.bin *.msd *.jsm);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin);;Fichiers FF8 text (*.msd);;Fichiers FF8 field script (*.jsm)</source>
+        <source>Compatible File (*.fs *.iso *.bin *.msd *.jsm);;FS Archive (*.fs);;Image Disk File (*.iso *.bin);;FF8 text files (*.msd);;FF8 field script files (*.jsm)</source>
         <translation type="unfinished">Ongi ibiliko fitxak (*.fs *.iso *.bin *.msd *.jsm);;FS Artxiboa (*.fs);;Disko-irudia fitxa (*.iso *.bin);;FF8 text files (*.msd);;FF8 field script files (*.jsm)</translation>
     </message>
     <message>
-        <source>Fichiers &amp;récents</source>
+        <source>&amp;Recent Files</source>
         <translation type="unfinished">&amp;Recent Files</translation>
     </message>
     <message>
-        <source>Fichiers FF8 text (*.msd)</source>
+        <source>FF8 text files (*.msd)</source>
         <translation type="unfinished">FF8 text files (*.msd)</translation>
     </message>
     <message>
-        <source>Fichiers FF8 field script (*.jsm)</source>
+        <source>FF8 field script files (*.jsm)</source>
         <translation type="unfinished">FF8 field script files (*.jsm)</translation>
     </message>
 </context>
 <context>
     <name>MiscSearch</name>
     <message>
-        <source>Rechercher tout</source>
+        <source>Find All</source>
         <translation>Aurkitu guztia</translation>
     </message>
 </context>
 <context>
     <name>MiscWidget</name>
     <message>
-        <source>Nom :</source>
+        <source>Name:</source>
         <translation>Izena:</translation>
     </message>
     <message>
-        <source>PMP :</source>
+        <source>PMP:</source>
         <translation>PMP:</translation>
     </message>
     <message>
-        <source>PMD :</source>
+        <source>PMD:</source>
         <translation>PMD:</translation>
     </message>
     <message>
-        <source>PVP (1) :</source>
+        <source>PVP (1):</source>
         <oldsource>PVP :</oldsource>
         <translation>PVP (1):</translation>
     </message>
     <message>
-        <source>PVP (2) :</source>
+        <source>PVP (2):</source>
         <translation>PVP (2):</translation>
     </message>
     <message>
-        <source>PMP : données particules</source>
+        <source>PMP: particles data</source>
         <translation>PMP: partikula-datuak</translation>
     </message>
     <message>
@@ -2573,14 +2480,14 @@ Error message:
         <translation>Paleta %1</translation>
     </message>
     <message>
-        <source>Divers</source>
+        <source>Miscellaneous</source>
         <translation>Askotakoa(k)</translation>
     </message>
 </context>
 <context>
     <name>MsdWidget</name>
     <message>
-        <source>Nouvelle page</source>
+        <source>New page</source>
         <translation>Orri berria</translation>
     </message>
     <message>
@@ -2588,71 +2495,71 @@ Error message:
         <translation>Pausatu</translation>
     </message>
     <message>
-        <source>Gris foncé</source>
+        <source>Dark grey</source>
         <translation>Gris iluna</translation>
     </message>
     <message>
-        <source>Gris</source>
+        <source>Grey</source>
         <translation>Grisa</translation>
     </message>
     <message>
-        <source>Jaune</source>
+        <source>Yellow</source>
         <translation>Haria</translation>
     </message>
     <message>
-        <source>Rouge</source>
+        <source>Red</source>
         <translation>Gorria</translation>
     </message>
     <message>
-        <source>Vert</source>
+        <source>Green</source>
         <translation>Berdea</translation>
     </message>
     <message>
-        <source>Bleu</source>
+        <source>Blue</source>
         <translation>Urdina</translation>
     </message>
     <message>
-        <source>Violet</source>
+        <source>Purple</source>
         <translation>Purpura</translation>
     </message>
     <message>
-        <source>Blanc</source>
+        <source>White</source>
         <translation>Zuria</translation>
     </message>
     <message>
-        <source>Gris foncé clignotant</source>
+        <source>Dark grey blink</source>
         <translation>Gris iluna kliskatzen</translation>
     </message>
     <message>
-        <source>Gris clignotant</source>
+        <source>Grey blink</source>
         <translation>Grisa kliskatzen</translation>
     </message>
     <message>
-        <source>Jaune clignotant</source>
+        <source>Yellow blink</source>
         <translation>Haria kliskatzen</translation>
     </message>
     <message>
-        <source>Rouge clignotant</source>
+        <source>Red blink</source>
         <translation>Gorria kliskatzen</translation>
     </message>
     <message>
-        <source>Vert clignotant</source>
+        <source>Green blink</source>
         <translation>Berdea kliskatzen</translation>
     </message>
     <message>
-        <source>Bleu clignotant</source>
+        <source>Blue blink</source>
         <translation>Urdina kliskatzen</translation>
     </message>
     <message>
-        <source>Violet clignotant</source>
+        <source>Purple blink</source>
         <translation>Purpura kliskatzen</translation>
     </message>
     <message>
-        <source>Blanc clignotant</source>
+        <source>White blink</source>
         <translation>Zuria kliskatzen</translation>
     </message>
     <message>
-        <source>Lieux</source>
+        <source>Locations</source>
         <translation>Lekuak</translation>
     </message>
     <message>
@@ -2660,11 +2567,11 @@ Error message:
         <translation>Galbadia</translation>
     </message>
     <message>
-        <source>Insérer un texte au-dessus</source>
+        <source>Insert text above</source>
         <translation>Tartekatu testua goian</translation>
     </message>
     <message>
-        <source>Insérer un texte en dessous</source>
+        <source>Insert text below</source>
         <translation>Tartekatu testua behean</translation>
     </message>
     <message>
@@ -2673,10 +2580,6 @@ Error message:
     </message>
     <message>
         <source>Balamb</source>
-        <translation>Balamb</translation>
-    </message>
-    <message>
-        <source>Dollet</source>
         <translation>Balamb</translation>
     </message>
     <message>
@@ -2692,7 +2595,7 @@ Error message:
         <translation>Centra</translation>
     </message>
     <message>
-        <source>Horizon</source>
+        <source>F. Horizon</source>
         <translation>AZ</translation>
     </message>
     <message>
@@ -2712,7 +2615,7 @@ Error message:
         <translation>Varb0</translation>
     </message>
     <message>
-        <source>Touches</source>
+        <source>Keys</source>
         <translation>Giltzak</translation>
     </message>
     <message>
@@ -2720,11 +2623,7 @@ Error message:
         <translation>L2</translation>
     </message>
     <message>
-        <source>Ajouter un texte</source>
-        <translation type="obsolete">Testua gehitu</translation>
-    </message>
-    <message>
-        <source>Supprimer un texte</source>
+        <source>Remove text</source>
         <translation>Testua kendu</translation>
     </message>
     <message>
@@ -2744,15 +2643,15 @@ Error message:
         <translation>Hirukia</translation>
     </message>
     <message>
-        <source>Rond</source>
+        <source>Circle</source>
         <translation>Biribila</translation>
     </message>
     <message>
-        <source>Croix</source>
+        <source>Cross</source>
         <translation>Gurutzea</translation>
     </message>
     <message>
-        <source>Carré</source>
+        <source>Square</source>
         <translation>Laukia</translation>
     </message>
     <message>
@@ -2764,23 +2663,23 @@ Error message:
         <translation>Hasi</translation>
     </message>
     <message>
-        <source>Haut</source>
+        <source>Up</source>
         <translation>Gora</translation>
     </message>
     <message>
-        <source>Droite</source>
+        <source>Right</source>
         <translation>Eskuinera</translation>
     </message>
     <message>
-        <source>Bas</source>
+        <source>Down</source>
         <translation>Behera</translation>
     </message>
     <message>
-        <source>Gauche</source>
+        <source>left</source>
         <translation>Ezkerrera</translation>
     </message>
     <message>
-        <source>Caractères spéciaux</source>
+        <source>Special Characters</source>
         <translation>Karakter bereziak</translation>
     </message>
     <message>
@@ -2792,7 +2691,7 @@ Error message:
         <translation>Y</translation>
     </message>
     <message>
-        <source>Texte %1</source>
+        <source>Text %1</source>
         <translation>Testua %1</translation>
     </message>
     <message>
@@ -2800,320 +2699,292 @@ Error message:
         <translation>Orria %1/%2</translation>
     </message>
     <message>
-        <source>Fenêtre %1/%2</source>
+        <source>Window %1/%2</source>
         <translation>Leihoa %1/%2</translation>
     </message>
     <message>
-        <source>Textes</source>
+        <source>Texts</source>
         <translation>Testuak</translation>
     </message>
 </context>
 <context>
     <name>OrientationWidget</name>
     <message>
-        <source>Droite</source>
+        <source>Right</source>
         <translation>Eskuina</translation>
     </message>
 </context>
 <context>
     <name>ProgressWidget</name>
     <message>
-        <source>Annuler</source>
+        <source>Cancel</source>
         <translation>Ezeztatu</translation>
     </message>
     <message>
-        <source>Arrêter</source>
+        <source>Stop</source>
         <translation>Gelditu</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <source>Format de fichier invalide</source>
+        <source>Invalid file format</source>
         <translation>Fitxa-formatu irekiezina</translation>
     </message>
     <message>
-        <source>Erreur inconnue</source>
+        <source>Unknown error</source>
         <translation>Huts ezezaguna</translation>
     </message>
     <message>
-        <source>Erreur</source>
+        <source>Error</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <source>Opération réalisée avec succès !</source>
+        <source>Operation successfully completed!</source>
         <translation>Jarduera bukatua arrakastaz!</translation>
     </message>
     <message>
-        <source>L&apos;archive Fs ne peut pas être modifiée, vérifiez vos droits en écriture.</source>
+        <source>The Fs archive can not be modified, check your rights in writing.</source>
         <translation>Ezin du Fs artxiboa aldatzen, zuzendu zure eskubideak idazketan.</translation>
     </message>
     <message>
-        <source>Le fichier source ne peut pas être ouvert%1.</source>
+        <source>The source file cannot be opened%1.</source>
         <translation>Ezin du fitxa iturria irekitzen%1.</translation>
     </message>
     <message>
-        <source>Le fichier temp ne peut pas être ouvert%1.</source>
+        <source>The temps file cannont be opened%1.</source>
         <translation>Ezin du behineko fitxa irekitzen%1.</translation>
     </message>
     <message>
-        <source>Le fichier cible ne peut pas être ouvert%1.</source>
+        <source>The target file cannot be opened%1.</source>
         <translation>Ezin du zuriko fitxa irekitzen%1.</translation>
     </message>
     <message>
-        <source>Erreur lors de la création des fichiers &apos;*.fi&apos; et &apos;*.fl&apos;.</source>
+        <source>Error while creating files &apos;*.fi&apos; and &apos;*.fl&apos;.</source>
         <translation>Hutsa sortzerakoan fitxak &apos;*.fi&apos; and &apos;*.fl&apos;.</translation>
     </message>
     <message>
-        <source>Erreur lors de la sauvegarde de l&apos;archive Fs%1.</source>
+        <source>Error while saving the archive Fs%1.</source>
         <translation>Hutsa gorde egiterakoan artxiboa Fs%1.</translation>
     </message>
     <message>
-        <source>Ce fichier existe déjà dans l&apos;archive%1.</source>
+        <source>This file already exists in the archive%1.</source>
         <translation>Artxiboak fitxa hau jadanik edukitzen du%1.</translation>
     </message>
     <message>
-        <source>Ce fichier n&apos;existe pas dans l&apos;archive%1.</source>
+        <source>This file does not exists in the archive%1.</source>
         <translation>Artxiboak ez du fitxa hau edukitzen%1.</translation>
     </message>
     <message>
-        <source>Ce fichier est vide%1.</source>
+        <source>This file is empty%1.</source>
         <translation>Fitxa hau hutsa da%1.</translation>
     </message>
     <message>
-        <source>Opération annulée.</source>
+        <source>Operation canceled.</source>
         <translation>Jarduera ezeztatua.</translation>
     </message>
     <message>
-        <source>Erreur inconnue.</source>
+        <source>Unknown error.</source>
         <translation>Huts ezezaguna.</translation>
     </message>
     <message>
-        <source>Trop d&apos;arguments</source>
+        <source>Too many arguments</source>
         <translation>Gehiegi argumentuak</translation>
     </message>
     <message>
-        <source>Conversion en entier impossible après &apos;LABEL&apos; : %1</source>
+        <source>Unable to convert to integer after &apos;LABEL&apos;: %1</source>
         <translation>Ezin du zenbaki oso bihurtzen &apos;LABELA&apos;: %1 ondoren</translation>
     </message>
     <message>
-        <source>&apos;LABEL%1&apos; déjà déclaré précédemment.</source>
+        <source>&apos;LABEL %1&apos; already declared.</source>
         <translation>&apos;LABELA %1&apos; jadanik deklaratua.</translation>
     </message>
     <message>
-        <source>Opcode non reconnu : %1</source>
+        <source>Unknown opcode: %1</source>
         <translation>Opcode ezezaguna: %1</translation>
     </message>
     <message>
-        <source>Cet opcode ne peut pas avoir de paramètre : %1</source>
+        <source>This opcode can not have parameters: %1</source>
         <translation>Opcode honek ezin du parametroak edukitzen: %1</translation>
     </message>
     <message>
-        <source>Opération non reconnue : %1</source>
+        <source>Unknown operation: %1</source>
         <translation>Jarduera ezezaguna: %1</translation>
     </message>
     <message>
-        <source>Conversion en entier impossible : %1</source>
+        <source>Unable to convert to integer: %1</source>
         <translation>Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
-        <source>Conversion en entier impossible après &apos;VAR&apos; : %1</source>
+        <source>Unable to convert to integer after &apos;VAR&apos;: %1</source>
         <translation type="unfinished">Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
-        <source>Conversion en entier impossible après &apos;TEMP&apos; : %1</source>
+        <source>Unable to convert to integer after &apos;TEMP&apos;: %1</source>
         <translation type="unfinished">Ezin du zenbaki oso bihurtzen: %1</translation>
     </message>
     <message>
-        <source>Conversion en entier impossible après &apos;MODEL&apos; : %1</source>
+        <source>Unable to convert to integer after &apos;MODEL&apos;: %1</source>
         <translation type="unfinished">Unable to convert to integer after &apos;MODEL&apos;: %1</translation>
     </message>
     <message>
-        <source>Conversion en entier impossible après &apos;CHAR&apos; : %1</source>
-        <translation type="obsolete">Ezin du zenbaki oso bihurtzen: %1</translation>
-    </message>
-    <message>
-        <source>&apos;LABEL%1&apos; indéfini.</source>
+        <source>&apos;LABEL %1&apos; undefined.</source>
         <translation>&apos;LABELA %1&apos; zehaztugabea.</translation>
     </message>
     <message>
-        <source>Impossible d&apos;ouvrir l&apos;archive.</source>
+        <source>Unable to open the archive.</source>
         <translation>Artxiboa ezin du irekitzen.</translation>
     </message>
     <message>
-        <source>Ouverture annulée.</source>
+        <source>Opening canceled.</source>
         <translation>Irekitzea ezeztatua.</translation>
     </message>
     <message>
-        <source>Aucun écran trouvé.</source>
+        <source>No field found.</source>
         <translation>Ezin du gunerik aurkitu.</translation>
     </message>
     <message>
-        <source>Impossible d&apos;ouvrir le fichier image disque. (%1)</source>
+        <source>Can not open the disk image file. (%1)</source>
         <translation>Ezin du disko-irudia fitxa irekitzen. (%1)</translation>
     </message>
     <message>
-        <source>Fichier FF8DISC?.IMG introuvable.</source>
+        <source>FF8DISC?.IMG File not found.</source>
         <translation>FF8DISC?.IMG aurkituezina.</translation>
     </message>
     <message>
-        <source>Impossible d&apos;ouvrir le dossier field.</source>
+        <source>Unable to open the field dir.</source>
         <translation>Ezin du gune-bidea irekitzen.</translation>
     </message>
     <message>
-        <source>Enregistrement des données</source>
+        <source>Saving data</source>
         <translation>Datuak gorde egiten</translation>
     </message>
     <message>
-        <source>Les polices de caractères n&apos;ont pas pu être enregistrées !</source>
+        <source>Fonts could not be saved!</source>
         <translation>Ezin ditu fontak gorde!</translation>
     </message>
     <message>
-        <source>Fichier caméra écran PC (*.ca)</source>
+        <source>Field camera PC File (*.ca)</source>
         <translation>Gune kamera PC fitxa (*.ca)</translation>
     </message>
     <message>
-        <source>Fichier walkmesh écran PC (*.id)</source>
+        <source>Field walkmesh PC File (*.id)</source>
         <translation>Gune walkmesh PC fitxa (*.id)</translation>
     </message>
     <message>
-        <source>Fichier passages et portes écran PC (*.inf)</source>
+        <source>Field gate and doors PC File (*.inf)</source>
         <translation>Gune ateak PC fitxa (*.inf)</translation>
     </message>
     <message>
-        <source>Fichier scripts écran PC (*.jsm)</source>
+        <source>Field Script PC file (*.jsm)</source>
         <translation>Gune Gidoia PC fitxa (*.jsm)</translation>
     </message>
     <message>
-        <source>Fichier modèle 3D écran (*.mch)</source>
+        <source>Field 3D model file (*.mch)</source>
         <translation>Gune modelo 3D fitxa (*.mch)</translation>
     </message>
     <message>
-        <source>Fichier formations combat écran PC (*.mrt)</source>
+        <source>Field battle formation PC file (*.mrt)</source>
         <translation>Gune gudu-formatze PC fitxa (*.mrt)</translation>
     </message>
     <message>
-        <source>Fichier dialogues écran PC (*.msd)</source>
+        <source>Field dialogs PC file (*.msd)</source>
         <translation>Gune solasak PC fitxa (*.msd)</translation>
     </message>
     <message>
-        <source>Fichier caméra cinématique écran PC (*.msk)</source>
+        <source>Field movie camera PC file (*.msk)</source>
         <translation>Gune filmagailua PC fitxa (*.msk)</translation>
     </message>
     <message>
-        <source>Fichier informations particules écran PC (*.pmd)</source>
+        <source>Field particles infos PC file (*.pmd)</source>
         <translation>Gune partikula infoa PC fitxa (*.pmd)</translation>
     </message>
     <message>
-        <source>Fichier données particules écran PC (*.pmp)</source>
+        <source>Field particles data PC file (*.pmp)</source>
         <translation>Gune partikula datuak PC fitxa (*.pmp)</translation>
     </message>
     <message>
-        <source>Fichier inconnu écran PC (*.pvp)</source>
+        <source>Field unknown PC file (*.pvp)</source>
         <translation>Gune PC fitxa ezezaguna (*.pvp)</translation>
     </message>
     <message>
-        <source>Fichier fréquence combat écran PC (*.rat)</source>
+        <source>Field battle rate PC file (*.rat)</source>
         <oldsource>Fichier inconnu combat écran PC (*.rat)</oldsource>
         <translation>Gune gudu-heina PC fitxa (*.rat)</translation>
     </message>
     <message>
-        <source>Fichier sons écran PC (*.sfx)</source>
+        <source>Field sounds PC file (*.sfx)</source>
         <translation>Gune soinuak PC fitxa (*.sfx)</translation>
     </message>
     <message>
-        <source>Fichier caractères additionnels écran PC (*.tdw)</source>
+        <source>Field additionnal fonts PC file (*.tdw)</source>
         <translation>Field additionnal fonts PC file (*.tdw)</translation>
     </message>
     <message>
-        <source>Chargement des données</source>
+        <source>Loading data</source>
         <translation>Datuak kargatzen</translation>
     </message>
     <message>
-        <source>Les polices de caractères n&apos;ont pas pu être chargées !</source>
+        <source>Fonts could not be loaded!</source>
         <translation>Ezin ditu fontak kargatzen!</translation>
     </message>
     <message>
-        <source>sans-nom</source>
+        <source>Unamed</source>
         <translation type="unfinished">Unamed</translation>
     </message>
     <message>
-        <source>Impossible d&apos;exporter &apos;%1&apos; en image</source>
+        <source>Unable to export &apos;%1&apos; to image</source>
         <translation type="unfinished">Unable to export &apos;%1&apos; to image</translation>
     </message>
     <message>
-        <source>Fichier map tiles écran PC (*.map)</source>
+        <source>Map Tiles PC Field File (*.map)</source>
         <translation type="unfinished">Map Tiles PC Field File (*.map)</translation>
     </message>
     <message>
-        <source>Pas une archive mappemonde.</source>
+        <source>Not a worldmap archive.</source>
         <translation type="unfinished">Not a worldmap archive.</translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (1).</source>
-        <translation type="obsolete">Unable to read the worldmap (1).</translation>
-    </message>
-    <message>
-        <source>Impossible de lire la mappemonde (2).</source>
-        <translation type="obsolete">Unable to read the worldmap (2).</translation>
-    </message>
-    <message>
-        <source>Impossible de lire la mappemonde (3).</source>
-        <translation type="obsolete">Unable to read the worldmap (3).</translation>
-    </message>
-    <message>
-        <source>Impossible de lire la mappemonde (4).</source>
-        <translation type="obsolete">Unable to read the worldmap (4).</translation>
-    </message>
-    <message>
-        <source>Impossible de lire la mappemonde (5).</source>
-        <translation type="obsolete">Unable to read the worldmap (5).</translation>
-    </message>
-    <message>
-        <source>Impossible de lire la mappemonde (6).</source>
-        <translation type="obsolete">Unable to read the worldmap (6).</translation>
-    </message>
-    <message>
-        <source>Impossible de lire la mappemonde (readSegments).</source>
+        <source>Unable to read the worldmap (readSegments).</source>
         <translation type="unfinished">Unable to read the worldmap (readSegments).</translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (readEncounterRegions).</source>
+        <source>Unable to read the worldmap (readEncounterRegions).</source>
         <translation type="unfinished">Unable to read the worldmap (readEncounterRegions).</translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (readEncounters).</source>
+        <source>Unable to read the worldmap (readEncounters).</source>
         <translation type="unfinished">Unable to read the worldmap (readEncounters).</translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (readSpecialTextures).</source>
+        <source>Unable to read the worldmap (readSpecialTextures).</source>
         <translation type="unfinished">Unable to read the worldmap (readSpecialTextures).</translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (readRoadTextures).</source>
+        <source>Unable to read the worldmap (readRoadTextures).</source>
         <translation type="unfinished">Unable to read the worldmap (readRoadTextures).</translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (readDrawPoints).</source>
+        <source>Unable to read the worldmap (readDrawPoints).</source>
         <translation type="unfinished">Unable to read the worldmap (readDrawPoints).</translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (readTexts).</source>
+        <source>Unable to read the worldmap (readTexts).</source>
         <translation type="unfinished">Unable to read the worldmap (readTexts).</translation>
     </message>
     <message>
-        <source>Impossible de lire la mappemonde (readTextures).</source>
+        <source>Unable to read the worldmap (readTextures).</source>
         <translation type="unfinished">Unable to read the worldmap (readTextures).</translation>
     </message>
 </context>
 <context>
     <name>Search</name>
     <message>
-        <source>Rechercher</source>
+        <source>Find</source>
         <translation>Bilatu</translation>
     </message>
     <message>
-        <source>Textes</source>
+        <source>Texts</source>
         <translation>Testuak</translation>
     </message>
     <message>
@@ -3121,27 +2992,27 @@ Error message:
         <translation>Gidoiak</translation>
     </message>
     <message>
-        <source>Chercher le suivant</source>
+        <source>Find next</source>
         <translation>Hurrengoa aurkitu</translation>
     </message>
     <message>
-        <source>Chercher le précédent</source>
+        <source>Find previous</source>
         <translation>Aurrekoa aurkitu</translation>
     </message>
     <message>
-        <source>Chercher tout</source>
+        <source>Search All</source>
         <translation type="unfinished">Search All</translation>
     </message>
     <message>
-        <source>Sensible à la casse</source>
+        <source>Case sensitive</source>
         <translation>Kaxa-sentibera</translation>
     </message>
     <message>
-        <source>Expression régulière</source>
+        <source>Regular Expression</source>
         <translation>Regex</translation>
     </message>
     <message>
-        <source>Texte</source>
+        <source>Text</source>
         <translation>Testua</translation>
     </message>
     <message>
@@ -3149,35 +3020,35 @@ Error message:
         <translation>Opcode</translation>
     </message>
     <message>
-        <source>Variable</source>
+        <source>Var pool</source>
         <translation>Var pool</translation>
     </message>
     <message>
-        <source>Exécution</source>
+        <source>Execution</source>
         <translation>Exekuzioa</translation>
     </message>
     <message>
-        <source>Saut d&apos;écran</source>
+        <source>Map jump</source>
         <translation type="unfinished">Map jump</translation>
     </message>
     <message>
-        <source>Paramètre :</source>
+        <source>Parameter:</source>
         <translation>Parametroa:</translation>
     </message>
     <message>
-        <source>Tout</source>
+        <source>All</source>
         <translation type="unfinished">All</translation>
     </message>
     <message>
-        <source>Pop uniquement</source>
+        <source>Pop only</source>
         <translation>Pop bakarrik</translation>
     </message>
     <message>
-        <source>Push uniquement</source>
+        <source>Push only</source>
         <translation type="unfinished">Push only</translation>
     </message>
     <message>
-        <source>Groupe id</source>
+        <source>Entity id</source>
         <translation>Erakundea id</translation>
     </message>
     <message>
@@ -3185,33 +3056,31 @@ Error message:
         <translation>Labela</translation>
     </message>
     <message>
-        <source>Écran id</source>
+        <source>Map ID</source>
         <translation type="unfinished">Map ID</translation>
     </message>
     <message>
-        <source>Dernier fichier,
-poursuite de la recherche dans le premier fichier.</source>
+        <source>Last file.</source>
         <translation>Azkeneko fitxa.</translation>
     </message>
     <message>
-        <source>Premier fichier,
-poursuite de la recherche dans le dernier fichier.</source>
+        <source>First file.</source>
         <translation>Lehenbiziko fitxa.</translation>
     </message>
 </context>
 <context>
     <name>SearchAll</name>
     <message>
-        <source>Chercher tout</source>
+        <source>Search All</source>
         <translation type="unfinished">Search All</translation>
     </message>
     <message>
-        <source>Copier</source>
+        <source>Copy</source>
         <oldsource>Copy</oldsource>
         <translation type="unfinished">Copy</translation>
     </message>
     <message>
-        <source>Groupe</source>
+        <source>Group</source>
         <oldsource>Group</oldsource>
         <translation type="unfinished">Group</translation>
     </message>
@@ -3220,98 +3089,94 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation type="unfinished">Gidoia</translation>
     </message>
     <message>
-        <source>Lines</source>
-        <translation type="obsolete">Lines</translation>
-    </message>
-    <message>
         <source>Instruction</source>
         <translation type="unfinished">Instruction</translation>
     </message>
     <message>
-        <source>Lignes</source>
+        <source>Lines</source>
         <translation type="unfinished">Lines</translation>
     </message>
     <message>
-        <source>N° de texte</source>
+        <source>Text #</source>
         <oldsource>Text #</oldsource>
         <translation type="unfinished">Text #</translation>
     </message>
     <message>
-        <source>Texte</source>
+        <source>Text</source>
         <translation>Testua</translation>
     </message>
 </context>
 <context>
     <name>SoundWidget</name>
     <message>
-        <source>Ajouter son</source>
+        <source>Add sound</source>
         <translation>Soinua gehitu</translation>
     </message>
     <message>
-        <source>Supprimer son</source>
+        <source>Remove sound</source>
         <translation>Soinua kendu</translation>
     </message>
     <message>
-        <source>Identifiant :</source>
+        <source>ID:</source>
         <translation>ID:</translation>
     </message>
     <message>
-        <source>Exporter</source>
+        <source>Export</source>
         <translation>Exportati</translation>
     </message>
     <message>
-        <source>Importer</source>
+        <source>Import</source>
         <translation>Inportatu</translation>
     </message>
     <message>
-        <source>Son %1</source>
+        <source>Sound %1</source>
         <translation>Soinua %1</translation>
     </message>
     <message>
-        <source>Fichier AKAO (*.akao)</source>
+        <source>AKAO file (*.akao)</source>
         <translation>AKAO fitxa (*.akao)</translation>
     </message>
     <message>
-        <source>Erreur</source>
+        <source>Error</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <source>Fichier invalide.</source>
+        <source>Invalid file.</source>
         <translation>Fitxa irekiezina.</translation>
     </message>
     <message>
-        <source>Impossible d&apos;ajouter le son (%1).</source>
+        <source>Unable to add sound (%1).</source>
         <translation>Ezin du soinua gehitzen (%1).</translation>
     </message>
     <message>
-        <source>Exporter son</source>
+        <source>Export sound</source>
         <translation>Soinua exportatu</translation>
     </message>
     <message>
-        <source>son%1</source>
+        <source>sound%1</source>
         <translation>soinua%1</translation>
     </message>
     <message>
-        <source>Impossible d&apos;exporter le son (%1).</source>
+        <source>Unable to export sound (%1).</source>
         <translation>Ezin du soinua exportatu (%1).</translation>
     </message>
     <message>
-        <source>Importer son</source>
+        <source>Import sound</source>
         <translation>Soinua inportatu</translation>
     </message>
     <message>
-        <source>Impossible d&apos;importer le son (%1).</source>
+        <source>Unable to import sound (%1).</source>
         <translation>Ezin du soinua inportatu (%1).</translation>
     </message>
     <message>
-        <source>Sons</source>
+        <source>Sounds</source>
         <translation>Soinuak</translation>
     </message>
 </context>
 <context>
     <name>SpecialCharactersDialog</name>
     <message>
-        <source>Caractères spéciaux</source>
+        <source>Special Characters</source>
         <translation>Karakter bereziak</translation>
     </message>
     <message>
@@ -3319,7 +3184,7 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Taula %1</translation>
     </message>
     <message>
-        <source>Insérer</source>
+        <source>Insert</source>
         <translation>Tartekatu</translation>
     </message>
     <message>
@@ -3330,15 +3195,15 @@ poursuite de la recherche dans le dernier fichier.</source>
 <context>
     <name>TdwManagerDialog</name>
     <message>
-        <source>Gestionnaire de police</source>
+        <source>Font manager</source>
         <translation>Font-zuzendaria</translation>
     </message>
     <message>
-        <source>Copier</source>
+        <source>Copy</source>
         <translation>Kopiatu</translation>
     </message>
     <message>
-        <source>Effacer</source>
+        <source>Remove</source>
         <translation>Kendu</translation>
     </message>
     <message>
@@ -3346,7 +3211,7 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Latina</translation>
     </message>
     <message>
-        <source>Japonais</source>
+        <source>Japanese</source>
         <translation>Japoniera</translation>
     </message>
     <message>
@@ -3354,94 +3219,89 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>OK</translation>
     </message>
     <message>
-        <source>Nom &amp;affiché :</source>
+        <source>N&amp;ame displayed:</source>
         <translation>I&amp;zena erakutsia:</translation>
     </message>
     <message>
-        <source>Nom du &amp;fichier :</source>
+        <source>&amp;File name:</source>
         <translation>&amp;Fitxa-izena:</translation>
     </message>
     <message>
-        <source>Choisissez un autre nom</source>
+        <source>Choose another name</source>
         <translation>Beste izena bat aukeratu</translation>
     </message>
     <message>
-        <source>Ce nom existe déjà ou est invalide, veuillez en choisir un autre.</source>
+        <source>That name already exists or is invalid, please choose another.</source>
         <translation>Izen hori jadanik jardunean dago, edo irekiezina da. Beste bat aukeratu, mesedez.</translation>
     </message>
     <message>
-        <source>Supprimer une police</source>
+        <source>Remove a font</source>
         <translation>Fonta bat kendu</translation>
     </message>
     <message>
-        <source>Voulez-vous vraiment supprimer la police sélectionnée ?</source>
+        <source>Do you really want to delete the selected font?</source>
         <translation>Benetan aukeratutako fonta kentzen nahi duzu?</translation>
     </message>
 </context>
 <context>
     <name>TdwWidget</name>
     <message>
-        <source>Caractères additionnels</source>
+        <source>Additional characters</source>
         <translation>Gainerako karatkerrak</translation>
     </message>
 </context>
 <context>
     <name>TdwWidget2</name>
     <message>
-        <source>Gris foncé</source>
+        <source>Dark grey</source>
         <translation>Gris iluna</translation>
     </message>
     <message>
-        <source>Gris</source>
+        <source>Grey</source>
         <translation>Grisa</translation>
     </message>
     <message>
-        <source>Jaune</source>
+        <source>Yellow</source>
         <translation>Haria</translation>
     </message>
     <message>
-        <source>Rouge</source>
+        <source>Red</source>
         <translation>Gorria</translation>
     </message>
     <message>
-        <source>Vert</source>
+        <source>Green</source>
         <translation>Berdea</translation>
     </message>
     <message>
-        <source>Bleu</source>
+        <source>Blue</source>
         <translation>Urdina</translation>
     </message>
     <message>
-        <source>Violet</source>
+        <source>Purple</source>
         <translation>Purpura</translation>
     </message>
     <message>
-        <source>Blanc</source>
+        <source>White</source>
         <translation>Zuria</translation>
     </message>
     <message>
-        <source>À partir d&apos;une image...</source>
-        <oldsource>À partir d&apos;une irudia...</oldsource>
-        <translation type="obsolete">Irudi batetik...</translation>
-    </message>
-    <message>
-        <source>Exporter...</source>
+        <source>Export...</source>
         <translation>Exportatu...</translation>
     </message>
     <message>
-        <source>Importer...</source>
-        <translation>Inportatu...</translation>
+        <source>Import...</source>
+        <translation type="vanished">Inportatu...</translation>
     </message>
     <message>
-        <source>Annuler les modifications</source>
+        <source>Cancel Changes</source>
         <translation>Aukerak ezeztatu</translation>
     </message>
     <message>
-        <source>Texte :</source>
+        <source>Text:</source>
         <translation type="unfinished">Text:</translation>
     </message>
     <message>
-        <source>Largeur :</source>
+        <source>Width:</source>
         <translation type="unfinished">Width:</translation>
     </message>
     <message>
@@ -3449,46 +3309,46 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Taula %1</translation>
     </message>
     <message>
-        <source>Fichier texture FF8 (*.tex)</source>
+        <source>FF8 Texture File (*.tex)</source>
         <translation>FF8 fitxa egitura (*.tex)</translation>
     </message>
     <message>
-        <source>Fichier police FF8 (*.tdw)</source>
+        <source>FF8 Font File (*.tdw)</source>
         <translation>FF8 fitxa fonta (*.tdw)</translation>
     </message>
     <message>
-        <source>Fichier image PNG (*.png)</source>
+        <source>PNG image File (*.png)</source>
         <oldsource>Fichier irudia PNG (*.png)</oldsource>
         <translation type="unfinished">PNG fitxa irudia (*.png)</translation>
     </message>
     <message>
-        <source>Fichier image JPG (*.jpg)</source>
+        <source>JPG image File (*.jpg)</source>
         <oldsource>Fichier irudia JPG (*.jpg)</oldsource>
         <translation type="unfinished">JPG fitxa irudia (*.jpg)</translation>
     </message>
     <message>
-        <source>Fichier image BMP (*.bmp)</source>
+        <source>BMP image File (*.bmp)</source>
         <oldsource>Fichier irudia BMP (*.bmp)</oldsource>
         <translation type="unfinished">BMP fitxa irudia (*.bmp)</translation>
     </message>
     <message>
-        <source>Fichier traduction Deling (*.txt)</source>
+        <source>Deling translation File (*.txt)</source>
         <translation>Deling fitxa itzulpena (*.txt)</translation>
     </message>
     <message>
-        <source>Exporter police de caractère</source>
+        <source>Export font</source>
         <translation>Exportatu fonta</translation>
     </message>
     <message>
-        <source>Erreur</source>
+        <source>Error</source>
         <translation>Hutsa</translation>
     </message>
     <message>
-        <source>Erreur d&apos;ouverture du fichier. (%1)</source>
+        <source>Error when opening file. (%1)</source>
         <translation>Hutsa fitxa irekiterakoan. (%1)</translation>
     </message>
     <message>
-        <source>Erreur lors de l&apos;enregistrement.</source>
+        <source>Error when saving.</source>
         <translation>Hutsa gorde egiterakoan.</translation>
     </message>
     <message>
@@ -3496,62 +3356,62 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Informazioa</translation>
     </message>
     <message>
-        <source>Format de police de caractère inexportable.</source>
+        <source>Font format unexportable.</source>
         <translation>Fonta-formatua exportatuezina.</translation>
     </message>
     <message>
-        <source>Importer police de caractère</source>
+        <source>Import font</source>
         <translation>Fonta inportatu</translation>
     </message>
     <message>
-        <source>Fichier invalide</source>
+        <source>Invalid File</source>
         <translation>Fitxa irekiezina</translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation type="unfinished">Importing...</translation>
     </message>
 </context>
 <context>
     <name>TextExporterWidget</name>
     <message>
-        <source>Format CSV</source>
+        <source>CSV format</source>
         <translation type="unfinished">CSV format</translation>
     </message>
     <message>
-        <source>Jeu de caractères</source>
+        <source>Character encoding</source>
         <translation type="unfinished">Character encoding</translation>
     </message>
     <message>
-        <source>Séparateur de champ</source>
+        <source>Field separator</source>
         <translation type="unfinished">Field separator</translation>
     </message>
     <message>
-        <source>Séparateur de chaîne de caractères</source>
+        <source>String separator</source>
         <translation type="unfinished">String separator</translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation type="obsolete">Error</translation>
-    </message>
-    <message>
-        <source>Le séparateur de champ ne doit pas être le même que le séparateur de chaînes de caractères</source>
+        <source>The field separator must be different than the string separator</source>
         <translation type="unfinished">The field separator must be different than the string separator</translation>
     </message>
     <message>
-        <source>Le séparateur de champ ne doit pas être un retour à la ligne</source>
+        <source>The field separator cannot be a line break</source>
         <translation type="unfinished">The field separator cannot be a line break</translation>
     </message>
     <message>
-        <source>Le séparateur de chaînes de caractères ne doit pas être un retour à la ligne</source>
+        <source>The string separator cannot be a line break</source>
         <translation type="unfinished">The string separator cannot be a line break</translation>
     </message>
     <message>
-        <source>Colonne contenant les textes à importer</source>
+        <source>Column that contains the texts to import</source>
         <translation type="unfinished">Column that contains the texts to import</translation>
     </message>
     <message>
-        <source>Sélectionnez le numéro de la colonne qui contient les textes à importer, entre 1 et 100</source>
+        <source>Select the column number that contains the texts to import, between 1 and 100</source>
         <translation type="unfinished">Select the column number that contains the texts to import, between 1 and 100</translation>
     </message>
     <message>
-        <source>Erreur</source>
+        <source>Error</source>
         <translation>Hutsa</translation>
     </message>
 </context>
@@ -3591,14 +3451,14 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Centra</translation>
     </message>
     <message>
-        <source>Horizon</source>
+        <source>F. Horizon</source>
         <translation>AZ</translation>
     </message>
 </context>
 <context>
     <name>VarManager</name>
     <message>
-        <source>Gestionnaire de variables</source>
+        <source>Var manager</source>
         <translation>Var zuzendaria</translation>
     </message>
     <message>
@@ -3606,7 +3466,7 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Var</translation>
     </message>
     <message>
-        <source>Écran</source>
+        <source>Field</source>
         <translation>Gunea</translation>
     </message>
     <message>
@@ -3622,19 +3482,19 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Mota</translation>
     </message>
     <message>
-        <source>Adresses utilisées</source>
+        <source>Adresses used</source>
         <translation>Helbideak erabiliak</translation>
     </message>
     <message>
-        <source>Sauver</source>
+        <source>Save</source>
         <translation>Gorde</translation>
     </message>
     <message>
-        <source>Vars utilisés : %1/1536</source>
+        <source>Used vars: %1/1536</source>
         <translation>Var-ak erabiliak: %1/1536</translation>
     </message>
     <message>
-        <source>Nom</source>
+        <source>Name</source>
         <translation>Izena</translation>
     </message>
 </context>
@@ -3656,15 +3516,15 @@ poursuite de la recherche dans le dernier fichier.</source>
 <context>
     <name>WalkmeshWidget</name>
     <message>
-        <source>Utilisez les touches directionnelles pour déplacer la caméra.</source>
+        <source>Use the arrow keys to move the camera.</source>
         <translation type="unfinished">Use the arrow keys to move the camera.</translation>
     </message>
     <message>
-        <source>Remettre à 0</source>
+        <source>Reset</source>
         <translation type="unfinished">Reset</translation>
     </message>
     <message>
-        <source>Caméra</source>
+        <source>Camera</source>
         <translation>Kamera</translation>
     </message>
     <message>
@@ -3672,43 +3532,43 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Walkmesh</translation>
     </message>
     <message>
-        <source>Sorties</source>
+        <source>Exits</source>
         <translation>Irteerak</translation>
     </message>
     <message>
-        <source>Portes</source>
+        <source>Doors</source>
         <translation>Ateak</translation>
     </message>
     <message>
-        <source>Limites caméra</source>
+        <source>Camera Ranges</source>
         <translation>Kamera-irismenak</translation>
     </message>
     <message>
-        <source>Caméra cinématique</source>
+        <source>Movie Camera</source>
         <translation>Filmagailua</translation>
     </message>
     <message>
-        <source>Divers</source>
+        <source>Miscellaneous</source>
         <translation>Askotakoa(k)</translation>
     </message>
     <message>
-        <source>Ajouter caméra</source>
+        <source>Add camera</source>
         <translation>Kamera gehitu</translation>
     </message>
     <message>
-        <source>Supprimer caméra</source>
+        <source>Remove camera</source>
         <translation>Kamera kendu</translation>
     </message>
     <message>
-        <source>Distance (zoom) :</source>
+        <source>Zoom:</source>
         <translation>Zoom:</translation>
     </message>
     <message>
-        <source>Axes de la caméra :</source>
+        <source>Camera axis:</source>
         <translation>Camera axis:</translation>
     </message>
     <message>
-        <source>Position de la caméra :</source>
+        <source>Camera position:</source>
         <translation>Camera position:</translation>
     </message>
     <message>
@@ -3724,115 +3584,115 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Z</translation>
     </message>
     <message>
-        <source>Ajouter triangle</source>
+        <source>Add triangle</source>
         <translation>Hirukia gehitu</translation>
     </message>
     <message>
-        <source>Supprimer triangle</source>
+        <source>Remove triangle</source>
         <translation>Hirukia kendu</translation>
     </message>
     <message>
-        <source>Triangle accessible via la ligne 1-2 :</source>
+        <source>Triangle accessible via the line 1-2:</source>
         <translation>Hirukia aurkitzen ahal du 1-2 lerroaz:</translation>
     </message>
     <message>
-        <source>Triangle accessible via la ligne 2-3 :</source>
+        <source>Triangle accessible via la ligne 2-3:</source>
         <translation>Hirukia aurkitzen ahal du 2-3 lerroaz:</translation>
     </message>
     <message>
-        <source>Triangle accessible via la ligne 3-1 :</source>
+        <source>Triangle accessible via la ligne 3-1:</source>
         <translation>Hirukia aurkitzen ahal du 3-1 lerroaz:</translation>
     </message>
     <message>
-        <source>Point 1 :</source>
+        <source>Point 1:</source>
         <translation>Point 1:</translation>
     </message>
     <message>
-        <source>Point 2 :</source>
+        <source>Point 2:</source>
         <translation>Puntu 2:</translation>
     </message>
     <message>
-        <source>Point 3 :</source>
+        <source>Point 3:</source>
         <translation>Puntu 3:</translation>
     </message>
     <message>
-        <source>Id écran :</source>
+        <source>Field ID:</source>
         <translation>Gune ID:</translation>
     </message>
     <message>
-        <source>Inconnu 1 :</source>
+        <source>Unknown 1:</source>
         <translation>Ezezagun 1:</translation>
     </message>
     <message>
-        <source>Inconnu 2 :</source>
+        <source>Unknown 2:</source>
         <translation>Ezezagun 2:</translation>
     </message>
     <message>
-        <source>Ligne de sortie :</source>
+        <source>Exit Line:</source>
         <translation>Irteera-lerroa:</translation>
     </message>
     <message>
-        <source>Point de destination :</source>
+        <source>Destination point:</source>
         <translation>Irismenaren helburua:</translation>
     </message>
     <message>
-        <source>Utilisé</source>
+        <source>Used</source>
         <translation>Erabilia(k)</translation>
     </message>
     <message>
-        <source>Id porte :</source>
+        <source>Door ID:</source>
         <translation>Ate ID:</translation>
     </message>
     <message>
-        <source>Ligne déclench. porte :</source>
+        <source>Trigger Line Door:</source>
         <translation>Ate lerro katua:</translation>
     </message>
     <message>
-        <source>Limite caméra %1</source>
+        <source>Camera Range %1</source>
         <translation>Kamera-irismena %1</translation>
     </message>
     <message>
-        <source>Limite écran %1</source>
+        <source>Screen Range %1</source>
         <translation>Pantaila-irismena %1</translation>
     </message>
     <message>
-        <source>Haut</source>
+        <source>Top</source>
         <translation>Goia</translation>
     </message>
     <message>
-        <source>Bas</source>
+        <source>Bottom</source>
         <translation>Behea</translation>
     </message>
     <message>
-        <source>Droite</source>
+        <source>Right</source>
         <translation>Eskuina</translation>
     </message>
     <message>
-        <source>Gauche</source>
+        <source>Left</source>
         <translation>Ezkerra</translation>
     </message>
     <message>
-        <source>Ajouter</source>
+        <source>Add</source>
         <translation>Gehitu</translation>
     </message>
     <message>
-        <source>Effacer</source>
+        <source>Remove</source>
         <translation>Kendu</translation>
     </message>
     <message>
-        <source>Orientation des mouvements :</source>
+        <source>Movements orientation:</source>
         <translation>Mugimenduak orientazioa:</translation>
     </message>
     <message>
-        <source>Inconnu :</source>
+        <source>Unknown:</source>
         <translation>Ezezaguna:</translation>
     </message>
     <message>
-        <source>Hauteur focus caméra sur le personnage :</source>
+        <source>Camera Focus Height on the playable character:</source>
         <translation>Kamera Foku Garaiera ahaljokatu karaketerran.:</translation>
     </message>
     <message>
-        <source>Caméra %1</source>
+        <source>Camera %1</source>
         <translation>Kamera %1</translation>
     </message>
     <message>
@@ -3840,38 +3700,26 @@ poursuite de la recherche dans le dernier fichier.</source>
         <translation>Hiruki %1</translation>
     </message>
     <message>
-        <source>Inutilisé</source>
+        <source>Unused</source>
         <translation>Ez erabilia(k)</translation>
     </message>
     <message>
-        <source>Porte %1</source>
+        <source>Door %1</source>
         <translation>Ate %1</translation>
-    </message>
-    <message>
-        <source>Camera %1</source>
-        <translation>Kamera %1</translation>
     </message>
     <message>
         <source>Position %1</source>
         <translation>Maila %1</translation>
     </message>
     <message>
-        <source>Afficher décor</source>
+        <source>Show background</source>
         <translation type="unfinished">Show background</translation>
     </message>
 </context>
 <context>
     <name>WorldmapWidget</name>
     <message>
-        <source>dump</source>
-        <translation type="obsolete">dump</translation>
-    </message>
-    <message>
         <source>Worldmap</source>
-        <translation type="obsolete">Worldmap</translation>
-    </message>
-    <message>
-        <source>Mappemonde</source>
         <translation type="unfinished">Worldmap</translation>
     </message>
     <message>

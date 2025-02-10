@@ -28,7 +28,7 @@ void EncounterWidget::build()
 	if (isBuilded())	return;
 
 	QLabel *labelColumn1 = new QLabel(tr("Formations"));
-	QLabel *labelColumn2 = new QLabel(tr("Fréquence"));
+	QLabel *labelColumn2 = new QLabel(tr("Rate"));
 
 	QFont font = labelColumn1->font();
 	font.setPointSize(font.pointSize()+4);
@@ -53,9 +53,9 @@ void EncounterWidget::build()
 
 		layout->addWidget(formationEdit[i], row, 0);
 		if (i==0) {
-			layout->addWidget(new QLabel(tr("Basse")), row, 1);
+			layout->addWidget(new QLabel(tr("Low")), row, 1);
 			layout->addWidget(rateEdit, row, 2);
-			layout->addWidget(new QLabel(tr("Haute")), row, 3);
+			layout->addWidget(new QLabel(tr("High")), row, 3);
 			layout->addWidget(rateEditLabel, row+1, 1, 1, 3, Qt::AlignCenter);
 
 			connect(rateEdit, SIGNAL(valueChanged(int)), SLOT(editRate()));
@@ -164,7 +164,7 @@ void EncounterWidget::editRate()
 void EncounterWidget::fillRateLabel(int value)
 {
 	if (value == 0) {
-		rateEditLabel->setText(tr("Pas de combats"));
+		rateEditLabel->setText(tr("No fights"));
 	} else {
 		rateEditLabel->setNum(value);
 	}

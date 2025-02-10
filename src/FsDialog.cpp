@@ -31,16 +31,16 @@ FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	setMinimumSize(800, 528);
 
 	toolBar = new QToolBar(this);
-	extractAction = toolBar->addAction(tr("Extraire"), this, SLOT(extract()));
+	extractAction = toolBar->addAction(tr("Extract"), this, SLOT(extract()));
 	extractAction->setShortcut(QKeySequence(tr("Ctrl+E", "Extract")));
-	replaceAction = toolBar->addAction(tr("Remplacer"), this, SLOT(replace()));
+	replaceAction = toolBar->addAction(tr("Replace"), this, SLOT(replace()));
 	replaceAction->setShortcut(QKeySequence(tr("Ctrl+R", "Replace")));
-	_addFileAction = toolBar->addAction(tr("Ajouter fichier"), this, SLOT(addFile()));
+	_addFileAction = toolBar->addAction(tr("Add File"), this, SLOT(addFile()));
 	_addFileAction->setShortcut(QKeySequence::New);
-	_addDirAction = toolBar->addAction(tr("Ajouter dossier"), this, SLOT(addDirectory()));
-	removeAction = toolBar->addAction(tr("Supprimer"), this, SLOT(remove()));
+	_addDirAction = toolBar->addAction(tr("Add Directory"), this, SLOT(addDirectory()));
+	removeAction = toolBar->addAction(tr("Remove"), this, SLOT(remove()));
 	removeAction->setShortcut(QKeySequence::Delete);
-	renameAction = toolBar->addAction(tr("Renommer"), this, SLOT(rename()));
+	renameAction = toolBar->addAction(tr("Rename"), this, SLOT(rename()));
 	renameAction->setShortcut(QKeySequence(tr("F2", "Rename")));
 	toolBar->setWindowFlags(Qt::Widget);
 
@@ -235,7 +235,7 @@ void FsDialog::exportImages()
 	    filePath = currentPath % fileName;
 	QByteArray data = fsArchive->fileData(filePath);
 	
-	QString path = QFileDialog::getExistingDirectory(this, tr("Dossier cible"));
+	QString path = QFileDialog::getExistingDirectory(this, tr("Target directory"));
 	
 	if (path.isNull()) {
 		return;
@@ -332,10 +332,10 @@ void FsDialog::openDir(const QString &name)
 				compression = tr("LZS");
 				break;
 			case FiCompression::CompressionUnknown:
-				compression = tr("Inconnu");
+				compression = tr("Unknown");
 				break;
 			case FiCompression::CompressionNone:
-				compression = tr("Non");
+				compression = tr("No");
 				break;
 			}
 			item = new TreeWidgetItem(QStringList() << file << QString::number(header->uncompressedSize()) << compression);
@@ -431,11 +431,11 @@ void FsDialog::extract(QStringList sources)
 	if (sources.size()==1)
 	{
 		destination = QDir::cleanPath(Config::value("extractPath").toString()) % "/" % sources.first().mid(currentPath.size());
-		destination = QFileDialog::getSaveFileName(this, tr("Extraire"), destination);
+		destination = QFileDialog::getSaveFileName(this, tr("Extract"), destination);
 	}
 	else
 	{
-		destination = QFileDialog::getExistingDirectory(this, tr("Extraire"), QDir::cleanPath(Config::value("extractPath").toString()));
+		destination = QFileDialog::getExistingDirectory(this, tr("Extract"), QDir::cleanPath(Config::value("extractPath").toString()));
 	}
 
 	if (destination.isEmpty())	return;
@@ -443,16 +443,16 @@ void FsDialog::extract(QStringList sources)
 	if (sources.size()==1)
 	{
 		if (!fsArchive->extractFile(sources.first(), destination))
-			QMessageBox::warning(this, tr("Erreur"), tr("Le fichier n'a pas été extrait !"));
+			QMessageBox::warning(this, tr("Error"), tr("The file was not extracted!"));
 
 		Config::setValue("extractPath", destination.left(destination.lastIndexOf('/')));
 	}
 	else
 	{
-		ProgressWidget progress(tr("Extraction..."), ProgressWidget::Cancel, this);
+		ProgressWidget progress(tr("Extract..."), ProgressWidget::Cancel, this);
 
 		if (fsArchive->extractFiles(sources, currentPath, destination, &progress) != FsArchive::Ok)
-			QMessageBox::warning(this, tr("Erreur"), tr("Les fichiers n'ont pas été extraits !"));
+			QMessageBox::warning(this, tr("Error"), tr("The files were not extracted!"));
 
 		Config::setValue("extractPath", destination);
 	}
@@ -476,14 +476,14 @@ void FsDialog::replace(QString source, QString destination)
 			if (!QFile::exists(source)) {
 				source = QDir::cleanPath(Config::value("replacePath").toString());
 			}
-			source = QFileDialog::getExistingDirectory(this, tr("Remplacer"), source);
+			source = QFileDialog::getExistingDirectory(this, tr("Replace"), source);
 		} else {
-			source = QFileDialog::getOpenFileName(this, tr("Remplacer"), source);
+			source = QFileDialog::getOpenFileName(this, tr("Replace"), source);
 		}
 		if (source.isEmpty())	return;
 	}
 
-	ProgressWidget progress(tr("Remplacement..."), ProgressWidget::Cancel, this);
+	ProgressWidget progress(tr("Replace..."), ProgressWidget::Cancel, this);
 	FsArchive::Error error;
 
 	if (isDir) {
@@ -498,7 +498,7 @@ void FsDialog::replace(QString source, QString destination)
 	}
 
 	if (error != FsArchive::Ok) {
-		QMessageBox::warning(this, tr("Erreur de remplacement"), FsArchive::errorString(error));
+		QMessageBox::warning(this, tr("Replacement error"), FsArchive::errorString(error));
 	} else {
 		openDir(currentPath);
 	}
@@ -509,7 +509,7 @@ void FsDialog::replace(QString source, QString destination)
 void FsDialog::addFile(QStringList sources)
 {
 	if (sources.isEmpty()) {
-		sources = QFileDialog::getOpenFileNames(this, tr("Ajouter"), Config::value("addPath").toString());
+		sources = QFileDialog::getOpenFileNames(this, tr("Add"), Config::value("addPath").toString());
 		if (sources.isEmpty())	return;
 	}
 
@@ -519,7 +519,7 @@ void FsDialog::addFile(QStringList sources)
 void FsDialog::addDirectory(QString source)
 {
 	if (source.isEmpty()) {
-		source = QFileDialog::getExistingDirectory(this, tr("Ajouter"), Config::value("addPath").toString());
+		source = QFileDialog::getExistingDirectory(this, tr("Add"), Config::value("addPath").toString());
 		if (source.isEmpty())	return;
 	}
 
@@ -545,7 +545,7 @@ void FsDialog::add(QStringList sources, bool fromDir)
 		return;
 	}
 
-	ProgressWidget progress(tr("Ajout..."), ProgressWidget::Stop, this);
+	ProgressWidget progress(tr("Add..."), ProgressWidget::Stop, this);
 	QList<FsArchive::Error> errors;
 
 	if (fromDir) {
@@ -555,12 +555,12 @@ void FsDialog::add(QStringList sources, bool fromDir)
 	}
 
 	if (errors.contains(FsArchive::NonWritable)) {
-		QMessageBox::warning(this, tr("Erreur d'ajout"), FsArchive::errorString(FsArchive::NonWritable));
+		QMessageBox::warning(this, tr("Add error"), FsArchive::errorString(FsArchive::NonWritable));
 	}
 	QStringList errorOut;
 	for (i = 0; i < errors.size() && errorOut.size() < 20; ++i) {
 		if (errors.at(i) == FsArchive::FileExists) {
-			if (QMessageBox::question(this, tr("Le fichier existe déjà"), tr("Le fichier existe déjà, voulez-vous le remplacer ?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
+			if (QMessageBox::question(this, tr("The file already exists"), tr("The file already exists, do you want to replace it?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
 				replace(sources.at(i), destinations.at(i));
 				continue;
 			}
@@ -569,7 +569,7 @@ void FsDialog::add(QStringList sources, bool fromDir)
 			errorOut.append(FsArchive::errorString(errors.at(i), sources.at(i)));
 	}
 	if (!errorOut.isEmpty()) {
-		QMessageBox::warning(this, tr("Erreur d'ajout"), tr("Un problème est survenu pour un ou plusieurs des fichiers à ajouter :\n - %1").arg(errorOut.join("\n - ")));
+		QMessageBox::warning(this, tr("Add error"), tr("There was a problem for one or more files to add:\n - %1").arg(errorOut.join("\n - ")));
 	}
 
 	if (errors.contains(FsArchive::Ok)) {
@@ -598,15 +598,15 @@ void FsDialog::remove(QStringList destinations)
 		if (destinations.isEmpty())	return;
 	}
 
-	if (QMessageBox::question(this, tr("Supprimer"), tr("Voulez-vous supprimer les éléments sélectionnés ?"), QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes)
+	if (QMessageBox::question(this, tr("Remove"), tr("Do you want to delete the selected items?"), QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes)
 		return;
 
-	ProgressWidget progress(tr("Suppression..."), ProgressWidget::Cancel, this);
+	ProgressWidget progress(tr("Deleting..."), ProgressWidget::Cancel, this);
 
 	FsArchive::Error error = fsArchive->remove(destinations, &progress);
 
 	if (error != FsArchive::Ok) {
-		QMessageBox::warning(this, tr("Erreur de suppression"), FsArchive::errorString(error));
+		QMessageBox::warning(this, tr("Deleting error"), FsArchive::errorString(error));
 	} else {
 		openDir(currentPath);
 	}
@@ -638,7 +638,7 @@ void FsDialog::renameOK(QTreeWidgetItem *item, int column)
 	}
 
 	if (newName.contains('\\') || newName.contains('/') || newName.contains('\n') || newName.contains('\r')) {
-		QMessageBox::warning(this, tr("Erreur de renommage"), tr("Caractères interdits utilisés (par exemple : '\\' ou '/')"));
+		QMessageBox::warning(this, tr("Rename error"), tr("Illegal characters used (eg '\\' or '/')"));
 		item->setText(0, oldName);
 		list->blockSignals(false);
 		return;
@@ -662,7 +662,7 @@ void FsDialog::renameOK(QTreeWidgetItem *item, int column)
 	FsArchive::Error error = fsArchive->rename(destinations, newDestinations);
 
 	if (error != FsArchive::Ok) {
-		QMessageBox::warning(this, tr("Erreur de renommage"), FsArchive::errorString(error));
+		QMessageBox::warning(this, tr("Rename error"), FsArchive::errorString(error));
 	} else {
 		list->scrollToItem(item);
 	}
@@ -673,12 +673,12 @@ FiCompression FsDialog::compressionMessage(QWidget *parent)
 {
 	QMessageBox msgBox(QMessageBox::Information,
 	                   tr("Compression"),
-	                   tr("Voulez-vous compresser le(s) fichier(s) ?"),
+	                   tr("Would you compress file(s)?"),
 	                   QMessageBox::NoButton, parent);
 	QPushButton *lzs = msgBox.addButton(tr("LZS"), QMessageBox::YesRole);
 	QPushButton *lz4 = msgBox.addButton(tr("LZ4 (FF8 Remaster)"), QMessageBox::YesRole);
-	QPushButton *no = msgBox.addButton(tr("Non"), QMessageBox::NoRole);
-	QPushButton *cancel = msgBox.addButton(tr("Annuler"), QMessageBox::RejectRole);
+	QPushButton *no = msgBox.addButton(tr("No"), QMessageBox::NoRole);
+	QPushButton *cancel = msgBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
 
 	msgBox.setDefaultButton(lzs);
 	msgBox.setEscapeButton(cancel);

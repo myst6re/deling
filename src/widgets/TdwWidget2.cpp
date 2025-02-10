@@ -26,7 +26,7 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 	tdwPalette = new TdwPalette(this);
 	selectPal = new QComboBox(this);
 	QStringList colors;
-	colors << tr("Gris foncé") << tr("Gris") << tr("Jaune") << tr("Rouge") << tr("Vert") << tr("Bleu") << tr("Violet") << tr("Blanc");
+	colors << tr("Dark grey") << tr("Grey") << tr("Yellow") << tr("Red") << tr("Green") << tr("Blue") << tr("Purple") << tr("White");
 	selectPal->addItems(colors);
 	selectPal->setCurrentIndex(7);
 
@@ -42,9 +42,9 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 	widthLetter = new QSpinBox(this);
 	widthLetter->setRange(0, 15);
 	widthLetter->setReadOnly(isAdditionnalTable);
-	exportButton = new QPushButton(tr("Exporter..."), this);
-	importButton = new QPushButton(tr("Importer..."), this);
-	resetButton2 = new QPushButton(tr("Annuler les modifications"), this);
+	exportButton = new QPushButton(tr("Export..."), this);
+	importButton = new QPushButton(tr("Importing..."), this);
+	resetButton2 = new QPushButton(tr("Cancel Changes"), this);
 	resetButton2->setEnabled(false);
 
 	QGridLayout *layout = new QGridLayout(this);
@@ -54,9 +54,9 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 	layout->addWidget(selectPal, 2, 0, Qt::AlignRight);
 	layout->addWidget(selectTable, 2, 1, Qt::AlignLeft);
 	layout->addWidget(tdwPalette, 2, 2, 1, 4, Qt::AlignLeft);
-	layout->addWidget(new QLabel(tr("Texte :")), 3, 2);
+	layout->addWidget(new QLabel(tr("Text:")), 3, 2);
 	layout->addWidget(textLetter, 3, 3);
-	layout->addWidget(new QLabel(tr("Largeur :")), 3, 4);
+	layout->addWidget(new QLabel(tr("Width:")), 3, 4);
 	layout->addWidget(widthLetter, 3, 5);
 	//layout->addWidget(fromImage2, 3, 3, Qt::AlignRight);
 //	layout->addWidget(resetButton1, 4, 0, 1, 2, Qt::AlignLeft);
@@ -191,18 +191,18 @@ void TdwWidget2::exportFont()
 	QStringList filter;
 	if (tdwFile) {
 		if (!tdwFile->isOptimizedVersion())
-			filter.append(texF = tr("Fichier texture FF8 (*.tex)"));
-		filter.append(tdwF = tr("Fichier police FF8 (*.tdw)"));
-		filter.append(pngF = tr("Fichier image PNG (*.png)"));
-		filter.append(jpgF = tr("Fichier image JPG (*.jpg)"));
-		filter.append(bmpF = tr("Fichier image BMP (*.bmp)"));
+			filter.append(texF = tr("FF8 Texture File (*.tex)"));
+		filter.append(tdwF = tr("FF8 Font File (*.tdw)"));
+		filter.append(pngF = tr("PNG image File (*.png)"));
+		filter.append(jpgF = tr("JPG image File (*.jpg)"));
+		filter.append(bmpF = tr("BMP image File (*.bmp)"));
 	}
 
 	if (ff8Font)
-		filter.append(txtF = tr("Fichier traduction Deling (*.txt)"));
+		filter.append(txtF = tr("Deling translation File (*.txt)"));
 	QString selectedFilter;
 
-	QString path = QFileDialog::getSaveFileName(this, tr("Exporter police de caractère"), "sysfnt", filter.join(";;"), &selectedFilter);
+	QString path = QFileDialog::getSaveFileName(this, tr("Export font"), "sysfnt", filter.join(";;"), &selectedFilter);
 	if (path.isNull())		return;
 
 	if (selectedFilter == texF) {
@@ -215,13 +215,13 @@ void TdwWidget2::exportFont()
 					f.write(data);
 					f.close();
 				} else {
-					QMessageBox::warning(this, tr("Erreur"), tr("Erreur d'ouverture du fichier. (%1)").arg(f.errorString()));
+					QMessageBox::warning(this, tr("Error"), tr("Error when opening file. (%1)").arg(f.errorString()));
 				}
 			} else {
-				QMessageBox::warning(this, tr("Erreur"), tr("Erreur lors de l'enregistrement."));
+				QMessageBox::warning(this, tr("Error"), tr("Error when saving."));
 			}
 		} else {
-			QMessageBox::information(this, tr("Information"), tr("Format de police de caractère inexportable."));
+			QMessageBox::information(this, tr("Information"), tr("Font format unexportable."));
 		}
 	} else if (selectedFilter == tdwF) {
 		QByteArray data;
@@ -231,10 +231,10 @@ void TdwWidget2::exportFont()
 				f.write(data);
 				f.close();
 			} else {
-				QMessageBox::warning(this, tr("Erreur"), tr("Erreur d'ouverture du fichier. (%1)").arg(f.errorString()));
+				QMessageBox::warning(this, tr("Error"), tr("Error when opening file. (%1)").arg(f.errorString()));
 			}
 		} else {
-			QMessageBox::warning(this, tr("Erreur"), tr("Erreur lors de l'enregistrement."));
+			QMessageBox::warning(this, tr("Error"), tr("Error when saving."));
 		}
 	} else if (selectedFilter == txtF) {
 		QString data = ff8Font->saveTxt();
@@ -243,7 +243,7 @@ void TdwWidget2::exportFont()
 			f.write(data.toUtf8());
 			f.close();
 		} else {
-			QMessageBox::warning(this, tr("Erreur"), tr("Erreur d'ouverture du fichier. (%1)").arg(f.errorString()));
+			QMessageBox::warning(this, tr("Error"), tr("Error when opening file. (%1)").arg(f.errorString()));
 		}
 	} else if (selectedFilter == pngF ||
 			  selectedFilter == jpgF ||
@@ -267,11 +267,11 @@ void TdwWidget2::importFont()
 	QString tdwF;
 	QStringList filter;
 	if (tdwFile) {
-		filter.append(tdwF = tr("Fichier police FF8 (*.tdw)"));
+		filter.append(tdwF = tr("FF8 Font File (*.tdw)"));
 	}
 	QString selectedFilter;
 
-	QString path = QFileDialog::getOpenFileName(this, tr("Importer police de caractère"), "sysfnt", filter.join(";;"), &selectedFilter);
+	QString path = QFileDialog::getOpenFileName(this, tr("Import font"), "sysfnt", filter.join(";;"), &selectedFilter);
 	if (path.isNull())		return;
 
 	if (selectedFilter == tdwF) {
@@ -284,11 +284,11 @@ void TdwWidget2::importFont()
 				setTdwFile(tdwFile);// update
 				emit letterEdited();
 			} else {
-				QMessageBox::warning(this, tr("Erreur"), tr("Fichier invalide"));
+				QMessageBox::warning(this, tr("Error"), tr("Invalid File"));
 			}
 			f.close();
 		} else {
-			QMessageBox::warning(this, tr("Erreur"), tr("Erreur d'ouverture du fichier. (%1)").arg(f.errorString()));
+			QMessageBox::warning(this, tr("Error"), tr("Error when opening file. (%1)").arg(f.errorString()));
 		}
 	}
 }

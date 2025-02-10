@@ -28,7 +28,7 @@ public:
 	void clear();
 	void setReadOnly(bool ro);
 	void fill();
-	inline QString tabName() const { return tr("Sons"); }
+	inline QString tabName() const { return tr("Sounds"); }
 private slots:
 	void setCurrentSound(int id);
 	void addSound();

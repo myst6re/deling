@@ -42,23 +42,23 @@ void WalkmeshWidget::build()
 	slider2->setValue(0);
 	slider3->setValue(0);
 
-	QLabel *keyInfos = new QLabel(tr("Utilisez les touches directionnelles pour déplacer la caméra."));
+	QLabel *keyInfos = new QLabel(tr("Use the arrow keys to move the camera."));
 	keyInfos->setTextFormat(Qt::PlainText);
 	keyInfos->setWordWrap(true);
 
-	QPushButton *resetCamera = new QPushButton(tr("Remettre à 0"));
+	QPushButton *resetCamera = new QPushButton(tr("Reset"));
 
-	showBackground = new QCheckBox(tr("Afficher décor"));
+	showBackground = new QCheckBox(tr("Show background"));
 	showBackground->setChecked(Config::value("fieldBackgroundVisible", true).toBool());
 
 	tabWidget = new QTabWidget(this);
-	tabWidget->addTab(buildCameraPage(), tr("Caméra"));
+	tabWidget->addTab(buildCameraPage(), tr("Camera"));
 	tabWidget->addTab(buildWalkmeshPage(), tr("Walkmesh"));
-	tabWidget->addTab(buildGatewaysPage(), tr("Sorties"));
-	tabWidget->addTab(buildDoorsPage(), tr("Portes"));
-	tabWidget->addTab(buildCameraRangePage(), tr("Limites caméra"));
-	tabWidget->addTab(buildMovieCameraPage(), tr("Caméra cinématique"));
-	tabWidget->addTab(buildMiscPage(), tr("Divers"));
+	tabWidget->addTab(buildGatewaysPage(), tr("Exits"));
+	tabWidget->addTab(buildDoorsPage(), tr("Doors"));
+	tabWidget->addTab(buildCameraRangePage(), tr("Camera Ranges"));
+	tabWidget->addTab(buildMovieCameraPage(), tr("Movie Camera"));
+	tabWidget->addTab(buildMiscPage(), tr("Miscellaneous"));
 	tabWidget->setFixedHeight(250);
 
 	QGridLayout *layout = new QGridLayout(this);
@@ -101,8 +101,8 @@ QWidget *WalkmeshWidget::buildCameraPage()
 	QWidget *ret = new QWidget(this);
 
 	ListWidget *listWidget = new ListWidget(ret);
-	listWidget->addAction(ListWidget::Add, tr("Ajouter caméra"), this, SLOT(addCamera()));
-	listWidget->addAction(ListWidget::Rem, tr("Supprimer caméra"), this, SLOT(removeCamera()));
+	listWidget->addAction(ListWidget::Add, tr("Add camera"), this, SLOT(addCamera()));
+	listWidget->addAction(ListWidget::Rem, tr("Remove camera"), this, SLOT(removeCamera()));
 
 	caToolbar = listWidget->toolBar();
 	camList = listWidget->listWidget();
@@ -127,13 +127,13 @@ QWidget *WalkmeshWidget::buildCameraPage()
 
 	QGridLayout *caLayout = new QGridLayout(ret);
 	caLayout->addWidget(listWidget, 0, 0, 8, 1);
-	caLayout->addWidget(new QLabel(tr("Distance (zoom) :")), 0, 1, 1, 3);
+	caLayout->addWidget(new QLabel(tr("Zoom:")), 0, 1, 1, 3);
 	caLayout->addWidget(caZoomEdit, 0, 4, 1, 2);
-	caLayout->addWidget(new QLabel(tr("Axes de la caméra :")), 1, 1, 1, 6);
+	caLayout->addWidget(new QLabel(tr("Camera axis:")), 1, 1, 1, 6);
 	caLayout->addWidget(caVectorXEdit, 2, 1, 1, 6);
 	caLayout->addWidget(caVectorYEdit, 3, 1, 1, 6);
 	caLayout->addWidget(caVectorZEdit, 4, 1, 1, 6);
-	caLayout->addWidget(new QLabel(tr("Position de la caméra :")), 5, 1, 1, 6);
+	caLayout->addWidget(new QLabel(tr("Camera position:")), 5, 1, 1, 6);
 	caLayout->addWidget(new QLabel(tr("X")), 6, 1);
 	caLayout->addWidget(caSpaceXEdit, 6, 2);
 	caLayout->addWidget(new QLabel(tr("Y")), 6, 3);
@@ -165,8 +165,8 @@ QWidget *WalkmeshWidget::buildWalkmeshPage()
 	QWidget *ret = new QWidget(this);
 
 	ListWidget *listWidget = new ListWidget(ret);
-	listWidget->addAction(ListWidget::Add, tr("Ajouter triangle"), this, SLOT(addTriangle()));
-	listWidget->addAction(ListWidget::Rem, tr("Supprimer triangle"), this, SLOT(removeTriangle()));
+	listWidget->addAction(ListWidget::Add, tr("Add triangle"), this, SLOT(addTriangle()));
+	listWidget->addAction(ListWidget::Rem, tr("Remove triangle"), this, SLOT(removeTriangle()));
 
 	idToolbar = listWidget->toolBar();
 	idList = listWidget->listWidget();
@@ -184,24 +184,24 @@ QWidget *WalkmeshWidget::buildWalkmeshPage()
 	idAccess[2]->setRange(-32768, 32767);
 
 	QHBoxLayout *accessLayout0 = new QHBoxLayout;
-	accessLayout0->addWidget(new QLabel(tr("Triangle accessible via la ligne 1-2 :")));
+	accessLayout0->addWidget(new QLabel(tr("Triangle accessible via the line 1-2:")));
 	accessLayout0->addWidget(idAccess[0]);
 
 	QHBoxLayout *accessLayout1 = new QHBoxLayout;
-	accessLayout1->addWidget(new QLabel(tr("Triangle accessible via la ligne 2-3 :")));
+	accessLayout1->addWidget(new QLabel(tr("Triangle accessible via la ligne 2-3:")));
 	accessLayout1->addWidget(idAccess[1]);
 
 	QHBoxLayout *accessLayout2 = new QHBoxLayout;
-	accessLayout2->addWidget(new QLabel(tr("Triangle accessible via la ligne 3-1 :")));
+	accessLayout2->addWidget(new QLabel(tr("Triangle accessible via la ligne 3-1:")));
 	accessLayout2->addWidget(idAccess[2]);
 
 	QGridLayout *layout = new QGridLayout(ret);
 	layout->addWidget(listWidget, 0, 0, 7, 1, Qt::AlignLeft);
-	layout->addWidget(new QLabel(tr("Point 1 :")), 0, 1);
+	layout->addWidget(new QLabel(tr("Point 1:")), 0, 1);
 	layout->addWidget(idVertices[0], 0, 2);
-	layout->addWidget(new QLabel(tr("Point 2 :")), 1, 1);
+	layout->addWidget(new QLabel(tr("Point 2:")), 1, 1);
 	layout->addWidget(idVertices[1], 1, 2);
-	layout->addWidget(new QLabel(tr("Point 3 :")), 2, 1);
+	layout->addWidget(new QLabel(tr("Point 3:")), 2, 1);
 	layout->addWidget(idVertices[2], 2, 2);
 	layout->addLayout(accessLayout0, 3, 1, 1, 2);
 	layout->addLayout(accessLayout1, 4, 1, 1, 2);
@@ -240,22 +240,22 @@ QWidget *WalkmeshWidget::buildGatewaysPage()
 	unknownGate2 = new HexLineEdit(ret);
 
 	QGridLayout *idsLayout = new QGridLayout;
-	idsLayout->addWidget(new QLabel(tr("Id écran :")), 0, 0);
+	idsLayout->addWidget(new QLabel(tr("Field ID:")), 0, 0);
 	idsLayout->addWidget(fieldId, 0, 1, 1, 4);
-	idsLayout->addWidget(new QLabel(tr("Inconnu 1 :")), 1, 0);
+	idsLayout->addWidget(new QLabel(tr("Unknown 1:")), 1, 0);
 	idsLayout->addWidget(unknownGate1[0], 1, 1);
 	idsLayout->addWidget(unknownGate1[1], 1, 2);
 	idsLayout->addWidget(unknownGate1[2], 1, 3);
 	idsLayout->addWidget(unknownGate1[3], 1, 4);
-	idsLayout->addWidget(new QLabel(tr("Inconnu 2 :")), 2, 0);
+	idsLayout->addWidget(new QLabel(tr("Unknown 2:")), 2, 0);
 	idsLayout->addWidget(unknownGate2, 2, 1, 1, 4);
 
 	QGridLayout *layout = new QGridLayout(ret);
 	layout->addWidget(gateList, 0, 0, 5, 1, Qt::AlignLeft);
-	layout->addWidget(new QLabel(tr("Ligne de sortie :")), 0, 1);
+	layout->addWidget(new QLabel(tr("Exit Line:")), 0, 1);
 	layout->addWidget(exitPoints[0], 0, 2);
 	layout->addWidget(exitPoints[1], 1, 2);
-	layout->addWidget(new QLabel(tr("Point de destination :")), 2, 1);
+	layout->addWidget(new QLabel(tr("Destination point:")), 2, 1);
 	layout->addWidget(entryPoint, 2, 2);
 	layout->addLayout(idsLayout, 3, 1, 1, 2);
 	layout->setRowStretch(4, 1);
@@ -283,19 +283,19 @@ QWidget *WalkmeshWidget::buildDoorsPage()
 	doorPosition[0] = new VertexWidget(ret);
 	doorPosition[1] = new VertexWidget(ret);
 
-	doorUsed = new QCheckBox(tr("Utilisé"));
+	doorUsed = new QCheckBox(tr("Used"));
 
 	doorId = new QSpinBox(ret);
 	doorId->setRange(0, 254);
 
 	QGridLayout *idsLayout = new QGridLayout;
 	idsLayout->addWidget(doorUsed, 0, 0);
-	idsLayout->addWidget(new QLabel(tr("Id porte :")), 0, 1);
+	idsLayout->addWidget(new QLabel(tr("Door ID:")), 0, 1);
 	idsLayout->addWidget(doorId, 0, 2);
 
 	QGridLayout *layout = new QGridLayout(ret);
 	layout->addWidget(doorList, 0, 0, 4, 1, Qt::AlignLeft);
-	layout->addWidget(new QLabel(tr("Ligne déclench. porte :")), 0, 1);
+	layout->addWidget(new QLabel(tr("Trigger Line Door:")), 0, 1);
 	layout->addWidget(doorPosition[0], 0, 2);
 	layout->addWidget(doorPosition[1], 1, 2);
 	layout->addLayout(idsLayout, 2, 1, 1, 2);
@@ -317,13 +317,13 @@ QWidget *WalkmeshWidget::buildCameraRangePage()
 	rangeList1 = new QListWidget(ret);
 
 	for (int i = 0; i < 8; ++i) {
-		rangeList1->addItem(tr("Limite caméra %1").arg(i+1));
+		rangeList1->addItem(tr("Camera Range %1").arg(i+1));
 	}
 
 	rangeList2 = new QListWidget(ret);
 
 	for (int i = 0; i < 2; ++i) {
-		rangeList2->addItem(tr("Limite écran %1").arg(i+1));
+		rangeList2->addItem(tr("Screen Range %1").arg(i+1));
 	}
 
 	for (int i = 0; i < 4; ++i) {
@@ -336,21 +336,21 @@ QWidget *WalkmeshWidget::buildCameraRangePage()
 	QGridLayout *layout = new QGridLayout(ret);
 	layout->addWidget(rangeList1, 0, 0, 3, 1, Qt::AlignLeft);
 	layout->addWidget(rangeList2, 3, 0, 3, 1, Qt::AlignLeft);
-	layout->addWidget(new QLabel(tr("Haut")), 0, 1);
+	layout->addWidget(new QLabel(tr("Top")), 0, 1);
 	layout->addWidget(rangeEdit1[0], 0, 2);
-	layout->addWidget(new QLabel(tr("Bas")), 0, 3);
+	layout->addWidget(new QLabel(tr("Bottom")), 0, 3);
 	layout->addWidget(rangeEdit1[1], 0, 4);
-	layout->addWidget(new QLabel(tr("Droite")), 1, 1);
+	layout->addWidget(new QLabel(tr("Right")), 1, 1);
 	layout->addWidget(rangeEdit1[2], 1, 2);
-	layout->addWidget(new QLabel(tr("Gauche")), 1, 3);
+	layout->addWidget(new QLabel(tr("Left")), 1, 3);
 	layout->addWidget(rangeEdit1[3], 1, 4);
-	layout->addWidget(new QLabel(tr("Haut")), 3, 1);
+	layout->addWidget(new QLabel(tr("Top")), 3, 1);
 	layout->addWidget(rangeEdit2[0], 3, 2);
-	layout->addWidget(new QLabel(tr("Bas")), 3, 3);
+	layout->addWidget(new QLabel(tr("Bottom")), 3, 3);
 	layout->addWidget(rangeEdit2[1], 3, 4);
-	layout->addWidget(new QLabel(tr("Droite")), 4, 1);
+	layout->addWidget(new QLabel(tr("Right")), 4, 1);
 	layout->addWidget(rangeEdit2[2], 4, 2);
-	layout->addWidget(new QLabel(tr("Gauche")), 4, 3);
+	layout->addWidget(new QLabel(tr("Left")), 4, 3);
 	layout->addWidget(rangeEdit2[3], 4, 4);
 	layout->setRowStretch(2, 1);
 	layout->setRowStretch(5, 1);
@@ -374,8 +374,8 @@ QWidget *WalkmeshWidget::buildMovieCameraPage()
 	QWidget *ret = new QWidget(this);
 
 	ListWidget *listWidget = new ListWidget(ret);
-	camPlusAction = listWidget->addAction(ListWidget::Add, tr("Ajouter"), this, SLOT(addMovieCameraPosition()));
-	camMinusAction = listWidget->addAction(ListWidget::Rem, tr("Effacer"), this, SLOT(removeMovieCameraPosition()));
+	camPlusAction = listWidget->addAction(ListWidget::Add, tr("Add"), this, SLOT(addMovieCameraPosition()));
+	camMinusAction = listWidget->addAction(ListWidget::Rem, tr("Remove"), this, SLOT(removeMovieCameraPosition()));
 	camToolbar = listWidget->toolBar();
 
 	frameList = listWidget->listWidget();
@@ -414,12 +414,12 @@ QWidget *WalkmeshWidget::buildMiscPage()
 	cameraFocus->setRange(-32768, 32767);
 
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(new QLabel(tr("Orientation des mouvements :")), 0, 0);
+	layout->addWidget(new QLabel(tr("Movements orientation:")), 0, 0);
 	layout->addWidget(navigation, 0, 1);
 	layout->addWidget(navigation2, 0, 2);
-	layout->addWidget(new QLabel(tr("Inconnu :")), 1, 0);
+	layout->addWidget(new QLabel(tr("Unknown:")), 1, 0);
 	layout->addWidget(unknown, 1, 1, 1, 2);
-	layout->addWidget(new QLabel(tr("Hauteur focus caméra sur le personnage :")), 2, 0);
+	layout->addWidget(new QLabel(tr("Camera Focus Height on the playable character:")), 2, 0);
 	layout->addWidget(cameraFocus, 2, 1, 1, 2);
 	layout->setRowStretch(4, 1);
 
@@ -517,7 +517,7 @@ void WalkmeshWidget::fill()
 			camList->blockSignals(true);
 			camList->clear();
 			for (int i = 0; i < camCount; ++i) {
-				camList->addItem(tr("Caméra %1").arg(i));
+				camList->addItem(tr("Camera %1").arg(i));
 			}
 			camList->blockSignals(false);
 		}
@@ -548,7 +548,7 @@ void WalkmeshWidget::fill()
 			if (gateway.fieldId != 0x7FFF) {
 				gateList->addItem(QString("%1 (%2)").arg(Data::maplist().value(gateway.fieldId)).arg(gateway.fieldId));
 			} else {
-				gateList->addItem(tr("Inutilisé"));
+				gateList->addItem(tr("Unused"));
 			}
 		}
 		gateList->setCurrentRow(0);
@@ -557,9 +557,9 @@ void WalkmeshWidget::fill()
 		doorList->clear();
 		for (const Trigger &trigger: data()->getInfFile()->getTriggers(false)) {
 			if (trigger.doorID != 0xFF) {
-				doorList->addItem(tr("Porte %1").arg(trigger.doorID));
+				doorList->addItem(tr("Door %1").arg(trigger.doorID));
 			} else {
-				doorList->addItem(tr("Inutilisé"));
+				doorList->addItem(tr("Unused"));
 			}
 		}
 		doorList->setCurrentRow(0);
@@ -1020,7 +1020,7 @@ void WalkmeshWidget::editFieldId(int v)
 			if (v != 0x7FFF) {
 				gateList->currentItem()->setText(QString("%1 (%2)").arg(Data::maplist().value(v)).arg(v));
 			} else {
-				gateList->currentItem()->setText(tr("Inutilisé"));
+				gateList->currentItem()->setText(tr("Unused"));
 			}
 
 			emit modified();
@@ -1045,9 +1045,9 @@ void WalkmeshWidget::editDoorId(int v)
 			old.doorID = v;
 			data()->getInfFile()->setTrigger(gateId, old);
 			if (v != 0xFF) {
-				doorList->currentItem()->setText(tr("Porte %1").arg(v));
+				doorList->currentItem()->setText(tr("Door %1").arg(v));
 			} else {
-				doorList->currentItem()->setText(tr("Inutilisé"));
+				doorList->currentItem()->setText(tr("Unused"));
 			}
 
 			walkmeshGL->update();

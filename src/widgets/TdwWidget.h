@@ -29,7 +29,7 @@ public:
 	void clear();
 	void setReadOnly(bool ro);
 	void fill();
-	inline QString tabName() const { return tr("Caractères additionnels"); }
+	inline QString tabName() const { return tr("Additional characters"); }
 private:
 	void build();
 	TdwWidget2 *tdwWidget;

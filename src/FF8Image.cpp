@@ -160,7 +160,7 @@ void FF8Image::error(QPaintDevice *pd)
 {
 	QFont font;
 	font.setPixelSize(44);
-	QString text = QObject::tr("Erreur");
+	QString text = QObject::tr("Error");
 	int textWidth = QFontMetrics(font).horizontalAdvance(text);
 	int textHeight = QFontMetrics(font).height();
 

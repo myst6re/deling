@@ -57,7 +57,7 @@ bool ScriptExporter::toDir(const QDir &dir, ArchiveObserver *observer)
 			QString fieldName = f->name();
 
 			if (fieldName.isEmpty()) {
-				fieldName = QObject::tr("sans-nom");
+				fieldName = QObject::tr("Unamed");
 			}
 
 			QString path = fieldName;
@@ -66,7 +66,7 @@ bool ScriptExporter::toDir(const QDir &dir, ArchiveObserver *observer)
 			for (int groupID = 0; groupID < scripts.nbGroup(); ++groupID) {
 				QString groupName = scripts.group(groupID).name();
 				if (groupName.isEmpty()) {
-					groupName = QObject::tr("sans-nom");
+					groupName = QObject::tr("Unamed");
 				}
 
 				QString script;
@@ -74,7 +74,7 @@ bool ScriptExporter::toDir(const QDir &dir, ArchiveObserver *observer)
 				for (int methodID = 0; methodID < scripts.nbScript(groupID); ++methodID) {
 					QString scriptName = scripts.script(groupID, methodID).name();
 					if (scriptName.isEmpty()) {
-						scriptName = QObject::tr("sans-nom");
+						scriptName = QObject::tr("Unamed");
 					}
 
 					script.append(QString("%1() begin\n").arg(scriptName));

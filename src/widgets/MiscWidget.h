@@ -29,7 +29,7 @@ public:
 	void clear();
 	void setReadOnly(bool readOnly);
 	void fill();
-	inline QString tabName() const { return tr("Divers"); }
+	inline QString tabName() const { return tr("Miscellaneous"); }
 private slots:
 	void editName(const QString &);
 	void editPmp(const QString &);

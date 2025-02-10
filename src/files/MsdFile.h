@@ -27,7 +27,7 @@ public:
 	bool open(const QByteArray &msd);
 	bool save(QByteArray &msd);
 	inline QString filterText() const {
-		return QObject::tr("Fichier dialogues écran PC (*.msd)");
+		return QObject::tr("Field dialogs PC file (*.msd)");
 	}
 	QByteArray data(int id) const;
 	FF8Text text(int) const;

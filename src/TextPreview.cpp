@@ -64,7 +64,7 @@ TextPreview::TextPreview(QWidget *parent)
 		locations << FF8Text::toFF8(tr("Galbadia"), jp) << FF8Text::toFF8(tr("Esthar"), jp)
 				<< FF8Text::toFF8(tr("Balamb"), jp) << FF8Text::toFF8(tr("Dollet"), jp)
 				<< FF8Text::toFF8(tr("Timber"), jp) << FF8Text::toFF8(tr("Trabia"), jp)
-				<< FF8Text::toFF8(tr("Centra"), jp) << FF8Text::toFF8(tr("Horizon"), jp);
+				<< FF8Text::toFF8(tr("Centra"), jp) << FF8Text::toFF8(tr("F. Horizon"), jp);
 
 		locationsWidth[0] = calcFF8TextWidth(locations.at(0));
 		locationsWidth[1] = calcFF8TextWidth(locations.at(1));

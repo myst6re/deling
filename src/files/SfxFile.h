@@ -26,7 +26,7 @@ public:
 	bool open(const QByteArray &sfx);
 	bool save(QByteArray &sfx);
 	inline QString filterText() const {
-		return QObject::tr("Fichier sons écran PC (*.sfx)");
+		return QObject::tr("Field sounds PC file (*.sfx)");
 	}
 	int valueCount() const;
 	quint32 value(int id) const;

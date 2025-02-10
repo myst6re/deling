@@ -60,7 +60,7 @@ public:
 	bool open(const QByteArray &inf);
 	bool save(QByteArray &inf);
 	inline QString filterText() const {
-		return QObject::tr("Fichier passages et portes écran PC (*.inf)");
+		return QObject::tr("Field gate and doors PC File (*.inf)");
 	}
     QString getMapName() const;
 	void setMapName(const QString &mapName);
