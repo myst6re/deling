@@ -28,7 +28,7 @@ public:
 	bool open(const QByteArray &pmp);
 	bool save(QByteArray &pmp);
 	inline QString filterText() const {
-		return QObject::tr("Fichier données particules écran PC (*.pmp)");
+		return QObject::tr("Field particles data PC file (*.pmp)");
 	}
 	QByteArray getPmpData() const;
 	void setPmpData(const QByteArray &pmp);

@@ -28,8 +28,8 @@ void SoundWidget::build()
 	if (isBuilded())	return;
 
 	ListWidget *listWidget = new ListWidget(this);
-	listWidget->addAction(ListWidget::Add, tr("Ajouter son"), this, SLOT(addSound()));
-	listWidget->addAction(ListWidget::Rem, tr("Supprimer son"), this, SLOT(removeSound()));
+	listWidget->addAction(ListWidget::Add, tr("Add sound"), this, SLOT(addSound()));
+	listWidget->addAction(ListWidget::Rem, tr("Remove sound"), this, SLOT(removeSound()));
 
 	toolBar = listWidget->toolBar();
 	list1 = listWidget->listWidget();
@@ -44,7 +44,7 @@ void SoundWidget::build()
 	sfxValue->setRange(0, (quint32)-1);
 
 	QHBoxLayout *sfxLayout = new QHBoxLayout(sfxGroup);
-	sfxLayout->addWidget(new QLabel(tr("Identifiant :")));
+	sfxLayout->addWidget(new QLabel(tr("ID:")));
 	sfxLayout->addWidget(sfxValue);
 	sfxLayout->addStretch();
 	sfxLayout->setContentsMargins(QMargins());
@@ -54,8 +54,8 @@ void SoundWidget::build()
 	akaoGroup = new QWidget(this);
 	akaoGroup->hide();
 
-	exportButton = new QPushButton(tr("Exporter"));
-	importButton = new QPushButton(tr("Importer"));
+	exportButton = new QPushButton(tr("Export"));
+	importButton = new QPushButton(tr("Import"));
 
 	QHBoxLayout *akaoLayout = new QHBoxLayout(akaoGroup);
 	akaoLayout->addWidget(exportButton);
@@ -123,7 +123,7 @@ void SoundWidget::fillList(int count)
 {
 	list1->blockSignals(true);
 	for (int i = 0; i < count; ++i) {
-		list1->addItem(tr("Son %1").arg(i));
+		list1->addItem(tr("Sound %1").arg(i));
 	}
 	list1->blockSignals(false);
 
@@ -153,7 +153,7 @@ void SoundWidget::addSound()
 		inserted = true;
 	}
 	else if (data()->isPs()) {
-		QString path = QFileDialog::getOpenFileName(this, tr("Ajouter son"), QString(), tr("Fichier AKAO (*.akao)"));
+		QString path = QFileDialog::getOpenFileName(this, tr("Add sound"), QString(), tr("AKAO file (*.akao)"));
 		if (path.isNull())		return;
 
 		QFile f(path);
@@ -163,20 +163,20 @@ void SoundWidget::addSound()
 			}
 
 			if (!data()->getAkaoListFile()->insertAkao(row+1, f.readAll())) {
-				QMessageBox::warning(this, tr("Erreur"), tr("Fichier invalide."));
+				QMessageBox::warning(this, tr("Error"), tr("Invalid file."));
 			} else {
 				inserted = true;
 			}
 			f.close();
 		} else {
-			QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ajouter le son (%1).").arg(f.errorString()));
+			QMessageBox::warning(this, tr("Error"), tr("Unable to add sound (%1).").arg(f.errorString()));
 		}
 	}
 
 	if (inserted) {
-		list1->insertItem(row+1, tr("Son %1").arg(row+1));
+		list1->insertItem(row+1, tr("Sound %1").arg(row+1));
 		for (int i = row + 2; i < list1->count(); ++i) {
-			list1->item(i)->setText(tr("Son %1").arg(i));
+			list1->item(i)->setText(tr("Sound %1").arg(i));
 		}
 		list1->setCurrentRow(row+1);
 		emit modified();
@@ -214,7 +214,7 @@ void SoundWidget::removeSound()
 	if (removed) {
 		delete list1->item(row);
 		for (int i = row; i < list1->count(); ++i) {
-			list1->item(i)->setText(tr("Son %1").arg(i));
+			list1->item(i)->setText(tr("Sound %1").arg(i));
 		}
 		emit modified();
 	}
@@ -239,7 +239,7 @@ void SoundWidget::exportAkao()
 		int id = list1->currentRow();
 		if (id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
 
-			QString path = QFileDialog::getSaveFileName(this, tr("Exporter son"), tr("son%1").arg(id), tr("Fichier AKAO (*.akao)"));
+			QString path = QFileDialog::getSaveFileName(this, tr("Export sound"), tr("sound%1").arg(id), tr("AKAO file (*.akao)"));
 			if (path.isNull())		return;
 
 			QFile f(path);
@@ -247,7 +247,7 @@ void SoundWidget::exportAkao()
 				f.write(data()->getAkaoListFile()->akao(id));
 				f.close();
 			} else {
-				QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'exporter le son (%1).").arg(f.errorString()));
+				QMessageBox::warning(this, tr("Error"), tr("Unable to export sound (%1).").arg(f.errorString()));
 			}
 		}
 	}
@@ -259,17 +259,17 @@ void SoundWidget::importAkao()
 		int id = list1->currentRow();
 		if (id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
 
-			QString path = QFileDialog::getOpenFileName(this, tr("Importer son"), QString(), tr("Fichier AKAO (*.akao)"));
+			QString path = QFileDialog::getOpenFileName(this, tr("Import sound"), QString(), tr("AKAO file (*.akao)"));
 			if (path.isNull())		return;
 
 			QFile f(path);
 			if (f.open(QIODevice::ReadOnly)) {
 				if (!data()->getAkaoListFile()->setAkao(id, f.readAll())) {
-					QMessageBox::warning(this, tr("Erreur"), tr("Fichier invalide."));
+					QMessageBox::warning(this, tr("Error"), tr("Invalid file."));
 				}
 				f.close();
 			} else {
-				QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'importer le son (%1).").arg(f.errorString()));
+				QMessageBox::warning(this, tr("Error"), tr("Unable to import sound (%1).").arg(f.errorString()));
 			}
 		}
 	}

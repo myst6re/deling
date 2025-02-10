@@ -33,9 +33,9 @@ void MsdWidget::build()
 	QAction *action;
 
 	ListWidget *listWidget = new ListWidget(this);
-	listWidget->addAction(ListWidget::Invisible, tr("Insérer un texte au-dessus"), this, SLOT(insertTextAbove()));
-	listWidget->addAction(ListWidget::Add, tr("Insérer un texte en dessous"), this, SLOT(insertText()));
-	actionRemoveText = listWidget->addAction(ListWidget::Rem, tr("Supprimer un texte"), this, SLOT(removeText()));
+	listWidget->addAction(ListWidget::Invisible, tr("Insert text above"), this, SLOT(insertTextAbove()));
+	listWidget->addAction(ListWidget::Add, tr("Insert text below"), this, SLOT(insertText()));
+	actionRemoveText = listWidget->addAction(ListWidget::Rem, tr("Remove text"), this, SLOT(removeText()));
 
 	toolBar0 = listWidget->toolBar();
 	textList = listWidget->listWidget();
@@ -85,60 +85,60 @@ void MsdWidget::build()
 	action->setStatusTip(action->text());
 	action->setData("{Boko}");
 	toolBar->addSeparator();
-	action = toolBar->addAction(QIcon(":/images/icon-newpage.png"), tr("Nouvelle page"));
+	action = toolBar->addAction(QIcon(":/images/icon-newpage.png"), tr("New page"));
 	action->setStatusTip(action->text());
 	action->setData("\n{NewPage}\n");
 	action = toolBar->addAction(QIcon(":/images/icon-wait.png"), tr("Pause"));
 	action->setStatusTip(action->text());
 	action->setData("{Wait000}");
 	toolBar->addSeparator();
-	action = toolBar->addAction(QIcon(":/images/icon-darkgrey.png"), tr("Gris foncé"));
+	action = toolBar->addAction(QIcon(":/images/icon-darkgrey.png"), tr("Dark grey"));
 	action->setStatusTip(action->text());
 	action->setData("{Darkgrey}");
-	action = toolBar->addAction(QIcon(":/images/icon-grey.png"), tr("Gris"));
+	action = toolBar->addAction(QIcon(":/images/icon-grey.png"), tr("Grey"));
 	action->setStatusTip(action->text());
 	action->setData("{Grey}");
-	action = toolBar->addAction(QIcon(":/images/icon-yellow.png"), tr("Jaune"));
+	action = toolBar->addAction(QIcon(":/images/icon-yellow.png"), tr("Yellow"));
 	action->setStatusTip(action->text());
 	action->setData("{Yellow}");
-	action = toolBar->addAction(QIcon(":/images/icon-red.png"), tr("Rouge"));
+	action = toolBar->addAction(QIcon(":/images/icon-red.png"), tr("Red"));
 	action->setStatusTip(action->text());
 	action->setData("{Red}");
-	action = toolBar->addAction(QIcon(":/images/icon-green.png"), tr("Vert"));
+	action = toolBar->addAction(QIcon(":/images/icon-green.png"), tr("Green"));
 	action->setStatusTip(action->text());
 	action->setData("{Green}");
-	action = toolBar->addAction(QIcon(":/images/icon-blue.png"), tr("Bleu"));
+	action = toolBar->addAction(QIcon(":/images/icon-blue.png"), tr("Blue"));
 	action->setStatusTip(action->text());
 	action->setData("{Blue}");
-	action = toolBar->addAction(QIcon(":/images/icon-purple.png"), tr("Violet"));
+	action = toolBar->addAction(QIcon(":/images/icon-purple.png"), tr("Purple"));
 	action->setStatusTip(action->text());
 	action->setData("{Purple}");
-	action = toolBar->addAction(QIcon(":/images/icon-white.png"), tr("Blanc"));
+	action = toolBar->addAction(QIcon(":/images/icon-white.png"), tr("White"));
 	action->setStatusTip(action->text());
 	action->setData("{White}");
 	toolBar->addSeparator();
-	action = toolBar->addAction(QIcon(":/images/icon-darkgreyblink.png"), tr("Gris foncé clignotant"));
+	action = toolBar->addAction(QIcon(":/images/icon-darkgreyblink.png"), tr("Dark grey blink"));
 	action->setStatusTip(action->text());
 	action->setData("{DarkgreyBlink}");
-	action = toolBar->addAction(QIcon(":/images/icon-greyblink.png"), tr("Gris clignotant"));
+	action = toolBar->addAction(QIcon(":/images/icon-greyblink.png"), tr("Grey blink"));
 	action->setStatusTip(action->text());
 	action->setData("{GreyBlink}");
-	action = toolBar->addAction(QIcon(":/images/icon-yellowblink.png"), tr("Jaune clignotant"));
+	action = toolBar->addAction(QIcon(":/images/icon-yellowblink.png"), tr("Yellow blink"));
 	action->setStatusTip(action->text());
 	action->setData("{YellowBlink}");
-	action = toolBar->addAction(QIcon(":/images/icon-redblink.png"), tr("Rouge clignotant"));
+	action = toolBar->addAction(QIcon(":/images/icon-redblink.png"), tr("Red blink"));
 	action->setStatusTip(action->text());
 	action->setData("{RedBlink}");
-	action = toolBar->addAction(QIcon(":/images/icon-greenblink.png"), tr("Vert clignotant"));
+	action = toolBar->addAction(QIcon(":/images/icon-greenblink.png"), tr("Green blink"));
 	action->setStatusTip(action->text());
 	action->setData("{GreenBlink}");
-	action = toolBar->addAction(QIcon(":/images/icon-blueblink.png"), tr("Bleu clignotant"));
+	action = toolBar->addAction(QIcon(":/images/icon-blueblink.png"), tr("Blue blink"));
 	action->setStatusTip(action->text());
 	action->setData("{BlueBlink}");
-	action = toolBar->addAction(QIcon(":/images/icon-purpleblink.png"), tr("Violet clignotant"));
+	action = toolBar->addAction(QIcon(":/images/icon-purpleblink.png"), tr("Purple blink"));
 	action->setStatusTip(action->text());
 	action->setData("{PurpleBlink}");
-	action = toolBar->addAction(QIcon(":/images/icon-whiteblink.png"), tr("Blanc clignotant"));
+	action = toolBar->addAction(QIcon(":/images/icon-whiteblink.png"), tr("White blink"));
 	action->setStatusTip(action->text());
 	action->setData("{WhiteBlink}");
 	toolBar->addSeparator();
@@ -150,7 +150,7 @@ void MsdWidget::build()
 	action->setData("{Esthar}");
 	action = menu1->addAction(tr("Balamb"));
 	action->setData("{Balamb}");
-	action = menu1->addAction(tr("Dollet"));
+	action = menu1->addAction(tr("Balamb"));
 	action->setData("{Dollet}");
 	action = menu1->addAction(tr("Timber"));
 	action->setData("{Timber}");
@@ -158,9 +158,9 @@ void MsdWidget::build()
 	action->setData("{Trabia}");
 	action = menu1->addAction(tr("Centra"));
 	action->setData("{Centra}");
-	action = menu1->addAction(tr("Horizon"));
+	action = menu1->addAction(tr("F. Horizon"));
 	action->setData("{Horizon}");
-	action = toolBar->addAction(tr("Lieux"));
+	action = toolBar->addAction(tr("Locations"));
 	action->setMenu(menu1);
 
 	QMenu *menu2 = new QMenu(this);
@@ -184,30 +184,30 @@ void MsdWidget::build()
 	action->setData("{x0523}");
 	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x04)), tr("Triangle"));
 	action->setData("{x0524}");
-	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x05)), tr("Rond"));
+	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x05)), tr("Circle"));
 	action->setData("{x0525}");
-	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x06)), tr("Croix"));
+	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x06)), tr("Cross"));
 	action->setData("{x0526}");
-	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x07)), tr("Carré"));
+	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x07)), tr("Square"));
 	action->setData("{x0527}");
 	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x08)), tr("Select"));
 	action->setData("{x0528}");
 	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x0b)), tr("Start"));
 	action->setData("{x052b}");
-	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x0c)), tr("Haut"));
+	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x0c)), tr("Up"));
 	action->setData("{x052c}");
-	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x0d)), tr("Droite"));
+	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x0d)), tr("Right"));
 	action->setData("{x052d}");
-	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x0e)), tr("Bas"));
+	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x0e)), tr("Down"));
 	action->setData("{x052e}");
-	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x0f)), tr("Gauche"));
+	action = menu3->addAction(QPixmap::fromImage(TextPreview::getIconImage(0x0f)), tr("left"));
 	action->setData("{x052f}");
-	action = toolBar->addAction(tr("Touches"));
+	action = toolBar->addAction(tr("Keys"));
 	action->setMenu(menu3);
 
 	toolBar2 = new QToolBar(this);
 	toolBar2->setIconSize(QSize(16, 16));
-	toolBar2->addAction(tr("Caractères spéciaux"), this, SLOT(specialCharactersDialog()));
+	toolBar2->addAction(tr("Special Characters"), this, SLOT(specialCharactersDialog()));
 
 	QVBoxLayout *toolBars = new QVBoxLayout();
 	toolBars->addWidget(toolBar);
@@ -354,7 +354,7 @@ void MsdWidget::fill()
 			QIcon icon(":/images/text_icon.png"), iconDisabled(":/images/text_icon_disabled.png");
 
 			for (int i = 0; i < nbTexts; ++i) {
-				QListWidgetItem *item = new QListWidgetItem(tr("Texte %1").arg(i));
+				QListWidgetItem *item = new QListWidgetItem(tr("Text %1").arg(i));
 				if (data()->hasJsmFile() && data()->getJsmFile()->nbWindows(i)>0)
 					item->setIcon(icon);
 				else
@@ -451,7 +451,7 @@ void MsdWidget::changeTextPreviewWin()
 {
 	int currentWin = textPreview->getCurrentWin(), nbWin = textPreview->getNbWin();
 
-	textWin->setText(tr("Fenêtre %1/%2").arg(currentWin).arg(nbWin));
+	textWin->setText(tr("Window %1/%2").arg(currentWin).arg(nbWin));
 	prevWin->setEnabled(currentWin > 1);
 	nextWin->setEnabled(currentWin < nbWin);
 	textWin->setEnabled(nbWin > 0);

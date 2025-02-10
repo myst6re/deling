@@ -37,7 +37,7 @@ public:
 	QString selectedText() const;
 	void setReadOnly(bool);
 	void updateText();
-	inline QString tabName() const { return tr("Textes"); }
+	inline QString tabName() const { return tr("Texts"); }
 public slots:
 	void gotoText(int textID, int from, int size);
 private slots:

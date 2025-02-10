@@ -22,7 +22,7 @@
 SpecialCharactersDialog::SpecialCharactersDialog(QWidget *parent) :
 	QDialog(parent, Qt::Dialog | Qt::WindowCloseButtonHint)
 {
-	setWindowTitle(tr("Caractères spéciaux"));
+	setWindowTitle(tr("Special Characters"));
 
 	bool hasTables = FF8Font::getCurrentConfigFont()->tdw()->tableCount() > 1;
 
@@ -37,7 +37,7 @@ SpecialCharactersDialog::SpecialCharactersDialog(QWidget *parent) :
 	grid->setTdwFile(FF8Font::getCurrentConfigFont()->tdw());
 
 	QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
-	buttonBox->addButton(tr("Insérer"), QDialogButtonBox::AcceptRole);
+	buttonBox->addButton(tr("Insert"), QDialogButtonBox::AcceptRole);
 	buttonBox->addButton(QDialogButtonBox::Cancel);
 
 	connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));

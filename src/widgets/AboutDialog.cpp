@@ -23,13 +23,14 @@ AboutDialog::AboutDialog(QWidget *parent)
 	QLabel *image = new QLabel(this);
 	image->setPixmap(QPixmap(":/images/deling_city.png"));
 
-	QLabel *desc1 = new QLabel(QString("<h1 style=\"text-align:center\">%1 %2</h1>").arg(QLatin1String(DELING_NAME), QLatin1String(DELING_VERSION)) % tr("Par Jérôme &lt;myst6re&gt; Arzel <br/><a href=\"https://github.com/myst6re/deling/\">"
+	QLabel *desc1 = new QLabel(QString("<h1 style=\"text-align:center\">%1 %2</h1>").arg(QLatin1String(DELING_NAME), QLatin1String(DELING_VERSION))
+	                           % tr("By Jérôme &lt;myst6re&gt; Arzel <br/><a href=\"https://github.com/myst6re/deling/\">"
 	                "github.com/myst6re/deling</a>"), this);
 	desc1->setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
 	desc1->setTextFormat(Qt::RichText);
 	desc1->setOpenExternalLinks(true);
 
-	QLabel *desc2 = new QLabel(tr("Merci à :<ul style=\"margin:0\"><li>Aali</li>"
+	QLabel *desc2 = new QLabel(tr("Thanks to:<ul style=\"margin:0\"><li>Aali</li>"
 	                            "<li>Aladore384</li>"
 	                            "<li>Asa</li>"
 	                            "<li>Maki</li>"

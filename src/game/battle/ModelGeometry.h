@@ -17,28 +17,20 @@
  ****************************************************************************/
 #pragma once
 
-#include <QtWidgets>
-#include "3d/WorldmapGLWidget.h"
-#include "widgets/PageWidget.h"
+#include <QtCore>
+#include "Poly.h"
 
-class WorldmapWidget : public PageWidget
+class BattleModelObject
 {
-	Q_OBJECT
 public:
-	explicit WorldmapWidget(QWidget *parent = nullptr);
-	inline WorldmapGLWidget *scene() const {
-		return _scene;
+	BattleModelObject();
+	inline void setTriangles(const QList<TrianglePoly> &triangles) {
+		_triangles = triangles;
 	}
-	void fill() override;
-	inline QString tabName() const override { return tr("Worldmap"); }
-	void clear() override;
-private slots:
-	void setXRot(int value);
-	void setYRot(int value);
-	void setZRot(int value);
-	void resetCamera();
+	inline void setTriangles(const QList<QuadPoly> &quads) {
+		_quads = quads;
+	}
 private:
-	void build() override;
-	WorldmapGLWidget *_scene;
-	QSlider *_xRotSlider, *_yRotSlider, *_zRotSlider;
+	QList<TrianglePoly> _triangles;
+	QList<QuadPoly> _quads;
 };

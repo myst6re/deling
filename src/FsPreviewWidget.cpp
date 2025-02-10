@@ -33,7 +33,7 @@ QWidget *FsPreviewWidget::imageWidget()
 
 	imageSelect = new QComboBox(ret);
 	palSelect = new QComboBox(ret);
-	exportAll = new QPushButton(tr("Exporter tout"), ret);
+	exportAll = new QPushButton(tr("Export All"), ret);
 
 	scrollArea = new QScrollArea(ret);
 	scrollArea->setAlignment(Qt::AlignCenter);

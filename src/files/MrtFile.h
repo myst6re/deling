@@ -26,7 +26,7 @@ public:
 	bool open(const QByteArray &mrt);
 	bool save(QByteArray &mrt);
 	inline QString filterText() const {
-		return QObject::tr("Fichier formations combat écran PC (*.mrt)");
+		return QObject::tr("Field battle formation PC file (*.mrt)");
 	}
 	quint16 formation(int index) const;
 	void setFormation(int index, quint16 formation);

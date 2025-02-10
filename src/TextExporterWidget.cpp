@@ -44,7 +44,7 @@ void TextExporterWidget::build(const QStringList &langs, bool onlyOne)
 		}
 	}
 
-	QGroupBox *group = new QGroupBox(tr("Format CSV"), this);
+	QGroupBox *group = new QGroupBox(tr("CSV format"), this);
 	if (onlyOne) {
 		_column = new QSpinBox(group);
 		_column->setRange(0, 100);
@@ -60,11 +60,11 @@ void TextExporterWidget::build(const QStringList &langs, bool onlyOne)
 	_quoteCharater->setCompleter(new QCompleter(QStringList() << "\"" << "'"));
 	QFormLayout *groupLayout = new QFormLayout(group);
 	if (onlyOne) {
-		groupLayout->addRow(tr("Colonne contenant les textes à importer"), _column);
+		groupLayout->addRow(tr("Column that contains the texts to import"), _column);
 	}
-	groupLayout->addRow(tr("Jeu de caractères"), _encoding);
-	groupLayout->addRow(tr("Séparateur de champ"), _fieldSeparator);
-	groupLayout->addRow(tr("Séparateur de chaîne de caractères"), _quoteCharater);
+	groupLayout->addRow(tr("Character encoding"), _encoding);
+	groupLayout->addRow(tr("Field separator"), _fieldSeparator);
+	groupLayout->addRow(tr("String separator"), _quoteCharater);
 	
 	QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Ok
 	                                                 | QDialogButtonBox::Cancel, this);
@@ -117,19 +117,19 @@ QString TextExporterWidget::validate() const
 	QChar fieldSep = fieldSeparator(), quoteChar = quoteCharater();
 
 	if (!fieldSep.isNull() && fieldSep == quoteChar) {
-		return tr("Le séparateur de champ ne doit pas être le même que le séparateur de chaînes de caractères");
+		return tr("The field separator must be different than the string separator");
 	}
 	
 	if (fieldSep == '\n' || fieldSep == '\r') {
-		return tr("Le séparateur de champ ne doit pas être un retour à la ligne");
+		return tr("The field separator cannot be a line break");
 	}
 	
 	if (quoteChar == '\n' || quoteChar == '\r') {
-		return tr("Le séparateur de chaînes de caractères ne doit pas être un retour à la ligne");
+		return tr("The string separator cannot be a line break");
 	}
 	
 	if (_column != nullptr && _column->value() == 0) {
-		return tr("Sélectionnez le numéro de la colonne qui contient les textes à importer, entre 1 et 100");
+		return tr("Select the column number that contains the texts to import, between 1 and 100");
 	}
 	
 	return QString();
@@ -139,7 +139,7 @@ void TextExporterWidget::accept()
 {
 	QString validationText = validate();
 	if (!validationText.isEmpty()) {
-		QMessageBox::warning(this, tr("Erreur"), validationText);
+		QMessageBox::warning(this, tr("Error"), validationText);
 		return;
 	}
 	

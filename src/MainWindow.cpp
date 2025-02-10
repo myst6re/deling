@@ -67,37 +67,37 @@ MainWindow::MainWindow()
 	QMenuBar *menuBar = new QMenuBar();
 
 	/* Menu 'Fichier' */
-	QMenu *menu = menuBar->addMenu(tr("&Fichier"));
+	QMenu *menu = menuBar->addMenu(tr("&File"));
 
-	QAction *actionOpen = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogOpenButton), tr("&Ouvrir..."), QKeySequence::Open, this, SLOT(openFile()));
-	_recentMenu = new QMenu(tr("Fichiers &récents"), this);
+	QAction *actionOpen = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogOpenButton), tr("&Open..."), QKeySequence::Open, this, SLOT(openFile()));
+	_recentMenu = new QMenu(tr("&Recent Files"), this);
 	fillRecentMenu();
 	connect(_recentMenu, SIGNAL(triggered(QAction*)), SLOT(openRecentFile(QAction*)));
 	menu->addMenu(_recentMenu);
-	actionGameLang = menu->addAction(tr("Changer la langue du jeu"));
+	actionGameLang = menu->addAction(tr("Change game language"));
 	actionGameLang->setVisible(false);
-	actionSave = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton), tr("Enregi&strer"), QKeySequence::Save, this, SLOT(save()));
-	actionSaveAs = menu->addAction(tr("Enre&gistrer Sous..."), QKeySequence::SaveAs, this, SLOT(saveAs()));
-	actionExport = menu->addAction(tr("Exporter..."), this, SLOT(exportCurrent()));
-	menuExportAll = menu->addMenu(tr("Exporter tout"));
-	menuExportAll->addAction(tr("Textes..."), this, SLOT(exportAllTexts()));
+	actionSave = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton), tr("&Save"), QKeySequence::Save, this, SLOT(save()));
+	actionSaveAs = menu->addAction(tr("Sa&ve As..."), QKeySequence::SaveAs, this, SLOT(saveAs()));
+	actionExport = menu->addAction(tr("Export..."), this, SLOT(exportCurrent()));
+	menuExportAll = menu->addMenu(tr("Export All"));
+	menuExportAll->addAction(tr("Texts..."), this, SLOT(exportAllTexts()));
 	menuExportAll->addAction(tr("Scripts..."), this, SLOT(exportAllScripts()));
-	menuExportAll->addAction(tr("Rencontres aléatoires..."), this, SLOT(exportAllEncounters()));
-	menuExportAll->addAction(tr("Décors..."), this, SLOT(exportAllBackground()));
-	actionImport = menu->addAction(tr("Importer..."), this, SLOT(importCurrent()));
-	menuImportAll = menu->addMenu(tr("Importer tout"));
-	menuImportAll->addAction(tr("Textes..."), this, SLOT(importAllTexts()));
-	actionOpti = menu->addAction(tr("Optimiser l'archive..."), this, SLOT(optimizeArchive()));
+	menuExportAll->addAction(tr("Random Encounters..."), this, SLOT(exportAllEncounters()));
+	menuExportAll->addAction(tr("Backgrounds..."), this, SLOT(exportAllBackground()));
+	actionImport = menu->addAction(tr("Importing..."), this, SLOT(importCurrent()));
+	menuImportAll = menu->addMenu(tr("Import all"));
+	menuImportAll->addAction(tr("Texts..."), this, SLOT(importAllTexts()));
+	actionOpti = menu->addAction(tr("Optimize the archive..."), this, SLOT(optimizeArchive()));
 	menu->addSeparator();
-	menu->addAction(tr("Plein écran"), Qt::Key_F11, this, SLOT(fullScreen()));
-	actionClose = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Fe&rmer"), this, SLOT(closeFiles()));
-	menu->addAction(tr("&Quitter"), this, SLOT(close()))->setMenuRole(QAction::QuitRole);
+	menu->addAction(tr("Fullscreen"), Qt::Key_F11, this, SLOT(fullScreen()));
+	actionClose = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogCloseButton), tr("C&lose"), this, SLOT(closeFiles()));
+	menu->addAction(tr("&Quit"), this, SLOT(close()))->setMenuRole(QAction::QuitRole);
 
-	menu = menuBar->addMenu(tr("&Outils"));
-	actionFind = menu->addAction(QIcon(":/images/find.png"), tr("Rec&hercher..."), QKeySequence::Find, this, SLOT(search()));
+	menu = menuBar->addMenu(tr("T&ools"));
+	actionFind = menu->addAction(QIcon(":/images/find.png"), tr("Fi&nd..."), QKeySequence::Find, this, SLOT(search()));
 	menu->addAction(tr("&Var manager..."), this, SLOT(varManager()));
 	//menu->addAction(tr("&Rechercher tout..."), this, SLOT(miscSearch()));
-	actionRun = menu->addAction(QIcon(":/images/ff8.png"), tr("&Lancer FF8..."), Qt::Key_F8, this, SLOT(runFF8()));
+	actionRun = menu->addAction(QIcon(":/images/ff8.png"), tr("&Launch FF8..."), Qt::Key_F8, this, SLOT(runFF8()));
 	actionRun->setShortcutContext(Qt::ApplicationShortcut);
 	actionRun->setEnabled(Data::ff8Found());
 	addAction(actionRun);
@@ -112,7 +112,7 @@ MainWindow::MainWindow()
 
 	setMenuBar(menuBar);
 
-	toolBar = new QToolBar(tr("Barre d'outils &principale"));
+	toolBar = new QToolBar(tr("&Main Toolbar"));
 	toolBar->setIconSize(QSize(16,16));
 	toolBar->addAction(actionOpen);
 	toolBar->addAction(actionSave);
@@ -122,7 +122,7 @@ MainWindow::MainWindow()
 	toolBar->addAction(actionGameLang);
 
 	list1 = new QTreeWidget();
-	list1->setHeaderLabels(QStringList() << tr("Fichier") << tr("Description") << tr("#"));
+	list1->setHeaderLabels(QStringList() << tr("File") << tr("Description") << tr("#"));
 	list1->setIndentation(0);
 	list1->setSortingEnabled(true);
 	list1->setAutoScroll(false);
@@ -135,7 +135,7 @@ MainWindow::MainWindow()
 
 	lineSearch = new QLineEdit();
 	lineSearch->setFixedWidth(320);
-	lineSearch->setStatusTip(tr("Recherche rapide"));
+	lineSearch->setStatusTip(tr("Quick Search"));
 
 	bgPreview = new BGPreview();
 	bgPreview->setFixedHeight(224);
@@ -253,7 +253,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		Config::setValue("list1ColumnSort", list1->sortColumn());
 		Config::setValue("currentPage", stackedWidget->currentIndex());
 		if (!FF8Font::saveFonts()) {
-			QMessageBox::critical(nullptr, QObject::tr("Enregistrement des données"), QObject::tr("Les polices de caractères n'ont pas pu être enregistrées !"));
+			QMessageBox::critical(nullptr, QObject::tr("Saving data"), QObject::tr("Fonts could not be saved!"));
 		}
 		event->accept();
 	}
@@ -300,7 +300,7 @@ bool MainWindow::openArchive(const QString &path)
 	if (_varManager != nullptr)
 		_varManager->setFieldArchive(fieldArchive);
 
-	ProgressWidget progress(tr("Ouverture..."), ProgressWidget::Cancel, this);
+	ProgressWidget progress(tr("Opening..."), ProgressWidget::Cancel, this);
 
 	QElapsedTimer t;t.start();
 	int error = fieldArchive->open(path, &progress);
@@ -362,7 +362,7 @@ bool MainWindow::openArchive(const QString &path)
 		list1->setFocus();
 		return true;
 	} else if (error != 2 && error != 3) {
-		QMessageBox::warning(this, tr("Erreur d'ouverture"), fieldArchive->errorMessage());
+		QMessageBox::warning(this, tr("Opening error"), fieldArchive->errorMessage());
 	}
 
 	return false;
@@ -421,7 +421,7 @@ bool MainWindow::openMsdFile(const QString &path)
 	
 	QFile f(path);
 	if (!f.open(QIODevice::ReadOnly)) {
-		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, f.errorString()));
+		QMessageBox::warning(this, tr("Error"), tr("Unable to open the file\n'%1'\nError message:\n%2").arg(path, f.errorString()));
 		return false;
 	}
 	
@@ -430,7 +430,7 @@ bool MainWindow::openMsdFile(const QString &path)
 
 	msdFile = field->getMsdFile();
 	if (!msdFile->open(f.readAll())) {
-		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'").arg(path));
+		QMessageBox::warning(this, tr("Error"), tr("Unable to open the file\n'%1'").arg(path));
 		delete field;
 		field = nullptr;
 
@@ -456,7 +456,7 @@ bool MainWindow::openJsmFile(const QString &path)
 {
 	QFile f(path);
 	if (!f.open(QIODevice::ReadOnly)) {
-		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'\nMessage d'erreur :\n%2").arg(path, f.errorString()));
+		QMessageBox::warning(this, tr("Error"), tr("Unable to open the file\n'%1'\nError message:\n%2").arg(path, f.errorString()));
 		return false;
 	}
 	
@@ -465,7 +465,7 @@ bool MainWindow::openJsmFile(const QString &path)
 
 	jsmFile = field->getJsmFile();
 	if (!jsmFile->open(f.readAll())) {
-		QMessageBox::warning(this, tr("Erreur"), tr("Impossible d'ouvrir le fichier\n'%1'").arg(path));
+		QMessageBox::warning(this, tr("Error"), tr("Unable to open the file\n'%1'").arg(path));
 		delete field;
 		field = nullptr;
 
@@ -607,8 +607,8 @@ int MainWindow::closeFiles(bool quit)
 
 	if (actionSave->isEnabled() && (fieldArchive != nullptr || field != nullptr))
 	{
-		QMessageBox::StandardButton reponse = QMessageBox::warning(this, tr("Sauvegarder"),
-		                                   tr("Voulez-vous enregistrer les changements de %1 ?").arg(savePath()),
+		QMessageBox::StandardButton reponse = QMessageBox::warning(this, tr("Save"),
+		                                   tr("Would you like to save changes of %1?").arg(savePath()),
 		                                   QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
 		if (reponse == QMessageBox::Yes)				save();
 		if (quit || reponse == QMessageBox::Cancel)	return reponse;
@@ -679,7 +679,7 @@ void MainWindow::openFile(QString path)
 				path.append("/Data");
 		}
 
-		path = QFileDialog::getOpenFileName(this, tr("Ouvrir un fichier"), path, tr("Fichiers compatibles (*.fs *.iso *.bin *.msd *.jsm);;Archives FS (*.fs);;Fichiers Image Disque (*.iso *.bin);;Fichiers FF8 text (*.msd);;Fichiers FF8 field script (*.jsm)"));
+		path = QFileDialog::getOpenFileName(this, tr("Open a file"), path, tr("Compatible File (*.fs *.iso *.bin *.msd *.jsm);;FS Archive (*.fs);;Image Disk File (*.iso *.bin);;FF8 text files (*.msd);;FF8 field script files (*.jsm)"));
 	}
 
 	if (!path.isEmpty())
@@ -747,11 +747,11 @@ void MainWindow::saveAs(QString path)
 	QString filter;
 	
 	if (fieldArchive != nullptr || field != nullptr && field->isOpen() && field->isPc()) {
-		filter = tr("Archive FS (*.fs)");
+		filter = tr("FS Archive (*.fs)");
 	} else if (msdFile != nullptr) {
-		filter = tr("Fichiers FF8 text (*.msd)");
+		filter = tr("FF8 text files (*.msd)");
 	} else if (jsmFile != nullptr) {
-		filter = tr("Fichiers FF8 field script (*.jsm)");
+		filter = tr("FF8 field script files (*.jsm)");
 	} else {
 		return;
 	}
@@ -773,14 +773,14 @@ void MainWindow::saveAs(QString path)
 
 	if (path.isEmpty())
 	{
-		path = QFileDialog::getSaveFileName(this, tr("Enregistrer Sous"), savePath(), filter);
+		path = QFileDialog::getSaveFileName(this, tr("Save As"), savePath(), filter);
 		if (path.isNull())		return;
 	}
 
 	bool ok = true;
 
 	if (fieldArchive != nullptr) {
-		ProgressWidget progress(tr("Enregistrement..."), ProgressWidget::Cancel, this);
+		ProgressWidget progress(tr("Save..."), ProgressWidget::Cancel, this);
 
 		ok = ((FieldArchivePC *)fieldArchive)->save(&progress, path);
 	} else if (msdFile != nullptr) {
@@ -813,7 +813,7 @@ void MainWindow::saveAs(QString path)
 		currentPath->setText(path);
 		setWindowTitle(QString("[*]%1 - %2 %3").arg(path.mid(path.lastIndexOf('/')+1), QLatin1String(DELING_NAME), QLatin1String(DELING_VERSION)));
 	} else {
-		QMessageBox::warning(this, tr("Erreur"), tr("Une erreur s'est produite lors de l'enregistrement."));
+		QMessageBox::warning(this, tr("Error"), tr("An error occurred when saving."));
 	}
 }
 
@@ -856,7 +856,7 @@ void MainWindow::exportCurrent()
 				filter.append(currentField->getJsmFile()->filterText());
 				typeList.append(i);
 				if (currentField->getJsmFile()->hasSym()) {
-					filter.append(tr("Fichier nom des scripts écran PC (*.sym)"));
+					filter.append(tr("Script names field PC file (*.sym)"));
 					typeList.append(FILE_COUNT);
 				}
 			}
@@ -870,12 +870,12 @@ void MainWindow::exportCurrent()
 	}
 
 	if (filter.isEmpty()) {
-		QMessageBox::warning(this, tr("Erreur"), tr("Cet écran ne contient pas assez d'éléments pour être exporté."));
+		QMessageBox::warning(this, tr("Error"), tr("This field does not contains enough information to be exported."));
 		return;
 	}
 
 	QString selectedFilter;
-	path = QFileDialog::getSaveFileName(this, tr("Exporter"), path, filter.join(";;"), &selectedFilter);
+	path = QFileDialog::getSaveFileName(this, tr("Export"), path, filter.join(";;"), &selectedFilter);
 	if (path.isNull())		return;
 	
 	int type = typeList.at(filter.indexOf(selectedFilter));
@@ -883,12 +883,12 @@ void MainWindow::exportCurrent()
 	switch (type) {
 	case FILE_COUNT:
 		if (!currentField->getJsmFile()->toFileSym(path)) {
-			QMessageBox::warning(this, tr("Erreur"), currentField->getJsmFile()->errorString());
+			QMessageBox::warning(this, tr("Error"), currentField->getJsmFile()->errorString());
 		}
 		break;
 	default:
 		if (!currentField->getFile(Field::FileType(type))->toFile(path)) {
-			QMessageBox::warning(this, tr("Erreur"), currentField->getFile(Field::FileType(type))->errorString());
+			QMessageBox::warning(this, tr("Error"), currentField->getFile(Field::FileType(type))->errorString());
 		}
 	}
 }
@@ -899,7 +899,7 @@ void MainWindow::exportAllTexts()
 	
 	QString oldPath = Config::value("export_path").toString();
 	
-	QString path = QFileDialog::getSaveFileName(this, tr("Exporter"), oldPath, tr("Fichier CSV (*.csv)"));
+	QString path = QFileDialog::getSaveFileName(this, tr("Export"), oldPath, tr("CSV File (*.csv)"));
 	if (path.isNull()) {
 		return;
 	}
@@ -922,7 +922,7 @@ void MainWindow::exportAllTexts()
 	TextExporter exporter(fieldArchive);
 	
 	if (!exporter.toCsv(path, dialog.langs(), dialog.fieldSeparator(), dialog.quoteCharater(), dialog.encoding(), &progress) && !progress.observerWasCanceled()) {
-		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
+		QMessageBox::warning(this, tr("Error"), exporter.errorString());
 	}
 }
 
@@ -932,7 +932,7 @@ void MainWindow::importAllTexts()
 	
 	QString oldPath = Config::value("export_path").toString();
 	
-	QString path = QFileDialog::getOpenFileName(this, tr("Importer"), oldPath, tr("Fichier CSV (*.csv)"));
+	QString path = QFileDialog::getOpenFileName(this, tr("Import"), oldPath, tr("CSV File (*.csv)"));
 	if (path.isNull()) {
 		return;
 	}
@@ -945,12 +945,12 @@ void MainWindow::importAllTexts()
 		return;
 	}
 	
-	ProgressWidget progress(tr("Import..."), ProgressWidget::Cancel, this);
+	ProgressWidget progress(tr("Importing..."), ProgressWidget::Cancel, this);
 	
 	TextExporter exporter(fieldArchive);
 	
 	if (!exporter.fromCsv(path, dialog.column(), QChar(','), QChar('"'), CsvFile::Utf8, &progress) && !progress.observerWasCanceled()) {
-		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
+		QMessageBox::warning(this, tr("Error"), exporter.errorString());
 	}
 	
 	setModified(true);
@@ -962,7 +962,7 @@ void MainWindow::exportAllScripts()
 
 	QString oldPath = Config::value("export_path").toString();
 
-	QString dirPath = QFileDialog::getExistingDirectory(this, tr("Exporter"), oldPath);
+	QString dirPath = QFileDialog::getExistingDirectory(this, tr("Export"), oldPath);
 	if (dirPath.isNull()) {
 		return;
 	}
@@ -974,7 +974,7 @@ void MainWindow::exportAllScripts()
 	ScriptExporter exporter(fieldArchive);
 
 	if (!exporter.toDir(dirPath, &progress) && !progress.observerWasCanceled()) {
-		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
+		QMessageBox::warning(this, tr("Error"), exporter.errorString());
 	}
 }
 
@@ -984,7 +984,7 @@ void MainWindow::exportAllEncounters()
 
 	QString oldPath = Config::value("export_path").toString();
 
-	QString dirPath = QFileDialog::getExistingDirectory(this, tr("Exporter"), oldPath);
+	QString dirPath = QFileDialog::getExistingDirectory(this, tr("Export"), oldPath);
 	if (dirPath.isNull()) {
 		return;
 	}
@@ -996,7 +996,7 @@ void MainWindow::exportAllEncounters()
 	EncounterExporter exporter(fieldArchive);
 
 	if (!exporter.toDir(dirPath, &progress) && !progress.observerWasCanceled()) {
-		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
+		QMessageBox::warning(this, tr("Error"), exporter.errorString());
 	}
 }
 
@@ -1006,7 +1006,7 @@ void MainWindow::exportAllBackground()
 
 	QString oldPath = Config::value("export_path").toString();
 
-	QString dirPath = QFileDialog::getExistingDirectory(this, tr("Exporter"), oldPath);
+	QString dirPath = QFileDialog::getExistingDirectory(this, tr("Export"), oldPath);
 	if (dirPath.isNull()) {
 		return;
 	}
@@ -1018,7 +1018,7 @@ void MainWindow::exportAllBackground()
 	BackgroundExporter exporter(fieldArchive);
 
 	if (!exporter.toDir(dirPath, &progress) && !progress.observerWasCanceled()) {
-		QMessageBox::warning(this, tr("Erreur"), exporter.errorString());
+		QMessageBox::warning(this, tr("Error"), exporter.errorString());
 	}
 }
 
@@ -1040,27 +1040,27 @@ void MainWindow::importCurrent()
     }
 
     if (filter.isEmpty()) {
-        QMessageBox::warning(this, tr("Erreur"), tr("Cet écran ne contient pas assez d'éléments pour être importé."));
+        QMessageBox::warning(this, tr("Error"), tr("This field does not contains enough information to be imported."));
         return;
     }
 
     QString selectedFilter;
-    path = QFileDialog::getSaveFileName(this, tr("Importer"), path, filter.join(";;"), &selectedFilter);
+    path = QFileDialog::getSaveFileName(this, tr("Import"), path, filter.join(";;"), &selectedFilter);
     if (path.isNull())		return;
 
 	if (!currentField->getFile(Field::FileType(typeList.at(filter.indexOf(selectedFilter))))->fromFile(path)) {
-		QMessageBox::warning(this, tr("Erreur"), currentField->getFile(Field::FileType(typeList.at(filter.indexOf(selectedFilter))))->errorString());
+		QMessageBox::warning(this, tr("Error"), currentField->getFile(Field::FileType(typeList.at(filter.indexOf(selectedFilter))))->errorString());
     }
 }
 
 void MainWindow::optimizeArchive()
 {
-	QMessageBox::StandardButton reponse = QMessageBox::information(this, tr("À propos de l'optimisation"),
-							 tr("L'optimiseur d'archive va modifier l'ordre des fichiers pour permettre une ouverture bien plus rapide avec Deling.\nIl est vivement conseillé de sauvegarder l'archive (fs, fi et fl) avant de continuer."),
+	QMessageBox::StandardButton reponse = QMessageBox::information(this, tr("About optimization"),
+							 tr("The optimizer will modify the archive file order to allow an opening much faster with Deling.\nIt is strongly recommended to save the archive (fs, fi and fl) before continuing."),
 							 QMessageBox::Apply | QMessageBox::Cancel);
 	if (reponse != QMessageBox::Apply)	return;
 
-	ProgressWidget progress(tr("Optimisation..."), ProgressWidget::Cancel, this);
+	ProgressWidget progress(tr("Optimization..."), ProgressWidget::Cancel, this);
 
 	((FieldArchivePC *)fieldArchive)->optimiseArchive(&progress);
 }
@@ -1102,7 +1102,7 @@ void MainWindow::configDialog()
 void MainWindow::runFF8()
 {
 	if (!QProcess::startDetached("\"" % Data::ff8ExePath() % "\"", QStringList(), Data::AppPath())) {
-		QMessageBox::warning(this, tr("Erreur"), tr("Final Fantasy VIII n'a pas pu être lancé.\n%1").arg(Data::ff8ExePath()));
+		QMessageBox::warning(this, tr("Error"), tr("Final Fantasy VIII could not be launched.\n%1").arg(Data::ff8ExePath()));
 	}
 }
 

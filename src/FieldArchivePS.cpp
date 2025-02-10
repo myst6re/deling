@@ -65,12 +65,12 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 	if (iso)		delete iso;
 	iso = new FF8DiscArchive(path);
 	if (!iso->open(QIODevice::ReadOnly)) {
-		errorMsg = QObject::tr("Impossible d'ouvrir le fichier image disque. (%1)").arg(iso->errorString());
+		errorMsg = QObject::tr("Can not open the disk image file. (%1)").arg(iso->errorString());
 		return 1;
 	}
 
 	if (!iso->findIMG()) {
-		errorMsg = QObject::tr("Fichier FF8DISC?.IMG introuvable.");
+		errorMsg = QObject::tr("FF8DISC?.IMG File not found.");
 		return 4;
 	}
 
@@ -79,7 +79,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 	const int tocStart = iso->isDemo() ? 0 : 77;
 
 	if (tocSize == 0) {
-		errorMsg = QObject::tr("Impossible d'ouvrir le dossier field.");
+		errorMsg = QObject::tr("Unable to open the field dir.");
 		return 4;
 	}
 
@@ -99,7 +99,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 		QCoreApplication::processEvents();
 		if (progress->observerWasCanceled()) {
 			clearFields();
-			errorMsg = QObject::tr("Ouverture annulée.");
+			errorMsg = QObject::tr("Opening canceled.");
 			return 2;
 		}
 		if (currentMap % freq == 0) {
@@ -136,7 +136,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 	}
 
 	if (fields.isEmpty()) {
-		errorMsg = QObject::tr("Aucun écran trouvé.");
+		errorMsg = QObject::tr("No field found.");
 		return 4;
 	}
 

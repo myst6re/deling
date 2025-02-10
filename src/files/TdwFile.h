@@ -34,7 +34,7 @@ public:
 	void close();
 	bool save(QByteArray &tdw);
 	inline QString filterText() const {
-		return QObject::tr("Fichier caractères additionnels écran PC (*.tdw)");
+		return QObject::tr("Field additionnal fonts PC file (*.tdw)");
 	}
 	bool isNull() const;
 	QImage image(Color color=White);

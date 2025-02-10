@@ -29,7 +29,7 @@ public:
 	void clear();
 	void setReadOnly(bool readOnly);
 	void fill();
-	inline QString tabName() const { return tr("Rencontres aléatoires"); }
+	inline QString tabName() const { return tr("Encounters"); }
 private slots:
 	void editFormation();
 	void editRate();

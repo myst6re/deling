@@ -26,7 +26,7 @@ public:
 	bool open(const QByteArray &rat);
 	bool save(QByteArray &rat);
 	inline QString filterText() const {
-		return QObject::tr("Fichier fréquence combat écran PC (*.rat)");
+		return QObject::tr("Field battle rate PC file (*.rat)");
 	}
 	quint8 rate() const;
 	void setRate(quint8 rate);

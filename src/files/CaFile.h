@@ -36,7 +36,7 @@ public:
 	bool open(const QByteArray &ca);
 	bool save(QByteArray &ca);
 	inline QString filterText() const {
-		return QObject::tr("Fichier caméra écran PC (*.ca)");
+		return QObject::tr("Field camera PC File (*.ca)");
 	}
 	bool hasCamera() const;
 	int cameraCount() const;

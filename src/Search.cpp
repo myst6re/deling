@@ -26,17 +26,17 @@ Search::Search(QTreeWidget *fieldList, SearchAll *searchAllDialog, QWidget *pare
 {
 	fieldID = -1;
 	textID = from = groupID = methodID = opcodeID = 0;
-	setWindowTitle(tr("Rechercher"));
+	setWindowTitle(tr("Find"));
 	setWindowModality(Qt::NonModal);
 	setSizeGripEnabled(true);
 
 	tabWidget = new QTabWidget(this);
-	tabWidget->addTab(textPageWidget(), tr("Textes"));
+	tabWidget->addTab(textPageWidget(), tr("Texts"));
 	tabWidget->addTab(scriptPageWidget(), tr("Scripts"));
 
-	buttonNext = new QPushButton(tr("Chercher le suivant"), this);
-	buttonPrev = new QPushButton(tr("Chercher le précédent"), this);
-	buttonSearchAll = new QPushButton(tr("Chercher tout"), this);
+	buttonNext = new QPushButton(tr("Find next"), this);
+	buttonPrev = new QPushButton(tr("Find previous"), this);
+	buttonSearchAll = new QPushButton(tr("Search All"), this);
 	buttonPrev->setAutoDefault(false);
 	buttonNext->setAutoDefault(false);
 	buttonNext->setEnabled(false);
@@ -120,8 +120,8 @@ QWidget *Search::textPageWidget()
 
 	searchTextField = new QLineEdit(ret);
 	searchTextField->setFocus();
-	checkBox = new QCheckBox(tr("Sensible à la casse"), ret);
-	checkBox2 = new QCheckBox(tr("Expression régulière"), ret);
+	checkBox = new QCheckBox(tr("Case sensitive"), ret);
+	checkBox2 = new QCheckBox(tr("Regular Expression"), ret);
 
 	QVBoxLayout *layout = new QVBoxLayout(ret);
 	layout->addWidget(searchTextField);
@@ -137,11 +137,11 @@ QWidget *Search::scriptPageWidget()
 	QWidget *ret = new QWidget(this);
 
 	typeScriptChoice = new QComboBox(ret);
-	typeScriptChoice->addItem(tr("Texte"));
+	typeScriptChoice->addItem(tr("Text"));
 	typeScriptChoice->addItem(tr("Opcode"));
-	typeScriptChoice->addItem(tr("Variable"));
-	typeScriptChoice->addItem(tr("Exécution"));
-	typeScriptChoice->addItem(tr("Saut d'écran"));
+	typeScriptChoice->addItem(tr("Var pool"));
+	typeScriptChoice->addItem(tr("Execution"));
+	typeScriptChoice->addItem(tr("Map jump"));
 
 	scriptStacked = new QStackedWidget(ret);
 	scriptStacked->addWidget(scriptPageWidget1());
@@ -167,8 +167,8 @@ QWidget *Search::scriptPageWidget1()
 
 	searchScriptTextField = new QLineEdit(ret);
 	searchScriptTextField->setFocus();
-	scriptCheckBox = new QCheckBox(tr("Sensible à la casse"), ret);
-	scriptCheckBox2 = new QCheckBox(tr("Expression régulière"), ret);
+	scriptCheckBox = new QCheckBox(tr("Case sensitive"), ret);
+	scriptCheckBox2 = new QCheckBox(tr("Regular Expression"), ret);
 
 	QVBoxLayout *layout = new QVBoxLayout(ret);
 	layout->addWidget(searchScriptTextField);
@@ -199,7 +199,7 @@ QWidget *Search::scriptPageWidget2()
 
 	QGridLayout *layout = new QGridLayout(ret);
 	layout->addWidget(searchOpcode, 0, 0, 1, 2);
-	layout->addWidget(new QLabel(tr("Paramètre :"), ret), 1, 0);
+	layout->addWidget(new QLabel(tr("Parameter:"), ret), 1, 0);
 	layout->addWidget(searchOpcodeValue, 1, 1);
 	layout->setRowStretch(2, 1);
 	layout->setColumnStretch(1, 1);
@@ -220,9 +220,9 @@ QWidget *Search::scriptPageWidget3()
 	selectScriptVar->completer()->setCompletionMode(QCompleter::PopupCompletion);
 	selectScriptVar->completer()->setFilterMode(Qt::MatchContains);
 	QGroupBox *group = new QGroupBox(ret);
-	QRadioButton *allScriptVar = new QRadioButton(tr("Tout"), ret);
-	popScriptVar = new QRadioButton(tr("Pop uniquement"), ret);
-	pushScriptVar = new QRadioButton(tr("Push uniquement"), ret);
+	QRadioButton *allScriptVar = new QRadioButton(tr("All"), ret);
+	popScriptVar = new QRadioButton(tr("Pop only"), ret);
+	pushScriptVar = new QRadioButton(tr("Push only"), ret);
 	pushScriptVar->hide();
 
 	allScriptVar->setChecked(true);
@@ -252,7 +252,7 @@ QWidget *Search::scriptPageWidget4()
 	selectScriptLabel->setRange(0, 65535);
 
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(new QLabel(tr("Groupe id"),ret), 0, 0);
+	layout->addWidget(new QLabel(tr("Entity id"),ret), 0, 0);
 	layout->addWidget(new QLabel(tr("Label"),ret), 0, 1);
 	layout->addWidget(selectScriptGroup, 1, 0);
 	layout->addWidget(selectScriptLabel, 1, 1);
@@ -270,7 +270,7 @@ QWidget *Search::scriptPageWidget5()
 	selectMap->setRange(0, 65535);
 
 	QGridLayout *layout = new QGridLayout(ret);
-	layout->addWidget(new QLabel(tr("Écran id"),ret), 0, 0);
+	layout->addWidget(new QLabel(tr("Map ID"),ret), 0, 0);
 	layout->addWidget(selectMap, 0, 1);
 	layout->setRowStretch(1, 1);
 	layout->setContentsMargins(QMargins());
@@ -360,7 +360,7 @@ void Search::findNext()
 
 	if (!found)
 	{
-		QMessageBox::information(this, windowTitle(), tr("Dernier fichier,\npoursuite de la recherche dans le premier fichier."));
+		QMessageBox::information(this, windowTitle(), tr("Last file."));
 	}
 
 	buttonNext->setEnabled(true);
@@ -385,7 +385,7 @@ void Search::findPrev()
 
 	if (!found)
 	{
-		QMessageBox::information(this, windowTitle(), tr("Premier fichier,\npoursuite de la recherche dans le dernier fichier."));
+		QMessageBox::information(this, windowTitle(), tr("First file."));
 	}
 
 	buttonPrev->setEnabled(true);

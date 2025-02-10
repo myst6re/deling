@@ -17,28 +17,26 @@
  ****************************************************************************/
 #pragma once
 
-#include <QtWidgets>
-#include "3d/WorldmapGLWidget.h"
-#include "widgets/PageWidget.h"
+#include <QtCore>
+#include "ModelSkeleton.h"
+#include "ModelGeometry.h"
 
-class WorldmapWidget : public PageWidget
+constexpr int DAT_FILE_SECTION_COUNT = 11;
+
+class DatFile
 {
-	Q_OBJECT
 public:
-	explicit WorldmapWidget(QWidget *parent = nullptr);
-	inline WorldmapGLWidget *scene() const {
-		return _scene;
+	explicit DatFile(QIODevice *io = nullptr);
+	inline void setDevice(QIODevice *device) {
+		_io = device;
 	}
-	void fill() override;
-	inline QString tabName() const override { return tr("Worldmap"); }
-	void clear() override;
-private slots:
-	void setXRot(int value);
-	void setYRot(int value);
-	void setZRot(int value);
-	void resetCamera();
+	bool readSkeleton(BattleModelSkeleton &skeleton);
+	bool readObjects(QList<BattleModelObject> &objects);
 private:
-	void build() override;
-	WorldmapGLWidget *_scene;
-	QSlider *_xRotSlider, *_yRotSlider, *_zRotSlider;
+	bool openToc();
+	QByteArray sectionData(int sectionNumber);
+	
+	QIODevice *_io;
+	quint32 _toc[DAT_FILE_SECTION_COUNT + 1];
 };
+

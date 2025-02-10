@@ -72,7 +72,7 @@ public:
 	bool toFileSym(const QString &path);
 	QString saveSym();
 	inline QString filterText() const {
-		return QObject::tr("Fichier scripts écran PC (*.jsm)");
+		return QObject::tr("Field Script PC file (*.jsm)");
     }
 
 	bool compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);

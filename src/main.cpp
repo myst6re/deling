@@ -80,16 +80,13 @@ int main(int argc, char *argv[])
 	if (translator.load("Deling_" % lang, Config::programLanguagesDir()) || translator.load("Deling_" % lang)) {
 		app.installTranslator(&translator);
 		Config::setValue("lang", lang);
-	} else if (lang != "fr" && (translator.load("Deling_en", Config::programLanguagesDir()) || translator.load("Deling_en"))) {
-		app.installTranslator(&translator);
-		Config::setValue("lang", "en");
 	} else {
-		Config::setValue("lang", "fr");
+		Config::setValue("lang", "en");
 	}
 
 	if (!FF8Font::listFonts()) {
-		QMessageBox::critical(nullptr, QObject::tr("Chargement des données"),
-		                      QObject::tr("Les polices de caractères n'ont pas pu être chargées !"));
+		QMessageBox::critical(nullptr, QObject::tr("Loading data"),
+		                      QObject::tr("Fonts could not be loaded!"));
 		return -1;
 	}
 

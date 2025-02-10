@@ -34,13 +34,13 @@ void JsmWidget::build()
 {
 	if (isBuilded())	return;
 
-	warningWidget = new QLabel(tr("Attention : Les scripts de cet écran sont dans un ancien format mal reconnu par Deling. Ce que vous pourrez lire ici n'aura peut-être aucun sens."), this);
+	warningWidget = new QLabel(tr("Warning: On this field scripts are in an old poorly recognized format. What you will read here may did not make sense."), this);
 	warningWidget->hide();
 	warningWidget->setWordWrap(true);
 	warningWidget->setTextFormat(Qt::PlainText);
 
 	list1 = new QTreeWidget(this);
-	list1->setHeaderLabels(QStringList() << tr("Id") << tr("Groupe") << tr("Exec"));
+	list1->setHeaderLabels(QStringList() << tr("Id") << tr("Entity") << tr("Exec"));
 	list1->setMaximumWidth(
 	    list1->fontMetrics().boundingRect(QString(16, 'M')).width());
 	list1->setMinimumWidth(
@@ -98,9 +98,9 @@ void JsmWidget::build()
 	errorLayout->addWidget(errorLabel);
 
 	toolBar = new QToolBar(this);
-	QAction *compileAction = toolBar->addAction(tr("Compiler"), this, SLOT(compile()));
-	compileAction->setToolTip(tr("Compiler (Ctrl+B)"));
-	compileAction->setStatusTip(tr("Compiler (Ctrl+B)"));
+	QAction *compileAction = toolBar->addAction(tr("Compile"), this, SLOT(compile()));
+	compileAction->setToolTip(tr("Compile (Ctrl+B)"));
+	compileAction->setStatusTip(tr("Compile (Ctrl+B)"));
 	compileAction->setShortcutContext(Qt::ApplicationShortcut);
 	compileAction->setShortcut(QKeySequence("Ctrl+B"));
 	toolBar->addWidget(errorWidget);
@@ -139,12 +139,12 @@ void JsmWidget::compile()
 		pal.setColor(QPalette::Active, QPalette::ButtonText, Qt::darkRed);
 		pal.setColor(QPalette::Inactive, QPalette::ButtonText, Qt::darkRed);
 		errorLabel->setPalette(pal);
-		errorLabel->setText(l != -1 ? tr("Ligne %1 -> %2").arg(l).arg(errorStr) : errorStr);
+		errorLabel->setText(l != -1 ? tr("Line %1 -> %2").arg(l).arg(errorStr) : errorStr);
 	} else {
 		pal.setColor(QPalette::Active, QPalette::ButtonText, Qt::darkGreen);
 		pal.setColor(QPalette::Inactive, QPalette::ButtonText, Qt::darkGreen);
 		errorLabel->setPalette(pal);
-		errorLabel->setText(tr("Compilé avec succès"));
+		errorLabel->setText(tr("Successfully compiled"));
 		emit modified();
 	}
 }

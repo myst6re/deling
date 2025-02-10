@@ -23,28 +23,28 @@
 VarManager::VarManager(FieldArchive *fieldArchive, QWidget *parent)
 	: QWidget(parent, Qt::Tool)
 {
-	setWindowTitle(tr("Gestionnaire de variables"));
+	setWindowTitle(tr("Var manager"));
 	
 	var = new QSpinBox(this);
 	var->setRange(0, 1536); // Valid vars : 4 -> 1536
 
 	name = new QLineEdit(this);
 	list = new QTreeWidget(this);
-	list->setHeaderLabels(QStringList() << tr("Var") << tr("Type") << tr("Nom") << tr("Écran") << tr("MEM fr") << tr("MEM us"));
+	list->setHeaderLabels(QStringList() << tr("Var") << tr("Type") << tr("Name") << tr("Field") << tr("MEM fr") << tr("MEM us"));
 	list->setAutoScroll(false);
 	list->setIndentation(0);
 	list->setUniformRowHeights(true);
 
 	countLabel = new QLabel(this);
 
-	searchButton = new QPushButton(tr("Adresses utilisées"), this);
-	QPushButton *saveButton = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton), tr("Sauver"), this);
+	searchButton = new QPushButton(tr("Adresses used"), this);
+	QPushButton *saveButton = new QPushButton(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton), tr("Save"), this);
 	saveButton->setShortcut(QKeySequence::Save);
 	
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(new QLabel(tr("Var"),this), 0, 0);
 	layout->addWidget(var, 0, 1);
-	layout->addWidget(new QLabel(tr("Nom"),this), 1, 0);
+	layout->addWidget(new QLabel(tr("Name"),this), 1, 0);
 	layout->addWidget(name, 1, 1);
 	layout->addWidget(list, 2, 0, 1, 2);
 	layout->addWidget(countLabel, 3, 0, 1, 2);
@@ -152,7 +152,7 @@ void VarManager::search()
 	list->resizeColumnToContents(1);
 
 	setEnabled(true);
-	countLabel->setText(tr("Vars utilisés : %1/1536").arg(count.size()));
+	countLabel->setText(tr("Used vars: %1/1536").arg(count.size()));
 }
 
 void VarManager::save()

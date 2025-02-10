@@ -781,7 +781,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 		}
 
 		if(rowsSize > 2) {
-			errorStr = QObject::tr("Trop d'arguments");
+			errorStr = QObject::tr("Too many arguments");
 			return l;
 		}
 
@@ -790,11 +790,11 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 		if(first.startsWith("LABEL", Qt::CaseInsensitive)) {
 			lbl = first.mid(5).toInt(&ok);
 			if(!ok) {
-				errorStr = QObject::tr("Conversion en entier impossible après 'LABEL' : %1").arg(first.mid(5));
+				errorStr = QObject::tr("Unable to convert to integer after 'LABEL': %1").arg(first.mid(5));
 				return l;
 			}
 			if(labelsPos.contains(lbl)) {
-				errorStr = QObject::tr("'LABEL%1' déjà déclaré précédemment.").arg(lbl);
+				errorStr = QObject::tr("'LABEL %1' already declared.").arg(lbl);
 				return l;
 			}
 			labelsPos.insert(lbl, res.nbOpcode());
@@ -803,7 +803,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 		}
 
 		if((key = opcodeName.indexOf(first.toUpper())) == -1) {
-			errorStr = QObject::tr("Opcode non reconnu : %1").arg(first);
+			errorStr = QObject::tr("Unknown opcode: %1").arg(first);
 			return l;
 		}
 
@@ -811,7 +811,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 			const QString &second = rows.at(1);
 
 			if(key > 0x38) {
-				errorStr = QObject::tr("Cet opcode ne peut pas avoir de paramètre : %1").arg(first);
+				errorStr = QObject::tr("This opcode can not have parameters: %1").arg(first);
 				return l;
 			}
 
@@ -820,7 +820,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 				if(param == -1) {
 					param = second.toInt(&ok);
 					if(!ok) {
-						errorStr = QObject::tr("Opération non reconnue : %1")
+						errorStr = QObject::tr("Unknown operation: %1")
 						           .arg(second);
 						return l;
 					}
@@ -829,7 +829,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 				if(second.startsWith("LABEL", Qt::CaseInsensitive)) {
 					lbl = second.mid(5).toInt(&ok);
 					if(!ok) {
-						errorStr = QObject::tr("Conversion en entier impossible après 'LABEL' : %1").arg(second.mid(5));
+						errorStr = QObject::tr("Unable to convert to integer after 'LABEL': %1").arg(second.mid(5));
 						return l;
 					}
 					if((posLbl = labelsPos.value(lbl, -1)) != -1) {
@@ -841,7 +841,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 				} else {
 					param = second.toInt(&ok);
 					if(!ok) {
-						errorStr = QObject::tr("Conversion en entier impossible : %1").arg(second);
+						errorStr = QObject::tr("Unable to convert to integer: %1").arg(second);
 						return l;
 					}
 				}
@@ -857,14 +857,14 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 				if(second.startsWith("VAR", Qt::CaseInsensitive)) {
 					param = second.mid(3).toInt(&ok);
 					if(!ok) {
-						errorStr = QObject::tr("Conversion en entier impossible après 'VAR' : %1")
+						errorStr = QObject::tr("Unable to convert to integer after 'VAR': %1")
 						           .arg(second.mid(3));
 						return l;
 					}
 				} else {
 					param = second.toInt(&ok);
 					if(!ok) {
-						errorStr = QObject::tr("Conversion en entier impossible : %1").arg(second);
+						errorStr = QObject::tr("Unable to convert to integer: %1").arg(second);
 						return l;
 					}
 				}
@@ -872,14 +872,14 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 				if(second.startsWith("TEMP", Qt::CaseInsensitive)) {
 					param = second.mid(4).toInt(&ok);
 					if(!ok) {
-						errorStr = QObject::tr("Conversion en entier impossible après 'TEMP' : %1")
+						errorStr = QObject::tr("Unable to convert to integer after 'TEMP': %1")
 						           .arg(second.mid(4));
 						return l;
 					}
 				} else {
 					param = second.toInt(&ok);
 					if(!ok) {
-						errorStr = QObject::tr("Conversion en entier impossible : %1").arg(second);
+						errorStr = QObject::tr("Unable to convert to integer: %1").arg(second);
 						return l;
 					}
 				}
@@ -887,21 +887,21 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 				if(second.startsWith("MODEL", Qt::CaseInsensitive)) {
 					param = second.mid(5).toInt(&ok);
 					if(!ok) {
-						errorStr = QObject::tr("Conversion en entier impossible après 'MODEL' : %1")
+						errorStr = QObject::tr("Unable to convert to integer after 'MODEL': %1")
 						           .arg(second.mid(5));
 						return l;
 					}
 				} else {
 					param = second.toInt(&ok);
 					if(!ok) {
-						errorStr = QObject::tr("Conversion en entier impossible : %1").arg(second);
+						errorStr = QObject::tr("Unable to convert to integer: %1").arg(second);
 						return l;
 					}
 				}
 			} else {
 				param = second.toInt(&ok);
 				if(!ok) {
-					errorStr = QObject::tr("Conversion en entier impossible : %1").arg(second);
+					errorStr = QObject::tr("Unable to convert to integer: %1").arg(second);
 					return l;
 				}
 			}
@@ -924,7 +924,7 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 			op.setParam(param);
 			res.setOpcode(it.value(), op);
 		} else {
-			errorStr = QObject::tr("'LABEL%1' indéfini.").arg(lbl);
+			errorStr = QObject::tr("'LABEL %1' undefined.").arg(lbl);
 			return -1;
 		}
 	}

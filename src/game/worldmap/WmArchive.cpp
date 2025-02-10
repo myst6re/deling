@@ -32,7 +32,7 @@ int WmArchive::open(FsArchive *fsArchive, Map &map, ArchiveObserver *progress)
 	}
 	
 	if (!fsArchive->fileExists("*world\\dat\\wmx.obj")) {
-		_errorString = QObject::tr("Pas une archive mappemonde.");
+		_errorString = QObject::tr("Not a worldmap archive.");
 		return 1;
 	}
 
@@ -48,7 +48,7 @@ int WmArchive::open(FsArchive *fsArchive, Map &map, ArchiveObserver *progress)
 	wmx.setDevice(&wmxBuffer);
 
 	if(!wmx.readSegments(map, 768)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (readSegments).");
+		_errorString = QObject::tr("Unable to read the worldmap (readSegments).");
 		return 2;
 	}
 
@@ -64,32 +64,32 @@ int WmArchive::open(FsArchive *fsArchive, Map &map, ArchiveObserver *progress)
 	wmset.setDevice(&wmsetBuffer);
 
 	if (!wmset.readEncounterRegions(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (readEncounterRegions).");
+		_errorString = QObject::tr("Unable to read the worldmap (readEncounterRegions).");
 		return 3;
 	}
 
 	if (!wmset.readEncounters(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (readEncounters).");
+		_errorString = QObject::tr("Unable to read the worldmap (readEncounters).");
 		return 4;
 	}
 
 	if (!wmset.readSpecialTextures(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (readSpecialTextures).");
+		_errorString = QObject::tr("Unable to read the worldmap (readSpecialTextures).");
 		return 5;
 	}
 
 	if (!wmset.readRoadTextures(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (readRoadTextures).");
+		_errorString = QObject::tr("Unable to read the worldmap (readRoadTextures).");
 		return 6;
 	}
 
 	if (!wmset.readDrawPoints(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (readDrawPoints).");
+		_errorString = QObject::tr("Unable to read the worldmap (readDrawPoints).");
 		return 7;
 	}
 	
 	if (!wmset.readTexts(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (readTexts).");
+		_errorString = QObject::tr("Unable to read the worldmap (readTexts).");
 		return 8;
 	}
 
@@ -105,7 +105,7 @@ int WmArchive::open(FsArchive *fsArchive, Map &map, ArchiveObserver *progress)
 	texl.setDevice(&texlBuffer);
 
 	if (!texl.readTextures(map)) {
-		_errorString = QObject::tr("Impossible de lire la mappemonde (readTextures).");
+		_errorString = QObject::tr("Unable to read the worldmap (readTextures).");
 		return 9;
 	}
 
