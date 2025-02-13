@@ -26,7 +26,7 @@ public:
 	MskFile();
 	virtual ~MskFile();
 	bool open(const QByteArray &msk);
-	bool save(QByteArray &msk);
+	bool save(QByteArray &msk) const;
 	inline QString filterText() const {
 		return QObject::tr("Field movie camera PC file (*.msk)");
 	}

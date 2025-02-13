@@ -32,7 +32,7 @@ public:
 	virtual ~TdwFile();
 	bool open(const QByteArray &tdw);
 	void close();
-	bool save(QByteArray &tdw);
+	bool save(QByteArray &tdw) const;
 	inline QString filterText() const {
 		return QObject::tr("Field additionnal fonts PC file (*.tdw)");
 	}

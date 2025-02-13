@@ -67,7 +67,7 @@ bool MsdFile::open(const QByteArray &msd)
 	return true;
 }
 
-bool MsdFile::save(QByteArray &msd)
+bool MsdFile::save(QByteArray &msd) const
 {
 	QByteArray msd_data;
 	int headerSize = nbText()*4, pos, i=0;
@@ -80,11 +80,12 @@ bool MsdFile::save(QByteArray &msd)
 		pos = headerSize + msd_data.size();
 		msd.append((char *)&pos, 4);
 		if (_paddedFormat) {
-			QByteArray timmedText = FF8Text(text).toFF8();
-			msd_data.append(timmedText);
-			if (timmedText.size() % 4 != 0) {
+			QByteArray trimmedText = FF8Text(text).toFF8();
+			msd_data.append(trimmedText);
+			msd_data.append('\0');
+			if ((trimmedText.size() + 1) % 4 != 0) {
 				// Padding
-				msd_data.append(4 - timmedText.size() % 4, '\0');
+				msd_data.append(4 - (trimmedText.size() + 1) % 4, '\0');
 			}
 		} else {
 			msd_data.append(text);

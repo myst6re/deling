@@ -35,7 +35,7 @@ bool RatFile::open(const QByteArray &rat)
 	return true;
 }
 
-bool RatFile::save(QByteArray &rat)
+bool RatFile::save(QByteArray &rat) const
 {
 	rat.append((char)_rate);
 	rat.append((char)_rate);

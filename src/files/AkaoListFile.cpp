@@ -73,7 +73,7 @@ bool AkaoListFile::open(const QByteArray &akao)
 	return true;
 }
 
-bool AkaoListFile::save(QByteArray &akao)
+bool AkaoListFile::save(QByteArray &akao) const
 {
 	quint32 pos = _akaos.size() * 4;
 

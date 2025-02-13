@@ -62,7 +62,7 @@ bool File::open(const QByteArray &)
 	return false;
 }
 
-bool File::save(QByteArray &)
+bool File::save(QByteArray &) const
 {
 	return false;
 }

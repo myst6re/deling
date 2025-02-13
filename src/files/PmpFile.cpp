@@ -47,7 +47,7 @@ bool PmpFile::open(const QByteArray &pmp)
 	return true;
 }
 
-bool PmpFile::save(QByteArray &pmp)
+bool PmpFile::save(QByteArray &pmp) const
 {
 	pmp = this->pmp;
 

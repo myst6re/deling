@@ -25,7 +25,7 @@ public:
 	File();
 	virtual ~File() {}
 	virtual bool open(const QByteArray &);
-	virtual bool save(QByteArray &);
+	virtual bool save(QByteArray &) const;
 	bool fromFile(const QString &path);
 	bool toFile(const QString &path);
 	virtual QString filterText() const=0;

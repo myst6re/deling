@@ -58,7 +58,7 @@ class InfFile : public File
 public:
 	InfFile();
 	bool open(const QByteArray &inf);
-	bool save(QByteArray &inf);
+	bool save(QByteArray &inf) const;
 	inline QString filterText() const {
 		return QObject::tr("Field gate and doors PC File (*.inf)");
 	}

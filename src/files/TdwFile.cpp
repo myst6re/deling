@@ -106,7 +106,7 @@ void TdwFile::close()
 	}
 }
 
-bool TdwFile::save(QByteArray &tdw)
+bool TdwFile::save(QByteArray &tdw) const
 {
 	quint32 posHeader=8, posData=0;
 	quint8 space, i;

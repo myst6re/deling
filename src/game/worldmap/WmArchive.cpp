@@ -117,3 +117,38 @@ int WmArchive::open(FsArchive *fsArchive, Map &map, ArchiveObserver *progress)
 
 	return 0;
 }
+
+bool WmArchive::save(FsArchive *fsArchive, Map &map, QByteArray &outputWmsetData)
+{
+	WmsetFile wmset;
+
+	QByteArray wmsetData = fsArchive->fileData("*world\\dat\\wmset??.obj");
+	QBuffer wmsetBuffer(&wmsetData);
+	wmsetBuffer.open(QIODevice::ReadOnly);
+	wmset.setDevice(&wmsetBuffer);
+	
+	QBuffer wmsetOutputBuffer(&outputWmsetData);
+	wmsetOutputBuffer.open(QIODevice::WriteOnly);
+	
+	QByteArray toc;
+	wmsetOutputBuffer.write(wmset.tocData());
+	for (int i = 0; i < OBJFILE_SECTION_COUNT; ++i) {
+		quint32 pos = wmsetOutputBuffer.pos();
+		toc.append((const char *)&pos, 4);
+
+		if (i == 13 && map.texts().isModified()) {
+			QByteArray data;
+			if (!map.texts().save(data)) {
+				return false;
+			}
+			wmsetOutputBuffer.write(data);
+		} else {
+			wmsetOutputBuffer.write(wmset.readSection(i));
+		}
+	}
+	
+	wmsetOutputBuffer.reset();
+	wmsetOutputBuffer.write(toc);
+	
+	return true;
+}

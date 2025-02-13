@@ -37,7 +37,7 @@ bool MrtFile::open(const QByteArray &mrt)
 	return true;
 }
 
-bool MrtFile::save(QByteArray &mrt)
+bool MrtFile::save(QByteArray &mrt) const
 {
 	mrt = QByteArray((char *)formations, 2*4);
 

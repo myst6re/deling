@@ -247,7 +247,7 @@ bool JsmFile::openSym(const QByteArray &sym_data)
 	return true;
 }
 
-bool JsmFile::save(const QString &path)
+bool JsmFile::saveWithPath(const QString &path)
 {
 	QFile jsm_file(path);
 	if(!jsm_file.open(QIODevice::WriteOnly)) {
@@ -272,7 +272,7 @@ bool JsmFile::save(const QString &path)
 	return true;
 }
 
-bool JsmFile::save(QByteArray &jsm)
+bool JsmFile::save(QByteArray &jsm) const
 {
 	QByteArray section0(scripts.nbGroup()*2, '\x00'), section1;
 	quint16 data;

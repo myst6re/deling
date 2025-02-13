@@ -19,6 +19,7 @@
 
 #include <QtCore>
 #include "game/worldmap/Map.h"
+#include "files/MsdFile.h"
 
 #define OBJFILE_SECTION_COUNT      48
 #define OBJFILE_SPECIAL_TEX_OFFSET 9
@@ -34,6 +35,8 @@ public:
 	bool extract(quint32 id, const QString &fileName);
 	bool extract(const QString &name, const QString &dirName);
 	static bool build(const QString &dirName, const QString &fileName);
+	QByteArray readSection(int id);
+	QByteArray tocData() const;
 	bool readEncounters(Map &map);
 	bool readEncounterRegions(Map &map);
 	bool readDrawPoints(Map &map);

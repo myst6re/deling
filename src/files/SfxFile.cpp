@@ -44,7 +44,7 @@ bool SfxFile::open(const QByteArray &sfx)
 	return true;
 }
 
-bool SfxFile::save(QByteArray &sfx)
+bool SfxFile::save(QByteArray &sfx) const
 {
 	for (const quint32 &v: _values) {
 		sfx.append((char *)&v, 4);

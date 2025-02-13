@@ -61,7 +61,7 @@ bool PmdFile::open(const QByteArray &pmd)
 	return true;
 }
 
-bool PmdFile::save(QByteArray &pmd)
+bool PmdFile::save(QByteArray &pmd) const
 {
 	pmd = this->pmd;
 

@@ -35,7 +35,7 @@ bool PvpFile::open(const QByteArray &pvp)
 	return true;
 }
 
-bool PvpFile::save(QByteArray &pvp)
+bool PvpFile::save(QByteArray &pvp) const
 {
 	pvp.append((char *)&_value, 4);
 

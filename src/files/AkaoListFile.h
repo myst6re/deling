@@ -24,7 +24,7 @@ class AkaoListFile : public File
 public:
 	AkaoListFile();
 	bool open(const QByteArray &akao);
-	bool save(QByteArray &akao);
+	bool save(QByteArray &akao) const;
 	inline QString filterText() const {
 		return QString();
 	}

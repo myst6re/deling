@@ -24,7 +24,7 @@ class MrtFile : public File
 public:
 	MrtFile();
 	bool open(const QByteArray &mrt);
-	bool save(QByteArray &mrt);
+	bool save(QByteArray &mrt) const;
 	inline QString filterText() const {
 		return QObject::tr("Field battle formation PC file (*.mrt)");
 	}

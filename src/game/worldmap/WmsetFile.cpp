@@ -146,6 +146,31 @@ bool WmsetFile::build(const QString &dirName, const QString &fileName)
 	return true;
 }
 
+QByteArray WmsetFile::readSection(int id)
+{
+	if ((_toc.isEmpty() && !openToc()) || id >= _toc.size()) {
+		return QByteArray();
+	}
+
+	const quint32 sizeSection = _toc.at(id + 1) - _toc.at(id);
+
+	_io->seek(_toc.at(id));
+
+	return _io->read(sizeSection);
+}
+
+QByteArray WmsetFile::tocData() const
+{
+	QByteArray out;
+	out.reserve(4 * _toc.size());
+	
+	for (quint32 entry: _toc) {
+		out.append((const char *)&entry, 4);
+	}
+	
+	return out;
+}
+
 bool WmsetFile::readEncounters(Map &map)
 {
 	if ((_toc.isEmpty() && !openToc()) || _toc.size() < 7) {

@@ -380,12 +380,15 @@ bool MainWindow::openFsArchive(const QString &path)
 	if (fieldArchive->getWorldMap() != nullptr) {
 		tabBar->setTabEnabled(WorldMapPage, true);
 		setCurrentPage(WorldMapPage);
-		setReadOnly(true);
 		fillPage();
+		actionExport->setEnabled(false);
+		menuExportAll->setEnabled(false);
+		actionImport->setEnabled(false);
+		menuImportAll->setEnabled(false);
 	} else if (fieldArchive->nbFields() > 0) {
 		actionOpti->setEnabled(true);
 		buildGameLangMenu(fieldArchivePc->languages());
-		tabBar->setTabEnabled(WorldMapPage, false);
+		tabBar->setTabEnabled(WorldMapPage, false);	
 	} else {
 		tabBar->setTabEnabled(WorldMapPage, false);
 		field = new FieldPC(path, Config::value("gameLang", "en").toString());

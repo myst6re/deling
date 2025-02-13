@@ -26,6 +26,7 @@ class WmArchive
 public:
 	WmArchive();
 	int open(FsArchive *fsArchive, Map &map, ArchiveObserver *progress = nullptr);
+	bool save(FsArchive *fsArchive, Map &map, QByteArray &outputWmsetData);
 	inline const QString &errorString() const {
 		return _errorString;
 	}

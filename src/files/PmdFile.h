@@ -24,7 +24,7 @@ class PmdFile : public File
 public:
 	PmdFile();
 	bool open(const QByteArray &pmd);
-	bool save(QByteArray &pmd);
+	bool save(QByteArray &pmd) const;
 	inline QString filterText() const {
 		return QObject::tr("Field particles infos PC file (*.pmd)");
 	}

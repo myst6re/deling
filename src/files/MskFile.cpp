@@ -66,7 +66,7 @@ bool MskFile::open(const QByteArray &msk)
 	return true;
 }
 
-bool MskFile::save(QByteArray &msk)
+bool MskFile::save(QByteArray &msk) const
 {
 	qint32 count = vertices.size();
 	msk.append((char *)&count, 4);

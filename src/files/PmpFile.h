@@ -26,7 +26,7 @@ public:
 	static QString currentFieldName;
 	PmpFile();
 	bool open(const QByteArray &pmp);
-	bool save(QByteArray &pmp);
+	bool save(QByteArray &pmp) const;
 	inline QString filterText() const {
 		return QObject::tr("Field particles data PC file (*.pmp)");
 	}

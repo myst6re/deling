@@ -24,7 +24,7 @@ class RatFile : public File
 public:
 	RatFile();
 	bool open(const QByteArray &rat);
-	bool save(QByteArray &rat);
+	bool save(QByteArray &rat) const;
 	inline QString filterText() const {
 		return QObject::tr("Field battle rate PC file (*.rat)");
 	}

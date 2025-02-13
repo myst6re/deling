@@ -81,7 +81,7 @@ public:
 	inline QString filterText() const {
 		return QObject::tr("Map Tiles PC Field File (*.map)");
 	}
-	bool save(QByteArray &map);
+	bool save(QByteArray &map) const;
 
 	QImage background(bool hideBG=false) const;
 	QImage background(const QList<quint8> &activeParams, bool hideBG = false);

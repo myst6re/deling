@@ -24,7 +24,7 @@ class PvpFile : public File
 public:
 	PvpFile();
 	bool open(const QByteArray &pvp);
-	bool save(QByteArray &pvp);
+	bool save(QByteArray &pvp) const;
 	inline QString filterText() const {
 		return QObject::tr("Field unknown PC file (*.pvp)");
 	}

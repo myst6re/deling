@@ -168,27 +168,27 @@ JsmScripts::JsmScripts(const QList<JsmGroup> &groupList, const QList<JsmScript> 
 {
 }
 
-quint8 JsmScripts::countDoors()
+quint8 JsmScripts::countDoors() const
 {
 	return _countDoors;
 }
 
-quint8 JsmScripts::countLines()
+quint8 JsmScripts::countLines() const
 {
 	return _countLines;
 }
 
-quint8 JsmScripts::countBackgrounds()
+quint8 JsmScripts::countBackgrounds() const
 {
 	return _countBackgrounds;
 }
 
-quint8 JsmScripts::countOthers()
+quint8 JsmScripts::countOthers() const
 {
 	return _countOthers;
 }
 
-int JsmScripts::nbEntitiesForSym()
+int JsmScripts::nbEntitiesForSym() const
 {
 	return _countLines + _countBackgrounds + _countOthers;
 }

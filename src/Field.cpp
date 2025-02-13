@@ -433,8 +433,7 @@ bool Field::isModified() const
 			return true;
 		}
 	}
-	return false;
-//	return hasCharaFile() && charaFile->isModified();
+	return hasMsdFile() && getMsdFile()->isModified();
 }
 
 void Field::setModified(bool modified)
@@ -443,6 +442,10 @@ void Field::setModified(bool modified)
 		if (f) {
 			f->setModified(modified);
 		}
+	}
+	
+	if (hasMsdFile()) {
+		getMsdFile()->setModified(modified);
 	}
 }
 

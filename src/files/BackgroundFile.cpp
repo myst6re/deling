@@ -159,7 +159,7 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim,
 	return true;
 }
 
-bool BackgroundFile::save(QByteArray &map)
+bool BackgroundFile::save(QByteArray &map) const
 {
 	Tile1 tile1;
 	Tile2 tile2;

@@ -24,7 +24,7 @@ class SfxFile : public File
 public:
 	SfxFile();
 	bool open(const QByteArray &sfx);
-	bool save(QByteArray &sfx);
+	bool save(QByteArray &sfx) const;
 	inline QString filterText() const {
 		return QObject::tr("Field sounds PC file (*.sfx)");
 	}

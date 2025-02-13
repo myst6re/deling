@@ -272,14 +272,16 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 	QMap<Field *, QMap<QString, FsHeader> > oldFields;
 
 	for (Field *field: fields) {
+		qDebug() << field->name() << field->isModified() << field->hasWorldmapFile();
+		if (progress->observerWasCanceled()) {
+			temp.remove();
+			restoreFieldHeaders(oldFields);
+			archive->setHeader(oldValues);
+			return false;
+		}
+
 		if (field->isModified() && field->isPc()) {
 			QCoreApplication::processEvents();
-			if (progress->observerWasCanceled()) {
-				temp.remove();
-				restoreFieldHeaders(oldFields);
-				archive->setHeader(oldValues);
-				return false;
-			}
 
 			FsArchive *fieldHeader = ((FieldPC *)field)->getArchiveHeader();
 			if (fieldHeader != nullptr) {
@@ -314,8 +316,8 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 			toc.removeOne(file);
 
 			/* FL */
-            file.chop(1);
-            file = FsArchive::flPath(file);
+			file.chop(1);
+			file = FsArchive::flPath(file);
 			pos = temp.pos();
 			archive->setFileData(file, fl_data);
 //			qDebug() << "save" << pos << file;
@@ -325,7 +327,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 
 			/* FI */
 			file.chop(1);
-            file = FsArchive::fiPath(file);
+			file = FsArchive::fiPath(file);
 			pos = temp.pos();
 			archive->setFileData(file, fi_data);
 //			qDebug() << "save" << pos << file;
@@ -355,6 +357,25 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 //			}
 
 			progress->setObserverValue(pos);
+		} else if (field->isModified() && field->hasWorldmapFile()) {
+			QCoreApplication::processEvents();
+			
+			QByteArray wmsetData;
+			WmArchive wmArchive;
+			
+			if (!wmArchive.save(archive, *_worldMap, wmsetData)) {
+				errorMsg = wmArchive.errorString();
+				
+				qWarning() << errorMsg;
+			} else {
+				file = archive->filePath("*world\\dat\\wmset??.obj");
+				qDebug() << file;
+				pos = temp.pos();
+				archive->setFileData(file, wmsetData);
+				archive->setFilePosition(file, pos);
+				temp.write(wmsetData);
+				toc.removeOne(file);
+			}
 		}
 	}
 
@@ -398,8 +419,8 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 	if (save_path.compare(path, Qt::CaseInsensitive)==0) {
 		int replaceError = archive->replaceArchive(&temp);
 		if (replaceError==1) {
-            QFile::remove(FsArchive::fiPath(temp_path));
-            QFile::remove(FsArchive::flPath(temp_path));
+			QFile::remove(FsArchive::fiPath(temp_path));
+			QFile::remove(FsArchive::flPath(temp_path));
 			temp.remove();
 			restoreFieldHeaders(oldFields);
 			archive->setHeader(oldValues);

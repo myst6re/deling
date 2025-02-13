@@ -118,7 +118,7 @@ bool InfFile::open(const QByteArray &inf)
 	return true;
 }
 
-bool InfFile::save(QByteArray &inf)
+bool InfFile::save(QByteArray &inf) const
 {
 	inf.append((char *)&infStruct, sizeof(InfStruct));
 

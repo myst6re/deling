@@ -55,7 +55,7 @@ bool CaFile::open(const QByteArray &ca)
 	return true;
 }
 
-bool CaFile::save(QByteArray &ca)
+bool CaFile::save(QByteArray &ca) const
 {
 	for (Camera camera: cameras) {
 		camera.camera_axis2z = camera.camera_axis[2].z;

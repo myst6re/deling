@@ -65,8 +65,8 @@ public:
 		return open(jsm, QByteArray());
 	}
 	bool open(const QByteArray &jsm, const QByteArray &sym_data, bool old_format = false);
-	bool save(const QString &path);
-	bool save(QByteArray &jsm);
+	bool saveWithPath(const QString &path);
+	bool save(QByteArray &jsm) const override;
 	bool save(QByteArray &jsm, QByteArray &sym);
 	bool openSym(const QByteArray &sym_data);
 	bool toFileSym(const QString &path);

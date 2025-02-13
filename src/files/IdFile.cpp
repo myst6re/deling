@@ -77,7 +77,7 @@ bool IdFile::open(const QByteArray &id)
 	return true;
 }
 
-bool IdFile::save(QByteArray &id)
+bool IdFile::save(QByteArray &id) const
 {
 	quint32 count=triangles.size();
 

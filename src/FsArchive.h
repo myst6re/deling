@@ -85,6 +85,7 @@ public:
 	bool open(const QString &path);
 	void addFile(const QString &path, FiCompression compression);
 	FsHeader *getFile(const QString &path) const;
+	QString filePath(const QString &path) const;
 	void fileToTheEnd(const QString &path, QByteArray &fs_data);
 	void rebuildInfos();
 
@@ -137,7 +138,6 @@ public:
 private:
 	void addFile(const QString &path, quint32 uncompressedSize, quint32 position, quint32 compression);
 	bool removeFile(QString);
-	QString filePath(const QString &path) const;
 	bool setFilePath(QString path, const QString &newPath);
 	quint32 uncompressedFileSize(const QString &path) const;
 	quint32 filePosition(const QString &path) const;

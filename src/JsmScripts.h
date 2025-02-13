@@ -84,11 +84,11 @@ public:
 	JsmScripts(const QList<JsmGroup> &groupList, const QList<JsmScript> &scriptList, const JsmData &scriptData,
 			   quint8 countDoors, quint8 countLines, quint8 countBackgrounds, quint8 countOthers);
 	// Header
-	quint8 countDoors();
-	quint8 countLines();
-	quint8 countBackgrounds();
-	quint8 countOthers();
-	int nbEntitiesForSym();
+	quint8 countDoors() const;
+	quint8 countLines() const;
+	quint8 countBackgrounds() const;
+	quint8 countOthers() const;
+	int nbEntitiesForSym() const;
 	// Groups
 	const QList<JsmGroup> &getGroupList() const;
 	const JsmGroup &group(int groupID) const;
