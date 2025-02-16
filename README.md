@@ -1,11 +1,10 @@
 # Deling
 
-[![Build Status Linux/OSX](https://travis-ci.org/myst6re/deling.svg?branch=develop)](https://travis-ci.org/myst6re/deling)
-[![Build status Win32](https://ci.appveyor.com/api/projects/status/74gm0u6ya9nqxw9u/branch/develop?svg=true)](https://ci.appveyor.com/project/myst6re/deling/branch/develop)
+[![CI/CD](https://github.com/myst6re/makoureactor/actions/workflows/build.yml/badge.svg)](https://github.com/myst6re/makoureactor/actions/workflows/build.yml)
 
-![Deling](images/deling.png)
+![Deling](src/qt/images/Deling.png)
 
-Final Fantasy VIII field archive editor.
+Final Fantasy VIII field/worldmap archive editor ([Forum](https://forums.qhimm.com/index.php?topic=13050.0)).
 
 ## Building
 
@@ -110,5 +109,3 @@ $ cmake --build .dist/build --config Debug
 ## How to contribute
 
 Pull requests are welcome on [GitHub](https://github.com/myst6re/deling).
-Ensure that you have commited in `develop` branch, otherwise I will not accept your
-request.
