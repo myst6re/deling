@@ -376,15 +376,21 @@ bool MainWindow::openFsArchive(const QString &path)
 	fieldArchive = fieldArchivePc;
 	openArchive(path);
 	actionSaveAs->setEnabled(true);
+	for (QAction *action: menuExportAll->actions()) {
+		action->setEnabled(true);
+	}
 
 	if (fieldArchive->getWorldMap() != nullptr) {
 		tabBar->setTabEnabled(WorldMapPage, true);
 		setCurrentPage(WorldMapPage);
 		fillPage();
 		actionExport->setEnabled(false);
-		menuExportAll->setEnabled(false);
+		menuExportAll->setEnabled(true);
+		for (QAction *action: menuExportAll->actions()) {
+			action->setEnabled(false);
+		}
+		menuExportAll->actions().first()->setEnabled(true);
 		actionImport->setEnabled(false);
-		menuImportAll->setEnabled(false);
 	} else if (fieldArchive->nbFields() > 0) {
 		actionOpti->setEnabled(true);
 		buildGameLangMenu(fieldArchivePc->languages());

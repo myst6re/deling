@@ -172,10 +172,12 @@ int FieldArchivePC::openWorld()
 	
 	Field *field = new Field("worldmap");
 	field->setWorldmapFile(_worldMap);
+	field->setOpen(true);
 	fields.append(field);
 	fieldsSortByName.insert(QString(), 0);
 	fieldsSortByDesc.insert(QString(), 0);
 	fieldsSortByMapId.insert(QString(), 0);
+	_mapList = QStringList("worldmap");
 	
 	return 0;
 }
