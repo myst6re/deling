@@ -834,10 +834,11 @@ QList<FsArchive::Error> FsArchive::appendDir(const QString &source, const QStrin
 	return appendFiles(sources, destinations, compression, progress);
 }
 
-FsArchive::Error FsArchive::remove(QStringList destinations, ArchiveObserver *progress)
+FsArchive::Error FsArchive::remove(const QStringList &destinations, ArchiveObserver *progress)
 {
 	QElapsedTimer t;t.start();
 
+	QStringList modifiableDestinations = destinations;
 	QStringList toc = this->toc();
 	//	QByteArray fl_data, fi_data;
 	int pos, i=0;
@@ -863,9 +864,9 @@ FsArchive::Error FsArchive::remove(QStringList destinations, ArchiveObserver *pr
 
 		pos = temp.pos();
 
-		if (destinations.contains(entry, Qt::CaseInsensitive)) {
+		if (modifiableDestinations.contains(entry, Qt::CaseInsensitive)) {
 			removeFile(entry);
-			destinations.removeOne(entry);
+			modifiableDestinations.removeOne(entry);
 		}
 		else {
 			temp.write(fileData(entry, false));
@@ -1170,8 +1171,8 @@ void FsArchive::rebuildInfos()
 		newToc.insert(info->path().toLower(), info);
 	}
 
-	sortedByPosition = newInfos;
-	toc_access = newToc;
+	sortedByPosition = std::move(newInfos);
+	toc_access = std::move(newToc);
 }
 
 QMap<QString, FsHeader *> FsArchive::fileList(QString dir) const

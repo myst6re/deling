@@ -125,9 +125,7 @@ bool TdwManagerDialog::newNameDialog(QString &name, QString &nameId)
 	connect(ok, SIGNAL(clicked()), &dialog, SLOT(accept()));
 
 	if (dialog.exec() == QDialog::Accepted) {
-		QString name1 = nameEdit->text();
-		QString name2 = QDir::cleanPath(fileNameEdit->text());
-
+		QString name1 = nameEdit->text(), name2 = QDir::cleanPath(fileNameEdit->text());
 		QStringList fontList = FF8Font::fontList();
 		if (name1.isEmpty() || name2.isEmpty()
 				|| fontList.contains(name1)
@@ -136,8 +134,8 @@ bool TdwManagerDialog::newNameDialog(QString &name, QString &nameId)
 			return false;
 		}
 
-		name = name1;
-		nameId = name2;
+		name = std::move(name1);
+		nameId = std::move(name2);
 		return true;
 	}
 	return false;

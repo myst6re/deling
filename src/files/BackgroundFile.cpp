@@ -265,8 +265,8 @@ QImage BackgroundFile::background(const QList<quint8> &activeParams, bool hideBG
 
 	QImage image = background(hideBG);
 
-	params = savParams;
-	layers = savLayers;
+	params = std::move(savParams);
+	layers = std::move(savLayers);
 
 	return image;
 }

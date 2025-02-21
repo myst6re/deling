@@ -65,7 +65,7 @@ private slots:
 	int closeFiles(bool quit = false);
 	void setModified(bool modified = true);
 	void save();
-	void saveAs(QString path = QString());
+	void saveAs(const QString &optPath = QString());
 	void exportCurrent();
 	void exportAllTexts();
 	void importAllTexts();

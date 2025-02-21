@@ -107,7 +107,7 @@ public:
 	QList<FsArchive::Error> replaceDir(const QString &source, const QString &destination, FiCompression compression, ArchiveObserver *progress);
 	QList<FsArchive::Error> appendFiles(const QStringList &sources, const QStringList &destinations, FiCompression compression, ArchiveObserver *progress);
 	QList<FsArchive::Error> appendDir(const QString &source, const QString &destination, FiCompression compression, ArchiveObserver *progress);
-	Error remove(QStringList destinations, ArchiveObserver *progress);
+	Error remove(const QStringList &destinations, ArchiveObserver *progress);
 	Error rename(const QStringList &destinations, const QStringList &newDestinations);
 	QMap<QString, FsHeader *> fileList(QString dir) const;
 	QStringList tocInDirectory(QString dir) const;

@@ -45,7 +45,7 @@ public:
 	static QStringList fontList();
 	static void registerFont(const QString &name, FF8Font *font);
 	static void deregisterFont(const QString &name);
-	static FF8Font *font(QString name);
+	static FF8Font *font(const QString &name);
 	static FF8Font *getCurrentConfigFont();
 	static bool saveFonts();
 	static bool copyFont(const QString &name, const QString &from, const QString &name2);

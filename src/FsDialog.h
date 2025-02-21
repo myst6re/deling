@@ -50,7 +50,7 @@ private slots:
 	void exportImages();
 private:
 	void generatePreview();
-	void add(QStringList sources, bool fromDir = false);
+	void add(const QStringList &sources, bool fromDir = false);
 	void openDir(const QString &dirPath);
 	QStringList listFilesInDir(QString dirPath);
 	static FiCompression compressionMessage(QWidget *parent);

@@ -54,13 +54,7 @@ bool ScriptExporter::toDir(const QDir &dir, ArchiveObserver *observer)
 		if (f && f->isOpen() && f->hasJsmFile()) {
 			JsmFile *jsm = (JsmFile *)f->getFile(Field::Jsm);
 			const JsmScripts &scripts = jsm->getScripts();
-			QString fieldName = f->name();
-
-			if (fieldName.isEmpty()) {
-				fieldName = QObject::tr("Unamed");
-			}
-
-			QString path = fieldName;
+			QString path = f->name().isEmpty() ? QObject::tr("Unamed") : f->name();
 			dir.mkpath(path);
 
 			for (int groupID = 0; groupID < scripts.nbGroup(); ++groupID) {

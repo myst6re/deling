@@ -751,9 +751,9 @@ QString MainWindow::savePath() const
 	return QString();
 }
 
-void MainWindow::saveAs(QString path)
+void MainWindow::saveAs(const QString &optPath)
 {
-	QString filter;
+	QString filter, path = optPath;
 	
 	if (fieldArchive != nullptr || field != nullptr && field->isOpen() && field->isPc()) {
 		filter = tr("FS Archive (*.fs)");

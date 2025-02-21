@@ -526,9 +526,9 @@ void FsDialog::addDirectory(QString source)
 	add(QStringList(source), true);
 }
 
-void FsDialog::add(QStringList sources, bool fromDir)
+void FsDialog::add(const QStringList &constSources, bool fromDir)
 {
-	QStringList destinations;
+	QStringList sources = constSources, destinations;
 	QString source, destination;
 	FiCompression compress;
 	int i, nbFiles;

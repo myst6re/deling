@@ -292,8 +292,10 @@ void FF8Font::deregisterFont(const QString &name)
 	}
 }
 
-FF8Font *FF8Font::font(QString name)
+FF8Font *FF8Font::font(const QString &constName)
 {
+	QString name = constName;
+
 	if (name.isEmpty()) {
 		name = "00";
 	}
