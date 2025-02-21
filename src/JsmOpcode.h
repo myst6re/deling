@@ -406,6 +406,8 @@ public:
 	JsmOpcode();
 	explicit JsmOpcode(quint32 op);
 	JsmOpcode(unsigned int key, int param);
+	JsmOpcode(const JsmOpcode &other) : op(other.op) {}
+	JsmOpcode(JsmOpcode &&other) : op(std::move(other.op)) {}
 	virtual ~JsmOpcode() {}
 	unsigned int key() const;
 	virtual int param() const;
@@ -434,6 +436,16 @@ public:
 	virtual QString paramStr() const;
 	virtual QString desc() const;
 	virtual QString toString() const;
+	JsmOpcode &operator=(const JsmOpcode &other) {
+		op = other.op;
+		
+		return *this;
+	}
+	JsmOpcode &operator=(JsmOpcode &&other) {
+		op = std::move(other.op);
+		
+		return *this;
+	}
 
 	static const char *opcodes[JSM_OPCODE_COUNT];
 private:

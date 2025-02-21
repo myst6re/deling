@@ -225,7 +225,7 @@ void TdwWidget2::exportFont()
 		}
 	} else if (selectedFilter == tdwF) {
 		QByteArray data;
-		if (tdwFile->save(data)) {
+		if (tdwFile && tdwFile->save(data)) {
 			QFile f(path);
 			if (f.open(QIODevice::WriteOnly)) {
 				f.write(data);

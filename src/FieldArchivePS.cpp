@@ -172,7 +172,7 @@ bool FieldArchivePS::openModels()
 			MchFile mch;
 			if (mch.open(fieldData, QString("d%1").arg(i, 3, 10, QChar('0')))
 					&& mch.hasModel()) {
-				models.insert(i, new CharaModel(*mch.model()));
+				models.insert(i, mch.model());
 			}
 		}
 	}

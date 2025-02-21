@@ -204,7 +204,7 @@ void JsmWidget::setData(Field *field)
 	PageWidget::setData(field);
 }
 
-void JsmWidget::setMainModels(QHash<int, CharaModel *> *mainModels)
+void JsmWidget::setMainModels(QHash<int, CharaModel> *mainModels)
 {
 	this->mainModels = mainModels;
 	if (isBuilded())

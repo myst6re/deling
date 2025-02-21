@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "JsmExpression.h"
+#include "JsmOpcode.h"
 #include "Field.h"
 #include "Config.h"
 #include "Data.h"
@@ -557,6 +558,10 @@ QString JsmControlRepeatUntil::toString(const Field *field, int indent) const
 
 QStringList JsmApplication::stackToStringList(const Field *field) const
 {
+	if (_opcode == nullptr) {
+		return QStringList();
+	}
+	
 	QStringList params;
 	bool isText = false, isMap = false, isChara = false, isParty = false,
 	        isMagic = false, isItem = false, isItem2 = false, isKeys = false;
@@ -725,7 +730,7 @@ QString JsmApplication::paramsToString(const Field *field) const
 {
 	QStringList params;
 
-	if (_opcode && _opcode->hasParam()) {
+	if (_opcode != nullptr && _opcode->hasParam()) {
 		params.append(_opcode->paramStr());
 	}
 
@@ -736,7 +741,7 @@ QString JsmApplication::paramsToString(const Field *field) const
 
 QString JsmApplication::toString(const Field *field) const
 {
-	return QString("%1(%2)").arg(_opcode ? _opcode->name().toLower() : "nil",
+	return QString("%1(%2)").arg(_opcode != nullptr ? _opcode->name().toLower() : "nil",
 	                             paramsToString(field));
 }
 
@@ -753,7 +758,7 @@ int JsmApplication::opcodeCount() const
 
 JsmExpression *JsmApplicationAssignment::opcodeExpression() const
 {
-	if (!_opcode) {
+	if (_opcode == nullptr) {
 		return 0;
 	}
 	switch (_opcode->key()) {
@@ -821,7 +826,7 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 			opExpr = nullptr;
 		}
 	}
-	if (ret.isEmpty()) {
+	if (ret.isEmpty() && opExpr != nullptr) {
 		ret = QString("%1 = %2").arg(opExpr->toString(field),
 		                             JsmExpression::stripParenthesis(
 		                                 expr->toString(field)));
@@ -834,7 +839,7 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 
 QString JsmApplicationExec::execType() const
 {
-	if (!_opcode) {
+	if (_opcode == nullptr) {
 		return QString();
 	}
 	switch (_opcode->key()) {
@@ -852,7 +857,7 @@ QString JsmApplicationExec::execType() const
 
 QString JsmApplicationExec::toString(const Field *field) const
 {
-	if (!_opcode) {
+	if (_opcode == nullptr) {
 		return JsmApplication::toString(field);
 	}
 

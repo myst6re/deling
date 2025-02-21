@@ -29,12 +29,12 @@ public:
 	void clear();
 	void fill();
 	inline QString tabName() const { return tr("3D Model"); }
-	void setMainModels(QHash<int, CharaModel *> *mainModels);
+	void setMainModels(QHash<int, CharaModel> *mainModels);
 public slots:
 	void setModel(int modelID);
 private:
 	void build();
-	QHash<int, CharaModel *> *_mainModels;
+	QHash<int, CharaModel> *_mainModels;
 	CharaPreview *_modelPreview;
 	QListWidget *_modelList;
 };

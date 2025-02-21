@@ -56,7 +56,11 @@ bool MskFile::open(const QByteArray &msk)
 	}
 
 	for (quint32 i = 0; i < count; ++i) {
-		Vertex *vertex = new Vertex[4];
+		Vertex *vertex = new (std::nothrow) Vertex[4];
+		
+		if (vertex == nullptr) {
+			return false;
+		}
 
 		memcpy(vertex, &mskData[4 + i*24], 24);
 

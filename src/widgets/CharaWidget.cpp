@@ -74,7 +74,7 @@ void CharaWidget::fill()
 	PageWidget::fill();
 }
 
-void CharaWidget::setMainModels(QHash<int, CharaModel *> *mainModels)
+void CharaWidget::setMainModels(QHash<int, CharaModel> *mainModels)
 {
 	_mainModels = mainModels;
 	if (isBuilded()) {

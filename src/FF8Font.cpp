@@ -221,9 +221,15 @@ bool FF8Font::listFonts()
 	QStringList stringList = dir.entryList(QStringList("*.tdw"), QDir::Files, QDir::Name);
 
 	FF8Font *latinFont = openFont(":/fonts/sysfnt.tdw", ":/fonts/sysfnt.txt");
+	if (!latinFont) {
+		return false;
+	}
 	FF8Font *jpFont = openFont(":/fonts/sysfnt_jp.tdw", ":/fonts/sysfnt_jp.txt");
 
-	if (!latinFont || !jpFont)	return false;
+	if (!jpFont) {
+		delete latinFont;
+		return false;
+	}
 
 	latinFont->setReadOnly(true);
 	jpFont->setReadOnly(true);
@@ -261,17 +267,17 @@ FF8Font *FF8Font::openFont(const QString &tdwPath, const QString &txtPath)
 
 	if (!tdw) {
 		return nullptr;
-	} else {
-		QFile f2(txtPath);
-		if (f2.open(QIODevice::ReadOnly)) {
-			ff8Font = new FF8Font(tdw, f2.readAll());
-			f2.close();
-		} else {
-			ff8Font = new FF8Font(tdw, QByteArray());
-		}
-		ff8Font->setPaths(txtPath, tdwPath);
-		return ff8Font;
 	}
+
+	QFile f2(txtPath);
+	if (f2.open(QIODevice::ReadOnly)) {
+		ff8Font = new FF8Font(tdw, f2.readAll());
+		f2.close();
+	} else {
+		ff8Font = new FF8Font(tdw, QByteArray());
+	}
+	ff8Font->setPaths(txtPath, tdwPath);
+	return ff8Font;
 }
 
 void FF8Font::registerFont(const QString &name, FF8Font *font)

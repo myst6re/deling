@@ -66,7 +66,11 @@ bool TdwFile::open(const QByteArray &tdw)
 
 		for (tableID = 0; tableID < tableCount; ++tableID) {
 
-			quint8 *charWidth = new quint8[224];
+			quint8 *charWidth = new (std::nothrow) quint8[224];
+			
+			if (charWidth == nullptr) {
+				return false;
+			}
 
 			for (i = 0; i<sizeHeader && i < quint32(112); ++i) {
 				space = tdw.at(posHeader + tableID*112 + i);

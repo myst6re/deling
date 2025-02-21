@@ -206,7 +206,7 @@ bool FieldArchivePC::openModels()
 			if (ok) {
 				MchFile mch;
 				if (mch.open(mainModels.fileData(entry, fs), match.captured(0).left(4)) && mch.hasModel()) {
-					models.insert(id, new CharaModel(*mch.model()));
+					models.insert(id, mch.model());
 				}
 			}
 		}

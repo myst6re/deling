@@ -330,7 +330,11 @@ qint64 IsoArchiveIO::readIso(char *data, qint64 maxSize)
 
 QByteArray IsoArchiveIO::readIso(qint64 maxSize)
 {
-	char *data = new char[maxSize];
+	char *data = new (std::nothrow) char[maxSize];
+	
+	if (data == nullptr) {
+		return QByteArray();
+	}
 
 	QByteArray baData(data, readIso(data, maxSize));
 

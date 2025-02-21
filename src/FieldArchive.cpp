@@ -28,7 +28,6 @@ FieldArchive::FieldArchive()
 FieldArchive::~FieldArchive()
 {
 	for (Field *field: fields)		delete field;
-	for (CharaModel *model: models)	delete model;
 	if (_worldMap != nullptr) {
 		delete _worldMap;
 	}
@@ -38,13 +37,13 @@ void FieldArchive::clearFields()
 {
 	for (Field *field: fields)	delete field;
 	fields.clear();
-	for (CharaModel *model: models)	delete model;
 	models.clear();
 	fieldsSortByName.clear();
 	fieldsSortByDesc.clear();
 	fieldsSortByMapId.clear();
 	if (_worldMap != nullptr) {
 		delete _worldMap;
+		_worldMap = nullptr;
 	}
 }
 
@@ -82,12 +81,12 @@ int FieldArchive::nbFields() const
 	return fields.size();
 }
 
-CharaModel *FieldArchive::getModel(int id) const
+CharaModel FieldArchive::getModel(int id) const
 {
-	return models.value(id, nullptr);
+	return models.value(id);
 }
 
-QHash<int, CharaModel *> *FieldArchive::getModels()
+QHash<int, CharaModel> *FieldArchive::getModels()
 {
 	return &models;
 }

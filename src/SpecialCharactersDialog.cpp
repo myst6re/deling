@@ -24,14 +24,14 @@ SpecialCharactersDialog::SpecialCharactersDialog(QWidget *parent) :
 {
 	setWindowTitle(tr("Special Characters"));
 
-	bool hasTables = FF8Font::getCurrentConfigFont()->tdw()->tableCount() > 1;
-
-	if (hasTables) {
+	if (FF8Font::getCurrentConfigFont()->tdw()->tableCount() > 1) {
 		tableSelect = new QComboBox(this);
 		int tableCount = FF8Font::getCurrentConfigFont()->tdw()->tableCount();
 		for (int i = 0; i < tableCount; ++i) {
 			tableSelect->addItem(tr("Table %1").arg(i+1));
 		}
+	} else {
+		tableSelect = nullptr;
 	}
 	grid = new TdwGrid(this);
 	grid->setTdwFile(FF8Font::getCurrentConfigFont()->tdw());
@@ -42,11 +42,11 @@ SpecialCharactersDialog::SpecialCharactersDialog(QWidget *parent) :
 
 	connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
 	connect(buttonBox, SIGNAL(rejected()), SLOT(reject()));
-	if (hasTables)	connect(tableSelect, SIGNAL(currentIndexChanged(int)), grid, SLOT(setCurrentTable(int)));
+	if (tableSelect)	connect(tableSelect, SIGNAL(currentIndexChanged(int)), grid, SLOT(setCurrentTable(int)));
 
 	QGridLayout *layout = new QGridLayout(this);
-	if (hasTables)	layout->addWidget(new QLabel(tr("Table")), 0, 0);
-	if (hasTables)	layout->addWidget(tableSelect, 0, 1);
+	if (tableSelect)	layout->addWidget(new QLabel(tr("Table")), 0, 0);
+	if (tableSelect)	layout->addWidget(tableSelect, 0, 1);
 	layout->addWidget(grid, 1, 0, 1, 4);
 	layout->addWidget(buttonBox, 2, 0, 1, 4);
 }

@@ -208,10 +208,15 @@ QByteArray FsHeader::data(QFile *fs, bool uncompress, int maxUncompress) const
 			return fs->read(size+4);
 		}
 
-		char *buff = new char[size];
-
-		if (fs->read(buff, size) != size)
+		char *buff = new (std::nothrow) char[size];
+		if (buff == nullptr) {
 			return QByteArray();
+		}
+
+		if (fs->read(buff, size) != size) {
+			delete[] buff;
+			return QByteArray();
+		}
 
 		const QByteArray &decData = decompress(buff, size, maxUncompress<=0 ? _uncompressedSize : maxUncompress);
 		delete[] buff;

@@ -66,7 +66,7 @@ bool FF8DiscArchive::findIMG()
 		return false;
 	}
 
-	posIMG = file->location() * SECTOR_SIZE_DATA;
+	posIMG = qint64(file->location()) * SECTOR_SIZE_DATA;
 	sizeIMG = file->size();
 
 	return true;

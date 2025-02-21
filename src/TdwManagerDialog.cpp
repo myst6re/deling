@@ -84,7 +84,7 @@ void TdwManagerDialog::setTdw(int id)
 		tdwWidget->setFF8Font(font);
 	}
 
-	minusAction->setEnabled(!font->isReadOnly());
+	minusAction->setEnabled(font && !font->isReadOnly());
 }
 
 void TdwManagerDialog::addFont()

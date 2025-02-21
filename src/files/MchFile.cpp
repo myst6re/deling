@@ -17,16 +17,15 @@
  ****************************************************************************/
 #include "MchFile.h"
 #include "files/TimFile.h"
-#include "CharaModel.h"
 
 MchFile::MchFile() :
-	File(), _model(0)
+	File()
 {
 }
 
 bool MchFile::open(const QByteArray &mch, const QString &name)
 {
-	_model = 0;
+	_model = CharaModel();
 
 	if (mch.size() < 0x100) {
 		if (mch.size() != 33) { // "This is dummy file. Kazuo Suzuki{0a}"
@@ -73,7 +72,7 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 				}
 			}
 
-			_model = new CharaModel(name, textures);
+			_model = CharaModel(name, textures);
 		}
 //		else {
 //			qDebug() << "No tim";
@@ -90,15 +89,10 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 
 bool MchFile::hasModel() const
 {
-	return _model;
+	return !_model.isEmpty() && !_model.name().isEmpty();
 }
 
-CharaModel *MchFile::model() const
+const CharaModel &MchFile::model() const
 {
 	return _model;
-}
-
-void MchFile::setModel(CharaModel *model)
-{
-	_model = model;
 }

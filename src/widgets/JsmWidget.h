@@ -35,7 +35,7 @@ public:
 	void clear();
 	void setReadOnly(bool readOnly);
 	void setData(Field *field);
-	void setMainModels(QHash<int, CharaModel *> *mainModels);
+	void setMainModels(QHash<int, CharaModel> *mainModels);
 	void setFieldArchive(FieldArchive *fieldArchive);
 	void fill();
 	void gotoScript(int, int, int);
@@ -45,7 +45,7 @@ private:
 	void saveSession();
 	QList<QTreeWidgetItem *> nameList() const;
 	QList<QTreeWidgetItem *> methodList(int groupID) const;
-	QHash<int, CharaModel *> *mainModels;
+	QHash<int, CharaModel> *mainModels;
 	FieldArchive *fieldArchive;
 	QTreeWidget *list1;
 	CharaPreview *modelPreview;

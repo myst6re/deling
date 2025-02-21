@@ -41,7 +41,7 @@ void CharaPreview::fill(const QPixmap &background)
 		setPixmap(background);
 }
 
-void CharaPreview::setMainModels(QHash<int, CharaModel *> *mainModels)
+void CharaPreview::setMainModels(QHash<int, CharaModel> *mainModels)
 {
 	_mainModels = mainModels;
 }
@@ -51,7 +51,7 @@ void CharaPreview::setModel(const CharaModel &model)
 	const CharaModel *m;
 
 	if (model.isEmpty() && _mainModels && _mainModels->contains(model.id())) {
-		m = _mainModels->value(model.id());
+		m = &(*_mainModels)[model.id()];
 	} else {
 		m = &model;
 	}

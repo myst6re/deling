@@ -18,8 +18,7 @@
 #pragma once
 
 #include "files/File.h"
-
-class CharaModel;
+#include "CharaModel.h"
 
 class MchFile : public File
 {
@@ -30,9 +29,8 @@ public:
 		return QObject::tr("Field 3D model file (*.mch)");
 	}
 	bool hasModel() const;
-	CharaModel *model() const;
-	void setModel(CharaModel *model);
+	const CharaModel &model() const;
 private:
 	using File::open;
-	CharaModel *_model;
+	CharaModel _model;
 };

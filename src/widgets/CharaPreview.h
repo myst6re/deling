@@ -27,7 +27,7 @@ class CharaPreview : public BGPreview2
 public:
 	explicit CharaPreview(QWidget *parent = nullptr);
 	void fill(const QPixmap &background);
-	void setMainModels(QHash<int, CharaModel *> *mainModels);
+	void setMainModels(QHash<int, CharaModel> *mainModels);
 	void setModel(const CharaModel &model);
 protected:
 	inline bool hasHeightForWidth() const override {
@@ -37,5 +37,5 @@ protected:
 		return w;
 	}
 private:
-	QHash<int, CharaModel *> *_mainModels;
+	QHash<int, CharaModel> *_mainModels;
 };

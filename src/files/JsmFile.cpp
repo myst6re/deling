@@ -1405,6 +1405,6 @@ int JsmFile::currentOpcodeScroll(int groupID, int methodID) const
 int JsmFile::currentTextCursor(int groupID, int methodID, int &anchor) const
 {
 	quint64 val = textCursors.value(((qint64)groupID << 32) | (qint64)methodID, -1);
-	anchor = val & 0xFFFFFFFF;
+	anchor = int(val & 0xFFFFFFFF);
 	return val >> 32;
 }

@@ -47,8 +47,8 @@ public:
 	Field *getFieldFromMapId(int mapId) const;
 	const QList<Field *> &getFields() const;
 	int nbFields() const;
-	CharaModel *getModel(int id) const;
-	QHash<int, CharaModel *> *getModels();
+	CharaModel getModel(int id) const;
+	QHash<int, CharaModel> *getModels();
 	bool isReadOnly() const;
 	virtual int open(const QString &, ArchiveObserver *progress)=0;
 	virtual bool openModels()=0;
@@ -78,7 +78,7 @@ public:
 protected:
 	QString errorMsg;
 	QList<Field *> fields;
-	QHash<int, CharaModel *> models;
+	QHash<int, CharaModel> models;
 	QStringList _mapList;
 	QMultiMap<QString, int> fieldsSortByName;
 	QMultiMap<QString, int> fieldsSortByDesc;

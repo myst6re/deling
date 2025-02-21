@@ -18,8 +18,8 @@
 #pragma once
 
 #include <QtCore>
-#include "JsmOpcode.h"
 
+class JsmOpcode;
 class JsmControl;
 class JsmExpression;
 class JsmApplication;

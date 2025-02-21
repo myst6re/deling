@@ -98,7 +98,7 @@ bool WmxFile::readSegments(Map &map, int segmentCount)
 
 	QList<MapSegment> segments;
 	bool toTheEnd = segmentCount < 0;
-	qint64 end = toTheEnd ? 0 : segmentCount * WMXFILE_SEGMENT_SIZE;
+	qint64 end = toTheEnd ? 0 : qint64(segmentCount) * WMXFILE_SEGMENT_SIZE;
 
 	while (canReadSegment() && (toTheEnd || _io->pos() < end)) {
 		MapSegment segment;
