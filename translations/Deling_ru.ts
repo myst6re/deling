@@ -19,17 +19,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>
-List of available commands:
-  unpack           Unpack files from FS archive
-  pack             Pack files from directory to FS archive
-  export-texts     Export texts to CSV from FIELD FS archive
-  import-texts     Import texts from a CSV file to existing FIELD FS archive
-
-&quot;%1 unpack --help&quot; to see help of the specific subcommand</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Please specify a command</source>
         <translation></translation>
     </message>
@@ -93,15 +82,26 @@ List of available commands:
         <source>Error: target directory does not exist:</source>
         <translation></translation>
     </message>
+    <message>
+        <source>
+List of available commands:
+  unpack           Unpack files from FS archive
+  pack             Pack files from directory to FS archive
+  export-texts     Export texts to CSV from FIELD/WORLD FS archive
+  import-texts     Import texts from a CSV file to existing FIELD/WORLD FS archive
+
+&quot;%1 unpack --help&quot; to see help of the specific subcommand</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>ArgumentsExport</name>
     <message>
-        <source>Input Field FS archive.</source>
+        <source>Output CSV file path.</source>
         <translation></translation>
     </message>
     <message>
-        <source>Output CSV file path.</source>
+        <source>Input Field/World FS archive.</source>
         <translation></translation>
     </message>
 </context>
