@@ -939,7 +939,7 @@ FsArchive::Error FsArchive::rename(const QStringList &destinations, const QStrin
 bool FsArchive::load(const QByteArray &fl_data, const QByteArray &fi_data)
 {
 	if (_isOpen || fl_data.isEmpty() || fi_data.isEmpty()) {
-		qWarning() << "Error loading data" << fl_data.isEmpty() << fi_data.isEmpty();
+		qDebug() << "Error loading data" << fl_data.isEmpty() << fi_data.isEmpty();
 		return false;
 	}
 

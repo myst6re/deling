@@ -111,8 +111,8 @@ Arguments::Arguments() :
 	        "\nList of available commands:\n"
 	        "  unpack           Unpack files from FS archive\n"
 	        "  pack             Pack files from directory to FS archive\n"
-	        "  export-texts     Export texts to CSV from FIELD FS archive\n"
-	        "  import-texts     Import texts from a CSV file to existing FIELD FS archive\n"
+	        "  export-texts     Export texts to CSV from FIELD/WORLD FS archive\n"
+	        "  import-texts     Import texts from a CSV file to existing FIELD/WORLD FS archive\n"
 	        "\n"
 	        "\"%1 unpack --help\" to see help of the specific subcommand"
 	    ).arg(QFileInfo(qApp->arguments().first()).fileName())

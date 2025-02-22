@@ -21,7 +21,7 @@ ArgumentsExport::ArgumentsExport() : ArgumentsImportExport()
 	_ADD_FLAG(_OPTION_NAMES("f", "force"),
 	          "Overwrite destination file if exists.");
 
-	_parser.addPositionalArgument("archive", QCoreApplication::translate("ArgumentsExport", "Input Field FS archive."));
+	_parser.addPositionalArgument("archive", QCoreApplication::translate("ArgumentsExport", "Input Field/World FS archive."));
 	_parser.addPositionalArgument("output", QCoreApplication::translate("ArgumentsExport", "Output CSV file path."));
 
 	parse();
