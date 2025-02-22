@@ -192,6 +192,7 @@ jobs:
        repo_token: "${{ secrets.GITHUB_TOKEN }}"
        prerelease: false
        generate_notes: false
+       automaticReleaseTag: ${{ github.event.ref }}
        title: ${{ github.event.ref }}
        files: |
          artifact-*/*
