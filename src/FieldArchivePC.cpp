@@ -174,11 +174,11 @@ int FieldArchivePC::openWorld()
 	field->setWorldmapFile(_worldMap);
 	field->setOpen(true);
 	fields.append(field);
-	fieldsSortByName.insert(QString(), 0);
+	_mapList = QStringList(field->name());
+	fieldsSortByName.insert(field->name(), 0);
 	fieldsSortByDesc.insert(QString(), 0);
-	fieldsSortByMapId.insert(QString(), 0);
-	_mapList = QStringList("worldmap");
-	
+	fieldsSortByMapId.insert(QString("%1").arg(0, 3, 10, QChar('0')), 0);
+
 	return 0;
 }
 
