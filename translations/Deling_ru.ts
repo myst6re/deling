@@ -16,71 +16,71 @@
     <name>Arguments</name>
     <message>
         <source>Command to execute</source>
-        <translation></translation>
+        <translation>Команды для выполнения</translation>
     </message>
     <message>
         <source>Please specify a command</source>
-        <translation></translation>
+        <translation>Пожалуйста, укажите команду</translation>
     </message>
     <message>
         <source>Unknown command type:</source>
-        <translation></translation>
+        <translation>Неизвестный тип команды:</translation>
     </message>
     <message>
         <source>Error: too much parameters</source>
-        <translation></translation>
+        <translation>Ошибка: слишком много параметров</translation>
     </message>
     <message>
         <source>Error: target file already exist, use --force to override the file</source>
-        <translation></translation>
+        <translation>Ошибка: целевой файл уже существует, используйте --force, чтобы перезаписать файл</translation>
     </message>
     <message>
         <source>Error: column should be an integer value &gt;= 1</source>
-        <translation></translation>
+        <translation>Ошибка: столбец должен иметь целочисленное значение &gt;= 1</translation>
     </message>
     <message>
         <source>Error: CSV file does not exist</source>
-        <translation></translation>
+        <translation>Ошибка: CSV-файл не существует</translation>
     </message>
     <message>
         <source>Error: Field archive does not exist</source>
-        <translation></translation>
+        <translation>Ошибка: Архив field не существует</translation>
     </message>
     <message>
         <source>Error: separator value should be specified with exactly one character</source>
-        <translation></translation>
+        <translation>Ошибка: значение разделителя должно содержать ровно один символ</translation>
     </message>
     <message>
         <source>Error: separator value cannot be a line break character</source>
-        <translation></translation>
+        <translation>Ошибка: значение разделителя не может быть символом переноса строки</translation>
     </message>
     <message>
         <source>Error: quote character value should be specified with exactly one character</source>
-        <translation></translation>
+        <translation>Ошибка: значение символа кавычек должно быть указано ровно одним символом</translation>
     </message>
     <message>
         <source>Error: quote value cannot be a line break character</source>
-        <translation></translation>
+        <translation>Ошибка: значение кавычек не может быть символом переноса строки</translation>
     </message>
     <message>
         <source>Error: separator and quote character cannot be the same character</source>
-        <translation></translation>
+        <translation>Ошибка: разделитель и символ кавычек не могут быть одним и тем же символом</translation>
     </message>
     <message>
         <source>Error: unknown compression, available values: lzs, lz4, none</source>
-        <translation></translation>
+        <translation>Ошибка: неизвестное сжатие, доступные значения: lzs, lz4, none</translation>
     </message>
     <message>
         <source>Error: source directory does not exist:</source>
-        <translation></translation>
+        <translation>Ошибка: исходный каталог не существует:</translation>
     </message>
     <message>
         <source>Warning: cannot open file</source>
-        <translation></translation>
+        <translation>Предупреждение: невозможно открыть файл</translation>
     </message>
     <message>
         <source>Error: target directory does not exist:</source>
-        <translation></translation>
+        <translation>Ошибка: целевой каталог не существует:</translation>
     </message>
     <message>
         <source>
@@ -91,51 +91,58 @@ List of available commands:
   import-texts     Import texts from a CSV file to existing FIELD/WORLD FS archive
 
 &quot;%1 unpack --help&quot; to see help of the specific subcommand</source>
-        <translation></translation>
+        <translation>
+Список доступных команд:
+  unpack Распаковать файлы из архива ФС
+  pack Упаковать файлы из каталога в архив ФС
+  export-texts Экспорт текста в CSV из архива ФС FIELD/WORLD
+  import-texts Импортировать текст из CSV-файла в существующий архив ФС FIELD/WORLD
+
+&quot;%1 unpack --help&quot; для просмотра справки по конкретной подкоманде</translation>
     </message>
 </context>
 <context>
     <name>ArgumentsExport</name>
     <message>
         <source>Output CSV file path.</source>
-        <translation></translation>
+        <translation>Путь к выходному файлу CSV.</translation>
     </message>
     <message>
         <source>Input Field/World FS archive.</source>
-        <translation></translation>
+        <translation>Входной архив ФС Field/World.</translation>
     </message>
 </context>
 <context>
     <name>ArgumentsImport</name>
     <message>
         <source>Input Field FS archive.</source>
-        <translation></translation>
+        <translation>Входной архив ФС Field.</translation>
     </message>
     <message>
         <source>Input CSV file path.</source>
-        <translation></translation>
+        <translation>Путь к входному CSV-файлу.</translation>
     </message>
 </context>
 <context>
     <name>ArgumentsPack</name>
     <message>
         <source>Input directory.</source>
-        <translation></translation>
+        <translation>Входной каталог.</translation>
     </message>
     <message>
         <source>Input file or directory.</source>
-        <translation></translation>
+        <translation>Входной файл или каталог.</translation>
     </message>
 </context>
 <context>
     <name>ArgumentsUnpack</name>
     <message>
         <source>Input file or directory.</source>
-        <translation></translation>
+        <translation>Входной файл или каталог.</translation>
     </message>
     <message>
         <source>Output directory.</source>
-        <translation></translation>
+        <translation>Выходной каталог.</translation>
     </message>
 </context>
 <context>
@@ -194,7 +201,8 @@ List of available commands:
     </message>
     <message>
         <source>Draw</source>
-        <translation type="unfinished">Draw</translation>
+        <translatorcomment>*Отрисовывать</translatorcomment>
+        <translation>Отрисовать</translation>
     </message>
     <message>
         <source>Alpha Type</source>
@@ -214,7 +222,7 @@ List of available commands:
     </message>
     <message>
         <source>State</source>
-        <translation type="unfinished">Состояние</translation>
+        <translation>Состояние</translation>
     </message>
     <message>
         <source>Parameters</source>
@@ -245,39 +253,39 @@ List of available commands:
     <name>CLI</name>
     <message>
         <source>An error occured when exporting inner FS/FL/FI</source>
-        <translation></translation>
+        <translation>Возникла ошибка при экспорте внутреннего FS/FL/FI</translation>
     </message>
     <message>
         <source>An error occured when exporting file inside inner FS/FL/FI</source>
-        <translation></translation>
+        <translation>Возникла ошибка при экспорте файла внутри внутреннего FS/FL/FI</translation>
     </message>
     <message>
         <source>An error occured when exporting</source>
-        <translation></translation>
+        <translation>Возникла ошибка при экспорте</translation>
     </message>
     <message>
         <source>Destination file already exist, use --force to override</source>
-        <translation></translation>
+        <translation>Файл назначения уже существует, используйте --force для отмены</translation>
     </message>
     <message>
         <source>An error occured when opening target files</source>
-        <translation></translation>
+        <translation>Возникла ошибка при открытии целевых файлов</translation>
     </message>
     <message>
         <source>Apply changes...</source>
-        <translation></translation>
+        <translation>Применение изменений...</translation>
     </message>
     <message>
         <source>Done</source>
-        <translation></translation>
+        <translation>Готово</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation></translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <source>Cannot open archive</source>
-        <translation></translation>
+        <translation>Невозможно открыть архив</translation>
     </message>
 </context>
 <context>
@@ -340,11 +348,11 @@ List of available commands:
     </message>
     <message>
         <source>Executable path of Final Fantasy VIII PC</source>
-        <translation type="unfinished">Executable path of Final Fantasy VIII PC</translation>
+        <translation>Путь к исполняемому файлу Final Fantasy VIII PC</translation>
     </message>
     <message>
         <source>FF8 exe (*.exe);;All files (*)</source>
-        <translation type="unfinished">FF8 exe (*.exe);;All files (*)</translation>
+        <translation>FF8 exe (*.exe);;Все файлы (*)</translation>
     </message>
 </context>
 <context>
@@ -2094,11 +2102,11 @@ Dollet Harbor</translation>
     </message>
     <message>
         <source>Target directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Целевой каталог</translation>
     </message>
     <message>
         <source>LZ4 (FF8 Remaster)</source>
-        <translation type="unfinished"></translation>
+        <translation>LZ4 (FF8 Remaster)</translation>
     </message>
 </context>
 <context>
@@ -2113,7 +2121,7 @@ Dollet Harbor</translation>
     </message>
     <message>
         <source>Export All</source>
-        <translation type="unfinished">Экспортировать все</translation>
+        <translation>Экспортировать все</translation>
     </message>
 </context>
 <context>
@@ -2147,8 +2155,8 @@ Dollet Harbor</translation>
     </message>
     <message>
         <source>Exec</source>
-        <translatorcomment>*Исполнение</translatorcomment>
-        <translation type="unfinished">Exec</translation>
+        <translatorcomment>*Исполнение *Выполнение</translatorcomment>
+        <translation>Выполнение</translation>
     </message>
     <message>
         <source>Script</source>
@@ -2393,47 +2401,51 @@ It is strongly recommended to save the archive (fs, fi and fl) before continuing
     </message>
     <message>
         <source>&amp;Recent Files</source>
-        <translation type="unfinished">&amp;Recent Files</translation>
+        <translation>&amp;Недавние файлы</translation>
     </message>
     <message>
         <source>Texts...</source>
-        <translation type="unfinished"></translation>
+        <translation>Текст...</translation>
     </message>
     <message>
         <source>Import all</source>
-        <translation type="unfinished"></translation>
+        <translation>Импортировать все</translation>
     </message>
     <message>
         <source>Unable to open the file
 &apos;%1&apos;
 Error message:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно открыть файл
+&apos;%1&apos;
+Сообщение об ошибке:
+%2</translation>
     </message>
     <message>
         <source>Unable to open the file
 &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно открыть файл
+&apos;%1&apos;</translation>
     </message>
     <message>
         <source>Compatible File (*.fs *.iso *.bin *.msd *.jsm);;FS Archive (*.fs);;Image Disk File (*.iso *.bin);;FF8 text files (*.msd);;FF8 field script files (*.jsm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Совместимый файл (*.fs *.iso *.bin *.msd *.jsm);;Архив ФС (*.fs);;Файл образа диска (*.iso *.bin);;Текстовые файлы FF8 (*.msd);;Сценарии файла field FF8 (*.jsm)</translation>
     </message>
     <message>
         <source>FF8 text files (*.msd)</source>
-        <translation type="unfinished">FF8 text files (*.msd)</translation>
+        <translation>Текстовые файлы FF8 (*.msd)</translation>
     </message>
     <message>
         <source>FF8 field script files (*.jsm)</source>
-        <translation type="unfinished">FF8 field script files (*.jsm)</translation>
+        <translation>Файлы скриптов field FF8 (*.jsm)</translation>
     </message>
     <message>
         <source>CSV File (*.csv)</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл CSV (*.csv)</translation>
     </message>
     <message>
         <source>Importing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт...</translation>
     </message>
 </context>
 <context>
@@ -2866,12 +2878,12 @@ Error message:
     </message>
     <message>
         <source>Field walkmesh PC File (*.id)</source>
-        <translation type="unfinished">Field walkmesh PC File (*.id)</translation>
+        <translation>Сетка движения ПК файла field (*.id)</translation>
     </message>
     <message>
         <source>Field gate and doors PC File (*.inf)</source>
         <translatorcomment>Field gate and doors PC File (*.inf)</translatorcomment>
-        <translation>Ворота и двери файла ПК (*.inf)</translation>
+        <translation>Ворота и двери ПК файла field (*.inf)</translation>
     </message>
     <message>
         <source>Field Script PC file (*.jsm)</source>
@@ -2890,12 +2902,12 @@ Error message:
     <message>
         <source>Field dialogs PC file (*.msd)</source>
         <translatorcomment>Field dialogs PC file (*.msd)</translatorcomment>
-        <translation>Диалоги файла ПК (*.msd)</translation>
+        <translation>Диалоги ПК файла field (*.msd)</translation>
     </message>
     <message>
         <source>Field movie camera PC file (*.msk)</source>
         <translatorcomment>Field movie camera PC file (*.msk)</translatorcomment>
-        <translation>Движение камеры файл ПК (*.msk)</translation>
+        <translation>Движение камеры файла ПК (*.msk)</translation>
     </message>
     <message>
         <source>Field particles infos PC file (*.pmd)</source>
@@ -2919,7 +2931,7 @@ Error message:
     <message>
         <source>Field sounds PC file (*.sfx)</source>
         <translatorcomment>Field sounds PC file (*.sfx)</translatorcomment>
-        <translation>Звуковой файл ПК файла field (*.sfx)</translation>
+        <translation>Звуки ПК файла field (*.sfx)</translation>
     </message>
     <message>
         <source>Field additionnal fonts PC file (*.tdw)</source>
@@ -2940,8 +2952,7 @@ Error message:
     </message>
     <message>
         <source>Unable to export &apos;%1&apos; to image</source>
-        <translatorcomment>* в изображение</translatorcomment>
-        <translation type="unfinished">Невозможно экспортировать &apos;%1&apos; в образ</translation>
+        <translation>Невозможно экспортировать &apos;%1&apos; в образ</translation>
     </message>
     <message>
         <source>Map Tiles PC Field File (*.map)</source>
@@ -2950,39 +2961,39 @@ Error message:
     </message>
     <message>
         <source>Not a worldmap archive.</source>
-        <translation type="unfinished"></translation>
+        <translation>Это не архив с картой мира.</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readSegments).</source>
-        <translation type="unfinished">Unable to read the worldmap (readSegments).</translation>
+        <translation>Невозможно прочитать карту мира (readSegments).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readEncounterRegions).</source>
-        <translation type="unfinished">Unable to read the worldmap (readEncounterRegions).</translation>
+        <translation>Невозможно прочитать карту мира (readEncounterRegions).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readEncounters).</source>
-        <translation type="unfinished">Unable to read the worldmap (readEncounters).</translation>
+        <translation>Невозможно прочитать карту мира (readEncounters).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readSpecialTextures).</source>
-        <translation type="unfinished">Unable to read the worldmap (readSpecialTextures).</translation>
+        <translation>Невозможно прочитать карту мира (readSpecialTextures).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readRoadTextures).</source>
-        <translation type="unfinished">Unable to read the worldmap (readRoadTextures).</translation>
+        <translation>Невозможно прочитать карту мира (readRoadTextures).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readDrawPoints).</source>
-        <translation type="unfinished">Unable to read the worldmap (readDrawPoints).</translation>
+        <translation>Невозможно прочитать карту мира (readDrawPoints).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readTexts).</source>
-        <translation type="unfinished">Unable to read the worldmap (readTexts).</translation>
+        <translation>Невозможно прочитать карту мира (readTexts).</translation>
     </message>
     <message>
         <source>Unable to read the worldmap (readTextures).</source>
-        <translation type="unfinished">Unable to read the worldmap (readTextures).</translation>
+        <translation>Невозможно прочитать карту мира (readTextures).</translation>
     </message>
 </context>
 <context>
@@ -3033,12 +3044,13 @@ Error message:
     </message>
     <message>
         <source>Execution</source>
-        <translation>Исполнение</translation>
+        <translatorcomment>*Исполнение *Выполнение</translatorcomment>
+        <translation>Выполнение</translation>
     </message>
     <message>
         <source>Map jump</source>
-        <translatorcomment>**Экранный переход</translatorcomment>
-        <translation type="unfinished">Map jump</translation>
+        <translatorcomment>Переход на карту</translatorcomment>
+        <translation>Экранный переход</translation>
     </message>
     <message>
         <source>Parameter:</source>
@@ -3050,11 +3062,11 @@ Error message:
     </message>
     <message>
         <source>Pop only</source>
-        <translation type="unfinished">Pop only</translation>
+        <translation>только Pop</translation>
     </message>
     <message>
         <source>Push only</source>
-        <translation type="unfinished">Push only</translation>
+        <translation>только Push</translation>
     </message>
     <message>
         <source>Entity id</source>
@@ -3112,7 +3124,7 @@ Error message:
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Текст</translation>
+        <translation>Текст</translation>
     </message>
 </context>
 <context>
@@ -3375,50 +3387,50 @@ Error message:
     </message>
     <message>
         <source>Importing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт...</translation>
     </message>
 </context>
 <context>
     <name>TextExporterWidget</name>
     <message>
         <source>CSV format</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат CSV</translation>
     </message>
     <message>
         <source>Column that contains the texts to import</source>
-        <translation type="unfinished"></translation>
+        <translation>Колонка, содержащая текст для импорта</translation>
     </message>
     <message>
         <source>Character encoding</source>
-        <translation type="unfinished"></translation>
+        <translation>Кодировка символов</translation>
     </message>
     <message>
         <source>Field separator</source>
-        <translation type="unfinished"></translation>
+        <translation>Разделитель полей</translation>
     </message>
     <message>
         <source>String separator</source>
-        <translation type="unfinished"></translation>
+        <translation>Разделитель строк</translation>
     </message>
     <message>
         <source>The field separator must be different than the string separator</source>
-        <translation type="unfinished"></translation>
+        <translation>Разделитель полей должен отличаться от разделителя строк</translation>
     </message>
     <message>
         <source>The field separator cannot be a line break</source>
-        <translation type="unfinished"></translation>
+        <translation>Разделитель полей не может быть переносом строки</translation>
     </message>
     <message>
         <source>The string separator cannot be a line break</source>
-        <translation type="unfinished"></translation>
+        <translation>Разделитель строк не может быть переносом строки</translation>
     </message>
     <message>
         <source>Select the column number that contains the texts to import, between 1 and 100</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите номер столбца, содержащего текст для импорта, в диапазоне от 1 до 100</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
 </context>
 <context>
@@ -3469,19 +3481,19 @@ Error message:
     </message>
     <message>
         <source>Var</source>
-        <translation type="unfinished">Переменная</translation>
+        <translation>Переменная</translation>
     </message>
     <message>
         <source>Field</source>
-        <translation type="unfinished">Field</translation>
+        <translation>Field</translation>
     </message>
     <message>
         <source>MEM fr</source>
-        <translation>MEM fr</translation>
+        <translation>Адрес (FR)</translation>
     </message>
     <message>
         <source>MEM us</source>
-        <translation>MEM us</translation>
+        <translation>Адрес (US)</translation>
     </message>
     <message>
         <source>Type</source>
@@ -3535,7 +3547,7 @@ Error message:
     </message>
     <message>
         <source>Walkmesh</source>
-        <translation type="unfinished">Walkmesh</translation>
+        <translation>Сетка движения</translation>
     </message>
     <message>
         <source>Exits</source>
@@ -3551,8 +3563,8 @@ Error message:
     </message>
     <message>
         <source>Movie Camera</source>
-        <translatorcomment>Movie Camera</translatorcomment>
-        <translation type="unfinished">Движение камеры</translation>
+        <translatorcomment>Переджвижение камеры</translatorcomment>
+        <translation>Движение камеры</translation>
     </message>
     <message>
         <source>Miscellaneous</source>
@@ -3637,8 +3649,8 @@ Error message:
     </message>
     <message>
         <source>Exit Line:</source>
-        <translatorcomment>**Линия выхода:</translatorcomment>
-        <translation type="unfinished">Выходная линия:</translation>
+        <translatorcomment>**Выходная линия: </translatorcomment>
+        <translation>Линия выхода:</translation>
     </message>
     <message>
         <source>Destination point:</source>
@@ -3646,7 +3658,7 @@ Error message:
     </message>
     <message>
         <source>Used</source>
-        <translation type="unfinished">Используемый</translation>
+        <translation>Используется</translation>
     </message>
     <message>
         <source>Door ID:</source>
@@ -3710,7 +3722,7 @@ Error message:
     </message>
     <message>
         <source>Unused</source>
-        <translation>Неиспользуемый</translation>
+        <translation>Не используется</translation>
     </message>
     <message>
         <source>Door %1</source>
@@ -3723,18 +3735,18 @@ Error message:
     </message>
     <message>
         <source>Show background</source>
-        <translation type="unfinished">Show background</translation>
+        <translation>Показать фон</translation>
     </message>
 </context>
 <context>
     <name>WorldmapWidget</name>
     <message>
         <source>Reset</source>
-        <translation type="unfinished">Reset</translation>
+        <translation>Сброс</translation>
     </message>
     <message>
         <source>Worldmap</source>
-        <translation type="unfinished"></translation>
+        <translation>Карта мира</translation>
     </message>
 </context>
 </TS>
