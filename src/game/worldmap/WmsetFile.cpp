@@ -159,14 +159,20 @@ QByteArray WmsetFile::readSection(int id)
 	return _io->read(sizeSection);
 }
 
-QByteArray WmsetFile::tocData() const
+QByteArray WmsetFile::tocData()
 {
+	if (_toc.isEmpty() && !openToc()) {
+		return QByteArray();
+	}
+
 	QByteArray out;
 	out.reserve(4 * _toc.size());
 	
-	for (quint32 entry: _toc) {
+	for (qsizetype i = 0; i < _toc.size() - 1; ++i) {
+		const quint32 entry = _toc.at(i);
 		out.append((const char *)&entry, 4);
 	}
+	out.append(4, '\0');
 	
 	return out;
 }

@@ -36,7 +36,7 @@ public:
 	bool extract(const QString &name, const QString &dirName);
 	static bool build(const QString &dirName, const QString &fileName);
 	QByteArray readSection(int id);
-	QByteArray tocData() const;
+	QByteArray tocData();
 	bool readEncounters(Map &map);
 	bool readEncounterRegions(Map &map);
 	bool readDrawPoints(Map &map);

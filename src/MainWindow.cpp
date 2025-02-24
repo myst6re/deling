@@ -381,8 +381,10 @@ bool MainWindow::openFsArchive(const QString &path)
 	}
 
 	if (fieldArchive->getWorldMap() != nullptr) {
-		tabBar->setTabEnabled(WorldMapPage, true);
-		setCurrentPage(WorldMapPage);
+		for (qsizetype i = pageWidgets.size(); i > 0; --i) {
+			Pages page = Pages(i - 1);
+			tabBar->setTabEnabled(page, page == WorldMapPage || page == TextPage);
+		}
 		fillPage();
 		actionExport->setEnabled(false);
 		menuExportAll->setEnabled(true);
@@ -394,9 +396,15 @@ bool MainWindow::openFsArchive(const QString &path)
 	} else if (fieldArchive->nbFields() > 0) {
 		actionOpti->setEnabled(true);
 		buildGameLangMenu(fieldArchivePc->languages());
-		tabBar->setTabEnabled(WorldMapPage, false);	
+		for (qsizetype i = pageWidgets.size(); i > 0; --i) {
+			Pages page = Pages(i - 1);
+			tabBar->setTabEnabled(page, page != WorldMapPage);
+		}
 	} else {
-		tabBar->setTabEnabled(WorldMapPage, false);
+		for (qsizetype i = pageWidgets.size(); i > 0; --i) {
+			Pages page = Pages(i - 1);
+			tabBar->setTabEnabled(page, page != WorldMapPage);
+		}
 		field = new FieldPC(path, Config::value("gameLang", "en").toString());
 		if (field->hasFiles()) {
 			delete fieldArchive;
