@@ -20,7 +20,7 @@
 #ifdef QTASKBAR_WIN
 
 QTaskBarButton::QTaskBarButton(QWidget *mainWindow) :
-      QObject(mainWindow), pITask(0), _minimum(0), _maximum(100),
+      QObject(mainWindow), pITask(nullptr), _minimum(0), _maximum(100),
       _value(0), _state(Invisible)
 {
 	_winId = mainWindow->window()->winId();
@@ -30,7 +30,7 @@ QTaskBarButton::QTaskBarButton(QWidget *mainWindow) :
 	                                nullptr, CLSCTX_INPROC_SERVER,
 	                                IID_ITaskbarList3, (LPVOID*)&pITask);
 	if (FAILED(hRes)) {
-		pITask = 0;
+		pITask = nullptr;
 		CoUninitialize();
 		return;
 	}
@@ -40,7 +40,7 @@ QTaskBarButton::QTaskBarButton(QWidget *mainWindow) :
 
 QTaskBarButton::~QTaskBarButton()
 {
-	if (pITask) {
+	if (pITask != nullptr) {
 		pITask->Release();
 		pITask = nullptr;
 		CoUninitialize();
@@ -49,7 +49,7 @@ QTaskBarButton::~QTaskBarButton()
 
 void QTaskBarButton::setOverlayIcon(const QImage &image, const QString &text)
 {
-	if (!pITask) {
+	if (pITask = nullptr) {
 		return;
 	}
 
@@ -64,7 +64,9 @@ void QTaskBarButton::setOverlayIcon(const QImage &image, const QString &text)
 
 void QTaskBarButton::setState(State state)
 {
-	if (!pITask)	return;
+	if (pITask == nullptr) {
+		return;
+	}
 
 	TBPFLAG flag;
 	switch (state) {
@@ -87,7 +89,7 @@ void QTaskBarButton::setState(State state)
 
 void QTaskBarButton::setValue(int value)
 {
-	if (!pITask) {
+	if (pITask == nullptr) {
 		return;
 	}
 

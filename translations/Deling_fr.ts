@@ -2244,7 +2244,7 @@ Dollet Harbor</source>
     </message>
     <message>
         <source>Import...</source>
-        <translation type="vanished">Importer...</translation>
+        <translation>Importer...</translation>
     </message>
     <message>
         <source>Optimize the archive...</source>
@@ -3316,11 +3316,11 @@ poursuite de la recherche dans le dernier fichier.</translation>
     </message>
     <message>
         <source>Import...</source>
-        <translation type="vanished">Importer...</translation>
+        <translation>Importer...</translation>
     </message>
     <message>
         <source>Importing...</source>
-        <translation>Import...</translation>
+        <translation type="vanished">Import...</translation>
     </message>
     <message>
         <source>Cancel Changes</source>

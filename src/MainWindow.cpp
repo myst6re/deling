@@ -84,7 +84,7 @@ MainWindow::MainWindow()
 	menuExportAll->addAction(tr("Scripts..."), this, SLOT(exportAllScripts()));
 	menuExportAll->addAction(tr("Random Encounters..."), this, SLOT(exportAllEncounters()));
 	menuExportAll->addAction(tr("Backgrounds..."), this, SLOT(exportAllBackground()));
-	actionImport = menu->addAction(tr("Importing..."), this, SLOT(importCurrent()));
+	actionImport = menu->addAction(tr("Import..."), this, SLOT(importCurrent()));
 	menuImportAll = menu->addMenu(tr("Import all"));
 	menuImportAll->addAction(tr("Texts..."), this, SLOT(importAllTexts()));
 	actionOpti = menu->addAction(tr("Optimize the archive..."), this, SLOT(optimizeArchive()));
@@ -386,13 +386,13 @@ bool MainWindow::openFsArchive(const QString &path)
 			tabBar->setTabEnabled(page, page == WorldMapPage || page == TextPage);
 		}
 		fillPage();
-		actionExport->setEnabled(false);
+		actionExport->setEnabled(true);
 		menuExportAll->setEnabled(true);
 		for (QAction *action: menuExportAll->actions()) {
 			action->setEnabled(false);
 		}
 		menuExportAll->actions().first()->setEnabled(true);
-		actionImport->setEnabled(false);
+		actionImport->setEnabled(true);
 	} else if (fieldArchive->nbFields() > 0) {
 		actionOpti->setEnabled(true);
 		buildGameLangMenu(fieldArchivePc->languages());
@@ -1041,33 +1041,33 @@ void MainWindow::exportAllBackground()
 
 void MainWindow::importCurrent()
 {
-    if (!currentField)	return;
-
+	if (!currentField)	return;
+	
 	QString path = savePath();
-    QStringList filter;
-    QList<int> typeList;
-
-    for (int i = 0; i < FILE_COUNT; ++i) {
-        if (i != Field::Background && i != Field::Jsm) {
+	QStringList filter;
+	QList<int> typeList;
+	
+	for (int i = 0; i < FILE_COUNT; ++i) {
+		if (i != Field::Background && i != Field::Jsm) {
 			if (currentField->hasFile(Field::FileType(i))) {
 				filter.append(currentField->getFile(Field::FileType(i))->filterText());
-                typeList.append(i);
-            }
-        }
-    }
-
-    if (filter.isEmpty()) {
-        QMessageBox::warning(this, tr("Error"), tr("This field does not contains enough information to be imported."));
-        return;
-    }
-
-    QString selectedFilter;
-    path = QFileDialog::getSaveFileName(this, tr("Import"), path, filter.join(";;"), &selectedFilter);
-    if (path.isNull())		return;
-
+				typeList.append(i);
+			}
+		}
+	}
+	
+	if (filter.isEmpty()) {
+		QMessageBox::warning(this, tr("Error"), tr("This field does not contains enough information to be imported."));
+		return;
+	}
+	
+	QString selectedFilter;
+	path = QFileDialog::getSaveFileName(this, tr("Import"), path, filter.join(";;"), &selectedFilter);
+	if (path.isNull())		return;
+	
 	if (!currentField->getFile(Field::FileType(typeList.at(filter.indexOf(selectedFilter))))->fromFile(path)) {
 		QMessageBox::warning(this, tr("Error"), currentField->getFile(Field::FileType(typeList.at(filter.indexOf(selectedFilter))))->errorString());
-    }
+	}
 }
 
 void MainWindow::optimizeArchive()

@@ -44,8 +44,8 @@ bool File::toFile(const QString &path)
 	QFile f(path);
 	if (f.open(QIODevice::WriteOnly)) {
 		QByteArray data;
-		bool ok;
-		if ((ok = save(data))) {
+		bool ok = saveForExport(data);
+		if (ok) {
 			f.write(data);
 		} else {
 			lastError = QObject::tr("Unknown error");
@@ -65,6 +65,12 @@ bool File::open(const QByteArray &)
 bool File::save(QByteArray &) const
 {
 	return false;
+}
+
+
+bool File::saveForExport(QByteArray &data)
+{
+	return save(data);
 }
 
 bool File::isModified() const

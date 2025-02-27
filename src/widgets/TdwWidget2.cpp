@@ -19,7 +19,7 @@
 #include "FF8Text.h"
 
 TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
-	QWidget(parent), isAdditionnalTable(isAdditionnalTable), ff8Font(0)
+	QWidget(parent), isAdditionnalTable(isAdditionnalTable), ff8Font(nullptr)
 {
 	tdwGrid = new TdwGrid(this);
 	tdwLetter = new TdwLetter(this);
@@ -32,18 +32,18 @@ TdwWidget2::TdwWidget2(bool isAdditionnalTable, QWidget *parent) :
 
 	selectTable = new QComboBox(this);
 
-	/* fromImage1 = new QPushButton(tr("À partir d'une image..."), this);
+	/* fromImage1 = new QPushButton(tr("From image..."), this);
 	fromImage1->setVisible(false);//TODO
-	fromImage2 = new QPushButton(tr("À partir d'une image..."), this);
+	fromImage2 = new QPushButton(tr("From image..."), this);
 	fromImage2->setVisible(false);//TODO */
-//	QPushButton *resetButton1 = new QPushButton(tr("Annuler les modifications"), this);//TODO
+//	QPushButton *resetButton1 = new QPushButton(tr("Cancel changes"), this);//TODO
 	textLetter = new QLineEdit(this);
 	textLetter->setReadOnly(isAdditionnalTable);
 	widthLetter = new QSpinBox(this);
 	widthLetter->setRange(0, 15);
 	widthLetter->setReadOnly(isAdditionnalTable);
 	exportButton = new QPushButton(tr("Export..."), this);
-	importButton = new QPushButton(tr("Importing..."), this);
+	importButton = new QPushButton(tr("Import..."), this);
 	resetButton2 = new QPushButton(tr("Cancel Changes"), this);
 	resetButton2->setEnabled(false);
 

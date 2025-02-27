@@ -19,7 +19,7 @@
 
 TdwPalette::TdwPalette(QWidget *parent) :
 	QWidget(parent), colorCount(16), _currentColor(0),
-	_currentPalette(TdwFile::White), readOnly(false), tdw(0)
+	_currentPalette(TdwFile::White), readOnly(false), tdw(nullptr)
 {
 }
 

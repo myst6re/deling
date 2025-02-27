@@ -23,6 +23,8 @@ Map *Field::worldmapFile = nullptr;
 Field::Field(const QString &name)
 	: _isOpen(false), _name(name)
 {
+	worldmapFile = nullptr;
+
 	for (int i = 0; i < FILE_COUNT; ++i) {
 		files.append(nullptr);
 	}
@@ -155,7 +157,7 @@ void Field::deleteFile(FileType fileType)
 {
 	File *f = getFile(fileType);
 
-	if (f != nullptr) {
+	if (f != nullptr && worldmapFile == nullptr) {
 		delete f;
 		files[fileType] = nullptr;
 	}
@@ -176,7 +178,7 @@ bool Field::hasFile(FileType fileType) const
 
 bool Field::hasMsdFile() const
 {
-	return hasFile(Msd) || hasWorldmapFile();
+	return hasFile(Msd);
 }
 
 bool Field::hasJsmFile() const
@@ -267,7 +269,7 @@ bool Field::hasFiles() const
 		}
 	}
 
-	return hasFiles2() || hasCharaFile() || hasWorldmapFile();
+	return hasFiles2() || hasCharaFile();
 }
 
 bool Field::hasFiles2() const
@@ -277,22 +279,16 @@ bool Field::hasFiles2() const
 
 File *Field::getFile(FileType fileType) const
 {
+	if (fileType == Msd && hasWorldmapFile()) {
+		return worldmapFile->textsPtr();
+	}
+
 	return files.at(fileType);
 }
 
 MsdFile *Field::getMsdFile() const
 {
-	MsdFile *ret = (MsdFile *)getFile(Msd);
-	
-	if (ret != nullptr) {
-		return ret;
-	}
-	
-	if (hasWorldmapFile()) {
-		return worldmapFile->textsPtr();
-	}
-	
-	return nullptr;
+	return (MsdFile *)getFile(Msd);
 }
 
 JsmFile *Field::getJsmFile() const

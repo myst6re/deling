@@ -274,7 +274,6 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 	QMap<Field *, QMap<QString, FsHeader> > oldFields;
 
 	for (Field *field: fields) {
-		qDebug() << field->name() << field->isModified() << field->hasWorldmapFile();
 		if (progress->observerWasCanceled()) {
 			temp.remove();
 			restoreFieldHeaders(oldFields);
@@ -371,7 +370,6 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 				qWarning() << errorMsg;
 			} else {
 				file = archive->filePath("*world\\dat\\wmset??.obj");
-				qDebug() << file;
 				pos = temp.pos();
 				archive->setFileData(file, wmsetData);
 				archive->setFilePosition(file, pos);

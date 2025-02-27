@@ -2240,7 +2240,7 @@ Dollet Harbor</translation>
     </message>
     <message>
         <source>Import...</source>
-        <translation type="vanished">Импорт...</translation>
+        <translation>Импорт...</translation>
     </message>
     <message>
         <source>Optimize the archive...</source>
@@ -3311,7 +3311,7 @@ Error message:
     </message>
     <message>
         <source>Import...</source>
-        <translation type="vanished">Импорт...</translation>
+        <translation>Импорт...</translation>
     </message>
     <message>
         <source>Cancel Changes</source>
@@ -3387,7 +3387,7 @@ Error message:
     </message>
     <message>
         <source>Importing...</source>
-        <translation>Импорт...</translation>
+        <translation type="vanished">Импорт...</translation>
     </message>
 </context>
 <context>

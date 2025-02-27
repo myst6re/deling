@@ -24,9 +24,10 @@ class MsdFile : public File
 {
 public:
 	MsdFile(bool paddedFormat = false);
-	bool open(const QByteArray &msd);
-	bool save(QByteArray &msd) const;
-	inline QString filterText() const {
+	bool open(const QByteArray &msd) override;
+	bool save(QByteArray &msd) const override;
+	bool saveForExport(QByteArray &msd) override;
+	inline QString filterText() const override {
 		return QObject::tr("Field dialogs PC file (*.msd)");
 	}
 	QByteArray data(int id) const;

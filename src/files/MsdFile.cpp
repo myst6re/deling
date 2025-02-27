@@ -106,6 +106,18 @@ bool MsdFile::save(QByteArray &msd) const
 	return true;
 }
 
+bool MsdFile::saveForExport(QByteArray &msd)
+{
+	bool paddedFormat = _paddedFormat;
+	_paddedFormat = false;
+
+	bool ret = save(msd);
+
+	_paddedFormat = paddedFormat;
+
+	return ret;
+}
+
 QByteArray MsdFile::data(int id) const
 {
 	return texts.value(id, QByteArray());
