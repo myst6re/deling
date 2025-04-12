@@ -22,6 +22,9 @@ cmake_policy(SET CMP0042 NEW)
 cmake_policy(SET CMP0074 NEW)
 cmake_policy(SET CMP0091 NEW)
 
+set(VCPKG_DISABLE_COMPILER_TRACKING 1)
+set(VCPKG_INSTALL_OPTIONS "--clean-after-build" "--x-use-aria2")
+
 set(RELEASE_NAME "Deling")
 set(GUI_TARGET "${RELEASE_NAME}")
 set(CLI_TARGET "deling-cli")
@@ -43,9 +46,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (MSVC)
     add_compile_options(/W3)
-    set(lz4_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lz4/lib/cmake/lz4")
-    set(ZLIB_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/zlib/include")
-    set(ZLIB_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/zlib/lib/zlibstatic.lib")
 else()
     add_compile_options(-Wall -Wextra -pedantic)
 endif()
@@ -75,7 +75,7 @@ add_compile_definitions(
 
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets OpenGLWidgets OpenGL LinguistTools REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(lz4 REQUIRED)
+find_package(lz4 CONFIG REQUIRED)
 
 set(LANGS
     fr
@@ -477,15 +477,15 @@ if(GUI)
 		Qt::Widgets
 		Qt::OpenGLWidgets
 		ZLIB::ZLIB
-		LZ4::lz4_static
+		lz4::lz4
 	)
-	
+
 	if(${QT_VERSION_MAJOR} EQUAL 6)
 		target_compile_definitions(${GUI_TARGET}
 			PRIVATE TASKBAR_BUTTON=1
 		)
 	endif()
-	
+
 	set_target_properties(${GUI_TARGET} PROPERTIES
 		MACOSX_BUNDLE_BUNDLE_NAME "Deling"
 		MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
@@ -494,10 +494,18 @@ if(GUI)
 		MACOSX_BUNDLE_GUI_IDENTIFIER org.myst6re.deling
 		MACOSX_BUNDLE_ICON_FILE ${RELEASE_NAME}.icns
 	)
-	
+
 	if(APPLE OR WIN32)
 		set_target_properties(${GUI_TARGET} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}")
 	endif()
+
+    if (WIN32)
+        target_compile_options(
+            ${GUI_TARGET}
+            PRIVATE /Qpar
+            PRIVATE /MP
+        )
+    endif()
 
     qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES} OPTIONS -no-ui-lines -locations none)
     # Force lupdate
@@ -510,11 +518,18 @@ if(CLI)
     target_link_libraries(${CLI_TARGET} PRIVATE
         Qt::Gui
         ZLIB::ZLIB
-        LZ4::lz4_static
+        lz4::lz4
     )
     target_compile_definitions(${CLI_TARGET}
         PRIVATE DELING_CONSOLE=1 QT_NO_DEBUG_OUTPUT=1
     )
+    if(WIN32)
+        target_compile_options(
+            ${CLI_TARGET}
+            PRIVATE /Qpar
+            PRIVATE /MP
+        )
+    endif()
 endif()
 
 include(GNUInstallDirs)

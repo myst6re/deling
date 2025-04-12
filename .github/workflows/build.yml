@@ -35,7 +35,7 @@ jobs:
         - os: macos-latest
           package_extension: 'dmg'
           package_suffix: 'macos'
-          cmake_extra_args: "-DCMAKE_OSX_ARCHITECTURES=\"arm64;x86_64\""
+          cmake_extra_args: "-DCMAKE_OSX_ARCHITECTURES=\"arm64;x86_64\" -DVCPKG_TARGET_TRIPLET=\"universal-osx\""
         - os: windows-latest
           package_extension: 'zip'
           package_suffix: 'win64'
@@ -51,25 +51,33 @@ jobs:
 
     env:
       qt_installation_path: ${{ github.workspace }}
-      lz4_path: ${{ github.workspace }}/../lz4-git
-      lz4_build_path: ${{ github.workspace }}/../build-lz4-git
-      lz4_installation_path: ${{ github.workspace }}/../lz4
-      lz4_version: "dev"
       deling_build_path: ${{ github.workspace }}/../build-deling
       deling_installation_path: ${{ github.workspace }}/../installation-deling
       deling_appbundle_path: ${{ github.workspace }}/../appbundle-deling
       CMAKE_GENERATOR: Ninja
       CMAKE_BUILD_TYPE: ${{ matrix.build_type }}
+      CMAKE_TOOLCHAIN_FILE: ${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
 
     - name: Env Script (Windows)
       uses: ilammy/msvc-dev-cmd@v1
       if: runner.os == 'Windows'
       with:
         arch: ${{ matrix.win_arch }}
+
+    - name: Add universal-osx triplet
+      shell: bash
+      if: runner.os == 'macOS'
+      run: |
+        cd ${{ github.workspace }}/vcpkg/triplets
+        cp arm64-osx.cmake universal-osx.cmake
+        sed -i '' 's|set(VCPKG_OSX_ARCHITECTURES arm64)|set(VCPKG_OSX_ARCHITECTURES "arm64;x86_64")|' universal-osx.cmake
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
@@ -95,20 +103,6 @@ jobs:
       run: |
         echo "PRERELEASE_STRING= unstable build" >> $GITHUB_ENV
 
-    - name: Cache lz4
-      id: cache-lz4
-      uses: actions/cache@v4
-      with:
-        path: ${{ env.lz4_installation_path }}
-        key: ${{ runner.os }}${{ matrix.win_arch }}-lz4-${{ env.lz4_version}}
-
-    - name: Install lz4
-      if: steps.cache-lz4.outputs.cache-hit != 'true'
-      run: |
-        git clone -q --depth 1 --single-branch --branch=${{ env.lz4_version }} https://github.com/lz4/lz4 ${{ env.lz4_path }}
-        cmake -S${{ env.lz4_path }}/build/cmake -B${{ env.lz4_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.lz4_installation_path }} -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_STATIC_LIBS:BOOL=ON -DLZ4_BUILD_LEGACY_LZ4C:BOOL=OFF -DLZ4_POSITION_INDEPENDENT_LIB:BOOL=OFF -DLZ4_BUILD_CLI:BOOL=OFF ${{ matrix.cmake_extra_args }}
-        cmake --build ${{ env.lz4_build_path }} --target install -j3
-
     - name: Download linuxdeployqt
       if: runner.os == 'Linux'
       run: |
@@ -122,7 +116,7 @@ jobs:
     - name: Build Deling
       id: main_build
       run: |
-        cmake -B ${{ env.deling_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.deling_installation_path }} -DCLI:BOOL=${{ matrix.cmake_cli_arg }} -DGUI:BOOL=${{ matrix.cmake_gui_arg }} -DPRERELEASE_STRING="$PRERELEASE_STRING" -Dlz4_DIR=${{ env.lz4_installation_path }}/lib/cmake/lz4 ${{ matrix.cmake_extra_args }}
+        cmake -B ${{ env.deling_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.deling_installation_path }} -DCLI:BOOL=${{ matrix.cmake_cli_arg }} -DGUI:BOOL=${{ matrix.cmake_gui_arg }} -DPRERELEASE_STRING="$PRERELEASE_STRING" -DCMAKE_TOOLCHAIN_FILE=${{ env.CMAKE_TOOLCHAIN_FILE }} ${{ matrix.cmake_extra_args }}
         cmake --build ${{ env.deling_build_path }} --target package -j3
 
     - name: Build AppImage (Linux)
