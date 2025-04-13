@@ -68,7 +68,7 @@ Close and reopen your terminal.
 
 ```sh
 $ mkdir -p .dist/build .dist/install
-$ cmake -S . -B .dist/build -DCMAKE_INSTALL_PREFIX=.dist/install -DCMAKE_BUILD_TYPE=Debug
+$ cmake --preset=vcpkg -S . -B .dist/build -DCMAKE_INSTALL_PREFIX=.dist/install -DCMAKE_BUILD_TYPE=Debug
 $ cmake --build .dist/build --config Debug
 ```
 
@@ -92,7 +92,7 @@ $ pacman -S --needed base-devel cmake qt6
 
 ```sh
 $ mkdir -p .dist/build .dist/install
-$ cmake -S . -B .dist/build -DCMAKE_INSTALL_PREFIX=.dist/install -DCMAKE_BUILD_TYPE=Debug
+$ cmake --preset=vcpkg -S . -B .dist/build -DCMAKE_INSTALL_PREFIX=.dist/install -DCMAKE_BUILD_TYPE=Debug
 $ cmake --build .dist/build --config Debug
 ```
 
