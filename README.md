@@ -1,6 +1,6 @@
 # Deling
 
-[![CI/CD](https://github.com/myst6re/makoureactor/actions/workflows/build.yml/badge.svg)](https://github.com/myst6re/makoureactor/actions/workflows/build.yml)
+[![CI/CD](https://github.com/myst6re/deling/actions/workflows/build.yml/badge.svg)](https://github.com/myst6re/deling/actions/workflows/build.yml)
 
 ![Deling](src/qt/images/Deling.png)
 
@@ -19,47 +19,37 @@ instructions below.
 
 ### Windows
 
-#### Required: Qt
+#### Qt + Qt Creator
 
-0) Download the online installer from https://www.qt.io/download-qt-installer ( remember to click the Download button )
-1) Install Qt with these items checked:
-   - **Packages categories:** `Latest supported releases`
-   - **Components:** Uncheck everything and pick `Qt/Qt 6.*.*/MSVC 20?? 64-bit`
-   - [Optional] To open the project with Qt Creator (easier), check `Developer and Designer Tools/Qt Creator` and `Developer and Designer Tools/CMake`
+0. Download the online installer from https://www.qt.io/download-qt-installer
+1. Install Qt 6 with these items checked:
+   - **Qt/Qt 6.x.x (last version):** Check `MSVC 2022 64-bit`, `Qt Creator`, `Qt Shader Tools` and `Qt 5 Compatibility Module`
+   - **Developer And Designer Tools:** Check `CMake` and `Ninja`
+2. Run Qt Creator and open an existing project, select the CMakeLists.txt in the source directory of Deling
 
-#### Required: MSVC Compiler
+#### Visual Studio
 
-0) Download the the latest [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) installer (2019 or 2022 depending of what you checked when installing Qt)
-1) Run the installer, check "Desktop developement C++", or per component, at least:
-   - `Compiler/MSVC C++ x64/86` (last version)
-   - [Optional] To open the project with Visual Studio or Visual Studio Code, check `Compiler/CMake C++ Tools for Windows`, `Dev/Base C++ features`, `Dev/IntelliCode`
+> **Please note:**
+>
+> By default Visual Studio will pick the **x86-Release** build configuration, but you can choose any other profile available.
 
-#### Optional: Qt Creator (easier)
-
-Open the project (`File` > `Open File or Project...` > `CMakeLists.txt`) and setup Qt. Select Debug or Release build and then run the project (`CTRL + R`).
-
-To deploy the project with Qt dependencies you can add an extra "cmake install" step in "Run settings" of the project.
-
-#### Optional: Visual Studio
-
-Open this repository **as a folder** and click the build button.
-
-To execute the project you need Qt dependencies where the exe is created. You can do (replace `{QT_DIR}` by where Qt is installed):
-```sh
-{QT_DIR}/*/msvc2019_64/bin/windeployqt --no-quick-import -xml --translations en {build_dir}
-```
+0. **REQUIRED!** Follow the steps to install Qt, if you didn't already
+1. Download the the latest [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) installer
+2. Run the installer and import this [.vsconfig](.vsconfig) file in the installer to pick the required components to build this project
+3. Make sure you select the English Language pack in the language list before clicking Install
+4. Once installed, open this repository **as a folder** in Visual Studio 2022 and click the build button.
 
 #### Optional: Visual Studio Code
 
-1) Download and install the latest [Visual Studio Code](https://code.visualstudio.com/) release
-2) Install the following extensions:
+0. **REQUIRED!** Follow the steps to install Qt, if you didn't already
+1. **REQUIRED!** Follow the steps to install Visual Studio, if you didn't already
+2. Download and install the latest [Visual Studio Code](https://code.visualstudio.com/) release
+3. Install the following extensions:
    - https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools
    - https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools
-3) Open this repository as a folder in Visual Studio code
-4) Choose as build profile in the status bar `CMake: [Release]` ( or one of the aforementioned profiles )
-5) Click the button on the status bar `Build`
-
-To execute the project, follow the instructions from "Optional: Visual Studio" section.
+4. Open this repository as a folder in Visual Studio code
+5. Choose as build profile in the status bar `CMake: [Release]` (or one of the aforementioned profiles)
+6. Click the button on the status bar `Build`
 
 ### macOS
 
