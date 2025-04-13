@@ -56,7 +56,6 @@ jobs:
       deling_appbundle_path: ${{ github.workspace }}/../appbundle-deling
       CMAKE_GENERATOR: Ninja
       CMAKE_BUILD_TYPE: ${{ matrix.build_type }}
-      CMAKE_TOOLCHAIN_FILE: ${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
 
     steps:
@@ -116,7 +115,7 @@ jobs:
     - name: Build Deling
       id: main_build
       run: |
-        cmake -B ${{ env.deling_build_path }} -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.deling_installation_path }} -DCLI:BOOL=${{ matrix.cmake_cli_arg }} -DGUI:BOOL=${{ matrix.cmake_gui_arg }} -DPRERELEASE_STRING="$PRERELEASE_STRING" -DCMAKE_TOOLCHAIN_FILE=${{ env.CMAKE_TOOLCHAIN_FILE }} ${{ matrix.cmake_extra_args }}
+        cmake -B ${{ env.deling_build_path }} --preset=vcpkg -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ env.deling_installation_path }} -DCLI:BOOL=${{ matrix.cmake_cli_arg }} -DGUI:BOOL=${{ matrix.cmake_gui_arg }} -DPRERELEASE_STRING="$PRERELEASE_STRING" ${{ matrix.cmake_extra_args }}
         cmake --build ${{ env.deling_build_path }} --target package -j3
 
     - name: Build AppImage (Linux)
