@@ -16,7 +16,7 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.25)
 cmake_policy(SET CMP0010 NEW)
 cmake_policy(SET CMP0042 NEW)
 cmake_policy(SET CMP0074 NEW)
@@ -24,6 +24,7 @@ cmake_policy(SET CMP0091 NEW)
 
 set(VCPKG_DISABLE_COMPILER_TRACKING 1)
 set(VCPKG_INSTALL_OPTIONS "--clean-after-build" "--x-use-aria2")
+set(X_VCPKG_APPLOCAL_DEPS_INSTALL ON)
 
 set(RELEASE_NAME "Deling")
 set(GUI_TARGET "${RELEASE_NAME}")
