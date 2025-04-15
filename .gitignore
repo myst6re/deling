@@ -449,7 +449,5 @@ compile_commands.json
 *_qmlcache.qrc
 
 # Custom
-.dist
-
-#msvc builds cmake in out/build
-out/*
+.build
+.install
