@@ -23,7 +23,7 @@ cmake_policy(SET CMP0074 NEW)
 cmake_policy(SET CMP0091 NEW)
 
 set(VCPKG_DISABLE_COMPILER_TRACKING 1)
-set(VCPKG_INSTALL_OPTIONS "--clean-after-build" "--x-use-aria2")
+set(VCPKG_INSTALL_OPTIONS "--clean-after-build")
 set(X_VCPKG_APPLOCAL_DEPS_INSTALL ON)
 
 set(RELEASE_NAME "Deling")
