@@ -19,6 +19,15 @@
 #include "QLZ4.h"
 #include "LZS.h"
 #include "ArchiveObserver.h"
+#include "QRegularExpressionWildcardCompat.h"
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
+using WildcardConversionOptions = RegexWildcardConversionOptions;
+constexpr auto NonPathWildcardConversion = RegexNonPathWildcardConversion;
+#else
+using WildcardConversionOptions = QRegularExpression::WildcardConversionOptions;
+constexpr auto NonPathWildcardConversion = QRegularExpression::NonPathWildcardConversion;
+#endif
 
 FsHeader::FsHeader()
     : _uncompressedSize(0), _position(quint32(-1)), _compression(quint32(CompressionNone))
@@ -363,7 +372,7 @@ FsHeader *FsArchive::getFile(const QString &path) const
 
 		if (path2.contains('*') || path2.contains('?'))
 		{
-			QRegularExpression expr = QRegularExpression::fromWildcard(path2, Qt::CaseInsensitive, QRegularExpression::WildcardConversionOptions(QRegularExpression::UnanchoredWildcardConversion | QRegularExpression::NonPathWildcardConversion));
+			QRegularExpression expr = fromWildcard(path2, Qt::CaseInsensitive, WildcardConversionOptions(QRegularExpression::UnanchoredWildcardConversion | NonPathWildcardConversion));
 			expr.setPattern(expr.pattern().append("$"));
 			
 			while (i.hasNext())
