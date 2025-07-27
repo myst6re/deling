@@ -23,7 +23,7 @@ instructions below.
 
 0. Download the online installer from https://www.qt.io/download-qt-installer
 1. Install Qt 6 with these items checked:
-   - **Qt/Qt 6.x.x (last version):** Check `MSVC 2022 64-bit`, `Qt Creator`, `Qt Shader Tools` and `Qt 5 Compatibility Module`
+   - **Qt/Qt 6.x.x (last version):** Check `MSVC 2022 64-bit`, `Qt Creator`, `Qt Shader Tools`
    - **Developer And Designer Tools:** Check `CMake` and `Ninja`
 2. Run Qt Creator and open an existing project, select the CMakeLists.txt in the source directory of Deling
 
