@@ -16,8 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-#ifndef QREGULAREXPRESSIONWILDCARDCOMPAT_H
-#define QREGULAREXPRESSIONWILDCARDCOMPAT_H
+#pragma once
 
 #include <QRegularExpression>
 #include <QtGlobal>
@@ -45,6 +44,9 @@ QString wildcardToRegularExpression(
     RegexWildcardConversionOptions options = RegexNoWildcardConversion
 );
 
+using WildcardConversionOptions = RegexWildcardConversionOptions;
+constexpr auto NonPathWildcardConversion = RegexNonPathWildcardConversion;
+
 #else
 
 // Qt ≥ 6.6 — Use built-in Qt API
@@ -63,6 +65,7 @@ inline QString wildcardToRegularExpression(
     return QRegularExpression::wildcardToRegularExpression(wildcard, options);
 }
 
-#endif // QT_VERSION
+using WildcardConversionOptions = QRegularExpression::WildcardConversionOptions;
+constexpr auto NonPathWildcardConversion = QRegularExpression::NonPathWildcardConversion;
 
-#endif // QREGULAREXPRESSIONWILDCARDCOMPAT_H
+#endif // QT_VERSION

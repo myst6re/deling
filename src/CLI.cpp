@@ -30,14 +30,6 @@
 #include <QCoreApplication>
 #include "QRegularExpressionWildcardCompat.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
-using WildcardConversionOptions = RegexWildcardConversionOptions;
-constexpr auto NonPathWildcardConversion = RegexNonPathWildcardConversion;
-#else
-using WildcardConversionOptions = QRegularExpression::WildcardConversionOptions;
-constexpr auto NonPathWildcardConversion = QRegularExpression::NonPathWildcardConversion;
-#endif
-
 constexpr int BUFFER_SIZE = 4000000;
 
 void CLIObserver::setObserverValue(int value)

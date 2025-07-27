@@ -21,14 +21,6 @@
 #include "ArchiveObserver.h"
 #include "QRegularExpressionWildcardCompat.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
-using WildcardConversionOptions = RegexWildcardConversionOptions;
-constexpr auto NonPathWildcardConversion = RegexNonPathWildcardConversion;
-#else
-using WildcardConversionOptions = QRegularExpression::WildcardConversionOptions;
-constexpr auto NonPathWildcardConversion = QRegularExpression::NonPathWildcardConversion;
-#endif
-
 FsHeader::FsHeader()
     : _uncompressedSize(0), _position(quint32(-1)), _compression(quint32(CompressionNone))
 {
