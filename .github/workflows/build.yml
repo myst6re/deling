@@ -37,25 +37,30 @@ jobs:
         - os: ubuntu-latest
           package_extension: 'tar.xz'
           package_suffix: 'linux_x64'
+          qt_host: linux
         - os: ubuntu-24.04-arm
           package_extension: 'tar.xz'
           package_suffix: 'linux_arm64'
+          qt_host: linux_arm64 
         - os: macos-latest
           package_extension: 'dmg'
           package_suffix: 'macos'
           cmake_extra_args: "-DCMAKE_OSX_ARCHITECTURES=\"arm64;x86_64\" -DVCPKG_TARGET_TRIPLET=\"universal-osx\""
+          qt_host: mac
         - os: windows-latest
           package_extension: 'zip'
           package_suffix: 'win_x64'
           win_arch: "x64"
           qt_arch: win64_msvc2022_64
           qt_tools: tools_ninja, tools_cmake
+          qt_host: windows
         - os: windows-11-arm
           package_extension: 'zip'
           package_suffix: 'win_arm64'
           win_arch: "arm64"
-          qt_arch: win64_msvc2022_arm64
+          qt_arch: win64_msvc2022_arm64_cross_compiled
           qt_tools: tools_ninja, tools_cmake
+          qt_host: windows
         - interface: gui
           cmake_cli_arg: 'OFF'
           cmake_gui_arg: 'ON'
@@ -118,6 +123,7 @@ jobs:
       with:
        dir: ${{ env.qt_installation_path }}
        arch: ${{ matrix.qt_arch }}
+       host: ${{ matrix.qt_host }}
        version: ${{ matrix.qt }}
        cache: true
        tools: ${{ matrix.qt_tools }}
