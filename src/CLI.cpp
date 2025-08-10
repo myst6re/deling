@@ -28,6 +28,7 @@
 #include "FieldArchivePC.h"
 #include <iostream>
 #include <QCoreApplication>
+#include "QRegularExpressionWildcardCompat.h"
 
 constexpr int BUFFER_SIZE = 4000000;
 
@@ -284,10 +285,10 @@ QStringList CLI::filteredFiles(const QStringList &fileList, const QStringList &i
 	QList<QRegularExpression> includes, excludes;
 
 	for (const QString &pattern: includePatterns) {
-		includes.append(QRegularExpression(QRegularExpression::wildcardToRegularExpression(pattern, QRegularExpression::NonPathWildcardConversion)));
+		includes.append(QRegularExpression(wildcardToRegularExpression(pattern, NonPathWildcardConversion)));
 	}
 	for (const QString &pattern: excludePatterns) {
-		excludes.append(QRegularExpression(QRegularExpression::wildcardToRegularExpression(pattern, QRegularExpression::NonPathWildcardConversion)));
+		excludes.append(QRegularExpression(wildcardToRegularExpression(pattern, NonPathWildcardConversion)));
 	}
 
 	for (const QString &entry: fileList) {
