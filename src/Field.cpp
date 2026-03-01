@@ -439,7 +439,7 @@ void Field::setModified(bool modified)
 			f->setModified(modified);
 		}
 	}
-	
+
 	if (hasMsdFile()) {
 		getMsdFile()->setModified(modified);
 	}

@@ -28,7 +28,9 @@ FsWidget::FsWidget(QWidget *parent) :
 	dirIcon = QFileIconProvider().icon(QFileIconProvider::Folder);
 	tmp.setFileName(QDir::tempPath() % "/deling");
 	if (!tmp.isOpen()) {
-		tmp.open(QIODevice::WriteOnly);
+		if (!tmp.open(QIODevice::WriteOnly)) {
+			qWarning() << "Unable to open temp archive" << tmp.errorString();
+		}
 	}
 	setAcceptDrops(true);
 	setIndentation(0);

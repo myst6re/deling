@@ -196,7 +196,9 @@ void TexFile::debug()
 	TexStruct h = header;
 
 	QFile f("debugTex.txt");
-	f.open(QIODevice::WriteOnly);
+	if (!f.open(QIODevice::WriteOnly)) {
+		return;
+	}
 	f.write(QString("version= %1 | unknown1= %2 | hasColorKey= %3 | unknown2= %4 | unknown3= %5\n")
 	            .arg(h.version).arg(h.unknown1).arg(h.hasColorKey).arg(h.unknown2).arg(h.unknown3).toLatin1());
 	f.write(QString("minBitsPerColor= %1 | maxBitsPerColor= %2 | minAlphaBits= %3 | maxAlphaBits= %4 | minBitsPerPixel= %5\n")

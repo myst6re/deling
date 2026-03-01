@@ -584,7 +584,9 @@ bool FsArchive::extractFile(const QString &fileName, const QByteArray &fs_data, 
 	if (!_isOpen)	return false;
 
 	QFile fic(filePath);
-	fic.open(QIODevice::WriteOnly);
+	if (!fic.open(QIODevice::WriteOnly)) {
+		return false;
+	}
 	fic.write(fileData(fileName, fs_data, uncompress));
 	fic.close();
 
@@ -596,7 +598,9 @@ bool FsArchive::extractFile(const QString &fileName, const QString &filePath, bo
 	if (!fromFile || !_isOpen)	return false;
 
 	QFile fic(filePath);
-	fic.open(QIODevice::WriteOnly);
+	if (!fic.open(QIODevice::WriteOnly)) {
+		return false;
+	}
 	fic.write(fileData(fileName, uncompress));
 	fic.close();
 
@@ -1048,7 +1052,9 @@ int FsArchive::replaceArchive(QFile *newFile)
 
 	if (!fs.remove()) {
 		qWarning() << "Impossible to remove the fs" << fs.errorString();
-		fs.open(QIODevice::ReadWrite);
+		if (!fs.open(QIODevice::ReadWrite)) {
+			qWarning() << "Unable to reopen the file" << fs.errorString();
+		}
 		return 1;
 	}
 

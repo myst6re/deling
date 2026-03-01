@@ -41,6 +41,7 @@ private slots:
 	void openDir();
 	void parentDir();
 	void extract(QStringList sources = QStringList());
+	void extractAsChunks();
 	void replace(QString source = QString(), QString destination = QString());
 	void addFile(QStringList sources = QStringList());
 	void addDirectory(QString source = QString());
@@ -49,6 +50,8 @@ private slots:
 	void renameOK(QTreeWidgetItem *item, int row);
 	void exportImages();
 private:
+	static QList<QTreeWidgetItem *> filterChunkable(const QList<QTreeWidgetItem *> &selectedItems);
+	static QList<QByteArray> splitIntoChunks(const QByteArray &data, const QString &filename);
 	void generatePreview();
 	void add(const QStringList &sources, bool fromDir = false);
 	void openDir(const QString &dirPath);
@@ -56,7 +59,7 @@ private:
 	static FiCompression compressionMessage(QWidget *parent);
 
 	QToolBar *toolBar;
-	QAction *extractAction, *replaceAction, *_addFileAction, *_addDirAction, *removeAction, *renameAction;
+	QAction *extractAction, *extractAsChunksAction, *replaceAction, *_addFileAction, *_addDirAction, *removeAction, *renameAction;
 	FsWidget *list;
 	FsPreviewWidget *preview;
 	QPushButton *up;

@@ -62,7 +62,7 @@ public:
 	inline QString filterText() const {
 		return QObject::tr("Field gate and doors PC File (*.inf)");
 	}
-    QString getMapName() const;
+	QString getMapName() const;
 	void setMapName(const QString &mapName);
 	quint8 controlDirection() const;
 	void setControlDirection(quint8 controlDirection);

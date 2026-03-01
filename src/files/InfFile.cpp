@@ -127,7 +127,7 @@ bool InfFile::save(QByteArray &inf) const
 
 QString InfFile::getMapName() const
 {
-	return QString(QByteArray(infStruct.name, 8));
+	return QString(QByteArray(infStruct.name, strnlen(infStruct.name, 8)));
 }
 
 void InfFile::setMapName(const QString &mapName)

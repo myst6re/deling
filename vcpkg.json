@@ -4,7 +4,6 @@
   "builtin-baseline": "ce613c41372b23b1f51333815feb3edd87ef8a8b",
   "dependencies": [
     "lz4",
-    "vulkan-headers",
     "zlib"
   ],
   "overrides": [
@@ -12,11 +11,6 @@
       "name": "lz4",
       "version": "1.10.0",
       "port-version": 0
-    },
-    {
-      "name": "vulkan-headers",
-      "version": "1.4.304.1",
-      "port-version": 1
     },
     {
       "name": "zlib",

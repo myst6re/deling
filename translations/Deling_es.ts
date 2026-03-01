@@ -2004,6 +2004,10 @@ Dollet Harbor</source>
         <translation>Ctrl+E</translation>
     </message>
     <message>
+        <source>Extract As Chunks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Ctrl+R</source>
         <comment>Replace</comment>
         <translation>Ctrl+R</translation>

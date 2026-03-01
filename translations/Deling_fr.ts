@@ -1988,6 +1988,10 @@ Dollet Harbor</source>
         <translation>Supprimer</translation>
     </message>
     <message>
+        <source>Extract As Chunks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Add File</source>
         <translation>Ajouter fichier</translation>
     </message>

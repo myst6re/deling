@@ -1981,6 +1981,10 @@ Dollet Harbor</translation>
         <translation>Удалить</translation>
     </message>
     <message>
+        <source>Extract As Chunks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Add File</source>
         <translation>Добавить файл</translation>
     </message>

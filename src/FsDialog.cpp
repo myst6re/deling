@@ -33,6 +33,7 @@ FsDialog::FsDialog(FsArchive *fsArchive, QWidget *parent) :
 	toolBar = new QToolBar(this);
 	extractAction = toolBar->addAction(tr("Extract"), this, SLOT(extract()));
 	extractAction->setShortcut(QKeySequence(tr("Ctrl+E", "Extract")));
+	extractAsChunksAction = toolBar->addAction(tr("Extract As Chunks"), this, SLOT(extractAsChunks()));
 	replaceAction = toolBar->addAction(tr("Replace"), this, SLOT(replace()));
 	replaceAction->setShortcut(QKeySequence(tr("Ctrl+R", "Replace")));
 	_addFileAction = toolBar->addAction(tr("Add File"), this, SLOT(addFile()));
@@ -94,6 +95,19 @@ void FsDialog::setCurrentPath(const QString &path)
 	openDir(path);
 }
 
+QList<QTreeWidgetItem *> FsDialog::filterChunkable(const QList<QTreeWidgetItem *> &selectedItems)
+{
+	QList<QTreeWidgetItem *> ret;
+
+	for (QTreeWidgetItem *item: selectedItems) {
+		if (item->text(0).contains(QRegularExpression("c0m\\d{3}\\.dat"))) {
+			ret.append(item);
+		}
+	}
+
+	return ret;
+}
+
 void FsDialog::setButtonsEnabled()
 {
 	QList<QTreeWidgetItem *> selectedItems = list->selectedItems();
@@ -124,6 +138,7 @@ void FsDialog::setButtonsEnabled()
 		removeAction->setEnabled(true);
 		renameAction->setEnabled(false);
 	}
+	extractAsChunksAction->setEnabled(!filterChunkable(selectedItems).isEmpty());
 
 	if (fsArchive && !fsArchive->isWritable()) {
 		replaceAction->setEnabled(false);
@@ -456,6 +471,91 @@ void FsDialog::extract(QStringList sources)
 
 		Config::setValue("extractPath", destination);
 	}
+}
+
+void FsDialog::extractAsChunks()
+{
+	QStringList sources;
+	QString destination, source;
+	QList<QTreeWidgetItem *> items = filterChunkable(list->selectedItems());
+	if (items.isEmpty())			return;
+
+	for (QTreeWidgetItem *item: items) {
+		source = currentPath % item->text(0);
+		if (item->data(0, FILE_TYPE_ROLE).toInt() == FILE) {
+			sources.append(source);
+		} else {
+			sources.append(listFilesInDir(source));
+		}
+	}
+
+	if (sources.isEmpty())	return;
+
+	destination = QFileDialog::getExistingDirectory(this, tr("Extract As Chunks"), QDir::cleanPath(Config::value("extractPath").toString()));
+
+	if (destination.isEmpty())	return;
+
+	for (const QString &source: sources) {
+		QByteArray data = fsArchive->fileData(source);
+		QList<QByteArray> chunks = splitIntoChunks(data, source);
+		QDir dir(destination);
+		int chunkId = 1, sizeOfBaseFileName = currentPath.size();
+
+		for (const QByteArray &chunk: chunks) {
+			QString fileName = QString("%1.chunk.%2").arg(source).arg(chunkId++);
+			fileName = FsArchive::cleanPath(fileName);
+			fileName.chop(1);
+			int index = fileName.lastIndexOf('\\');
+			if (index - sizeOfBaseFileName > 0) {
+				dir.mkpath(QDir::cleanPath(fileName.mid(sizeOfBaseFileName, index-sizeOfBaseFileName)));
+			}
+
+			QFile fic(QDir::cleanPath(destination % QDir::separator() % fileName.mid(sizeOfBaseFileName).replace('\\', '/')));
+			if (!fic.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+				QMessageBox::warning(this, tr("Error"), tr("The files were not extracted!"));
+				return;
+			}
+			fic.write(chunk);
+			fic.close();
+		}
+	}
+
+	Config::setValue("extractPath", destination.left(destination.lastIndexOf('/')));
+}
+
+QList<QByteArray> FsDialog::splitIntoChunks(const QByteArray &data, const QString &filename)
+{
+	Q_UNUSED(filename)
+
+	QList<QByteArray> ret;
+	const quint32 *constData = (const quint32 *)data.constData();
+
+	if (data.size() < 4) {
+		return ret;
+	}
+
+	quint32 sectionCount = constData[0];
+
+	if (sectionCount != 11 || data.size() < 4 * (11 + 2)) {
+		return ret;
+	}
+
+	for (quint32 i = 0; i < sectionCount; ++i) {
+		quint32 pos = constData[i + 1];
+
+		if (pos > data.size()) {
+			return ret;
+		}
+
+		qint32 size = constData[i + 2] - pos;
+		if (size < 0) {
+			return ret;
+		}
+		QByteArray chunk = data.mid(pos, size);
+		ret.append(chunk);
+	}
+
+	return ret;
 }
 
 void FsDialog::replace(QString source, QString destination)

@@ -1993,6 +1993,10 @@ Dollet Harbor</source>
         <translation>削除</translation>
     </message>
     <message>
+        <source>Extract As Chunks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Add File</source>
         <translation type="unfinished">Add File</translation>
     </message>
