@@ -517,8 +517,9 @@ bool JsmPseudoCompiler::parseFunctionCall(const QString &name, JsmData &result,
 			// No args — emit opcode with no param
 			result.append(JsmOpcode(opcode));
 		} else {
-			// Push stack args (all except first) in reverse order
-			for (int i = argDatas.size() - 1; i >= 1; --i) {
+			// Push stack args (all except first) in forward order
+			// The decompiler inverts the stack before display, so first pushed = first displayed
+			for (int i = 1; i < argDatas.size(); ++i) {
 				result += argDatas[i];
 			}
 			// First arg is the inline param — try to extract a literal
@@ -538,8 +539,8 @@ bool JsmPseudoCompiler::parseFunctionCall(const QString &name, JsmData &result,
 			}
 		}
 	} else {
-		// No inline param — all args are stack args, push in reverse
-		for (int i = argDatas.size() - 1; i >= 0; --i) {
+		// No inline param — all args are stack args, push in forward order
+		for (int i = 0; i < argDatas.size(); ++i) {
 			result += argDatas[i];
 		}
 		result.append(JsmOpcode(opcode));
