@@ -37,6 +37,7 @@ protected:
 private:
 	void highlightBlockPseudoCode(const QString &text);
 	void highlightBlockOpcodes(const QString &text);
+	bool isDarkMode() const;
 	void applyReg(const QString &text, const QRegularExpression &regExp,
 	              const QTextCharFormat &format);
 	void applyReg(const QString &text, const QRegularExpression &regExp,

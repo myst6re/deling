@@ -19,6 +19,8 @@
 #include "3d/WalkmeshGLWidget.h"
 #include "Config.h"
 #include "Data.h"
+#include "JsmHelpDialog.h"
+#include "JsmPseudoCompiler.h"
 
 JsmWidget::JsmWidget(QWidget *parent)
     : PageWidget(parent), mainModels(nullptr), fieldArchive(nullptr),
@@ -71,7 +73,7 @@ void JsmWidget::build()
 
 	tabBar = new QTabBar(this);
 	tabBar->setDrawBase(false);
-	tabBar->addTab(tr("Pseudo-code"));
+	tabBar->addTab(tr("Code"));
 	tabBar->addTab(tr("Instructions"));
 
 	PlainTextEdit *te = new PlainTextEdit(this);
@@ -106,6 +108,20 @@ void JsmWidget::build()
 	toolBar->addWidget(errorWidget);
 	toolBar->setEnabled(false);
 
+	// Pseudo-code toolbar with compile and help buttons
+	pseudoToolBar = new QToolBar(this);
+	QAction *pseudoCompileAction = pseudoToolBar->addAction(tr("Compile"), this, SLOT(compilePseudo()));
+	pseudoCompileAction->setToolTip(tr("Compile pseudo-code to opcodes (Ctrl+Shift+B)"));
+	pseudoCompileAction->setStatusTip(tr("Compile pseudo-code to opcodes (Ctrl+Shift+B)"));
+	pseudoCompileAction->setShortcutContext(Qt::ApplicationShortcut);
+	pseudoCompileAction->setShortcut(QKeySequence("Ctrl+Shift+B"));
+	QAction *helpAction = pseudoToolBar->addAction(tr("Help"), this, SLOT(showHelp()));
+	helpAction->setToolTip(tr("Script reference (F1)"));
+	helpAction->setStatusTip(tr("Script reference (F1)"));
+	helpAction->setShortcutContext(Qt::ApplicationShortcut);
+	helpAction->setShortcut(QKeySequence("F1"));
+	pseudoToolBar->setEnabled(false);
+
 	QGridLayout *mainLayout = new QGridLayout(this);
 	mainLayout->addWidget(warningWidget, 0, 0, 1, 4);
 	mainLayout->addLayout(list1Layout, 1, 0, 3, 1);
@@ -113,6 +129,7 @@ void JsmWidget::build()
 	mainLayout->addWidget(tabBar, 1, 2, 1, 2);
 	mainLayout->addWidget(te, 2, 2);
 	mainLayout->addWidget(textEdit, 2, 3);
+	mainLayout->addWidget(pseudoToolBar, 3, 2, 1, 2);
 	mainLayout->addWidget(toolBar, 3, 2, 1, 2);
 	mainLayout->setContentsMargins(QMargins());
 
@@ -120,7 +137,7 @@ void JsmWidget::build()
 
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillList2()));
 	connect(list2, SIGNAL(itemSelectionChanged()), SLOT(fillTextEdit()));
-	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(fillTextEdit()));
+	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(onTabChanged(int)));
 	connect(textEdit, SIGNAL(lineHovered(QString,QPoint)), SLOT(showPreview(QString,QPoint)));
 
 	PageWidget::build();
@@ -145,8 +162,61 @@ void JsmWidget::compile()
 		pal.setColor(QPalette::Inactive, QPalette::ButtonText, Qt::darkGreen);
 		errorLabel->setPalette(pal);
 		errorLabel->setText(tr("Successfully compiled"));
+		textEdit->document()->setModified(false);
 		emit modified();
 	}
+}
+
+void JsmWidget::compilePseudo()
+{
+	groupID = currentItem(list1);
+	methodID = currentItem(list2);
+	if (groupID == -1 || methodID == -1) return;
+
+	JsmPseudoCompiler compiler;
+	JsmData compiled;
+	QString errorStr;
+	int errorLine = 0;
+
+	if (compiler.compile(textEdit->toPlainText(), compiled, errorStr, errorLine)) {
+		// Replace the script data and invalidate caches
+		data()->getJsmFile()->getScripts().replaceScript(groupID, methodID, compiled);
+		// Mark the JsmFile as modified so the save system knows to write it
+		data()->getJsmFile()->setModified(true);
+		// Clear cached decompiled scripts so both views regenerate
+		data()->getJsmFile()->setDecompiledScript(groupID, methodID, QString(), false);
+		data()->getJsmFile()->setDecompiledScript(groupID, methodID, QString(), true);
+
+		QMessageBox::information(this, tr("Compile"),
+		    tr("Successfully compiled (%1 opcodes)").arg(compiled.nbOpcode()));
+		textEdit->document()->setModified(false);
+		emit modified();
+	} else {
+		QString msg;
+		if (errorLine > 0) {
+			msg = tr("Line %1: %2").arg(errorLine).arg(errorStr);
+
+			// Move cursor to the error line
+			QTextCursor cursor = textEdit->textCursor();
+			QTextBlock block = textEdit->document()->findBlockByLineNumber(errorLine - 1);
+			if (block.isValid()) {
+				cursor.setPosition(block.position());
+				cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+				textEdit->setTextCursor(cursor);
+				textEdit->ensureCursorVisible();
+			}
+		} else {
+			msg = errorStr;
+		}
+
+		QMessageBox::critical(this, tr("Compile Error"), msg);
+	}
+}
+
+void JsmWidget::showHelp()
+{
+	JsmHelpDialog dialog(this);
+	dialog.exec();
 }
 
 void JsmWidget::clear()
@@ -177,10 +247,12 @@ void JsmWidget::saveSession()
 
 	data()->getJsmFile()->setCurrentOpcodeScroll(this->groupID, this->methodID, textEdit->verticalScrollBar()->value(), textEdit->textCursor());
 	if (textEdit->document()->isModified()) {
+		// Save to the correct cache slot based on which tab is active
+		bool isPseudo = (tabBar->currentIndex() <= 0);
 		data()->getJsmFile()->setDecompiledScript(this->groupID,
 		                                          this->methodID,
 		                                          textEdit->toPlainText(),
-		                                          false);
+		                                          isPseudo);
 	}
 }
 
@@ -282,6 +354,34 @@ void JsmWidget::fillList2()
 	if (item) 	list2->setCurrentItem(item);
 }
 
+void JsmWidget::onTabChanged(int index)
+{
+	Q_UNUSED(index)
+
+	// Check if the editor has uncompiled changes
+	if (textEdit->document()->isModified() && groupID != -1 && methodID != -1) {
+		QMessageBox::StandardButton reply = QMessageBox::warning(
+		    this, tr("Unsaved Changes"),
+		    tr("You have uncompiled changes. Switching tabs will discard them.\n\n"
+		       "Do you want to switch anyway?"),
+		    QMessageBox::Yes | QMessageBox::No,
+		    QMessageBox::No);
+
+		if (reply == QMessageBox::No) {
+			// Revert the tab switch
+			tabBar->blockSignals(true);
+			tabBar->setCurrentIndex(index == 0 ? 1 : 0);
+			tabBar->blockSignals(false);
+			return;
+		}
+
+		// User chose to discard — clear the modified flag so saveSession doesn't cache stale text
+		textEdit->document()->setModified(false);
+	}
+
+	fillTextEdit();
+}
+
 void JsmWidget::fillTextEdit()
 {
 //	qDebug() << QString("JsmWidget::fillTextEdit(%1, %2)").arg(currentItem(list1)).arg(currentItem(list2));
@@ -294,17 +394,22 @@ void JsmWidget::fillTextEdit()
 	if (groupID==-1 || methodID==-1) {
 		textEdit->clear();
 		toolBar->setEnabled(false);
+		pseudoToolBar->setEnabled(false);
 		return;
 	}
 
 	list2->scrollToItem(list2->currentItem());
 
 	if (tabBar->currentIndex() <= 0) {
-		toolBar->setEnabled(false);
-		textEdit->setReadOnly(true);
+		toolBar->setVisible(false);
+		pseudoToolBar->setVisible(true);
+		pseudoToolBar->setEnabled(!isReadOnly());
+		textEdit->setReadOnly(isReadOnly());
 		highlighter->setPseudoCode(true);
 		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, true, data()));
 	} else {
+		pseudoToolBar->setVisible(false);
+		toolBar->setVisible(true);
 		toolBar->setEnabled(!isReadOnly());
 		textEdit->setReadOnly(isReadOnly());
 		highlighter->setPseudoCode(false);

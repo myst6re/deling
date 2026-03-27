@@ -2139,6 +2139,21 @@ Dollet Harbor</source>
     </message>
 </context>
 <context>
+    <name>JsmHelpDialog</name>
+    <message>
+        <source>Script Reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search opcodes...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>JsmWidget</name>
     <message>
         <source>Warning: On this field scripts are in an old poorly recognized format. What you will read here may did not make sense.</source>
@@ -2170,7 +2185,7 @@ Dollet Harbor</source>
     </message>
     <message>
         <source>Pseudo-code</source>
-        <translation type="unfinished">Pseudo-code</translation>
+        <translation type="obsolete">Pseudo-code</translation>
     </message>
     <message>
         <source>Compile</source>
@@ -2181,6 +2196,18 @@ Dollet Harbor</source>
         <translation>Bildumaratu (Ctrl+B)</translation>
     </message>
     <message>
+        <source>Compile pseudo-code to opcodes (Ctrl+Shift+B)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Script reference (F1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Line %1 -&gt; %2</source>
         <translation>Lerro %1 -&gt; %2</translation>
     </message>
@@ -2189,8 +2216,34 @@ Dollet Harbor</source>
         <translation>Bildumaratua arrakastaz</translation>
     </message>
     <message>
+        <source>Successfully compiled (%1 opcodes)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Scripts</source>
         <translation>Gidoiak</translation>
+    </message>
+    <message>
+        <source>Line %1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compile Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have uncompiled changes. Switching tabs will discard them.
+
+Do you want to switch anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2979,6 +3032,98 @@ Error message:
     <message>
         <source>Unable to read the worldmap (readTextures).</source>
         <translation type="unfinished">Unable to read the worldmap (readTextures).</translation>
+    </message>
+    <message>
+        <source>Unexpected character: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected &apos;%1&apos;, got &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;goto&apos; is not supported in pseudo-code mode. Use if/while/repeat instead.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;label&apos; is not supported in pseudo-code mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected statement, got &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected method name after &apos;.&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown statement: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid temp index: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid model index: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot resolve variable: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot resolve variable for push: &apos;%1&apos;. Use temp_N, model_N, or N_ubyte/uword/ulong/sbyte/sword/slong format.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot resolve variable for assignment: &apos;%1&apos;. Use temp_N or N_ubyte/uword/ulong/sbyte/sword/slong format.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown assignment operator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown function: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot resolve entity &apos;%1&apos; to a group ID. Use numeric IDs for entity.method() calls.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected &apos;begin&apos; after if condition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected &apos;end&apos; to close if/else block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected &apos;else&apos; or &apos;end&apos; after if block, got &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected &apos;end&apos; to close while block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected &apos;while&apos; or &apos;forever&apos; after &apos;wait&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected &apos;end&apos; to close forever block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected &apos;until&apos; to close repeat block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unexpected token: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

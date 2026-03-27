@@ -25,6 +25,7 @@
 #include "PlainTextEdit.h"
 #include "CharaModel.h"
 #include "FieldArchive.h"
+#include "JsmPseudoCompiler.h"
 
 class JsmWidget : public PageWidget
 {
@@ -54,6 +55,7 @@ private:
 	PlainTextEditPriv *textEdit;
 	JsmHighlighter *highlighter;
 	QToolBar *toolBar;
+	QToolBar *pseudoToolBar;
 	QLabel *errorLabel;
 	QLabel *warningWidget;
 	QRegularExpression _regConst, _regSetLine, _regColor, _regPlace;
@@ -63,6 +65,9 @@ private:
 	int groupID, methodID;
 private slots:
 	void compile();
+	void compilePseudo();
+	void showHelp();
+	void onTabChanged(int index);
 	void fillList2();
 	void fillTextEdit();
 	void showPreview(const QString &line, QPoint cursorPos);
