@@ -61,7 +61,8 @@ private:
 	void skipNewlines();
 
 	// Parser — statement level
-	bool parseStatements(JsmData &result, QString &errorStr, int &errorLine);
+	bool parseStatements(JsmData &result, QString &errorStr, int &errorLine,
+	                     const QStringList &allowedTerminators = QStringList({"end", "else", "until"}));
 	bool parseStatement(JsmData &result, QString &errorStr);
 	bool parseIf(JsmData &result, QString &errorStr);
 	bool parseWhile(JsmData &result, QString &errorStr);

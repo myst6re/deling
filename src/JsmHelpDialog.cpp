@@ -381,13 +381,10 @@ JsmHelpDialog::JsmHelpDialog(QWidget *parent)
 	QVBoxLayout *outerLayout = new QVBoxLayout(this);
 	outerLayout->addLayout(mainLayout);
 
-	QPushButton *closeBtn = new QPushButton(tr("Close"), this);
-	QHBoxLayout *btnLayout = new QHBoxLayout();
-	btnLayout->addStretch();
-	btnLayout->addWidget(closeBtn);
-	outerLayout->addLayout(btnLayout);
+	QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
+	outerLayout->addWidget(buttonBox);
 
-	connect(closeBtn, &QPushButton::clicked, this, &QDialog::accept);
+	connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 	connect(_categoryTree, &QTreeWidget::itemSelectionChanged, this, &JsmHelpDialog::onCategorySelected);
 	connect(_searchField, &QLineEdit::textChanged, this, &JsmHelpDialog::onSearch);
 

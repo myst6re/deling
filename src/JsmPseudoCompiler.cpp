@@ -238,20 +238,26 @@ bool JsmPseudoCompiler::compile(const QString &pseudoCode, JsmData &result,
 	_pos = 0;
 	_currentLine = 1;
 
-	return parseStatements(result, errorStr, errorLine);
+	return parseStatements(result, errorStr, errorLine, {});
 }
 
 // ============================================================
 // Statement-level parsing
 // ============================================================
 
-bool JsmPseudoCompiler::parseStatements(JsmData &result, QString &errorStr, int &errorLine)
+bool JsmPseudoCompiler::parseStatements(JsmData &result, QString &errorStr, int &errorLine,
+                                        const QStringList &allowedTerminators)
 {
 	skipNewlines();
 	while (peek().type != Token::EndOfInput) {
-		// Stop at block-ending keywords
 		QString kw = peek().text.toLower();
-		if (kw == "end" || kw == "else" || kw == "until") break;
+		if (allowedTerminators.contains(kw)) break;
+		// Check for block-ending keywords that aren't valid in this context
+		if (kw == "end" || kw == "else" || kw == "until") {
+			errorStr = QObject::tr("Unexpected '%1' in this block").arg(kw);
+			errorLine = _currentLine;
+			return false;
+		}
 
 		if (!parseStatement(result, errorStr)) {
 			errorLine = _currentLine;
@@ -273,7 +279,16 @@ bool JsmPseudoCompiler::parseStatement(JsmData &result, QString &errorStr)
 	// Control flow keywords
 	if (kw == "if") return parseIf(result, errorStr);
 	if (kw == "while") return parseWhile(result, errorStr);
-	if (kw == "wait") return parseWait(result, errorStr);
+	if (kw == "wait") {
+		// 'wait' is both a keyword (wait while, wait forever) and an opcode (wait(frames))
+		advance(); // consume 'wait'
+		if (peek().type == Token::LParen) {
+			return parseFunctionCall("wait", result, errorStr, true);
+		}
+		// Keyword form — put back and delegate to parseWait
+		--_pos;
+		return parseWait(result, errorStr);
+	}
 	if (kw == "forever") return parseForever(result, errorStr);
 	if (kw == "repeat") return parseRepeat(result, errorStr);
 	if (kw == "ret") {
@@ -558,9 +573,26 @@ bool JsmPseudoCompiler::parseMethodCall(const QString &objectName, const QString
 {
 	if (!expect(Token::LParen, errorStr)) return false;
 
+	// Parse arguments, but watch for SW/EW exec type identifiers
 	QList<JsmData> argDatas;
+	int reqOpcode = JsmOpcode::REQ;
+
 	if (peek().type != Token::RParen) {
 		do {
+			// Check if this argument is an exec type modifier (SW or EW)
+			if (peek().type == Token::Identifier) {
+				QString upper = peek().text.toUpper();
+				if (upper == "SW" || upper == "EW") {
+					// Check if followed by ) or , — confirms it's a modifier, not a variable
+					Token execToken = advance();
+					if (peek().type == Token::RParen || peek().type == Token::Comma) {
+						reqOpcode = (upper == "SW") ? JsmOpcode::REQSW : JsmOpcode::REQEW;
+						continue;
+					}
+					// Not followed by ) or , — put it back and parse as expression
+					--_pos;
+				}
+			}
 			JsmData argData;
 			if (!parseExpression(argData, errorStr)) return false;
 			argDatas.append(argData);
@@ -568,54 +600,32 @@ bool JsmPseudoCompiler::parseMethodCall(const QString &objectName, const QString
 	}
 	if (!expect(Token::RParen, errorStr)) return false;
 
-	// entity.method(priority) or entity.method(priority, "SW"/"EW")
-	// We emit: PSHN_L <methodLabel>, PSHN_L <priority>, REQ/REQSW/REQEW <entityGroup>
-	// Since we don't have the script table at compile time, we emit the method name
-	// as a numeric label. The user must use numeric IDs.
-
-	// Default to REQ
-	int reqOpcode = JsmOpcode::REQ;
-	int lastArgIdx = argDatas.size() - 1;
-
-	// Check if last arg is a string-like identifier for exec type
-	// In the pseudo-code, it appears as: entity.method(priority, SW)
-	// But since we tokenize SW as an identifier, we check for it
-	if (argDatas.size() >= 2) {
-		// The exec type might have been parsed as an identifier pushed as something
-		// We'll handle this by checking the token stream — but since we already parsed,
-		// we just default to REQ and let the user specify reqsw/reqew explicitly
-	}
-
-	// For simplicity: entity.method(priority) => REQ
-	// The user can also write reqsw(entity, method, priority) directly
-	if (argDatas.isEmpty()) {
-		// Push method=0, priority=0
-		result.append(JsmOpcode(JsmOpcode::PSHN_L, 0));
-		result.append(JsmOpcode(JsmOpcode::PSHN_L, 0));
-	} else if (argDatas.size() == 1) {
-		// Push method=0, then priority
-		result.append(JsmOpcode(JsmOpcode::PSHN_L, 0));
-		result += argDatas[0]; // priority
-	} else {
-		result += argDatas[0]; // method label
-		result += argDatas[1]; // priority
-	}
-
-	// We can't resolve entity name to group ID at compile time without the script table
-	// So we require numeric group IDs: e.g. 5.3(1)
+	// Resolve entity group ID — must be numeric or name#N format
 	bool ok;
 	int groupId = objectName.toInt(&ok);
 	if (!ok) {
-		// Try stripping a trailing #N
 		int hashIdx = objectName.indexOf('#');
 		if (hashIdx >= 0) {
 			groupId = objectName.mid(hashIdx + 1).toInt(&ok);
 		}
 		if (!ok) {
-			errorStr = QObject::tr("Cannot resolve entity '%1' to a group ID. Use numeric IDs for entity.method() calls.")
+			errorStr = QObject::tr("Cannot resolve entity '%1' to a group ID. "
+			                        "Use numeric IDs for entity.method() calls.")
 			           .arg(objectName);
 			return false;
 		}
+	}
+
+	// Emit: push method label, push priority, REQ/REQSW/REQEW(groupID)
+	if (argDatas.isEmpty()) {
+		result.append(JsmOpcode(JsmOpcode::PSHN_L, 0));
+		result.append(JsmOpcode(JsmOpcode::PSHN_L, 0));
+	} else if (argDatas.size() == 1) {
+		result.append(JsmOpcode(JsmOpcode::PSHN_L, 0));
+		result += argDatas[0];
+	} else {
+		result += argDatas[0];
+		result += argDatas[1];
 	}
 
 	result.append(JsmOpcode(reqOpcode, groupId));
@@ -645,7 +655,7 @@ bool JsmPseudoCompiler::parseIf(JsmData &result, QString &errorStr)
 	// Parse if-block
 	JsmData ifBlock;
 	int dummy;
-	if (!parseStatements(ifBlock, errorStr, dummy)) return false;
+	if (!parseStatements(ifBlock, errorStr, dummy, {"end", "else"})) return false;
 
 	skipNewlines();
 	QString kw = peek().text.toLower();
@@ -669,7 +679,7 @@ bool JsmPseudoCompiler::parseIf(JsmData &result, QString &errorStr)
 		} else {
 			// Parse else-block
 			JsmData elseBlock;
-			if (!parseStatements(elseBlock, errorStr, dummy)) return false;
+			if (!parseStatements(elseBlock, errorStr, dummy, {"end"})) return false;
 
 			skipNewlines();
 			if (peek().text.toLower() != "end") {
@@ -720,7 +730,7 @@ bool JsmPseudoCompiler::parseWhile(JsmData &result, QString &errorStr)
 
 	JsmData bodyBlock;
 	int dummy;
-	if (!parseStatements(bodyBlock, errorStr, dummy)) return false;
+	if (!parseStatements(bodyBlock, errorStr, dummy, {"end"})) return false;
 
 	skipNewlines();
 	if (peek().text.toLower() != "end") {
@@ -783,7 +793,7 @@ bool JsmPseudoCompiler::parseForever(JsmData &result, QString &errorStr)
 		advance();
 		JsmData bodyBlock;
 		int dummy;
-		if (!parseStatements(bodyBlock, errorStr, dummy)) return false;
+		if (!parseStatements(bodyBlock, errorStr, dummy, {"end"})) return false;
 
 		skipNewlines();
 		if (peek().text.toLower() != "end") {
@@ -814,7 +824,7 @@ bool JsmPseudoCompiler::parseRepeat(JsmData &result, QString &errorStr)
 
 	JsmData bodyBlock;
 	int dummy;
-	if (!parseStatements(bodyBlock, errorStr, dummy)) return false;
+	if (!parseStatements(bodyBlock, errorStr, dummy, {"until"})) return false;
 
 	skipNewlines();
 	if (peek().text.toLower() != "until") {
