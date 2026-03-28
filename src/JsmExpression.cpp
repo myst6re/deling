@@ -638,7 +638,44 @@ QStringList JsmApplication::stackToStringList(const Field *field) const
 				int id = expr->eval(&ok);
 
 				if (ok) {
-					text = Data::name(id);
+					switch (id) {
+					case 0:
+						text = "squall";
+						break;
+					case 1:
+						text = "zell";
+						break;
+					case 2:
+						text = "irvine";
+						break;
+					case 3:
+						text = "quistis";
+						break;
+					case 4:
+						text = "rinoa";
+						break;
+					case 5:
+						text = "selphie";
+						break;
+					case 6:
+						text = "seifer";
+						break;
+					case 7:
+						text = "edea";
+						break;
+					case 8:
+						text = "laguna";
+						break;
+					case 9:
+						text = "kiros";
+						break;
+					case 10:
+						text = "ward";
+						break;
+					default:
+						text = QString("chara_%1").arg(id);
+						break;
+					}
 				}
 			} else if (isMagic && i == 1) {
 				bool ok = false;

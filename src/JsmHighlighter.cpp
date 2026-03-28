@@ -31,7 +31,7 @@ JsmHighlighter::JsmHighlighter(QTextDocument *parent) :
 	                       .arg(keywords.join("|")));
 	_regNumeric = QRegularExpression("\\b-?(b[01]+|0x[\\da-fA-F]+|\\d+)\\b");
 	_regVar = QRegularExpression("\\b((model|temp)_\\d+|\\w+_[us](byte|word|long))\\b");
-	_regConst = QRegularExpression("\\b((text|map|item|magic)_\\d+|[A-Z][a-zA-Z\\d]+)\\b");
+	_regConst = QRegularExpression("\\b((text|map|item|magic|chara)_\\d+|squall|zell|irvine|quistis|rinoa|selphie|seifer|edea|laguna|kiros|ward)\\b");
 	_regExec = QRegularExpression("\\b([\\w#]+\\.\\w+|req|reqsw|reqew|preq|preqsw|preqew)\\b");
 }
 
