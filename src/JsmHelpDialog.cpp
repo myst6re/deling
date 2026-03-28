@@ -427,7 +427,7 @@ void JsmHelpDialog::buildContent()
 	    "<li><b>Control flow:</b> if/else/end, while/end, wait while, forever, repeat/until</li>"
 	    "<li><b>Assignments:</b> var = expr, var += expr, etc.</li>"
 	    "<li><b>Function calls:</b> opcodeName(arg1, arg2, ...)</li>"
-	    "<li><b>Expressions:</b> arithmetic (+, -, *, /, %), comparison (==, !=, >, <), "
+	    "<li><b>Expressions:</b> arithmetic (+, -, *, /, %), comparison (==, !=, &gt;, &lt;), "
 	    "bitwise (&amp;, |, ^, ~, &gt;&gt;, &lt;&lt;), logical (and, or, !)</li>"
 	    "<li><b>Variables:</b> N_ubyte, N_uword, N_ulong, N_sbyte, N_sword, N_slong, temp_N, model_N</li>"
 	    "<li><b>Constants:</b> text_N, map_N, item_N, magic_N, character names, key names</li>"
@@ -451,9 +451,9 @@ void JsmHelpDialog::onCategorySelected()
 			if (childIdx >= 0) {
 				const OpcodeHelp &h = opcodeHelpData[childIdx];
 				html += QString("<h3>%1</h3><pre>%2</pre><p>%3</p><hr>")
-				        .arg(QString::fromLatin1(h.name),
-				             QString::fromLatin1(h.signature),
-				             QString::fromLatin1(h.description));
+				        .arg(QString::fromLatin1(h.name).toHtmlEscaped(),
+				             QString::fromLatin1(h.signature).toHtmlEscaped(),
+				             QString::fromLatin1(h.description).toHtmlEscaped());
 			}
 		}
 		_detailView->setHtml(html);
@@ -466,10 +466,10 @@ void JsmHelpDialog::onCategorySelected()
 	            "<p><b>Category:</b> %2</p>"
 	            "<h3>Signature</h3><pre>%3</pre>"
 	            "<h3>Description</h3><p>%4</p>")
-	    .arg(QString::fromLatin1(h.name),
-	         QString::fromLatin1(h.category),
-	         QString::fromLatin1(h.signature),
-	         QString::fromLatin1(h.description))
+	    .arg(QString::fromLatin1(h.name).toHtmlEscaped(),
+	         QString::fromLatin1(h.category).toHtmlEscaped(),
+	         QString::fromLatin1(h.signature).toHtmlEscaped(),
+	         QString::fromLatin1(h.description).toHtmlEscaped())
 	);
 }
 

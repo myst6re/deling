@@ -450,4 +450,5 @@ compile_commands.json
 
 # Custom
 .build
+.release
 .install
