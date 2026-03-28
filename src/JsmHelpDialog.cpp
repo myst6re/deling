@@ -47,7 +47,42 @@ static const OpcodeHelp opcodeHelpData[] = {
 	 "Temporary registers 0-7. Many opcodes store results in temp_0."},
 	{"Model Reference", "Syntax", "model_N", "Entity/model reference by index."},
 	{"Constants", "Syntax", "text_N, map_N, item_N, magic_N, KeyCancel, Squall, etc.",
-	 "Named constants: character names (Squall=0..Ward=10), key names, resource refs."},
+	 "Named constants that resolve to numeric values. See the Characters, Keys, and Resources categories for full listings."},
+
+	// -- Character Constants --
+	{"Squall", "Characters", "Squall = 0", "Main protagonist."},
+	{"Zell", "Characters", "Zell = 1", "Martial artist party member."},
+	{"Irvine", "Characters", "Irvine = 2", "Sharpshooter party member."},
+	{"Quistis", "Characters", "Quistis = 3", "Instructor party member."},
+	{"Rinoa", "Characters", "Rinoa = 4", "Rinoa Heartilly."},
+	{"Selphie", "Characters", "Selphie = 5", "Selphie Tilmitt."},
+	{"Seifer", "Characters", "Seifer = 6", "Seifer Almasy."},
+	{"Edea", "Characters", "Edea = 7", "Edea Kramer."},
+	{"Laguna", "Characters", "Laguna = 8", "Laguna Loire. Used in dream sequences."},
+	{"Kiros", "Characters", "Kiros = 9", "Kiros Seagill. Used in dream sequences."},
+	{"Ward", "Characters", "Ward = 10", "Ward Zabac. Used in dream sequences."},
+
+	// -- Key Constants --
+	{"KeyL1", "Keys", "KeyL1 = 0x1", "L1 button."},
+	{"KeyR1", "Keys", "KeyR1 = 0x2", "R1 button."},
+	{"KeyL2", "Keys", "KeyL2 = 0x4", "L2 button."},
+	{"KeyR2", "Keys", "KeyR2 = 0x8", "R2 button."},
+	{"KeyCancel", "Keys", "KeyCancel = 0x10 (16)", "Cancel / X button."},
+	{"KeyMenu", "Keys", "KeyMenu = 0x20 (32)", "Menu / Triangle button."},
+	{"KeyChoose", "Keys", "KeyChoose = 0x40 (64)", "Confirm / Circle button."},
+	{"KeyCard", "Keys", "KeyCard = 0x80 (128)", "Card / Square button."},
+	{"KeySelect", "Keys", "KeySelect = 0x100 (256)", "Select button."},
+	{"KeyStart", "Keys", "KeyStart = 0x800 (2048)", "Start button."},
+	{"KeyUp", "Keys", "KeyUp = 0x1000 (4096)", "D-pad up."},
+	{"KeyRight", "Keys", "KeyRight = 0x2000 (8192)", "D-pad right."},
+	{"KeyDown", "Keys", "KeyDown = 0x4000 (16384)", "D-pad down."},
+	{"KeyLeft", "Keys", "KeyLeft = 0x8000 (32768)", "D-pad left."},
+
+	// -- Resource Constants --
+	{"text_N", "Resources", "text_N (e.g. text_0, text_5)", "Reference to a text entry in the field's MSD file. N is the text index."},
+	{"map_N", "Resources", "map_N (e.g. map_100, map_256)", "Reference to a field map by ID. Used with mapjump and related opcodes."},
+	{"item_N", "Resources", "item_N (e.g. item_1, item_32)", "Reference to an item by ID."},
+	{"magic_N", "Resources", "magic_N (e.g. magic_5, magic_20)", "Reference to a magic spell by ID."},
 
 	// -- Flow Control --
 	{"nop", "Flow Control", "nop()", "No operation. Does nothing."},
@@ -386,6 +421,7 @@ JsmHelpDialog::JsmHelpDialog(QWidget *parent)
 
 	connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 	connect(_categoryTree, &QTreeWidget::itemSelectionChanged, this, &JsmHelpDialog::onCategorySelected);
+	connect(_categoryTree, &QTreeWidget::itemDoubleClicked, this, &JsmHelpDialog::onItemDoubleClicked);
 	connect(_searchField, &QLineEdit::textChanged, this, &JsmHelpDialog::onSearch);
 
 	buildContent();
@@ -485,4 +521,14 @@ void JsmHelpDialog::onSearch(const QString &text)
 		cat->setHidden(!anyVisible && !lower.isEmpty());
 		if (anyVisible) cat->setExpanded(true);
 	}
+}
+
+void JsmHelpDialog::onItemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+	Q_UNUSED(column)
+	int idx = item->data(0, Qt::UserRole).toInt();
+	if (idx < 0) return; // Category header, ignore
+
+	QString sig = QString::fromLatin1(opcodeHelpData[idx].signature);
+	emit insertSignature(sig);
 }

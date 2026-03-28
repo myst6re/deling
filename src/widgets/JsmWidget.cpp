@@ -219,6 +219,12 @@ void JsmWidget::showHelp()
 		_helpDialog = new JsmHelpDialog(this);
 		_helpDialog->setAttribute(Qt::WA_DeleteOnClose);
 		connect(_helpDialog, &QDialog::destroyed, this, [this]() { _helpDialog = nullptr; });
+		connect(_helpDialog, &JsmHelpDialog::insertSignature, this, [this](const QString &sig) {
+			if (tabBar->currentIndex() <= 0 && !textEdit->isReadOnly()) {
+				textEdit->insertPlainText(sig);
+				textEdit->setFocus();
+			}
+		});
 	}
 	_helpDialog->show();
 	_helpDialog->raise();

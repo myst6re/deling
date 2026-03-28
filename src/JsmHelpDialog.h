@@ -24,6 +24,8 @@ class JsmHelpDialog : public QDialog
 	Q_OBJECT
 public:
 	explicit JsmHelpDialog(QWidget *parent = nullptr);
+signals:
+	void insertSignature(const QString &signature);
 private:
 	void buildContent();
 	QTreeWidget *_categoryTree;
@@ -32,4 +34,5 @@ private:
 private slots:
 	void onCategorySelected();
 	void onSearch(const QString &text);
+	void onItemDoubleClicked(QTreeWidgetItem *item, int column);
 };
