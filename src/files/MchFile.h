@@ -25,6 +25,11 @@ class MchFile : public File
 public:
 	MchFile();
 	bool open(const QByteArray &mch, const QString &name);
+	virtual bool save(QByteArray &data) const override;
+	static bool readFullModel(const char *constData, int size, const QString &name, CharaModel &model);
+	static QByteArray writeFullModel(const CharaModel &model);
+	static QList<Animation> readAnimations(const char *constData, int size, QByteArray *unknownData = nullptr);
+	static QByteArray writeAnimations(const CharaModel &model);
 	inline QString filterText() const {
 		return QObject::tr("Field 3D model file (*.mch)");
 	}

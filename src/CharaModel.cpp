@@ -17,16 +17,39 @@
  ****************************************************************************/
 #include "CharaModel.h"
 
-CharaModel::CharaModel()
+CharaModel::CharaModel() :
+    _unknown2(0), _unknown3(0), _scale(16), _unknownFlags(0), _isExternal(false),
+	_externalTextureModelLoaderId(0xEEEEEEEE), _noTextureFlag(0)
 {
 }
 
-CharaModel::CharaModel(const QString &name, const QList<TimFile> &textures) :
-    _name(name), _textures(textures)
+CharaModel::CharaModel(const QString &name, quint8 scale, const QList<Animation> &animations) :
+    _name(name), _animations(animations), _unknown2(0), _unknown3(0), _scale(scale),
+    _unknownFlags(0), _isExternal(true), _externalTextureModelLoaderId(0xEEEEEEEE),
+    _noTextureFlag(0)
 {
 }
 
-bool CharaModel::isEmpty() const
+CharaModel::CharaModel(
+	const QString &name,
+	const QList<Bone> &bones,
+	const QList<Vertex_sr> &vertices,
+	const QList<TextureAnimation> &textureAnimations,
+	const QList<Face> &faces,
+	const QList<ModelUnknown> &unknown1s,
+	const QList<SkinObject> &skinObjects,
+	const QList<Animation> &animations,
+	quint16 unknown2, quint16 unknown3,
+	const QByteArray &unknownData
+) :
+    _name(name), _bones(bones), _vertices(vertices), _textureAnimations(textureAnimations),
+    _faces(faces), _unknown1s(unknown1s), _skinObjects(skinObjects), _animations(animations),
+    _unknown2(unknown2), _unknown3(unknown3), _unknownData(unknownData), _scale(16), _unknownFlags(0x00808080),
+    _isExternal(false), _externalTextureModelLoaderId(0xEEEEEEEE), _noTextureFlag(0)
+{
+}
+
+bool CharaModel::isEmpty2() const
 {
 	return _textures.isEmpty();
 }
@@ -51,4 +74,9 @@ const TimFile &CharaModel::texture(int id) const
 int CharaModel::textureCount() const
 {
 	return _textures.size();
+}
+
+void CharaModel::setTextures(const QList<TimFile> &textures)
+{
+	_textures = textures;
 }

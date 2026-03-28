@@ -103,12 +103,12 @@ void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 	}
 }
 
-CharaFile *Field::charaFile = nullptr;
+CharaOneFile *Field::charaFile = nullptr;
 
 void Field::openCharaFile(const QByteArray &one)
 {
 	deleteCharaFile();
-	charaFile = new CharaFile();
+	charaFile = new CharaOneFile();
 
 	if (!charaFile->open(one, isPs())) {
 		qWarning() << "Field::openCharaFile error" << _name;
@@ -346,7 +346,7 @@ TdwFile *Field::getTdwFile() const
 	return (TdwFile *)getFile(Tdw);
 }
 
-CharaFile *Field::getCharaFile() const
+CharaOneFile *Field::getCharaFile() const
 {
 	return charaFile;
 }

@@ -50,13 +50,13 @@ void CharaPreview::setModel(const CharaModel &model)
 {
 	const CharaModel *m;
 
-	if (model.isEmpty() && _mainModels && _mainModels->contains(model.id())) {
+	if (model.isExternal() && _mainModels && _mainModels->contains(model.id())) {
 		m = &(*_mainModels)[model.id()];
 	} else {
 		m = &model;
 	}
 
-	if (!m->isEmpty()) {
+	if (!m->textures().isEmpty()) {
 		setName(QString("tex%1").arg(m->id()));
 		setPixmap(QPixmap::fromImage(m->texture(0).image()));
 	} else {

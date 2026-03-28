@@ -66,4 +66,5 @@ private:
 	quint16 palX, palY;
 	quint16 palW, palH;
 	quint16 imgX, imgY;
+	QList<QBitArray> _alphaBits;
 };

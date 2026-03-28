@@ -30,7 +30,7 @@
 #include "files/MrtFile.h"
 #include "files/BackgroundFile.h"
 #include "files/TdwFile.h"
-#include "files/CharaFile.h"
+#include "files/CharaOneFile.h"
 #include "files/MskFile.h"
 #include "files/SfxFile.h"
 #include "files/AkaoListFile.h"
@@ -99,7 +99,7 @@ public:
 	PvpFile *getPvpFile() const;
 	BackgroundFile *getBackgroundFile() const;
 	TdwFile *getTdwFile() const;
-	CharaFile *getCharaFile() const;
+	CharaOneFile *getCharaFile() const;
 	MskFile *getMskFile() const;
 	SfxFile *getSfxFile() const;
 	AkaoListFile *getAkaoListFile() const;
@@ -130,7 +130,7 @@ private:
 
 	bool _isOpen;
 	QString _name;
-	static CharaFile *charaFile;
+	static CharaOneFile *charaFile;
 	static Map *worldmapFile;
 
 	QList<File *> files;
