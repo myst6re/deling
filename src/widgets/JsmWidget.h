@@ -27,6 +27,8 @@
 #include "FieldArchive.h"
 #include "JsmPseudoCompiler.h"
 
+class JsmHelpDialog;
+
 class JsmWidget : public PageWidget
 {
     Q_OBJECT
@@ -59,6 +61,7 @@ private:
 	QLabel *errorLabel;
 	QLabel *warningWidget;
 	QRegularExpression _regConst, _regSetLine, _regColor, _regPlace;
+	JsmHelpDialog *_helpDialog = nullptr;
 
 	static int currentItem(QTreeWidget *);
 //	void gotoScriptLabel(int groupID, int labelID);

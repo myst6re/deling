@@ -215,8 +215,14 @@ void JsmWidget::compilePseudo()
 
 void JsmWidget::showHelp()
 {
-	JsmHelpDialog dialog(this);
-	dialog.exec();
+	if (!_helpDialog) {
+		_helpDialog = new JsmHelpDialog(this);
+		_helpDialog->setAttribute(Qt::WA_DeleteOnClose);
+		connect(_helpDialog, &QDialog::destroyed, this, [this]() { _helpDialog = nullptr; });
+	}
+	_helpDialog->show();
+	_helpDialog->raise();
+	_helpDialog->activateWindow();
 }
 
 void JsmWidget::clear()
