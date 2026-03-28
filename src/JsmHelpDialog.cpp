@@ -442,7 +442,7 @@ void JsmHelpDialog::onCategorySelected()
 	int idx = items.first()->data(0, Qt::UserRole).toInt();
 	if (idx < 0) {
 		QTreeWidgetItem *catItem = items.first();
-		QString html = QString("<h2>%1</h2>").arg(catItem->text(0));
+		QString html = QString("<h2>%1</h2>").arg(catItem->text(0).toHtmlEscaped());
 		for (int c = 0; c < catItem->childCount(); ++c) {
 			int childIdx = catItem->child(c)->data(0, Qt::UserRole).toInt();
 			if (childIdx >= 0) {
