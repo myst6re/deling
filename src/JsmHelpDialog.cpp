@@ -152,6 +152,14 @@ static const OpcodeHelp opcodeHelpData[] = {
 	{"facedirlimit", "Positioning", "facedirlimit(limit)", "Limit head turn range."},
 	{"facediroff", "Positioning", "facediroff(frames)", "Stop head facing over N frames."},
 	{"facedirinit", "Positioning", "facedirinit()", "Unlock head from model. Call before FACEDIR."},
+	{"facedir", "Positioning", "facedir(angle, frames)", "Set face direction over frames."},
+	{"facediri", "Positioning", "facediri(angle)", "Set face direction immediately."},
+	{"rfacedir", "Positioning", "rfacedir(angle, frames)", "Resume-script face direction."},
+	{"rfacedira", "Positioning", "rfacedira(actorID, frames)", "Resume-script face towards actor."},
+	{"rfacedirp", "Positioning", "rfacedirp(partyMemberID, frames)", "Resume-script face towards party member."},
+	{"rfacediri", "Positioning", "rfacediri(angle)", "Resume-script face direction immediately."},
+	{"rfacediroff", "Positioning", "rfacediroff(frames)", "Resume-script stop face direction."},
+	{"facedirsync", "Positioning", "facedirsync()", "Wait for face direction to finish."},
 
 	// -- Movement --
 	{"mspeed", "Movement", "mspeed(speed)", "Set movement speed."},
@@ -170,12 +178,27 @@ static const OpcodeHelp opcodeHelpData[] = {
 	{"ladderup2", "Movement", "ladderup2(...)", "Ladder up variant (9 stack params)."},
 	{"ladderdown2", "Movement", "ladderdown2(...)", "Ladder down variant (9 stack params)."},
 	{"ladderanime", "Movement", "ladderanime(animID, firstFrame, lastFrame)", "Ladder animation."},
+	{"rmove", "Movement", "rmove(walkmeshID, x, y, unknown)", "Resume-script move (no pause)."},
+	{"rmovea", "Movement", "rmovea(actorID, unknown)", "Resume-script move to actor."},
+	{"rpmovea", "Movement", "rpmovea(partyMemberID, unknown)", "Resume-script move to party member."},
+	{"rcmove", "Movement", "rcmove(walkmeshID, x, y, unknown)", "Resume-script cmove."},
+	{"rfmove", "Movement", "rfmove(walkmeshID, x, y, unknown)", "Resume-script fmove."},
+	{"fmovea", "Movement", "fmovea(actorID, unknown)", "Face-move to actor."},
+	{"fmovep", "Movement", "fmovep(partyMemberID, unknown)", "Face-move to party member."},
+	{"movecancel", "Movement", "movecancel()", "Cancel current movement."},
+	{"pmovecancel", "Movement", "pmovecancel()", "Cancel party member movement."},
+	{"maccel", "Movement", "maccel(acceleration)", "Set movement acceleration."},
+	{"mlimit", "Movement", "mlimit(limit)", "Set movement speed limit."},
 
 	// -- Turning --
 	{"cturnr", "Turning", "cturnr(angle, speed)", "Turn clockwise. 256-degree system."},
 	{"cturnl", "Turning", "cturnl(angle, speed)", "Turn counter-clockwise."},
+	{"lturnr", "Turning", "lturnr(angle, speed)", "Linear turn right."},
+	{"lturnl", "Turning", "lturnl(angle, speed)", "Linear turn left."},
 	{"cturn", "Turning", "cturn()", "Face entity set with PSHAC."},
+	{"lturn", "Turning", "lturn()", "Linear turn to face entity."},
 	{"pcturn", "Turning", "pcturn(partyMemberID, speed)", "Face a PC. Speed = frame count."},
+	{"plturn", "Turning", "plturn(partyMemberID, speed)", "Linear turn to face PC."},
 
 	// -- Model / Animation --
 	{"setmodel", "Animation", "setmodel(modelID)", "Set display model."},
@@ -240,11 +263,35 @@ static const OpcodeHelp opcodeHelpData[] = {
 	{"lscroll", "Camera", "lscroll(x, y, frameCount)", "Scroll by X,Y pixels over frames."},
 	{"cscroll", "Camera", "cscroll(x, y, frameCount)", "Scroll by X,Y pixels over frames."},
 	{"dscrolla", "Camera", "dscrolla(actorID)", "Scroll onto actor."},
+	{"lscrolla", "Camera", "lscrolla(actorID, frameCount)", "Linear scroll to actor."},
+	{"cscrolla", "Camera", "cscrolla(actorID, frameCount)", "Curved scroll to actor."},
 	{"scrollsync", "Camera", "scrollsync()", "Wait for scroll to finish."},
+	{"dscrollp", "Camera", "dscrollp(partyMemberID)", "Scroll to party member."},
+	{"lscrollp", "Camera", "lscrollp(partyMemberID, frameCount)", "Linear scroll to party member."},
+	{"cscrollp", "Camera", "cscrollp(partyMemberID, frameCount)", "Curved scroll to party member."},
 	{"dscroll2", "Camera", "dscroll2()", "Scroll variant 2."},
-	{"lscroll2", "Camera", "lscroll2(x, y, frameCount)", "Scroll variant 2."},
-	{"cscroll2", "Camera", "cscroll2(x, y, frameCount)", "Scroll variant 2."},
+	{"lscroll2", "Camera", "lscroll2(x, y, frameCount)", "Linear scroll variant 2."},
+	{"cscroll2", "Camera", "cscroll2(x, y, frameCount)", "Curved scroll variant 2."},
+	{"dscrolla2", "Camera", "dscrolla2(actorID)", "Scroll to actor variant 2."},
+	{"lscrolla2", "Camera", "lscrolla2(actorID, frameCount)", "Linear scroll to actor variant 2."},
+	{"cscrolla2", "Camera", "cscrolla2(actorID, frameCount)", "Curved scroll to actor variant 2."},
+	{"dscrollp2", "Camera", "dscrollp2(partyMemberID)", "Scroll to party member variant 2."},
+	{"lscrollp2", "Camera", "lscrollp2(partyMemberID, frameCount)", "Linear scroll to party variant 2."},
+	{"cscrollp2", "Camera", "cscrollp2(partyMemberID, frameCount)", "Curved scroll to party variant 2."},
 	{"scrollsync2", "Camera", "scrollsync2()", "Wait for scroll2 to finish."},
+	{"scrollmode2", "Camera", "scrollmode2(mode)", "Set scroll mode variant 2."},
+	{"dscroll3", "Camera", "dscroll3()", "Scroll variant 3."},
+	{"lscroll3", "Camera", "lscroll3(x, y, frameCount)", "Linear scroll variant 3."},
+	{"cscroll3", "Camera", "cscroll3(x, y, frameCount)", "Curved scroll variant 3."},
+	{"scrollratio2", "Camera", "scrollratio2(ratio)", "Set scroll ratio variant 2."},
+	{"setcamera", "Camera", "setcamera()", "Set camera parameters."},
+	{"setdcamera", "Camera", "setdcamera()", "Set dynamic camera."},
+	{"doffset", "Camera", "doffset(x, y)", "Direct camera offset."},
+	{"loffsets", "Camera", "loffsets(x, y, frameCount)", "Linear camera offsets."},
+	{"coffsets", "Camera", "coffsets(x, y, frameCount)", "Curved camera offsets."},
+	{"loffset", "Camera", "loffset(x, y, frameCount)", "Linear camera offset."},
+	{"coffset", "Camera", "coffset(x, y, frameCount)", "Curved camera offset."},
+	{"offsetsync", "Camera", "offsetsync()", "Wait for camera offset to finish."},
 
 	// -- Movies / FMV --
 	{"movie", "Movies", "movie()", "Play prepared movie."},
@@ -317,6 +364,9 @@ static const OpcodeHelp opcodeHelpData[] = {
 	{"hasitem", "Items", "hasitem(itemID)", "Push 1 to temp_0 if party has item, else 0."},
 	{"addmagic", "Items", "addmagic(characterID, magicID)", "Add magic to character."},
 	{"setcard", "Items", "setcard(cardID, deckID)", "Move card to deck. Rare cards are unique."},
+	{"getcard", "Items", "getcard(cardID)", "Get/check a card. Result in temp_0."},
+	{"howmanycard", "Items", "howmanycard(cardID)", "Push the count of a card the player owns to temp_0."},
+	{"wherecard", "Items", "wherecard(cardID)", "Push which deck a card is in to temp_0."},
 	{"drawpoint", "Items", "drawpoint(drawPointID)", "Initialize draw point."},
 	{"setdrawpoint", "Items", "setdrawpoint(isHidden)", "Hide (>=1) or show (0) draw point."},
 	{"cardgame", "Items", "cardgame(deckID, knownRules, regionRules, rareChance, u1, u2, u3)",
@@ -400,6 +450,102 @@ static const OpcodeHelp opcodeHelpData[] = {
 	{"closeeyes", "Misc", "closeeyes()", "Close character eyes."},
 	{"blinkeyes", "Misc", "blinkeyes()", "Blink character eyes."},
 	{"swap", "Misc", "swap()", "Swap entities."},
+
+	// -- Footstep Control --
+	{"footstepon", "Footsteps", "footstepon()", "Enable footstep sounds."},
+	{"footstepoff", "Footsteps", "footstepoff()", "Disable footstep sounds."},
+	{"footstepoffall", "Footsteps", "footstepoffall()", "Disable all footstep sounds."},
+	{"footstepcut", "Footsteps", "footstepcut()", "Cut footstep sounds."},
+	{"footstepcopy", "Footsteps", "footstepcopy()", "Copy footstep settings from another entity."},
+
+	// -- Animation State --
+	{"pushanime", "Animation", "pushanime()", "Save current animation state to stack."},
+	{"popanime", "Animation", "popanime()", "Restore saved animation state from stack."},
+
+	// -- Particles --
+	{"particleon", "Visual", "particleon()", "Enable particle effects."},
+	{"particleoff", "Visual", "particleoff()", "Disable particle effects."},
+	{"particleset", "Visual", "particleset(params)", "Set particle parameters."},
+
+	// -- Additional Visual --
+	{"ending", "Visual", "ending()", "Play ending sequence."},
+	{"shadeform", "Visual", "shadeform()", "Set shade form effect."},
+	{"shadeset", "Visual", "shadeset()", "Set shade parameters."},
+	{"fadenone", "Visual", "fadenone()", "Cancel fade / no fade."},
+	{"mapfadeoff", "Visual", "mapfadeoff()", "Disable map transition fade."},
+	{"mapfadeon", "Visual", "mapfadeon()", "Enable map transition fade."},
+	{"stopvibrate", "Visual", "stopvibrate()", "Stop controller vibration."},
+
+	// -- Additional Music/Sound --
+	{"crossmusic", "Music", "crossmusic()", "Crossfade between music tracks."},
+	{"dualmusic", "Music", "dualmusic()", "Play dual music tracks."},
+	{"musicvolfade", "Music", "musicvolfade(volume, duration)", "Fade music volume."},
+	{"musicstatus", "Music", "musicstatus()", "Get music playback status."},
+	{"musicreplay", "Music", "musicreplay()", "Replay current music."},
+	{"musicskip", "Music", "musicskip()", "Skip current music."},
+	{"musicvolsync", "Music", "musicvolsync()", "Wait for music volume transition."},
+	{"choicemusic", "Music", "choicemusic()", "Set choice/menu music."},
+	{"initsound", "Music", "initsound()", "Initialize sound system."},
+	{"loadsync", "Music", "loadsync()", "Wait for sound load to complete."},
+
+	// -- Additional Party --
+	{"changeparty", "Party", "changeparty()", "Open party change screen."},
+	{"refreshparty", "Party", "refreshparty()", "Refresh party display."},
+	{"setparty2", "Party", "setparty2(member1, member2, member3)", "Set party variant 2."},
+
+	// -- Additional Background --
+	{"bganimeflag", "Background", "bganimeflag(flag)", "Set background animation flag."},
+	{"bgshadestop", "Background", "bgshadestop()", "Stop background shading."},
+	{"rbgshadeloop", "Background", "rbgshadeloop()", "Loop background shading."},
+	{"bgshadeoff", "Background", "bgshadeoff()", "Turn off background shade."},
+	{"bgclear", "Background", "bgclear()", "Clear background."},
+
+	// -- Additional Entity --
+	{"mesforcus", "Entity", "mesforcus()", "Force message cursor to this entity."},
+	{"shadetimer", "Entity", "shadetimer()", "Set shade timer."},
+	{"setroottrans", "Entity", "setroottrans()", "Set root transform."},
+	{"pcopyinfo", "Entity", "pcopyinfo()", "Copy party member entity info."},
+	{"axis", "Entity", "axis()", "Set entity axis."},
+	{"axissync", "Entity", "axissync()", "Wait for axis operation."},
+
+	// -- Lines/Triggers --
+	{"doorlineoff", "Lines", "doorlineoff()", "Disable door line trigger."},
+	{"doorlineon", "Lines", "doorlineon()", "Enable door line trigger."},
+
+	// -- UI Bars --
+	{"setbar", "Menus", "setbar()", "Set progress/gauge bar."},
+	{"dispbar", "Menus", "dispbar()", "Display gauge bar."},
+	{"killbar", "Menus", "killbar()", "Remove gauge bar."},
+
+	// -- Player Input --
+	{"key", "Player Control", "key(keyMask)", "Key input check."},
+	{"keysighnchange", "Player Control", "keysighnchange()", "Key sign change. Dummied out."},
+
+	// -- Additional Game State --
+	{"sethp", "Game State", "sethp(characterID, hp)", "Set character HP."},
+	{"gethp", "Game State", "gethp(characterID)", "Get character HP. Result in temp_0."},
+	{"rest", "Game State", "rest()", "Rest/inn — restore party."},
+	{"addpastgil", "Game State", "addpastgil(amount)", "Add gil in Laguna's time period."},
+	{"broken", "Game State", "broken()", "Broken/unused opcode."},
+
+	// -- Map Transitions --
+	{"premapjump2", "Map Transitions", "premapjump2(fieldMapID)", "Prepare map jump variant 2."},
+
+	// -- Unknown --
+	{"unknown2", "Unknown", "unknown2()", "Unknown opcode."},
+	{"unknown3", "Unknown", "unknown3()", "Unknown opcode."},
+	{"unknown4", "Unknown", "unknown4()", "Used on Ragnarok hatch screen only."},
+	{"unknown6", "Unknown", "unknown6()", "Possibly clockwise turn variant."},
+	{"unknown7", "Unknown", "unknown7()", "Possibly counter-clockwise turn variant."},
+	{"unknown8", "Unknown", "unknown8()", "Possibly clockwise turn variant 2."},
+	{"unknown9", "Unknown", "unknown9()", "Possibly counter-clockwise turn variant 2."},
+	{"unknown10", "Unknown", "unknown10()", "Possibly music sample time."},
+	{"unknown11", "Unknown", "unknown11()", "Some kind of wait command."},
+	{"unknown12", "Unknown", "unknown12()", "Ends unknown11."},
+	{"unknown13", "Unknown", "unknown13()", "Possibly sound channel control."},
+	{"unknown14", "Unknown", "unknown14()", "Preserve sound channel across field loads."},
+	{"unknown15", "Unknown", "unknown15()", "Ladder area entry related."},
+	{"unknown16", "Unknown", "unknown16()", "Possibly set draw point ID."},
 
 	{nullptr, nullptr, nullptr, nullptr}
 };

@@ -81,6 +81,8 @@ void JsmWidget::build()
 	QFont font2 = textEdit->document()->defaultFont();
 	font2.setStyleHint(QFont::TypeWriter);
 	font2.setFamily("Courier");
+	int savedFontSize = Config::value("scriptFontSize", 10).toInt();
+	font2.setPointSize(savedFontSize);
 	textEdit->document()->setDefaultFont(font2);
 	highlighter = new JsmHighlighter(textEdit->document());
 	// continue highlight when window is inactive
@@ -122,11 +124,30 @@ void JsmWidget::build()
 	helpAction->setShortcut(QKeySequence("F1"));
 	pseudoToolBar->setEnabled(false);
 
+	// Font size control — shared across both tabs
+	QLabel *fontSizeLabel = new QLabel(tr("Font:"), this);
+	fontSizeSpinner = new QSpinBox(this);
+	fontSizeSpinner->setRange(6, 36);
+	fontSizeSpinner->setValue(savedFontSize);
+	fontSizeSpinner->setSuffix(tr("pt"));
+	fontSizeSpinner->setToolTip(tr("Code editor font size"));
+	connect(fontSizeSpinner, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int size) {
+		QFont f = textEdit->document()->defaultFont();
+		f.setPointSize(size);
+		textEdit->document()->setDefaultFont(f);
+		Config::setValue("scriptFontSize", size);
+	});
+
+	QHBoxLayout *tabBarLayout = new QHBoxLayout();
+	tabBarLayout->addWidget(tabBar, 1);
+	tabBarLayout->addWidget(fontSizeLabel);
+	tabBarLayout->addWidget(fontSizeSpinner);
+
 	QGridLayout *mainLayout = new QGridLayout(this);
 	mainLayout->addWidget(warningWidget, 0, 0, 1, 4);
 	mainLayout->addLayout(list1Layout, 1, 0, 3, 1);
 	mainLayout->addWidget(list2, 1, 1, 3, 1);
-	mainLayout->addWidget(tabBar, 1, 2, 1, 2);
+	mainLayout->addLayout(tabBarLayout, 1, 2, 1, 2);
 	mainLayout->addWidget(te, 2, 2);
 	mainLayout->addWidget(textEdit, 2, 3);
 	mainLayout->addWidget(pseudoToolBar, 3, 2, 1, 2);

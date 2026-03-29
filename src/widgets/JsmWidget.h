@@ -58,6 +58,7 @@ private:
 	JsmHighlighter *highlighter;
 	QToolBar *toolBar;
 	QToolBar *pseudoToolBar;
+	QSpinBox *fontSizeSpinner;
 	QLabel *errorLabel;
 	QLabel *warningWidget;
 	QRegularExpression _regConst, _regSetLine, _regColor, _regPlace;
