@@ -82,6 +82,7 @@ public:
 	int fromString(int groupID, int methodID, const QString &text, QString &errorStr);
 
 	const JsmScripts &getScripts() const;
+	JsmScripts &getScripts();
 
 	bool search(SearchType type, quint64 value, int &groupID, int &methodID, int &opcodeID) const;
 	bool search(SearchType type, const QList<quint64> &values, int &groupID, int &methodID, int &opcodeID) const;

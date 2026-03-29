@@ -952,6 +952,11 @@ const JsmScripts &JsmFile::getScripts() const
 	return scripts;
 }
 
+JsmScripts &JsmFile::getScripts()
+{
+	return scripts;
+}
+
 bool JsmFile::search(SearchType type, quint64 value, int &groupID, int &methodID, int &opcodeID) const
 {
 	int groupListSize = scripts.nbGroup(), nbOpcode, methodCount;

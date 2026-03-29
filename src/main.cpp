@@ -35,6 +35,19 @@
 
 int main(int argc, char *argv[])
 {
+	// Check for --scale argument before QApplication is created
+	for (int i = 1; i < argc; ++i) {
+		if (qstrcmp(argv[i], "--scale") == 0 && i + 1 < argc) {
+			qputenv("QT_SCALE_FACTOR", argv[i + 1]);
+			// Remove --scale and its value from argv
+			for (int j = i; j + 2 < argc; ++j) {
+				argv[j] = argv[j + 2];
+			}
+			argc -= 2;
+			break;
+		}
+	}
+
 #ifdef DELING_CONSOLE
 	QCoreApplication app(argc, argv);
 	QCoreApplication::setApplicationName(DELING_NAME);
