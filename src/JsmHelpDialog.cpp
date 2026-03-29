@@ -81,8 +81,23 @@ static const OpcodeHelp opcodeHelpData[] = {
 	// -- Resource Constants --
 	{"text_N", "Resources", "text_N (e.g. text_0, text_5)", "Reference to a text entry in the field's MSD file. N is the text index."},
 	{"map_N", "Resources", "map_N (e.g. map_100, map_256)", "Reference to a field map by ID. Used with mapjump and related opcodes."},
-	{"item_N", "Resources", "item_N (e.g. item_1, item_32)", "Reference to an item by ID."},
-	{"magic_N", "Resources", "magic_N (e.g. magic_5, magic_20)", "Reference to a magic spell by ID."},
+	{"item_N", "Resources", "item_N (e.g. item_1, item_32)", "Reference to an item by ID. "
+	 "0=Empty, 1=Potion, 2=Potion+, 3=Hi-Potion, 4=Hi-Potion+, 5=X-Potion, 6=Mega-Potion, "
+	 "7=Phoenix Down, 8=Mega-Phoenix, 9=Elixir, 10=Megalixir, 11=Antidote, 12=Soft, "
+	 "13=Eyedrops, 14=Echo Screen, 15=Holy Water, 16=Remedy, 17=Remedy+, 18=Hero-Trial, "
+	 "19=Hero, 20=Holy War-Trial, 21=Holy War, 22=Shell Stone, 23=Protect Stone, "
+	 "24=Aura Stone, 25=Death Stone, 26=Holy Stone, 27=Flare Stone, 28=Meteor Stone, "
+	 "29=Ultima Stone, 30=Gysahl Greens, 31=Phoenix Pinion, 32=Friendship."},
+	{"magic_N", "Resources", "magic_N (e.g. magic_1, magic_20)", "Reference to a magic spell by ID. "
+	 "0=Empty, 1=Fire, 2=Fira, 3=Firaga, 4=Blizzard, 5=Blizzara, 6=Blizzaga, "
+	 "7=Thunder, 8=Thundara, 9=Thundaga, 10=Water, 11=Aero, 12=Bio, 13=Demi, "
+	 "14=Holy, 15=Flare, 16=Meteor, 17=Quake, 18=Tornado, 19=Ultima, 20=Apocalypse, "
+	 "21=Cure, 22=Cura, 23=Curaga, 24=Life, 25=Full-Life, 26=Regan, 27=Esuna, "
+	 "28=Dispel, 29=Protect, 30=Shell, 31=Reflect, 32=Aura, 33=Double, 34=Triple, "
+	 "35=Haste, 36=Slow, 37=Stop, 38=Blind, 39=Confuse, 40=Sleep, 41=Silence, "
+	 "42=Break, 43=Death, 44=Drain, 45=Pain, 46=Berserk, 47=Float, 48=Zombie, "
+	 "49=Meltdown, 50=Scan, 51=Full-Cure, 52=Wall, 53=Rapture, 54=Percent, "
+	 "55=Catastrophe, 56=The End."},
 
 	// -- Flow Control --
 	{"nop", "Flow Control", "nop()", "No operation. Does nothing."},
