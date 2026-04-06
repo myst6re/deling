@@ -21,14 +21,15 @@
 #include "CharaModel.h"
 #include "BGPreview2.h"
 
+class CharaOneFile;
+
 class CharaPreview : public BGPreview2
 {
 	Q_OBJECT
 public:
 	explicit CharaPreview(QWidget *parent = nullptr);
 	void fill(const QPixmap &background);
-	void setMainModels(QHash<int, CharaModel> *mainModels);
-	void setModel(const CharaModel &model);
+	void setModel(int modelID, CharaOneFile *charaOne, QHash<int, CharaModel> *mainModels);
 protected:
 	inline bool hasHeightForWidth() const override {
 		return true;
@@ -37,5 +38,5 @@ protected:
 		return w;
 	}
 private:
-	QHash<int, CharaModel> *_mainModels;
+	QImage setImageColors(const QImage &image, quint32 colorModifier);
 };

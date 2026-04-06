@@ -113,7 +113,7 @@ public:
 	quint32 isoFieldID() const;
 	virtual bool open(const QByteArray &dat);
 	virtual bool open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
-	bool save(QByteArray &dat, QByteArray &mim);
+	bool save(QByteArray &dat, QByteArray &mim, QByteArray &lzk);
 
 private:
 	quint32 _isoFieldID;

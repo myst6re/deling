@@ -28,7 +28,7 @@ CharaOneFile::~CharaOneFile()
 {
 }
 
-bool CharaOneFile::open(const QByteArray &one, bool ps)
+bool CharaOneFile::open(const QByteArray &one, const QByteArray &pcb, bool ps)
 {
 	models.clear();
 
@@ -40,6 +40,12 @@ bool CharaOneFile::open(const QByteArray &one, bool ps)
 	quint32 count=0, offset, size, modelID;
 	const char *constData = one.constData();
 	const char * const startData = constData;
+	PcbFile pcbFile;
+	QMap<QRgb, quint16> calcDefaultLightColor;
+
+	if (!pcb.isEmpty()) {
+		pcbFile.open(pcb);
+	}
 
 	if (!ps) {
 		memcpy(&count, constData, 4);
@@ -62,7 +68,7 @@ bool CharaOneFile::open(const QByteArray &one, bool ps)
 		constData += 4;
 
 		if (modelID == size || ps) {
-			qDebug() << "size twice!";
+			//qDebug() << "size twice!";
 			memcpy(&modelID, constData, 4);
 			constData += 4;
 		}
@@ -71,7 +77,7 @@ bool CharaOneFile::open(const QByteArray &one, bool ps)
 		QList<quint64> offsets;
 
 		if ((modelID & 0xF0000000) == 0xD0000000) {
-			qDebug() << "D modelID (HRC)" << (modelID & 0xFFFF) << QString::number(modelID, 16);
+			//qDebug() << "D modelID (HRC)" << (modelID & 0xFFFF) << QString::number(modelID, 16);
 			memcpy(&animationOffset, constData, 4);
 			constData += 4;
 			offsets.append(quint64(0xD000000000) | quint64(animationOffset));
@@ -107,7 +113,8 @@ bool CharaOneFile::open(const QByteArray &one, bool ps)
 		offsets.append(size);
 
 		QString name;
-		quint32 nextOffset, unknownFlags = 0x00808080, externalTextureModelLoaderId = 0xEEEEEEEE;
+		quint32 nextOffset, externalTextureModelLoaderId = 0xEEEEEEEE;
+		QRgb lightColor = qRgb(0x80, 0x80, 0x80);
 
 		memcpy(&nextOffset, constData, 4);
 
@@ -116,12 +123,23 @@ bool CharaOneFile::open(const QByteArray &one, bool ps)
 			name = QString::fromLatin1(nameBA, qstrnlen(nameBA, 4));
 //			qDebug() << name;
 			constData += 4;
-			memcpy(&unknownFlags, constData, 4);
+			lightColor = qRgb(constData[0], constData[1], constData[2]);
 			constData += 4;
 			memcpy(&externalTextureModelLoaderId, constData, 4);
 			constData += 4;
-		} else if ((modelID & 0xF0000000) == 0xD0000000) {
+		}
+
+		// Override name with what's actually used by the game
+		if ((modelID & 0xF0000000) == 0xD0000000) {
 			name = QString("d%1").arg(modelID & 0xFFFF, 3, 10, QChar('0'));
+		}
+
+		if (!pcb.isEmpty()) {
+			lightColor = pcbFile.modelLightColor(name);
+		} else if (calcDefaultLightColor.contains(lightColor)) {
+			calcDefaultLightColor[lightColor] += 1;
+		} else {
+			calcDefaultLightColor.insert(lightColor, 0);
 		}
 
 		if (!ps) {
@@ -156,7 +174,6 @@ bool CharaOneFile::open(const QByteArray &one, bool ps)
 				if (!MchFile::readFullModel(data.constData() + pos, sizePart, name, model)) {
 					qWarning() << "CharaModel::open cannot read full model" << name;
 				}
-				model.setNoTextureFlag(modelID & 0xFFFFFF);
 			} else {
 				textures.append(TimFile(data.mid(pos, sizePart)));
 				if (!textures.last().isValid()) {
@@ -165,25 +182,42 @@ bool CharaOneFile::open(const QByteArray &one, bool ps)
 			}
 		}
 
-		model.setUnknownFlags(unknownFlags);
+		model.setLightColor(lightColor);
 		model.setTextures(textures);
-		model.setExternalTextureModelLoaderId(externalTextureModelLoaderId);
+		if ((modelID & 0xF0000000) == 0xA0000000) {
+			model.setSharedTextureModelId((modelID >> 20) & 0xFF);
+		}
 
 		models.append(model);
 	}
 
 	_ps = ps;
+	if (!pcb.isEmpty()) {
+		_defaultLightColor = pcbFile.defaultModelLightColor();
+	} else {
+		_defaultLightColor = qRgb(0x80, 0x80, 0x80);
+		quint16 count = 0;
+		QMapIterator<QRgb, quint16> it(calcDefaultLightColor);
+		while (it.hasNext()) {
+			it.next();
+			if (it.value() > count) {
+				count = it.value();
+				_defaultLightColor = it.key();
+			}
+		}
+	}
 
 	return true;
 }
 
-bool CharaOneFile::save(QByteArray &data) const
+bool CharaOneFile::save(QByteArray &one, QByteArray &pcb) const
 {
 	QByteArray header;
 	const qsizetype padding = 0x800;
 	const qsizetype headerSize = padding;
 	const qsizetype paddedHeaderSize = (headerSize / padding + int(headerSize % padding != 0)) * padding;
-	data = QByteArray(paddedHeaderSize, '\0');
+	one = QByteArray(paddedHeaderSize, '\0');
+	QList< QPair<QString, QRgb> > modelLightColors;
 
 	if (!_ps) {
 		quint32 count = quint32(models.size());
@@ -191,20 +225,21 @@ bool CharaOneFile::save(QByteArray &data) const
 	}
 
 	for (const CharaModel &model: models) {
-		quint32 offset = data.size();
+		quint32 offset = one.size();
 		header.append((const char *)&offset, 4);
 
 		QByteArray modelHeader, mchData, modelData;
+		bool isNoTextures = model.textures().isEmpty();
 
-		if (model.isExternal()) {
+		if (model.loadingType() == CharaModel::External) {
 			quint32 modelID = 0xD0000000 | (quint32(model.scale()) << 16) | model.id();
 			modelHeader.append((const char *)&modelID, 4);
 			quint32 animationOffset = mchData.size();
 			modelHeader.append((const char *)&animationOffset, 4);
 			mchData.append(MchFile::writeAnimations(model));
-		} else if (model.textures().isEmpty()) {
-			quint32 noTextureFlag = 0xA0000000 | model.noTextureFlag();
-			modelHeader.append((const char *)&noTextureFlag, 4);
+		} else if (model.loadingType() == CharaModel::LocalSharedTexture) {
+			quint32 sharedTextureModelId = 0xA0000000 | (model.sharedTextureModelId() << 20) | ((offset - 0x800) & 0xFFFFF);
+			modelHeader.append((const char *)&sharedTextureModelId, 4);
 			modelHeader.append("\xFF\xFF\xFF\xFF", 4);
 			quint32 modelOffset = mchData.size();
 			modelHeader.append((const char *)&modelOffset, 4);
@@ -235,38 +270,46 @@ bool CharaOneFile::save(QByteArray &data) const
 
 		quint32 size = mchData.size();
 		header.append((const char *)&size, 4);
-		// Redundant but mandatory
-		header.append((const char *)&size, 4);
+		if (_ps) {
+			// FIXME: unknown value for PS version only
+			header.append((const char *)&size, 4);
+		} else {
+			// Redundant but mandatory
+			header.append((const char *)&size, 4);
+		}
 		header.append(modelHeader);
 		header.append(model.name().toLatin1().leftJustified(4, '\0', true));
-		quint32 unknownFlags = model.unknownFlags();
-		header.append((const char *)&unknownFlags, 4);
-		quint32 externalModelLoaderId = model.externalTextureModelLoaderId();
+		QRgb lightColor = model.lightColor();
+		header.append((const char *)&lightColor, 4);
+		if (lightColor != _defaultLightColor) {
+			modelLightColors.append(qMakePair(model.name(), lightColor));
+		}
+		quint32 externalModelLoaderId = model.loadingType() == CharaModel::LocalSharedTexture ? model.sharedTextureModelId() : 0xEEEEEEEE;
 		header.append((const char *)&externalModelLoaderId, 4);
 
 		if (_ps) {
 			QByteArray compressedData = LZS::compress(mchData);
 			quint32 compressedDataSize = compressedData.size();
-			data.append((const char *)&compressedDataSize, 4);
-			data.append(compressedData);
+			one.append((const char *)&compressedDataSize, 4);
+			one.append(compressedData);
 		} else {
-			data.append("\0\0\0\0", 4);
-			data.append(mchData.constData(), mchData.size() - 4);
+			one.append("\0\0\0\0", 4);
+			one.append(mchData.constData(), mchData.size() - 4);
 		}
 	}
 
-	data.replace(0, paddedHeaderSize, header.leftJustified(paddedHeaderSize, '\0', true));
+	one.replace(0, paddedHeaderSize, header.leftJustified(paddedHeaderSize, '\0', true));
 
 	if (!_ps) {
-		data.append("\0\0\0\0", 4);
+		one.append("\0\0\0\0", 4);
 	}
 
-	return true;
-}
+	PcbFile pcbFile;
+	pcbFile.setModelLightColors(modelLightColors);
+	pcbFile.setDefaultModelLightColor(_defaultLightColor);
+	pcbFile.save(pcb);
 
-const CharaModel &CharaOneFile::model(int id) const
-{
-	return models.at(id);
+	return true;
 }
 
 void CharaOneFile::setModel(int id, const CharaModel &model)
@@ -275,7 +318,14 @@ void CharaOneFile::setModel(int id, const CharaModel &model)
 	modified = true;
 }
 
-int CharaOneFile::modelCount() const
+void CharaOneFile::setDefaultLightColor(QRgb defaultLightColor)
 {
-	return models.size();
+	for (int i = 0; i < models.size(); ++i) {
+		CharaModel &m = model(i);
+		if (m.lightColor() == _defaultLightColor) {
+			m.setLightColor(defaultLightColor);
+		}
+	}
+	_defaultLightColor = defaultLightColor;
+	modified = true;
 }

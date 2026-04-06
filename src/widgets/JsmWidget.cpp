@@ -21,9 +21,11 @@
 #include "Data.h"
 #include "JsmHelpDialog.h"
 #include "JsmPseudoCompiler.h"
+#include "widgets/JsmGroupList.h"
+#include "widgets/HelpWidget.h"
 
 JsmWidget::JsmWidget(QWidget *parent)
-    : PageWidget(parent), mainModels(nullptr), fieldArchive(nullptr),
+    : PageWidget(parent), mainModels(nullptr), fieldArchive(nullptr), list1(nullptr),
       _regConst(QRegularExpression("\\b(text|map|item|magic)_(\\d+)\\b")),
       _regSetLine(QRegularExpression("setline\\(\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*\\)")),
       _regColor(QRegularExpression("(polycolor|polycolorall|dcoladd|dcolsub|tcoladd|tcolsub|fcoladd|fcolsub|bgshade)\\(\\s*([\\w-]+)\\s*,\\s*([\\w-]+)\\s*,\\s*([\\w-]+)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\)")),
@@ -41,22 +43,15 @@ void JsmWidget::build()
 	warningWidget->setWordWrap(true);
 	warningWidget->setTextFormat(Qt::PlainText);
 
-	list1 = new QTreeWidget(this);
-	list1->setHeaderLabels(QStringList() << tr("Id") << tr("Entity") << tr("Exec"));
-	list1->setMaximumWidth(
-	    list1->fontMetrics().boundingRect(QString(16, 'M')).width());
-	list1->setMinimumWidth(
-	    list1->fontMetrics().boundingRect(QString(8, 'M')).width());
-	list1->setAutoScroll(false);
-	list1->setIndentation(0);
-	list1->setUniformRowHeights(true);
-	list1->setAlternatingRowColors(true);
+	list1 = new JsmGroupList(this);
+	list1->setField(data());
 
 	modelPreview = new CharaPreview(this);
-	modelPreview->setMainModels(mainModels);
 
 	QVBoxLayout *list1Layout = new QVBoxLayout();
+	list1Layout->addWidget(list1->toolBar(), 0, Qt::AlignTop);
 	list1Layout->addWidget(list1, 1);
+	list1Layout->addWidget(list1->helpWidget());
 	list1Layout->addWidget(modelPreview, 0, Qt::AlignBottom);
 	list1Layout->setContentsMargins(QMargins());
 
@@ -166,7 +161,7 @@ void JsmWidget::build()
 
 void JsmWidget::compile()
 {
-	groupID = currentItem(list1);
+	groupID = list1->selectedID();
 	methodID = currentItem(list2);
 	if (groupID==-1 || methodID==-1)	return;
 
@@ -190,7 +185,7 @@ void JsmWidget::compile()
 
 void JsmWidget::compilePseudo()
 {
-	groupID = currentItem(list1);
+	groupID = list1->selectedID();
 	methodID = currentItem(list2);
 	if (groupID == -1 || methodID == -1) return;
 
@@ -307,13 +302,15 @@ void JsmWidget::setData(Field *field)
 	}
 
 	PageWidget::setData(field);
+
+	if (list1 != nullptr) {
+		list1->setField(field);
+	}
 }
 
 void JsmWidget::setMainModels(QHash<int, CharaModel> *mainModels)
 {
 	this->mainModels = mainModels;
-	if (isBuilded())
-		modelPreview->setMainModels(mainModels);
 }
 
 void JsmWidget::setFieldArchive(FieldArchive *fieldArchive)
@@ -329,17 +326,14 @@ void JsmWidget::fill()
 
 //	qDebug() << "JsmWidget::fill()";
 
-	if (!hasData() || !data()->hasJsmFile())		return;
+	if (!hasData() || !data()->hasJsmFile()) {
+		return;
+	}
 
 	int groupID = data()->getJsmFile()->currentGroupItem();
 
-	modelPreview->setMainModels(mainModels);
-
-	list1->addTopLevelItems(nameList());
-	list1->scrollToTop();
-	list1->resizeColumnToContents(0);
-	list1->resizeColumnToContents(1);
-	list1->resizeColumnToContents(2);
+	list1->setField(data());
+	list1->fill();
 
 	if (data()->getJsmFile()->oldFormat()) {
 		warningWidget->show();
@@ -356,7 +350,7 @@ void JsmWidget::fillList2()
 //	qDebug() << QString("JsmWidget::fillList2(%1)").arg(currentItem(list1));
 
 	list2->clear();
-	int groupID = currentItem(list1);
+	int groupID = list1->selectedID();
 	if (groupID==-1)	return;
 	int methodID = data()->getJsmFile()->currentMethodItem(groupID);
 
@@ -373,7 +367,7 @@ void JsmWidget::fillList2()
 	if (modelID != -1 && data()->hasCharaFile()
 			&& modelID < data()->getCharaFile()->modelCount()) {
 		modelPreview->setEnabled(true);
-		modelPreview->setModel(data()->getCharaFile()->model(modelID));
+		modelPreview->setModel(modelID, data()->getCharaFile(), mainModels);
 	} else if (bgParamID != -1 && data()->hasBackgroundFile()
 			  && data()->getBackgroundFile()->allparams.contains(bgParamID)) {
 		modelPreview->setEnabled(true);
@@ -422,7 +416,7 @@ void JsmWidget::fillTextEdit()
 	saveSession();
 	textEdit->previewWidget()->hide();
 	Config::setValue("scriptType", tabBar->currentIndex());
-	groupID = currentItem(list1);
+	groupID = list1->selectedID();
 	methodID = currentItem(list2);
 	if (groupID==-1 || methodID==-1) {
 		textEdit->clear();
@@ -604,129 +598,6 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 	}
 
 	textEdit->previewWidget()->hide();
-}
-
-QList<QTreeWidgetItem *> JsmWidget::nameList() const
-{
-	QList<QTreeWidgetItem *> items;
-	QTreeWidgetItem *item;
-	int nbGroup = data()->getJsmFile()->getScripts().nbGroup();
-	int directorCount=1, squallCount=1, zellCount=1, irvineCount=1, quistisCount=1;
-	int rinoaCount=1, selphieCount=1, seiferCount=1, edeaCount=1, lagunaCount=1, kirosCount=1;
-	int wardCount=1, modelCount=1, drawPointCount=1, eventLineCount=1, doorCount=1, bgCount=1;
-
-	for (int groupID = 0; groupID < nbGroup; ++groupID) {
-		const JsmGroup &grp = data()->getJsmFile()->getScripts().group(groupID);
-		QString name = grp.name();
-		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(groupID, 3) << QString() << QString("%1").arg(grp.execOrder(), 3));
-		item->setData(0, Qt::UserRole, groupID);
-		switch (grp.type()) {
-		case JsmGroup::Main:
-			if (name.isEmpty())	name = QString("Director%1").arg(directorCount);
-			directorCount++;
-			item->setIcon(0, QIcon(":/images/main.png"));
-			break;
-		case JsmGroup::Model:
-			switch (grp.character()) {
-			case 0:
-				if (name.isEmpty())	name = QString("Squall%1").arg(squallCount);
-				squallCount++;
-				item->setIcon(0, QIcon(":/images/icon-squall.png"));
-				break;
-			case 1:
-				if (name.isEmpty())	name = QString("Zell%1").arg(zellCount);
-				zellCount++;
-				item->setIcon(0, QIcon(":/images/icon-zell.png"));
-				break;
-			case 2:
-				if (name.isEmpty())	name = QString("Irvine%1").arg(irvineCount);
-				irvineCount++;
-				item->setIcon(0, QIcon(":/images/icon-irvine.png"));
-				break;
-			case 3:
-				if (name.isEmpty())	name = QString("Quistis%1").arg(quistisCount);
-				quistisCount++;
-				item->setIcon(0, QIcon(":/images/icon-quistis.png"));
-				break;
-			case 4:
-				if (name.isEmpty())	name = QString("Rinoa%1").arg(rinoaCount);
-				rinoaCount++;
-				item->setIcon(0, QIcon(":/images/icon-rinoa.png"));
-				break;
-			case 5:
-				if (name.isEmpty())	name = QString("Selphie%1").arg(selphieCount);
-				selphieCount++;
-				item->setIcon(0, QIcon(":/images/icon-selphie.png"));
-				break;
-			case 6:
-				if (name.isEmpty())	name = QString("Seifer%1").arg(seiferCount);
-				seiferCount++;
-				item->setIcon(0, QIcon(":/images/icon-seifer.png"));
-				break;
-			case 7:
-				if (name.isEmpty())	name = QString("Edea%1").arg(edeaCount);
-				edeaCount++;
-				item->setIcon(0, QIcon(":/images/icon-edea.png"));
-				break;
-			case 8:
-				if (name.isEmpty())	name = QString("Laguna%1").arg(lagunaCount);
-				lagunaCount++;
-				item->setIcon(0, QIcon(":/images/icon-laguna.png"));
-				break;
-			case 9:
-				if (name.isEmpty())	name = QString("Kiros%1").arg(kirosCount);
-				kirosCount++;
-				item->setIcon(0, QIcon(":/images/icon-kiros.png"));
-				break;
-			case 10:
-				if (name.isEmpty())	name = QString("Ward%1").arg(wardCount);
-				wardCount++;
-				item->setIcon(0, QIcon(":/images/icon-ward.png"));
-				break;
-			case -1:
-				if(name.isEmpty())	name = QString("Model%1").arg(modelCount);
-				modelCount++;
-				item->setIcon(0, QIcon(":/images/3d_model.png"));
-				break;
-			case DRAWPOINT_CHARACTER:
-				if (name.isEmpty())	name = QString("DrawPoint%1").arg(drawPointCount);
-				drawPointCount++;
-				item->setIcon(0, QIcon(":/images/icon-drawpoint.png"));
-				break;
-			default:
-				item->setIcon(0, QIcon(":/images/icon-unknown.png"));
-				break;
-			}
-			break;
-		case JsmGroup::Location:
-			if (name.isEmpty())	name = QString("EventLine%1").arg(eventLineCount);
-			eventLineCount++;
-			item->setIcon(0, QIcon(":/images/location.png"));
-			break;
-		case JsmGroup::Door:
-			if (name.isEmpty())	name = QString("Door%1").arg(doorCount);
-			doorCount++;
-			item->setIcon(0, QIcon(":/images/door.png"));
-			break;
-		case JsmGroup::Background:
-			if(name.isEmpty())	name = QString("Background%1").arg(bgCount);
-			bgCount++;
-			item->setIcon(0, QIcon(":/images/background.png"));
-			break;
-		default:
-			QPixmap pixnull(32, 32);
-			pixnull.fill(Qt::transparent);
-			item->setIcon(0, QIcon(pixnull));
-			break;
-		}
-		if (name.isEmpty()) 	name = QString("Module%1").arg(groupID);
-		item->setText(1, name);
-		items.append(item);
-	}
-
-	// qDebug() << data()->getJsmFile()->printCount();
-
-	return items;
 }
 
 QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const

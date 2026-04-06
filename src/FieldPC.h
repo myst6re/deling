@@ -26,7 +26,7 @@ class FieldPC : public Field
 {
 public:
 	enum FileExt {
-		Msd, Jsm, Id, Ca, Rat, Mrt, Inf, Pmp, Pmd, Pvp, Map, Tdw, Msk, Sfx, CharaOne, Mim, Sym
+		Msd, Jsm, Id, Ca, Rat, Mrt, Inf, Pcb, Pmp, Pmd, Pvp, Map, Tdw, Msk, Sfx, CharaOne, Mim, Sym
 	};
 
 	FieldPC(const QString &name, const QString &path, FsArchive *archive, const QString &gameLang);
@@ -61,7 +61,7 @@ private:
 		return QList<FileExt>() << Inf << Msd << Jsm << Mrt << Sym;
 	}
 	inline static QList<FileExt> open2Exts() {
-		return QList<FileExt>() << Msk << Rat << Pmp << Pmd << Pvp << Sfx
+		return QList<FileExt>() << Msk << Rat << Pcb << Pmp << Pmd << Pvp << Sfx
 		                        << Id << Ca << Tdw << Map << Mim << CharaOne;
 	}
 	static FileType extToType(FileExt fileExt, bool *ok);

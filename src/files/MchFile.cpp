@@ -128,7 +128,7 @@ bool MchFile::readFullModel(const char *constData, int size, const QString &name
 	ModelHeader modelHeader = ModelHeader();
 	memcpy(&modelHeader, constData, sizeof(ModelHeader));
 
-	qDebug() << name << "bones" << QString::number(modelHeader.bonesOffset, 16) << modelHeader.boneCount
+	/* qDebug() << name << "bones" << QString::number(modelHeader.bonesOffset, 16) << modelHeader.boneCount
 		<< "vertices" << QString::number(modelHeader.verticesOffset, 16) << modelHeader.verticeCount
 		<< "textureAnimations" << QString::number(modelHeader.textureAnimationsOffset, 16) << modelHeader.textureAnimationCount
 		<< "faces" << QString::number(modelHeader.facesOffset, 16) << modelHeader.faceCount
@@ -138,7 +138,7 @@ bool MchFile::readFullModel(const char *constData, int size, const QString &name
 		<< "padding" << modelHeader.padding
 		<< "triangleCount" << modelHeader.triangleCount
 		<< "quadCount" << modelHeader.quadCount
-		<< "unknown3" << QString::number(modelHeader.unknown3a, 16) << QString::number(modelHeader.unknown3b, 16);
+		<< "unknown3" << QString::number(modelHeader.unknown3a, 16) << QString::number(modelHeader.unknown3b, 16); */
 
 	FILL_LIST(Bone, bone)
 	FILL_LIST(Vertex_sr, vertice)

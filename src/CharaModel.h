@@ -82,6 +82,11 @@ struct Animation
 class CharaModel
 {
 public:
+	enum ModelLoadingType {
+		Local,
+		LocalSharedTexture,
+		External
+	};
 	CharaModel();
 	CharaModel(const QString &name, quint8 scale, const QList<Animation> &animations = QList<Animation>());
 	CharaModel(
@@ -98,10 +103,16 @@ public:
 	);
 	bool open(const QList<quint32> &toc, const QByteArray &data);
 	bool isEmpty2() const;
-	inline bool isExternal() const {
-		return _isExternal;
+	inline ModelLoadingType loadingType() const {
+		return _loadingType;
+	}
+	inline void setLoadingType(ModelLoadingType loadingType) {
+		_loadingType = loadingType;
 	}
 	QString name() const;
+	inline void setName(const QString &name) {
+		_name = name;
+	}
 	int id() const;
 	const TimFile &texture(int id) const;
 	int textureCount() const;
@@ -145,23 +156,21 @@ public:
 	inline quint8 scale() const {
 		return _scale;
 	}
-	inline quint32 unknownFlags() const {
-		return _unknownFlags;
+	inline void setScale(quint8 scale) {
+		_scale = scale;
 	}
-	inline void setUnknownFlags(quint32 unknownFlags) {
-		_unknownFlags = unknownFlags;
+	inline QRgb lightColor() const {
+		return _lightColor;
 	}
-	inline quint32 externalTextureModelLoaderId() const {
-		return _externalTextureModelLoaderId;
+	inline void setLightColor(QRgb lightColor) {
+		_lightColor = lightColor;
 	}
-	inline void setExternalTextureModelLoaderId(quint32 externalTextureModelLoaderId) {
-		_externalTextureModelLoaderId = externalTextureModelLoaderId;
+	inline quint8 sharedTextureModelId() const {
+		return _sharedTextureModelId;
 	}
-	inline quint32 noTextureFlag() const {
-		return _noTextureFlag;
-	}
-	inline void setNoTextureFlag(quint32 noTextureFlag) {
-		_noTextureFlag = noTextureFlag;
+	inline void setSharedTextureModelId(quint8 sharedTextureModelId) {
+		_sharedTextureModelId = sharedTextureModelId;
+		setLoadingType(CharaModel::LocalSharedTexture);
 	}
 private:
 	QString _name;
@@ -175,9 +184,9 @@ private:
 	QList<TimFile> _textures;
 	quint16 _unknown2, _unknown3;
 	QByteArray _unknownData;
-	quint8 _scale;
-	quint32 _unknownFlags;
-	bool _isExternal;
-	quint32 _externalTextureModelLoaderId;
-	quint32 _noTextureFlag;
+	// Model Loader
+	QRgb _lightColor;
+	ModelLoadingType _loadingType;
+	quint8 _scale; // External only
+	quint8 _sharedTextureModelId; // Local Shared Texture only
 };

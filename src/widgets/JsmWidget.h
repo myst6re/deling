@@ -28,6 +28,7 @@
 #include "JsmPseudoCompiler.h"
 
 class JsmHelpDialog;
+class JsmGroupList;
 
 class JsmWidget : public PageWidget
 {
@@ -46,11 +47,10 @@ public:
 	inline QString tabName() const { return tr("Scripts"); }
 private:
 	void saveSession();
-	QList<QTreeWidgetItem *> nameList() const;
 	QList<QTreeWidgetItem *> methodList(int groupID) const;
 	QHash<int, CharaModel> *mainModels;
 	FieldArchive *fieldArchive;
-	QTreeWidget *list1;
+	JsmGroupList *list1;
 	CharaPreview *modelPreview;
 	QTreeWidget *list2;
 	QTabBar *tabBar;

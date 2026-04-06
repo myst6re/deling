@@ -18,15 +18,15 @@
 #include "CharaModel.h"
 
 CharaModel::CharaModel() :
-    _unknown2(0), _unknown3(0), _scale(16), _unknownFlags(0), _isExternal(false),
-	_externalTextureModelLoaderId(0xEEEEEEEE), _noTextureFlag(0)
+    _unknown2(0), _unknown3(0), _lightColor(qRgb(0x80, 0x80, 0x80)), _loadingType(Local), _scale(16),
+	_sharedTextureModelId(0)
 {
 }
 
 CharaModel::CharaModel(const QString &name, quint8 scale, const QList<Animation> &animations) :
-    _name(name), _animations(animations), _unknown2(0), _unknown3(0), _scale(scale),
-    _unknownFlags(0), _isExternal(true), _externalTextureModelLoaderId(0xEEEEEEEE),
-    _noTextureFlag(0)
+    _name(name), _animations(animations), _unknown2(0), _unknown3(0),
+    _lightColor(qRgb(0x80, 0x80, 0x80)), _loadingType(External), _scale(scale),
+    _sharedTextureModelId(0)
 {
 }
 
@@ -44,8 +44,8 @@ CharaModel::CharaModel(
 ) :
     _name(name), _bones(bones), _vertices(vertices), _textureAnimations(textureAnimations),
     _faces(faces), _unknown1s(unknown1s), _skinObjects(skinObjects), _animations(animations),
-    _unknown2(unknown2), _unknown3(unknown3), _unknownData(unknownData), _scale(16), _unknownFlags(0x00808080),
-    _isExternal(false), _externalTextureModelLoaderId(0xEEEEEEEE), _noTextureFlag(0)
+    _unknown2(unknown2), _unknown3(unknown3), _unknownData(unknownData), _lightColor(qRgb(0x80, 0x80, 0x80)),
+    _loadingType(Local), _scale(16), _sharedTextureModelId(0)
 {
 }
 

@@ -146,7 +146,7 @@ bool FieldPC::openOptimized(const QList<FileExt> &selectedExts)
 		} else if (ext == Map && files.contains(Mim)) {
 			openBackgroundFile(header->fileData(path), header->fileData(files[Mim]));
 		} else if (ext == CharaOne) {
-			openCharaFile(header->fileData(path));
+			openCharaFile(header->fileData(path), files.contains(Pcb) ? header->fileData(files[Pcb]) : QByteArray());
 		} else {
 			openFile(type, header->fileData(path));
 		}
@@ -211,7 +211,7 @@ bool FieldPC::openOptimized(const QList<FileExt> &selectedExts, FsArchive *archi
 		} else if (ext == Map && files.contains(Mim)) {
 			openBackgroundFile(infos->data(fs_data), files[Mim]->data(fs_data));
 		} else if (ext == CharaOne) {
-			openCharaFile(infos->data(fs_data));
+			openCharaFile(infos->data(fs_data), files.contains(Pcb) ? files[Pcb]->data(fs_data) : QByteArray());
 		} else {
 			openFile(type, infos->data(fs_data));
 		}
@@ -403,6 +403,15 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 			header->setFileData(filePath(Sfx), fs_data, sfx);
 		}
 	}
+	if (hasCharaFile() && getCharaFile()->isModified()) {
+		QByteArray charaOne, pcb;
+		if (getCharaFile()->save(charaOne, pcb)) {
+			header->setFileData(filePath(CharaOne), fs_data, charaOne);
+			if (!pcb.isEmpty()) {
+				header->setFileData(filePath(Pcb), fs_data, pcb);
+			}
+		}
+	}
 	if (hasBackgroundFile() && getBackgroundFile()->isModified()) {
 		QByteArray map;
 		if (getBackgroundFile()->save(map)) {
@@ -513,6 +522,8 @@ QString FieldPC::fileName(FileExt fileExt, bool useGameLang) const
 		return name() + lang + ".mrt";
 	case Inf:
 		return name() + lang + ".inf";
+	case Pcb:
+		return name() + lang + ".pcb";
 	case Pmp:
 		return name() + lang + ".pmp";
 	case Pmd:
@@ -595,8 +606,10 @@ Field::FileType FieldPC::extToType(FieldPC::FileExt fileExt, bool *ok)
 	case FieldPC::Sfx:
 		return Field::Sfx;
 	case FieldPC::CharaOne:
+		return Field::CharaOne;
 	case FieldPC::Mim:
 	case FieldPC::Sym:
+	case FieldPC::Pcb:
 		break;
 	}
 
@@ -642,6 +655,8 @@ FieldPC::FileExt FieldPC::typeToExt(Field::FileType fileType, bool *ok)
 		return FieldPC::Msk;
 	case Field::Sfx:
 		return FieldPC::Sfx;
+	case Field::CharaOne:
+		return FieldPC::CharaOne;
 	case Field::AkaoList:
 		break;
 	}

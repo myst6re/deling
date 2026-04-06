@@ -21,13 +21,9 @@
 Map *Field::worldmapFile = nullptr;
 
 Field::Field(const QString &name)
-	: _isOpen(false), _name(name)
+	: _isOpen(false), _name(name), files(FILE_COUNT, nullptr)
 {
 	worldmapFile = nullptr;
-
-	for (int i = 0; i < FILE_COUNT; ++i) {
-		files.append(nullptr);
-	}
 }
 
 Field::~Field()
@@ -35,8 +31,6 @@ Field::~Field()
 	for (int i = 0; i < files.size(); ++i) {
 		deleteFile(FileType(i));
 	}
-
-	deleteCharaFile();
 }
 
 bool Field::isOpen() const
@@ -103,16 +97,20 @@ void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 	}
 }
 
-CharaOneFile *Field::charaFile = nullptr;
-
-void Field::openCharaFile(const QByteArray &one)
+void Field::openCharaFile(const QByteArray &one, const QByteArray &pcb)
 {
-	deleteCharaFile();
-	charaFile = new CharaOneFile();
+	qDebug() << "openCharaFile" << name();
+	CharaOneFile *f;
 
-	if (!charaFile->open(one, isPs())) {
+	if (!hasCharaFile()) {
+		f = (CharaOneFile *)newFile(CharaOne);
+	} else {
+		f = getCharaFile();
+	}
+
+	if (!f->open(one, pcb, isPs())) {
 		qWarning() << "Field::openCharaFile error" << _name;
-		deleteCharaFile();
+		deleteFile(CharaOne);
 	}
 }
 
@@ -149,6 +147,8 @@ File *Field::newFile(FileType fileType)
 		return files[fileType] = new SfxFile();
 	case AkaoList:
 		return files[fileType] = new AkaoListFile();
+	case CharaOne:
+		return files[fileType] = new CharaOneFile();
 	}
 	return nullptr;
 }
@@ -160,14 +160,6 @@ void Field::deleteFile(FileType fileType)
 	if (f != nullptr && worldmapFile == nullptr) {
 		delete f;
 		files[fileType] = nullptr;
-	}
-}
-
-void Field::deleteCharaFile()
-{
-	if (charaFile != nullptr) {
-		delete charaFile;
-		charaFile = nullptr;
 	}
 }
 
@@ -238,7 +230,7 @@ bool Field::hasTdwFile() const
 
 bool Field::hasCharaFile() const
 {
-	return charaFile != nullptr;
+	return hasFile(CharaOne);
 }
 
 bool Field::hasMskFile() const
@@ -269,7 +261,7 @@ bool Field::hasFiles() const
 		}
 	}
 
-	return hasFiles2() || hasCharaFile();
+	return hasFiles2();
 }
 
 bool Field::hasFiles2() const
@@ -348,7 +340,7 @@ TdwFile *Field::getTdwFile() const
 
 CharaOneFile *Field::getCharaFile() const
 {
-	return charaFile;
+	return (CharaOneFile *)getFile(CharaOne);
 }
 
 MskFile *Field::getMskFile() const
@@ -414,6 +406,11 @@ void Field::addSfxFile()
 void Field::addAkaoListFile()
 {
 	setFile(AkaoList);
+}
+
+void Field::addCharaFile()
+{
+	setFile(CharaOne);
 }
 
 void Field::setFile(FileType fileType)

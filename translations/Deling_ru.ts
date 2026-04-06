@@ -295,8 +295,51 @@ List of available commands:
         <translation>3D модель</translation>
     </message>
     <message>
+        <source>Main Character model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Local model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished">Тип</translation>
+    </message>
+    <message>
+        <source>Local ID pointer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main Model ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color modifier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shared texture local model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default color modifier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>(No Name)</source>
         <translation>(без имени)</translation>
+    </message>
+</context>
+<context>
+    <name>ColorDisplay</name>
+    <message>
+        <source>Choose a new color</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2144,6 +2187,94 @@ Dollet Harbor</translation>
     </message>
 </context>
 <context>
+    <name>JsmGroupList</name>
+    <message>
+        <source>Id</source>
+        <translation type="unfinished">ИД</translation>
+    </message>
+    <message>
+        <source>Entity</source>
+        <translation type="unfinished">Группа</translation>
+    </message>
+    <message>
+        <source>Exec</source>
+        <translation type="unfinished">Выполнение</translation>
+    </message>
+    <message>
+        <source>Rename group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Group Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add a group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove a group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Up</source>
+        <translation type="unfinished">Вверх</translation>
+    </message>
+    <message>
+        <source>Down</source>
+        <translation type="unfinished">Вниз</translation>
+    </message>
+    <message>
+        <source>You have more than 48 groups in this field, the game may crash.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove %1?
+Some scripts can refer to it!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the group selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the selected groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>JsmHelpDialog</name>
     <message>
         <source>Script Reference</source>
@@ -2151,10 +2282,6 @@ Dollet Harbor</translation>
     </message>
     <message>
         <source>Search opcodes...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2170,12 +2297,12 @@ Dollet Harbor</translation>
     </message>
     <message>
         <source>Entity</source>
-        <translation>Группа</translation>
+        <translation type="vanished">Группа</translation>
     </message>
     <message>
         <source>Exec</source>
         <translatorcomment>*Исполнение *Выполнение</translatorcomment>
-        <translation>Выполнение</translation>
+        <translation type="vanished">Выполнение</translation>
     </message>
     <message>
         <source>Script</source>
@@ -2211,6 +2338,18 @@ Dollet Harbor</translation>
     </message>
     <message>
         <source>Script reference (F1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Font:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code editor font size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3061,6 +3200,10 @@ Error message:
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Unexpected &apos;%1&apos; in this block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&apos;goto&apos; is not supported in pseudo-code mode. Use if/while/repeat instead.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3142,6 +3285,10 @@ Error message:
     </message>
     <message>
         <source>Unexpected token: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Field model color alteration file (*.pcb)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

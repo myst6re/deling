@@ -1,6 +1,6 @@
 /****************************************************************************
  ** Deling Final Fantasy VIII Field Editor
- ** Copyright (C) 2009-2024 Arzel Jérôme <myst6re@gmail.com>
+ ** Copyright (C) 2009-2026 Arzel Jérôme <myst6re@gmail.com>
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
@@ -18,36 +18,30 @@
 #pragma once
 
 #include "files/File.h"
-#include "CharaModel.h"
-#include "files/PcbFile.h"
+#include <QRgb>
 
-class CharaOneFile : public File
+class PcbFile : public File
 {
 public:
-	CharaOneFile();
-	virtual ~CharaOneFile();
-	bool open(const QByteArray &one, const QByteArray &pcb, bool ps);
-	bool save(QByteArray &one, QByteArray &pcb) const;
+	PcbFile();
+	bool open(const QByteArray &data);
+	bool save(QByteArray &data) const;
 	inline QString filterText() const {
-		return QString();
+		return QObject::tr("Field model color alteration file (*.pcb)");
 	}
-	const CharaModel &model(int id) const {
-		return models.at(id);
+	inline const QMap<QString, QRgb> &modelLightColors() const {
+		return _modelLightColors;
 	}
-	CharaModel &model(int id) {
-		return models[id];
+	inline QRgb defaultModelLightColor() const {
+		return _order.isEmpty() ? qRgb(0x80, 0x80, 0x80) : _modelLightColors.value(_order.first());
 	}
-	void setModel(int id, const CharaModel &model);
-	inline int modelCount() const {
-		return models.size();
+	inline QRgb modelLightColor(const QString &modelName) const {
+		return _modelLightColors.value(modelName, defaultModelLightColor());
 	}
-	inline QRgb defaultLightColor() const {
-		return _defaultLightColor;
-	}
-	void setDefaultLightColor(QRgb defaultLightColor);
+	void setModelLightColors(const QMap<QString, QRgb> &modelLightColors, const QStringList &order);
+	void setModelLightColors(const QList< QPair<QString, QRgb> > &modelLightColors);
+	void setDefaultModelLightColor(QRgb color);
 private:
-	using File::open;
-	QList<CharaModel> models;
-	QRgb _defaultLightColor;
-	bool _ps;
+	QMap<QString, QRgb> _modelLightColors;
+	QStringList _order;
 };

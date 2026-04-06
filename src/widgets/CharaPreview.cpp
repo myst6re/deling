@@ -17,8 +17,10 @@
  ****************************************************************************/
 #include "CharaPreview.h"
 
+#include "files/CharaOneFile.h"
+
 CharaPreview::CharaPreview(QWidget *parent) :
-	BGPreview2(parent), _mainModels(nullptr)
+	BGPreview2(parent)
 {
 	setAutoFillBackground(true);
 	setAlignment(Qt::AlignCenter);
@@ -41,25 +43,62 @@ void CharaPreview::fill(const QPixmap &background)
 		setPixmap(background);
 }
 
-void CharaPreview::setMainModels(QHash<int, CharaModel> *mainModels)
+void CharaPreview::setModel(int modelID, CharaOneFile *charaOne, QHash<int, CharaModel> *mainModels)
 {
-	_mainModels = mainModels;
-}
-
-void CharaPreview::setModel(const CharaModel &model)
-{
+	const CharaModel &model = charaOne->model(modelID);
 	const CharaModel *m;
 
-	if (model.isExternal() && _mainModels && _mainModels->contains(model.id())) {
-		m = &(*_mainModels)[model.id()];
+	if (model.loadingType() == CharaModel::External && mainModels && mainModels->contains(model.id())) {
+		m = &(*mainModels)[model.id()];
+	} else if (model.loadingType() == CharaModel::LocalSharedTexture && model.sharedTextureModelId() < charaOne->modelCount()) {
+		m = &charaOne->model(model.sharedTextureModelId());
 	} else {
 		m = &model;
 	}
 
 	if (!m->textures().isEmpty()) {
-		setName(QString("tex%1").arg(m->id()));
-		setPixmap(QPixmap::fromImage(m->texture(0).image()));
+		setName(QString("%1-tex%2").arg(m->name()).arg(m->id()));
+		setPixmap(QPixmap::fromImage(setImageColors(m->texture(0).image(), model.lightColor())));
 	} else {
 		clear();
 	}
+}
+
+QImage CharaPreview::setImageColors(const QImage &image, quint32 colorModifier)
+{
+	QList<uint> colorTable = image.colorTable();
+	const int redModifier = qRed(colorModifier) - 128,
+	    greenModifier = qGreen(colorModifier) - 128,
+	    blueModifier = qBlue(colorModifier) - 128;
+
+	for (qsizetype i = 0; i < colorTable.size(); ++i) {
+		const uint color = colorTable.at(i);
+		if (color != 0) {
+			int r = qRed(color) + redModifier, g = qGreen(color) + greenModifier, b = qBlue(color) + blueModifier;
+			if (r < 0) {
+				r = 0;
+			}
+			if (r > 255) {
+				r = 255;
+			}
+			if (g < 0) {
+				g = 0;
+			}
+			if (g > 255) {
+				g = 255;
+			}
+			if (b < 0) {
+				b = 0;
+			}
+			if (b > 255) {
+				b = 255;
+			}
+			colorTable[i] = qRgba(r, g, b, qAlpha(color));
+		}
+	}
+
+	QImage ret = image;
+	ret.setColorTable(colorTable);
+
+	return ret;
 }

@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QtWidgets>
+#include "widgets/ColorDisplay.h"
 #include "widgets/PageWidget.h"
 #include "CharaPreview.h"
 
@@ -32,9 +33,22 @@ public:
 	void setMainModels(QHash<int, CharaModel> *mainModels);
 public slots:
 	void setModel(int modelID);
+	void setDefaultLightColor();
+	void setModelLightColor();
+	void setModelLoadingType(int index);
+	void setScaleValue(int value);
+	void setExternalModelId(int value);
+	void setLocalTextureLoaderId(int value);
 private:
 	void build();
+	QFormLayout *_formLayout;
 	QHash<int, CharaModel> *_mainModels;
 	CharaPreview *_modelPreview;
 	QListWidget *_modelList;
+	QComboBox *_loadingTypeChoice;
+	ColorDisplay *_lightColorEdit;
+	ColorDisplay *_defaultLightColorEdit;
+	QSpinBox *_localTextureLoaderIdEdit;
+	QSpinBox *_modelScale;
+	QSpinBox *_modelId;
 };

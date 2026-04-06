@@ -23,6 +23,7 @@
 #include "files/IdFile.h"
 #include "files/CaFile.h"
 #include "files/InfFile.h"
+#include "files/PcbFile.h"
 #include "files/PmpFile.h"
 #include "files/PmdFile.h"
 #include "files/PvpFile.h"
@@ -35,7 +36,7 @@
 #include "files/SfxFile.h"
 #include "files/AkaoListFile.h"
 
-#define FILE_COUNT		15
+#define FILE_COUNT		16
 
 class Map;
 
@@ -43,13 +44,13 @@ class Field
 {
 public:
 	enum FileType {
-		Msd, Jsm, Id, Ca, Rat, Mrt, Inf, Pmp, Pmd, Pvp, Background, Tdw, Msk, Sfx, AkaoList
+		Msd, Jsm, Id, Ca, Rat, Mrt, Inf, Pmp, Pmd, Pvp, Background, Tdw, Msk, Sfx, AkaoList, CharaOne
 	};
 	
 	inline static QList<FileType> fileTypes() {
 		return QList<FileType>() << Msd << Jsm << Id << Ca << Rat << Mrt
 		                         << Inf << Pmp << Pmd << Pvp << Background << Tdw
-		                         << Msk << Sfx << AkaoList;
+		                         << Msk << Sfx << AkaoList << CharaOne;
 	}
 
 	Field(const QString &name);
@@ -71,7 +72,8 @@ public:
 	bool hasCaFile() const;
 	bool hasRatFile() const;
 	bool hasMrtFile() const;
-    bool hasInfFile() const;
+	bool hasInfFile() const;
+	bool hasPcbFile() const;
 	bool hasPmpFile() const;
 	bool hasPmdFile() const;
 	bool hasPvpFile() const;
@@ -114,6 +116,7 @@ public:
 	void addMskFile();
 	void addSfxFile();
 	void addAkaoListFile();
+	void addCharaFile();
 	void setOpen(bool open);
 protected:
 	void setName(const QString &name);
@@ -121,16 +124,14 @@ protected:
 	void openFile(FileType fileType, const QByteArray &data);
 	void openJsmFile(const QByteArray &jsm, const QByteArray &sym = QByteArray(), bool oldFormat = false);
 	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
-	void openCharaFile(const QByteArray &one);
+	void openCharaFile(const QByteArray &one, const QByteArray &pcb = QByteArray());
 	virtual void setFile(FileType fileType);
 private:
 	File *newFile(FileType fileType);
 	void deleteFile(FileType fileType);
-	void deleteCharaFile();
 
 	bool _isOpen;
 	QString _name;
-	static CharaOneFile *charaFile;
 	static Map *worldmapFile;
 
 	QList<File *> files;

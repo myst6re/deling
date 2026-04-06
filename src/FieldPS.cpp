@@ -233,10 +233,11 @@ bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArr
 	return true;
 }
 
-bool FieldPS::save(QByteArray &dat, QByteArray &mim)
+bool FieldPS::save(QByteArray &dat, QByteArray &mim, QByteArray &lzk)
 {
 	// pvp + mim + tdw + pmp (MIM)
 	// inf + ca + id + map + msk + rat + mrt + AKAO + msd + pmd + jsm (DAT)
+	// charaOne (LZK)
 	FieldDatHeader header(dat);
 
 	if (hasMsdFile() && getMsdFile()->isModified()) {
@@ -325,6 +326,12 @@ bool FieldPS::save(QByteArray &dat, QByteArray &mim)
 		if (getAkaoListFile()->save(akao)) {
 			dat.replace(header.position(FieldDatHeader::AKAO), header.size(FieldDatHeader::AKAO), akao);
 			header.setSize(FieldDatHeader::AKAO, akao.size());
+		}
+	}
+	if (hasCharaFile() && getCharaFile()->isModified()) {
+		QByteArray charaOne, pcb;
+		if (getCharaFile()->save(charaOne, pcb)) {
+			lzk = charaOne;
 		}
 	}
 	if (hasBackgroundFile() && getBackgroundFile()->isModified()) {
