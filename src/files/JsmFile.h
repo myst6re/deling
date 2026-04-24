@@ -131,6 +131,7 @@ private:
 	QString _toString(int position, int nbOpcode, int indent = 0) const;
 	QString _toStringMore(int position, int nbOpcode, const Field *field, int indent = 0) const;
 
+	void forceNames();
 	void searchWindows();
 	void searchGroupTypes();
 
