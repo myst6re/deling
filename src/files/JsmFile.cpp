@@ -222,6 +222,7 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &symData, bool oldFor
 
 	_hasSym = openSym(symData);
 
+	forceNames();
 	searchWindows();
 	searchGroupTypes();
 

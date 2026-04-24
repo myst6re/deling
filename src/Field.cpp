@@ -71,9 +71,44 @@ void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym, bool oldFo
 	deleteFile(Jsm);
 	JsmFile *f = (JsmFile *)newFile(Jsm);
 
+	//qDebug() << "openJsmFile" << name();
+
 	if (!f->open(jsm, sym, oldFormat)) {
 		qWarning() << "Field::openJsmFile error" << _name;
 		deleteFile(Jsm);
+	} else {
+		/* QFile f0(QString("E:/Desktop/jsm-original/%1.jsm").arg(name()));
+		f0.open(QIODevice::WriteOnly | QIODevice::Truncate);
+		f0.write(jsm);
+		f0.close();
+		QFile f0sym(QString("E:/Desktop/jsm-original/%1.sym").arg(name()));
+		f0sym.open(QIODevice::WriteOnly | QIODevice::Truncate);
+		f0sym.write(sym);
+		f0sym.close();
+
+		QFile f1(QString("E:/Desktop/jsm/%1.jsm").arg(name()));
+		f1.open(QIODevice::WriteOnly | QIODevice::Truncate);
+		QByteArray jsm2, sym2;
+		f->save(jsm2, sym2);
+		f1.write(jsm2);
+		f1.close();
+		QFile f1sym(QString("E:/Desktop/jsm/%1.sym").arg(name()));
+		f1sym.open(QIODevice::WriteOnly | QIODevice::Truncate);
+		f1sym.write(sym2);
+		f1sym.close();
+
+		for (int groupID = 0; groupID < f->getScripts().groups().size(); ++groupID) {
+			for (int methodID = 0; methodID < f->getScripts().group(groupID).scriptCount(); ++methodID) {
+				JsmPseudoCompiler compiler;
+				JsmData result;
+				QString errorStr;
+				int errorLine;
+				if (!compiler.compile(f->toString(groupID, methodID, true, this), f->getScripts(), result, errorStr, errorLine)) {
+					qWarning() << "compile error" << name() << groupID << methodID << errorStr;
+					return;
+				}
+			}
+		} */
 	}
 }
 
