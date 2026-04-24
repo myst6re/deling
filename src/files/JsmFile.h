@@ -35,13 +35,15 @@ struct FF8Window {
 };
 
 struct JsmHeader {
-	quint8 count0;
-	quint8 count1;
-	quint8 count2;
-	quint8 count3;
-	quint16 section1;
-	quint16 section2;
+	quint8 countDoors;
+	quint8 countLines;
+	quint8 countBackground;
+	quint8 countOther;
+	quint16 offsetScriptPositionsSection;
+	quint16 offsetScriptDataSection;
 };
+
+class Field;
 
 class JsmFile : public File
 {
@@ -57,11 +59,9 @@ public:
 	JsmFile();
 	virtual ~JsmFile();
 
-	QString printCount();
-
 	bool open(const QString &path);
 	// Ensure File::open is overloaded
-	inline bool open(const QByteArray &jsm) {
+	inline bool open(const QByteArray &jsm) override {
 		return open(jsm, QByteArray());
 	}
 	bool open(const QByteArray &jsm, const QByteArray &sym_data, bool old_format = false);
@@ -70,19 +70,22 @@ public:
 	bool save(QByteArray &jsm, QByteArray &sym);
 	bool openSym(const QByteArray &sym_data);
 	bool toFileSym(const QString &path);
-	QString saveSym();
+	QByteArray saveSym();
 	inline QString filterText() const {
 		return QObject::tr("Field Script PC file (*.jsm)");
-    }
+	}
 
-	bool compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
 	QString toString(int groupID, int methodID, bool moreDecompiled,
 	                 const Field *field, int indent = 0, bool noCache = false);
-	int opcodePositionInText(int groupID, int methodID, int opcodeID) const;
+	int opcodePositionInText(int groupID, int methodID, int opcodeID, bool more, const Field *field) const;
 	int fromString(int groupID, int methodID, const QString &text, QString &errorStr);
 
-	const JsmScripts &getScripts() const;
-	JsmScripts &getScripts();
+	inline const JsmScripts &getScripts() const {
+		return scripts;
+	}
+	inline JsmScripts &getScripts() {
+		return scripts;
+	}
 
 	bool search(SearchType type, quint64 value, int &groupID, int &methodID, int &opcodeID) const;
 	bool search(SearchType type, const QList<quint64> &values, int &groupID, int &methodID, int &opcodeID) const;
@@ -96,7 +99,9 @@ public:
 	void searchAllOpcodeTypes(QMap<int, int> &ret) const;
 	void searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const;
 
-	bool hasSym() const;
+	inline bool hasSym() const {
+		return _hasSym;
+	}
 	int mapID() const;
 	inline bool oldFormat() const {
 		return _oldFormat;
@@ -110,16 +115,19 @@ public:
 	void setWindow(quint8 textID, int winID, const FF8Window &value);
 
 	void setDecompiledScript(int groupID, int methodID, const QString &text, bool moreDecompiled);
-	void setCurrentOpcodeScroll(int groupID, int methodID, int scrollValue, const QTextCursor &textCursor);
-	int currentGroupItem() const;
+	void setCurrentOpcodeScroll(int groupID, int methodID, bool more, int scrollValue, const QTextCursor &textCursor);
+	inline int currentGroupItem() const {
+		return groupItem;
+	}
 	int currentMethodItem(int groupID) const;
-	int currentOpcodeScroll(int groupID, int methodID) const;
-	int currentTextCursor(int groupID, int methodID, int &anchor) const;
+	int currentOpcodeScroll(int groupID, int methodID, bool more) const;
+	int currentTextCursor(int groupID, int methodID, bool more, int &anchor) const;
 
-	static QStringList opcodeName;
-	static QStringList opcodeNameCalc;
+	static QStringList opcodeNames;
+	static QStringList opcodeNamesCalc;
 private:
-	bool search(SearchType type, quint64 value, quint16 pos, int opcodeID) const;
+	static JsmGroup createGroup(quint16 label, quint8 count, const JsmHeader &jsmHeader, int headerID);
+	bool searchInOpcode(SearchType type, quint64 value, quint16 pos, int opcodeID) const;
 	QString _toString(int position, int nbOpcode, int indent = 0) const;
 	QString _toStringMore(int position, int nbOpcode, const Field *field, int indent = 0) const;
 
@@ -129,11 +137,11 @@ private:
 	JsmScripts scripts;
 	bool _hasSym;
 	bool needUpdate, needUpdateMore;
-	int section1_padding;
+	int _offsetScriptPositionsSectionPadding;
 	int _mapID;
 	QMultiMap<quint8, FF8Window> ff8Windows;
-	QMap<quint64, int> opcodeScroll;
-	QMap<quint64, quint64> textCursors;
+	QMap<quint64, int> opcodeScroll, opcodeScrollMore;
+	QMap<quint64, quint64> textCursors, textCursorsMore;
 	QMap<int, int> methodItem;
 	int groupItem;
 	bool _oldFormat;

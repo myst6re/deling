@@ -193,15 +193,16 @@ void JsmWidget::compilePseudo()
 	JsmData compiled;
 	QString errorStr;
 	int errorLine = 0;
+	JsmFile *jsm = data()->getJsmFile();
 
-	if (compiler.compile(textEdit->toPlainText(), compiled, errorStr, errorLine)) {
+	if (compiler.compile(textEdit->toPlainText(), jsm->getScripts(), compiled, errorStr, errorLine)) {
 		// Replace the script data and invalidate caches
-		data()->getJsmFile()->getScripts().replaceScript(groupID, methodID, compiled);
+		jsm->getScripts().replaceScript(groupID, methodID, compiled);
 		// Mark the JsmFile as modified so the save system knows to write it
-		data()->getJsmFile()->setModified(true);
+		jsm->setModified(true);
 		// Clear cached decompiled scripts so both views regenerate
-		data()->getJsmFile()->setDecompiledScript(groupID, methodID, QString(), false);
-		data()->getJsmFile()->setDecompiledScript(groupID, methodID, QString(), true);
+		jsm->setDecompiledScript(groupID, methodID, QString(), false);
+		jsm->setDecompiledScript(groupID, methodID, QString(), true);
 
 		QMessageBox::information(this, tr("Compile"),
 		    tr("Successfully compiled (%1 opcodes)").arg(compiled.nbOpcode()));
@@ -273,10 +274,10 @@ void JsmWidget::saveSession()
 {
 	if (!hasData() || !data()->hasJsmFile() || !isBuilded())	return;
 
-	data()->getJsmFile()->setCurrentOpcodeScroll(this->groupID, this->methodID, textEdit->verticalScrollBar()->value(), textEdit->textCursor());
+	bool isPseudo = (tabBar->currentIndex() <= 0);
+	data()->getJsmFile()->setCurrentOpcodeScroll(this->groupID, this->methodID, isPseudo, textEdit->verticalScrollBar()->value(), textEdit->textCursor());
 	if (textEdit->document()->isModified()) {
 		// Save to the correct cache slot based on which tab is active
-		bool isPseudo = (tabBar->currentIndex() <= 0);
 		data()->getJsmFile()->setDecompiledScript(this->groupID,
 		                                          this->methodID,
 		                                          textEdit->toPlainText(),
@@ -362,13 +363,13 @@ void JsmWidget::fillList2()
 	list2->resizeColumnToContents(1);
 
 	const JsmGroup &group = data()->getJsmFile()->getScripts().group(groupID);
-	int modelID = group.modelId(), bgParamID = group.backgroundParamId();
+	int modelID = group.modelId(), bgParamID = group.groupTypeRelativeId();
 
 	if (modelID != -1 && data()->hasCharaFile()
 			&& modelID < data()->getCharaFile()->modelCount()) {
 		modelPreview->setEnabled(true);
 		modelPreview->setModel(modelID, data()->getCharaFile(), mainModels);
-	} else if (bgParamID != -1 && data()->hasBackgroundFile()
+	} else if (bgParamID != -1 && group.type() == JsmGroup::Background && data()->hasBackgroundFile()
 			  && data()->getBackgroundFile()->allparams.contains(bgParamID)) {
 		modelPreview->setEnabled(true);
 		modelPreview->fill(QPixmap::fromImage(data()->getBackgroundFile()->background(QList<quint8>() << bgParamID, true)));
@@ -418,7 +419,7 @@ void JsmWidget::fillTextEdit()
 	Config::setValue("scriptType", tabBar->currentIndex());
 	groupID = list1->selectedID();
 	methodID = currentItem(list2);
-	if (groupID==-1 || methodID==-1) {
+	if (groupID == -1 || methodID == -1) {
 		textEdit->clear();
 		toolBar->setEnabled(false);
 		pseudoToolBar->setEnabled(false);
@@ -426,35 +427,39 @@ void JsmWidget::fillTextEdit()
 	}
 
 	list2->scrollToItem(list2->currentItem());
+	textEdit->setReadOnly(isReadOnly());
 
+	bool more;
 	if (tabBar->currentIndex() <= 0) {
 		toolBar->setVisible(false);
 		pseudoToolBar->setVisible(true);
 		pseudoToolBar->setEnabled(!isReadOnly());
-		textEdit->setReadOnly(isReadOnly());
 		highlighter->setPseudoCode(true);
-		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, true, data()));
+		more = true;
 	} else {
 		pseudoToolBar->setVisible(false);
 		toolBar->setVisible(true);
 		toolBar->setEnabled(!isReadOnly());
-		textEdit->setReadOnly(isReadOnly());
 		highlighter->setPseudoCode(false);
-		textEdit->setPlainText(data()->getJsmFile()->toString(groupID, methodID, false, data()));
-
-		int scroll = data()->getJsmFile()->currentOpcodeScroll(groupID, methodID);
-		int anchor;
-		int position = data()->getJsmFile()->currentTextCursor(groupID, methodID, anchor);
-
-		if (position >= 0) {
-			QTextCursor newCursor = textEdit->textCursor();
-			newCursor.setPosition(anchor);
-			newCursor.setPosition(position, QTextCursor::KeepAnchor);
-			textEdit->setTextCursor(newCursor);
-		}
-
-		textEdit->verticalScrollBar()->setValue(scroll);
+		more = false;
 	}
+
+	JsmFile *jsm = data()->getJsmFile();
+
+	textEdit->setPlainText(jsm->toString(groupID, methodID, more, data()));
+
+	int scroll = jsm->currentOpcodeScroll(groupID, methodID, more);
+	int anchor;
+	int position = jsm->currentTextCursor(groupID, methodID, more, anchor);
+
+	if (position >= 0) {
+		QTextCursor newCursor = textEdit->textCursor();
+		newCursor.setPosition(anchor);
+		newCursor.setPosition(position, QTextCursor::KeepAnchor);
+		textEdit->setTextCursor(newCursor);
+	}
+
+	textEdit->verticalScrollBar()->setValue(scroll);
 }
 
 void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
@@ -606,70 +611,67 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 	QTreeWidgetItem *item;
 	int begin, count;
 	QString name;
+	const JsmScripts &scripts = data()->getJsmFile()->getScripts();
 
-	if (data()->getJsmFile()->getScripts().nbGroup()<=groupID) {
-		qWarning() << "JsmFile::methodList error 1" << groupID << data()->getJsmFile()->getScripts().nbGroup();
+	if (scripts.nbGroup() <= groupID) {
+		qWarning() << "JsmFile::methodList error 1" << groupID << scripts.nbGroup();
 		return items;
 	}
 
-	JsmGroup::Type groupType = data()->getJsmFile()->getScripts().group(groupID).type();
+	JsmGroup::Type groupType = scripts.group(groupID).type();
 
-	begin = data()->getJsmFile()->getScripts().firstMethodID(groupID);
-	count = data()->getJsmFile()->getScripts().nbScript(groupID);
+	begin = scripts.firstMethodID(groupID);
+	count = scripts.nbScript(groupID);
 
-	if (data()->getJsmFile()->getScripts().nbScript()<begin+count) {
-		qWarning() << "JsmFile::methodList error 2" << data()->getJsmFile()->getScripts().nbScript() << (begin+count);
+	if (scripts.nbScript() < begin + count) {
+		qWarning() << "JsmFile::methodList error 2" << scripts.nbScript() << (begin + count);
 		return items;
 	}
 
 	for (int methodID = 0; methodID < count; ++methodID) {
-		const JsmScript &script = data()->getJsmFile()->getScripts().script(groupID, methodID);
-		if (methodID==0) {
-			name = QString();
-		}
-		else {
-			name = script.name();
-			if (name.isEmpty()) {
-				if (methodID==1) {
-					name = "default";
-				} else {
-					switch (groupType) {
-					case JsmGroup::Model:
-						switch (methodID) {
-						case 2:		name = "talk";		break;
-						case 3:		name = "push";		break;
-						}
-						break;
-					case JsmGroup::Location:
-						switch (methodID) {
-						case 2:		name = "talk";		break;
-						case 3:		name = "push";		break;
-						case 4:		name = "across";	break;
-						case 5:		name = "touch";		break;
-						case 6:		name = "touchoff";	break;
-						case 7:		name = "touchon";	break;
-						}
-						break;
-					case JsmGroup::Door:
-						switch (methodID) {
-						case 2:		name = "open";		break;
-						case 3:		name = "close";		break;
-						case 4:		name = "on";		break;
-						case 5:		name = "off";		break;
-						}
-						break;
-					default:
-						break;
+		const JsmScript &script = scripts.script(groupID, methodID);
+		name = script.name();
+		if (name.isEmpty()) {
+			if (methodID == 0) {
+				name = "init";
+			} else if (methodID == 1) {
+				name = "default";
+			} else {
+				switch (groupType) {
+				case JsmGroup::No:
+					switch (methodID) {
+					case 2:		name = "talk";		break;
+					case 3:		name = "push";		break;
 					}
-					if (name.isEmpty())		name = QString("Method%1").arg(methodID);
+					break;
+				case JsmGroup::Location:
+					switch (methodID) {
+					case 2:		name = "talk";		break;
+					case 3:		name = "push";		break;
+					case 4:		name = "across";	break;
+					case 5:		name = "touch";		break;
+					case 6:		name = "touchoff";	break;
+					case 7:		name = "touchon";	break;
+					}
+					break;
+				case JsmGroup::Door:
+					switch (methodID) {
+					case 2:		name = "open";		break;
+					case 3:		name = "close";		break;
+					case 4:		name = "on";		break;
+					case 5:		name = "off";		break;
+					}
+					break;
+				case JsmGroup::Model:
+				case JsmGroup::Main:
+				case JsmGroup::Background:
+					break;
 				}
+				if (name.isEmpty())		name = QString("Method%1").arg(methodID);
 			}
 		}
 		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(methodID, 3) << name << QString("%1").arg(begin+methodID, 3));
 		item->setData(0, Qt::UserRole, methodID);
-		if (script.flag()) {
-			item->setForeground(0, Qt::darkGreen);
-		}
 		items.append(item);
 	}
 
@@ -727,9 +729,6 @@ void JsmWidget::gotoScript(int groupID, int methodID, int opcodeID)
 {
 	if (!isBuilded())	build();
 
-	// Force opcode list
-	tabBar->setCurrentIndex(1);
-
 	QList<QTreeWidgetItem *> items = list1->findItems(QString("%1").arg(groupID, 3), Qt::MatchExactly);
 	QTreeWidgetItem *item;
 	if (items.isEmpty())	return;
@@ -746,7 +745,7 @@ void JsmWidget::gotoScript(int groupID, int methodID, int opcodeID)
 	list2->scrollToItem(item);
 
 	QTextCursor cursor = textEdit->textCursor();
-	cursor.setPosition(textEdit->document()->findBlockByLineNumber(data()->getJsmFile()->opcodePositionInText(groupID, methodID, opcodeID)).position());
+	cursor.setPosition(textEdit->document()->findBlockByLineNumber(data()->getJsmFile()->opcodePositionInText(groupID, methodID, opcodeID, tabBar->currentIndex() <= 0, data())).position());
 	cursor.movePosition(QTextCursor::StartOfLine);
 	cursor.movePosition(QTextCursor::EndOfLine, QTextCursor::KeepAnchor);
 	textEdit->setTextCursor(cursor);
@@ -782,7 +781,7 @@ int JsmWidget::selectedOpcode()
 	cursor.movePosition(QTextCursor::StartOfWord);
 	cursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
 	int index;
-	if ((index = JsmFile::opcodeName.indexOf(cursor.selectedText().toUpper())) != -1) {
+	if ((index = JsmFile::opcodeNames.indexOf(cursor.selectedText().toUpper())) != -1) {
 		return index;
 	}
 	return 0;

@@ -23,36 +23,38 @@ JsmData::JsmData() :
 }
 
 JsmData::JsmData(const QByteArray &scriptData, bool demo) :
-    scriptData(scriptData), _demo(demo)
+    _scriptData(scriptData), _demo(demo)
 {
-	if (this->scriptData.size() % 4 != 0) {
-		qWarning() << "JsmData::JsmData : Incorrect size" << this->scriptData.size();
-		this->scriptData.resize(this->scriptData.size() - (this->scriptData.size() % 4));
+	if (_scriptData.size() % 4 != 0) {
+		qWarning() << "JsmData::JsmData : Incorrect size" << _scriptData.size();
+		_scriptData.resize(_scriptData.size() - (_scriptData.size() % 4));
 	}
 }
 
-int JsmData::nbOpcode() const
+JsmData &JsmData::prepend(const JsmOpcode &opcode)
 {
-	return scriptData.size()/4;
+	quint32 op = opcode.opcode();
+	_scriptData.prepend((const char *)&op, 4);
+	return *this;
 }
 
 JsmData &JsmData::append(const JsmOpcode &opcode)
 {
 	quint32 op = opcode.opcode();
-	scriptData.append((char *)&op, 4);
+	_scriptData.append((const char *)&op, 4);
 	return *this;
 }
 
 JsmData &JsmData::append(const JsmData &jsmData)
 {
-	scriptData.append(jsmData.constData());
+	_scriptData.append(jsmData.constData());
 	return *this;
 }
 
 JsmOpcode JsmData::opcode(int opcodeID) const
 {
-	const char *constData = scriptData.constData();
-	quint32 op=0;
+	const char *constData = _scriptData.constData();
+	quint32 op = 0;
 
 	memcpy(&op, constData + opcodeID * 4, 4);
 
@@ -111,66 +113,41 @@ QList<JsmOpcode *> JsmData::opcodesp(int opcodeID, int nbOpcode) const
 JsmData &JsmData::setOpcode(int opcodeID, const JsmOpcode &opcode)
 {
 	quint32 op = opcode.opcode();
-	scriptData.replace(opcodeID*4, 4, (char *)&op, 4);
+	_scriptData.replace(opcodeID * 4, 4, (const char *)&op, 4);
 	return *this;
 }
 
 JsmData &JsmData::insertOpcode(int opcodeID, const JsmOpcode &opcode)
 {
 	quint32 op = opcode.opcode();
-	scriptData.insert(opcodeID*4, (char *)&op, 4);
+	_scriptData.insert(opcodeID * 4, (const char *)&op, 4);
 	return *this;
 }
 
 JsmData &JsmData::insert(int opcodeID, const JsmData &data)
 {
-	scriptData.insert(opcodeID*4, data.constData());
+	_scriptData.insert(opcodeID*4, data.constData());
 	return *this;
 }
 
 JsmData &JsmData::remove(int opcodeID, int nbOpcode)
 {
-	scriptData.remove(opcodeID*4, nbOpcode*4);
+	_scriptData.remove(opcodeID * 4, nbOpcode * 4);
 	return *this;
 }
 
 JsmData &JsmData::replace(int opcodeID, int nbOpcode, const JsmData &after)
 {
-	scriptData.replace(opcodeID*4, nbOpcode*4, after.constData());
+	_scriptData.replace(opcodeID * 4, nbOpcode * 4, after.constData());
 	return *this;
 }
 
 JsmData JsmData::mid(int opcodeID, int nbOpcode) const
 {
-	return JsmData(scriptData.mid(opcodeID*4, nbOpcode==-1 ? nbOpcode : nbOpcode*4), _demo);
+	return JsmData(_scriptData.mid(opcodeID * 4, nbOpcode == -1 ? nbOpcode : nbOpcode * 4), _demo);
 }
 
-const QByteArray &JsmData::constData() const
+JsmData JsmData::copy() const
 {
-	return scriptData;
-}
-
-JsmData &JsmData::operator+=(const JsmOpcode &opcode)
-{
-	return append(opcode);
-}
-
-JsmData &JsmData::operator+=(const JsmData &data)
-{
-	return append(data);
-}
-
-bool JsmData::operator==(const JsmData &data) const
-{
-	return this->constData() == data.constData();
-}
-
-bool JsmData::operator!=(const JsmData &data) const
-{
-	return !(*this == data);
-}
-
-JsmOpcode JsmData::operator[](int opcodeID) const
-{
-	return opcode(opcodeID);
+	return JsmData(_scriptData, _demo);
 }

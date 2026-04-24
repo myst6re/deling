@@ -17,41 +17,6 @@
  ****************************************************************************/
 #include "JsmScripts.h"
 
-JsmScript::JsmScript() {
-}
-
-JsmScript::JsmScript(quint16 pos, bool flag) :
-	_pos(pos), _flag(flag)
-{
-}
-
-JsmScript::JsmScript(quint16 pos, const QString &name) :
-	_name(name), _pos(pos), _flag(false)
-{
-
-}
-
-void JsmScript::setName(const QString &name)
-{
-	_name = name;
-}
-
-//void JsmScript::setPos(quint16 pos)
-//{
-//	_pos = pos;
-//}
-
-void JsmScript::incPos(int inc)
-{
-	_pos += inc;
-//	qDebug() << name() << "incPos" << inc << "=>" << _pos;
-}
-
-void JsmScript::setFlag(bool flag)
-{
-	_flag = flag;
-}
-
 void JsmScript::setDecompiledScript(const QString &text, bool moreDecompiled)
 {
 	if (moreDecompiled) {
@@ -61,176 +26,86 @@ void JsmScript::setDecompiledScript(const QString &text, bool moreDecompiled)
 	}
 }
 
-const QString &JsmScript::name() const
-{
-	return _name;
-}
-
-quint16 JsmScript::pos() const
-{
-	return _pos;
-}
-
-bool JsmScript::flag() const
-{
-	return _flag;
-}
-
 const QString &JsmScript::decompiledScript(bool moreDecompiled) const
 {
-	if (moreDecompiled) {
-		return _decompiledScriptMore;
+	return moreDecompiled ? _decompiledScriptMore : _decompiledScript;
+}
+
+JsmGroup::JsmGroup(quint16 label, quint8 scriptCount, Type groupType, int groupTypeRelativeID)
+	: _type(groupType), _character(-1), _modelID(-1), _groupTypeRelativeID(groupTypeRelativeID),
+	  _label(label), _scriptCount(scriptCount)
+{
+}
+
+JsmScripts::JsmScripts(const QList<JsmGroup> &groupListOrderedById, const QList<JsmScript> &methodList, const JsmData &scriptData) :
+	_groupListOrderedById(groupListOrderedById), _methodList(methodList), scriptData(scriptData)
+{
+}
+
+void JsmScripts::countTypes(quint8 &doors, quint8 &lines, quint8 &backgrounds, quint8 &others) const
+{
+	doors = 0;
+	lines = 0;
+	backgrounds = 0;
+	others = 0;
+
+	for (const JsmGroup &group: _groupListOrderedById) {
+		switch (group.type()) {
+		case JsmGroup::Door:
+			++doors;
+			break;
+		case JsmGroup::Location:
+			++lines;
+			break;
+		case JsmGroup::Background:
+			++backgrounds;
+			break;
+		default:
+			++others;
+			break;
+		}
 	}
-	return _decompiledScript;
 }
 
-JsmGroup::JsmGroup() {
-}
-
-JsmGroup::JsmGroup(quint16 exec_order, quint16 label, quint8 script_count)
-	: _type(No), _character(-1), _modelID(-1), _backgroundParamID(-1),
-	  _exec_order(exec_order), _label(label), _script_count(script_count)
+int JsmScripts::countModels() const
 {
+	int ret = 0;
+	for (const JsmGroup &group: _groupListOrderedById) {
+		ret += int(group.type() == JsmGroup::Model);
+	}
+	return ret;
 }
 
-void JsmGroup::setType(Type type) {
-	_type = type;
-}
-
-void JsmGroup::setCharacter(int character) {
-	_character = character;
-}
-
-void JsmGroup::setModelId(int modelID) {
-	_modelID = modelID;
-}
-
-void JsmGroup::setBackgroundParamId(int backgroundParamID) {
-	_backgroundParamID = backgroundParamID;
-}
-
-void JsmGroup::setName(const QString &name) {
-	_name = name;
-}
-
-void JsmGroup::incLabel(int inc)
+QList<int> JsmScripts::groupIDsSortedByLabel() const
 {
-	_label += inc;
-//	qDebug() << name() << "incLabel" << inc << "=>" << _label;
-}
+	QMultiMap<int, int> groupIDByLabel;
+	int groupID = 0;
+	for (const JsmGroup &group: _groupListOrderedById) {
+		groupIDByLabel.insert(group.label(), groupID);
+		groupID += 1;
+	}
 
-void JsmGroup::incScriptCount(int inc)
-{
-	_script_count += inc;
-//	qDebug() << name() << "incScriptCount" << inc << "=>" << _script_count;
-}
-
-JsmGroup::Type JsmGroup::type() const {
-	return _type;
-}
-
-int JsmGroup::character() const {
-	return _character;
-}
-
-int JsmGroup::modelId() const {
-	return _modelID;
-}
-
-int JsmGroup::backgroundParamId() const {
-	return _backgroundParamID;
-}
-
-const QString &JsmGroup::name() const {
-	return _name;
-}
-
-quint16 JsmGroup::execOrder() const {
-	return _exec_order;
-}
-
-quint16 JsmGroup::label() const {
-	return _label;
-}
-
-quint8 JsmGroup::scriptCount() const {
-	return _script_count + 1;//count + constructor
-}
-
-JsmScripts::JsmScripts()
-{
-}
-
-JsmScripts::JsmScripts(const QList<JsmGroup> &groupList, const QList<JsmScript> &scriptList, const JsmData &scriptData,
-					   quint8 countDoors, quint8 countLines, quint8 countBackgrounds, quint8 countOthers) :
-	groupList(groupList), scriptList(scriptList), scriptData(scriptData), _countDoors(countDoors),
-	_countLines(countLines), _countBackgrounds(countBackgrounds), _countOthers(countOthers)
-{
-}
-
-quint8 JsmScripts::countDoors() const
-{
-	return _countDoors;
-}
-
-quint8 JsmScripts::countLines() const
-{
-	return _countLines;
-}
-
-quint8 JsmScripts::countBackgrounds() const
-{
-	return _countBackgrounds;
-}
-
-quint8 JsmScripts::countOthers() const
-{
-	return _countOthers;
-}
-
-int JsmScripts::nbEntitiesForSym() const
-{
-	return _countLines + _countBackgrounds + _countOthers;
-}
-
-const QList<JsmGroup> &JsmScripts::getGroupList() const
-{
-	return groupList;
-}
-
-const JsmGroup &JsmScripts::group(int groupID) const
-{
-	return groupList.at(groupID);
-}
-
-int JsmScripts::nbGroup() const
-{
-	return groupList.size();
+	return groupIDByLabel.values();
 }
 
 void JsmScripts::setGroupName(int groupID, const QString &name)
 {
-	groupList[groupID].setName(name);
+	_groupListOrderedById[groupID].setName(name);
 }
 
 void JsmScripts::setGroupCharacter(int groupID, int character)
 {
-	groupList[groupID].setCharacter(character);
+	_groupListOrderedById[groupID].setCharacter(character);
 }
 
 void JsmScripts::setGroupModelId(int groupID, int modelID)
 {
-	groupList[groupID].setModelId(modelID);
-}
-
-void JsmScripts::setGroupBackgroundParamId(int groupID, int backgroundParamID)
-{
-	groupList[groupID].setBackgroundParamId(backgroundParamID);
+	_groupListOrderedById[groupID].setModelId(modelID);
 }
 
 void JsmScripts::setGroupType(int groupID, JsmGroup::Type type)
 {
-	groupList[groupID].setType(type);
+	_groupListOrderedById[groupID].setType(type);
 }
 
 int JsmScripts::firstMethodID(int groupID) const
@@ -243,39 +118,24 @@ int JsmScripts::absoluteMethodID(int groupID, int methodID) const
 	return firstMethodID(groupID) + methodID;
 }
 
-const QList<JsmScript> &JsmScripts::getScriptList() const
+int JsmScripts::findGroupIDByName(const QString &groupName) const
 {
-	return scriptList;
-}
+	int groupID = 0;
 
-const JsmScript &JsmScripts::script(int absoluteMethodID) const
-{
-	return scriptList.at(absoluteMethodID);
+	for (const JsmGroup &group: _groupListOrderedById) {
+		if (group.name() == groupName) {
+			return groupID;
+		}
+
+		groupID += 1;
+	}
+
+	return -1;
 }
 
 const JsmScript &JsmScripts::script(int groupID, int methodID) const
 {
-	return scriptList.at(absoluteMethodID(groupID, methodID));
-}
-
-int JsmScripts::findGroup(int absoluteMethodID) const
-{
-	int groupId = 0;
-
-	for (const JsmGroup &group: groupList) {
-		if (group.label() > absoluteMethodID) {
-			return groupId - 1;
-		}
-
-		groupId += 1;
-	}
-
-	return groupId - 1;
-}
-
-int JsmScripts::nbScript() const
-{
-	return scriptList.size();
+	return _methodList.at(absoluteMethodID(groupID, methodID));
 }
 
 int JsmScripts::nbScript(int groupID) const
@@ -285,29 +145,42 @@ int JsmScripts::nbScript(int groupID) const
 
 void JsmScripts::setScriptName(int groupID, int methodID, const QString &name)
 {
-	scriptList[absoluteMethodID(groupID, methodID)].setName(name);
+	_methodList[absoluteMethodID(groupID, methodID)].setName(name);
 }
 
-const JsmData &JsmScripts::data() const
+int JsmScripts::opcodeIDStartScript(int groupID, int methodID) const
 {
-	return scriptData;
+	return script(groupID, methodID).opcodeIDStart();
 }
 
-int JsmScripts::posScript(int groupID, int methodID) const
+int JsmScripts::opcodeIDStartScript(int groupID, int methodID, int *nbOpcode) const
 {
-	return script(groupID, methodID).pos();
+	int opcodeID = opcodeIDStartScript(groupID, methodID);
+	*nbOpcode = opcodeIDStartScript(groupID, methodID + 1) - opcodeID;
+	return opcodeID;
 }
 
-int JsmScripts::posScript(int groupID, int methodID, int *nbOpcode) const
+int JsmScripts::absoluteOpcodeID(int groupID, int methodID, int opcodeID) const
 {
-	int position = posScript(groupID, methodID);
-	*nbOpcode = posScript(groupID, methodID + 1) - position;
-	return position;
+	return opcodeIDStartScript(groupID, methodID) + opcodeID;
 }
 
-int JsmScripts::posOpcode(int groupID, int methodID, int opcodeID) const
+int JsmScripts::findMethodIDByName(int groupID, const QString &methodName) const
 {
-	return posScript(groupID, methodID) + opcodeID;
+	if (groupID >= _groupListOrderedById.size()) {
+		return -1;
+	}
+
+	const JsmGroup &group = _groupListOrderedById.at(groupID);
+
+	for (int methodID = group.label(); methodID < group.label() + group.scriptCount(); ++methodID) {
+		const JsmScript &method = _methodList.at(methodID);
+		if (method.name() == methodName) {
+			return methodID;
+		}
+	}
+
+	return -1;
 }
 
 QList<int> JsmScripts::searchJumps(const QList<JsmOpcode *> &opcodes) const
@@ -334,11 +207,11 @@ QList<int> JsmScripts::searchJumps(const QList<JsmOpcode *> &opcodes) const
 QList<JsmOpcode *> JsmScripts::opcodesp(int groupID, int methodID,
                                         bool withLabels) const
 {
-	int nbOpcode, position;
+	int nbOpcode, opcodeID;
 
-	position = posScript(groupID, methodID, &nbOpcode);
+	opcodeID = opcodeIDStartScript(groupID, methodID, &nbOpcode);
 
-	QList<JsmOpcode *> opcodes = scriptData.opcodesp(position, nbOpcode);
+	QList<JsmOpcode *> opcodes = scriptData.opcodesp(opcodeID, nbOpcode);
 
 	if (withLabels) {
 		QList<int> labels = searchJumps(opcodes);
@@ -427,151 +300,154 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 		if (lbl != -1) {
 			// Add label lbl
 			JsmOpcode *opLabel = new JsmOpcodeLabel(lbl);
-			ret.append(JsmInstruction(opLabel));
+			ret.append(JsmInstruction(opLabel, -1));
 			collectPointers.insert(opLabel);
 		}
 
 		++it;
 
 		// Compute expressions from PUSH and CAL, will modify the stack
-		JsmExpression *expression = JsmExpression::factory(op, stack);
+		JsmExpression *expression = JsmExpression::factory(op, stack, pos);
 
 		if (expression) {
 			collectPointers.insert(expression);
-			delete op; // Delete push/cal
+			collectPointers.insert(op); // CAL
 		} else {
 			bool instructionAppended = false;
 			// Use the stack
-			if (!stack.isEmpty()) {
-				if (op->popCount() >= 0) {
-					// Show elements of the stack directly
-					while (stack.size() > op->popCount()) {
-						// FIXME: back to Opcode
-						ret.append(JsmInstruction(stack.pop()));
-					}
+			if (op->popCount() >= 0) {
+				// Show elements of the stack directly
+				while (stack.size() > op->popCount()) {
+					// FIXME: back to Opcode
+					ret.append(JsmInstruction(stack.pop()));
 				}
+			}
 
-				if (op->key() >= JsmOpcode::JMP && op->key() <= JsmOpcode::GJMP) {
-					if (op->key() == JsmOpcode::JPF) {
-						JsmExpression *condition = stack.pop();
-						JsmControl *toAppend = 0;
+			if (op->key() >= JsmOpcode::JMP && op->key() <= JsmOpcode::GJMP) {
+				if (op->key() == JsmOpcode::JPF && !stack.isEmpty()) {
+					JsmExpression *condition = stack.pop();
+					JsmControl *toAppend = 0;
 
-						if (op->param() > 0 && it - 1 + op->param() <= end) {
-							QList<JsmOpcode *>::const_iterator ifElsePos = it,
-									ifElseEnd = it + op->param() - 1;
-							JsmOpcode *lastOpOfBlock = *(ifElseEnd - 1);
+					if (op->param() > 0 && it - 1 + op->param() <= end) {
+						QList<JsmOpcode *>::const_iterator ifElsePos = it,
+								ifElseEnd = it + op->param() - 1;
+						JsmOpcode *lastOpOfBlock = *(ifElseEnd - 1);
 
-							// Else or While
-							if (lastOpOfBlock->key() == JsmOpcode::JMP) {
-								if (lastOpOfBlock->param() > 0
-										&& ifElseEnd - 1 + lastOpOfBlock->param() <= end) {
-									// If Else
-									toAppend = new JsmControlIfElse(
-									               condition,
-									               // Block If
-									               program(constBegin, ifElsePos,
-									                       // Remove JMP
-									                       ifElseEnd - 1, labels,
-									                       collectPointers,
-									                       usedLabels),
-									               // Block Else
-									               program(constBegin, ifElseEnd,
-									                       ifElseEnd +
-									                       lastOpOfBlock->param() -
-									                       1, labels,
-									                       collectPointers,
-									                       usedLabels));
-
-									ifElseEnd += lastOpOfBlock->param() - 1;
-								} else if (lastOpOfBlock->param() < 0
-										  && ifElseEnd + lastOpOfBlock->param() ==
-										  ifElsePos - condition->opcodeCount()) {
-									// While
-									toAppend = new JsmControlWhile(
-									               condition,
-									               // Block loop
-									               program(constBegin, ifElsePos,
-									                       // Remove JMP
-									                       ifElseEnd - 1, labels,
-									                       collectPointers,
-									                       usedLabels));
-								}
-							}
-							if (!toAppend) {
-								// If
+						// Else or While
+						if (lastOpOfBlock->key() == JsmOpcode::JMP) {
+							if (lastOpOfBlock->param() > 0
+									&& ifElseEnd - 1 + lastOpOfBlock->param() <= end) {
+								// If Else
 								toAppend = new JsmControlIfElse(
-								               condition,
-								               // Block If
-								               program(constBegin, ifElsePos,
-								                       ifElseEnd, labels,
-								                       collectPointers,
-								                       usedLabels));
-							}
+												condition,
+												// Block If
+												program(constBegin, ifElsePos,
+														// Remove JMP
+														ifElseEnd - 1, labels,
+														collectPointers,
+														usedLabels),
+												// Block Else
+												program(constBegin, ifElseEnd,
+														ifElseEnd +
+														lastOpOfBlock->param() -
+														1, labels,
+														collectPointers,
+														usedLabels));
 
-							mergeAndConditions(toAppend, ifElsePos - constBegin,
-							                   (it - constBegin) + op->param() - 1,
-							                   collectPointers, usedLabels);
-
-							it = ifElseEnd;
-						} // else if (op->param() <= 0 0 && it - 1 + op->param() >= 0) {
-							// TODO: repeatUntil: remove appended opcodes from ret
-							// toAppend = new JsmControlRepeatUntil(
-							//							stack.pop(),
-							//							program(constBegin, it - 1 + op->param(),
-							//									it - 1, labels,
-							//									collectPointers));
-						// }
-						if (!toAppend) { // JPF
-							int lbl = labels.indexOf(pos + op->param());
-							if (lbl == -1) {
-								qDebug() << labels << op->toString();
-								qFatal("%s", qUtf8Printable(QString("JsmScripts::program 1 label for pos %1 + %2 not found").arg(pos).arg(op->param())));
+								ifElseEnd += lastOpOfBlock->param() - 1;
+							} else if (lastOpOfBlock->param() < 0
+										&& ifElseEnd + lastOpOfBlock->param() ==
+										ifElsePos - condition->opcodeCount()) {
+								// While
+								toAppend = new JsmControlWhile(
+												condition,
+												// Block loop
+												program(constBegin, ifElsePos,
+														// Remove JMP
+														ifElseEnd - 1, labels,
+														collectPointers,
+														usedLabels));
 							}
-							JsmOpcodeGoto *jmp = new JsmOpcodeGoto(*op, lbl);
-							jmp->setKey(JsmOpcode::JMP);
-							collectPointers.insert(jmp);
-							toAppend = new JsmControlIfElse(condition, JsmProgram(),
-							                                JsmProgram()
-							                                << JsmInstruction(jmp));
-							usedLabels.insert(lbl);
 						}
-						ret.append(JsmInstruction(toAppend));
-						collectPointers.insert(toAppend);
-					} else { // JMP/GJMP
+						if (!toAppend) {
+							// If
+							toAppend = new JsmControlIfElse(
+											condition,
+											// Block If
+											program(constBegin, ifElsePos,
+													ifElseEnd, labels,
+													collectPointers,
+													usedLabels));
+						}
+
+						mergeAndConditions(toAppend, ifElsePos - constBegin,
+											(it - constBegin) + op->param() - 1,
+											collectPointers, usedLabels);
+
+						it = ifElseEnd;
+					} /* else if (op->param() < 0 && it - condition->opcodeCount() + op->param() >= constBegin) {
+						QList<JsmOpcode *>::const_iterator repeatUntilPos = it - condition->opcodeCount() + op->param(),
+								repeatUntilEnd = it - condition->opcodeCount() - 1;
+						toAppend = new JsmControlRepeatUntil(
+											condition,
+											// Block Repeat
+											program(constBegin, repeatUntilPos,
+													repeatUntilEnd, labels,
+													collectPointers,
+													usedLabels));
+					} */
+					if (!toAppend) { // JPF
 						int lbl = labels.indexOf(pos + op->param());
 						if (lbl == -1) {
 							qDebug() << labels << op->toString();
-							qFatal("%s", qUtf8Printable(QString("JsmScripts::program 3 label for pos %1 + %2 not found").arg(pos).arg(op->param())));
+							qFatal("%s", qUtf8Printable(QString("JsmScripts::program 1 label for pos %1 + %2 not found").arg(pos).arg(op->param())));
 						}
-						JsmOpcode *toAppendOp = new JsmOpcodeGoto(*op, lbl);
-						ret.append(JsmInstruction(toAppendOp));
-						collectPointers.insert(toAppendOp);
+						JsmOpcodeGoto *jmp = new JsmOpcodeGoto(*op, lbl);
+						jmp->setKey(JsmOpcode::JMP);
+						collectPointers.insert(jmp);
+						toAppend = new JsmControlIfElse(condition, JsmProgram(),
+														JsmProgram()
+														<< JsmInstruction(jmp, pos));
 						usedLabels.insert(lbl);
 					}
-					delete op; // Remove JPF/JMP/GJMP
-					instructionAppended = true;
-				} else if (op->key() == JsmOpcode::POPI_L
-				          || op->key() == JsmOpcode::POPM_B
-				          || op->key() == JsmOpcode::POPM_W
-				          || op->key() == JsmOpcode::POPM_L) {
-					JsmApplication *application = new JsmApplicationAssignment(
-					                                  stack.pop(), op);
-					ret.append(JsmInstruction(application));
-					instructionAppended = true;
-					collectPointers.insert(application);
+					ret.append(JsmInstruction(toAppend, pos));
+					collectPointers.insert(toAppend);
 					collectPointers.insert(op);
-				} else if (stack.size() >= 2
-				          && op->key() >= JsmOpcode::REQ
-				          && op->key() <= JsmOpcode::REQEW) {
-					JsmApplication *exec = new JsmApplicationExec(
-					                           stack.pop(),
-					                           stack.pop(),
-					                           op);
-					ret.append(JsmInstruction(exec));
-					instructionAppended = true;
-					collectPointers.insert(exec);
-					collectPointers.insert(op);
+				} else { // JMP/GJMP
+					int lbl = labels.indexOf(pos + op->param());
+					if (lbl == -1) {
+						ret.append(JsmInstruction(op, pos));
+					} else {
+						// TODO: forever loop
+						JsmOpcode *toAppendOp = new JsmOpcodeGoto(*op, lbl);
+						ret.append(JsmInstruction(toAppendOp, pos));
+						collectPointers.insert(toAppendOp);
+						collectPointers.insert(op);
+						usedLabels.insert(lbl);
+					}
 				}
+				instructionAppended = true;
+			} else if ((op->key() == JsmOpcode::POPI_L
+						|| op->key() == JsmOpcode::POPM_B
+						|| op->key() == JsmOpcode::POPM_W
+						|| op->key() == JsmOpcode::POPM_L) && !stack.isEmpty()) {
+				JsmApplication *application = new JsmApplicationAssignment(
+													stack.pop(), op);
+				ret.append(JsmInstruction(application, pos));
+				instructionAppended = true;
+				collectPointers.insert(application);
+				collectPointers.insert(op);
+			} else if (stack.size() >= 2
+						&& op->key() >= JsmOpcode::REQ
+						&& op->key() <= JsmOpcode::REQEW) {
+				JsmApplication *exec = new JsmApplicationExec(
+											stack.pop(),
+											stack.pop(),
+											op);
+				ret.append(JsmInstruction(exec, pos));
+				instructionAppended = true;
+				collectPointers.insert(exec);
+				collectPointers.insert(op);
 			}
 
 			if (!instructionAppended) {
@@ -582,10 +458,10 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 						invertedStack.push(stack.pop());
 					}
 					JsmApplication *application = new JsmApplication(invertedStack, op);
-					ret.append(JsmInstruction(application));
+					ret.append(JsmInstruction(application, pos));
 					collectPointers.insert(application);
 				} else {
-					ret.append(JsmInstruction(op));
+					ret.append(JsmInstruction(op, pos));
 				}
 				collectPointers.insert(op);
 			}
@@ -599,7 +475,7 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 			invertedStack.push(stack.pop());
 		}
 		JsmApplication *application = new JsmApplication(invertedStack, nullptr);
-		ret.append(JsmInstruction(application));
+		ret.append(JsmInstruction(application, end - constBegin));
 		collectPointers.insert(application);
 	}
 
@@ -691,9 +567,8 @@ JsmProgram JsmScripts::program(int groupID, int methodID,
 	JsmOpcode *firstOp = opcodes.first();
 	QList<int> labels = searchJumps(opcodes);
 	QList<JsmOpcode *>::const_iterator begin = opcodes.constBegin();
-	// Ignore label if correct at the beginning
-	if (firstOp->key() == JsmOpcode::LBL
-	        && firstOp->param() == absoluteMethodID(groupID, methodID)) {
+	// Ignore LBL (automatically generated)
+	if (firstOp->key() == JsmOpcode::LBL) {
 		begin += 1;
 		delete firstOp;
 	}
@@ -705,154 +580,204 @@ JsmProgram JsmScripts::program(int groupID, int methodID,
 
 unsigned int JsmScripts::key(int groupID, int methodID, int opcodeID) const
 {
-	return key(posOpcode(groupID, methodID, opcodeID));
+	return key(absoluteOpcodeID(groupID, methodID, opcodeID));
 }
-
-unsigned int JsmScripts::key(int opcodeID) const
-{
-	return opcode(opcodeID).key();
-}
-
-//void JsmScripts::setKey(int groupID, int methodID, int opcodeID, unsigned int key)
-//{
-//	setKey(posOpcode(groupID, methodID, opcodeID), key);
-//}
-
-//void JsmScripts::setKey(int opcodeID, unsigned int key)
-//{
-//	JsmOpcode op = opcode(opcodeID);
-//	op.setKey(key);
-//	setOpcode(opcodeID, op);
-//}
 
 int JsmScripts::param(int groupID, int methodID, int opcodeID) const
 {
-	return param(posOpcode(groupID, methodID, opcodeID));
-}
-
-int JsmScripts::param(int opcodeID) const
-{
-	return opcode(opcodeID).param();
+	return param(absoluteOpcodeID(groupID, methodID, opcodeID));
 }
 
 void JsmScripts::setParam(int groupID, int methodID, int opcodeID, int param)
 {
-	setParam(posOpcode(groupID, methodID, opcodeID), param);
+	setParam(absoluteOpcodeID(groupID, methodID, opcodeID), param);
 }
 
-void JsmScripts::setParam(int opcodeID, int param)
+void JsmScripts::setParam(int absoluteOpcodeID, int param)
 {
-	JsmOpcode op = opcode(opcodeID);
+	JsmOpcode op = opcode(absoluteOpcodeID);
 	op.setParam(param);
-	setOpcode(opcodeID, op);
+	setOpcode(absoluteOpcodeID, op);
 }
 
 JsmOpcode JsmScripts::opcode(int groupID, int methodID, int opcodeID) const
 {
-	return opcode(posOpcode(groupID, methodID, opcodeID));
-}
-
-JsmOpcode JsmScripts::opcode(int opcodeID) const
-{
-	return scriptData.opcode(opcodeID);
-}
-
-JsmOpcode *JsmScripts::opcodep(int opcodeID) const
-{
-	return scriptData.opcodep(opcodeID);
+	return opcode(absoluteOpcodeID(groupID, methodID, opcodeID));
 }
 
 void JsmScripts::setOpcode(int groupID, int methodID, int opcodeID, const JsmOpcode &value)
 {
-	setOpcode(posOpcode(groupID, methodID, opcodeID), value);
+	setOpcode(absoluteOpcodeID(groupID, methodID, opcodeID), value);
 }
 
-void JsmScripts::setOpcode(int opcodeID, const JsmOpcode &value)
+void JsmScripts::insertScript(int groupID, int methodID, const QString &name)
 {
-	scriptData.setOpcode(opcodeID, value);
+	int absMethodID = absoluteMethodID(groupID, methodID);
+	// Minimal script (LBL + RET) All groups have at last one script
+	JsmData data = JsmData()
+	    .append(JsmOpcode(JsmOpcode::LBL, absMethodID))
+	    .append(JsmOpcode(JsmOpcode::RET, 8));
+	int opcodeID = opcodeIDStartScript(groupID, methodID);
+	qDebug() << "JsmScripts::insertScript" << "groupID" << groupID << "methodID" << methodID << "nbOpcode" << data.nbOpcode() << "opcodeID" << opcodeID;
+	scriptData.insert(opcodeID, data);
+	_methodList.insert(absMethodID, JsmScript(opcodeID, name));
+
+	propagateScriptCountChange(groupID, absMethodID, +1);
+	propagateOpcodeCountChange(absMethodID, data.nbOpcode());
 }
 
-void JsmScripts::insertOpcode(int groupID, int methodID, int opcodeID, const JsmOpcode &value)
+void JsmScripts::insertGroup(int groupID, int groupTypeRelativeID)
 {
-	scriptData.insertOpcode(posOpcode(groupID, methodID, opcodeID), value);
+	int absMethodID = 0;
 
-	shiftScriptsAfter(groupID, methodID, +1);
-}
+	if (groupID < _groupListOrderedById.size()) {
+		absMethodID = firstMethodID(groupID);
+	} else {
+		const JsmGroup &lastGroup = _groupListOrderedById.last();
+		absMethodID = lastGroup.label() + lastGroup.scriptCount();
+	}
 
-void JsmScripts::removeOpcode(int groupID, int methodID, int opcodeID)
-{
-	scriptData.remove(posOpcode(groupID, methodID, opcodeID), 1);
+	qDebug() << "JsmScripts::insertGroup" << "groupID" << groupID << "absMethodID" << absMethodID;
 
-	shiftScriptsAfter(groupID, methodID, -1);
-}
-
-//void JsmScripts::addScript(int groupID, const JsmData &data)
-//{
-//	insertScript(groupID, nbScript(groupID), data);
-//}
-
-void JsmScripts::insertScript(int groupID, int methodID, const JsmData &data, const QString &name)
-{
-	int position = posScript(groupID, methodID);
-	scriptData.insert(position, data);
-	scriptList.insert(absoluteMethodID(groupID, methodID), JsmScript(position, name));
-
-	shiftGroupsAfter(groupID, methodID, 1, data.nbOpcode());
+	_groupListOrderedById.insert(groupID, JsmGroup(absMethodID, 0, JsmGroup::No, groupTypeRelativeID));
+	insertScript(groupID, 0);
+	propagateGroupCountChange(groupID, +1);
 }
 
 void JsmScripts::removeScript(int groupID, int methodID)
 {
-	int nbOpcode, position = posScript(groupID, methodID, &nbOpcode);
-	scriptData.remove(position, nbOpcode);
-	scriptList.removeAt(absoluteMethodID(groupID, methodID));
+	int nbOpcode, opcodeID = opcodeIDStartScript(groupID, methodID, &nbOpcode),
+		absMethodID = absoluteMethodID(groupID, methodID);
+	scriptData.remove(opcodeID, nbOpcode);
+	_methodList.removeAt(absMethodID);
 
-	shiftGroupsAfter(groupID, methodID, -1, nbOpcode);
+	propagateScriptCountChange(groupID, absMethodID, -1);
+	propagateOpcodeCountChange(absMethodID, -nbOpcode);
+}
+
+void JsmScripts::removeGroup(int groupID)
+{
+	const JsmGroup &grp = _groupListOrderedById.at(groupID);
+
+	for (int methodID = grp.scriptCount() - 1; methodID >= 0; --methodID) {
+		removeScript(groupID, methodID);
+	}
+
+	_groupListOrderedById.removeAt(groupID);
+	propagateGroupCountChange(groupID, -1);
 }
 
 void JsmScripts::replaceScript(int groupID, int methodID, const JsmData &data)
 {
-	int nbOpcode, position = posScript(groupID, methodID, &nbOpcode);
-	scriptData.replace(position, nbOpcode, data);
+	// Add LBL automatically
+	JsmData dataCopy = data.copy();
+	JsmOpcode lbl(JsmOpcode::LBL, absoluteMethodID(groupID, methodID));
+	if (dataCopy.nbOpcode() > 0 && dataCopy.opcode(0).key() == JsmOpcode::LBL) {
+		dataCopy.setOpcode(0, lbl);
+	} else {
+		dataCopy.prepend(lbl);
+	}
+	int nbOpcode, opcodeID = opcodeIDStartScript(groupID, methodID, &nbOpcode);
+	scriptData.replace(opcodeID, nbOpcode, dataCopy);
 
-	shiftScriptsAfter(groupID, methodID, data.nbOpcode() - nbOpcode);
+	propagateOpcodeCountChange(absoluteMethodID(groupID, methodID), dataCopy.nbOpcode() - nbOpcode);
 }
 
-//void JsmScripts::insertGroup(int groupID)
-//{
-//	groupList.insert(groupID, JsmGroup(firstMethodID(groupID), 0));
-
-//	shiftGroupsAfter(groupID, methodID, 1, data.nbOpcode());
-//}
-
-//void JsmScripts::removeGroup(int groupID)
-//{
-//	int nbOpcode, position = posScript(groupID, methodID, &nbOpcode);
-//	scriptData.remove(position, nbOpcode);
-
-//	shiftGroupsAfter(groupID, methodID, -1, nbOpcode);
-//}
-
-void JsmScripts::shiftGroupsAfter(int groupID, int methodID, int shiftGroup, int shiftScript)
+void JsmScripts::propagateGroupCountChange(int groupID, int groupCountChange)
 {
-	if (shiftGroup == 0 || shiftScript == 0)	return;
+	qDebug() << "JsmScripts::propagateGroupCountChange" << "groupID" << groupID << "groupCountChange" << groupCountChange;
+	if (groupCountChange == 0) {
+		return;
+	}
 
-	groupList[groupID].incScriptCount(shiftGroup);
+	// Update REQ groups
+	for (int opcodeID = 0; opcodeID < scriptData.nbOpcode(); ++opcodeID) {
+		JsmOpcode opcode = scriptData.opcode(opcodeID);
+		int group = 0;
 
-	for (int i = qMax(groupID+shiftGroup, 0) ; i<nbGroup() ; ++i)
-		groupList[i].incLabel(shiftGroup);
-
-	shiftScriptsAfter(groupID, methodID, shiftScript);
+		switch (opcode.key()) {
+			case JsmOpcode::REQ:
+			case JsmOpcode::REQSW:
+			case JsmOpcode::REQEW:
+				group = opcode.param();
+				opcode.setParam(group + groupCountChange);
+				scriptData.setOpcode(opcodeID, opcode);
+				break;
+			default:
+				break;
+		}
+	}
 }
 
-void JsmScripts::shiftScriptsAfter(int groupID, int methodID, int shift)
+void JsmScripts::propagateScriptCountChange(int groupID, int absMethodID, int scriptCountChange)
 {
-	if (shift == 0)	return;
+	qDebug() << "JsmScripts::propagateScriptCountChange" << "groupID" << groupID << "absMethodID" << absMethodID << "scriptCountChange" << scriptCountChange;
+	if (scriptCountChange == 0) {
+		return;
+	}
 
-	for (int i = absoluteMethodID(groupID, methodID+1) ; i<nbScript() ; ++i)
-		scriptList[i].incPos(shift);
+	_groupListOrderedById[groupID].incScriptCount(scriptCountChange);
+
+	// Update Groups label
+	int i = 0;
+	for (const JsmGroup &group: _groupListOrderedById) {
+		if (groupID != i && group.label() >= absMethodID) {
+			_groupListOrderedById[i].incLabel(scriptCountChange);
+		}
+		i += 1;
+	}
+
+	// Update LBL parameter
+	int label = 0;
+	for (const JsmScript &script: _methodList) {
+		JsmOpcode opcode = scriptData.opcode(script.opcodeIDStart());
+		if (opcode.key() == JsmOpcode::LBL && opcode.param() != label) {
+			opcode.setParam(label);
+			scriptData.setOpcode(script.opcodeIDStart(), opcode);
+		}
+		label += 1;
+	}
+
+	// Update REQ labels
+	for (int opcodeID = 0; opcodeID < scriptData.nbOpcode(); ++opcodeID) {
+		JsmOpcode opcode = scriptData.opcode(opcodeID);
+		int group = 0;
+
+		switch (opcode.key()) {
+			case JsmOpcode::REQ:
+			case JsmOpcode::REQSW:
+			case JsmOpcode::REQEW:
+				group = opcode.param();
+				if (opcodeID > 0) {
+					JsmOpcode prevOpcode = scriptData.opcode(opcodeID - 1);
+					if (prevOpcode.key() == JsmOpcode::PSHN_L) {
+						int script = prevOpcode.param();
+						if (script >= absMethodID) {
+							prevOpcode.setParam(script + scriptCountChange);
+							scriptData.setOpcode(opcodeID - 1, prevOpcode);
+						}
+					}
+				}
+				break;
+			default:
+				break;
+		}
+	}
+}
+
+void JsmScripts::propagateOpcodeCountChange(int absMethodID, int opcodeCountChange)
+{
+	//qDebug() << "JsmScripts::propagateOpcodeCountChange" << "absMethodID" << absMethodID << "opcodeCountChange" << opcodeCountChange;
+	if (opcodeCountChange == 0) {
+		return;
+	}
+
+	for (int i = absMethodID + 1; i < nbScript(); ++i) {
+		_methodList[i].incOpcodeIDStart(opcodeCountChange);
+	}
 }
 
 void JsmScripts::setDecompiledScript(int groupID, int methodID, const QString &text, bool moreDecompiled)
 {
-	scriptList[absoluteMethodID(groupID, methodID)].setDecompiledScript(text, moreDecompiled);
+	_methodList[absoluteMethodID(groupID, methodID)].setDecompiledScript(text, moreDecompiled);
 }

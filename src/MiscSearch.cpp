@@ -176,7 +176,7 @@ void MiscSearch::fillList()
 	QMap<int, int> opcodeTypes = fieldArchive->searchAllOpcodeTypes();
 	for (int j = 0; j < JSM_OPCODE_COUNT; ++j) {
 		if (!opcodeTypes.contains(j)) {
-			qWarning() << QString::number(j, 16) << JsmFile::opcodeName.value(j, "???") << "introuvable";
+			qWarning() << QString::number(j, 16) << JsmFile::opcodeNames.value(j, "???") << "introuvable";
 		}
 	}
 	QMapIterator<int, int> i(opcodeTypes);
@@ -197,7 +197,7 @@ void MiscSearch::fillList()
 			break;
 		}
 
-		text.append(QString("%1: %2\n").arg(JsmFile::opcodeName.value(i.key(), "???")).arg(type));
+		text.append(QString("%1: %2\n").arg(JsmFile::opcodeNames.value(i.key(), "???")).arg(type));
 	}*/
 
 	QMapIterator<int, QStringList> i(cardPlayers);

@@ -20,13 +20,14 @@
 #include <QtCore>
 #include "JsmData.h"
 #include "JsmOpcode.h"
+#include "JsmScripts.h"
 
 class JsmPseudoCompiler
 {
 public:
 	JsmPseudoCompiler();
 
-	bool compile(const QString &pseudoCode, JsmData &result, QString &errorStr, int &errorLine);
+	bool compile(const QString &pseudoCode, const JsmScripts &scripts, JsmData &result, QString &errorStr, int &errorLine);
 
 private:
 	struct Token {
@@ -61,14 +62,22 @@ private:
 	void skipNewlines();
 
 	// Parser — statement level
-	bool parseStatements(JsmData &result, QString &errorStr, int &errorLine,
-	                     const QStringList &allowedTerminators = QStringList({"end", "else", "until"}));
-	bool parseStatement(JsmData &result, QString &errorStr);
-	bool parseIf(JsmData &result, QString &errorStr);
-	bool parseWhile(JsmData &result, QString &errorStr);
+	bool parseStatements(const JsmScripts &scripts, JsmData &result, QString &errorStr, int &errorLine, qsizetype opcodeID,
+	                     const QStringList &allowedTerminators, QMap<QString, qsizetype> &labels,
+	                     QMap<qsizetype, QString> &gotos);
+	bool parseStatement(const JsmScripts &scripts, JsmData &result, QString &errorStr, qsizetype opcodeID,
+	                    QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos);
+	bool parseIf(const JsmScripts &scripts, JsmData &result, QString &errorStr,
+                 QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos, qsizetype opcodeID);
+	bool parseWhile(const JsmScripts &scripts, JsmData &result, QString &errorStr,
+                    QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos, qsizetype opcodeID);
 	bool parseWait(JsmData &result, QString &errorStr);
-	bool parseForever(JsmData &result, QString &errorStr);
-	bool parseRepeat(JsmData &result, QString &errorStr);
+	bool parseForever(const JsmScripts &scripts, JsmData &result, QString &errorStr,
+                      QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos, qsizetype opcodeID);
+	bool parseRepeat(const JsmScripts &scripts, JsmData &result, QString &errorStr,
+                     QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos, qsizetype opcodeID);
+	bool parseGoto(const JsmScripts &scripts, JsmData &result, QString &errorStr, QMap<qsizetype, QString> &gotos, qsizetype opcodeID);
+	bool parseLabel(const JsmScripts &scripts, JsmData &result, QString &errorStr, QMap<QString, qsizetype> &labels, qsizetype opcodeID);
 
 	// Parser — expression level (for conditions and arguments)
 	bool parseExpression(JsmData &result, QString &errorStr);
@@ -88,11 +97,13 @@ private:
 	// Helpers
 	bool parseAssignment(const QString &varName, JsmData &result, QString &errorStr);
 	bool parseFunctionCall(const QString &name, JsmData &result, QString &errorStr, bool isStatement);
-	bool parseMethodCall(const QString &objectName, const QString &methodName,
+	bool parseMethodCall(const QString &groupName, const QString &methodName, const JsmScripts &scripts,
 	                     JsmData &result, QString &errorStr);
 	bool emitPushVar(const QString &varName, JsmData &result, QString &errorStr);
 	bool emitPopVar(const QString &varName, JsmData &result, QString &errorStr);
 	int resolveOpcode(const QString &name) const;
+	bool updateGotoJumps(JsmData &result, QString &errorStr, int &errorLine,
+	                     QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos);
 
 	static QMap<QString, int> _opcodeMap;
 	static void initOpcodeMap();

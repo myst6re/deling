@@ -36,14 +36,14 @@ JsmOpcode::JsmOpcode(unsigned int key, int param)
 
 unsigned int JsmOpcode::key() const
 {
-	if (hasParam()) 	return op >> 24;
-	else			return op;
+	if (hasParam()) return op >> 24;
+	else            return op;
 }
 
 int JsmOpcode::param() const
 {
-	if (!(op & 0x00800000))		return op & 0x00FFFFFF;
-	else						return op | 0xFF000000;
+	if (!(op & 0x00800000)) return op & 0x00FFFFFF;
+	else                    return op | 0xFF000000;
 }
 
 quint32 JsmOpcode::opcode() const
@@ -58,8 +58,8 @@ void JsmOpcode::setOpcode(quint32 op)
 
 void JsmOpcode::setKey(unsigned int key)
 {
-	if (hasParam()) 	op = (key << 24) | (param() & 0x00FFFFFF);
-	else			op = key;
+	if (hasParam()) op = (key << 24) | (param() & 0x00FFFFFF);
+	else            op = key;
 }
 
 void JsmOpcode::setParam(int param)
@@ -99,11 +99,10 @@ QString JsmOpcode::toString() const
 {
 	if (!hasParam()) {
 		return name();
-	} else {
-		return QString("%1 %2")
-		        .arg(name(), -11)
-		        .arg(paramStr());
 	}
+	return QString("%1 %2")
+			.arg(name(), -11)
+			.arg(paramStr());
 }
 
 JsmOpcodeCal::JsmOpcodeCal(const JsmOpcode &other) :

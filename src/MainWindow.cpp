@@ -773,21 +773,6 @@ void MainWindow::saveAs(const QString &optPath)
 		return;
 	}
 
-	/* int errorFieldID, errorGroupID, errorMethodID, errorLine;
-	QString errorStr;
-
-	if (!fieldArchive->compileScripts(errorFieldID, errorGroupID, errorMethodID, errorLine, errorStr)) {
-		QMessageBox::warning(this, tr("Erreur de compilation"), tr("Écran %1 (%2), groupe %3, méthode %4, ligne %5 :\n%6.")
-							 .arg(fieldArchive->getField(errorFieldID)->name())
-							 .arg(errorFieldID)
-							 .arg(errorGroupID)
-							 .arg(errorMethodID)
-							 .arg(errorLine)
-							 .arg(errorStr));
-		gotoScript(errorFieldID, errorGroupID, errorMethodID, errorLine);
-		return;
-	}*/
-
 	if (path.isEmpty())
 	{
 		path = QFileDialog::getSaveFileName(this, tr("Save As"), savePath(), filter);

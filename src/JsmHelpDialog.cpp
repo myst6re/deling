@@ -26,7 +26,7 @@ struct OpcodeHelp {
 
 static const OpcodeHelp opcodeHelpData[] = {
 	// -- Syntax --
-	{"if / else / end", "Syntax", "if <condition> begin ... else ... end",
+	{"if / elsif / else / end", "Syntax", "if <condition> begin ... elsif <condition> begin ... else begin ... end",
 	 "Conditional execution. The else block is optional. Conditions use ==, !=, >, <, >=, <=, and, or."},
 	{"while / end", "Syntax", "while <condition> begin ... end",
 	 "Loop while condition is true."},
@@ -34,7 +34,7 @@ static const OpcodeHelp opcodeHelpData[] = {
 	 "Pause script until condition becomes false. Empty-body while loop."},
 	{"wait forever", "Syntax", "wait forever",
 	 "Pause script execution indefinitely."},
-	{"forever / end", "Syntax", "forever begin ... end",
+	{"forever / end", "Syntax", "forever ... end",
 	 "Infinite loop."},
 	{"repeat / until", "Syntax", "repeat ... until <condition> end",
 	 "Execute body at least once, repeat until condition is true."},
@@ -46,7 +46,7 @@ static const OpcodeHelp opcodeHelpData[] = {
 	{"Temp Variables", "Syntax", "temp_N",
 	 "Temporary registers 0-7. Many opcodes store results in temp_0."},
 	{"Model Reference", "Syntax", "model_N", "Entity/model reference by index."},
-	{"Constants", "Syntax", "text_N, map_N, item_N, magic_N, KeyCancel, Squall, etc.",
+	{"Constants", "Syntax", "text_N, map_N, item_N, magic_N, KeyCancel, squall, etc.",
 	 "Named constants that resolve to numeric values. See the Characters, Keys, and Resources categories for full listings."},
 
 	// -- Character Constants --
@@ -61,6 +61,7 @@ static const OpcodeHelp opcodeHelpData[] = {
 	{"Laguna", "Characters", "Laguna = 8", "Laguna Loire. Used in dream sequences."},
 	{"Kiros", "Characters", "Kiros = 9", "Kiros Seagill. Used in dream sequences."},
 	{"Ward", "Characters", "Ward = 10", "Ward Zabac. Used in dream sequences."},
+	{"chara_N", "Characters", "chara_N (e.g. chara_1, chara_255)", "Reference to any character ID."},
 
 	// -- Key Constants --
 	{"KeyL1", "Keys", "KeyL1 = 0x1", "L1 button."},
@@ -346,7 +347,7 @@ static const OpcodeHelp opcodeHelpData[] = {
 	// -- Party / Characters --
 	{"addparty", "Party", "addparty(characterID)", "Add to active party. 0=Squall..10=Ward."},
 	{"subparty", "Party", "subparty(characterID)", "Remove from active party."},
-	{"setparty", "Party", "setparty(member1, member2, member3)", "Set full party. 255=blank."},
+	{"setparty", "Party", "setparty(member1, member2, member3)", "Set full party. chara_255=blank."},
 	{"isparty", "Party", "isparty(characterID)", "Push party position to temp_0. -1 if absent."},
 	{"addmember", "Party", "addmember(characterID)", "Add to available roster."},
 	{"submember", "Party", "submember(characterID)", "Remove from roster and party."},
@@ -620,7 +621,7 @@ void JsmHelpDialog::buildContent()
 	    "<ul>"
 	    "<li><b>Control flow:</b> if/else/end, while/end, wait while, forever, repeat/until</li>"
 	    "<li><b>Assignments:</b> var = expr, var += expr, etc.</li>"
-	    "<li><b>Function calls:</b> opcodeName(arg1, arg2, ...)</li>"
+	    "<li><b>Function calls:</b> opcodeNames(arg1, arg2, ...)</li>"
 	    "<li><b>Expressions:</b> arithmetic (+, -, *, /, %), comparison (==, !=, &gt;, &lt;), "
 	    "bitwise (&amp;, |, ^, ~, &gt;&gt;, &lt;&lt;), logical (and, or, !)</li>"
 	    "<li><b>Variables:</b> N_ubyte, N_uword, N_ulong, N_sbyte, N_sword, N_slong, temp_N, model_N</li>"

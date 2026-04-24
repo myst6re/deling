@@ -42,7 +42,7 @@ public:
 	void setMainModels(QHash<int, CharaModel> *mainModels);
 	void setFieldArchive(FieldArchive *fieldArchive);
 	void fill();
-	void gotoScript(int, int, int);
+	void gotoScript(int groupID, int methodID, int opcodeID);
 	int selectedOpcode();
 	inline QString tabName() const { return tr("Scripts"); }
 private:
@@ -64,7 +64,7 @@ private:
 	QRegularExpression _regConst, _regSetLine, _regColor, _regPlace;
 	JsmHelpDialog *_helpDialog = nullptr;
 
-	static int currentItem(QTreeWidget *);
+	static int currentItem(QTreeWidget *item);
 //	void gotoScriptLabel(int groupID, int labelID);
 	int groupID, methodID;
 private slots:

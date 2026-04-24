@@ -3349,15 +3349,11 @@ Error message:
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Cannot find label %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Unexpected &apos;%1&apos; in this block</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&apos;goto&apos; is not supported in pseudo-code mode. Use if/while/repeat instead.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&apos;label&apos; is not supported in pseudo-code mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3401,7 +3397,11 @@ Error message:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot resolve entity &apos;%1&apos; to a group ID. Use numeric IDs for entity.method() calls.</source>
+        <source>Cannot resolve entity &apos;%1&apos; to a group ID.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot resolve method &apos;%1&apos; to a method ID (group ID = %2).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3430,6 +3430,14 @@ Error message:
     </message>
     <message>
         <source>Expected &apos;until&apos; to close repeat block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected an identifier after a goto instruction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected an identifier after a label instruction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

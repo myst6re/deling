@@ -53,7 +53,6 @@ public:
 	virtual int open(const QString &, ArchiveObserver *progress)=0;
 	virtual bool openModels()=0;
 	virtual bool openBG(Field *field) const=0;
-	bool compileScripts(int &errorFieldID, int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr);
 	bool searchText(const QRegularExpression &text, int &fieldID, int &textID, int &from, int &size, Sorting=SortByMapId) const;
 	bool searchTextReverse(const QRegularExpression &text, int &fieldID, int &textID, int &from, int &size, Sorting=SortByMapId) const;
 	bool searchScript(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;

@@ -85,7 +85,7 @@ QList<JsmPseudoCompiler::Token> JsmPseudoCompiler::tokenize(
 			} else {
 				while (i < len && input[i].isDigit()) ++i;
 				// Check if followed by _ making it a variable name (e.g. 474_ubyte, 1024_uword)
-				if (i < len && input[i] == '_') {
+				if (i < len && (input[i].isLetter() || input[i] == '_')) {
 					while (i < len && (input[i].isLetterOrNumber() || input[i] == '_')) ++i;
 					tokens.append({Token::Identifier, input.mid(start, i - start), line});
 				} else {
@@ -113,7 +113,7 @@ QList<JsmPseudoCompiler::Token> JsmPseudoCompiler::tokenize(
 		// Identifiers and keywords
 		if (c.isLetter() || c == '_') {
 			int start = i;
-			while (i < len && (input[i].isLetterOrNumber() || input[i] == '_' || input[i] == '#')) ++i;
+			while (i < len && (input[i].isLetterOrNumber() || input[i] == '_')) ++i;
 			QString word = input.mid(start, i - start);
 			// Check for "and" / "or" keywords
 			if (word.toLower() == "and") {
@@ -226,7 +226,7 @@ void JsmPseudoCompiler::skipNewlines()
 // Main compile entry
 // ============================================================
 
-bool JsmPseudoCompiler::compile(const QString &pseudoCode, JsmData &result,
+bool JsmPseudoCompiler::compile(const QString &pseudoCode, const JsmScripts &scripts, JsmData &result,
                                 QString &errorStr, int &errorLine)
 {
 	errorStr.clear();
@@ -238,15 +238,49 @@ bool JsmPseudoCompiler::compile(const QString &pseudoCode, JsmData &result,
 	_pos = 0;
 	_currentLine = 1;
 
-	return parseStatements(result, errorStr, errorLine, {});
+	QMap<QString, qsizetype> labels;
+	QMap<qsizetype, QString> gotos;
+
+	if (!parseStatements(scripts, result, errorStr, errorLine, 0, {}, labels, gotos)) {
+		return false;
+	}
+
+	return updateGotoJumps(result, errorStr, errorLine, labels, gotos);
+}
+
+bool JsmPseudoCompiler::updateGotoJumps(JsmData &result, QString &errorStr, int &errorLine,
+                                        QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos)
+{
+	QMapIterator<qsizetype, QString> itGotos(gotos);
+
+	while (itGotos.hasNext()) {
+		itGotos.next();
+		qsizetype gotoPos = itGotos.key();
+		const QString &label = itGotos.value();
+		qsizetype labelPos = labels.value(label, -1);
+		qDebug() << "updateGotoJumps" << gotoPos << label << labelPos;
+
+		if (labelPos == -1) {
+			errorStr = QObject::tr("Cannot find label %1").arg(label);
+			errorLine = gotoPos + 1;
+			return false;
+		}
+
+		JsmOpcode jmp = result.opcode(gotoPos);
+		qDebug() << "updateGotoJumps" << jmp.toString();
+		jmp.setParam(labelPos - gotoPos);
+		result.setOpcode(gotoPos, JsmOpcode(JsmOpcode::JMP, labelPos - gotoPos));
+	}
+
+	return true;
 }
 
 // ============================================================
 // Statement-level parsing
 // ============================================================
 
-bool JsmPseudoCompiler::parseStatements(JsmData &result, QString &errorStr, int &errorLine,
-                                        const QStringList &allowedTerminators)
+bool JsmPseudoCompiler::parseStatements(const JsmScripts &scripts, JsmData &result, QString &errorStr, int &errorLine, qsizetype opcodeID,
+                                        const QStringList &allowedTerminators, QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos)
 {
 	skipNewlines();
 	while (peek().type != Token::EndOfInput) {
@@ -255,11 +289,11 @@ bool JsmPseudoCompiler::parseStatements(JsmData &result, QString &errorStr, int 
 		// Check for block-ending keywords that aren't valid in this context
 		if (kw == "end" || kw == "else" || kw == "until") {
 			errorStr = QObject::tr("Unexpected '%1' in this block").arg(kw);
-			errorLine = _currentLine;
+			errorLine = _currentLine + 1;
 			return false;
 		}
 
-		if (!parseStatement(result, errorStr)) {
+		if (!parseStatement(scripts, result, errorStr, opcodeID, labels, gotos)) {
 			errorLine = _currentLine;
 			return false;
 		}
@@ -268,7 +302,7 @@ bool JsmPseudoCompiler::parseStatements(JsmData &result, QString &errorStr, int 
 	return true;
 }
 
-bool JsmPseudoCompiler::parseStatement(JsmData &result, QString &errorStr)
+bool JsmPseudoCompiler::parseStatement(const JsmScripts &scripts, JsmData &result, QString &errorStr, qsizetype opcodeID, QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos)
 {
 	skipNewlines();
 	Token t = peek();
@@ -277,8 +311,8 @@ bool JsmPseudoCompiler::parseStatement(JsmData &result, QString &errorStr)
 	QString kw = t.text.toLower();
 
 	// Control flow keywords
-	if (kw == "if") return parseIf(result, errorStr);
-	if (kw == "while") return parseWhile(result, errorStr);
+	if (kw == "if") return parseIf(scripts, result, errorStr, labels, gotos, opcodeID);
+	if (kw == "while") return parseWhile(scripts, result, errorStr, labels, gotos, opcodeID);
 	if (kw == "wait") {
 		// 'wait' is both a keyword (wait while, wait forever) and an opcode (wait(frames))
 		advance(); // consume 'wait'
@@ -289,8 +323,8 @@ bool JsmPseudoCompiler::parseStatement(JsmData &result, QString &errorStr)
 		--_pos;
 		return parseWait(result, errorStr);
 	}
-	if (kw == "forever") return parseForever(result, errorStr);
-	if (kw == "repeat") return parseRepeat(result, errorStr);
+	if (kw == "forever") return parseForever(scripts, result, errorStr, labels, gotos, opcodeID);
+	if (kw == "repeat") return parseRepeat(scripts, result, errorStr, labels, gotos, opcodeID);
 	if (kw == "ret") {
 		advance();
 		// Check if ret has arguments: ret(N)
@@ -300,18 +334,8 @@ bool JsmPseudoCompiler::parseStatement(JsmData &result, QString &errorStr)
 		result.append(JsmOpcode(JsmOpcode::RET, 0));
 		return true;
 	}
-	if (kw == "goto") {
-		advance();
-		// We don't support goto in pseudo-code compilation
-		errorStr = QObject::tr("'goto' is not supported in pseudo-code mode. Use if/while/repeat instead.");
-		return false;
-	}
-	if (kw == "label") {
-		advance();
-		// Labels are not supported in pseudo-code compilation
-		errorStr = QObject::tr("'label' is not supported in pseudo-code mode.");
-		return false;
-	}
+	if (kw == "goto") return parseGoto(scripts, result, errorStr, gotos, opcodeID);
+	if (kw == "label") return parseLabel(scripts, result, errorStr, labels, opcodeID);
 
 	// Must be an identifier: could be assignment, function call, or method call
 	if (t.type != Token::Identifier) {
@@ -330,7 +354,7 @@ bool JsmPseudoCompiler::parseStatement(JsmData &result, QString &errorStr)
 			return false;
 		}
 		Token methodToken = advance();
-		return parseMethodCall(ident.text, methodToken.text, result, errorStr);
+		return parseMethodCall(ident.text, methodToken.text, scripts, result, errorStr);
 	}
 
 	// Assignment: var = expr, var += expr, etc.
@@ -568,7 +592,8 @@ bool JsmPseudoCompiler::parseFunctionCall(const QString &name, JsmData &result,
 // Method call: entity.method(priority, ...)  =>  REQ/REQSW/REQEW
 // ============================================================
 
-bool JsmPseudoCompiler::parseMethodCall(const QString &objectName, const QString &methodName,
+bool JsmPseudoCompiler::parseMethodCall(const QString &groupName, const QString &methodName,
+                                        const JsmScripts &scripts,
                                         JsmData &result, QString &errorStr)
 {
 	if (!expect(Token::LParen, errorStr)) return false;
@@ -586,7 +611,7 @@ bool JsmPseudoCompiler::parseMethodCall(const QString &objectName, const QString
 					// Check if followed by ) or , — confirms it's a modifier, not a variable
 					Token execToken = advance();
 					if (peek().type == Token::RParen || peek().type == Token::Comma) {
-						reqOpcode = (upper == "SW") ? JsmOpcode::REQSW : JsmOpcode::REQEW;
+						reqOpcode = upper == "SW" ? JsmOpcode::REQSW : JsmOpcode::REQEW;
 						continue;
 					}
 					// Not followed by ) or , — put it back and parse as expression
@@ -600,32 +625,29 @@ bool JsmPseudoCompiler::parseMethodCall(const QString &objectName, const QString
 	}
 	if (!expect(Token::RParen, errorStr)) return false;
 
-	// Resolve entity group ID — must be numeric or name#N format
-	bool ok;
-	int groupId = objectName.toInt(&ok);
-	if (!ok) {
-		int hashIdx = objectName.indexOf('#');
-		if (hashIdx >= 0) {
-			groupId = objectName.mid(hashIdx + 1).toInt(&ok);
-		}
-		if (!ok) {
-			errorStr = QObject::tr("Cannot resolve entity '%1' to a group ID. "
-			                        "Use numeric IDs for entity.method() calls.")
-			           .arg(objectName);
-			return false;
-		}
+	// Resolve entity group ID
+	int groupId = scripts.findGroupIDByName(groupName);
+	if (groupId < 0) {
+		errorStr = QObject::tr("Cannot resolve entity '%1' to a group ID.")
+					.arg(groupName);
+		return false;
+	}
+	// Resolve entity method ID
+	int methodId = scripts.findMethodIDByName(groupId, methodName);
+	if (methodId < 0) {
+		errorStr = QObject::tr("Cannot resolve method '%1' to a method ID (group ID = %2).")
+					.arg(methodName)
+					.arg(groupId);
+		return false;
 	}
 
 	// Emit: push method label, push priority, REQ/REQSW/REQEW(groupID)
 	if (argDatas.isEmpty()) {
 		result.append(JsmOpcode(JsmOpcode::PSHN_L, 0));
-		result.append(JsmOpcode(JsmOpcode::PSHN_L, 0));
-	} else if (argDatas.size() == 1) {
-		result.append(JsmOpcode(JsmOpcode::PSHN_L, 0));
-		result += argDatas[0];
+		result.append(JsmOpcode(JsmOpcode::PSHN_L, methodId));
 	} else {
 		result += argDatas[0];
-		result += argDatas[1];
+		result.append(JsmOpcode(JsmOpcode::PSHN_L, methodId));
 	}
 
 	result.append(JsmOpcode(reqOpcode, groupId));
@@ -636,7 +658,8 @@ bool JsmPseudoCompiler::parseMethodCall(const QString &objectName, const QString
 // Control flow: if/else/end, while/end, wait while, forever, repeat/until
 // ============================================================
 
-bool JsmPseudoCompiler::parseIf(JsmData &result, QString &errorStr)
+bool JsmPseudoCompiler::parseIf(const JsmScripts &scripts, JsmData &result, QString &errorStr,
+                                QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos, qsizetype opcodeID)
 {
 	advance(); // consume 'if'
 
@@ -652,34 +675,41 @@ bool JsmPseudoCompiler::parseIf(JsmData &result, QString &errorStr)
 	}
 	advance();
 
+	result += condData;
+
 	// Parse if-block
 	JsmData ifBlock;
 	int dummy;
-	if (!parseStatements(ifBlock, errorStr, dummy, {"end", "else"})) return false;
+	if (!parseStatements(scripts, ifBlock, errorStr, dummy, opcodeID + result.nbOpcode() + 1, {"end", "else", "elsif"}, labels, gotos)) return false;
 
 	skipNewlines();
 	QString kw = peek().text.toLower();
 
-	if (kw == "else") {
+	if (kw == "elsif") {
+		// Emit: condition, JPF over if-block+JMP, if-block, JMP over else-block, else-block
+		result.append(JsmOpcode(JsmOpcode::JPF, ifBlock.nbOpcode() + 2)); // +1 for JPF and +1 for JMP
+		result += ifBlock;
+
+		JsmData elsifBlock;
+		if (!parseIf(scripts, elsifBlock, errorStr, labels, gotos, opcodeID + result.nbOpcode() + 1)) return false;
+
+		result.append(JsmOpcode(JsmOpcode::JMP, elsifBlock.nbOpcode() + 1));
+		result += elsifBlock;
+	} else if (kw == "else") {
 		advance();
 		skipNewlines();
+		QString nextKw = peek().text.toLower();
 
 		// Check for "else if"
-		if (peek().text.toLower() == "if") {
-			JsmData elseBlock;
-			if (!parseIf(elseBlock, errorStr)) return false;
+		if (nextKw == "begin") {
+			advance();
 
-			// Emit: condition, JPF over if-block+JMP, if-block, JMP over else-block, else-block
-			result += condData;
-			int ifSize = ifBlock.nbOpcode() + 1; // +1 for JMP
-			result.append(JsmOpcode(JsmOpcode::JPF, ifSize + 1));
+			result.append(JsmOpcode(JsmOpcode::JPF, ifBlock.nbOpcode() + 2)); // +1 for JPF and +1 for JMP
 			result += ifBlock;
-			result.append(JsmOpcode(JsmOpcode::JMP, elseBlock.nbOpcode() + 1));
-			result += elseBlock;
-		} else {
+
 			// Parse else-block
 			JsmData elseBlock;
-			if (!parseStatements(elseBlock, errorStr, dummy, {"end"})) return false;
+			if (!parseStatements(scripts, elseBlock, errorStr, dummy, opcodeID + result.nbOpcode() + 1, {"end"}, labels, gotos)) return false;
 
 			skipNewlines();
 			if (peek().text.toLower() != "end") {
@@ -688,17 +718,12 @@ bool JsmPseudoCompiler::parseIf(JsmData &result, QString &errorStr)
 			}
 			advance();
 
-			result += condData;
-			int ifSize = ifBlock.nbOpcode() + 1;
-			result.append(JsmOpcode(JsmOpcode::JPF, ifSize + 1));
-			result += ifBlock;
 			result.append(JsmOpcode(JsmOpcode::JMP, elseBlock.nbOpcode() + 1));
 			result += elseBlock;
 		}
 	} else if (kw == "end") {
 		advance();
 		// Simple if without else
-		result += condData;
 		result.append(JsmOpcode(JsmOpcode::JPF, ifBlock.nbOpcode() + 1));
 		result += ifBlock;
 	} else {
@@ -709,19 +734,21 @@ bool JsmPseudoCompiler::parseIf(JsmData &result, QString &errorStr)
 	return true;
 }
 
-bool JsmPseudoCompiler::parseWhile(JsmData &result, QString &errorStr)
+bool JsmPseudoCompiler::parseWhile(const JsmScripts &scripts, JsmData &result, QString &errorStr,
+                                   QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos, qsizetype opcodeID)
 {
 	advance(); // consume 'while'
 
 	JsmData condData;
 	if (!parseExpression(condData, errorStr)) return false;
 
+	int condSize = condData.nbOpcode();
+	result += condData;
+
 	skipNewlines();
 	if (peek().text.toLower() != "begin") {
 		// "while <cond>" without begin = wait while (single-line)
 		// Emit: condition, JPF +2, JMP back to condition
-		int condSize = condData.nbOpcode();
-		result += condData;
 		result.append(JsmOpcode(JsmOpcode::JPF, 2));
 		result.append(JsmOpcode(JsmOpcode::JMP, -(condSize + 1)));
 		return true;
@@ -730,7 +757,7 @@ bool JsmPseudoCompiler::parseWhile(JsmData &result, QString &errorStr)
 
 	JsmData bodyBlock;
 	int dummy;
-	if (!parseStatements(bodyBlock, errorStr, dummy, {"end"})) return false;
+	if (!parseStatements(scripts, bodyBlock, errorStr, dummy, opcodeID + result.nbOpcode() + 1, {"end"}, labels, gotos)) return false;
 
 	skipNewlines();
 	if (peek().text.toLower() != "end") {
@@ -740,9 +767,7 @@ bool JsmPseudoCompiler::parseWhile(JsmData &result, QString &errorStr)
 	advance();
 
 	// Emit: condition, JPF over body+JMP, body, JMP back to condition
-	int condSize = condData.nbOpcode();
 	int bodySize = bodyBlock.nbOpcode();
-	result += condData;
 	result.append(JsmOpcode(JsmOpcode::JPF, bodySize + 2)); // +1 for JMP back
 	result += bodyBlock;
 	result.append(JsmOpcode(JsmOpcode::JMP, -(condSize + bodySize + 1)));
@@ -752,6 +777,7 @@ bool JsmPseudoCompiler::parseWhile(JsmData &result, QString &errorStr)
 
 bool JsmPseudoCompiler::parseWait(JsmData &result, QString &errorStr)
 {
+	qDebug() << "parseWait" << result.nbOpcode();
 	advance(); // consume 'wait'
 
 	skipNewlines();
@@ -783,48 +809,41 @@ bool JsmPseudoCompiler::parseWait(JsmData &result, QString &errorStr)
 	return false;
 }
 
-bool JsmPseudoCompiler::parseForever(JsmData &result, QString &errorStr)
+bool JsmPseudoCompiler::parseForever(const JsmScripts &scripts, JsmData &result, QString &errorStr,
+                                     QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos, qsizetype opcodeID)
 {
 	advance(); // consume 'forever'
 
 	skipNewlines();
-	// Check for 'begin' — if present, it's a forever loop with body
-	if (peek().text.toLower() == "begin") {
-		advance();
-		JsmData bodyBlock;
-		int dummy;
-		if (!parseStatements(bodyBlock, errorStr, dummy, {"end"})) return false;
 
-		skipNewlines();
-		if (peek().text.toLower() != "end") {
-			errorStr = QObject::tr("Expected 'end' to close forever block");
-			return false;
-		}
-		advance();
+	JsmData bodyBlock;
+	int dummy;
+	if (!parseStatements(scripts, bodyBlock, errorStr, dummy, opcodeID + result.nbOpcode() + 2, {"end"}, labels, gotos)) return false;
 
-		// forever begin ... end = while(1) begin ... end
-		int bodySize = bodyBlock.nbOpcode();
-		result.append(JsmOpcode(JsmOpcode::PSHN_L, 1));
-		result.append(JsmOpcode(JsmOpcode::JPF, bodySize + 2));
-		result += bodyBlock;
-		result.append(JsmOpcode(JsmOpcode::JMP, -(bodySize + 2)));
-		return true;
+	skipNewlines();
+	if (peek().text.toLower() != "end") {
+		errorStr = QObject::tr("Expected 'end' to close forever block");
+		return false;
 	}
+	advance();
 
-	// Bare "forever" = wait forever
+	// forever begin ... end = while(1) begin ... end
+	int bodySize = bodyBlock.nbOpcode();
 	result.append(JsmOpcode(JsmOpcode::PSHN_L, 1));
-	result.append(JsmOpcode(JsmOpcode::JPF, 2));
-	result.append(JsmOpcode(JsmOpcode::JMP, -2));
+	result.append(JsmOpcode(JsmOpcode::JPF, bodySize + 2));
+	result += bodyBlock;
+	result.append(JsmOpcode(JsmOpcode::JMP, -(bodySize + 2)));
 	return true;
 }
 
-bool JsmPseudoCompiler::parseRepeat(JsmData &result, QString &errorStr)
+bool JsmPseudoCompiler::parseRepeat(const JsmScripts &scripts, JsmData &result, QString &errorStr,
+                                    QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos, qsizetype opcodeID)
 {
 	advance(); // consume 'repeat'
 
 	JsmData bodyBlock;
 	int dummy;
-	if (!parseStatements(bodyBlock, errorStr, dummy, {"until"})) return false;
+	if (!parseStatements(scripts, bodyBlock, errorStr, dummy, opcodeID + result.nbOpcode(), {"until"}, labels, gotos)) return false;
 
 	skipNewlines();
 	if (peek().text.toLower() != "until") {
@@ -848,6 +867,39 @@ bool JsmPseudoCompiler::parseRepeat(JsmData &result, QString &errorStr)
 	result += bodyBlock;
 	result += condData;
 	result.append(JsmOpcode(JsmOpcode::JPF, -(bodySize + condSize)));
+
+	return true;
+}
+
+bool JsmPseudoCompiler::parseGoto(const JsmScripts &scripts, JsmData &result, QString &errorStr, QMap<qsizetype, QString> &gotos, qsizetype opcodeID)
+{
+	advance(); // consume 'goto'
+	skipNewlines();
+
+	if (peek().type != Token::Identifier && peek().type != Token::Number) {
+		errorStr = QObject::tr("Expected an identifier after a goto instruction");
+		return false;
+	}
+
+	gotos.insert(opcodeID + result.nbOpcode(), peek().text);
+	result.append(JsmOpcode(JsmOpcode::JMP, 0xFFFFF));
+	advance();
+
+	return true;
+}
+
+bool JsmPseudoCompiler::parseLabel(const JsmScripts &scripts, JsmData &result, QString &errorStr, QMap<QString, qsizetype> &labels, qsizetype opcodeID)
+{
+	advance(); // consume 'label'
+	skipNewlines();
+
+	if (peek().type != Token::Identifier && peek().type != Token::Number) {
+		errorStr = QObject::tr("Expected an identifier after a label instruction");
+		return false;
+	}
+
+	labels.insert(peek().text, opcodeID + result.nbOpcode());
+	advance();
 
 	return true;
 }
@@ -1075,7 +1127,7 @@ bool JsmPseudoCompiler::parsePrimary(JsmData &result, QString &errorStr)
 
 		// Named constants from pseudo-code: text_N, map_N, item_N, magic_N
 		// These are just numeric values in the opcode stream
-		QRegularExpression constRe("^(text|map|item|magic)_(\\d+)$");
+		QRegularExpression constRe("^(text|map|item|magic|chara)_(\\d+)$");
 		QRegularExpressionMatch cm = constRe.match(lower);
 		if (cm.hasMatch()) {
 			int val = cm.captured(2).toInt();

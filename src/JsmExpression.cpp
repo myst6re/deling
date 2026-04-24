@@ -21,24 +21,39 @@
 #include "Config.h"
 #include "Data.h"
 
-QString JsmInstruction::toString(const Field *field, int indent) const
+JsmInstruction::JsmInstruction(JsmExpression *expression) :
+    _type(Expression), _position(expression->position())
 {
+	_instr.expression = expression;
+}
+
+QString JsmInstruction::toString(const Field *field, int indent, int highlightOpcodeID) const
+{
+	QString mark;
+
+	if (_position == highlightOpcodeID) {
+		mark = "[X]";
+	}
+
 	switch (type()) {
 	case Opcode:
-		return QString("%1%2")
+		return QString("%1%2%3%1")
+		        .arg(mark)
 		        .arg(opcode() && opcode()->isLabel()
 		             ? "" : QString(indent, QChar('\t')),
 		             opcodeToString(opcode()));
 	case Expression:
-		return QString("%1%2")
+		return QString("%1%2%3%1")
+		        .arg(mark)
 		        .arg(QString(indent, QChar('\t')),
-		             expression()->toString(field));
+		             expression()->toString(field, highlightOpcodeID, 10));
 	case Control:
-		return control()->toString(field, indent);
+		return mark + control()->toString(field, indent, highlightOpcodeID);
 	case Application:
-		return QString("%1%2")
+		return QString("%1%2%3%1")
+		        .arg(mark)
 		        .arg(QString(indent, QChar('\t')),
-		             application()->toString(field));
+		             application()->toString(field, highlightOpcodeID));
 	}
 	return QString(); // Never happen
 }
@@ -72,12 +87,12 @@ QString JsmInstruction::opcodeToString(const JsmOpcode *opcode)
 	                             opcode->hasParam() ? opcode->paramStr() : "");
 }
 
-QStringList JsmProgram::toStringList(const Field *field, int indent) const
+QStringList JsmProgram::toStringList(const Field *field, int indent, int highlightOpcodeID) const
 {
 	QStringList ret;
 
 	for (const JsmInstruction &instr: *this) {
-		QString instrStr = instr.toString(field, indent);
+		QString instrStr = instr.toString(field, indent, highlightOpcodeID);
 		if (!instrStr.isEmpty()) {
 			ret.append(instrStr);
 		}
@@ -95,6 +110,17 @@ int JsmProgram::opcodeCount() const
 	}
 
 	return ret;
+}
+
+QString JsmExpression::getToStringMark(int highlightOpcodeID) const
+{
+	QString mark;
+
+	if (_position == highlightOpcodeID) {
+		mark = "[X]";
+	}
+
+	return mark;
 }
 
 int JsmExpression::eval(bool *ok) const
@@ -115,7 +141,7 @@ QString JsmExpression::stripParenthesis(const QString &exprStr)
 }
 
 JsmExpression *JsmExpression::factory(const JsmOpcode *op,
-                                      QStack<JsmExpression *> &stack)
+                                      QStack<JsmExpression *> &stack, int pos)
 {
 	JsmExpression *ret = 0;
 
@@ -169,23 +195,26 @@ JsmExpression *JsmExpression::factory(const JsmOpcode *op,
 	}
 
 	if (ret) {
+		ret->setPosition(pos);
 		stack.push(ret);
 	}
 
 	return ret;
 }
 
-QString JsmExpressionVal::toString(const Field *field, int base) const
+QString JsmExpressionVal::toString(const Field *field, int highlightOpcodeID, int base) const
 {
+	QString mark = getToStringMark(highlightOpcodeID);
+
 	Q_UNUSED(field)
 	switch (base) {
 	case 2:
-		return QString("b%1").arg(quint32(_val), 0, base);
+		return mark + QString("b%1").arg(quint32(_val), 0, base) + mark;
 	case 16:
-		return QString("0x%1").arg(QString::number(quint32(_val), base)
-		                           .toUpper());
+		return mark + QString("0x%1").arg(QString::number(quint32(_val), base)
+		                           .toUpper()) + mark;
 	default:
-		return QString::number(_val, base);
+		return mark + QString::number(_val, base) + mark;
 	}
 }
 
@@ -208,69 +237,78 @@ QString JsmExpressionVar::varName() const
 	return QString::number(_var);
 }
 
-QString JsmExpressionVarUByte::toString(const Field *field, int base) const
+QString JsmExpressionVarUByte::toString(const Field *field, int highlightOpcodeID, int base) const
 {
 	Q_UNUSED(field)
 	Q_UNUSED(base)
-	return QString("%1_ubyte").arg(varName());
+	QString mark = getToStringMark(highlightOpcodeID);
+	return mark + QString("%1_ubyte").arg(varName()) + mark;
 }
 
-QString JsmExpressionVarUWord::toString(const Field *field, int base) const
+QString JsmExpressionVarUWord::toString(const Field *field, int highlightOpcodeID, int base) const
 {
 	Q_UNUSED(field)
 	Q_UNUSED(base)
-	return QString("%1_uword").arg(varName());
+	QString mark = getToStringMark(highlightOpcodeID);
+	return mark + QString("%1_uword").arg(varName()) + mark;
 }
 
-QString JsmExpressionVarULong::toString(const Field *field, int base) const
+QString JsmExpressionVarULong::toString(const Field *field, int highlightOpcodeID, int base) const
 {
 	Q_UNUSED(field)
 	Q_UNUSED(base)
-	return QString("%1_ulong").arg(varName());
+	QString mark = getToStringMark(highlightOpcodeID);
+	return mark + QString("%1_ulong").arg(varName()) + mark;
 }
 
-QString JsmExpressionVarSByte::toString(const Field *field, int base) const
+QString JsmExpressionVarSByte::toString(const Field *field, int highlightOpcodeID, int base) const
 {
 	Q_UNUSED(field)
 	Q_UNUSED(base)
-	return QString("%1_sbyte").arg(varName());
+	QString mark = getToStringMark(highlightOpcodeID);
+	return mark + QString("%1_sbyte").arg(varName()) + mark;
 }
 
-QString JsmExpressionVarSWord::toString(const Field *field, int base) const
+QString JsmExpressionVarSWord::toString(const Field *field, int highlightOpcodeID, int base) const
 {
 	Q_UNUSED(field)
 	Q_UNUSED(base)
-	return QString("%1_sword").arg(varName());
+	QString mark = getToStringMark(highlightOpcodeID);
+	return mark + QString("%1_sword").arg(varName()) + mark;
 }
 
-QString JsmExpressionVarSLong::toString(const Field *field, int base) const
+QString JsmExpressionVarSLong::toString(const Field *field, int highlightOpcodeID, int base) const
 {
 	Q_UNUSED(field)
 	Q_UNUSED(base)
-	return QString("%1_slong").arg(varName());
+	QString mark = getToStringMark(highlightOpcodeID);
+	return mark + QString("%1_slong").arg(varName()) + mark;
 }
 
-QString JsmExpressionChar::toString(const Field *field, int base) const
+QString JsmExpressionChar::toString(const Field *field, int highlightOpcodeID, int base) const
 {
 	Q_UNUSED(field)
 	Q_UNUSED(base)
-	return QString("model_%1").arg(_char);
+	QString mark = getToStringMark(highlightOpcodeID);
+	return mark + QString("model_%1").arg(_char) + mark;
 }
 
-QString JsmExpressionTemp::toString(const Field *field, int base) const
+QString JsmExpressionTemp::toString(const Field *field, int highlightOpcodeID, int base) const
 {
 	Q_UNUSED(field)
 	Q_UNUSED(base)
-	return QString("temp_%1").arg(_temp);
+	QString mark = getToStringMark(highlightOpcodeID);
+	return mark + QString("temp_%1").arg(_temp) + mark;
 }
 
-QString JsmExpressionUnary::toString(const Field *field, int base) const
+QString JsmExpressionUnary::toString(const Field *field, int highlightOpcodeID, int base) const
 {
 	if (_op == Not) {
 		base = 16;
 	}
-	return QString("%1%2").arg(operationToString(),
-	                           _first->toString(field, base));
+	QString mark = getToStringMark(highlightOpcodeID);
+	return mark + QString("%1%2").arg(operationToString(),
+	                           _first->toString(field, highlightOpcodeID, base)) + mark;
 }
 
 int JsmExpressionUnary::opcodeCount() const
@@ -311,7 +349,7 @@ QString JsmExpressionUnary::operationToString(Operation op)
 	return QString();
 }
 
-QString JsmExpressionBinary::toString(const Field *field, int base) const
+QString JsmExpressionBinary::toString(const Field *field, int highlightOpcodeID, int base) const
 {
 	if (_op == And
 	        || _op == Or
@@ -320,10 +358,11 @@ QString JsmExpressionBinary::toString(const Field *field, int base) const
 	        || _op == Rsh) {
 		base = 16;
 	}
-	return QString("(%1 %2 %3)")
-	        .arg(_first->toString(field, base),
+	QString mark = getToStringMark(highlightOpcodeID);
+	return mark + QString("(%1 %2 %3)")
+	        .arg(_first->toString(field, highlightOpcodeID, base),
 	             operationToString(),
-	             _second->toString(field, base));
+	             _second->toString(field, highlightOpcodeID, base)) + mark;
 }
 
 int JsmExpressionBinary::eval(bool *ok) const
@@ -472,19 +511,18 @@ QString JsmControl::indentString(const char *str, int indent)
 	return indentString(s, indent);
 }
 
-QString JsmControlIfElse::toString(const Field *field, int indent,
-                                   bool elseIf) const
+QString JsmControlIfElse::toString(bool elseIf, const Field *field, int indent,
+                                   int highlightOpcodeID) const
 {
-	if (_block.isEmpty() && _blockElse.isEmpty()) {
-		return QString();
-	}
 	// TODO: if block is empty, then blockElse will be executed unless condition
 	QString condStr = JsmExpression::stripParenthesis(
-	                      _condition->toString(field));
+	                      _condition->toString(field, highlightOpcodeID, 10));
 	QStringList lines(indentString("if %1 begin", elseIf ? 0 : indent)
 	                  .arg(condStr));
 
-	lines.append(_block.toStringList(field, indent + 1));
+	if (!_block.isEmpty()) {
+		lines.append(_block.toStringList(field, indent + 1, highlightOpcodeID));
+	}
 
 	if (!_blockElse.isEmpty()) {
 		if (_blockElse.size() == 1) {
@@ -493,14 +531,19 @@ QString JsmControlIfElse::toString(const Field *field, int indent,
 			        && instr.control()->type() == JsmControl::IfElse) {
 				JsmControlIfElse *ifElse =
 				        static_cast<JsmControlIfElse *>(instr.control());
-				lines.append(indentString("else %1", indent)
-				             .arg(ifElse->toString(field, indent, true)));
+				QString elseStr = ifElse->toString(true, field, indent, highlightOpcodeID);
+				if (elseStr.isEmpty()) {
+					lines.append(indentString("else begin", indent));
+				} else {
+					lines.append(indentString("els%1", indent)
+								.arg(elseStr));
+				}
 				goto JsmControlIfElse_toString_end;
 			}
 		}
 
-		lines.append(indentString("else", indent));
-		lines.append(_blockElse.toStringList(field, indent + 1));
+		lines.append(indentString("else begin", indent));
+		lines.append(_blockElse.toStringList(field, indent + 1, highlightOpcodeID));
 	}
 
 JsmControlIfElse_toString_end:
@@ -511,7 +554,7 @@ JsmControlIfElse_toString_end:
 	return lines.join("\n");
 }
 
-QString JsmControlWhile::toString(const Field *field, int indent) const
+QString JsmControlWhile::toString(const Field *field, int indent, int highlightOpcodeID) const
 {
 	QString prefix, firstLine;
 	bool ok, noBlock = _block.isEmpty();
@@ -527,7 +570,7 @@ QString JsmControlWhile::toString(const Field *field, int indent) const
 	} else {
 		// While
 		QString condStr = JsmExpression::stripParenthesis(
-		                      _condition->toString(field));
+		                      _condition->toString(field, highlightOpcodeID, 10));
 		firstLine = QString("while %1").arg(condStr);
 		if (!noBlock) {
 			firstLine.append(" begin");
@@ -536,27 +579,27 @@ QString JsmControlWhile::toString(const Field *field, int indent) const
 	QStringList lines(indentString(prefix.append(firstLine), indent));
 
 	if (!noBlock) {
-		lines.append(_block.toStringList(field, indent + 1));
+		lines.append(_block.toStringList(field, indent + 1, highlightOpcodeID));
 		lines.append(indentString("end", indent));
 	}
 
 	return lines.join("\n");
 }
 
-QString JsmControlRepeatUntil::toString(const Field *field, int indent) const
+QString JsmControlRepeatUntil::toString(const Field *field, int indent, int highlightOpcodeID) const
 {
 	QStringList lines(indentString("repeat", indent));
-	lines.append(_block.toStringList(field, indent + 1));
+	lines.append(_block.toStringList(field, indent + 1, highlightOpcodeID));
 
 	QString condStr = JsmExpression::stripParenthesis(
-	                      _condition->toString(field));
+	                      _condition->toString(field, highlightOpcodeID, 10));
 	lines.append(indentString("until %1 end", indent)
 	             .arg(condStr));
 
 	return lines.join("\n");
 }
 
-QStringList JsmApplication::stackToStringList(const Field *field) const
+QStringList JsmApplication::stackToStringList(const Field *field, int highlightOpcodeID) const
 {
 	if (_opcode == nullptr) {
 		return QStringList();
@@ -754,7 +797,10 @@ QStringList JsmApplication::stackToStringList(const Field *field) const
 		}
 
 		if (text.isEmpty()) {
-			text = expr->toString(field);
+			text = expr->toString(field, highlightOpcodeID, 10);
+		} else if (expr->position() == highlightOpcodeID) {
+			text.prepend("[X]");
+			text.append("[X]");
 		}
 
 		params.append(text);
@@ -763,7 +809,7 @@ QStringList JsmApplication::stackToStringList(const Field *field) const
 	return params;
 }
 
-QString JsmApplication::paramsToString(const Field *field) const
+QString JsmApplication::paramsToString(const Field *field, int highlightOpcodeID) const
 {
 	QStringList params;
 
@@ -771,15 +817,15 @@ QString JsmApplication::paramsToString(const Field *field) const
 		params.append(_opcode->paramStr());
 	}
 
-	params.append(stackToStringList(field));
+	params.append(stackToStringList(field, highlightOpcodeID));
 
 	return params.join(", ");
 }
 
-QString JsmApplication::toString(const Field *field) const
+QString JsmApplication::toString(const Field *field, int highlightOpcodeID) const
 {
 	return QString("%1(%2)").arg(_opcode != nullptr ? _opcode->name().toLower() : "nil",
-	                             paramsToString(field));
+	                             paramsToString(field, highlightOpcodeID));
 }
 
 int JsmApplication::opcodeCount() const
@@ -813,7 +859,7 @@ JsmExpression *JsmApplicationAssignment::opcodeExpression() const
 	return 0;
 }
 
-QString JsmApplicationAssignment::toString(const Field *field) const
+QString JsmApplicationAssignment::toString(const Field *field, int highlightOpcodeID) const
 {
 	QString ret;
 	JsmExpression *opExpr = opcodeExpression(), // New instance
@@ -840,10 +886,10 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 			delete opExpr;
 			opExpr = leftOp;
 			ret = QString("%1 %2= %3")
-			      .arg(opExpr->toString(field),
+			      .arg(opExpr->toString(field, highlightOpcodeID, base),
 			           binaryExpr->operationToString(),
 			           JsmExpression::stripParenthesis(
-			               rightOp->toString(field, base)));
+			               rightOp->toString(field, highlightOpcodeID, base)));
 			opExpr = nullptr;
 		} else if ((binaryExpr->operation() == JsmExpressionBinary::Add
 		          || binaryExpr->operation() == JsmExpressionBinary::Mul)
@@ -856,17 +902,17 @@ QString JsmApplicationAssignment::toString(const Field *field) const
 			delete opExpr;
 			opExpr = rightOp;
 			ret = QString("%1 %2= %3")
-			      .arg(opExpr->toString(field),
+			      .arg(opExpr->toString(field, highlightOpcodeID, 10),
 			           binaryExpr->operationToString(),
 			           JsmExpression::stripParenthesis(
-			               leftOp->toString(field, 10)));
+			               leftOp->toString(field, highlightOpcodeID, 10)));
 			opExpr = nullptr;
 		}
 	}
 	if (ret.isEmpty() && opExpr != nullptr) {
-		ret = QString("%1 = %2").arg(opExpr->toString(field),
+		ret = QString("%1 = %2").arg(opExpr->toString(field, highlightOpcodeID, 10),
 		                             JsmExpression::stripParenthesis(
-		                                 expr->toString(field)));
+		                                 expr->toString(field, highlightOpcodeID, 10)));
 	}
 	if (opExpr != nullptr) {
 		delete opExpr;
@@ -892,10 +938,10 @@ QString JsmApplicationExec::execType() const
 	return QString();
 }
 
-QString JsmApplicationExec::toString(const Field *field) const
+QString JsmApplicationExec::toString(const Field *field, int highlightOpcodeID) const
 {
 	if (_opcode == nullptr) {
-		return JsmApplication::toString(field);
+		return JsmApplication::toString(field, highlightOpcodeID);
 	}
 
 	QString groupName, methodName;
@@ -909,26 +955,16 @@ QString JsmApplicationExec::toString(const Field *field) const
 		const JsmScripts &scripts = jsm->getScripts();
 		if (groupId < scripts.nbGroup()
 		        && absMethodId < scripts.nbScript()) {
-			int validGroupId = scripts.findGroup(absMethodId);
-
-			if (validGroupId < 0) {
-				validGroupId = groupId;
-			}
-
-			groupName = scripts.group(validGroupId).name();
+			groupName = scripts.group(groupId).name();
 			methodName = scripts.script(absMethodId).name();
-
-			if (validGroupId != groupId) {
-				groupName.append("#").append(QString::number(groupId));
-			}
 		}
 	}
 
 	if (groupName.isEmpty() || methodName.isEmpty()) {
-		return JsmApplication::toString(field);
+		return JsmApplication::toString(field, highlightOpcodeID);
 	}
 
-	QStringList params(stackCpy.pop()->toString(field));
+	QStringList params(stackCpy.pop()->toString(field, highlightOpcodeID, 10));
 	QString eType = execType();
 	if (!eType.isEmpty()) {
 		params.append(eType);

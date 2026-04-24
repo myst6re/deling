@@ -96,22 +96,6 @@ bool FieldArchive::isReadOnly() const
 	return readOnly;
 }
 
-bool FieldArchive::compileScripts(int &errorFieldID, int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr)
-{
-	errorFieldID = 0;
-
-	for (Field *field: fields) {
-		if (field->isOpen() && field->isModified() && field->hasJsmFile()) {
-			if (!field->getJsmFile()->compileAll(errorGroupID, errorMethodID, errorLine, errorStr)) {
-				return false;
-			}
-		}
-		++errorFieldID;
-	}
-
-	return true;
-}
-
 bool FieldArchive::searchIterators(QMultiMap<QString, int>::const_iterator &i, QMultiMap<QString, int>::const_iterator &end, int fieldID, Sorting sorting) const
 {
 	if (fieldID >= fields.size())		return false;

@@ -17,6 +17,7 @@
  ****************************************************************************/
 #include "Field.h"
 #include "game/worldmap/Map.h"
+#include "JsmPseudoCompiler.h"
 
 Map *Field::worldmapFile = nullptr;
 

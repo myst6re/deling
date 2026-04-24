@@ -18,19 +18,21 @@
 #include "files/JsmFile.h"
 #include "Data.h"
 
-QStringList JsmFile::opcodeNameCalc;
-QStringList JsmFile::opcodeName;
+QStringList JsmFile::opcodeNamesCalc;
+QStringList JsmFile::opcodeNames;
 
 JsmFile::JsmFile() :
-	File(), _hasSym(false), needUpdate(true), needUpdateMore(true),
+	File(), _hasSym(false), needUpdate(true), needUpdateMore(true), _offsetScriptPositionsSectionPadding(0),
     groupItem(0), _oldFormat(false)
 {
-	if(opcodeNameCalc.isEmpty()) {
-		for(int i=0 ; i<18 ; ++i)
-			opcodeNameCalc.append(JsmOpcodeCal::cal_table[i]);
+	if (opcodeNamesCalc.isEmpty()) {
+		for (int i = 0; i < 18; ++i) {
+			opcodeNamesCalc.append(JsmOpcodeCal::cal_table[i]);
+		}
 
-		for(int i=0 ; i<JSM_OPCODE_COUNT ; ++i)
-			opcodeName.append(JsmOpcode::opcodes[i]);
+		for (int i = 0; i < JSM_OPCODE_COUNT; ++i) {
+			opcodeNames.append(JsmOpcode::opcodes[i]);
+		}
 	}
 }
 
@@ -38,210 +40,261 @@ JsmFile::~JsmFile()
 {
 }
 
-QString JsmFile::printCount()
-{
-	return QString("doors = %1, lines = %2, bgs = %3, other = %4").arg(scripts.countDoors()).arg(scripts.countLines()).arg(scripts.countBackgrounds()).arg(scripts.countOthers());
-}
-
 bool JsmFile::open(const QString &path)
 {
-	QFile jsm_file(path);
-	if(!jsm_file.open(QIODevice::ReadOnly)) {
-		lastError = jsm_file.errorString();
+	QFile jsmFile(path);
+	if (!jsmFile.open(QIODevice::ReadOnly)) {
+		lastError = jsmFile.errorString();
 		return false;
 	}
 	QString symPath = path;
 	symPath.replace(QRegularExpression("\\..+$"), ".sym");
-	if(QFile::exists(symPath)) {
-		QFile sym_file(symPath);
-		if(!sym_file.open(QIODevice::ReadOnly)) {
-			lastError = sym_file.errorString();
+	if (QFile::exists(symPath)) {
+		QFile symFile(symPath);
+		if (!symFile.open(QIODevice::ReadOnly)) {
+			lastError = symFile.errorString();
 			return false;
 		}
-		return open(jsm_file.readAll(), sym_file.readAll());
+		return open(jsmFile.readAll(), symFile.readAll());
 	}
 
-	return open(jsm_file.readAll());
+	return open(jsmFile.readAll());
 }
 
-bool JsmFile::open(const QByteArray &jsm, const QByteArray &sym_data, bool old_format)
+JsmGroup JsmFile::createGroup(quint16 label, quint8 count, const JsmHeader &jsmHeader, int headerID)
 {
-	const char *jsm_data = jsm.constData();
-	int jsm_data_size = jsm.size();
-	QMultiMap<quint16, JsmGroup> linkGroupList;
+	JsmGroup::Type type = JsmGroup::No;
+	int groupRelativeID = 0;
+
+	if (headerID < jsmHeader.countLines) {
+		type = JsmGroup::Location;
+		groupRelativeID = headerID;
+	} else if (headerID < jsmHeader.countLines + jsmHeader.countDoors) {
+		type = JsmGroup::Door;
+		groupRelativeID = headerID - jsmHeader.countLines;
+	} else if (headerID < jsmHeader.countLines + jsmHeader.countDoors + jsmHeader.countBackground) {
+		type = JsmGroup::Background;
+		groupRelativeID = headerID - (jsmHeader.countLines + jsmHeader.countDoors);
+	} else {
+		type = JsmGroup::No;
+		groupRelativeID = headerID - (jsmHeader.countLines + jsmHeader.countDoors + jsmHeader.countBackground);
+	}
+
+	return JsmGroup(label, count + 1, type, groupRelativeID);
+}
+
+bool JsmFile::open(const QByteArray &jsm, const QByteArray &symData, bool oldFormat)
+{
+	const char *jsmData = jsm.constData();
+	int jsmDataSize = jsm.size(), oldPos = -1;
 	quint16 group, label, pos;
-	int oldPos=-1;
 	quint8 count;
-	JsmHeader jsm_header;
+	JsmHeader jsmHeader;
 
-	if(jsm_data_size<8) {
-		qWarning() << "JsmFile::open error (1)" << jsm_data_size;
+	if (jsmDataSize < 8) {
+		qWarning() << "JsmFile::open error (1)" << jsmDataSize;
 		return false;
 	}
 
-	memcpy(&jsm_header, jsm_data, 8);
+	memcpy(&jsmHeader, jsmData, 8);
 
-	int groupCount = (jsm_header.section1 - 8)/2;
-	int scriptCount = (jsm_header.section2-jsm_header.section1)/2;
+	int groupCount = (jsmHeader.offsetScriptPositionsSection - 8) / 2,
+	    scriptCount = (jsmHeader.offsetScriptDataSection - jsmHeader.offsetScriptPositionsSection) / 2;
 
-	if(jsm_data_size <= jsm_header.section1 || jsm_data_size <= jsm_header.section2) {
-		qWarning() << "JsmFile::open error (2)" << jsm_data_size << jsm_header.section1 << jsm_header.section2;
+	if (jsmDataSize <= jsmHeader.offsetScriptPositionsSection || jsmDataSize <= jsmHeader.offsetScriptDataSection) {
+		qWarning() << "JsmFile::open error (2)" << jsmDataSize << jsmHeader.offsetScriptPositionsSection << jsmHeader.offsetScriptDataSection;
 		return false;
 	}
 
-	if(groupCount != jsm_header.count0 + jsm_header.count1 + jsm_header.count2 + jsm_header.count3) {
-		if(jsm_header.count0 >= 50) 	jsm_header.count0 = 0;
-		if(jsm_header.count1 >= 50) 	jsm_header.count1 = 0;
-		if(jsm_header.count2 >= 50) 	jsm_header.count2 = 0;
-		if(jsm_header.count3 >= 50) 	jsm_header.count3 = 0;
-		if(groupCount != jsm_header.count0 + jsm_header.count1 + jsm_header.count2 + jsm_header.count3) {
-			qWarning() << "JsmFile::open invalid group count!" << groupCount << jsm_header.count0 << jsm_header.count1 << jsm_header.count2 << jsm_header.count3;
+	if (groupCount != jsmHeader.countDoors + jsmHeader.countLines + jsmHeader.countBackground + jsmHeader.countOther) {
+		if (jsmHeader.countDoors > 48) {
+			jsmHeader.countDoors = 0;
+		}
+		if (jsmHeader.countLines > 48) {
+			jsmHeader.countLines = 0;
+		}
+		if (jsmHeader.countBackground > 48) {
+			jsmHeader.countBackground = 0;
+		}
+		if (jsmHeader.countOther > 48) {
+			jsmHeader.countOther = 0;
+		}
+		if (groupCount != jsmHeader.countDoors + jsmHeader.countLines + jsmHeader.countBackground + jsmHeader.countOther) {
+			qWarning() << "JsmFile::open invalid group count!" << groupCount << jsmHeader.countDoors << jsmHeader.countLines << jsmHeader.countBackground << jsmHeader.countOther;
 			return false;
 		}
 	}
 
-	if (!old_format) {
-		for(int i=0 ; i<groupCount ; ++i) {
-			memcpy(&group, &jsm_data[8+i*2], 2);
+	_oldFormat = oldFormat;
+	QList<JsmGroup> groupList;
+	groupList.reserve(groupCount);
+
+	if (!oldFormat) {
+		for (int i = 0; i < groupCount; ++i) {
+			memcpy(&group, &jsmData[8 + i * 2], 2);
 			label = group >> 7;
 			count = group & 0x7F;
 
-			if(label+count+1 >= scriptCount) {
-				old_format = true; // Retry in old format mode
+			if (label + count + 1 >= scriptCount) {
+				oldFormat = true; // Retry in old format mode
 				break;
 			}
 
-			linkGroupList.insert(label, JsmGroup(i, label, count));
+			groupList.append(createGroup(label, count, jsmHeader, i));
 		}
 	}
 
-	if (old_format) {
-		for(int i=0 ; i<groupCount ; ++i) {
-			memcpy(&group, &jsm_data[8+i*2], 2);
+	if (oldFormat) {
+		for (int i = 0; i < groupCount; ++i) {
+			memcpy(&group, &jsmData[8 + i * 2], 2);
 			label = group & 0xFF;
 			count = group >> 8;
 
-			if(label+count+1 >= scriptCount) {
+			if (label + count + 1 >= scriptCount) {
 				qWarning() << "JsmFile::open error (3)" << label << count << scriptCount;
 				return false;
 			}
 
-			linkGroupList.insert(label, JsmGroup(i, label, count));
+			groupList.append(createGroup(label, count, jsmHeader, i));
 		}
-
-		_oldFormat = old_format;
 	}
 
-	QList<JsmGroup> groupList = linkGroupList.values();
-	QList<JsmScript> scriptList;
-	scriptList.reserve(scriptCount);
+	// verification no padding and no overlap between groups
+	QMultiMap<quint16, quint16> groupListLabelPerScriptCount;
+	for (const JsmGroup &group: groupList) {
+		groupListLabelPerScriptCount.insert(group.label(), group.scriptCount());
+	}
+	QMultiMapIterator<quint16, quint16> it(groupListLabelPerScriptCount);
+	while (it.hasNext()) {
+		it.next();
 
-	// verification no-paddings between groups
-	for(int i=0 ; i<groupCount-1 ; ++i) {
-		const JsmGroup &grp = groupList.at(i);
-		if(grp.label() + grp.scriptCount() > groupList.at(i+1).label()) {
-			qWarning() << "JsmFile::open incorrect group pos+size" << grp.label() << grp.scriptCount() << groupList.at(i+1).label();
+		if (it.hasNext() && it.key() + it.value() != it.peekNext().key()) {
+			qWarning() << "JsmFile::open incorrect group pos+size" << it.key() << it.value() << it.peekNext().key();
 			return false;
 		}
 	}
 
-	section1_padding = 0;
-	for(int i=0 ; i<scriptCount ; ++i) {
-		memcpy(&pos, &jsm_data[jsm_header.section1+i*2], 2);
-		if(i!=0 && pos==0) {
-			section1_padding = jsm_header.section2 - jsm_header.section1 - i*2;
+	QList<JsmGroup> groupListByGroupID;
+	groupListByGroupID.reserve(groupCount);
+	for (const JsmGroup &group: groupList) {
+		if (group.type() != JsmGroup::Background && group.type() != JsmGroup::Location && group.type() != JsmGroup::Door) {
+			groupListByGroupID.append(group);
+		}
+	}
+	for (const JsmGroup &group: groupList) {
+		if (group.type() == JsmGroup::Location) {
+			groupListByGroupID.append(group);
+		}
+	}
+	for (const JsmGroup &group: groupList) {
+		if (group.type() == JsmGroup::Background) {
+			groupListByGroupID.append(group);
+		}
+	}
+	for (const JsmGroup &group: groupList) {
+		if (group.type() == JsmGroup::Door) {
+			groupListByGroupID.append(group);
+		}
+	}
+
+	QList<JsmScript> methodList;
+	methodList.reserve(scriptCount);
+
+	_offsetScriptPositionsSectionPadding = 0;
+	for (int i = 0; i < scriptCount; ++i) {
+		memcpy(&pos, &jsmData[jsmHeader.offsetScriptPositionsSection + i * 2], 2);
+		if (i != 0 && pos == 0) {
+			_offsetScriptPositionsSectionPadding = jsmHeader.offsetScriptDataSection - jsmHeader.offsetScriptPositionsSection - i * 2;
 			break;
 		}
-		bool flag = pos >> 15;
 		pos &= 0x7FFF;
-		if((jsm_header.section2 + pos*4) > jsm_data_size || (int)pos < oldPos) {
-			qWarning() << "JsmFile::open error (4)" << (jsm_header.section2 + pos*4) << jsm_data_size;
+		if (jsmHeader.offsetScriptDataSection + pos * 4 > jsmDataSize || int(pos) < oldPos) {
+			qWarning() << "JsmFile::open error (4)" << (jsmHeader.offsetScriptDataSection + pos * 4) << jsmDataSize;
 			return false;
 		}
 		oldPos = pos;
 
-		scriptList.append(JsmScript(pos, flag));
+		methodList.append(JsmScript(pos));
 	}
 
-	scripts = JsmScripts(groupList, scriptList,
-	                     JsmData(QByteArray((char *)&jsm_data[jsm_header.section2], jsm_data_size-jsm_header.section2), _oldFormat),
-						 jsm_header.count0, jsm_header.count1, jsm_header.count2, jsm_header.count3);
+	scripts = JsmScripts(groupListByGroupID, methodList,
+	                     JsmData(QByteArray((char *)&jsmData[jsmHeader.offsetScriptDataSection], jsmDataSize - jsmHeader.offsetScriptDataSection), _oldFormat));
+
+	_hasSym = openSym(symData);
 
 	searchWindows();
 	searchGroupTypes();
-
-	_hasSym = openSym(sym_data);
 
 	modified = false;
 
 	return true;
 }
 
-bool JsmFile::openSym(const QByteArray &sym_data)
+bool JsmFile::openSym(const QByteArray &symData)
 {
-	QStringList sym_strings;
-	int nbScripts, nbGroup, nbLines, nbEntities = scripts.nbEntitiesForSym();
+	QStringList symLines = QString(symData).split('\n', Qt::SkipEmptyParts);
+	int nbLines = symLines.size();
 
-	sym_strings = QString(sym_data).split('\n', Qt::SkipEmptyParts);
-	nbLines = sym_strings.size();
+	if (nbLines <= 0) {
+		return false;
+	}
 
-	if(nbLines<=0) return false;
+	quint8 countDoors, countLines, countBackgrounds, countOthers;
+	scripts.countTypes(countDoors, countLines, countBackgrounds, countOthers);
 
-	nbScripts = scripts.nbScript()-1;
-	nbGroup = scripts.nbGroup();
+	int nbEntities = countLines + countBackgrounds + countOthers, // No doors
+	    nbScripts = scripts.scripts().size() - 1;
 
-	if(nbScripts>0 && nbLines==nbEntities+nbScripts) {
-		QString line;
-		QRegularExpression validName("^[\\w]+$");
-		int groupID=-1, methodID=1, index;
+	if (nbScripts <= 0 || nbLines != nbEntities + nbScripts) {
+		qWarning() << "JsmFile::openSym error 1" << nbLines << nbEntities << nbScripts;
+		return false;
+	}
 
-		for(int i=0 ; i<nbScripts ; ++i) {
-			if(groupID >= nbGroup) {
-				qWarning() << "JsmFile::openSym trop de groupes" << groupID;
+	QString line;
+	QRegularExpression validName("^[\\w]+$");
+	int fileOrderGroupID = -1, methodID = 1, index = -1, nbGroup = scripts.nbGroup();
+	QList<int> groupIDs = scripts.groupIDsSortedByLabel();
+
+	for (int i = 0; i < nbScripts; ++i) {
+		if (fileOrderGroupID >= nbGroup) {
+			qWarning() << "JsmFile::openSym too much groups" << fileOrderGroupID;
+			break;
+		}
+
+		line = symLines.at(nbEntities + i).simplified();
+		index = line.indexOf("::");
+		if (index == -1) {
+			++fileOrderGroupID;
+
+			if (validName.match(line).hasMatch()) {
+				scripts.setGroupName(groupIDs.at(fileOrderGroupID), line);
+			} else {
+				qWarning() << "JsmFile::openSym error invalid group name" << line;
+			}
+			methodID = 1;
+		} else if (validName.match(line.mid(index + 2)).hasMatch()) {
+			if (fileOrderGroupID == -1) {
+				qWarning() << "JsmFile::openSym undefined constructor" << line;
+				break;
+			}
+			int groupID = groupIDs.at(fileOrderGroupID);
+
+			if (!line.startsWith(scripts.group(groupID).name())) {
+				qWarning() << "JsmFile::openSym method does not start with the group name" << line << scripts.group(groupID).name();
 				break;
 			}
 
-			line = sym_strings.at(nbEntities+i).simplified();
-			if((index = line.indexOf("::")) == -1) {
-				if(validName.match(line).hasMatch()) {
-					scripts.setGroupName(groupID+1, line);
-				} else {
-					qWarning() << "JsmFile::openSym erreur nom groupe invalide" << line;
-				}
-
-				++groupID;
-				methodID = 1;
+			if (methodID < scripts.nbScript(groupID)) {
+				scripts.setScriptName(groupID, methodID, line.mid(index + 2));
+			} else {
+				qWarning() << "JsmFile::openSym error 2" << methodID << (scripts.nbScript(groupID));
+				break;
 			}
-			else if(validName.match(line.mid(index+2)).hasMatch()) {
-				if(groupID == -1) {
-					qWarning() << "JsmFile::openSym constructeur indéfini" << line;
-					break;
-				}
-
-				if(!line.startsWith(scripts.group(groupID).name())) {
-					qWarning() << "JsmFile::openSym la méthode ne commence pas par le nom du groupe" << line << scripts.group(groupID).name();
-					break;
-				}
-
-				if(methodID < scripts.nbScript(groupID)) {
-					scripts.setScriptName(groupID, methodID, line.mid(index+2));
-				}
-				else {
-					qWarning() << "JsmFile::openSym erreur 2" << methodID << (scripts.nbScript(groupID));
-					break;
-				}
-				++methodID;
-//				scriptList.at(i)->setName(line.mid(index+2));
-			}
-			else {
-				qWarning() << "JsmFile::openSym erreur nom script invalide" << line;
-				++methodID;
-			}
+			++methodID;
+		} else {
+			qWarning() << "JsmFile::openSym error script name invalid" << line;
+			++methodID;
 		}
-	}
-	else {
-		qWarning() << "JsmFile::openSym erreur 3" << nbLines << (nbEntities+nbScripts);
-		return false;
 	}
 
 	return true;
@@ -249,24 +302,24 @@ bool JsmFile::openSym(const QByteArray &sym_data)
 
 bool JsmFile::saveWithPath(const QString &path)
 {
-	QFile jsm_file(path);
-	if(!jsm_file.open(QIODevice::WriteOnly)) {
-		lastError = jsm_file.errorString();
+	QFile jsmFile(path);
+	if (!jsmFile.open(QIODevice::WriteOnly)) {
+		lastError = jsmFile.errorString();
 		return false;
 	}
 	QByteArray jsm, sym;
 	save(jsm, sym);
-	jsm_file.write(jsm);
-	jsm_file.close();
+	jsmFile.write(jsm);
+	jsmFile.close();
 
-	if(!sym.isEmpty()) {
-		QFile sym_file(path.left(path.lastIndexOf('.')) + ".sym");
-		if(!sym_file.open(QIODevice::WriteOnly)) {
-			lastError = sym_file.errorString();
+	if (!sym.isEmpty()) {
+		QFile symFile(path.left(path.lastIndexOf('.')) + ".sym");
+		if (!symFile.open(QIODevice::WriteOnly)) {
+			lastError = symFile.errorString();
 			return false;
 		}
-		sym_file.write(sym);
-		sym_file.close();
+		symFile.write(sym);
+		symFile.close();
 	}
 
 	return true;
@@ -274,67 +327,85 @@ bool JsmFile::saveWithPath(const QString &path)
 
 bool JsmFile::save(QByteArray &jsm) const
 {
-	QByteArray section0(scripts.nbGroup()*2, '\x00'), section1;
+	QByteArray section0, offsetScriptPositionsSection;
 	quint16 data;
-	JsmHeader jsm_header;
-	quint8 nbDoors=0, nbLines=0, nbBackground=0, nbOther=0;
+	JsmHeader jsmHeader;
+	// It is important to keep the ordering for doors and backgrounds
+	QMap<int, quint16> doorGroups, backgroundGroups;
+	QByteArray locationGroups, otherGroups;
+	QSet<quint16> scriptsWithFlag;
 
-	for (const JsmGroup &group: scripts.getGroupList()) {
-		switch(group.type()) {
-		case JsmGroup::Door:
-			nbDoors++;
-			break;
-		case JsmGroup::Location:
-			nbLines++;
-			break;
-		case JsmGroup::Background:
-			nbBackground++;
-			break;
-		default:
-			nbOther++;
-			break;
+	for (const JsmGroup &group: scripts.groups()) {
+		if (group.scriptCount() < 1) {
+			qWarning() << "JsmFile::save" << "Cannot save script: scriptCount cannot be < 1";
+			return false;
 		}
 
 		if (_oldFormat) {
-			data = ((group.scriptCount()-1) << 8) | (group.label() & 0xFF);
+			data = ((group.scriptCount() - 1) << 8) | (group.label() & 0xFF);
 		} else {
-			data = (group.label() << 7) | ((group.scriptCount()-1) & 0x7F);
+			data = (group.label() << 7) | ((group.scriptCount() - 1) & 0x7F);
 		}
-		section0.replace(group.execOrder()*2, 2, (char *)&data, 2);
+
+		bool isFlagged = true;
+		switch (group.type()) {
+		case JsmGroup::Door:
+			if (doorGroups.contains(group.groupTypeRelativeId())) {
+				qWarning() << "JsmFile::save" << "Same door id twice";
+				return false;
+			}
+			doorGroups.insert(group.groupTypeRelativeId(), data);
+			break;
+		case JsmGroup::Location:
+			locationGroups.append((const char *)&data, 2);
+			break;
+		case JsmGroup::Background:
+			if (backgroundGroups.contains(group.groupTypeRelativeId())) {
+				qWarning() << "JsmFile::save" << "Same background id twice";
+				return false;
+			}
+			backgroundGroups.insert(group.groupTypeRelativeId(), data);
+			break;
+		default:
+			otherGroups.append((const char *)&data, 2);
+			isFlagged = false;
+			break;
+		}
+
+		if (isFlagged) {
+			for (int i = group.label(); i < group.label() + group.scriptCount(); ++i) {
+				scriptsWithFlag.insert(i);
+			}
+		}
 	}
 
-	if(nbDoors != scripts.countDoors()) {
-		qWarning() << "Count Doors different" << nbDoors << scripts.countDoors();
+	section0.append(locationGroups);
+	for (quint16 p: doorGroups) {
+		section0.append((const char *)&p, 2);
 	}
-
-	if(nbLines != scripts.countLines()) {
-		qWarning() << "Count Lines different" << nbLines << scripts.countLines();
+	for (quint16 p: backgroundGroups) {
+		section0.append((const char *)&p, 2);
 	}
+	section0.append(otherGroups);
+	jsmHeader.countDoors = doorGroups.size();
+	jsmHeader.countLines = locationGroups.size() / 2;
+	jsmHeader.countBackground = backgroundGroups.size();
+	jsmHeader.countOther = otherGroups.size() / 2;
 
-	if(nbBackground != scripts.countBackgrounds()) {
-		qWarning() << "Count Background different" << nbBackground << scripts.countBackgrounds();
+	int scriptId = 0;
+	for (const JsmScript &script: scripts.scripts()) {
+		data = (int(scriptsWithFlag.contains(scriptId)) << 15) | (script.opcodeIDStart() & 0x7FFF);
+		offsetScriptPositionsSection.append((char *)&data, 2);
+		scriptId += 1;
 	}
+	offsetScriptPositionsSection.append(QByteArray(_offsetScriptPositionsSectionPadding, '\x00'));
 
-	if(nbOther != scripts.countOthers()) {
-		qWarning() << "Count Other different" << nbOther << scripts.countOthers();
-	}
+	jsmHeader.offsetScriptPositionsSection = 8 + section0.size();
+	jsmHeader.offsetScriptDataSection = jsmHeader.offsetScriptPositionsSection + offsetScriptPositionsSection.size();
 
-	for (const JsmScript &script: scripts.getScriptList()) {
-		data = (script.flag() << 15) | (script.pos() & 0x7FFF);
-		section1.append((char *)&data, 2);
-	}
-	section1.append(QByteArray(section1_padding, '\x00'));
-
-	jsm_header.count0 = scripts.countDoors();
-	jsm_header.count1 = scripts.countLines();
-	jsm_header.count2 = scripts.countBackgrounds();
-	jsm_header.count3 = scripts.countOthers();
-	jsm_header.section1 = 8 + section0.size();
-	jsm_header.section2 = jsm_header.section1 + section1.size();
-
-	jsm.append((char *)&jsm_header, 8);
+	jsm.append((char *)&jsmHeader, 8);
 	jsm.append(section0);
-	jsm.append(section1);
+	jsm.append(offsetScriptPositionsSection);
 	jsm.append(scripts.data().constData());// Section 2
 
 	return true;
@@ -343,7 +414,7 @@ bool JsmFile::save(QByteArray &jsm) const
 bool JsmFile::save(QByteArray &jsm, QByteArray &sym)
 {
 	save(jsm);
-	sym = saveSym().toLatin1();
+	sym = saveSym();
 
 	return true;
 }
@@ -351,8 +422,8 @@ bool JsmFile::save(QByteArray &jsm, QByteArray &sym)
 bool JsmFile::toFileSym(const QString &path)
 {
 	QFile f(path);
-	if(f.open(QIODevice::WriteOnly)) {
-		f.write(saveSym().toLatin1());
+	if (f.open(QIODevice::WriteOnly)) {
+		f.write(saveSym());
 		f.close();
 		return true;
 	}
@@ -360,39 +431,73 @@ bool JsmFile::toFileSym(const QString &path)
 	return false;
 }
 
-QString JsmFile::saveSym()
+QByteArray JsmFile::saveSym()
 {
 	QString ret;
+	int nbGroups = scripts.nbGroup();
+	QList<int> groupIDs = scripts.groupIDsSortedByLabel();
 
-	for (const JsmGroup &group: scripts.getGroupList()) {
-		if(group.name().isEmpty())	break;
+	for (int fileOrderGroupID = 0; fileOrderGroupID < nbGroups; ++fileOrderGroupID) {
+		const JsmGroup &group = scripts.group(groupIDs.at(fileOrderGroupID));
 
-		if(group.type() != JsmGroup::Door) {
+		if (group.name().isEmpty()) {
+			qWarning() << "JsmFile::saveSym" << "Empty group name";
+			return QByteArray();
+		}
+
+		if (group.type() != JsmGroup::Door && group.type() != JsmGroup::Background && group.type() != JsmGroup::Location) {
 			ret.append(group.name().leftJustified(31));
 			ret.append('\n');
 		}
 	}
 
-	if(ret.isEmpty()) {
-		qWarning() << "noms manquants";
-		return QString();
+	for (int fileOrderGroupID = 0; fileOrderGroupID < nbGroups; ++fileOrderGroupID) {
+		const JsmGroup &group = scripts.group(groupIDs.at(fileOrderGroupID));
+
+		if (group.type() == JsmGroup::Location) {
+			ret.append(group.name().leftJustified(31));
+			ret.append('\n');
+		}
 	}
 
-	int nbGroups = scripts.nbGroup();
-	for(int groupID=0 ; groupID<nbGroups ; ++groupID) {
-		int nbScripts = scripts.nbScript(groupID);
+	for (int fileOrderGroupID = 0; fileOrderGroupID < nbGroups; ++fileOrderGroupID) {
+		const JsmGroup &group = scripts.group(groupIDs.at(fileOrderGroupID));
+
+		if (group.type() == JsmGroup::Background) {
+			ret.append(group.name().leftJustified(31));
+			ret.append('\n');
+		}
+	}
+
+	// Door type is not present in the header list
+
+	if (ret.isEmpty()) {
+		qWarning() << "JsmFile::saveSym" << "Missing names";
+		return QByteArray();
+	}
+
+	for (int fileOrderGroupID = 0; fileOrderGroupID < nbGroups; ++fileOrderGroupID) {
+		const int groupID = groupIDs.at(fileOrderGroupID);
+		const int nbScripts = scripts.nbScript(groupID);
 		const QString &groupName = scripts.group(groupID).name();
-		for(int scriptID=0 ; scriptID<nbScripts ; ++scriptID) {
+		for (int scriptID = 0; scriptID < nbScripts; ++scriptID) {
 			QString name;
-			if(scriptID!=0)		name = groupName + "::" + scripts.script(groupID, scriptID).name();
-			else				name = groupName;// constructor
+			if (scriptID != 0) {
+				name = groupName + "::" + scripts.script(groupID, scriptID).name();
+			} else {
+				name = groupName; // constructor
+			}
+			if (name.isEmpty()) {
+				qWarning() << "JsmFile::saveSym" << "Empty script name";
+				return QByteArray();
+			}
 
 			ret.append(name.leftJustified(31));
 			ret.append('\n');
 		}
 	}
 
-	return ret;
+	return ret.toLatin1();
 }
 
 void JsmFile::searchWindows()
@@ -404,17 +509,17 @@ void JsmFile::searchWindows()
 	window.ask_last = window.ask_first = window.ask_first2 = 0;
 	ff8Windows.clear();
 
-	for(int i=4 ; i<nbOpcode ; ++i) {
+	for (int i=4 ; i<nbOpcode ; ++i) {
 		JsmOpcode op = scripts.opcode(i);
 		key = op.key();
 
-		switch(key) {
+		switch (key) {
 		case JsmOpcode::AMESW:
 		case JsmOpcode::AMES:
 		case JsmOpcode::RAMESW:
 		{
 			JsmOpcode _psh2=scripts.opcode(i-3);
-			if(_psh2.key() == JsmOpcode::PSHN_L) {
+			if (_psh2.key() == JsmOpcode::PSHN_L) {
 				JsmOpcode _psh1=scripts.opcode(i-4);
 				JsmOpcode _psh3=scripts.opcode(i-2);
 				JsmOpcode _psh4=scripts.opcode(i-1);
@@ -428,7 +533,7 @@ void JsmFile::searchWindows()
 			break;
 		}
 		case JsmOpcode::AASK:
-			if(i>=8) {
+			if (i>=8) {
 				JsmOpcode _psh1=scripts.opcode(i-8);
 				JsmOpcode _psh2=scripts.opcode(i-7);
 				JsmOpcode _psh3=scripts.opcode(i-6);
@@ -437,7 +542,7 @@ void JsmFile::searchWindows()
 				// ask_mem
 				JsmOpcode _psh7=scripts.opcode(i-2);
 				JsmOpcode _psh8=scripts.opcode(i-1);
-				if(i>=8
+				if (i>=8
 						&& _psh1.key() == JsmOpcode::PSHN_L
 						&& _psh2.key() == JsmOpcode::PSHN_L
 						&& _psh3.key() == JsmOpcode::PSHN_L
@@ -466,26 +571,26 @@ void JsmFile::searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const
 	// qDebug() << "JsmFile::searchDefaultBGStates";
 	int nbGroup = scripts.nbGroup(), nbOpcode;
 
-	for(int groupID=0 ; groupID < nbGroup ; ++groupID) {
+	for (int groupID=0 ; groupID < nbGroup ; ++groupID) {
 		const JsmGroup &jsmGroup = scripts.group(groupID);
 		int methodCount = (int)jsmGroup.scriptCount();
 
-		if(jsmGroup.type() == JsmGroup::Background) {
-			for(int methodID=0 ; methodID < methodCount && methodID < 2 ; ++methodID) {
-				int pos = scripts.posScript(groupID, methodID, &nbOpcode);
+		if (jsmGroup.type() == JsmGroup::Background) {
+			for (int methodID=0 ; methodID < methodCount && methodID < 2 ; ++methodID) {
+				int pos = scripts.opcodeIDStartScript(groupID, methodID, &nbOpcode);
 
-				for(int opcodeID=0 ; opcodeID < nbOpcode ; ++opcodeID) {
-					// qDebug() << groupID << methodID << jsmGroup.backgroundParamId() << scripts.key(pos + opcodeID);
-					switch(scripts.key(pos + opcodeID)) {
+				for (int opcodeID=0 ; opcodeID < nbOpcode ; ++opcodeID) {
+					// qDebug() << groupID << methodID << jsmGroup.groupTypeRelativeId() << scripts.key(pos + opcodeID);
+					switch (scripts.key(pos + opcodeID)) {
 					case JsmOpcode::BGDRAW:
-						if(scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L)
-							params.insert(jsmGroup.backgroundParamId(), scripts.param(pos + opcodeID - 1));
+						if (scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L)
+							params.insert(jsmGroup.groupTypeRelativeId(), scripts.param(pos + opcodeID - 1));
 						break;
 					case JsmOpcode::RBGANIMELOOP:
-						params.insert(jsmGroup.backgroundParamId(), 0);
+						params.insert(jsmGroup.groupTypeRelativeId(), 0);
 						break;
 					case JsmOpcode::RBGSHADELOOP:
-						params.insert(jsmGroup.backgroundParamId(), 0);
+						params.insert(jsmGroup.groupTypeRelativeId(), 0);
 						break;
 					}
 				}
@@ -499,15 +604,15 @@ void JsmFile::searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const
 //	qDebug() << "JsmFile::searchDefaultBGStates";
 	int nbGroup = scripts.nbGroup(), nbOpcode;
 
-	for(int groupID=0 ; groupID < nbGroup ; ++groupID) {
+	for (int groupID = 0; groupID < nbGroup; ++groupID) {
 		const JsmGroup &jsmGroup = scripts.group(groupID);
 		int methodCount = (int)jsmGroup.scriptCount();
 
-		if(jsmGroup.type() == JsmGroup::Location && methodCount > 0) {
-			int pos = scripts.posScript(groupID, 0, &nbOpcode);
+		if (jsmGroup.type() == JsmGroup::Location && methodCount > 0) {
+			int pos = scripts.opcodeIDStartScript(groupID, 0, &nbOpcode);
 
-			for(int opcodeID=0 ; opcodeID < nbOpcode ; ++opcodeID) {
-				switch(scripts.key(pos + opcodeID)) {
+			for (int opcodeID = 0; opcodeID < nbOpcode; ++opcodeID) {
+				switch (scripts.key(pos + opcodeID)) {
 				case JsmOpcode::SETLINE:
 					//TODO
 					break;
@@ -518,95 +623,72 @@ void JsmFile::searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const
 
 void JsmFile::searchGroupTypes()
 {
-//	qDebug() << "JsmFile::searchGroupTypes";
-	unsigned int key;
-	int param;
-	int nbGroup=scripts.nbGroup(), nbOpcode, methodCount, pos, character,
-			model_id, line_id, door_id, bg_id;
-	bool main_type;
-	QMap<quint16, int> bgExecOrder;
+	int nbGroup = scripts.nbGroup(), character = -1, modelId = -1;
+	bool mainType = false;
 
 	_mapID = -1;
 
-	for(int groupID=0 ; groupID < nbGroup ; ++groupID) {
+	for (int groupID = 0; groupID < nbGroup; ++groupID) {
 		const JsmGroup &jsmGroup = scripts.group(groupID);
-		methodCount = (int)jsmGroup.scriptCount();
-		main_type = false;
-		character = model_id = -1;
 
-		for(int methodID=0 ; methodID < methodCount ; ++methodID) {
-			pos = scripts.posScript(groupID, methodID, &nbOpcode);
+		if (jsmGroup.type() != JsmGroup::No) {
+			continue;
+		}
 
-			for(int opcodeID=0 ; opcodeID < nbOpcode ; ++opcodeID) {
+		int methodCount = int(jsmGroup.scriptCount());
+		mainType = false;
+		character = -1;
+		modelId = -1;
+
+		for(int methodID = 0; methodID < methodCount; ++methodID) {
+			int nbOpcode = 0;
+			// First script only
+			int pos = scripts.opcodeIDStartScript(groupID, methodID, &nbOpcode);
+
+			for (int opcodeID = 0; opcodeID < nbOpcode; ++opcodeID) {
 				JsmOpcode op = scripts.opcode(pos + opcodeID);
-				key = op.key();
-				param = op.param();
+				int param = op.param();
 
-				if(!scripts.script(groupID, methodID).flag()) {
-					switch(key) {
-					case JsmOpcode::SETMODEL:
-						model_id = param;
-						break;
-					case JsmOpcode::SETPC:
-						if(opcodeID>0 && scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L) {
-							param = scripts.param(pos + opcodeID - 1);
-							// if setpc has multiple definition
-							if(character!=-1 && param!=character) {
-								character = UNKNOWN_CHARACTER;
-							}
-							else {
-								character = param;
-							}
+				switch (op.key()) {
+				case JsmOpcode::SETMODEL:
+					modelId = param;
+					break;
+				case JsmOpcode::SETPC:
+					if (opcodeID > 0 && scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L) {
+						param = scripts.param(pos + opcodeID - 1);
+						// if setpc has multiple definition
+						if (character != -1 && param != character) {
+							character = UNKNOWN_CHARACTER;
+						} else {
+							character = param;
 						}
-						break;
-					case JsmOpcode::SETDRAWPOINT:
-						character = DRAWPOINT_CHARACTER;
-						break;
-					case JsmOpcode::FADEIN:
-						main_type = true;
-						break;
-					case JsmOpcode::SETPLACE:
-						main_type = true;
-						if(scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L)
-							_mapID = scripts.param(pos + opcodeID - 1);
-						break;
 					}
-				} else {
+					break;
+				case JsmOpcode::SETDRAWPOINT:
+					character = DRAWPOINT_CHARACTER;
+					break;
+				case JsmOpcode::FADEIN:
+					mainType = true;
+					break;
+				case JsmOpcode::SETPLACE:
+					mainType = true;
+					if (scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L) {
+						_mapID = scripts.param(pos + opcodeID - 1);
+					}
 					break;
 				}
 			}
 		}
 
-		if(character != -1) {
+		if (character != -1) {
 			scripts.setGroupCharacter(groupID, character);
 		}
-		if(model_id != -1) {
+		if (modelId != -1) {
 			scripts.setGroupType(groupID, JsmGroup::Model);
-			scripts.setGroupModelId(groupID, model_id);
-		}
-		else if(main_type) {
+			scripts.setGroupModelId(groupID, modelId);
+		} else if (mainType) {
 			scripts.setGroupType(groupID, JsmGroup::Main);
 		}
-
-		bgExecOrder.insert(jsmGroup.execOrder(), groupID);
-	}
-
-	QMap<quint16, int>::const_iterator it = bgExecOrder.constBegin();
-	line_id = door_id = bg_id = 0;
-	while(it != bgExecOrder.constEnd()) {
-		if(line_id < scripts.countLines()) {
-			scripts.setGroupType(it.value(), JsmGroup::Location);
-			++line_id;
-		} else if(door_id < scripts.countDoors()) {
-			scripts.setGroupType(it.value(), JsmGroup::Door);
-			++door_id;
-		} else if(bg_id < scripts.countBackgrounds()) {
-			scripts.setGroupType(it.value(), JsmGroup::Background);
-			scripts.setGroupBackgroundParamId(it.value(), bg_id);
-			++bg_id;
-		}
-
-		++it;
 	}
 }
 
@@ -630,18 +712,18 @@ void JsmFile::setWindow(quint8 textID, int winID, const FF8Window &window)
 //	qDebug() << "JsmFile::setWindow" << window.x << window.y;
 	quint32 key;
 
-	if(window.script_pos >= scripts.data().nbOpcode()) {
+	if (window.script_pos >= scripts.data().nbOpcode()) {
 		qWarning() << "JsmFile::setWindow error 1" << window.script_pos << scripts.data().nbOpcode() << textID << winID;
 		return;
 	}
 
 	key = scripts.key(window.script_pos);
-	if(window.type != key) {
+	if (window.type != key) {
 		qWarning() << "JsmFile::setWindow error 2" << window.type << key << textID << winID;
 		return;
 	}
 
-	switch(window.type) {
+	switch (window.type) {
 	case JsmOpcode::AMESW:
 	case JsmOpcode::AMES:
 	case JsmOpcode::RAMESW:
@@ -675,14 +757,14 @@ QString JsmFile::toString(int groupID, int methodID, bool moreDecompiled,
 {
 	if (!noCache) {
 		const QString &cache = scripts.script(groupID, methodID).decompiledScript(moreDecompiled);
-		if(!cache.isEmpty() && !needUpdate && !(needUpdateMore && moreDecompiled)) {
+		if (!cache.isEmpty() && !needUpdate && !(needUpdateMore && moreDecompiled)) {
 			return cache;
 		}
 	}
 	needUpdate = false;
 	needUpdateMore = false;
 	QString ret;
-	if(moreDecompiled) {
+	if (moreDecompiled) {
 		ret = _toStringMore(groupID, methodID, field, indent);
 	} else {
 		ret = _toString(groupID, methodID, indent);
@@ -699,6 +781,10 @@ QString JsmFile::_toString(int groupID, int methodID, int indent) const
 	QList<JsmOpcode *> opcodes = scripts.opcodesp(groupID, methodID, true);
 
 	for (JsmOpcode *op: opcodes) {
+		if (ret.isEmpty() && op->key() == JsmOpcode::LBL) { // LBL is auto-generated
+			delete op;
+			continue;
+		}
 		if (indent > 0) {
 			ret.append(QString(indent, QChar('\t')));
 		}
@@ -721,41 +807,42 @@ QString JsmFile::_toStringMore(int groupID, int methodID, const Field *field, in
 	return ret.join("\n");
 }
 
-int JsmFile::opcodePositionInText(int groupID, int methodID, int opcodeID) const
+int JsmFile::opcodePositionInText(int groupID, int methodID, int opcodeID, bool more, const Field *field) const
 {
-	QList<JsmOpcode *> opcodes = scripts.opcodesp(groupID, methodID, false);
-	int line = opcodeID;
-	QList<qint32> labels = scripts.searchJumps(opcodes);
+	if (more) {
+		QSet<void *> collectPointers;
+		if (scripts.data().nbOpcode() > 0 && scripts.opcode(groupID, methodID, 0).key() == JsmOpcode::LBL) {
+			opcodeID -= 1;
+		}
+		JsmProgram program = scripts.program(groupID, methodID, collectPointers);
+		QString ret = program.toStringList(field, 0, opcodeID).join("\n");
 
-	for(int i=0 ; i <= opcodeID ; ++i) {
-		if(labels.contains(i))	++line;
-	}
+		qDeleteAll(collectPointers);
 
-	qDeleteAll(opcodes);
+		int line = 1, index = ret.indexOf("[X]");
+		if (index >= 0) {
+			line = ret.left(index).count('\n');
+		}
 
-	return line;
-}
+		return line;
+	} else {
+		QList<JsmOpcode *> opcodes = scripts.opcodesp(groupID, methodID, false);
+		int line = opcodeID;
+		QList<qint32> labels = scripts.searchJumps(opcodes);
+		if (!opcodes.isEmpty() && opcodes.first()->key() == JsmOpcode::LBL) {
+			--line;
+		}
 
-bool JsmFile::compileAll(int &errorGroupID, int &errorMethodID, int &errorLine, QString &errorStr)
-{
-	errorLine = 0;
-
-	for(errorGroupID=0 ; errorGroupID < scripts.nbGroup() ; ++errorGroupID) {
-		const JsmGroup &group = scripts.group(errorGroupID);
-		for(errorMethodID=0 ; errorMethodID < group.scriptCount() ; ++errorMethodID) {
-			const JsmScript &script = scripts.script(errorGroupID, errorMethodID);
-			const QString &cache = script.decompiledScript(false);
-			if(!cache.isEmpty()) {
-				errorLine = fromString(errorGroupID, errorMethodID,
-				                       cache, errorStr);
-				if(0 != errorLine) {
-					return false;
-				}
+		for (int i = 0; i <= opcodeID; ++i) {
+			if (labels.contains(i)) {
+				++line;
 			}
 		}
-	}
 
-	return true;
+		qDeleteAll(opcodes);
+
+		return line;
+	}
 }
 
 int JsmFile::fromString(int groupID, int methodID, const QString &text, QString &errorStr)
@@ -771,29 +858,34 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 
 	errorStr = "";
 
-	int l=1;
+	int l = 1;
 	for (const QString &line: lines) {
 		QStringList rows = line.split(spaces, Qt::SkipEmptyParts);
 		int rowsSize = rows.size();
-		if(rowsSize < 1) {
+		if (rowsSize < 1) {
 			++l;
 			continue;
 		}
 
-		if(rowsSize > 2) {
+		if (rowsSize > 2) {
 			errorStr = QObject::tr("Too many arguments");
 			return l;
 		}
 
 		const QString &first = rows.first();
 
-		if(first.startsWith("LABEL", Qt::CaseInsensitive)) {
+		// Automatic LBL
+		if (res.constData().isEmpty() && !first.startsWith("LBL")) {
+			res.append(JsmOpcode(JsmOpcode::LBL, scripts.firstMethodID(groupID) + methodID));
+		}
+
+		if (first.startsWith("LABEL", Qt::CaseInsensitive)) {
 			lbl = first.mid(5).toInt(&ok);
-			if(!ok) {
+			if (!ok) {
 				errorStr = QObject::tr("Unable to convert to integer after 'LABEL': %1").arg(first.mid(5));
 				return l;
 			}
-			if(labelsPos.contains(lbl)) {
+			if (labelsPos.contains(lbl)) {
 				errorStr = QObject::tr("'LABEL %1' already declared.").arg(lbl);
 				return l;
 			}
@@ -802,37 +894,37 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 			continue;
 		}
 
-		if((key = opcodeName.indexOf(first.toUpper())) == -1) {
+		if ((key = opcodeNames.indexOf(first.toUpper())) == -1) {
 			errorStr = QObject::tr("Unknown opcode: %1").arg(first);
 			return l;
 		}
 
-		if(rowsSize == 2) {
+		if (rowsSize == 2) {
 			const QString &second = rows.at(1);
 
-			if(key > 0x38) {
+			if (key > 0x38) {
 				errorStr = QObject::tr("This opcode can not have parameters: %1").arg(first);
 				return l;
 			}
 
-			if(key == JsmOpcode::CAL) {
-				param = opcodeNameCalc.indexOf(second.toUpper());
-				if(param == -1) {
+			if (key == JsmOpcode::CAL) {
+				param = opcodeNamesCalc.indexOf(second.toUpper());
+				if (param == -1) {
 					param = second.toInt(&ok);
-					if(!ok) {
+					if (!ok) {
 						errorStr = QObject::tr("Unknown operation: %1")
 						           .arg(second);
 						return l;
 					}
 				}
-			} else if(key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
-				if(second.startsWith("LABEL", Qt::CaseInsensitive)) {
+			} else if (key >= JsmOpcode::JMP && key <= JsmOpcode::GJMP) {
+				if (second.startsWith("LABEL", Qt::CaseInsensitive)) {
 					lbl = second.mid(5).toInt(&ok);
-					if(!ok) {
+					if (!ok) {
 						errorStr = QObject::tr("Unable to convert to integer after 'LABEL': %1").arg(second.mid(5));
 						return l;
 					}
-					if((posLbl = labelsPos.value(lbl, -1)) != -1) {
+					if ((posLbl = labelsPos.value(lbl, -1)) != -1) {
 						param = posLbl - res.nbOpcode();
 					} else {
 						param = -1;
@@ -840,12 +932,12 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 					}
 				} else {
 					param = second.toInt(&ok);
-					if(!ok) {
+					if (!ok) {
 						errorStr = QObject::tr("Unable to convert to integer: %1").arg(second);
 						return l;
 					}
 				}
-			} else if(key == JsmOpcode::PSHM_B ||
+			} else if (key == JsmOpcode::PSHM_B ||
 			          key == JsmOpcode::PSHM_W ||
 			          key == JsmOpcode::PSHM_L ||
 			          key == JsmOpcode::PSHSM_B ||
@@ -854,53 +946,53 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 			          key == JsmOpcode::POPM_B ||
 			          key == JsmOpcode::POPM_W ||
 			          key == JsmOpcode::POPM_L) {
-				if(second.startsWith("VAR", Qt::CaseInsensitive)) {
+				if (second.startsWith("VAR", Qt::CaseInsensitive)) {
 					param = second.mid(3).toInt(&ok);
-					if(!ok) {
+					if (!ok) {
 						errorStr = QObject::tr("Unable to convert to integer after 'VAR': %1")
 						           .arg(second.mid(3));
 						return l;
 					}
 				} else {
 					param = second.toInt(&ok);
-					if(!ok) {
+					if (!ok) {
 						errorStr = QObject::tr("Unable to convert to integer: %1").arg(second);
 						return l;
 					}
 				}
-			} else if(key == JsmOpcode::PSHI_L || key == JsmOpcode::POPI_L) {
-				if(second.startsWith("TEMP", Qt::CaseInsensitive)) {
+			} else if (key == JsmOpcode::PSHI_L || key == JsmOpcode::POPI_L) {
+				if (second.startsWith("TEMP", Qt::CaseInsensitive)) {
 					param = second.mid(4).toInt(&ok);
-					if(!ok) {
+					if (!ok) {
 						errorStr = QObject::tr("Unable to convert to integer after 'TEMP': %1")
 						           .arg(second.mid(4));
 						return l;
 					}
 				} else {
 					param = second.toInt(&ok);
-					if(!ok) {
+					if (!ok) {
 						errorStr = QObject::tr("Unable to convert to integer: %1").arg(second);
 						return l;
 					}
 				}
-			} else if(key == JsmOpcode::PSHAC) {
-				if(second.startsWith("MODEL", Qt::CaseInsensitive)) {
+			} else if (key == JsmOpcode::PSHAC) {
+				if (second.startsWith("MODEL", Qt::CaseInsensitive)) {
 					param = second.mid(5).toInt(&ok);
-					if(!ok) {
+					if (!ok) {
 						errorStr = QObject::tr("Unable to convert to integer after 'MODEL': %1")
 						           .arg(second.mid(5));
 						return l;
 					}
 				} else {
 					param = second.toInt(&ok);
-					if(!ok) {
+					if (!ok) {
 						errorStr = QObject::tr("Unable to convert to integer: %1").arg(second);
 						return l;
 					}
 				}
 			} else {
 				param = second.toInt(&ok);
-				if(!ok) {
+				if (!ok) {
 					errorStr = QObject::tr("Unable to convert to integer: %1").arg(second);
 					return l;
 				}
@@ -915,10 +1007,10 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 	}
 
 	QMultiMapIterator<int, int> it(gotosPos);
-	while(it.hasNext()) {
+	while (it.hasNext()) {
 		it.next();
 		lbl = it.key();
-		if((posLbl = labelsPos.value(lbl, -1)) != -1) {
+		if ((posLbl = labelsPos.value(lbl, -1)) != -1) {
 			param = posLbl - it.value();
 			JsmOpcode op = res.opcode(it.value());
 			op.setParam(param);
@@ -929,16 +1021,6 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 		}
 	}
 
-//	int position, nbOpcode;
-//	position = scripts.posScript(groupID, methodID, &nbOpcode);
-//	if(res != scripts.data().mid(position, nbOpcode)) {
-//		qDebug() << scripts.data().mid(position, nbOpcode).constData().toHex();
-//		qDebug() << res.constData().toHex();
-//		qDebug() << nbOpcode << res.nbOpcode();
-//	} else {
-//		qDebug() << "ok";
-//	}
-
 	scripts.replaceScript(groupID, methodID, res);
 
 	modified = true;
@@ -947,32 +1029,22 @@ int JsmFile::fromString(int groupID, int methodID, const QString &text, QString 
 	return 0;
 }
 
-const JsmScripts &JsmFile::getScripts() const
-{
-	return scripts;
-}
-
-JsmScripts &JsmFile::getScripts()
-{
-	return scripts;
-}
-
 bool JsmFile::search(SearchType type, quint64 value, int &groupID, int &methodID, int &opcodeID) const
 {
 	int groupListSize = scripts.nbGroup(), nbOpcode, methodCount;
 
-	if(groupID < 0)		groupID = 0;
-	if(methodID < 0)	methodID = 0;
-	if(opcodeID < 0)	opcodeID = 0;
+	if (groupID < 0)   groupID = 0;
+	if (methodID < 0)  methodID = 0;
+	if (opcodeID < 0)  opcodeID = 0;
 
-	while(groupID < groupListSize) {
+	while (groupID < groupListSize) {
 		methodCount = scripts.nbScript(groupID);
 
-		while(methodID < methodCount) {
-			const int pos = scripts.posScript(groupID, methodID, &nbOpcode);
+		while (methodID < methodCount) {
+			const int pos = scripts.opcodeIDStartScript(groupID, methodID, &nbOpcode);
 
-			while(opcodeID < nbOpcode) {
-				if(search(type, value, quint16(pos), opcodeID)) {
+			while (opcodeID < nbOpcode) {
+				if (searchInOpcode(type, value, quint16(pos), opcodeID)) {
 					return true;
 				}
 
@@ -1001,14 +1073,14 @@ bool JsmFile::searchReverse(SearchType type, quint64 value, int &groupID, int &m
 
 		while (methodID >= 0) {
 			int nbOpcode;
-			const int pos = scripts.posScript(groupID, methodID, &nbOpcode);
+			const int pos = scripts.opcodeIDStartScript(groupID, methodID, &nbOpcode);
 
 			if (opcodeID >= nbOpcode) {
 				opcodeID = nbOpcode - 1;
 			}
 
 			while (opcodeID >= 0) {
-				if (search(type, value, quint16(pos), opcodeID)) {
+				if (searchInOpcode(type, value, quint16(pos), opcodeID)) {
 					return true;
 				}
 
@@ -1028,19 +1100,19 @@ bool JsmFile::search(SearchType type, const QList<quint64> &values, int &groupID
 {
 	int groupListSize = scripts.nbGroup(), nbOpcode, methodCount;
 
-	if(groupID < 0)		groupID = 0;
-	if(methodID < 0)	methodID = 0;
-	if(opcodeID < 0)	opcodeID = 0;
+	if (groupID < 0)		groupID = 0;
+	if (methodID < 0)	methodID = 0;
+	if (opcodeID < 0)	opcodeID = 0;
 
-	while(groupID < groupListSize) {
+	while (groupID < groupListSize) {
 		methodCount = scripts.nbScript(groupID);
 
-		while(methodID < methodCount) {
-			const int pos = scripts.posScript(groupID, methodID, &nbOpcode);
+		while (methodID < methodCount) {
+			const int pos = scripts.opcodeIDStartScript(groupID, methodID, &nbOpcode);
 
-			while(opcodeID < nbOpcode) {
+			while (opcodeID < nbOpcode) {
 				for (quint64 value: values) {
-					if(search(type, value, quint16(pos), opcodeID)) {
+					if (searchInOpcode(type, value, quint16(pos), opcodeID)) {
 						return true;
 					}
 				}
@@ -1070,7 +1142,7 @@ bool JsmFile::searchReverse(SearchType type, const QList<quint64> &values, int &
 
 		while (methodID >= 0) {
 			int nbOpcode;
-			const int pos = scripts.posScript(groupID, methodID, &nbOpcode);
+			const int pos = scripts.opcodeIDStartScript(groupID, methodID, &nbOpcode);
 
 			if (opcodeID >= nbOpcode) {
 				opcodeID = nbOpcode - 1;
@@ -1078,7 +1150,7 @@ bool JsmFile::searchReverse(SearchType type, const QList<quint64> &values, int &
 
 			while (opcodeID >= 0) {
 				for (quint64 value: values) {
-					if (search(type, value, quint16(pos), opcodeID)) {
+					if (searchInOpcode(type, value, quint16(pos), opcodeID)) {
 						return true;
 					}
 				}
@@ -1095,28 +1167,28 @@ bool JsmFile::searchReverse(SearchType type, const QList<quint64> &values, int &
 	return false;
 }
 
-bool JsmFile::search(SearchType type, quint64 value, quint16 pos, int opcodeID) const
+bool JsmFile::searchInOpcode(SearchType type, quint64 value, quint16 pos, int opcodeID) const
 {
 	JsmOpcode op = scripts.opcode(pos + opcodeID);
 	quint32 key = op.key();
 	qint32 param = op.param();
 
-	switch(type) {
+	switch (type) {
 	case SearchText:
-		switch(key) {
+		switch (key) {
 		case JsmOpcode::AMESW:
 		case JsmOpcode::AMES:
 		case JsmOpcode::RAMESW:
-			return opcodeID>=3 && scripts.key(pos + opcodeID - 3) == JsmOpcode::PSHN_L
+			return opcodeID >= 3 && scripts.key(pos + opcodeID - 3) == JsmOpcode::PSHN_L
 					&& value == (quint32)scripts.param(pos + opcodeID - 3);
 		case JsmOpcode::MES:
-			return opcodeID>=1 && scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L
+			return opcodeID >= 1 && scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L
 					&& value == (quint32)scripts.param(pos + opcodeID - 1);
 		case JsmOpcode::AASK:
-			return opcodeID>=7 && scripts.key(pos + opcodeID - 7) == JsmOpcode::PSHN_L
+			return opcodeID >= 7 && scripts.key(pos + opcodeID - 7) == JsmOpcode::PSHN_L
 					&& value == (quint32)scripts.param(pos + opcodeID - 7);
 		case JsmOpcode::ASK:
-			return opcodeID>=5 && scripts.key(pos + opcodeID - 5) == JsmOpcode::PSHN_L
+			return opcodeID >= 5 && scripts.key(pos + opcodeID - 5) == JsmOpcode::PSHN_L
 					&& value == (quint32)scripts.param(pos + opcodeID - 5);
 		}
 		return false;
@@ -1128,16 +1200,18 @@ bool JsmFile::search(SearchType type, quint64 value, quint16 pos, int opcodeID) 
 		        || (!(value & 0xC0000000) && key >= 10 && key <= 18))
 		        && (value & 0x3FFFFFFF) == (quint32)param;
 	case SearchExec:
-		if(opcodeID < 1 || key < 20 || key > 22) return false;
+		if (opcodeID < 1 || key < 20 || key > 22) {
+			return false;
+		}
 
 		return ((value >> 16) & 0xFFFF) == (quint32)scripts.param(pos + opcodeID - 1) // label
 				&& (value & 0xFFFF) == (quint32)param; // group
 	case SearchMapJump:
-		switch(key) {
+		switch (key) {
 		case JsmOpcode::MAPJUMP:
 		case JsmOpcode::MAPJUMP3:
 		case JsmOpcode::MAPJUMPO:
-			return opcodeID>=1 && scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L
+			return opcodeID >= 1 && scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L
 			        && value == (quint32)scripts.param(pos + opcodeID - 1);
 		}
 		return false;
@@ -1152,12 +1226,11 @@ QList<int> JsmFile::searchAllVars() const
 	quint32 key;
 	QList<int> vars;
 
-	for(int i=0 ; i<nbOpcode ; ++i)
-	{
+	for (int i = 0; i < nbOpcode; ++i) {
 		JsmOpcode op = scripts.opcode(i);
 		key = op.key();
 
-		if(key >= 10 && key <= 18 && !vars.contains(op.opcode())) {
+		if (key >= 10 && key <= 18 && !vars.contains(op.opcode())) {
 			vars.append(op.opcode());
 		}
 	}
@@ -1167,26 +1240,24 @@ QList<int> JsmFile::searchAllVars() const
 
 QList<int> JsmFile::searchAllSpells(const QString &fieldName) const
 {
-	int nbOpcode = scripts.data().nbOpcode();
+	int nbOpcode = scripts.data().nbOpcode(), param;
 	unsigned int key;
-	int param;
 	QList<int> ret;
 	bool setDrawPoint = false;
 //	QString ret;
 
-	for(int i=0 ; i<nbOpcode ; ++i)
-	{
+	for (int i = 0; i < nbOpcode; ++i) {
 		JsmOpcode op = scripts.opcode(i);
 		key = op.key();
 		param = op.param();
 
-		if(key == JsmOpcode::SETDRAWPOINT) {
+		if (key == JsmOpcode::SETDRAWPOINT) {
 			setDrawPoint = true;
 		}
-		else if(key == JsmOpcode::DRAWPOINT && i>0) {
-			if(!setDrawPoint) {
+		else if (key == JsmOpcode::DRAWPOINT && i>0) {
+			if (!setDrawPoint) {
 				qDebug() << fieldName << "magie ?";
-			} else if(scripts.key(i-1) == JsmOpcode::PSHN_L) {
+			} else if (scripts.key(i-1) == JsmOpcode::PSHN_L) {
 				param = scripts.param(i-1);
 				/*QStringList curList = ret.value(param, QStringList());
 				curList.append(fieldName);
@@ -1202,19 +1273,17 @@ QList<int> JsmFile::searchAllSpells(const QString &fieldName) const
 
 QList<int> JsmFile::searchAllCards(const QString &fieldName) const
 {
-	int nbOpcode = scripts.data().nbOpcode();
+	int nbOpcode = scripts.data().nbOpcode(), param;
 	unsigned int key;
-	int param;
 	QList<int> ret;
 
-	for(int i=0 ; i<nbOpcode ; ++i)
-	{
+	for (int i = 0; i < nbOpcode; ++i) {
 		JsmOpcode op = scripts.opcode(i);
 		key = op.key();
 		param = op.param();
 
-		if(key == JsmOpcode::GETCARD && i > 0) {
-			if(scripts.key(i - 1) == JsmOpcode::PSHN_L) {
+		if (key == JsmOpcode::GETCARD && i > 0) {
+			if (scripts.key(i - 1) == JsmOpcode::PSHN_L) {
 				param = scripts.param(i - 1);
 				ret.append(param);
 			} else {
@@ -1228,19 +1297,17 @@ QList<int> JsmFile::searchAllCards(const QString &fieldName) const
 
 QList<int> JsmFile::searchAllCardPlayers(const QString &fieldName) const
 {
-	int nbOpcode = scripts.data().nbOpcode();
+	int nbOpcode = scripts.data().nbOpcode(), param;
 	unsigned int key;
-	int param;
 	QList<int> ret;
 
-	for(int i=0 ; i<nbOpcode ; ++i)
-	{
+	for (int i = 0; i < nbOpcode; ++i) {
 		JsmOpcode op = scripts.opcode(i);
 		key = op.key();
 		param = op.param();
 
-		if(key == JsmOpcode::CARDGAME && i > 6) {
-			if(scripts.key(i - 7) == JsmOpcode::PSHN_L) {
+		if (key == JsmOpcode::CARDGAME && i > 6) {
+			if (scripts.key(i - 7) == JsmOpcode::PSHN_L) {
 				param = scripts.param(i - 7);
 				ret.append(param);
 			} else {
@@ -1259,18 +1326,18 @@ QList<int> JsmFile::searchAllMoments() const
 	qint32 param;
 	QList<int> ret;
 
-	for(int i=0 ; i<nbOpcode ; ++i)
-	{
+	for (int i = 0; i < nbOpcode; ++i) {
 		JsmOpcode op = scripts.opcode(i);
 		key = op.key();
 		param = op.param();
 
-		if((key==JsmOpcode::POPM_B || key == JsmOpcode::POPM_W || key == JsmOpcode::POPM_L) && i>0 && param==256) {
+		if ((key == JsmOpcode::POPM_B || key == JsmOpcode::POPM_W || key == JsmOpcode::POPM_L) && i > 0 && param == 256) {
 			op = scripts.opcode(i-1);
 			param = op.param();
 
-			if(op.key()==JsmOpcode::PSHN_L && !ret.contains(param))
+			if (op.key() == JsmOpcode::PSHN_L && !ret.contains(param)) {
 				ret.append(param);
+			}
 		}
 	}
 
@@ -1284,14 +1351,13 @@ void JsmFile::searchAllOpcodeTypes(QMap<int, int> &ret/*, QMap<int, QString> &st
 	qint32 param;
 	QStack<QString> stack;
 
-	for(int i=0 ; i<nbOpcode ; ++i)
-	{
+	for (int i = 0; i < nbOpcode; ++i) {
 		JsmOpcode op = scripts.opcode(i);
 		key = op.key();
 		param = op.param();
 		int type = !op.hasParam() ? JUST_KEY : (param < 0 ? KEY_AND_SPARAM : KEY_AND_UPARAM);
 
-		switch(key) {
+		switch (key) {
 		case JsmOpcode::PSHN_L:
 			stack.push("numerical value");
 			break;
@@ -1330,12 +1396,12 @@ void JsmFile::searchAllOpcodeTypes(QMap<int, int> &ret/*, QMap<int, QString> &st
 			break;
 		}
 
-//		if(ret.contains(key)) {
-//			if(ret.value(key) != type) {
-//				if(ret.value(key) == JUST_KEY || type == JUST_KEY) {
+//		if (ret.contains(key)) {
+//			if (ret.value(key) != type) {
+//				if (ret.value(key) == JUST_KEY || type == JUST_KEY) {
 //					qWarning() << "[Type !=]" << "key" << QString::number(key,16) << "referencedType" << ret.value(key) << "currentType" << type;
 //				}
-//				else if(type == KEY_AND_SPARAM) {
+//				else if (type == KEY_AND_SPARAM) {
 //					ret.insert(key, KEY_AND_SPARAM);
 //				}
 //			}
@@ -1352,12 +1418,12 @@ void JsmFile::searchAllSavePoints(QList<Vertex> &ret)
 	quint32 key;
 	qint32 param;
 
-	for(int i=0 ; i<nbOpcode ; ++i) {
+	for (int i=0 ; i<nbOpcode ; ++i) {
 		JsmOpcode op = scripts.opcode(i);
 		key = op.key();
 		param = op.param();
 
-		switch(key) {
+		switch (key) {
 		case JsmOpcode::SETLINE:
 			// TODO
 			break;
@@ -1368,33 +1434,31 @@ void JsmFile::searchAllSavePoints(QList<Vertex> &ret)
 	}
 }*/
 
-bool JsmFile::hasSym() const
-{
-	return _hasSym;
-}
-
 void JsmFile::setDecompiledScript(int groupID, int methodID, const QString &text, bool moreDecompiled)
 {
-	if(groupID == -1 || methodID == -1)		return;
+	if (groupID == -1 || methodID == -1) {
+		return;
+	}
 
 	scripts.setDecompiledScript(groupID, methodID, text, moreDecompiled);
 }
 
-void JsmFile::setCurrentOpcodeScroll(int groupID, int methodID, int scrollValue, const QTextCursor &textCursor)
+void JsmFile::setCurrentOpcodeScroll(int groupID, int methodID, bool more, int scrollValue, const QTextCursor &textCursor)
 {
-	if(groupID == -1)		return;
+	if (groupID == -1) {
+		return;
+	}
 	groupItem = groupID;
-	if(methodID == -1)		return;
+	if (methodID == -1) {
+		return;
+	}
 	methodItem.insert(groupID, methodID);
-	if(scrollValue == -1)		return;
+	if (scrollValue == -1) {
+		return;
+	}
 	quint64 key = ((qint64)groupID << 32) | (qint64)methodID;
-	opcodeScroll.insert(key, scrollValue);
-	textCursors.insert(key, ((qint64)textCursor.position() << 32) | (qint64)textCursor.anchor());
-}
-
-int JsmFile::currentGroupItem() const
-{
-	return groupItem;
+	(more ? opcodeScrollMore : opcodeScroll).insert(key, scrollValue);
+	(more ? textCursorsMore : textCursors).insert(key, ((qint64)textCursor.position() << 32) | (qint64)textCursor.anchor());
 }
 
 int JsmFile::currentMethodItem(int groupID) const
@@ -1402,14 +1466,14 @@ int JsmFile::currentMethodItem(int groupID) const
 	return methodItem.value(groupID, -1);
 }
 
-int JsmFile::currentOpcodeScroll(int groupID, int methodID) const
+int JsmFile::currentOpcodeScroll(int groupID, int methodID, bool more) const
 {
-	return opcodeScroll.value(((qint64)groupID << 32) | (qint64)methodID, -1);
+	return (more ? opcodeScrollMore : opcodeScroll).value(((qint64)groupID << 32) | (qint64)methodID, -1);
 }
 
-int JsmFile::currentTextCursor(int groupID, int methodID, int &anchor) const
+int JsmFile::currentTextCursor(int groupID, int methodID, bool more, int &anchor) const
 {
-	quint64 val = textCursors.value(((qint64)groupID << 32) | (qint64)methodID, -1);
+	quint64 val = (more ? textCursorsMore : textCursors).value(((qint64)groupID << 32) | (qint64)methodID, -1);
 	anchor = int(val & 0xFFFFFFFF);
 	return val >> 32;
 }

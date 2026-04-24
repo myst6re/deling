@@ -42,7 +42,7 @@ public slots:
 	void setFrom(int);
 signals:
 	void foundText(int fieldID, int textID, int from, int size);
-	void foundOpcode(int, int, int, int);
+	void foundOpcode(int fieldID, int groupID, int methodID, int opcodeID);
 private slots:
 	void findNext();
 	void findPrev();

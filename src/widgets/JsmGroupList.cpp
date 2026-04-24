@@ -166,7 +166,8 @@ QList<QTreeWidgetItem *> JsmGroupList::nameList() const
 	for (int groupID = 0; groupID < nbGroup; ++groupID) {
 		const JsmGroup &grp = scripts.group(groupID);
 		QString name = grp.name();
-		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(groupID, 3) << QString() << QString("%1").arg(grp.execOrder(), 3));
+		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(groupID, 3) << QString()
+			<< (grp.type() == JsmGroup::Door || grp.type() == JsmGroup::Background ? QString("%1").arg(grp.groupTypeRelativeId(), 3) : QString()));
 		item->setData(0, Qt::UserRole, groupID);
 		switch (grp.type()) {
 		case JsmGroup::Main:
@@ -272,8 +273,6 @@ QList<QTreeWidgetItem *> JsmGroupList::nameList() const
 		items.append(item);
 	}
 
-	// qDebug() << data()->getJsmFile()->printCount();
-
 	return items;
 }
 
@@ -325,7 +324,7 @@ void JsmGroupList::updateHelpWidget()
 	QStringList texts;
 	const JsmScripts &scripts = _field->getJsmFile()->getScripts();
 
-	/* if (scripts.calcCountModels() > 16) {
+	/* if (scripts.countModels() > 16) {
 		_helpWidget->show();
 		texts.append(tr("You have more than 16 models in this field, "
 		                "the game may crash if all models are visible at the same time."));
@@ -380,7 +379,7 @@ void JsmGroupList::add()
 	int grpScriptID = selectedID() + 1;
 	JsmScripts &scripts = _field->getJsmFile()->getScripts();
 
-	//scripts.insertGroup(grpScriptID, 0, JsmData().append(JsmOpcode(JsmOpcode::RET)));
+	scripts.insertGroup(grpScriptID, 0);
 	fill();
 	scroll(grpScriptID);
 	emit changed();
@@ -408,9 +407,9 @@ void JsmGroupList::del(bool totalDel)
 
 	JsmScripts &scripts = _field->getJsmFile()->getScripts();
 	std::sort(selectedIDs.begin(), selectedIDs.end());
-	/* for (int i = selectedIDs.size() - 1; i >= 0; --i) {
+	for (int i = selectedIDs.size() - 1; i >= 0; --i) {
 		scripts.removeGroup(i);
-	} */
+	}
 
 	blockSignals(true);
 	fill();

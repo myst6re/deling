@@ -30,7 +30,7 @@ JsmHighlighter::JsmHighlighter(QTextDocument *parent) :
     QSyntaxHighlighter(parent)
 {
 	QStringList keywords;
-	keywords << "if" << "begin" << "else" << "end"
+	keywords << "if" << "begin" << "else" << "elsif" << "end"
 	         << "while" << "wait while" << "forever"
 	         << "wait forever" << "repeat" << "until" << "ret"
 	         << "goto" << "label";
@@ -101,7 +101,7 @@ void JsmHighlighter::highlightBlockOpcodes(const QString &text)
 	}
 
 	const QString &name = rows.first();
-	int opcode = JsmFile::opcodeName.indexOf(name.toUpper());
+	int opcode = JsmFile::opcodeNames.indexOf(name.toUpper());
 
 	if (opcode != -1) {
 		if (opcode == JsmOpcode::CAL) {
@@ -140,7 +140,7 @@ void JsmHighlighter::highlightBlockOpcodes(const QString &text)
 	const QString &param = rows.at(1);
 	QColor paramColor = dark ? QColor(0xC5,0x80,0xDA) : QColor(0x66,0x00,0xcc);
 
-	if (opcode == JsmOpcode::CAL && JsmFile::opcodeNameCalc.contains(param.toUpper())) {
+	if (opcode == JsmOpcode::CAL && JsmFile::opcodeNamesCalc.contains(param.toUpper())) {
 		setFormat(text.indexOf(param), param.size(), dark ? QColor(0x56,0x9C,0xD6) : QColor(0x00,0x66,0xcc));
 	} else if (opcode >= JsmOpcode::JMP && opcode <= JsmOpcode::GJMP
 	          && param.startsWith("LABEL", Qt::CaseInsensitive)) {
