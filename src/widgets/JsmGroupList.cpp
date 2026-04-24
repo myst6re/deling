@@ -159,87 +159,55 @@ QList<QTreeWidgetItem *> JsmGroupList::nameList() const
 	QTreeWidgetItem *item;
 	const JsmScripts &scripts = _field->getJsmFile()->getScripts();
 	int nbGroup = scripts.nbGroup();
-	int directorCount=1, squallCount=1, zellCount=1, irvineCount=1, quistisCount=1;
-	int rinoaCount=1, selphieCount=1, seiferCount=1, edeaCount=1, lagunaCount=1, kirosCount=1;
-	int wardCount=1, modelCount=1, drawPointCount=1, eventLineCount=1, doorCount=1, bgCount=1;
 
 	for (int groupID = 0; groupID < nbGroup; ++groupID) {
 		const JsmGroup &grp = scripts.group(groupID);
-		QString name = grp.name();
-		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(groupID, 3) << QString()
+		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(groupID, 3) << grp.name()
 			<< (grp.type() == JsmGroup::Door || grp.type() == JsmGroup::Background ? QString("%1").arg(grp.groupTypeRelativeId(), 3) : QString()));
 		item->setData(0, Qt::UserRole, groupID);
 		switch (grp.type()) {
 		case JsmGroup::Main:
-			if (name.isEmpty())	name = QString("Director%1").arg(directorCount);
-			directorCount++;
 			item->setIcon(0, QIcon(":/images/main.png"));
 			break;
 		case JsmGroup::Model:
 			switch (grp.character()) {
 			case 0:
-				if (name.isEmpty())	name = QString("Squall%1").arg(squallCount);
-				squallCount++;
 				item->setIcon(0, QIcon(":/images/icon-squall.png"));
 				break;
 			case 1:
-				if (name.isEmpty())	name = QString("Zell%1").arg(zellCount);
-				zellCount++;
 				item->setIcon(0, QIcon(":/images/icon-zell.png"));
 				break;
 			case 2:
-				if (name.isEmpty())	name = QString("Irvine%1").arg(irvineCount);
-				irvineCount++;
 				item->setIcon(0, QIcon(":/images/icon-irvine.png"));
 				break;
 			case 3:
-				if (name.isEmpty())	name = QString("Quistis%1").arg(quistisCount);
-				quistisCount++;
 				item->setIcon(0, QIcon(":/images/icon-quistis.png"));
 				break;
 			case 4:
-				if (name.isEmpty())	name = QString("Rinoa%1").arg(rinoaCount);
-				rinoaCount++;
 				item->setIcon(0, QIcon(":/images/icon-rinoa.png"));
 				break;
 			case 5:
-				if (name.isEmpty())	name = QString("Selphie%1").arg(selphieCount);
-				selphieCount++;
 				item->setIcon(0, QIcon(":/images/icon-selphie.png"));
 				break;
 			case 6:
-				if (name.isEmpty())	name = QString("Seifer%1").arg(seiferCount);
-				seiferCount++;
 				item->setIcon(0, QIcon(":/images/icon-seifer.png"));
 				break;
 			case 7:
-				if (name.isEmpty())	name = QString("Edea%1").arg(edeaCount);
-				edeaCount++;
 				item->setIcon(0, QIcon(":/images/icon-edea.png"));
 				break;
 			case 8:
-				if (name.isEmpty())	name = QString("Laguna%1").arg(lagunaCount);
-				lagunaCount++;
 				item->setIcon(0, QIcon(":/images/icon-laguna.png"));
 				break;
 			case 9:
-				if (name.isEmpty())	name = QString("Kiros%1").arg(kirosCount);
-				kirosCount++;
 				item->setIcon(0, QIcon(":/images/icon-kiros.png"));
 				break;
 			case 10:
-				if (name.isEmpty())	name = QString("Ward%1").arg(wardCount);
-				wardCount++;
 				item->setIcon(0, QIcon(":/images/icon-ward.png"));
 				break;
 			case -1:
-				if(name.isEmpty())	name = QString("Model%1").arg(modelCount);
-				modelCount++;
 				item->setIcon(0, QIcon(":/images/3d_model.png"));
 				break;
 			case DRAWPOINT_CHARACTER:
-				if (name.isEmpty())	name = QString("DrawPoint%1").arg(drawPointCount);
-				drawPointCount++;
 				item->setIcon(0, QIcon(":/images/icon-drawpoint.png"));
 				break;
 			default:
@@ -248,18 +216,12 @@ QList<QTreeWidgetItem *> JsmGroupList::nameList() const
 			}
 			break;
 		case JsmGroup::Location:
-			if (name.isEmpty())	name = QString("EventLine%1").arg(eventLineCount);
-			eventLineCount++;
 			item->setIcon(0, QIcon(":/images/location.png"));
 			break;
 		case JsmGroup::Door:
-			if (name.isEmpty())	name = QString("Door%1").arg(doorCount);
-			doorCount++;
 			item->setIcon(0, QIcon(":/images/door.png"));
 			break;
 		case JsmGroup::Background:
-			if(name.isEmpty())	name = QString("Background%1").arg(bgCount);
-			bgCount++;
 			item->setIcon(0, QIcon(":/images/background.png"));
 			break;
 		default:
@@ -268,8 +230,6 @@ QList<QTreeWidgetItem *> JsmGroupList::nameList() const
 			item->setIcon(0, QIcon(pixnull));
 			break;
 		}
-		if (name.isEmpty()) 	name = QString("Module%1").arg(groupID);
-		item->setText(1, name);
 		items.append(item);
 	}
 

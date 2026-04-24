@@ -630,47 +630,7 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 
 	for (int methodID = 0; methodID < count; ++methodID) {
 		const JsmScript &script = scripts.script(groupID, methodID);
-		name = script.name();
-		if (name.isEmpty()) {
-			if (methodID == 0) {
-				name = "init";
-			} else if (methodID == 1) {
-				name = "default";
-			} else {
-				switch (groupType) {
-				case JsmGroup::No:
-					switch (methodID) {
-					case 2:		name = "talk";		break;
-					case 3:		name = "push";		break;
-					}
-					break;
-				case JsmGroup::Location:
-					switch (methodID) {
-					case 2:		name = "talk";		break;
-					case 3:		name = "push";		break;
-					case 4:		name = "across";	break;
-					case 5:		name = "touch";		break;
-					case 6:		name = "touchoff";	break;
-					case 7:		name = "touchon";	break;
-					}
-					break;
-				case JsmGroup::Door:
-					switch (methodID) {
-					case 2:		name = "open";		break;
-					case 3:		name = "close";		break;
-					case 4:		name = "on";		break;
-					case 5:		name = "off";		break;
-					}
-					break;
-				case JsmGroup::Model:
-				case JsmGroup::Main:
-				case JsmGroup::Background:
-					break;
-				}
-				if (name.isEmpty())		name = QString("Method%1").arg(methodID);
-			}
-		}
-		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(methodID, 3) << name << QString("%1").arg(begin+methodID, 3));
+		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(methodID, 3) << script.name() << QString("%1").arg(begin + methodID, 3));
 		item->setData(0, Qt::UserRole, methodID);
 		items.append(item);
 	}

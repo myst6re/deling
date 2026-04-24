@@ -224,6 +224,7 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &symData, bool oldFor
 
 	searchWindows();
 	searchGroupTypes();
+	forceNames();
 
 	modified = false;
 
@@ -498,6 +499,171 @@ QByteArray JsmFile::saveSym()
 	}
 
 	return ret.toLatin1();
+}
+
+void JsmFile::forceNames()
+{
+	int nbGroup = scripts.nbGroup(),
+	    directorCount = 1, squallCount = 1, zellCount = 1, irvineCount = 1, quistisCount = 1,
+	    rinoaCount = 1, selphieCount = 1, seiferCount = 1, edeaCount = 1, lagunaCount = 1, kirosCount = 1,
+	    wardCount = 1, modelCount = 1, drawPointCount = 1, eventLineCount = 1, doorCount = 1, bgCount = 1;
+	QStringList groupNames;
+
+	for (int groupID = 0; groupID < nbGroup; ++groupID) {
+		const JsmGroup &grp = scripts.group(groupID);
+		QString name = grp.name();
+		JsmGroup::Type groupType = grp.type();
+
+		if (name.isEmpty()) {
+			switch (groupType) {
+			case JsmGroup::Main:
+				name = QString("Director%1").arg(directorCount);
+				++directorCount;
+				break;
+			case JsmGroup::Model:
+				switch (grp.character()) {
+				case 0:
+					name = QString("Squall%1").arg(squallCount);
+					++squallCount;
+					break;
+				case 1:
+					name = QString("Zell%1").arg(zellCount);
+					zellCount++;
+					break;
+				case 2:
+					name = QString("Irvine%1").arg(irvineCount);
+					irvineCount++;
+					break;
+				case 3:
+					name = QString("Quistis%1").arg(quistisCount);
+					quistisCount++;
+					break;
+				case 4:
+					name = QString("Rinoa%1").arg(rinoaCount);
+					rinoaCount++;
+					break;
+				case 5:
+					name = QString("Selphie%1").arg(selphieCount);
+					selphieCount++;
+					break;
+				case 6:
+					name = QString("Seifer%1").arg(seiferCount);
+					seiferCount++;
+					break;
+				case 7:
+					name = QString("Edea%1").arg(edeaCount);
+					edeaCount++;
+					break;
+				case 8:
+					name = QString("Laguna%1").arg(lagunaCount);
+					lagunaCount++;
+					break;
+				case 9:
+					name = QString("Kiros%1").arg(kirosCount);
+					kirosCount++;
+					break;
+				case 10:
+					name = QString("Ward%1").arg(wardCount);
+					wardCount++;
+					break;
+				case -1:
+					name = QString("Model%1").arg(modelCount);
+					modelCount++;
+					break;
+				case DRAWPOINT_CHARACTER:
+					name = QString("DrawPoint%1").arg(drawPointCount);
+					drawPointCount++;
+					break;
+				}
+				break;
+			case JsmGroup::Location:
+				name = QString("EventLine%1").arg(eventLineCount);
+				eventLineCount++;
+				break;
+			case JsmGroup::Door:
+				name = QString("Door%1").arg(doorCount);
+				doorCount++;
+				break;
+			case JsmGroup::Background:
+				name = QString("Background%1").arg(bgCount);
+				bgCount++;
+				break;
+			}
+
+			if (name.isEmpty()) {
+				name = QString("Module%1").arg(groupID);
+			}
+		}
+
+		// Force unique names
+		if (groupNames.contains(name)) {
+			name = QString("%1Dup%2").arg(name).arg(groupID);
+		}
+
+		scripts.setGroupName(groupID, name);
+		groupNames.append(name);
+
+		int nbScripts = scripts.nbScript(groupID);
+		QStringList methodNames;
+
+		for (int methodID = 0; methodID < nbScripts; ++methodID) {
+			const JsmScript &script = scripts.script(groupID, methodID);
+			name = script.name();
+
+			if (name.isEmpty()) {
+				if (methodID == 0) {
+					name = "init";
+				} else if (methodID == 1) {
+					name = "default";
+				} else {
+					switch (groupType) {
+					case JsmGroup::No:
+						switch (methodID) {
+						case 2: name = "talk"; break;
+						case 3: name = "push"; break;
+						}
+						break;
+					case JsmGroup::Location:
+						switch (methodID) {
+						case 2: name = "talk";     break;
+						case 3: name = "push";     break;
+						case 4: name = "across";   break;
+						case 5: name = "touch";    break;
+						case 6: name = "touchoff"; break;
+						case 7: name = "touchon";  break;
+						}
+						break;
+					case JsmGroup::Door:
+						switch (methodID) {
+						case 2: name = "open";  break;
+						case 3: name = "close"; break;
+						case 4: name = "on";    break;
+						case 5: name = "off";   break;
+						}
+						break;
+					case JsmGroup::Model:
+					case JsmGroup::Main:
+					case JsmGroup::Background:
+						break;
+					}
+					if (name.isEmpty()) {
+						name = QString("Method%1").arg(methodID);
+					}
+				}
+			}
+
+			if (methodID > 0) {
+				// Force unique names
+				if (methodNames.contains(name)) {
+					name = QString("%1Dup%2").arg(name).arg(methodID);
+				}
+
+				methodNames.append(name);
+			}
+
+			scripts.setScriptName(groupID, methodID, name);
+		}
+	}
 }
 
 void JsmFile::searchWindows()
