@@ -78,7 +78,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 		setMapList(QStringList());
 	}
 
-	int currentMap=0;
+	int currentMap = 0;
 	// Ajout des écrans non-listés
 	QStringList toc = archive->toc();
 	for (const QString &entry: toc) {
@@ -91,7 +91,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 		}
 	}
 
-	quint32 freq = fsList.size()>100 ? fsList.size()/100 : 1;
+	quint32 freq = fsList.size() > 100 ? fsList.size() / 100 : 1;
 
 	progress->setObserverMaximum(fsList.size());
 
@@ -105,7 +105,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 			return 2;
 		}
 
-		if (currentMap%freq == 0) {
+		if (currentMap % freq == 0) {
 			progress->setObserverValue(currentMap);
 		}
 		currentMap++;
@@ -115,8 +115,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 		if ((index = map.lastIndexOf('\\')) != -1)
 			map = map.mid(index+1);
 
-		if (!map.isEmpty())
-		{
+		if (!map.isEmpty()) {
 			FieldPC *field = new FieldPC(map, entry, archive, Config::value("gameLang", "en").toString());
 			if (field->isOpen() && field->hasFiles()) {
 				if (field->hasJsmFile())
@@ -125,7 +124,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 					desc = QString();
 
 				index = mapList().indexOf(map);
-				QString mapId = index==-1 ? "~" : QString("%1").arg(index, 3, 10, QChar('0'));
+				QString mapId = index == -1 ? "~" : QString("%1").arg(index, 3, 10, QChar('0'));
 
 				fields.append(field);
 				fieldsSortByName.insert(map, fieldID);
@@ -133,7 +132,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 				fieldsSortByMapId.insert(mapId, fieldID);
 				++fieldID;
 			} else {
-				qWarning() << "field pas ouvert" << map;
+				qWarning() << "field not opened" << map;
 				delete field;
 			}
 //			break;

@@ -283,6 +283,18 @@ void JsmScripts::mergeAndConditions(JsmControl *control, int pos, int posEnd,
 	}
 }
 
+void JsmScripts::addLabelIfExists(JsmProgram &ret, int pos, const QList<int> &labels,
+                                  QSet<void *> &collectPointers)
+{
+	int lbl = labels.indexOf(pos);
+	if (lbl != -1) {
+		// Add label lbl
+		JsmOpcode *opLabel = new JsmOpcodeLabel(lbl);
+		ret.append(JsmInstruction(opLabel, -1));
+		collectPointers.insert(opLabel);
+	}
+}
+
 JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBegin,
                                QList<JsmOpcode *>::const_iterator it,
                                const QList<JsmOpcode *>::const_iterator &end,
@@ -296,13 +308,7 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 	while (it < end) {
 		JsmOpcode *op = *it;
 		int pos = it - constBegin;
-		int lbl = labels.indexOf(pos);
-		if (lbl != -1) {
-			// Add label lbl
-			JsmOpcode *opLabel = new JsmOpcodeLabel(lbl);
-			ret.append(JsmInstruction(opLabel, -1));
-			collectPointers.insert(opLabel);
-		}
+		addLabelIfExists(ret, pos, labels, collectPointers);
 
 		++it;
 
@@ -353,6 +359,8 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 														1, labels,
 														collectPointers,
 														usedLabels));
+								// Check label for the skipped JMP
+								addLabelIfExists(toAppend->block(), ifElseEnd - 1 - constBegin, labels, collectPointers);
 
 								ifElseEnd += lastOpOfBlock->param() - 1;
 							} else if (lastOpOfBlock->param() < 0
@@ -367,6 +375,8 @@ JsmProgram JsmScripts::program(const QList<JsmOpcode *>::const_iterator &constBe
 														ifElseEnd - 1, labels,
 														collectPointers,
 														usedLabels));
+								// Check label for the skipped JMP
+								addLabelIfExists(toAppend->block(), ifElseEnd - 1 - constBegin, labels, collectPointers);
 							}
 						}
 						if (!toAppend) {

@@ -16,7 +16,6 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "JsmExpression.h"
-#include "JsmOpcode.h"
 #include "Field.h"
 #include "Config.h"
 #include "Data.h"

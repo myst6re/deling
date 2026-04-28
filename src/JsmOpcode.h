@@ -456,6 +456,26 @@ private:
 class JsmOpcodeCal : public JsmOpcode
 {
 public:
+	enum Operation {
+		ADD,
+		SUB,
+		MUL,
+		DIV,
+		MOD,
+		MIN,
+		EQ,
+		GT,
+		GE,
+		LS,
+		LE,
+		NT,
+		AND,
+		OR,
+		EOR,
+		NOT,
+		RSH,
+		LSH
+	};
 	JsmOpcodeCal(const JsmOpcode &other);
 	virtual bool hasParam() const;
 	virtual int popCount() const;

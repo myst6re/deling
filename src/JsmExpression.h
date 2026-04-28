@@ -19,6 +19,8 @@
 
 #include <QtCore>
 
+#include "JsmOpcode.h"
+
 class JsmOpcode;
 class JsmControl;
 class JsmExpression;
@@ -254,8 +256,8 @@ class JsmExpressionUnary : public JsmExpression
 {
 public:
 	enum Operation {
-		Min = 5,
-		Not = 15,
+		Min = JsmOpcodeCal::MIN,
+		Not = JsmOpcodeCal::NOT,
 		LogNot = 0x1000002
 	};
 	JsmExpressionUnary(Operation op, JsmExpression *first) :
@@ -283,24 +285,24 @@ class JsmExpressionBinary : public JsmExpression
 {
 public:
 	enum Operation {
-		Add = 0,
-		Sub = 1,
-		Mul = 2,
-		Div = 3,
-		Mod = 4,
+		Add = JsmOpcodeCal::ADD,
+		Sub = JsmOpcodeCal::SUB,
+		Mul = JsmOpcodeCal::MUL,
+		Div = JsmOpcodeCal::DIV,
+		Mod = JsmOpcodeCal::MOD,
 		// Min
-		Eq = 6,
-		Gt = 7,
-		Ge = 8,
-		Ls = 9,
-		Le = 10,
-		Nt = 11,
-		And = 12,
-		Or = 13,
-		Eor = 14,
+		Eq = JsmOpcodeCal::EQ,
+		Gt = JsmOpcodeCal::GT,
+		Ge = JsmOpcodeCal::GE,
+		Ls = JsmOpcodeCal::LS,
+		Le = JsmOpcodeCal::LE,
+		Nt = JsmOpcodeCal::NT,
+		And = JsmOpcodeCal::AND,
+		Or = JsmOpcodeCal::OR,
+		Eor = JsmOpcodeCal::EOR,
 		// Not
-		Rsh = 16,
-		Lsh = 17,
+		Rsh = JsmOpcodeCal::RSH,
+		Lsh = JsmOpcodeCal::LSH,
 		LogAnd = 0x1000000,
 		LogOr = 0x1000001
 		// LogNot

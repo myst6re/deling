@@ -191,6 +191,8 @@ private:
 	static void mergeAndConditions(JsmControl *control, int pos, int posEnd,
 	                               QSet<void *> &collectPointers,
 	                               QSet<int> &usedLabels);
+	static void addLabelIfExists(JsmProgram &ret, int pos, const QList<int> &labels,
+                                 QSet<void *> &collectPointers);
 	static JsmProgram program(const QList<JsmOpcode *>::const_iterator &constBegin, 
 	                          QList<JsmOpcode *>::const_iterator it,
 	                          const QList<JsmOpcode *>::const_iterator &end,
