@@ -111,6 +111,19 @@ jobs:
         cp arm64-osx.cmake universal-osx.cmake
         sed -i '' 's|set(VCPKG_OSX_ARCHITECTURES arm64)|set(VCPKG_OSX_ARCHITECTURES "arm64;x86_64")|' universal-osx.cmake
 
+    - name: Install Mono (Linux)
+      shell: bash
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt install mono-runtime
+        sudo apt install mono-complete
+
+    - name: Install Mono (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        brew update
+        brew install mono
+
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
