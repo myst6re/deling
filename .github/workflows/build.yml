@@ -7,9 +7,6 @@ on:
     branches: [ master ]
   create: null
 
-env:
-  debianRequirements: "build-essential git zlib1g-dev cmake qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools qt6-declarative-dev qt6-base-dev libqt6svg6-dev qt6-base-dev-tools qt6-translations-l10n libqt6opengl6-dev libgl1-mesa-dev wget curl devscripts"
-
 jobs:
   main_build:
     name: ${{ matrix.package_suffix }} ${{ matrix.interface }}
@@ -115,8 +112,7 @@ jobs:
       shell: bash
       if: runner.os == 'Linux'
       run: |
-        sudo apt install mono-runtime
-        sudo apt install mono-complete
+        sudo apt install mono-runtime mono-complete
 
     - name: Install Mono (macOS)
       if: runner.os == 'macOS'
@@ -233,7 +229,7 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt-get update -y
-        sudo apt-get install -qqq ${{env.debianRequirements}}
+        sudo apt-get install -qqq build-essential git zlib1g-dev cmake qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools qt6-declarative-dev qt6-base-dev libqt6svg6-dev qt6-base-dev-tools qt6-translations-l10n libqt6opengl6-dev libgl1-mesa-dev wget curl devscripts mono-runtime mono-complete
 
     - name: Build
       run: |
