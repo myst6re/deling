@@ -32,7 +32,7 @@ jobs:
           - Release
         include:
         - qt_tools: tools_ninja
-          qt_modules:
+          qt_modules: qtmultimedia
           cmake_cli_arg: 'OFF'
         - os: ubuntu-latest
           package_extension: 'tar.xz'
