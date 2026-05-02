@@ -3454,7 +3454,11 @@ Error message:
     </message>
     <message>
         <source>ID:</source>
-        <translation>ИД:</translation>
+        <translation type="vanished">ИД:</translation>
+    </message>
+    <message>
+        <source>Global ID:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export</source>

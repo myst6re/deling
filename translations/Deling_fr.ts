@@ -3459,7 +3459,11 @@ poursuite de la recherche dans le dernier fichier.</translation>
     </message>
     <message>
         <source>ID:</source>
-        <translation>Identifiant :</translation>
+        <translation type="vanished">Identifiant :</translation>
+    </message>
+    <message>
+        <source>Global ID:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export</source>

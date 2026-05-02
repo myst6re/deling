@@ -74,7 +74,7 @@ add_compile_definitions(
     DELING_VERSION_TWEAK=0
 )
 
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets OpenGLWidgets OpenGL LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets OpenGLWidgets OpenGL LinguistTools Multimedia REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(lz4 CONFIG REQUIRED)
 
@@ -183,6 +183,12 @@ set(PROJECT_SOURCES
     "src/FsPreviewWidget.h"
     "src/FsWidget.cpp"
     "src/FsWidget.h"
+    "src/game/sound/AudioFmt.cpp"
+    "src/game/sound/AudioFmt.h"
+    "src/game/sound/Sfx.cpp"
+    "src/game/sound/Sfx.h"
+    "src/game/sound/Sound.cpp"
+    "src/game/sound/Sound.h"
     "src/game/worldmap/Map.cpp"
     "src/game/worldmap/Map.h"
     "src/game/worldmap/MapBlock.cpp"
@@ -295,6 +301,8 @@ set(PROJECT_SOURCES
     "src/widgets/MsdWidget.h"
     "src/widgets/PageWidget.cpp"
     "src/widgets/PageWidget.h"
+    "src/widgets/SoundPlayer.cpp"
+    "src/widgets/SoundPlayer.h"
     "src/widgets/SoundWidget.cpp"
     "src/widgets/SoundWidget.h"
     "src/widgets/TdwDisplay.cpp"
@@ -427,6 +435,12 @@ set(PROJECT_CLI_SOURCES
     "src/files/TimFile.h"
     "src/FsArchive.cpp"
     "src/FsArchive.h"
+    "src/game/sound/AudioFmt.cpp"
+    "src/game/sound/AudioFmt.h"
+    "src/game/sound/Sfx.cpp"
+    "src/game/sound/Sfx.h"
+    "src/game/sound/Sound.cpp"
+    "src/game/sound/Sound.h"
     "src/game/worldmap/Map.cpp"
     "src/game/worldmap/Map.h"
     "src/game/worldmap/MapBlock.cpp"
@@ -497,6 +511,7 @@ if(GUI)
 		Qt::OpenGLWidgets
 		ZLIB::ZLIB
 		lz4::lz4
+		Qt6::Multimedia
 	)
 
 	if(${QT_VERSION_MAJOR} EQUAL 6)

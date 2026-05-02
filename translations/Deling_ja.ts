@@ -3620,7 +3620,11 @@ Error message:
     </message>
     <message>
         <source>ID:</source>
-        <translation type="unfinished">ID:</translation>
+        <translation type="obsolete">ID:</translation>
+    </message>
+    <message>
+        <source>Global ID:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export</source>

@@ -25,7 +25,6 @@ JsmFile::JsmFile() :
 	File(), _hasSym(false), needUpdate(true), needUpdateMore(true), _offsetScriptPositionsSectionPadding(0),
     groupItem(0), _oldFormat(false)
 {
-	qDebug() << "JsmFile::JsmFile";
 	if (opcodeNamesCalc.isEmpty()) {
 		for (int i = 0; i < 18; ++i) {
 			opcodeNamesCalc.append(JsmOpcodeCal::cal_table[i]);
@@ -86,7 +85,6 @@ JsmGroup JsmFile::createGroup(quint16 label, quint8 count, const JsmHeader &jsmH
 
 bool JsmFile::open(const QByteArray &jsm, const QByteArray &symData, bool oldFormat)
 {
-	qDebug() << "JsmFile::open";
 	const char *jsmData = jsm.constData();
 	int jsmDataSize = jsm.size(), oldPos = -1;
 	quint16 group, label, pos;

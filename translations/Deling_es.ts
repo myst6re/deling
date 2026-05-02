@@ -3433,7 +3433,11 @@ Error message:
     </message>
     <message>
         <source>ID:</source>
-        <translation>ID:</translation>
+        <translation type="vanished">ID:</translation>
+    </message>
+    <message>
+        <source>Global ID:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export</source>
