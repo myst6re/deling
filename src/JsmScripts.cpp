@@ -585,7 +585,8 @@ JsmProgram JsmScripts::program(int groupID, int methodID,
 	QSet<int> usedLabels; // Filled by program()
 	JsmProgram p = program(opcodes.constBegin(), begin, opcodes.constEnd(),
 	                       labels, collectPointers, usedLabels);
-	return program2ndPass(p, collectPointers, usedLabels);
+	// Doing twice because "if !" can be created in the first 2nd pass and "and" conditions on the second 2nd pass 
+	return program2ndPass(program2ndPass(p, collectPointers, usedLabels), collectPointers, usedLabels);
 }
 
 unsigned int JsmScripts::key(int groupID, int methodID, int opcodeID) const

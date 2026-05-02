@@ -72,7 +72,7 @@ bool ScriptExporter::toDir(const QDir &dir, ArchiveObserver *observer)
 					}
 
 					script.append(QString("%1() begin\n").arg(scriptName));
-					script.append(jsm->toString(groupID, methodID, true, f, 1, true));
+					script.append(jsm->toString(groupID, methodID, true, 1, true));
 					script.append("\nend\n\n");
 				}
 

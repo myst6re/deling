@@ -43,8 +43,6 @@ struct JsmHeader {
 	quint16 offsetScriptDataSection;
 };
 
-class Field;
-
 class JsmFile : public File
 {
 public:
@@ -71,13 +69,14 @@ public:
 	bool openSym(const QByteArray &sym_data);
 	bool toFileSym(const QString &path);
 	QByteArray saveSym();
-	inline QString filterText() const {
+	inline QString filterText() const override {
 		return QObject::tr("Field Script PC file (*.jsm)");
 	}
 
 	QString toString(int groupID, int methodID, bool moreDecompiled,
-	                 const Field *field, int indent = 0, bool noCache = false);
-	int opcodePositionInText(int groupID, int methodID, int opcodeID, bool more, const Field *field) const;
+	                 int indent = 0, bool noCache = false);
+	QString toString(bool moreDecompiled, bool noCache = false);
+	int opcodePositionInText(int groupID, int methodID, int opcodeID, bool more) const;
 	int fromString(int groupID, int methodID, const QString &text, QString &errorStr);
 
 	inline const JsmScripts &getScripts() const {
@@ -129,7 +128,7 @@ private:
 	static JsmGroup createGroup(quint16 label, quint8 count, const JsmHeader &jsmHeader, int headerID);
 	bool searchInOpcode(SearchType type, quint64 value, quint16 pos, int opcodeID) const;
 	QString _toString(int position, int nbOpcode, int indent = 0) const;
-	QString _toStringMore(int position, int nbOpcode, const Field *field, int indent = 0) const;
+	QString _toStringMore(int position, int nbOpcode, int indent = 0) const;
 
 	void forceNames();
 	void searchWindows();

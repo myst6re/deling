@@ -44,7 +44,7 @@ struct Trigger {
 struct InfStruct {
 	char name[9];
 	quint8 control;
-	quint8 unknown[6];
+	quint8 unknown[6]; // unknown[3] == 1 => invert chara one texture loading positions in vram ; unknown[4] == 1 => load msk
 	quint16 pvp;
 	qint16 cameraFocusHeight;
 	Range cameraRange[8];
@@ -57,9 +57,9 @@ class InfFile : public File
 {
 public:
 	InfFile();
-	bool open(const QByteArray &inf);
-	bool save(QByteArray &inf) const;
-	inline QString filterText() const {
+	bool open(const QByteArray &inf) override;
+	bool save(QByteArray &inf) const override;
+	inline QString filterText() const override {
 		return QObject::tr("Field gate and doors PC File (*.inf)");
 	}
 	QString getMapName() const;

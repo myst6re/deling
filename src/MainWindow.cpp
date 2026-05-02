@@ -208,12 +208,22 @@ MainWindow::MainWindow()
 	connect(pageWidgets.at(TextPage), SIGNAL(textIdChanged(int)), searchDialog, SLOT(setTextId(int)));
 	connect(pageWidgets.at(TextPage), SIGNAL(fromChanged(int)), searchDialog, SLOT(setFrom(int)));
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillPage()));
+	connect(list1->header(), SIGNAL(sectionClicked(int)), SLOT(disableList1DescSort(int)));
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(setCurrentPage(int)));
 	for (PageWidget *pageWidget: pageWidgets) {
 		connect(pageWidget, SIGNAL(modified()), SLOT(setModified()));
 	}
 	connect(bgPreview, SIGNAL(triggered()), SLOT(bgPage()));
 	connect(fieldThread, SIGNAL(background(QImage)), SLOT(fillBackground(QImage)));
+}
+
+void MainWindow::disableList1DescSort(int logicalIndex)
+{
+	if (logicalIndex != 1) {
+		return;
+	}
+
+	list1->header()->setSortIndicator(0, list1->header()->sortIndicatorOrder());
 }
 
 void MainWindow::fillRecentMenu()
@@ -313,16 +323,15 @@ bool MainWindow::openArchive(const QString &path)
 	if (error == 0) {
 		QList<QTreeWidgetItem *> items;
 
-		int fieldID=0;
+		int fieldID = 0;
 		for (Field *field: fieldArchive->getFields()) {
 			QString desc;
-			if (field->hasJsmFile())
+			if (field->isPs() && field->hasJsmFile()) {
 				desc = Data::location(field->getJsmFile()->mapID());
-			else
-				desc = QString();
+			}
 
 			int index = fieldArchive->mapList().indexOf(field->name());
-			QString mapId = index==-1 ? "~" : QString("%1").arg(index, 3, 10, QChar('0'));
+			QString mapId = index==-1 ? "9999" : QString("%1").arg(index, 4, 10, QChar('0'));
 
 			QTreeWidgetItem *item = new QTreeWidgetItem(QStringList() << field->name() << desc << mapId);
 //			maplistcpy.removeOne(field->name());
@@ -330,19 +339,21 @@ bool MainWindow::openArchive(const QString &path)
 			if (!field->hasFiles())
 				item->setFlags(Qt::NoItemFlags);
 			item->setData(0, Qt::UserRole, fieldID++);
-			item->setForeground(1, QColor(0x5b,0x6b,0xa7));
+			item->setForeground(1, QColor(0x5b, 0x6b, 0xa7));
 
 			items.append(item);
 		}
 
 		if (!items.isEmpty()) {
 			list1->setEnabled(true);
+			list1->setSortingEnabled(false);
 			lineSearch->setEnabled(true);
 			bgPreview->setEnabled(true);
 			list1->addTopLevelItems(items);
 			list1->resizeColumnToContents(0);
 			list1->resizeColumnToContents(1);
 			list1->resizeColumnToContents(2);
+			list1->setSortingEnabled(true);
 	
 			actionExport->setEnabled(true);
 			menuExportAll->setEnabled(true);
@@ -553,7 +564,7 @@ void MainWindow::fillPage()
 		currentField = this->field;
 
 		if (this->field->isPc()) {
-			((FieldPC *)this->field)->open2();
+			((FieldPC *)this->field)->openFull();
 		}
 	} else {
 		QTreeWidgetItem *item = list1->currentItem();
@@ -567,7 +578,7 @@ void MainWindow::fillPage()
 
 		emit fieldIdChanged(fieldID);
 
-		fieldArchive->openBG(currentField);
+		fieldArchive->openFull(currentField);
 		/*if (fieldThread->isRunning()) {
 			qDebug() << "exit thread";
 			fieldThread->exit(0);
@@ -576,16 +587,23 @@ void MainWindow::fillPage()
 		fieldThread->setData(fieldArchive, currentField);
 		qDebug() << "start thread";
 		fieldThread->start();*/
+
+		if (currentField->hasJsmFile() && currentField->getJsmFile()->isOpen()) {
+			QString desc = Data::location(currentField->getJsmFile()->mapID());
+			item->setText(1, desc);
+		}
 	}
 
 	for (PageWidget *pageWidget: pageWidgets)
 		pageWidget->setData(currentField);
 
-	if (currentField->hasBackgroundFile())
+	if (currentField->hasBackgroundFile() && currentField->getBackgroundFile()->isOpen()) {
 		bgPreview->fill(QPixmap::fromImage(currentField->getBackgroundFile()->background()));
-	else
+		bgPreview->setEnabled(true);
+	} else {
 		bgPreview->fill(QPixmap());
-	bgPreview->setEnabled(currentField->hasBackgroundFile());
+		bgPreview->setEnabled(false);
+	}
 
 //	qDebug() << "BG" << t.elapsed();
 

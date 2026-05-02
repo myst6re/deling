@@ -18,6 +18,7 @@
 #pragma once
 
 #include "widgets/PageWidget.h"
+#include "widgets/SoundPlayer.h"
 #include "Listwidget.h"
 
 class SoundWidget : public PageWidget
@@ -31,6 +32,7 @@ public:
 	inline QString tabName() const { return tr("Sounds"); }
 private slots:
 	void setCurrentSound(int id);
+	void playCurrentSound();
 	void addSound();
 	void removeSound();
 	void editSfxValue(double v);
@@ -42,6 +44,7 @@ private:
 
 	QToolBar *toolBar;
 	QListWidget *list1;
+	SoundPlayer *_player;
 	// Sfx
 	QWidget *sfxGroup;
 	QDoubleSpinBox *sfxValue;

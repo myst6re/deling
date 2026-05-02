@@ -258,7 +258,6 @@ bool JsmPseudoCompiler::updateGotoJumps(JsmData &result, QString &errorStr, int 
 		qsizetype gotoPos = itGotos.key();
 		const QString &label = itGotos.value();
 		qsizetype labelPos = labels.value(label, -1);
-		qDebug() << "updateGotoJumps" << gotoPos << label << labelPos;
 
 		if (labelPos == -1) {
 			errorStr = QObject::tr("Cannot find label %1").arg(label);
@@ -267,7 +266,6 @@ bool JsmPseudoCompiler::updateGotoJumps(JsmData &result, QString &errorStr, int 
 		}
 
 		JsmOpcode jmp = result.opcode(gotoPos);
-		qDebug() << "updateGotoJumps" << jmp.toString();
 		jmp.setParam(labelPos - gotoPos);
 		result.setOpcode(gotoPos, JsmOpcode(JsmOpcode::JMP, labelPos - gotoPos));
 	}
@@ -496,16 +494,16 @@ bool JsmPseudoCompiler::parseAssignment(const QString &varName, JsmData &result,
 	// Compound assignment: var += expr  =>  push var, push expr, CAL op, pop var
 	int calOp = -1;
 	switch (op.type) {
-	case Token::OpAddAssign: calOp = 0; break; // ADD
-	case Token::OpSubAssign: calOp = 1; break; // SUB
-	case Token::OpMulAssign: calOp = 2; break; // MUL
-	case Token::OpDivAssign: calOp = 3; break; // DIV
-	case Token::OpModAssign: calOp = 4; break; // MOD
-	case Token::OpAndAssign: calOp = 12; break; // AND
-	case Token::OpOrAssign:  calOp = 13; break; // OR
-	case Token::OpEorAssign: calOp = 14; break; // EOR
-	case Token::OpRshAssign: calOp = 16; break; // RSH
-	case Token::OpLshAssign: calOp = 17; break; // LSH
+	case Token::OpAddAssign: calOp = JsmOpcodeCal::ADD; break;
+	case Token::OpSubAssign: calOp = JsmOpcodeCal::SUB; break;
+	case Token::OpMulAssign: calOp = JsmOpcodeCal::MUL; break;
+	case Token::OpDivAssign: calOp = JsmOpcodeCal::DIV; break;
+	case Token::OpModAssign: calOp = JsmOpcodeCal::MOD; break;
+	case Token::OpAndAssign: calOp = JsmOpcodeCal::AND; break;
+	case Token::OpOrAssign:  calOp = JsmOpcodeCal::OR;  break;
+	case Token::OpEorAssign: calOp = JsmOpcodeCal::EOR; break;
+	case Token::OpRshAssign: calOp = JsmOpcodeCal::RSH; break;
+	case Token::OpLshAssign: calOp = JsmOpcodeCal::LSH; break;
 	default:
 		errorStr = QObject::tr("Unknown assignment operator");
 		return false;
@@ -658,14 +656,40 @@ bool JsmPseudoCompiler::parseMethodCall(const QString &groupName, const QString 
 // Control flow: if/else/end, while/end, wait while, forever, repeat/until
 // ============================================================
 
+bool JsmPseudoCompiler::updateCondDataJumps(JsmData &condition, int endOfBlock, QString &errorStr)
+{
+	Q_UNUSED(errorStr)
+
+	int nbOpcodes = condition.nbOpcode();
+	//qDebug() << "JsmPseudoCompiler::updateCondDataJumps" << endOfBlock << nbOpcodes;
+
+	for (int opcodeID = 0; opcodeID < nbOpcodes; ++opcodeID) {
+		JsmOpcode op = condition.opcode(opcodeID);
+
+		if ((op.key() == JsmOpcode::JPF || op.key() == JsmOpcode::JMP) && op.param() == 0xFFFFE) {
+			//qDebug() << "JsmPseudoCompiler::updateCondDataJumps" << endOfBlock << opcodeID << nbOpcodes;
+			op.setParam(endOfBlock + (nbOpcodes - opcodeID));
+			condition.setOpcode(opcodeID, op);
+		} else if (op.key() == JsmOpcode::JMP && op.param() == 0xFFFFE) {
+			//qDebug() << "JsmPseudoCompiler::updateCondDataJumps" << endOfBlock << opcodeID << nbOpcodes;
+			op.setParam(endOfBlock + (nbOpcodes - opcodeID));
+			condition.setOpcode(opcodeID, op);
+		}
+	}
+
+	return true;
+}
+
 bool JsmPseudoCompiler::parseIf(const JsmScripts &scripts, JsmData &result, QString &errorStr,
                                 QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos, qsizetype opcodeID)
 {
+	JsmData ifData;
+
 	advance(); // consume 'if'
 
 	// Parse condition
 	JsmData condData;
-	if (!parseExpression(condData, errorStr)) return false;
+	if (!parseCondition(condData, errorStr)) return false;
 
 	// Expect 'begin'
 	skipNewlines();
@@ -675,26 +699,26 @@ bool JsmPseudoCompiler::parseIf(const JsmScripts &scripts, JsmData &result, QStr
 	}
 	advance();
 
-	result += condData;
+	opcodeID += result.nbOpcode() + condData.nbOpcode();
 
 	// Parse if-block
 	JsmData ifBlock;
 	int dummy;
-	if (!parseStatements(scripts, ifBlock, errorStr, dummy, opcodeID + result.nbOpcode() + 1, {"end", "else", "elsif"}, labels, gotos)) return false;
+	if (!parseStatements(scripts, ifBlock, errorStr, dummy, opcodeID + ifData.nbOpcode() + 1, {"end", "else", "elsif"}, labels, gotos)) return false;
 
 	skipNewlines();
 	QString kw = peek().text.toLower();
+	int endOfIfBlockNbOpcode = 0;
 
 	if (kw == "elsif") {
-		// Emit: condition, JPF over if-block+JMP, if-block, JMP over else-block, else-block
-		result.append(JsmOpcode(JsmOpcode::JPF, ifBlock.nbOpcode() + 2)); // +1 for JPF and +1 for JMP
-		result += ifBlock;
+		endOfIfBlockNbOpcode = ifBlock.nbOpcode() + 2; // +1 for JPF and +1 for JMP
+		ifData += ifBlock;
 
 		JsmData elsifBlock;
-		if (!parseIf(scripts, elsifBlock, errorStr, labels, gotos, opcodeID + result.nbOpcode() + 1)) return false;
+		if (!parseIf(scripts, elsifBlock, errorStr, labels, gotos, opcodeID + ifData.nbOpcode() + 1)) return false;
 
-		result.append(JsmOpcode(JsmOpcode::JMP, elsifBlock.nbOpcode() + 1));
-		result += elsifBlock;
+		ifData.append(JsmOpcode(JsmOpcode::JMP, elsifBlock.nbOpcode() + 1));
+		ifData += elsifBlock;
 	} else if (kw == "else") {
 		advance();
 		skipNewlines();
@@ -703,13 +727,12 @@ bool JsmPseudoCompiler::parseIf(const JsmScripts &scripts, JsmData &result, QStr
 		// Check for "else if"
 		if (nextKw == "begin") {
 			advance();
-
-			result.append(JsmOpcode(JsmOpcode::JPF, ifBlock.nbOpcode() + 2)); // +1 for JPF and +1 for JMP
-			result += ifBlock;
+			endOfIfBlockNbOpcode = ifBlock.nbOpcode() + 2; // +1 for JPF and +1 for JMP
+			ifData += ifBlock;
 
 			// Parse else-block
 			JsmData elseBlock;
-			if (!parseStatements(scripts, elseBlock, errorStr, dummy, opcodeID + result.nbOpcode() + 1, {"end"}, labels, gotos)) return false;
+			if (!parseStatements(scripts, elseBlock, errorStr, dummy, opcodeID + ifData.nbOpcode() + 1, {"end"}, labels, gotos)) return false;
 
 			skipNewlines();
 			if (peek().text.toLower() != "end") {
@@ -718,18 +741,26 @@ bool JsmPseudoCompiler::parseIf(const JsmScripts &scripts, JsmData &result, QStr
 			}
 			advance();
 
-			result.append(JsmOpcode(JsmOpcode::JMP, elseBlock.nbOpcode() + 1));
-			result += elseBlock;
+			ifData.append(JsmOpcode(JsmOpcode::JMP, elseBlock.nbOpcode() + 1));
+			ifData += elseBlock;
 		}
 	} else if (kw == "end") {
+		endOfIfBlockNbOpcode = ifBlock.nbOpcode() + 1;
 		advance();
 		// Simple if without else
-		result.append(JsmOpcode(JsmOpcode::JPF, ifBlock.nbOpcode() + 1));
-		result += ifBlock;
+		ifData += ifBlock;
 	} else {
 		errorStr = QObject::tr("Expected 'else' or 'end' after if block, got '%1'").arg(peek().text);
 		return false;
 	}
+
+	if (!updateCondDataJumps(condData, endOfIfBlockNbOpcode, errorStr)) {
+		return false;
+	}
+
+	result += condData;
+	result.append(JsmOpcode(JsmOpcode::JPF, endOfIfBlockNbOpcode));
+	result += ifData;
 
 	return true;
 }
@@ -740,15 +771,18 @@ bool JsmPseudoCompiler::parseWhile(const JsmScripts &scripts, JsmData &result, Q
 	advance(); // consume 'while'
 
 	JsmData condData;
-	if (!parseExpression(condData, errorStr)) return false;
+	if (!parseCondition(condData, errorStr)) return false;
 
 	int condSize = condData.nbOpcode();
-	result += condData;
 
 	skipNewlines();
 	if (peek().text.toLower() != "begin") {
+		if (!updateCondDataJumps(condData, 2, errorStr)) {
+			return false;
+		}
 		// "while <cond>" without begin = wait while (single-line)
 		// Emit: condition, JPF +2, JMP back to condition
+		result += condData;
 		result.append(JsmOpcode(JsmOpcode::JPF, 2));
 		result.append(JsmOpcode(JsmOpcode::JMP, -(condSize + 1)));
 		return true;
@@ -766,8 +800,14 @@ bool JsmPseudoCompiler::parseWhile(const JsmScripts &scripts, JsmData &result, Q
 	}
 	advance();
 
-	// Emit: condition, JPF over body+JMP, body, JMP back to condition
 	int bodySize = bodyBlock.nbOpcode();
+
+	if (!updateCondDataJumps(condData, bodySize + 2, errorStr)) {
+		return false;
+	}
+
+	// Emit: condition, JPF over body+JMP, body, JMP back to condition
+	result += condData;
 	result.append(JsmOpcode(JsmOpcode::JPF, bodySize + 2)); // +1 for JMP back
 	result += bodyBlock;
 	result.append(JsmOpcode(JsmOpcode::JMP, -(condSize + bodySize + 1)));
@@ -777,7 +817,6 @@ bool JsmPseudoCompiler::parseWhile(const JsmScripts &scripts, JsmData &result, Q
 
 bool JsmPseudoCompiler::parseWait(JsmData &result, QString &errorStr)
 {
-	qDebug() << "parseWait" << result.nbOpcode();
 	advance(); // consume 'wait'
 
 	skipNewlines();
@@ -786,7 +825,11 @@ bool JsmPseudoCompiler::parseWait(JsmData &result, QString &errorStr)
 	if (kw == "while") {
 		advance(); // consume 'while'
 		JsmData condData;
-		if (!parseExpression(condData, errorStr)) return false;
+		if (!parseCondition(condData, errorStr)) return false;
+
+		if (!updateCondDataJumps(condData, 2, errorStr)) {
+			return false;
+		}
 
 		// wait while <cond> = empty-body while loop
 		int condSize = condData.nbOpcode();
@@ -851,9 +894,16 @@ bool JsmPseudoCompiler::parseRepeat(const JsmScripts &scripts, JsmData &result, 
 		return false;
 	}
 	advance();
+	int bodySize = bodyBlock.nbOpcode();
+	result += bodyBlock;
 
 	JsmData condData;
-	if (!parseExpression(condData, errorStr)) return false;
+	if (!parseCondition(condData, errorStr)) return false;
+
+	int condSize = condData.nbOpcode();
+	if (!updateCondDataJumps(condData, -(bodySize + condSize), errorStr)) {
+		return false;
+	}
 
 	skipNewlines();
 	if (peek().text.toLower() == "end") {
@@ -862,9 +912,6 @@ bool JsmPseudoCompiler::parseRepeat(const JsmScripts &scripts, JsmData &result, 
 
 	// repeat ... until <cond> end
 	// Emit: body, condition, JPF back to body start
-	int bodySize = bodyBlock.nbOpcode();
-	int condSize = condData.nbOpcode();
-	result += bodyBlock;
 	result += condData;
 	result.append(JsmOpcode(JsmOpcode::JPF, -(bodySize + condSize)));
 
@@ -908,7 +955,7 @@ bool JsmPseudoCompiler::parseLabel(const JsmScripts &scripts, JsmData &result, Q
 // Expression parsing (recursive descent with precedence)
 // ============================================================
 
-bool JsmPseudoCompiler::parseExpression(JsmData &result, QString &errorStr)
+bool JsmPseudoCompiler::parseCondition(JsmData &result, QString &errorStr)
 {
 	return parseLogicalOr(result, errorStr);
 }
@@ -925,7 +972,7 @@ bool JsmPseudoCompiler::parseLogicalOr(JsmData &result, QString &errorStr)
 		// Actually the decompiler uses LogOr/LogAnd as virtual ops. For compilation,
 		// we use the pattern: left != 0, right != 0, OR
 		result += right;
-		result.append(JsmOpcode(JsmOpcode::CAL, 13)); // OR
+		result.append(JsmOpcode(JsmOpcode::CAL, JsmOpcodeCal::OR));
 		return true;
 	}
 	return true;
@@ -936,12 +983,18 @@ bool JsmPseudoCompiler::parseLogicalAnd(JsmData &result, QString &errorStr)
 	if (!parseBitwiseOr(result, errorStr)) return false;
 	while (peek().type == Token::OpLogAnd) {
 		advance();
+		//qDebug() << "JsmPseudoCompiler::parseLogicalAnd" << "JPF" << 0xFFFFE << result.nbOpcode();
+		result.append(JsmOpcode(JsmOpcode::JPF, 0xFFFFE));
 		JsmData right;
 		if (!parseBitwiseOr(right, errorStr)) return false;
 		result += right;
-		result.append(JsmOpcode(JsmOpcode::CAL, 12)); // AND
 	}
 	return true;
+}
+
+bool JsmPseudoCompiler::parseExpression(JsmData &result, QString &errorStr)
+{
+	return parseBitwiseOr(result, errorStr);
 }
 
 bool JsmPseudoCompiler::parseBitwiseOr(JsmData &result, QString &errorStr)
@@ -952,7 +1005,7 @@ bool JsmPseudoCompiler::parseBitwiseOr(JsmData &result, QString &errorStr)
 		JsmData right;
 		if (!parseBitwiseEor(right, errorStr)) return false;
 		result += right;
-		result.append(JsmOpcode(JsmOpcode::CAL, 13)); // OR
+		result.append(JsmOpcode(JsmOpcode::CAL, JsmOpcodeCal::OR));
 	}
 	return true;
 }
@@ -965,7 +1018,7 @@ bool JsmPseudoCompiler::parseBitwiseEor(JsmData &result, QString &errorStr)
 		JsmData right;
 		if (!parseBitwiseAnd(right, errorStr)) return false;
 		result += right;
-		result.append(JsmOpcode(JsmOpcode::CAL, 14)); // EOR
+		result.append(JsmOpcode(JsmOpcode::CAL, JsmOpcodeCal::EOR));
 	}
 	return true;
 }
@@ -978,7 +1031,7 @@ bool JsmPseudoCompiler::parseBitwiseAnd(JsmData &result, QString &errorStr)
 		JsmData right;
 		if (!parseEquality(right, errorStr)) return false;
 		result += right;
-		result.append(JsmOpcode(JsmOpcode::CAL, 12)); // AND
+		result.append(JsmOpcode(JsmOpcode::CAL, JsmOpcodeCal::AND));
 	}
 	return true;
 }
@@ -991,7 +1044,7 @@ bool JsmPseudoCompiler::parseEquality(JsmData &result, QString &errorStr)
 		JsmData right;
 		if (!parseRelational(right, errorStr)) return false;
 		result += right;
-		result.append(JsmOpcode(JsmOpcode::CAL, op.type == Token::OpEq ? 6 : 11));
+		result.append(JsmOpcode(JsmOpcode::CAL, op.type == Token::OpEq ? JsmOpcodeCal::EQ : JsmOpcodeCal::NT));
 	}
 	return true;
 }
@@ -1007,10 +1060,10 @@ bool JsmPseudoCompiler::parseRelational(JsmData &result, QString &errorStr)
 		result += right;
 		int calOp;
 		switch (op.type) {
-		case Token::OpGt: calOp = 7; break;
-		case Token::OpGe: calOp = 8; break;
-		case Token::OpLs: calOp = 9; break;
-		default:          calOp = 10; break; // LE
+		case Token::OpGt: calOp = JsmOpcodeCal::GT; break;
+		case Token::OpGe: calOp = JsmOpcodeCal::GE; break;
+		case Token::OpLs: calOp = JsmOpcodeCal::LS; break;
+		default:          calOp = JsmOpcodeCal::LE; break;
 		}
 		result.append(JsmOpcode(JsmOpcode::CAL, calOp));
 	}
@@ -1025,7 +1078,7 @@ bool JsmPseudoCompiler::parseShift(JsmData &result, QString &errorStr)
 		JsmData right;
 		if (!parseAdditive(right, errorStr)) return false;
 		result += right;
-		result.append(JsmOpcode(JsmOpcode::CAL, op.type == Token::OpRsh ? 16 : 17));
+		result.append(JsmOpcode(JsmOpcode::CAL, op.type == Token::OpRsh ? JsmOpcodeCal::RSH : JsmOpcodeCal::LSH));
 	}
 	return true;
 }
@@ -1038,7 +1091,7 @@ bool JsmPseudoCompiler::parseAdditive(JsmData &result, QString &errorStr)
 		JsmData right;
 		if (!parseMultiplicative(right, errorStr)) return false;
 		result += right;
-		result.append(JsmOpcode(JsmOpcode::CAL, op.type == Token::OpAdd ? 0 : 1));
+		result.append(JsmOpcode(JsmOpcode::CAL, op.type == Token::OpAdd ? JsmOpcodeCal::ADD : JsmOpcodeCal::SUB));
 	}
 	return true;
 }
@@ -1053,9 +1106,9 @@ bool JsmPseudoCompiler::parseMultiplicative(JsmData &result, QString &errorStr)
 		result += right;
 		int calOp;
 		switch (op.type) {
-		case Token::OpMul: calOp = 2; break;
-		case Token::OpDiv: calOp = 3; break;
-		default:           calOp = 4; break; // MOD
+		case Token::OpMul: calOp = JsmOpcodeCal::MUL; break;
+		case Token::OpDiv: calOp = JsmOpcodeCal::DIV; break;
+		default:           calOp = JsmOpcodeCal::MOD; break;
 		}
 		result.append(JsmOpcode(JsmOpcode::CAL, calOp));
 	}
@@ -1067,13 +1120,13 @@ bool JsmPseudoCompiler::parseUnary(JsmData &result, QString &errorStr)
 	if (peek().type == Token::OpSub) {
 		advance();
 		if (!parseUnary(result, errorStr)) return false;
-		result.append(JsmOpcode(JsmOpcode::CAL, 5)); // MIN (negate)
+		result.append(JsmOpcode(JsmOpcode::CAL, JsmOpcodeCal::MIN)); // negate
 		return true;
 	}
 	if (peek().type == Token::OpNot) {
 		advance();
 		if (!parseUnary(result, errorStr)) return false;
-		result.append(JsmOpcode(JsmOpcode::CAL, 15)); // NOT (bitwise)
+		result.append(JsmOpcode(JsmOpcode::CAL, JsmOpcodeCal::NOT)); // bitwise
 		return true;
 	}
 	if (peek().type == Token::OpLogNot) {
@@ -1094,7 +1147,7 @@ bool JsmPseudoCompiler::parsePrimary(JsmData &result, QString &errorStr)
 	// Parenthesized expression
 	if (t.type == Token::LParen) {
 		advance();
-		if (!parseExpression(result, errorStr)) return false;
+		if (!parseCondition(result, errorStr)) return false;
 		return expect(Token::RParen, errorStr);
 	}
 

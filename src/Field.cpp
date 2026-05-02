@@ -61,57 +61,58 @@ void Field::openFile(FileType fileType, const QByteArray &data)
 	File *f = newFile(fileType);
 
 	if (!f->open(data)) {
-		qWarning() << "Field::openFile error" << _name;
-		deleteFile(fileType);
+		qWarning() << "Field::openFile error" << _name << fileType;
+		f->setOpen(false);
+	} else {
+		f->setOpen(true);
 	}
 }
 
 void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym, bool oldFormat)
 {
-	deleteFile(Jsm);
-	JsmFile *f = (JsmFile *)newFile(Jsm);
+	JsmFile *f = (JsmFile *)_getFile(Jsm);
+
+	if (f == nullptr) {
+		f = (JsmFile *)newFile(Jsm);
+	}
 
 	if (!f->open(jsm, sym, oldFormat)) {
 		qWarning() << "Field::openJsmFile error" << _name;
-		deleteFile(Jsm);
+		f->setOpen(false);
+	} else {
+		f->setOpen(true);
 	}
 }
 
 void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 {
-	BackgroundFile *f;
+	BackgroundFile *f = (BackgroundFile *)_getFile(Background);
 
-	if (!hasBackgroundFile()) {
+	if (f == nullptr) {
 		f = (BackgroundFile *)newFile(Background);
-	} else {
-		f = getBackgroundFile();
 	}
-
-	/* QMultiMap<quint8, quint8> params;
-	if (hasJsmFile()) {
-		getJsmFile()->searchDefaultBGStates(params);
-	} */
 
 	if (!f->open(map, mim/*, &params */)) {
 		qWarning() << "Field::openBackgroundFile error" << _name;
-		deleteFile(Background);
+		f->setOpen(false);
+	} else {
+		f->setOpen(true);
 	}
 }
 
 void Field::openCharaFile(const QByteArray &one, const QByteArray &pcb)
 {
-	qDebug() << "openCharaFile" << name();
-	CharaOneFile *f;
+	CharaOneFile *f = (CharaOneFile *)_getFile(CharaOne);
 
-	if (!hasCharaFile()) {
+	if (f == nullptr) {
 		f = (CharaOneFile *)newFile(CharaOne);
-	} else {
-		f = getCharaFile();
 	}
 
 	if (!f->open(one, pcb, isPs())) {
 		qWarning() << "Field::openCharaFile error" << _name;
-		deleteFile(CharaOne);
+		f->setOpen(false);
+	} else {
+		f->setOpen(true);
 	}
 }
 
@@ -156,7 +157,7 @@ File *Field::newFile(FileType fileType)
 
 void Field::deleteFile(FileType fileType)
 {
-	File *f = getFile(fileType);
+	File *f = _getFile(fileType);
 
 	if (f != nullptr && worldmapFile == nullptr) {
 		delete f;
@@ -166,7 +167,7 @@ void Field::deleteFile(FileType fileType)
 
 bool Field::hasFile(FileType fileType) const
 {
-	return getFile(fileType) != nullptr;
+	return _getFile(fileType) != nullptr;
 }
 
 bool Field::hasMsdFile() const
@@ -262,15 +263,15 @@ bool Field::hasFiles() const
 		}
 	}
 
-	return hasFiles2();
-}
-
-bool Field::hasFiles2() const
-{
 	return false;
 }
 
-File *Field::getFile(FileType fileType) const
+File *Field::getFile(FileType fileType)
+{
+	return _getFile(fileType);
+}
+
+File *Field::_getFile(FileType fileType) const
 {
 	if (fileType == Msd && hasWorldmapFile()) {
 		return worldmapFile->textsPtr();
@@ -279,82 +280,82 @@ File *Field::getFile(FileType fileType) const
 	return files.at(fileType);
 }
 
-MsdFile *Field::getMsdFile() const
+MsdFile *Field::getMsdFile()
 {
 	return (MsdFile *)getFile(Msd);
 }
 
-JsmFile *Field::getJsmFile() const
+JsmFile *Field::getJsmFile()
 {
 	return (JsmFile *)getFile(Jsm);
 }
 
-IdFile *Field::getIdFile() const
+IdFile *Field::getIdFile()
 {
 	return (IdFile *)getFile(Id);
 }
 
-CaFile *Field::getCaFile() const
+CaFile *Field::getCaFile()
 {
 	return (CaFile *)getFile(Ca);
 }
 
-RatFile *Field::getRatFile() const
+RatFile *Field::getRatFile()
 {
 	return (RatFile *)getFile(Rat);
 }
 
-MrtFile *Field::getMrtFile() const
+MrtFile *Field::getMrtFile()
 {
 	return (MrtFile *)getFile(Mrt);
 }
 
-InfFile *Field::getInfFile() const
+InfFile *Field::getInfFile()
 {
 	return (InfFile *)getFile(Inf);
 }
 
-PmpFile *Field::getPmpFile() const
+PmpFile *Field::getPmpFile()
 {
 	return (PmpFile *)getFile(Pmp);
 }
 
-PmdFile *Field::getPmdFile() const
+PmdFile *Field::getPmdFile()
 {
 	return (PmdFile *)getFile(Pmd);
 }
 
-PvpFile *Field::getPvpFile() const
+PvpFile *Field::getPvpFile()
 {
 	return (PvpFile *)getFile(Pvp);
 }
 
-BackgroundFile *Field::getBackgroundFile() const
+BackgroundFile *Field::getBackgroundFile()
 {
 	return (BackgroundFile *)getFile(Background);
 }
 
-TdwFile *Field::getTdwFile() const
+TdwFile *Field::getTdwFile()
 {
 	return (TdwFile *)getFile(Tdw);
 }
 
-CharaOneFile *Field::getCharaFile() const
+CharaOneFile *Field::getCharaFile()
 {
 	return (CharaOneFile *)getFile(CharaOne);
 }
 
-MskFile *Field::getMskFile() const
+MskFile *Field::getMskFile()
 {
 	return (MskFile *)getFile(Msk);
 }
 
-SfxFile *Field::getSfxFile() const
+SfxFile *Field::getSfxFile()
 {
 	return (SfxFile *)getFile(Sfx);
 }
 
-AkaoListFile *Field::getAkaoListFile() const
+AkaoListFile *Field::getAkaoListFile()
 {
 	return (AkaoListFile *)getFile(AkaoList);
 }
@@ -422,24 +423,22 @@ void Field::setFile(FileType fileType)
 
 bool Field::isModified() const
 {
-	for (File *f: files) {
+	for (int i = 0; i < files.size(); ++i) {
+		File *f = _getFile(FileType(i));
 		if (f && f->isModified()) {
 			return true;
 		}
 	}
-	return hasMsdFile() && getMsdFile()->isModified();
+	return false;
 }
 
 void Field::setModified(bool modified)
 {
-	for (File *f: files) {
+	for (int i = 0; i < files.size(); ++i) {
+		File *f = _getFile(FileType(i));
 		if (f) {
 			f->setModified(modified);
 		}
-	}
-
-	if (hasMsdFile()) {
-		getMsdFile()->setModified(modified);
 	}
 }
 

@@ -3437,6 +3437,17 @@ poursuite de la recherche dans le dernier fichier.</translation>
     </message>
 </context>
 <context>
+    <name>SoundPlayer</name>
+    <message>
+        <source>Play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SoundWidget</name>
     <message>
         <source>Add sound</source>

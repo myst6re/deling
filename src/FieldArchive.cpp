@@ -39,7 +39,6 @@ void FieldArchive::clearFields()
 	fields.clear();
 	models.clear();
 	fieldsSortByName.clear();
-	fieldsSortByDesc.clear();
 	fieldsSortByMapId.clear();
 	if (_worldMap != nullptr) {
 		delete _worldMap;
@@ -81,11 +80,6 @@ int FieldArchive::nbFields() const
 	return fields.size();
 }
 
-CharaModel FieldArchive::getModel(int id) const
-{
-	return models.value(id);
-}
-
 QHash<int, CharaModel> *FieldArchive::getModels()
 {
 	return &models;
@@ -106,13 +100,6 @@ bool FieldArchive::searchIterators(QMultiMap<QString, int>::const_iterator &i, Q
 		end = fieldsSortByName.constEnd();
 		if (i==end) {
 			i = fieldsSortByName.constBegin();
-		}
-		return true;
-	case SortByDesc:
-		i = fieldsSortByDesc.constFind(fieldsSortByDesc.key(fieldID), fieldID);
-		end = fieldsSortByDesc.constEnd();
-		if (i==end) {
-			i = fieldsSortByDesc.constBegin();
 		}
 		return true;
 	case SortByMapId:
@@ -138,13 +125,6 @@ bool FieldArchive::searchIteratorsP(QMultiMap<QString, int>::const_iterator &i, 
 			--i;
 		}
 		return true;
-	case SortByDesc:
-		begin = fieldsSortByDesc.constBegin();
-		i = fieldsSortByDesc.constFind(fieldsSortByDesc.key(fieldID), fieldID);
-		if (i==fieldsSortByDesc.constEnd()) {
-			--i;
-		}
-		break;
 	case SortByMapId:
 		begin = fieldsSortByMapId.constBegin();
 		i = fieldsSortByMapId.constFind(fieldsSortByMapId.key(fieldID), fieldID);

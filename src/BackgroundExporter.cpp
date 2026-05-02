@@ -50,16 +50,18 @@ bool BackgroundExporter::toDir(const QDir &dir, ArchiveObserver *observer)
 			observer->setObserverValue(i++);
 		}
 
-		if (f && f->isOpen() && (!f->isPc() || ((FieldPC *)f)->open2(((FieldArchivePC *)_archive)->getFsArchive())) && f->hasBackgroundFile()) {
+		if (f && f->isOpen() && f->hasBackgroundFile()) {
 			BackgroundFile *background = f->getBackgroundFile();
-			QString fieldName = f->name();
+			if (background->isOpen()) {
+				QString fieldName = f->name();
 
-			if (fieldName.isEmpty()) {
-				fieldName = QObject::tr("Unamed");
-			}
+				if (fieldName.isEmpty()) {
+					fieldName = QObject::tr("Unamed");
+				}
 
-			if (!background->background().save(dir.filePath(fieldName + ".png"))) {
-				_lastErrorString = QObject::tr("Unable to export '%1' to image").arg(fieldName);
+				if (!background->background().save(dir.filePath(fieldName + ".png"))) {
+					_lastErrorString = QObject::tr("Unable to export '%1' to image").arg(fieldName);
+				}
 			}
 		}
 	}

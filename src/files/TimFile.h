@@ -26,8 +26,8 @@ public:
 	TimFile() : TextureFile() {}
 	explicit TimFile(const QByteArray &data);
 	TimFile(const TextureFile &texture, quint8 bpp, quint16 palX, quint16 palY, quint16 palW, quint16 palH, quint16 imgX, quint16 imgY);
-	bool open(const QByteArray &data);
-	bool save(QByteArray &data) const;
+	bool open(const QByteArray &data) override;
+	bool save(QByteArray &data) const override;
 	inline QPoint imgPos() const {
 		quint16 x = imgX;
 		

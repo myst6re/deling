@@ -23,16 +23,20 @@ class SfxFile : public File
 {
 public:
 	SfxFile();
-	bool open(const QByteArray &sfx);
-	bool save(QByteArray &sfx) const;
-	inline QString filterText() const {
+	bool open(const QByteArray &sfx) override;
+	bool save(QByteArray &sfx) const override;
+	inline QString filterText() const override {
 		return QObject::tr("Field sounds PC file (*.sfx)");
 	}
-	int valueCount() const;
-	quint32 value(int id) const;
-	void setValue(int id, quint32 v);
-	void insertValue(int id, quint32 v);
-	void removeValue(int id);
+	inline int sfxCount() const {
+		return _values.size();
+	}
+	quint32 sfxGameId(int id) const;
+	void setSfxGameId(int id, quint32 sfxGameId);
+	void insertSfxGameId(int id, quint32 sfxGameId);
+	void removeSfxGameId(int id);
 private:
+	static quint32 toSfxGameId(quint32 value);
+	static quint32 fromSfxGameId(quint32 sfxGameId);
 	QList<quint32> _values;
 };

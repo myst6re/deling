@@ -125,18 +125,15 @@ void TexFile::setVersion(Version version)
 	header.version = int(version);
 }
 
-void TexFile::updateHeader()
+bool TexFile::save(QByteArray &data) const
 {
+	TexStruct header;
+	memcpy(&header, &this->header, sizeof(TexStruct));
 	header.nbPalettes = _colorTables.size();
 	header.hasPal = !_colorTables.isEmpty();
 	header.imageWidth = _image.width();
 	header.imageHeight = _image.height();
 	header.hasColorKeyArray = !colorKeyArray.isEmpty();
-}
-
-bool TexFile::save(QByteArray &data)
-{
-	updateHeader();
 	data.append((char *)&header, header.version==2 ? sizeof(TexStruct) : sizeof(TexStruct) - 4);
 
 	//qDebug() << "texSize header" << data.size();

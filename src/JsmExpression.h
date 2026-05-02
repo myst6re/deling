@@ -21,11 +21,10 @@
 
 #include "JsmOpcode.h"
 
-class JsmOpcode;
 class JsmControl;
 class JsmExpression;
 class JsmApplication;
-class Field;
+class JsmFile;
 
 class JsmInstruction
 {
@@ -73,7 +72,7 @@ public:
 	inline InstructionType type() const {
 		return _type;
 	}
-	QString toString(const Field *field, int indent, int highlightOpcodeID) const;
+	QString toString(const JsmFile *jsm, int indent, int highlightOpcodeID) const;
 	int opcodeCount() const;
 	inline void setPosition(int position) {
 		_position = position;
@@ -96,7 +95,7 @@ public:
 		QList<JsmInstruction>(other) {}
 	JsmProgram(QList<JsmInstruction> &&other) :
 	    QList<JsmInstruction>(other) {}
-	QStringList toStringList(const Field *field, int indent, int highlightOpcodeID = -2) const;
+	QStringList toStringList(const JsmFile *jsm, int indent, int highlightOpcodeID = -2) const;
 	int opcodeCount() const;
 };
 
@@ -114,7 +113,7 @@ public:
 
 	JsmExpression() : _position(-1) {}
 	virtual ~JsmExpression() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const=0;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const=0;
 	virtual int opcodeCount() const=0;
 	virtual int eval(bool *ok) const;
 	virtual ExpressionType type() const=0;
@@ -138,7 +137,7 @@ class JsmExpressionVal : public JsmExpression
 public:
 	explicit JsmExpressionVal(int val) : _val(val) {}
 	virtual ~JsmExpressionVal() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const;
 	virtual inline int opcodeCount() const {
 		return 1;
 	}
@@ -174,7 +173,7 @@ class JsmExpressionVarUByte : public JsmExpressionVar
 public:
 	explicit JsmExpressionVarUByte(int var) : JsmExpressionVar(var) {}
 	virtual ~JsmExpressionVarUByte() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const;
 };
 
 class JsmExpressionVarUWord : public JsmExpressionVar
@@ -182,7 +181,7 @@ class JsmExpressionVarUWord : public JsmExpressionVar
 public:
 	explicit JsmExpressionVarUWord(int var) : JsmExpressionVar(var) {}
 	virtual ~JsmExpressionVarUWord() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const;
 };
 
 class JsmExpressionVarULong : public JsmExpressionVar
@@ -190,7 +189,7 @@ class JsmExpressionVarULong : public JsmExpressionVar
 public:
 	explicit JsmExpressionVarULong(int var) : JsmExpressionVar(var) {}
 	virtual ~JsmExpressionVarULong() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const;
 };
 
 class JsmExpressionVarSByte : public JsmExpressionVar
@@ -198,7 +197,7 @@ class JsmExpressionVarSByte : public JsmExpressionVar
 public:
 	explicit JsmExpressionVarSByte(int var) : JsmExpressionVar(var) {}
 	virtual ~JsmExpressionVarSByte() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const;
 };
 
 class JsmExpressionVarSWord : public JsmExpressionVar
@@ -206,7 +205,7 @@ class JsmExpressionVarSWord : public JsmExpressionVar
 public:
 	explicit JsmExpressionVarSWord(int var) : JsmExpressionVar(var) {}
 	virtual ~JsmExpressionVarSWord() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const;
 };
 
 class JsmExpressionVarSLong : public JsmExpressionVar
@@ -214,7 +213,7 @@ class JsmExpressionVarSLong : public JsmExpressionVar
 public:
 	explicit JsmExpressionVarSLong(int var) : JsmExpressionVar(var) {}
 	virtual ~JsmExpressionVarSLong() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const;
 };
 
 class JsmExpressionChar : public JsmExpression
@@ -222,7 +221,7 @@ class JsmExpressionChar : public JsmExpression
 public:
 	explicit JsmExpressionChar(int c) : _char(c) {}
 	virtual ~JsmExpressionChar() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const;
 	virtual inline int opcodeCount() const {
 		return 1;
 	}
@@ -238,7 +237,7 @@ class JsmExpressionTemp : public JsmExpression
 public:
 	explicit JsmExpressionTemp(int temp) : _temp(temp) {}
 	virtual ~JsmExpressionTemp() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const;
 	virtual inline int opcodeCount() const {
 		return 1;
 	}
@@ -263,7 +262,7 @@ public:
 	JsmExpressionUnary(Operation op, JsmExpression *first) :
 	    _op(op), _first(first) {}
 	virtual ~JsmExpressionUnary() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const;
 	virtual int opcodeCount() const;
 	virtual int eval(bool *ok) const;
 	inline ExpressionType type() const {
@@ -311,7 +310,7 @@ public:
 	                    JsmExpression *second) :
 	    _op(op), _first(first), _second(second) {}
 	virtual ~JsmExpressionBinary() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID, int base) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID, int base) const;
 	virtual int opcodeCount() const;
 	virtual int eval(bool *ok) const;
 	Operation logicalNot(bool *ok) const;
@@ -349,7 +348,7 @@ public:
 	JsmControl(JsmExpression *condition, const JsmProgram &block) :
 	    _condition(condition), _block(block) {}
 	virtual ~JsmControl() {}
-	virtual QString toString(const Field *field, int indent, int highlightOpcodeID) const=0;
+	virtual QString toString(const JsmFile *jsm, int indent, int highlightOpcodeID) const=0;
 	virtual ControlType type() const=0;
 	virtual int opcodeCount() const {
 		return condition()->opcodeCount() +
@@ -389,9 +388,9 @@ public:
 	                 const JsmProgram &blockElse = JsmProgram()) :
 	    JsmControl(other), _blockElse(blockElse) {}
 	virtual ~JsmControlIfElse() {}
-	QString toString(bool elseIf, const Field *field, int indent, int highlightOpcodeID) const;
-	inline virtual QString toString(const Field *field, int indent, int highlightOpcodeID) const {
-		return toString(false, field, indent, highlightOpcodeID);
+	QString toString(bool elseIf, const JsmFile *jsm, int indent, int highlightOpcodeID) const;
+	inline virtual QString toString(const JsmFile *jsm, int indent, int highlightOpcodeID) const {
+		return toString(false, jsm, indent, highlightOpcodeID);
 	}
 	virtual int opcodeCount() const {
 		return JsmControl::opcodeCount() +
@@ -422,7 +421,7 @@ public:
 	JsmControlWhile(const JsmControl &other) :
 	    JsmControl(other) {}
 	virtual ~JsmControlWhile() {}
-	virtual QString toString(const Field *field, int indent, int highlightOpcodeID) const;
+	virtual QString toString(const JsmFile *jsm, int indent, int highlightOpcodeID) const;
 	inline ControlType type() const {
 		return While;
 	}
@@ -437,7 +436,7 @@ public:
 	JsmControlRepeatUntil(const JsmControl &other) :
 	    JsmControl(other) {}
 	virtual ~JsmControlRepeatUntil() {}
-	virtual QString toString(const Field *field, int indent, int highlightOpcodeID) const;
+	virtual QString toString(const JsmFile *jsm, int indent, int highlightOpcodeID) const;
 	inline ControlType type() const {
 		return RepeatUntil;
 	}
@@ -449,11 +448,11 @@ public:
 	JsmApplication(const QStack<JsmExpression *> &stack, JsmOpcode *opcode) :
 	    _stack(stack), _opcode(opcode) {}
 	virtual ~JsmApplication() {}
-	virtual QString toString(const Field *field, int highlightOpcodeID) const;
+	virtual QString toString(const JsmFile *jsm, int highlightOpcodeID) const;
 	virtual int opcodeCount() const;
 protected:
-	QStringList stackToStringList(const Field *field, int highlightOpcodeID) const;
-	QString paramsToString(const Field *field, int highlightOpcodeID) const;
+	QStringList stackToStringList(const JsmFile *jsm, int highlightOpcodeID) const;
+	QString paramsToString(const JsmFile *jsm, int highlightOpcodeID) const;
 	QStack<JsmExpression *> _stack;
 	JsmOpcode *_opcode;
 };
@@ -467,7 +466,7 @@ public:
 		_stack.push(expression);
 	}
 	virtual ~JsmApplicationAssignment() {}
-	QString toString(const Field *field, int highlightOpcodeID) const;
+	QString toString(const JsmFile *jsm, int highlightOpcodeID) const;
 private:
 	JsmExpression *opcodeExpression() const;
 };
@@ -483,7 +482,7 @@ public:
 		_stack.push(stackLast);
 	}
 	virtual ~JsmApplicationExec() {}
-	QString toString(const Field *field, int highlightOpcodeID) const;
+	QString toString(const JsmFile *jsm, int highlightOpcodeID) const;
 private:
 	QString execType() const;
 };

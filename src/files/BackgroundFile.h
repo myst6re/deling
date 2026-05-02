@@ -78,10 +78,10 @@ public:
 
 	BackgroundFile();
 	bool open(const QByteArray &map, const QByteArray &mim, const QMultiMap<quint8, quint8> *defaultParams = nullptr);
-	inline QString filterText() const {
+	inline QString filterText() const override {
 		return QObject::tr("Map Tiles PC Field File (*.map)");
 	}
-	bool save(QByteArray &map) const;
+	bool save(QByteArray &map) const override;
 
 	QImage background(bool hideBG=false) const;
 	QImage background(const QList<quint8> &activeParams, bool hideBG = false);
@@ -118,7 +118,6 @@ private:
 	static void BGcolor(quint16 value, quint8 blendType, QRgb *pixels,
 	                    int index, bool forceBlack);
 	static QByteArray mim;
-	bool opened;
 	MapType _mapType;
 	QList<Tile> _tiles;
 	QMultiMap<quint16, int> _tilesZOrder;

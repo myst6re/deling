@@ -18,8 +18,25 @@
 #include "Data.h"
 #include "Config.h"
 #include "FF8Font.h"
+#include "game/sound/Sfx.h"
 
 QString Data::AppPathCache;
+Sfx *Data::_sounds = nullptr;
+
+Sfx *Data::sounds()
+{
+	if (_sounds == nullptr) {
+		_sounds = new Sfx(QString("%1/Data/Sound/audio.fmt").arg(AppPath()), QString("%1/Data/Sound/audio.dat").arg(AppPath()));
+		if (!_sounds->open()) {
+			delete _sounds;
+			_sounds = nullptr;
+
+			return nullptr;
+		}
+	}
+
+	return _sounds;
+}
 
 bool Data::ff8Found()
 {

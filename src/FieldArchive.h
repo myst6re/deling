@@ -32,7 +32,7 @@ class FieldArchive
 {
 public:
 	enum Sorting{
-		SortByName, SortByDesc, SortByMapId
+		SortByName, SortByMapId
 	};
 
 	FieldArchive();
@@ -47,12 +47,11 @@ public:
 	Field *getFieldFromMapId(int mapId) const;
 	const QList<Field *> &getFields() const;
 	int nbFields() const;
-	CharaModel getModel(int id) const;
 	QHash<int, CharaModel> *getModels();
 	bool isReadOnly() const;
 	virtual int open(const QString &, ArchiveObserver *progress)=0;
 	virtual bool openModels()=0;
-	virtual bool openBG(Field *field) const=0;
+	virtual bool openFull(Field *field) const=0;
 	bool searchText(const QRegularExpression &text, int &fieldID, int &textID, int &from, int &size, Sorting=SortByMapId) const;
 	bool searchTextReverse(const QRegularExpression &text, int &fieldID, int &textID, int &from, int &size, Sorting=SortByMapId) const;
 	bool searchScript(JsmFile::SearchType type, quint64 value, int &fieldID, int &groupID, int &methodID, int &opcodeID, Sorting=SortByMapId) const;
@@ -80,7 +79,6 @@ protected:
 	QHash<int, CharaModel> models;
 	QStringList _mapList;
 	QMultiMap<QString, int> fieldsSortByName;
-	QMultiMap<QString, int> fieldsSortByDesc;
 	QMultiMap<QString, int> fieldsSortByMapId;
 	Map *_worldMap;
 	bool readOnly;

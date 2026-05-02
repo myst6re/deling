@@ -17,6 +17,7 @@
  ****************************************************************************/
 #include "SoundWidget.h"
 #include "Field.h"
+#include "SoundPlayer.h"
 
 SoundWidget::SoundWidget() :
 	PageWidget()
@@ -25,7 +26,9 @@ SoundWidget::SoundWidget() :
 
 void SoundWidget::build()
 {
-	if (isBuilded())	return;
+	if (isBuilded()) {
+		return;
+	}
 
 	ListWidget *listWidget = new ListWidget(this);
 	listWidget->addAction(ListWidget::Add, tr("Add sound"), this, SLOT(addSound()));
@@ -33,6 +36,7 @@ void SoundWidget::build()
 
 	toolBar = listWidget->toolBar();
 	list1 = listWidget->listWidget();
+	_player = new SoundPlayer(this);
 
 	// Sfx
 
@@ -44,7 +48,7 @@ void SoundWidget::build()
 	sfxValue->setRange(0, (quint32)-1);
 
 	QHBoxLayout *sfxLayout = new QHBoxLayout(sfxGroup);
-	sfxLayout->addWidget(new QLabel(tr("ID:")));
+	sfxLayout->addWidget(new QLabel(tr("Global ID:")));
 	sfxLayout->addWidget(sfxValue);
 	sfxLayout->addStretch();
 	sfxLayout->setContentsMargins(QMargins());
@@ -64,23 +68,27 @@ void SoundWidget::build()
 	akaoLayout->setContentsMargins(QMargins());
 
 	QGridLayout *layout = new QGridLayout(this);
-	layout->addWidget(listWidget, 0, 0, 3, 1, Qt::AlignLeft);
+	layout->addWidget(listWidget, 0, 0, 4, 1, Qt::AlignLeft);
 	layout->addWidget(sfxGroup, 0, 1);
 	layout->addWidget(akaoGroup, 1, 1);
-	layout->setRowStretch(2, 1);
+	layout->addWidget(_player, 2, 1);
+	layout->setRowStretch(3, 1);
 	layout->setContentsMargins(QMargins());
 
 	connect(list1, SIGNAL(currentRowChanged(int)), SLOT(setCurrentSound(int)));
 	connect(sfxValue, SIGNAL(valueChanged(double)), SLOT(editSfxValue(double)));
 	connect(exportButton, SIGNAL(clicked()), SLOT(exportAkao()));
 	connect(importButton, SIGNAL(clicked()), SLOT(importAkao()));
+	connect(_player, SIGNAL(clicked()), SLOT(playCurrentSound()));
 
 	PageWidget::build();
 }
 
 void SoundWidget::clear()
 {
-	if (!isFilled())		return;
+	if (!isFilled()) {
+		return;
+	}
 
 	list1->clear();
 	sfxValue->clear();
@@ -101,13 +109,19 @@ void SoundWidget::setReadOnly(bool ro)
 
 void SoundWidget::fill()
 {
-	if (!isBuilded())	build();
-	if (isFilled())		clear();
+	if (!isBuilded()) {
+		build();
+	}
+	if (isFilled()) {
+		clear();
+	}
 
-	if (!hasData()) return;
+	if (!hasData()) {
+		return;
+	}
 
 	if (data()->isPc() && data()->hasSfxFile()) {
-		fillList(data()->getSfxFile()->valueCount());
+		fillList(data()->getSfxFile()->sfxCount());
 	}
 	else if (data()->isPs() && data()->hasAkaoListFile()) {
 		fillList(data()->getAkaoListFile()->akaoCount());
@@ -132,11 +146,28 @@ void SoundWidget::fillList(int count)
 
 void SoundWidget::setCurrentSound(int id)
 {
-	if (!hasData() || id<0 || !data()->hasSfxFile())	return;
-
-	if (id < data()->getSfxFile()->valueCount()) {
-		sfxValue->setValue(data()->getSfxFile()->value(id));
+	if (!hasData() || id < 0 || !data()->hasSfxFile()) {
+		return;
 	}
+
+	if (id < data()->getSfxFile()->sfxCount()) {
+		sfxValue->setValue(data()->getSfxFile()->sfxGameId(id));
+	}
+}
+
+void SoundWidget::playCurrentSound()
+{
+	if (data()->hasSfxFile()) {
+		int id = list1->currentRow();
+		if (id >= 0 && id < data()->getSfxFile()->sfxCount()) {
+			quint32 sfxGameId = data()->getSfxFile()->sfxGameId(id);
+			_player->togglePlay(sfxGameId);
+
+			return;
+		}
+	}
+
+	_player->stop();
 }
 
 void SoundWidget::addSound()
@@ -149,12 +180,14 @@ void SoundWidget::addSound()
 		if (!data()->hasSfxFile()) {
 			data()->addSfxFile();
 		}
-		data()->getSfxFile()->insertValue(row+1, 0);
+		data()->getSfxFile()->insertSfxGameId(row + 1, 0);
 		inserted = true;
 	}
 	else if (data()->isPs()) {
 		QString path = QFileDialog::getOpenFileName(this, tr("Add sound"), QString(), tr("AKAO file (*.akao)"));
-		if (path.isNull())		return;
+		if (path.isNull()) {
+			return;
+		}
 
 		QFile f(path);
 		if (f.open(QIODevice::ReadOnly)) {
@@ -162,7 +195,7 @@ void SoundWidget::addSound()
 				data()->addAkaoListFile();
 			}
 
-			if (!data()->getAkaoListFile()->insertAkao(row+1, f.readAll())) {
+			if (!data()->getAkaoListFile()->insertAkao(row + 1, f.readAll())) {
 				QMessageBox::warning(this, tr("Error"), tr("Invalid file."));
 			} else {
 				inserted = true;
@@ -174,11 +207,11 @@ void SoundWidget::addSound()
 	}
 
 	if (inserted) {
-		list1->insertItem(row+1, tr("Sound %1").arg(row+1));
+		list1->insertItem(row + 1, tr("Sound %1").arg(row + 1));
 		for (int i = row + 2; i < list1->count(); ++i) {
 			list1->item(i)->setText(tr("Sound %1").arg(i));
 		}
-		list1->setCurrentRow(row+1);
+		list1->setCurrentRow(row + 1);
 		emit modified();
 	}
 }
@@ -187,7 +220,9 @@ void SoundWidget::removeSound()
 {
 	int row = list1->currentRow();
 
-	if (row < 0)		return;
+	if (row < 0) {
+		return;
+	}
 
 	bool removed = false;
 
@@ -196,8 +231,8 @@ void SoundWidget::removeSound()
 			data()->addSfxFile();
 		}
 
-		if (row < data()->getSfxFile()->valueCount()) {
-			data()->getSfxFile()->removeValue(row);
+		if (row < data()->getSfxFile()->sfxCount()) {
+			data()->getSfxFile()->removeSfxGameId(row);
 			removed = true;
 		}
 	} else if (data()->isPs()) {
@@ -224,9 +259,9 @@ void SoundWidget::editSfxValue(double v)
 {
 	if (data()->hasSfxFile()) {
 		int id = list1->currentRow();
-		if (id >= 0 && id < data()->getSfxFile()->valueCount()) {
-			if (v != data()->getSfxFile()->value(id)) {
-				data()->getSfxFile()->setValue(id, v);
+		if (id >= 0 && id < data()->getSfxFile()->sfxCount()) {
+			if (v != data()->getSfxFile()->sfxGameId(id)) {
+				data()->getSfxFile()->setSfxGameId(id, v);
 				emit modified();
 			}
 		}
@@ -238,9 +273,10 @@ void SoundWidget::exportAkao()
 	if (data()->hasAkaoListFile()) {
 		int id = list1->currentRow();
 		if (id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
-
 			QString path = QFileDialog::getSaveFileName(this, tr("Export sound"), tr("sound%1").arg(id), tr("AKAO file (*.akao)"));
-			if (path.isNull())		return;
+			if (path.isNull()) {
+				return;
+			}
 
 			QFile f(path);
 			if (f.open(QIODevice::WriteOnly)) {
@@ -258,9 +294,10 @@ void SoundWidget::importAkao()
 	if (data()->hasAkaoListFile()) {
 		int id = list1->currentRow();
 		if (id >= 0 && id < data()->getAkaoListFile()->akaoCount()) {
-
 			QString path = QFileDialog::getOpenFileName(this, tr("Import sound"), QString(), tr("AKAO file (*.akao)"));
-			if (path.isNull())		return;
+			if (path.isNull()) {
+				return;
+			}
 
 			QFile f(path);
 			if (f.open(QIODevice::ReadOnly)) {

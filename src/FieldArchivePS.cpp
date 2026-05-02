@@ -121,11 +121,10 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 					desc = QString();
 
 				indexOf = iso->isDemo() ? i : mapList().indexOf(field->name());
-				QString mapId = indexOf==-1 ? "~" : QString("%1").arg(indexOf, 3, 10, QChar('0'));
+				QString mapId = indexOf==-1 ? "9999" : QString("%1").arg(indexOf, 4, 10, QChar('0'));
 
 				fields.append(field);
 				fieldsSortByName.insert(field->name(), fieldID);
-				fieldsSortByDesc.insert(desc, fieldID);
 				fieldsSortByMapId.insert(mapId, fieldID);
 				++fieldID;
 			} else {
@@ -180,9 +179,9 @@ bool FieldArchivePS::openModels()
 	return !models.isEmpty();
 }
 
-bool FieldArchivePS::openBG(Field *field) const
+bool FieldArchivePS::openFull(Field *field) const
 {
-	if (!iso)	return false;
+	if (!iso || !field->isPs())	return false;
 
 	FieldPS *fieldPS = (FieldPS *)field;
 	quint32 isoFieldID = fieldPS->isoFieldID();
@@ -190,7 +189,7 @@ bool FieldArchivePS::openBG(Field *field) const
 
 	if (iso->isDemo()) {
 		if ((int)isoFieldID+2 >= iso->fieldCount()) {
-			qWarning() << "FieldArchivePS::openBG field ID out of range" << isoFieldID << iso->fieldCount();
+			qWarning() << "FieldArchivePS::openFull field ID out of range" << isoFieldID << iso->fieldCount();
 			return false;
 		}
 
@@ -199,7 +198,7 @@ bool FieldArchivePS::openBG(Field *field) const
 		lzk = iso->fileLZS(iso->fieldFile(isoFieldID+2));
 	} else {
 		if (isoFieldID < 1 || (int)isoFieldID+1 >= iso->fieldCount()) {
-			qWarning() << "FieldArchivePS::openBG field ID out of range" << isoFieldID << iso->fieldCount();
+			qWarning() << "FieldArchivePS::openFull field ID out of range" << isoFieldID << iso->fieldCount();
 			return false;
 		}
 
@@ -208,5 +207,5 @@ bool FieldArchivePS::openBG(Field *field) const
 		lzk = iso->file(iso->fieldFile(isoFieldID+1));
 	}
 
-	return fieldPS->open2(dat, mim, lzk);
+	return fieldPS->openFull(dat, mim, lzk);
 }

@@ -30,7 +30,7 @@ public:
 	static QByteArray writeFullModel(const CharaModel &model);
 	static QList<Animation> readAnimations(const char *constData, int size, QByteArray *unknownData = nullptr);
 	static QByteArray writeAnimations(const CharaModel &model);
-	inline QString filterText() const {
+	inline QString filterText() const override {
 		return QObject::tr("Field 3D model file (*.mch)");
 	}
 	bool hasModel() const;

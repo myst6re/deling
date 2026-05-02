@@ -446,7 +446,7 @@ void JsmWidget::fillTextEdit()
 
 	JsmFile *jsm = data()->getJsmFile();
 
-	textEdit->setPlainText(jsm->toString(groupID, methodID, more, data()));
+	textEdit->setPlainText(jsm->toString(groupID, methodID, more));
 
 	int scroll = jsm->currentOpcodeScroll(groupID, methodID, more);
 	int anchor;
@@ -488,7 +488,7 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 			Field *field = fieldArchive->getFieldFromMapId(constId);
 
 			if (field != nullptr) {
-				if (fieldArchive->openBG(field)) {
+				if (fieldArchive->openFull(field)) {
 					BackgroundFile *file = field->getBackgroundFile();
 
 					if (file) {
@@ -705,7 +705,7 @@ void JsmWidget::gotoScript(int groupID, int methodID, int opcodeID)
 	list2->scrollToItem(item);
 
 	QTextCursor cursor = textEdit->textCursor();
-	cursor.setPosition(textEdit->document()->findBlockByLineNumber(data()->getJsmFile()->opcodePositionInText(groupID, methodID, opcodeID, tabBar->currentIndex() <= 0, data())).position());
+	cursor.setPosition(textEdit->document()->findBlockByLineNumber(data()->getJsmFile()->opcodePositionInText(groupID, methodID, opcodeID, tabBar->currentIndex() <= 0)).position());
 	cursor.movePosition(QTextCursor::StartOfLine);
 	cursor.movePosition(QTextCursor::EndOfLine, QTextCursor::KeepAnchor);
 	textEdit->setTextCursor(cursor);

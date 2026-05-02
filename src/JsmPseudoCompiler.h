@@ -62,6 +62,7 @@ private:
 	void skipNewlines();
 
 	// Parser — statement level
+	bool updateCondDataJumps(JsmData &condition, int endOfBlock, QString &errorStr);
 	bool parseStatements(const JsmScripts &scripts, JsmData &result, QString &errorStr, int &errorLine, qsizetype opcodeID,
 	                     const QStringList &allowedTerminators, QMap<QString, qsizetype> &labels,
 	                     QMap<qsizetype, QString> &gotos);
@@ -80,9 +81,10 @@ private:
 	bool parseLabel(const JsmScripts &scripts, JsmData &result, QString &errorStr, QMap<QString, qsizetype> &labels, qsizetype opcodeID);
 
 	// Parser — expression level (for conditions and arguments)
-	bool parseExpression(JsmData &result, QString &errorStr);
+	bool parseCondition(JsmData &result, QString &errorStr);
 	bool parseLogicalOr(JsmData &result, QString &errorStr);
 	bool parseLogicalAnd(JsmData &result, QString &errorStr);
+	bool parseExpression(JsmData &result, QString &errorStr);
 	bool parseBitwiseOr(JsmData &result, QString &errorStr);
 	bool parseBitwiseEor(JsmData &result, QString &errorStr);
 	bool parseBitwiseAnd(JsmData &result, QString &errorStr);

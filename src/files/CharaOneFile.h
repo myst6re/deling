@@ -28,7 +28,7 @@ public:
 	virtual ~CharaOneFile();
 	bool open(const QByteArray &one, const QByteArray &pcb, bool ps);
 	bool save(QByteArray &one, QByteArray &pcb) const;
-	inline QString filterText() const {
+	inline QString filterText() const override {
 		return QString();
 	}
 	const CharaModel &model(int id) const {

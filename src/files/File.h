@@ -30,10 +30,23 @@ public:
 	bool fromFile(const QString &path);
 	bool toFile(const QString &path);
 	virtual QString filterText() const=0;
-	bool isModified() const;
-	void setModified(bool modified);
-	const QString &errorString() const;
+	inline bool isModified() const {
+		return modified;
+	}
+	inline void setModified(bool modified) {
+		this->modified = modified;
+	}
+	inline bool isOpen() const {
+		return _open;
+	}
+	inline void setOpen(bool open) {
+		_open = open;
+	}
+	const QString &errorString() const {
+		return lastError;
+	}
 protected:
 	bool modified;
+	bool _open;
 	static QString lastError;
 };

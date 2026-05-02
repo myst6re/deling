@@ -117,7 +117,7 @@ Tile2 Tile::toTile2(const Tile &tile)
 }
 
 BackgroundFile::BackgroundFile() :
-    File(), opened(false), _mapType(TypeNew), _visibleTile(-1)
+    File(), _mapType(TypeNew), _visibleTile(-1)
 {
 }
 
@@ -126,7 +126,7 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim,
 {
 	this->mim = mim;
 
-	if (!opened) {
+	if (!isOpen()) {
 		allparams.clear();
 		params.clear();
 		layers.clear();
@@ -154,7 +154,7 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim,
 		}
 	}
 
-	opened = true;
+	setOpen(true);
 
 	return true;
 }

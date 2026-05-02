@@ -24,9 +24,9 @@ class PcbFile : public File
 {
 public:
 	PcbFile();
-	bool open(const QByteArray &data);
-	bool save(QByteArray &data) const;
-	inline QString filterText() const {
+	bool open(const QByteArray &data) override;
+	bool save(QByteArray &data) const override;
+	inline QString filterText() const override {
 		return QObject::tr("Field model color alteration file (*.pcb)");
 	}
 	inline const QMap<QString, QRgb> &modelLightColors() const {

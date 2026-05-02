@@ -55,7 +55,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 	archivePath.chop(1);
 	QStringList fsList;
 	QString map, desc;
-	int index, fieldID=0;
+	int index, fieldID = 0;
 
 	if (archive)		delete archive;
 	archive = new FsArchive(archivePath);
@@ -112,23 +112,19 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 
 		map = entry;
 		map.chop(3);
-		if ((index = map.lastIndexOf('\\')) != -1)
-			map = map.mid(index+1);
+		index = map.lastIndexOf('\\');
+		if (index != -1) {
+			map = map.mid(index + 1);
+		}
 
 		if (!map.isEmpty()) {
 			FieldPC *field = new FieldPC(map, entry, archive, Config::value("gameLang", "en").toString());
 			if (field->isOpen() && field->hasFiles()) {
-				if (field->hasJsmFile())
-					desc = Data::location(field->getJsmFile()->mapID());
-				else
-					desc = QString();
-
 				index = mapList().indexOf(map);
-				QString mapId = index == -1 ? "~" : QString("%1").arg(index, 3, 10, QChar('0'));
+				QString mapId = index == -1 ? "9999" : QString("%1").arg(index, 4, 10, QChar('0'));
 
 				fields.append(field);
 				fieldsSortByName.insert(map, fieldID);
-				fieldsSortByDesc.insert(desc, fieldID);
 				fieldsSortByMapId.insert(mapId, fieldID);
 				++fieldID;
 			} else {
@@ -175,7 +171,6 @@ int FieldArchivePC::openWorld()
 	fields.append(field);
 	_mapList = QStringList(field->name());
 	fieldsSortByName.insert(field->name(), 0);
-	fieldsSortByDesc.insert(QString(), 0);
 	fieldsSortByMapId.insert(QString("%1").arg(0, 3, 10, QChar('0')), 0);
 
 	return 0;
@@ -200,7 +195,7 @@ bool FieldArchivePC::openModels()
 	for (const QString &entry: toc) {
 		QRegularExpressionMatch match = fileName.match(entry, entry.size() - 9);
 		if (match.hasMatch()) {
-			bool ok;
+			bool ok = false;
 			int id = match.captured(1).toInt(&ok);
 			if (ok) {
 				MchFile mch;
@@ -214,11 +209,9 @@ bool FieldArchivePC::openModels()
 	return !models.isEmpty();
 }
 
-bool FieldArchivePC::openBG(Field *field) const
+bool FieldArchivePC::openFull(Field *field) const
 {
-	if (!archive)	return false;
-
-	return field->isPc() && ((FieldPC *)field)->open2(archive);
+	return field->isPc() && ((FieldPC *)field)->openFull();
 }
 
 void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHeader> > &oldFields) const

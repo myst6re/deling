@@ -33,7 +33,7 @@ public:
 	FF8DiscArchive *getFF8DiscArchive() const;
 	int open(const QString &, ArchiveObserver *progress);
 	bool openModels();
-	bool openBG(Field *field) const;
+	bool openFull(Field *field) const;
 private:
 	FF8DiscArchive *iso;
 };

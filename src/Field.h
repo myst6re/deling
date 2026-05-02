@@ -65,7 +65,7 @@ public:
 	void setModified(bool modified);
 	const QString &name() const;
 
-	bool hasFile(FileType fileType) const;
+	virtual bool hasFile(FileType fileType) const;
 	bool hasMsdFile() const;
 	bool hasJsmFile() const;
 	bool hasIdFile() const;
@@ -85,26 +85,25 @@ public:
 	bool hasAkaoListFile() const;
 	bool hasWorldmapFile() const;
 
-	bool hasFiles2() const;
 	bool hasFiles() const;
 
-	File *getFile(FileType fileType) const;
-	MsdFile *getMsdFile() const;
-	JsmFile *getJsmFile() const;
-	IdFile *getIdFile() const;
-	CaFile *getCaFile() const;
-	RatFile *getRatFile() const;
-	MrtFile *getMrtFile() const;
-	InfFile *getInfFile() const;
-	PmpFile *getPmpFile() const;
-	PmdFile *getPmdFile() const;
-	PvpFile *getPvpFile() const;
-	BackgroundFile *getBackgroundFile() const;
-	TdwFile *getTdwFile() const;
-	CharaOneFile *getCharaFile() const;
-	MskFile *getMskFile() const;
-	SfxFile *getSfxFile() const;
-	AkaoListFile *getAkaoListFile() const;
+	virtual File *getFile(FileType fileType);
+	MsdFile *getMsdFile();
+	JsmFile *getJsmFile();
+	IdFile *getIdFile();
+	CaFile *getCaFile();
+	RatFile *getRatFile();
+	MrtFile *getMrtFile();
+	InfFile *getInfFile();
+	PmpFile *getPmpFile();
+	PmdFile *getPmdFile();
+	PvpFile *getPvpFile();
+	BackgroundFile *getBackgroundFile();
+	TdwFile *getTdwFile();
+	CharaOneFile *getCharaFile();
+	MskFile *getMskFile();
+	SfxFile *getSfxFile();
+	AkaoListFile *getAkaoListFile();
 	Map *getWorldmapFile() const;
 	void setWorldmapFile(Map *mapFile);
 
@@ -120,15 +119,16 @@ public:
 	void setOpen(bool open);
 protected:
 	void setName(const QString &name);
+	File *_getFile(FileType fileType) const;
 
 	void openFile(FileType fileType, const QByteArray &data);
 	void openJsmFile(const QByteArray &jsm, const QByteArray &sym = QByteArray(), bool oldFormat = false);
 	void openBackgroundFile(const QByteArray &map, const QByteArray &mim);
 	void openCharaFile(const QByteArray &one, const QByteArray &pcb = QByteArray());
 	virtual void setFile(FileType fileType);
-private:
 	File *newFile(FileType fileType);
 	void deleteFile(FileType fileType);
+private:
 
 	bool _isOpen;
 	QString _name;

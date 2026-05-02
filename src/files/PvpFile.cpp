@@ -44,11 +44,11 @@ bool PvpFile::save(QByteArray &pvp) const
 
 quint32 PvpFile::value() const
 {
-	return _value;
+	return _value << 6;
 }
 
 void PvpFile::setValue(quint32 value)
 {
-	_value = value;
+	_value = value >> 6;
 	modified = true;
 }

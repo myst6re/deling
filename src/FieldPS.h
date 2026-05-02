@@ -102,19 +102,21 @@ public:
 		Pvp, Mim, Tdw, Pmp
 	};
 
-
 	FieldPS(quint32 isoFieldID);
 	virtual ~FieldPS();
 	
-	bool isPc() const;
-	bool isPs() const;
-	bool hasFiles2() const;
-//	void setIsoFieldID(quint32 isoFieldID);
-	quint32 isoFieldID() const;
+	inline bool isPc() const {
+		return false;
+	}
+	inline bool isPs() const {
+		return true;
+	}
+	inline quint32 isoFieldID() const {
+		return _isoFieldID;
+	}
 	virtual bool open(const QByteArray &dat);
-	virtual bool open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
+	virtual bool openFull(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
 	bool save(QByteArray &dat, QByteArray &mim, QByteArray &lzk);
-
 private:
 	quint32 _isoFieldID;
 };
@@ -126,5 +128,5 @@ public:
 	virtual ~FieldJpDemoPS() {}
 
 	bool open(const QByteArray &dat);
-	bool open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
+	bool openFull(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk);
 };

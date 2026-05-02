@@ -36,9 +36,9 @@ class IdFile : public File
 {
 public:
 	IdFile();
-	bool open(const QByteArray &id);
-	bool save(QByteArray &id) const;
-	inline QString filterText() const {
+	bool open(const QByteArray &id) override;
+	bool save(QByteArray &id) const override;
+	inline QString filterText() const override {
 		return QObject::tr("Field walkmesh PC File (*.id)");
 	}
 	bool hasTriangle() const;

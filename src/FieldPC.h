@@ -26,22 +26,32 @@ class FieldPC : public Field
 {
 public:
 	enum FileExt {
-		Msd, Jsm, Id, Ca, Rat, Mrt, Inf, Pcb, Pmp, Pmd, Pvp, Map, Tdw, Msk, Sfx, CharaOne, Mim, Sym
+		ExtMsd, ExtJsm, ExtId, ExtCa, ExtRat, ExtMrt, ExtInf, ExtPcb, ExtPmp,
+		ExtPmd, ExtPvp, ExtMap, ExtTdw, ExtMsk, ExtSfx, ExtCharaOne, ExtMim, ExtSym
 	};
 
 	FieldPC(const QString &name, const QString &path, FsArchive *archive, const QString &gameLang);
 	explicit FieldPC(const QString &path, const QString &gameLang);
 	virtual ~FieldPC();
 
-	bool isPc() const;
-	bool isPs() const;
-	bool hasFiles2() const;
+	inline bool isPc() const {
+		return true;
+	}
+	inline bool isPs() const {
+		return false;
+	}
+	bool hasFile(FileType fileType) const override;
+	File *getFile(FileType fileType) override;
 //	void setArchiveHeader(FsArchive *header);
-	FsArchive *getArchiveHeader() const;
-	const QString &path() const;
+	inline FsArchive *getArchiveHeader() const {
+		return header;
+	}
+	inline const QString &path() const {
+		return _path;
+	}
 	bool open(const QString &path);
 	bool open(FsArchive *archive);
-	bool open2(FsArchive *archive = nullptr);
+	bool openFull();
 	bool save(const QString &path);
 	void save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
 	void optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data);
@@ -51,22 +61,20 @@ public:
 protected:
 	virtual void setFile(FileType fileType);
 private:
-	bool openOptimized(const QList<FileExt> &selectedExts);
-	bool openOptimized(const QList<FileExt> &selectedExts, FsArchive *archive);
+	bool openOptimizedWithoutArchive(const QList<FileType> &selectedFileTypes);
+	bool openOptimized(const QList<FileType> &selectedFileTypes);
 	QString fileName(FileExt fileExt, bool useGameLang) const;
 	QString filePath(FileExt fileExt) const;
 	QString filePath(FileExt fileType, bool useGameLang) const;
 	QString filePath(const QString &fileName) const;
 	inline static QList<FileExt> openExts() {
-		return QList<FileExt>() << Inf << Msd << Jsm << Mrt << Sym;
+		return QList<FileExt>() << ExtInf << ExtMsd << ExtJsm << ExtMrt << ExtSym << ExtMsk
+		                        << ExtRat << ExtPcb << ExtPmp << ExtPmd << ExtPvp << ExtSfx
+		                        << ExtId << ExtCa << ExtTdw << ExtMap << ExtMim << ExtCharaOne;
 	}
-	inline static QList<FileExt> open2Exts() {
-		return QList<FileExt>() << Msk << Rat << Pcb << Pmp << Pmd << Pvp << Sfx
-		                        << Id << Ca << Tdw << Map << Mim << CharaOne;
-	}
-	static FileType extToType(FileExt fileExt, bool *ok);
-	static FileExt typeToExt(FileType fileType, bool *ok);
-	QString _path;
-	QString _lang, _subDir, _gameLang;
-	FsArchive *header;
+	static FileType extToType(FileExt fileExt);
+	static QList<FileExt> typeToExt(FileType fileType);
+	QString _path, _lang, _subDir, _gameLang;
+	FsArchive *header, *_archive;
+	static QRegularExpression _pathReg, _pathRegWithoutArchive;
 };

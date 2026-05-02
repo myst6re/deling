@@ -20,7 +20,7 @@
 QString File::lastError;
 
 File::File() :
-	modified(false)
+	modified(false), _open(false)
 {
 }
 
@@ -67,23 +67,7 @@ bool File::save(QByteArray &) const
 	return false;
 }
 
-
 bool File::saveForExport(QByteArray &data)
 {
 	return save(data);
-}
-
-bool File::isModified() const
-{
-	return modified;
-}
-
-void File::setModified(bool modified)
-{
-	this->modified = modified;
-}
-
-const QString &File::errorString() const
-{
-	return lastError;
 }

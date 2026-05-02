@@ -30,10 +30,10 @@ public:
 
 	explicit TdwFile();
 	virtual ~TdwFile();
-	bool open(const QByteArray &tdw);
+	bool open(const QByteArray &tdw) override;
 	void close();
-	bool save(QByteArray &tdw) const;
-	inline QString filterText() const {
+	bool save(QByteArray &tdw) const override;
+	inline QString filterText() const override {
 		return QObject::tr("Field additionnal fonts PC file (*.tdw)");
 	}
 	bool isNull() const;

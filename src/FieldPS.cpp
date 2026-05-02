@@ -114,31 +114,6 @@ FieldPS::~FieldPS()
 {
 }
 
-bool FieldPS::isPc() const
-{
-	return false;
-}
-
-bool FieldPS::isPs() const
-{
-	return true;
-}
-
-bool FieldPS::hasFiles2() const
-{
-	return true;
-}
-
-//void FieldPS::setIsoFieldID(quint32 isoFieldID)
-//{
-//	this->isoFieldID = isoFieldID;
-//}
-
-quint32 FieldPS::isoFieldID() const
-{
-	return _isoFieldID;
-}
-
 bool FieldPS::open(const QByteArray &dat)
 {
 	setOpen(false);
@@ -187,7 +162,7 @@ bool FieldPS::open(const QByteArray &dat)
 	return true;
 }
 
-bool FieldPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk)
+bool FieldPS::openFull(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk)
 {
 	const char *constData = mim.constData();
 
@@ -400,7 +375,7 @@ bool FieldJpDemoPS::open(const QByteArray &dat)
 	return true;
 }
 
-bool FieldJpDemoPS::open2(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk)
+bool FieldJpDemoPS::openFull(const QByteArray &dat, const QByteArray &mim, const QByteArray &lzk)
 {
 	if (dat.size() < 48 || mim.size() < 8) {
 		return false;

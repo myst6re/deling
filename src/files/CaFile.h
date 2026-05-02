@@ -33,9 +33,9 @@ class CaFile : public File
 {
 public:
 	CaFile();
-	bool open(const QByteArray &ca);
-	bool save(QByteArray &ca) const;
-	inline QString filterText() const {
+	bool open(const QByteArray &ca) override;
+	bool save(QByteArray &ca) const override;
+	inline QString filterText() const override {
 		return QObject::tr("Field camera PC File (*.ca)");
 	}
 	bool hasCamera() const;

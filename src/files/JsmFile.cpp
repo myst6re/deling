@@ -25,6 +25,7 @@ JsmFile::JsmFile() :
 	File(), _hasSym(false), needUpdate(true), needUpdateMore(true), _offsetScriptPositionsSectionPadding(0),
     groupItem(0), _oldFormat(false)
 {
+	qDebug() << "JsmFile::JsmFile";
 	if (opcodeNamesCalc.isEmpty()) {
 		for (int i = 0; i < 18; ++i) {
 			opcodeNamesCalc.append(JsmOpcodeCal::cal_table[i]);
@@ -85,6 +86,7 @@ JsmGroup JsmFile::createGroup(quint16 label, quint8 count, const JsmHeader &jsmH
 
 bool JsmFile::open(const QByteArray &jsm, const QByteArray &symData, bool oldFormat)
 {
+	qDebug() << "JsmFile::open";
 	const char *jsmData = jsm.constData();
 	int jsmDataSize = jsm.size(), oldPos = -1;
 	quint16 group, label, pos;
@@ -919,7 +921,7 @@ void JsmFile::setWindow(quint8 textID, int winID, const FF8Window &window)
 }
 
 QString JsmFile::toString(int groupID, int methodID, bool moreDecompiled,
-                          const Field *field, int indent, bool noCache)
+                          int indent, bool noCache)
 {
 	if (!noCache) {
 		const QString &cache = scripts.script(groupID, methodID).decompiledScript(moreDecompiled);
@@ -931,12 +933,31 @@ QString JsmFile::toString(int groupID, int methodID, bool moreDecompiled,
 	needUpdateMore = false;
 	QString ret;
 	if (moreDecompiled) {
-		ret = _toStringMore(groupID, methodID, field, indent);
+		ret = _toStringMore(groupID, methodID, indent);
 	} else {
 		ret = _toString(groupID, methodID, indent);
 	}
 
-	setDecompiledScript(groupID, methodID, ret, moreDecompiled);
+	if (indent == 0) {
+		setDecompiledScript(groupID, methodID, ret, moreDecompiled);
+	}
+
+	return ret;
+}
+
+QString JsmFile::toString(bool moreDecompiled, bool noCache)
+{
+	QString ret;
+	int nbGroups = scripts.nbGroup();
+
+	for (int groupID = 0; groupID < nbGroups; ++groupID) {
+		int nbMethods = scripts.nbScript(groupID);
+		for (int methodID = 0; methodID < nbMethods; ++methodID) {
+			ret.append(QString("%1%2::%3\n{\n").arg(groupID == 0 && methodID == 0 ? "" : "\n", scripts.group(groupID).name(), scripts.script(groupID, methodID).name()));
+			ret.append(toString(groupID, methodID, moreDecompiled, 1, noCache));
+			ret.append(QString("\n}\n"));
+		}
+	}
 
 	return ret;
 }
@@ -962,18 +983,18 @@ QString JsmFile::_toString(int groupID, int methodID, int indent) const
 	return ret;
 }
 
-QString JsmFile::_toStringMore(int groupID, int methodID, const Field *field, int indent) const
+QString JsmFile::_toStringMore(int groupID, int methodID, int indent) const
 {
 	QSet<void *> collectPointers;
 	JsmProgram program = scripts.program(groupID, methodID, collectPointers);
-	QStringList ret = program.toStringList(field, indent);
+	QStringList ret = program.toStringList(this, indent);
 
 	qDeleteAll(collectPointers);
 
 	return ret.join("\n");
 }
 
-int JsmFile::opcodePositionInText(int groupID, int methodID, int opcodeID, bool more, const Field *field) const
+int JsmFile::opcodePositionInText(int groupID, int methodID, int opcodeID, bool more) const
 {
 	if (more) {
 		QSet<void *> collectPointers;
@@ -981,7 +1002,7 @@ int JsmFile::opcodePositionInText(int groupID, int methodID, int opcodeID, bool 
 			opcodeID -= 1;
 		}
 		JsmProgram program = scripts.program(groupID, methodID, collectPointers);
-		QString ret = program.toStringList(field, 0, opcodeID).join("\n");
+		QString ret = program.toStringList(this, 0, opcodeID).join("\n");
 
 		qDeleteAll(collectPointers);
 

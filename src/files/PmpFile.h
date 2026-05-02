@@ -25,9 +25,9 @@ class PmpFile : public File
 public:
 	static QString currentFieldName;
 	PmpFile();
-	bool open(const QByteArray &pmp);
-	bool save(QByteArray &pmp) const;
-	inline QString filterText() const {
+	bool open(const QByteArray &pmp) override;
+	bool save(QByteArray &pmp) const override;
+	inline QString filterText() const override {
 		return QObject::tr("Field particles data PC file (*.pmp)");
 	}
 	QByteArray getPmpData() const;

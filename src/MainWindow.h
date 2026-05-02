@@ -58,6 +58,7 @@ public:
 public slots:
 	void openFile(QString path = QString());
 private slots:
+	void disableList1DescSort(int logicalIndex);
 	void filterMap();
 	void fillPage();
 	void fillBackground(const QImage &image);

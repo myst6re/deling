@@ -51,28 +51,34 @@ bool EncounterExporter::toDir(const QDir &dir, ArchiveObserver *observer)
 			observer->setObserverValue(i++);
 		}
 
-		if (f && f->isOpen() && (!f->isPc() || ((FieldPC *)f)->open2(((FieldArchivePC *)_archive)->getFsArchive())) && f->hasMrtFile()) {
+		if (f && f->isOpen() && f->hasMrtFile()) {
 			MrtFile *mrt = f->getMrtFile();
-			QString fieldName = f->name();
+			if (mrt->isOpen()) {
+				QString fieldName = f->name();
 
-			if (fieldName.isEmpty()) {
-				fieldName = QObject::tr("Unamed");
-			}
-
-			QFile file(dir.filePath(fieldName + ".txt"));
-			if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-				for (int i = 0; i < 4; ++i) {
-					file.write(QString("Stage %1\n").arg(mrt->formation(i)).toUtf8());
+				if (fieldName.isEmpty()) {
+					fieldName = QObject::tr("Unamed");
 				}
-				if (f->hasRatFile()) {
-					RatFile *rat = f->getRatFile();
-					file.write(QString("Rate %1\n").arg(rat->rate()).toUtf8());
+
+				QFile file(dir.filePath(fieldName + ".txt"));
+				if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+					for (int i = 0; i < 4; ++i) {
+						file.write(QString("Stage %1\n").arg(mrt->formation(i)).toUtf8());
+					}
+					if (f->hasRatFile()) {
+						RatFile *rat = f->getRatFile();
+						if (rat->isOpen()) {
+							file.write(QString("Rate %1\n").arg(rat->rate()).toUtf8());
+						} else {
+							file.write(QString("Rate -\n").toUtf8());
+						}
+					} else {
+						file.write(QString("Rate -\n").toUtf8());
+					}
 				} else {
-					file.write(QString("Rate -\n").toUtf8());
+					_lastErrorString = file.errorString();
+					return false;
 				}
-			} else {
-				_lastErrorString = file.errorString();
-				return false;
 			}
 		}
 	}

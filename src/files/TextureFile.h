@@ -27,9 +27,9 @@ public:
 	TextureFile(const QImage &image);
 	TextureFile(const QImage &image, const QList< QVector<QRgb> > &colorTables);
 	virtual ~TextureFile() {}
-	virtual bool open(const QByteArray &) {return false;}
-	virtual bool save(QByteArray &) const {return false;}
-	inline QString filterText() const {
+	virtual bool open(const QByteArray &) override {return false;}
+	virtual bool save(QByteArray &) const override {return false;}
+	inline QString filterText() const override {
 		return QString();
 	}
 	bool isValid() const;

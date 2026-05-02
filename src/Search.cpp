@@ -92,8 +92,6 @@ QString Search::text() const
 FieldArchive::Sorting Search::sorting() const
 {
 	switch (fieldList->sortColumn()) {
-	case 1:
-		return FieldArchive::SortByDesc;
 	case 2:
 		return FieldArchive::SortByMapId;
 	default:

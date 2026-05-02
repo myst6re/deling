@@ -24,6 +24,8 @@
 #define MAG_COUNT	57
 #define MAP_COUNT	982
 
+class Sfx;
+
 struct TranslateChar {
 	const char *source;
 	const char *comment;
@@ -36,6 +38,7 @@ public:
     static bool ff8Found();
 	static QString ff8ExePath();
 	static QString AppPath();
+	static Sfx *sounds();
 	static QString location(int i);
 	static QString name(int i);
 	static QString magic(int i);
@@ -44,4 +47,5 @@ private:
 	static TranslateChar locations[LOC_COUNT];
 	static const char *_maplist[MAP_COUNT];
 	static QString AppPathCache;
+	static Sfx *_sounds;
 };

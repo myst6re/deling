@@ -18,54 +18,72 @@
 #include "FieldPC.h"
 #include "FsArchive.h"
 
+QRegularExpression FieldPC::_pathReg = QRegularExpression("^" + QRegularExpression::escape("C:\\ff8\\Data\\") + "(\\w+)" + QRegularExpression::escape("\\FIELD\\mapdata\\") + "(\\w+)" + QRegularExpression::escape("\\"), QRegularExpression::CaseInsensitiveOption);
+QRegularExpression FieldPC::_pathRegWithoutArchive = QRegularExpression("^" + QRegularExpression::escape("C:\\ff8\\Data\\") + "(\\w+)" + QRegularExpression::escape("\\FIELD\\mapdata\\") + "(\\w+)" + QRegularExpression::escape("\\") + "(\\w+)" + QRegularExpression::escape("\\"), QRegularExpression::CaseInsensitiveOption);
+
 FieldPC::FieldPC(const QString &name, const QString &path, FsArchive *archive, const QString &gameLang)
-    : Field(name), _path(path), _gameLang(gameLang), header(nullptr)
+    : Field(name), _path(path), _gameLang(gameLang), header(nullptr), _archive(archive)
 {
 	open(archive);
 }
 
 FieldPC::FieldPC(const QString &path, const QString &gameLang)
-    : Field(QString()), _path(path), _gameLang(gameLang), header(nullptr)
+    : Field(QString()), _path(path), _gameLang(gameLang), header(nullptr), _archive(nullptr)
 {
 	open(path);
 }
 
 FieldPC::~FieldPC()
 {
-	if (header)		delete header;
+	if (header != nullptr) {
+		delete header;
+	}
 }
 
-bool FieldPC::isPc() const
+bool FieldPC::hasFile(Field::FileType fileType) const
 {
-	return true;
+	if (header == nullptr) {
+		return false;
+	}
+
+	QList<FileExt> exts = typeToExt(fileType);
+	for (const FileExt &ext: exts) {
+		if (!header->fileExists(filePath(ext))) {
+			return false;
+		}
+	}
+
+	return !exts.isEmpty();
 }
 
-bool FieldPC::isPs() const
+File *FieldPC::getFile(Field::FileType fileType)
 {
-	return false;
+	File *f = _getFile(fileType);
+	
+	if (f != nullptr) {
+		return f;
+	}
+
+	if (!openOptimized(QList<FileType>() << fileType)) {
+		return newFile(fileType);
+	}
+
+	f = _getFile(fileType);
+
+	if (f != nullptr) {
+		return f;
+	}
+
+	return newFile(fileType);
 }
 
-bool FieldPC::hasFiles2() const
+bool FieldPC::openFull()
 {
-	return header &&
-	        ((header->fileExists(filePath(Mim)) && header->fileExists(filePath(Map)))
-			|| header->fileExists(filePath(Tdw))
-	        || header->fileExists(filePath(CharaOne)));
-}
+	if (!header) {
+		return false;
+	}
 
-//void FieldPC::setArchiveHeader(FsArchive *header)
-//{
-//	this->header = header;
-//}
-
-FsArchive *FieldPC::getArchiveHeader() const
-{
-	return header;
-}
-
-const QString &FieldPC::path() const
-{
-	return _path;
+	return openOptimized(fileTypes());
 }
 
 bool FieldPC::open(const QString &path)
@@ -75,8 +93,11 @@ bool FieldPC::open(const QString &path)
 	QString archivePath = path;
 	archivePath.chop(1);
 
-	if (header)	delete header;
+	if (header != nullptr) {
+		delete header;
+	}
 	header = new FsArchive(archivePath);
+	_archive = nullptr;
 	if (!header->isOpen()) {
 		qWarning() << "fieldData pas ouvert" << path;
 		delete header;
@@ -84,7 +105,6 @@ bool FieldPC::open(const QString &path)
 		return false;
 	}
 
-	QRegularExpression pathReg("^" + QRegularExpression::escape("C:\\ff8\\Data\\") + "(\\w+)" + QRegularExpression::escape("\\FIELD\\mapdata\\") + "(\\w+)" + QRegularExpression::escape("\\") + "(\\w+)" + QRegularExpression::escape("\\"), QRegularExpression::CaseInsensitiveOption);
 	FsHeader *infInfos = header->getFile("*.inf");
 
 	if (!infInfos) {
@@ -92,7 +112,7 @@ bool FieldPC::open(const QString &path)
 		return false;
 	}
 	
-	QRegularExpressionMatch match = pathReg.match(infInfos->path());
+	QRegularExpressionMatch match = _pathRegWithoutArchive.match(infInfos->path());
 	if (!match.hasMatch()) {
 		qWarning() << "fieldData not opened wrong path" << infInfos->path();
 		return false;
@@ -102,51 +122,45 @@ bool FieldPC::open(const QString &path)
 	_subDir = match.captured(2);
 	setName(match.captured(3));
 
-	if (!openOptimized(openExts())) {
-		return false;
-	}
-
 	setOpen(true);
 	return true;
 }
 
-bool FieldPC::openOptimized(const QList<FileExt> &selectedExts)
+bool FieldPC::openOptimizedWithoutArchive(const QList<FileType> &selectedFileTypes)
 {
+	if (selectedFileTypes.isEmpty()) {
+		return false;
+	}
+
 	QMap<FileExt, QString> files;
 
-	for (FileExt ext: selectedExts) {
-		QString path = filePath(ext);
+	for (const FileType &type: selectedFileTypes) {
+		QList<FileExt> exts = typeToExt(type);
+		for (FileExt ext: exts) {
+			QString path = filePath(ext);
 
-		if (header->fileExists(path)) {
-			files[ext] = path;
+			if (header->fileExists(path)) {
+				files[ext] = path;
+			}
 		}
 	}
 
-	QMapIterator<FileExt, QString> it(files);
-
-	while (it.hasNext()) {
-		it.next();
-
-		FileExt ext = it.key();
-		FileType type = Field::Msd;
-
-		if (ext != CharaOne) {
-			bool ok;
-			type = extToType(ext, &ok);
-
-			if (!ok) {
-				continue;
-			}
+	for (const FileType &type: selectedFileTypes) {
+		QList<FileExt> exts = typeToExt(type);
+		if (exts.isEmpty()) {
+			continue;
+		}
+		const QString &path = files.value(exts.first());
+		if (path.isEmpty()) {
+			continue;
 		}
 
-		const QString &path = it.value();
-
-		if (ext == Jsm && files.contains(Sym)) {
-			openJsmFile(header->fileData(path), header->fileData(files[Sym]));
-		} else if (ext == Map && files.contains(Mim)) {
-			openBackgroundFile(header->fileData(path), header->fileData(files[Mim]));
-		} else if (ext == CharaOne) {
-			openCharaFile(header->fileData(path), files.contains(Pcb) ? header->fileData(files[Pcb]) : QByteArray());
+		if (type == Jsm && files.contains(ExtSym)) {
+			openJsmFile(header->fileData(path), header->fileData(files[ExtSym]));
+		} else if (type == Background && files.contains(ExtMim)) {
+			openBackgroundFile(header->fileData(path), header->fileData(files[ExtMim]));
+		} else if (type == CharaOne) {
+			openCharaFile(header->fileData(path), files.contains(ExtPcb) ? header->fileData(files[ExtPcb]) : QByteArray());
 		} else {
 			openFile(type, header->fileData(path));
 		}
@@ -155,22 +169,29 @@ bool FieldPC::openOptimized(const QList<FileExt> &selectedExts)
 	return true;
 }
 
-bool FieldPC::openOptimized(const QList<FileExt> &selectedExts, FsArchive *archive)
+bool FieldPC::openOptimized(const QList<FileType> &selectedFileTypes)
 {
-	if (!archive) {
-		return openOptimized(selectedExts);
+	if (selectedFileTypes.isEmpty()) {
+		return false;
+	}
+
+	if (_archive == nullptr) {
+		return openOptimizedWithoutArchive(selectedFileTypes);
 	}
 
 	QMap<FileExt, FsHeader *> files;
 	quint32 maxSize = 0;
 
 	// Gather max decompression size and header infos
-	for (FileExt ext: selectedExts) {
-		FsHeader *infos = header->getFile(filePath(ext));
+	for (const FileType &type: selectedFileTypes) {
+		QList<FileExt> exts = typeToExt(type);
+		for (const FileExt &ext: exts) {
+			FsHeader *infos = header->getFile(filePath(ext));
 
-		if (infos != nullptr) {
-			maxSize = qMax(maxSize, infos->position() + infos->uncompressedSize());
-			files[ext] = infos;
+			if (infos != nullptr) {
+				maxSize = qMax(maxSize, infos->position() + infos->uncompressedSize());
+				files[ext] = infos;
+			}
 		}
 	}
 
@@ -180,38 +201,29 @@ bool FieldPC::openOptimized(const QList<FileExt> &selectedExts, FsArchive *archi
 	}
 
 	// Get data and open files
-	QByteArray fs_data = archive->fileData("*"%name()%".fs", true, int(maxSize));
+	QByteArray fs_data = _archive->fileData("*" % name() % ".fs", true, int(maxSize));
 
 	if (fs_data.isEmpty()) {
 		qWarning() << "No data!" << name() << maxSize;
 		return false;
 	}
 
-	QMapIterator<FileExt, FsHeader *> it(files);
-
-	while (it.hasNext()) {
-		it.next();
-
-		FileExt ext = it.key();
-		FileType type = Field::Msd;
-
-		if (ext != CharaOne) {
-			bool ok;
-			type = extToType(ext, &ok);
-
-			if (!ok) {
-				continue;
-			}
+	for (const FileType &type: selectedFileTypes) {
+		QList<FileExt> exts = typeToExt(type);
+		if (exts.isEmpty()) {
+			continue;
+		}
+		FsHeader *infos = files.value(exts.first());
+		if (infos == nullptr) {
+			continue;
 		}
 
-		FsHeader *infos = it.value();
-
-		if (ext == Jsm && files.contains(Sym)) {
-			openJsmFile(infos->data(fs_data), files[Sym]->data(fs_data));
-		} else if (ext == Map && files.contains(Mim)) {
-			openBackgroundFile(infos->data(fs_data), files[Mim]->data(fs_data));
-		} else if (ext == CharaOne) {
-			openCharaFile(infos->data(fs_data), files.contains(Pcb) ? files[Pcb]->data(fs_data) : QByteArray());
+		if (type == Jsm && files.contains(ExtSym)) {
+			openJsmFile(infos->data(fs_data), files[ExtSym]->data(fs_data));
+		} else if (type == Background && files.contains(ExtMim)) {
+			openBackgroundFile(infos->data(fs_data), files[ExtMim]->data(fs_data));
+		} else if (type == CharaOne) {
+			openCharaFile(infos->data(fs_data), files.contains(ExtPcb) ? files[ExtPcb]->data(fs_data) : QByteArray());
 		} else {
 			openFile(type, infos->data(fs_data));
 		}
@@ -225,14 +237,14 @@ bool FieldPC::open(FsArchive *archive)
 	setOpen(false);
 
 	if (header)	delete header;
+	_archive = archive;
 
-	QRegularExpression pathReg("^" + QRegularExpression::escape("C:\\ff8\\Data\\") + "(\\w+)" + QRegularExpression::escape("\\FIELD\\mapdata\\") + "(\\w+)" + QRegularExpression::escape("\\"), QRegularExpression::CaseInsensitiveOption);
-	FsHeader *flInfos = archive->getFile("*"%name()%".fl");
+	FsHeader *flInfos = archive->getFile("*" % name() % ".fl");
 	if (!flInfos) {
 		qWarning() << "fieldData not opened" << name() << archive->path();
 		return false;
 	}
-	QRegularExpressionMatch match = pathReg.match(flInfos->path());
+	QRegularExpressionMatch match = _pathReg.match(flInfos->path());
 	if (!match.hasMatch()) {
 		qWarning() << "fieldData not opened" << name() << "wrong path" << flInfos->path();
 		return false;
@@ -240,7 +252,7 @@ bool FieldPC::open(FsArchive *archive)
 	_lang = match.captured(1);
 	_subDir = match.captured(2);
 
-	header = new FsArchive(archive->fileData(flInfos->path()), archive->fileData("*"%name()%".fi"));
+	header = new FsArchive(archive->fileData(flInfos->path()), archive->fileData("*" % name() % ".fi"));
 	if (!header->isOpen()) {
 		qWarning() << "fieldData not opened" << name();
 		delete header;
@@ -248,19 +260,8 @@ bool FieldPC::open(FsArchive *archive)
 		return false;
 	}
 
-	if (!openOptimized(openExts(), archive)) {
-		delete header;
-		header = nullptr;
-		return false;
-	}
-
 	setOpen(true);
 	return true;
-}
-
-bool FieldPC::open2(FsArchive *archive)
-{
-	return header && openOptimized(open2Exts(), archive);
 }
 
 bool FieldPC::save(const QString &path)
@@ -325,97 +326,97 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 	if (hasMsdFile() && getMsdFile()->isModified()) {
 		QByteArray msd;
 		if (getMsdFile()->save(msd)) {
-			header->setFileData(filePath(Msd), fs_data, msd);
+			header->setFileData(filePath(ExtMsd), fs_data, msd);
 		}
 	}
 	if (hasJsmFile() && getJsmFile()->isModified()) {
 		QByteArray jsm, sym;
 		if (getJsmFile()->save(jsm, sym)) {
-			header->setFileData(filePath(Jsm), fs_data, jsm);
+			header->setFileData(filePath(ExtJsm), fs_data, jsm);
 			if (!sym.isEmpty()) {
-				header->setFileData(filePath(Sym), fs_data, sym);
+				header->setFileData(filePath(ExtSym), fs_data, sym);
 			}
 		}
 	}
 	if (hasRatFile() && getRatFile()->isModified()) {
 		QByteArray rat;
 		if (getRatFile()->save(rat)) {
-			header->setFileData(filePath(Rat), fs_data, rat);
+			header->setFileData(filePath(ExtRat), fs_data, rat);
 		}
 	}
 	if (hasMrtFile() && getMrtFile()->isModified()) {
 		QByteArray mrt;
 		if (getMrtFile()->save(mrt)) {
-			header->setFileData(filePath(Mrt), fs_data, mrt);
+			header->setFileData(filePath(ExtMrt), fs_data, mrt);
 		}
 	}
 	if (hasInfFile() && getInfFile()->isModified()) {
 		QByteArray inf;
 		if (getInfFile()->save(inf)) {
-			header->setFileData(filePath(Inf), fs_data, inf);
+			header->setFileData(filePath(ExtInf), fs_data, inf);
 		}
 	}
 	if (hasPmpFile() && getPmpFile()->isModified()) {
 		QByteArray pmp;
 		if (getPmpFile()->save(pmp)) {
-			header->setFileData(filePath(Pmp), fs_data, pmp);
+			header->setFileData(filePath(ExtPmp), fs_data, pmp);
 		}
 	}
 	if (hasPmdFile() && getPmdFile()->isModified()) {
 		QByteArray pmd;
 		if (getPmdFile()->save(pmd)) {
-			header->setFileData(filePath(Pmd), fs_data, pmd);
+			header->setFileData(filePath(ExtPmd), fs_data, pmd);
 		}
 	}
 	if (hasPvpFile() && getPvpFile()->isModified()) {
 		QByteArray pvp;
 		if (getPvpFile()->save(pvp)) {
-			header->setFileData(filePath(Pvp), fs_data, pvp);
+			header->setFileData(filePath(ExtPvp), fs_data, pvp);
 		}
 	}
 	if (hasIdFile() && getIdFile()->isModified()) {
 		QByteArray id;
 		if (getIdFile()->save(id)) {
-			header->setFileData(filePath(Id), fs_data, id);
+			header->setFileData(filePath(ExtId), fs_data, id);
 		}
 	}
 	if (hasCaFile() && getCaFile()->isModified()) {
 		QByteArray ca;
 		if (getCaFile()->save(ca)) {
-			header->setFileData(filePath(Ca), fs_data, ca);
+			header->setFileData(filePath(ExtCa), fs_data, ca);
 		}
 	}
 	if (hasMskFile() && getMskFile()->isModified()) {
 		QByteArray msk;
 		if (getMskFile()->save(msk)) {
-			header->setFileData(filePath(Msk), fs_data, msk);
+			header->setFileData(filePath(ExtMsk), fs_data, msk);
 		}
 	}
 	if (hasTdwFile() && getTdwFile()->isModified()) {
 		QByteArray tdw;
 		if (getTdwFile()->save(tdw)) {
-			header->setFileData(filePath(Tdw), fs_data, tdw);
+			header->setFileData(filePath(ExtTdw), fs_data, tdw);
 		}
 	}
 	if (hasSfxFile() && getSfxFile()->isModified()) {
 		QByteArray sfx;
 		if (getSfxFile()->save(sfx)) {
-			header->setFileData(filePath(Sfx), fs_data, sfx);
+			header->setFileData(filePath(ExtSfx), fs_data, sfx);
 		}
 	}
 	if (hasCharaFile() && getCharaFile()->isModified()) {
 		QByteArray charaOne, pcb;
 		if (getCharaFile()->save(charaOne, pcb)) {
-			header->setFileData(filePath(CharaOne), fs_data, charaOne);
+			header->setFileData(filePath(ExtCharaOne), fs_data, charaOne);
 			if (!pcb.isEmpty()) {
-				header->setFileData(filePath(Pcb), fs_data, pcb);
+				header->setFileData(filePath(ExtPcb), fs_data, pcb);
 			}
 		}
 	}
 	if (hasBackgroundFile() && getBackgroundFile()->isModified()) {
 		QByteArray map;
 		if (getBackgroundFile()->save(map)) {
-			header->setFileData(filePath(Map), fs_data, map);
+			header->setFileData(filePath(ExtMap), fs_data, map);
 		}
 	}
 	header->save(fl_data, fi_data);
@@ -425,7 +426,11 @@ void FieldPC::optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_
 {
 	if (!header)	return;
 
-	for (FileExt ext: open2Exts()) {
+	QList<FileExt> exts = QList<FileExt>() << ExtInf << ExtMrt << ExtMsk << ExtRat
+	                      << ExtPcb << ExtPmp << ExtPmd << ExtPvp << ExtSfx
+	                      << ExtId << ExtCa << ExtTdw << ExtMap << ExtMim << ExtCharaOne;
+
+	for (FileExt ext: openExts()) {
 		header->fileToTheEnd(filePath(ext), fs_data);
 	}
 
@@ -434,10 +439,13 @@ void FieldPC::optimize(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_
 
 void FieldPC::setFile(FileType fileType)
 {
-	QString path = filePath(typeToExt(fileType, nullptr));
-	if (!path.isEmpty() && !header->fileExists(path)) {
-		header->addFile(path, FiCompression::CompressionNone);
-		Field::setFile(fileType);
+	QList<FileExt> exts = typeToExt(fileType);
+	for (const FileExt &ext: exts) {
+		QString path = filePath(ext);
+		if (!path.isEmpty() && !header->fileExists(path)) {
+			header->addFile(path, FiCompression::CompressionNone);
+			Field::setFile(fileType);
+		}
 	}
 }
 
@@ -476,7 +484,7 @@ bool FieldPC::changeGameLang(const QString &gameLang, FsArchive *archive)
 		return true;
 	}
 	
-	QList<FileExt> selectedExts;
+	QList<FileType> fts;
 
 	for (FileType t: fileTypes()) {
 		File *f = getFile(t);
@@ -484,16 +492,18 @@ bool FieldPC::changeGameLang(const QString &gameLang, FsArchive *archive)
 			continue;
 		}
 		
-		FileExt ext = typeToExt(t, nullptr);
-		if (filePath(ext).contains(QString("_%1.").arg(_gameLang))) {
-			selectedExts.append(ext);
+		for (const FileExt &ext: typeToExt(t)) {
+			if (filePath(ext).contains(QString("_%1.").arg(_gameLang))) {
+				fts.append(t);
+				break;
+			}
 		}
 	}
 	
 	_gameLang = gameLang;
 	
-	if (!selectedExts.empty()) {
-		return openOptimized(selectedExts, archive);
+	if (!fts.empty()) {
+		return openOptimized(fts);
 	}
 	
 	return true;
@@ -508,41 +518,41 @@ QString FieldPC::fileName(FileExt fileExt, bool useGameLang) const
 	}
 
 	switch (fileExt) {
-	case Msd:
+	case ExtMsd:
 		return name() + lang + ".msd";
-	case Jsm:
+	case ExtJsm:
 		return name() + lang + ".jsm";
-	case Id:
+	case ExtId:
 		return name() + lang + ".id";
-	case Ca:
+	case ExtCa:
 		return name() + lang + ".ca";
-	case Rat:
+	case ExtRat:
 		return name() + lang + ".rat";
-	case Mrt:
+	case ExtMrt:
 		return name() + lang + ".mrt";
-	case Inf:
+	case ExtInf:
 		return name() + lang + ".inf";
-	case Pcb:
+	case ExtPcb:
 		return name() + lang + ".pcb";
-	case Pmp:
+	case ExtPmp:
 		return name() + lang + ".pmp";
-	case Pmd:
+	case ExtPmd:
 		return name() + lang + ".pmd";
-	case Pvp:
+	case ExtPvp:
 		return name() + lang + ".pvp";
-	case Map:
+	case ExtMap:
 		return name() + lang + ".map";
-	case Tdw:
+	case ExtTdw:
 		return name() + lang + ".tdw";
-	case Msk:
+	case ExtMsk:
 		return name() + lang + ".msk";
-	case Sfx:
+	case ExtSfx:
 		return name() + lang + ".sfx";
-	case CharaOne:
+	case ExtCharaOne:
 		return "chara" + lang + ".one";
-	case Mim:
+	case ExtMim:
 		return name() + lang + ".mim";
-	case Sym:
+	case ExtSym:
 		return name() + lang + ".sym";
 	}
 	return QString();
@@ -570,100 +580,83 @@ QString FieldPC::filePath(const QString &fileName) const
 	        .arg(_lang, _subDir, name(), fileName);
 }
 
-Field::FileType FieldPC::extToType(FieldPC::FileExt fileExt, bool *ok)
+Field::FileType FieldPC::extToType(FieldPC::FileExt fileExt)
 {
-	if (ok) {
-		*ok = true;
-	}
-
 	switch (fileExt) {
-	case FieldPC::Msd:
+	case FieldPC::ExtMsd:
+	case FieldPC::ExtSym:
 		return Field::Msd;
-	case FieldPC::Jsm:
+	case FieldPC::ExtJsm:
 		return Field::Jsm;
-	case FieldPC::Id:
+	case FieldPC::ExtId:
 		return Field::Id;
-	case FieldPC::Ca:
+	case FieldPC::ExtCa:
 		return Field::Ca;
-	case FieldPC::Rat:
+	case FieldPC::ExtRat:
 		return Field::Rat;
-	case FieldPC::Mrt:
+	case FieldPC::ExtMrt:
 		return Field::Mrt;
-	case FieldPC::Inf:
+	case FieldPC::ExtInf:
 		return Field::Inf;
-	case FieldPC::Pmp:
+	case FieldPC::ExtPmp:
 		return Field::Pmp;
-	case FieldPC::Pmd:
+	case FieldPC::ExtPmd:
 		return Field::Pmd;
-	case FieldPC::Pvp:
+	case FieldPC::ExtPvp:
 		return Field::Pvp;
-	case FieldPC::Map:
+	case FieldPC::ExtMap:
+	case FieldPC::ExtMim:
 		return Field::Background;
-	case FieldPC::Tdw:
+	case FieldPC::ExtTdw:
 		return Field::Tdw;
-	case FieldPC::Msk:
+	case FieldPC::ExtMsk:
 		return Field::Msk;
-	case FieldPC::Sfx:
+	case FieldPC::ExtSfx:
 		return Field::Sfx;
-	case FieldPC::CharaOne:
+	case FieldPC::ExtCharaOne:
+	case FieldPC::ExtPcb:
 		return Field::CharaOne;
-	case FieldPC::Mim:
-	case FieldPC::Sym:
-	case FieldPC::Pcb:
-		break;
-	}
-
-	if (ok) {
-		*ok = false;
 	}
 
 	return Field::Msd;
 }
 
-FieldPC::FileExt FieldPC::typeToExt(Field::FileType fileType, bool *ok)
+QList<FieldPC::FileExt> FieldPC::typeToExt(Field::FileType fileType)
 {
-	if (ok) {
-		*ok = true;
-	}
-
 	switch (fileType) {
 	case Field::Msd:
-		return FieldPC::Msd;
+		return QList<FileExt>() << FieldPC::ExtMsd;
 	case Field::Jsm:
-		return FieldPC::Jsm;
+		return QList<FileExt>() << FieldPC::ExtJsm << FieldPC::ExtSym;
 	case Field::Id:
-		return FieldPC::Id;
+		return QList<FileExt>() << FieldPC::ExtId;
 	case Field::Ca:
-		return FieldPC::Ca;
+		return QList<FileExt>() << FieldPC::ExtCa;
 	case Field::Rat:
-		return FieldPC::Rat;
+		return QList<FileExt>() << FieldPC::ExtRat;
 	case Field::Mrt:
-		return FieldPC::Mrt;
+		return QList<FileExt>() << FieldPC::ExtMrt;
 	case Field::Inf:
-		return FieldPC::Inf;
+		return QList<FileExt>() << FieldPC::ExtInf;
 	case Field::Pmp:
-		return FieldPC::Pmp;
+		return QList<FileExt>() << FieldPC::ExtPmp;
 	case Field::Pmd:
-		return FieldPC::Pmd;
+		return QList<FileExt>() << FieldPC::ExtPmd;
 	case Field::Pvp:
-		return FieldPC::Pvp;
+		return QList<FileExt>() << FieldPC::ExtPvp;
 	case Field::Background:
-		return FieldPC::Map;
+		return QList<FileExt>() << FieldPC::ExtMap << FieldPC::ExtMim;
 	case Field::Tdw:
-		return FieldPC::Tdw;
+		return QList<FileExt>() << FieldPC::ExtTdw;
 	case Field::Msk:
-		return FieldPC::Msk;
+		return QList<FileExt>() << FieldPC::ExtMsk;
 	case Field::Sfx:
-		return FieldPC::Sfx;
+		return QList<FileExt>() << FieldPC::ExtSfx;
 	case Field::CharaOne:
-		return FieldPC::CharaOne;
+		return QList<FileExt>() << FieldPC::ExtCharaOne << FieldPC::ExtPcb;
 	case Field::AkaoList:
 		break;
 	}
 
-	if (ok) {
-		*ok = false;
-	}
-
-	return FieldPC::Msd;
+	return QList<FileExt>();
 }
