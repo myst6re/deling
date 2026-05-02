@@ -76,7 +76,7 @@ jobs:
       CMAKE_GENERATOR: Ninja
       CMAKE_BUILD_TYPE: ${{ matrix.build_type }}
       VCPKG_KEEP_ENV_VARS: PATH
-      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/../vcpkg-binary-cache
+      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/vcpkg-binary-cache
       QT_MEDIA_BACKEND: ffmpeg
 
     steps:
