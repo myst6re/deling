@@ -88,6 +88,7 @@ public:
 	bool hasFiles() const;
 
 	virtual File *getFile(FileType fileType);
+	void deleteFile(FileType fileType);
 	MsdFile *getMsdFile();
 	JsmFile *getJsmFile();
 	IdFile *getIdFile();
@@ -127,7 +128,6 @@ protected:
 	void openCharaFile(const QByteArray &one, const QByteArray &pcb = QByteArray());
 	virtual void setFile(FileType fileType);
 	File *newFile(FileType fileType);
-	void deleteFile(FileType fileType);
 private:
 
 	bool _isOpen;

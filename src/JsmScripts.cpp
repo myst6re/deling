@@ -31,9 +31,9 @@ const QString &JsmScript::decompiledScript(bool moreDecompiled) const
 	return moreDecompiled ? _decompiledScriptMore : _decompiledScript;
 }
 
-JsmGroup::JsmGroup(quint16 label, quint8 scriptCount, Type groupType, int groupTypeRelativeID)
-	: _type(groupType), _character(-1), _modelID(-1), _groupTypeRelativeID(groupTypeRelativeID),
-	  _label(label), _scriptCount(scriptCount)
+JsmGroup::JsmGroup(quint16 label, quint8 scriptCount, Type groupType, const QString &name)
+	: _type(groupType), _character(-1), _modelID(-1),
+	  _label(label), _scriptCount(scriptCount), _name(name)
 {
 }
 
@@ -131,6 +131,26 @@ int JsmScripts::findGroupIDByName(const QString &groupName) const
 	}
 
 	return -1;
+}
+
+int JsmScripts::calcGroupTypeRelativeId(int groupID) const
+{
+	int relativeId = 0, i = 0;
+	JsmGroup::Type type = _groupListOrderedById.at(groupID).type();
+
+	for (const JsmGroup &group: _groupListOrderedById) {
+		if (i == groupID) {
+			break;
+		}
+
+		if (group.type() == type) {
+			relativeId += 1;
+		}
+
+		i += 1;
+	}
+
+	return relativeId;
 }
 
 const JsmScript &JsmScripts::script(int groupID, int methodID) const
@@ -637,7 +657,7 @@ void JsmScripts::insertScript(int groupID, int methodID, const QString &name)
 	propagateOpcodeCountChange(absMethodID, data.nbOpcode());
 }
 
-void JsmScripts::insertGroup(int groupID, int groupTypeRelativeID)
+void JsmScripts::insertGroup(int groupID, JsmGroup::Type groupType, const QString &name)
 {
 	int absMethodID = 0;
 
@@ -650,9 +670,9 @@ void JsmScripts::insertGroup(int groupID, int groupTypeRelativeID)
 
 	qDebug() << "JsmScripts::insertGroup" << "groupID" << groupID << "absMethodID" << absMethodID;
 
-	_groupListOrderedById.insert(groupID, JsmGroup(absMethodID, 0, JsmGroup::No, groupTypeRelativeID));
-	insertScript(groupID, 0);
 	propagateGroupCountChange(groupID, +1);
+	_groupListOrderedById.insert(groupID, JsmGroup(absMethodID, 0, groupType, name));
+	insertScript(groupID, 0, "init");
 }
 
 void JsmScripts::removeScript(int groupID, int methodID)
@@ -702,7 +722,8 @@ void JsmScripts::propagateGroupCountChange(int groupID, int groupCountChange)
 	}
 
 	// Update REQ groups
-	for (int opcodeID = 0; opcodeID < scriptData.nbOpcode(); ++opcodeID) {
+	int nbOpcodes = scriptData.nbOpcode();
+	for (int opcodeID = 0; opcodeID < nbOpcodes; ++opcodeID) {
 		JsmOpcode opcode = scriptData.opcode(opcodeID);
 		int group = 0;
 
@@ -711,8 +732,10 @@ void JsmScripts::propagateGroupCountChange(int groupID, int groupCountChange)
 			case JsmOpcode::REQSW:
 			case JsmOpcode::REQEW:
 				group = opcode.param();
-				opcode.setParam(group + groupCountChange);
-				scriptData.setOpcode(opcodeID, opcode);
+				if (group >= groupID) {
+					opcode.setParam(group + groupCountChange);
+					scriptData.setOpcode(opcodeID, opcode);
+				}
 				break;
 			default:
 				break;

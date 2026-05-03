@@ -152,6 +152,7 @@ void JsmWidget::build()
 	tabBar->setCurrentIndex(Config::value("scriptType").toInt());
 
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillList2()));
+	connect(list1, SIGNAL(modified()), SIGNAL(modified()));
 	connect(list2, SIGNAL(itemSelectionChanged()), SLOT(fillTextEdit()));
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(onTabChanged(int)));
 	connect(textEdit, SIGNAL(lineHovered(QString,QPoint)), SLOT(showPreview(QString,QPoint)));
@@ -352,7 +353,7 @@ void JsmWidget::fillList2()
 
 	list2->clear();
 	int groupID = list1->selectedID();
-	if (groupID==-1)	return;
+	if (groupID == -1)	return;
 	int methodID = data()->getJsmFile()->currentMethodItem(groupID);
 
 	list1->scrollToItem(list1->currentItem());
@@ -362,8 +363,9 @@ void JsmWidget::fillList2()
 	list2->resizeColumnToContents(0);
 	list2->resizeColumnToContents(1);
 
-	const JsmGroup &group = data()->getJsmFile()->getScripts().group(groupID);
-	int modelID = group.modelId(), bgParamID = group.groupTypeRelativeId();
+	const JsmScripts &scripts = data()->getJsmFile()->getScripts();
+	const JsmGroup &group = scripts.group(groupID);
+	int modelID = group.modelId(), bgParamID = group.type() == JsmGroup::Background ? scripts.calcGroupTypeRelativeId(groupID) : 0;
 
 	if (modelID != -1 && data()->hasCharaFile()
 			&& modelID < data()->getCharaFile()->modelCount()) {

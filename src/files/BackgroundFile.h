@@ -85,7 +85,7 @@ public:
 
 	QImage background(bool hideBG=false) const;
 	QImage background(const QList<quint8> &activeParams, bool hideBG = false);
-	static QImage mimToImage(MapDepth depth);
+	QImage mimToImage(MapDepth depth) const;
 
 	inline const QList<Tile> &tiles() const {
 		return _tiles;
@@ -112,12 +112,12 @@ private:
 	QImage toImage(int palOffset, int srcYWidth,
 	               const QMultiMap<quint16, int> &tiles,
 	               const BackgroundBounds &bounds, bool hideBG) const;
-	static void drawTile(const Tile &tile, int palOffset, int srcYWidth,
-	                     int imageWidth, const BackgroundBounds &bounds,
-	                     const char *constMimData, QRgb *pixels);
+	void drawTile(const Tile &tile, int palOffset, int srcYWidth,
+	              int imageWidth, const BackgroundBounds &bounds,
+	              const char *constMimData, QRgb *pixels) const;
 	static void BGcolor(quint16 value, quint8 blendType, QRgb *pixels,
 	                    int index, bool forceBlack);
-	static QByteArray mim;
+	QByteArray mim;
 	MapType _mapType;
 	QList<Tile> _tiles;
 	QMultiMap<quint16, int> _tilesZOrder;

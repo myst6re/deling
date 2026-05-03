@@ -53,7 +53,7 @@ public:
 		No, Main, Model, Location, Door, Background
 	};
 
-	JsmGroup(quint16 label, quint8 scriptCount, Type groupType, int groupTypeRelativeID);
+	JsmGroup(quint16 label, quint8 scriptCount, Type groupType, const QString &name = QString());
 	inline void setType(Type type) {
 		_type = type;
 	}
@@ -62,9 +62,6 @@ public:
 	}
 	inline void setModelId(int modelID) {
 		_modelID = modelID;
-	}
-	inline void setGroupTypeRelativeId(int groupTypeRelativeID) {
-		_groupTypeRelativeID = groupTypeRelativeID;
 	}
 	inline void setName(const QString &name) {
 		_name = name;
@@ -84,9 +81,6 @@ public:
 	inline int modelId() const {
 		return _modelID;
 	}
-	int groupTypeRelativeId() const {
-		return _groupTypeRelativeID;
-	}
 	const QString &name() const {
 		return _name;
 	}
@@ -99,7 +93,7 @@ public:
 private:
 	Type _type;
 	int _character;
-	int _modelID, _groupTypeRelativeID;
+	int _modelID;
 	QString _name;
 	quint16 _label;
 	quint8 _scriptCount;
@@ -131,6 +125,7 @@ public:
 	void setGroupType(int groupID, JsmGroup::Type type);
 	int firstMethodID(int groupID) const;
 	int findGroupIDByName(const QString &groupName) const;
+	int calcGroupTypeRelativeId(int groupID) const;
 	// Scripts
 	inline const QList<JsmScript> &scripts() const {
 		return _methodList;
@@ -177,7 +172,7 @@ public:
 	void insertScript(int groupID, int methodID, const QString &name = QString());
 	void removeScript(int groupID, int methodID);
 	void replaceScript(int groupID, int methodID, const JsmData &data);
-	void insertGroup(int groupID, int groupTypeRelativeID);
+	void insertGroup(int groupID, JsmGroup::Type groupType, const QString &name = QString());
 	void removeGroup(int groupID);
 	// Decompiled data
 	void setDecompiledScript(int groupID, int methodID, const QString &text, bool moreDecompiled);

@@ -560,6 +560,14 @@ void MainWindow::fillPage()
 
 	QElapsedTimer t;t.start();
 
+	// Unload background for memory saving
+	if (currentField != nullptr && !currentField->isModified()) {
+		currentField->deleteFile(Field::Background);
+		currentField->deleteFile(Field::Tdw);
+		currentField->deleteFile(Field::Pmp);
+		currentField->deleteFile(Field::CharaOne);
+	}
+
 	if (this->field != nullptr) {
 		currentField = this->field;
 

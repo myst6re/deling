@@ -19,8 +19,6 @@
 #include "FF8Color.h"
 #include "FF8Image.h"
 
-QByteArray BackgroundFile::mim = QByteArray();
-
 Tile Tile::fromTile1(const Tile1 &tileType1, int sizeOfTile)
 {
 	Tile tile;
@@ -125,36 +123,31 @@ bool BackgroundFile::open(const QByteArray &map, const QByteArray &mim,
                           const QMultiMap<quint8, quint8> *defaultParams)
 {
 	this->mim = mim;
+	allparams.clear();
+	params.clear();
+	layers.clear();
+	int mimSize = mim.size();
+	MapType mapType;
 
-	if (!isOpen()) {
-		allparams.clear();
-		params.clear();
-		layers.clear();
-		int mimSize = mim.size();
-		MapType mapType;
-
-		if (mimSize == 401408) {
-			mapType = TypeOld;
-		} else if (mimSize == 438272) {
-			mapType = TypeNew;
-		}
-
-		_tiles = parseTiles(map, mapType);
-		_mapType = mapType;
-
-		openParameters();
-
-		if (defaultParams) {
-			params = *defaultParams;
-		} else {
-			// Enable parameter only when state = 0
-			for (quint8 param: allparams.keys(0)) {
-				params.insert(param, 0);
-			}
-		}
+	if (mimSize == 401408) {
+		mapType = TypeOld;
+	} else if (mimSize == 438272) {
+		mapType = TypeNew;
 	}
 
-	setOpen(true);
+	_tiles = parseTiles(map, mapType);
+	_mapType = mapType;
+
+	openParameters();
+
+	if (defaultParams) {
+		params = *defaultParams;
+	} else {
+		// Enable parameter only when state = 0
+		for (quint8 param: allparams.keys(0)) {
+			params.insert(param, 0);
+		}
+	}
 
 	return true;
 }
@@ -382,7 +375,7 @@ QImage BackgroundFile::toImage(int palOffset, int srcYWidth,
 
 void BackgroundFile::drawTile(const Tile &tile, int palOffset, int srcYWidth,
                               int imageWidth, const BackgroundBounds &bounds,
-                              const char *constMimData, QRgb *pixels)
+                              const char *constMimData, QRgb *pixels) const
 {
 	quint16 color;
 	const int baseX = bounds.left + tile.X,
@@ -501,7 +494,7 @@ void BackgroundFile::BGcolor(quint16 value, quint8 blendType, QRgb *pixels,
 	}
 }
 
-QImage BackgroundFile::mimToImage(MapDepth depth)
+QImage BackgroundFile::mimToImage(MapDepth depth) const
 {
 	if (depth == DepthColor) {
 		int width = 832;

@@ -56,9 +56,15 @@ bool Field::isPs() const
 
 void Field::openFile(FileType fileType, const QByteArray &data)
 {
-	PmpFile::currentFieldName = _name;
-	deleteFile(fileType);
-	File *f = newFile(fileType);
+	File *f = _getFile(fileType);
+
+	if (f == nullptr) {
+		f = newFile(fileType);
+	}
+
+	if (f->isOpen()) {
+		return;
+	}
 
 	if (!f->open(data)) {
 		qWarning() << "Field::openFile error" << _name << fileType;
@@ -74,6 +80,10 @@ void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym, bool oldFo
 
 	if (f == nullptr) {
 		f = (JsmFile *)newFile(Jsm);
+	}
+
+	if (f->isOpen()) {
+		return;
 	}
 
 	if (!f->open(jsm, sym, oldFormat)) {
@@ -92,6 +102,10 @@ void Field::openBackgroundFile(const QByteArray &map, const QByteArray &mim)
 		f = (BackgroundFile *)newFile(Background);
 	}
 
+	if (f->isOpen()) {
+		return;
+	}
+
 	if (!f->open(map, mim/*, &params */)) {
 		qWarning() << "Field::openBackgroundFile error" << _name;
 		f->setOpen(false);
@@ -106,6 +120,10 @@ void Field::openCharaFile(const QByteArray &one, const QByteArray &pcb)
 
 	if (f == nullptr) {
 		f = (CharaOneFile *)newFile(CharaOne);
+	}
+
+	if (f->isOpen()) {
+		return;
 	}
 
 	if (!f->open(one, pcb, isPs())) {

@@ -2204,7 +2204,7 @@ Dollet Harbor</source>
     </message>
     <message>
         <source>Exec</source>
-        <translation type="unfinished">Exec</translation>
+        <translation type="obsolete">Exec</translation>
     </message>
     <message>
         <source>Rename group</source>
@@ -2216,26 +2216,6 @@ Dollet Harbor</source>
     </message>
     <message>
         <source>Delete group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cut group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Paste group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Move up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Move down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2252,11 +2232,11 @@ Dollet Harbor</source>
     </message>
     <message>
         <source>Up</source>
-        <translation type="unfinished">Haut</translation>
+        <translation type="obsolete">Haut</translation>
     </message>
     <message>
         <source>Down</source>
-        <translation type="unfinished">Bas</translation>
+        <translation type="obsolete">Bas</translation>
     </message>
     <message>
         <source>You have more than 48 groups in this field, the game may crash.</source>

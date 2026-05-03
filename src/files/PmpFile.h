@@ -23,7 +23,6 @@
 class PmpFile : public File
 {
 public:
-	static QString currentFieldName;
 	PmpFile();
 	bool open(const QByteArray &pmp) override;
 	bool save(QByteArray &pmp) const override;

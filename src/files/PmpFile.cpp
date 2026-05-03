@@ -18,8 +18,6 @@
 #include "files/PmpFile.h"
 #include "FF8Color.h"
 
-QString PmpFile::currentFieldName;
-
 PmpFile::PmpFile()
 	: File()
 {
@@ -29,20 +27,6 @@ bool PmpFile::open(const QByteArray &pmp)
 {
 	this->pmp = pmp;
 	modified = false;
-
-//	quint32 lzsSize;
-
-//	memcpy(&lzsSize, pmp.constData(), 4);
-
-//	qDebug() << lzsSize << pmp.left(24).toHex() << pmp.size();
-//	int dec = 0;
-//	this->pmp = LZS::decompress(&(pmp.constData()[dec]), pmp.size()-dec);
-//	if(pmp.size() != 4) {
-//		palette().save(QString("pmp/%1-palette.png").arg(currentFieldName));
-//		for(int palID=0 ; palID<16 ; ++palID) {
-//			image(4, palID).save(QString("pmp/%1-%2.png").arg(currentFieldName).arg(palID));
-//		}
-//	}
 
 	return true;
 }

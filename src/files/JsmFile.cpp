@@ -64,23 +64,18 @@ bool JsmFile::open(const QString &path)
 JsmGroup JsmFile::createGroup(quint16 label, quint8 count, const JsmHeader &jsmHeader, int headerID)
 {
 	JsmGroup::Type type = JsmGroup::No;
-	int groupRelativeID = 0;
 
 	if (headerID < jsmHeader.countLines) {
 		type = JsmGroup::Location;
-		groupRelativeID = headerID;
 	} else if (headerID < jsmHeader.countLines + jsmHeader.countDoors) {
 		type = JsmGroup::Door;
-		groupRelativeID = headerID - jsmHeader.countLines;
 	} else if (headerID < jsmHeader.countLines + jsmHeader.countDoors + jsmHeader.countBackground) {
 		type = JsmGroup::Background;
-		groupRelativeID = headerID - (jsmHeader.countLines + jsmHeader.countDoors);
 	} else {
 		type = JsmGroup::No;
-		groupRelativeID = headerID - (jsmHeader.countLines + jsmHeader.countDoors + jsmHeader.countBackground);
 	}
 
-	return JsmGroup(label, count + 1, type, groupRelativeID);
+	return JsmGroup(label, count + 1, type);
 }
 
 bool JsmFile::open(const QByteArray &jsm, const QByteArray &symData, bool oldFormat)
@@ -217,6 +212,8 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &symData, bool oldFor
 		methodList.append(JsmScript(pos));
 	}
 
+	qDebug() << "JsmFile::open set scripts";
+
 	scripts = JsmScripts(groupListByGroupID, methodList,
 	                     JsmData(QByteArray((char *)&jsmData[jsmHeader.offsetScriptDataSection], jsmDataSize - jsmHeader.offsetScriptDataSection), _oldFormat));
 
@@ -335,6 +332,7 @@ bool JsmFile::save(QByteArray &jsm) const
 	QMap<int, quint16> doorGroups, backgroundGroups;
 	QByteArray locationGroups, otherGroups;
 	QSet<quint16> scriptsWithFlag;
+	int groupID = 0;
 
 	for (const JsmGroup &group: scripts.groups()) {
 		if (group.scriptCount() < 1) {
@@ -348,24 +346,26 @@ bool JsmFile::save(QByteArray &jsm) const
 			data = (group.label() << 7) | ((group.scriptCount() - 1) & 0x7F);
 		}
 
+		int relativeId = scripts.calcGroupTypeRelativeId(groupID);
+
 		bool isFlagged = true;
 		switch (group.type()) {
 		case JsmGroup::Door:
-			if (doorGroups.contains(group.groupTypeRelativeId())) {
+			if (doorGroups.contains(relativeId)) {
 				qWarning() << "JsmFile::save" << "Same door id twice";
 				return false;
 			}
-			doorGroups.insert(group.groupTypeRelativeId(), data);
+			doorGroups.insert(relativeId, data);
 			break;
 		case JsmGroup::Location:
 			locationGroups.append((const char *)&data, 2);
 			break;
 		case JsmGroup::Background:
-			if (backgroundGroups.contains(group.groupTypeRelativeId())) {
+			if (backgroundGroups.contains(relativeId)) {
 				qWarning() << "JsmFile::save" << "Same background id twice";
 				return false;
 			}
-			backgroundGroups.insert(group.groupTypeRelativeId(), data);
+			backgroundGroups.insert(relativeId, data);
 			break;
 		default:
 			otherGroups.append((const char *)&data, 2);
@@ -378,6 +378,8 @@ bool JsmFile::save(QByteArray &jsm) const
 				scriptsWithFlag.insert(i);
 			}
 		}
+
+		groupID += 1;
 	}
 
 	section0.append(locationGroups);
@@ -739,26 +741,27 @@ void JsmFile::searchDefaultBGStates(QMultiMap<quint8, quint8> &params) const
 	// qDebug() << "JsmFile::searchDefaultBGStates";
 	int nbGroup = scripts.nbGroup(), nbOpcode;
 
-	for (int groupID=0 ; groupID < nbGroup ; ++groupID) {
+	for (int groupID = 0; groupID < nbGroup; ++groupID) {
 		const JsmGroup &jsmGroup = scripts.group(groupID);
-		int methodCount = (int)jsmGroup.scriptCount();
 
 		if (jsmGroup.type() == JsmGroup::Background) {
-			for (int methodID=0 ; methodID < methodCount && methodID < 2 ; ++methodID) {
+			int methodCount = int(jsmGroup.scriptCount()), bgParam = scripts.calcGroupTypeRelativeId(groupID);
+
+			for (int methodID = 0; methodID < methodCount && methodID < 2; ++methodID) {
 				int pos = scripts.opcodeIDStartScript(groupID, methodID, &nbOpcode);
 
-				for (int opcodeID=0 ; opcodeID < nbOpcode ; ++opcodeID) {
-					// qDebug() << groupID << methodID << jsmGroup.groupTypeRelativeId() << scripts.key(pos + opcodeID);
+				for (int opcodeID = 0; opcodeID < nbOpcode; ++opcodeID) {
+					// qDebug() << groupID << methodID << bgParam << scripts.key(pos + opcodeID);
 					switch (scripts.key(pos + opcodeID)) {
 					case JsmOpcode::BGDRAW:
 						if (scripts.key(pos + opcodeID - 1) == JsmOpcode::PSHN_L)
-							params.insert(jsmGroup.groupTypeRelativeId(), scripts.param(pos + opcodeID - 1));
+							params.insert(bgParam, scripts.param(pos + opcodeID - 1));
 						break;
 					case JsmOpcode::RBGANIMELOOP:
-						params.insert(jsmGroup.groupTypeRelativeId(), 0);
+						params.insert(bgParam, 0);
 						break;
 					case JsmOpcode::RBGSHADELOOP:
-						params.insert(jsmGroup.groupTypeRelativeId(), 0);
+						params.insert(bgParam, 0);
 						break;
 					}
 				}

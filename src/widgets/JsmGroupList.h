@@ -29,7 +29,7 @@ class JsmGroupList : public QTreeWidget
 public:
 	explicit JsmGroupList(QWidget *parent = nullptr);
 
-	int selectedID();
+	int selectedID() const;
 
 	inline QToolBar *toolBar() const {
 		return _toolBar;
@@ -67,18 +67,19 @@ private slots:
 	void upDownEnabled();
 
 signals:
-	void changed();
+	void modified();
 
 private:
 	QList<QTreeWidgetItem *> nameList() const;
 	void updateHelpWidget();
 	void move(bool direction);
-	QTreeWidgetItem *findItem(int id);
-	QList<int> selectedIDs();
+	QTreeWidgetItem *findItem(int id) const;
+	QList<int> selectedIDs() const;
 
 	QToolBar *_toolBar;
 	HelpWidget *_helpWidget;
 	QAction *_renameGroupAction, *_addGroupAction, *_delGroupAction, *_cutGroupAction, *_copyGroupAction, *_pasteGroupAction, *_upGroupAction, *_downGroupAction;
 
 	Field *_field;
+	//QList<JsmScripts> _grpScriptCopied;
 };

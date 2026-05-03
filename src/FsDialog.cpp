@@ -198,7 +198,7 @@ void FsDialog::generatePreview()
 		QString filePathWithoutExt = filePath.left(filePath.size()-3);
 		BackgroundFile backgroundFile;
 		backgroundFile.open(fsArchive->fileData(filePathWithoutExt+"map"), data);
-		preview->imagePreview(QPixmap::fromImage(BackgroundFile::mimToImage(BackgroundFile::DepthColor)), fileName);
+		preview->imagePreview(QPixmap::fromImage(backgroundFile.mimToImage(BackgroundFile::DepthColor)), fileName);
 	}
 	else if (fileType == "cnf")
 	{

@@ -83,6 +83,7 @@ public:
 		return scripts;
 	}
 	inline JsmScripts &getScripts() {
+		qDebug() << "JsmFile::getScripts()";
 		return scripts;
 	}
 
