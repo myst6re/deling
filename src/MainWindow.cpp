@@ -781,7 +781,7 @@ void MainWindow::saveAs(const QString &optPath)
 {
 	QString filter, path = optPath;
 	
-	if (fieldArchive != nullptr || field != nullptr && field->isOpen() && field->isPc()) {
+	if (fieldArchive != nullptr || (field != nullptr && field->isOpen() && field->isPc())) {
 		filter = tr("FS Archive (*.fs)");
 	} else if (msdFile != nullptr) {
 		filter = tr("FF8 text files (*.msd)");

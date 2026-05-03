@@ -77,8 +77,8 @@ private:
                       QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos, qsizetype opcodeID);
 	bool parseRepeat(const JsmScripts &scripts, JsmData &result, QString &errorStr,
                      QMap<QString, qsizetype> &labels, QMap<qsizetype, QString> &gotos, qsizetype opcodeID);
-	bool parseGoto(const JsmScripts &scripts, JsmData &result, QString &errorStr, QMap<qsizetype, QString> &gotos, qsizetype opcodeID);
-	bool parseLabel(const JsmScripts &scripts, JsmData &result, QString &errorStr, QMap<QString, qsizetype> &labels, qsizetype opcodeID);
+	bool parseGoto(JsmData &result, QString &errorStr, QMap<qsizetype, QString> &gotos, qsizetype opcodeID);
+	bool parseLabel(JsmData &result, QString &errorStr, QMap<QString, qsizetype> &labels, qsizetype opcodeID);
 
 	// Parser — expression level (for conditions and arguments)
 	bool parseCondition(JsmData &result, QString &errorStr);

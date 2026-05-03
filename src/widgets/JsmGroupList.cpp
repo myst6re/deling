@@ -66,7 +66,7 @@ JsmGroupList::JsmGroupList(QWidget *parent) :
 	_downGroupAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 	_downGroupAction->setEnabled(false);
 
-	/* connect(this, &JsmGroupList::itemDoubleClicked, this, qOverload<QTreeWidgetItem *, int>(&JsmGroupList::rename));
+	connect(this, &JsmGroupList::itemDoubleClicked, this, qOverload<QTreeWidgetItem *, int>(&JsmGroupList::rename));
 	connect(this, &JsmGroupList::itemSelectionChanged, this, &JsmGroupList::upDownEnabled);
 
 	connect(_renameGroupAction, &QAction::triggered, this, qOverload<>(&JsmGroupList::rename));
@@ -91,7 +91,7 @@ JsmGroupList::JsmGroupList(QWidget *parent) :
 	separator2->setSeparator(true);
 	this->addAction(separator2);
 	this->addAction(_upGroupAction);
-	this->addAction(_downGroupAction); */
+	this->addAction(_downGroupAction);
 
 	_toolBar = new QToolBar(tr("&Group Editor"));
 	_toolBar->setIconSize(QSize(14, 14));
@@ -104,7 +104,6 @@ JsmGroupList::JsmGroupList(QWidget *parent) :
 	_upGroupAction->setStatusTip(tr("Up"));
 	_toolBar->addAction(_downGroupAction);
 	_downGroupAction->setStatusTip(tr("Down"));
-	_toolBar->hide();
 
 	_helpWidget = new HelpWidget(32, HelpWidget::IconWarning, this);
 	_helpWidget->hide();

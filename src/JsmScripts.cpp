@@ -752,13 +752,13 @@ void JsmScripts::propagateScriptCountChange(int groupID, int absMethodID, int sc
 	// Update REQ labels
 	for (int opcodeID = 0; opcodeID < scriptData.nbOpcode(); ++opcodeID) {
 		JsmOpcode opcode = scriptData.opcode(opcodeID);
-		int group = 0;
+		//int group = 0;
 
 		switch (opcode.key()) {
 			case JsmOpcode::REQ:
 			case JsmOpcode::REQSW:
 			case JsmOpcode::REQEW:
-				group = opcode.param();
+				//group = opcode.param();
 				if (opcodeID > 0) {
 					JsmOpcode prevOpcode = scriptData.opcode(opcodeID - 1);
 					if (prevOpcode.key() == JsmOpcode::PSHN_L) {

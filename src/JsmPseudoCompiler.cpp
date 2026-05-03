@@ -332,8 +332,8 @@ bool JsmPseudoCompiler::parseStatement(const JsmScripts &scripts, JsmData &resul
 		result.append(JsmOpcode(JsmOpcode::RET, 0));
 		return true;
 	}
-	if (kw == "goto") return parseGoto(scripts, result, errorStr, gotos, opcodeID);
-	if (kw == "label") return parseLabel(scripts, result, errorStr, labels, opcodeID);
+	if (kw == "goto") return parseGoto(result, errorStr, gotos, opcodeID);
+	if (kw == "label") return parseLabel(result, errorStr, labels, opcodeID);
 
 	// Must be an identifier: could be assignment, function call, or method call
 	if (t.type != Token::Identifier) {
@@ -918,7 +918,7 @@ bool JsmPseudoCompiler::parseRepeat(const JsmScripts &scripts, JsmData &result, 
 	return true;
 }
 
-bool JsmPseudoCompiler::parseGoto(const JsmScripts &scripts, JsmData &result, QString &errorStr, QMap<qsizetype, QString> &gotos, qsizetype opcodeID)
+bool JsmPseudoCompiler::parseGoto(JsmData &result, QString &errorStr, QMap<qsizetype, QString> &gotos, qsizetype opcodeID)
 {
 	advance(); // consume 'goto'
 	skipNewlines();
@@ -935,7 +935,7 @@ bool JsmPseudoCompiler::parseGoto(const JsmScripts &scripts, JsmData &result, QS
 	return true;
 }
 
-bool JsmPseudoCompiler::parseLabel(const JsmScripts &scripts, JsmData &result, QString &errorStr, QMap<QString, qsizetype> &labels, qsizetype opcodeID)
+bool JsmPseudoCompiler::parseLabel(JsmData &result, QString &errorStr, QMap<QString, qsizetype> &labels, qsizetype opcodeID)
 {
 	advance(); // consume 'label'
 	skipNewlines();

@@ -478,7 +478,7 @@ QStringList FieldPC::languages() const
 	return langs;
 }
 
-bool FieldPC::changeGameLang(const QString &gameLang, FsArchive *archive)
+bool FieldPC::changeGameLang(const QString &gameLang)
 {
 	if (_gameLang == gameLang) {
 		return true;

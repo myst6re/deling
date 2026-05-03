@@ -588,6 +588,8 @@ void JsmFile::forceNames()
 				name = QString("Background%1").arg(bgCount);
 				bgCount++;
 				break;
+			case JsmGroup::No:
+				break;
 			}
 
 			if (name.isEmpty()) {

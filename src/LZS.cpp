@@ -51,7 +51,7 @@ const QByteArray &LZS::decompress(const char *data, int fileSize, int max)
 	if (result.capacity() < sizeAlloc) {
 		try {
 			result.reserve(sizeAlloc);
-		} catch (std::bad_alloc) {
+		} catch (std::bad_alloc const&) {
 			result.clear();
 			return result;
 		}

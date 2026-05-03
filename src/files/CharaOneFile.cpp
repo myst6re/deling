@@ -229,7 +229,6 @@ bool CharaOneFile::save(QByteArray &one, QByteArray &pcb) const
 		header.append((const char *)&offset, 4);
 
 		QByteArray modelHeader, mchData, modelData;
-		bool isNoTextures = model.textures().isEmpty();
 
 		if (model.loadingType() == CharaModel::External) {
 			quint32 modelID = 0xD0000000 | (quint32(model.scale()) << 16) | model.id();

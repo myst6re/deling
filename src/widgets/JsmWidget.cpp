@@ -618,8 +618,6 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 		return items;
 	}
 
-	JsmGroup::Type groupType = scripts.group(groupID).type();
-
 	begin = scripts.firstMethodID(groupID);
 	count = scripts.nbScript(groupID);
 

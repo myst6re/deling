@@ -268,7 +268,8 @@ uint TdwFile::letterPixelIndex(int charId, const QPoint &pos) const
 
 	if (isOptimizedVersion()) {
 		// returns a number between 0 and 3
-		const QRgb &color = _tim.colorTable(charId % 2).at(index);
+		QVector<QRgb> colorTable = _tim.colorTable(charId % 2);
+		const QRgb &color = colorTable.at(index);
 
 		return _tim.colorTable(0).indexOf(color);
 	} else {
@@ -291,7 +292,8 @@ bool TdwFile::setLetterPixelIndex(int charId, const QPoint &pos, uint pixelIndex
 		notModifColorTable = _tim.colorTable((charId + 1) % 2);
 		uint realPixelIndex = _tim.imagePtr()->pixelIndex(letterPos(charId) + pos);
 
-		const QRgb &newColor = _tim.colorTable(0).at(pixelIndex % 4);
+		QVector<QRgb> colorTable = _tim.colorTable(0);
+		const QRgb &newColor = colorTable.at(pixelIndex % 4);
 		const QRgb &notModifColor = notModifColorTable.at(realPixelIndex);
 		int index = -1;
 

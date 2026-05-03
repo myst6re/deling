@@ -335,6 +335,8 @@ void WorldmapGLWidget::mousePressEvent(QMouseEvent *event)
 
 void WorldmapGLWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+	Q_UNUSED(event)
+
 	_moveStart = QPointF();
 }
 

@@ -47,6 +47,7 @@ public:
 	void setDefaultLightColor(QRgb defaultLightColor);
 private:
 	using File::open;
+	using File::save;
 	QList<CharaModel> models;
 	QRgb _defaultLightColor;
 	bool _ps;

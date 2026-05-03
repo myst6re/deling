@@ -115,7 +115,7 @@ bool MchFile::open(const QByteArray &mch, const QString &name)
 	QList<type> entity##s; \
 	for (quint64 i = 0; i < modelHeader.entity##Count; ++i) { \
 		type e = type(); \
-		if (modelHeader.entity##sOffset + sizeof(type) * (i + 1) > size) { \
+		if (modelHeader.entity##sOffset + sizeof(type) * (i + 1) > quint64(size)) { \
 			qWarning() << "MchFile::readFullModel: File too short" << #entity << i; \
 			return false; \
 		} \

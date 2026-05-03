@@ -83,7 +83,7 @@ bool TextExporter::toCsv(const QString &fileName, const QStringList &langs, QCha
 				if (langs.size() > 1 && f->isPc()) {
 					int langId = 0;
 					for (const QString &lang: langs) {
-						((FieldPC *)f)->changeGameLang(lang, ((FieldArchivePC *)_archive)->getFsArchive());
+						((FieldPC *)f)->changeGameLang(lang);
 						MsdFile *msd2 = f->getMsdFile();
 						if (msd2 != nullptr) {
 							const QList<QByteArray> &texts = msd2->getTexts();
@@ -101,7 +101,7 @@ bool TextExporter::toCsv(const QString &fileName, const QStringList &langs, QCha
 						}
 						langId += 1;
 					}
-					((FieldPC *)f)->changeGameLang(Config::value("gameLang", "en").toString(), ((FieldArchivePC *)_archive)->getFsArchive());
+					((FieldPC *)f)->changeGameLang(Config::value("gameLang", "en").toString());
 					
 					for (const QList<QByteArray> &texts: textsByLang) {
 						QStringList line;
