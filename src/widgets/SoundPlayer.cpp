@@ -8,12 +8,12 @@ SoundPlayer::SoundPlayer(QWidget *parent) :
     QPushButton(tr("Play"), parent)
 {
     _mediaPlayer.setAudioOutput(new QAudioOutput);
-    connect(&_mediaPlayer, SIGNAL(playingChanged(bool)), SLOT(updateButtonText(bool)));
+    connect(&_mediaPlayer, SIGNAL(playbackStateChanged(QMediaPlayer::PlaybackState)), SLOT(updateButtonText(QMediaPlayer::PlaybackState)));
 }
 
 bool SoundPlayer::togglePlay(quint32 sfxGameId)
 {
-    if (_mediaPlayer.isPlaying()) {
+    if (_mediaPlayer.playbackState() == QMediaPlayer::PlayingState) {
         stop();
 
         return true;
@@ -55,7 +55,7 @@ void SoundPlayer::stop()
     _buffer.close();
 }
 
-void SoundPlayer::updateButtonText(bool isPlaying)
+void SoundPlayer::updateButtonText(QMediaPlayer::PlaybackState playbackState)
 {
-    setText(isPlaying ? tr("Stop") : tr("Play"));
+    setText(playbackState == QMediaPlayer::PlayingState ? tr("Stop") : tr("Play"));
 }

@@ -11,7 +11,7 @@ public slots:
     bool togglePlay(quint32 sfxGameId);
     bool play(quint32 sfxGameId);
     void stop();
-    void updateButtonText(bool isPlaying);
+    void updateButtonText(QMediaPlayer::PlaybackState playbackState);
 private:
     QBuffer _buffer;
     QMediaPlayer _mediaPlayer;

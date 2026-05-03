@@ -77,7 +77,7 @@ jobs:
       QT_MEDIA_BACKEND: ffmpeg
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
         fetch-depth: 0
@@ -146,6 +146,7 @@ jobs:
     - name: Download linuxdeployqt (ARM64)
       if: runner.os == 'Linux' && runner.arch == 'ARM64'
       run: |
+        sudo apt install -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad
         wget -qc "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-aarch64.AppImage"
         wget -qc "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-aarch64.AppImage"
         export VERSION=continuous
@@ -161,7 +162,7 @@ jobs:
 
     - name: Upload vcpkg build logs
       if: failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: vcpkg-logs-${{ matrix.package_suffix }}-${{ matrix.interface }}-${{ matrix.build_type }}
         path: ${{ github.workspace }}/vcpkg/buildtrees/**/*.log
@@ -188,7 +189,7 @@ jobs:
       run: mv ../build-deling/*.${{ matrix.package_extension }} deling-continuous-${{ matrix.interface }}-${{ matrix.package_suffix }}.${{ matrix.package_extension }}
 
     - name: Upload
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: artifact-${{ matrix.package_suffix }}-${{ matrix.interface }}
         path: ${{ github.workspace }}/deling-continuous-*.*
@@ -209,7 +210,7 @@ jobs:
              , arch: aarch64
           }
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: recursive
         fetch-depth: 0
@@ -226,7 +227,7 @@ jobs:
         cpack -G DEB -C Release --config build/CPackConfig.cmake
 
     - name: Upload
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: debian-artifacts-${{ matrix.config.name }}-${{matrix.config.arch}}
         path: deling*.deb
