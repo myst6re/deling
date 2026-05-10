@@ -143,11 +143,8 @@ FF8Window TextPreview::getWindow()
 	if (!ff8Windows.isEmpty())
 		return ff8Windows.at(currentWin);
 	else {
-		FF8Window ff8Window;
+		FF8Window ff8Window = FF8Window();
 		ff8Window.type = NOWIN;
-		ff8Window.script_pos = ff8Window.ask_first =
-		        ff8Window.ask_first2 = ff8Window.ask_last =
-		        ff8Window.u1 = ff8Window.x = ff8Window.y = 0;
 		return ff8Window;
 	}
 }

@@ -31,7 +31,7 @@
 struct FF8Window {
 	unsigned int type;
 	int x, y, u1, ask_first, ask_last, ask_first2;
-	int script_pos;
+	int groupID, methodID, opcodeID;
 };
 
 struct JsmHeader {
@@ -102,7 +102,9 @@ public:
 	inline bool hasSym() const {
 		return _hasSym;
 	}
-	int mapID() const;
+	inline int mapID() const {
+		return _mapID;
+	}
 	inline bool oldFormat() const {
 		return _oldFormat;
 	}
@@ -110,9 +112,13 @@ public:
 		_oldFormat = oldFormat;
 	}
 
-	int nbWindows(quint8 textID) const;
-	QList<FF8Window> windows(quint8 textID) const;
-	void setWindow(quint8 textID, int winID, const FF8Window &value);
+	inline int nbWindows(quint8 textID) const {
+		return ff8Windows.count(textID);
+	}
+	inline QList<FF8Window> windows(quint8 textID) const {
+		return ff8Windows.values(textID);
+	}
+	bool setWindow(quint8 textID, int winID, const FF8Window &value);
 
 	void setDecompiledScript(int groupID, int methodID, const QString &text, bool moreDecompiled);
 	void setCurrentOpcodeScroll(int groupID, int methodID, bool more, int scrollValue, const QTextCursor &textCursor);
@@ -127,7 +133,7 @@ public:
 	static QStringList opcodeNamesCalc;
 private:
 	static JsmGroup createGroup(quint16 label, quint8 count, const JsmHeader &jsmHeader, int headerID);
-	bool searchInOpcode(SearchType type, quint64 value, quint16 pos, int opcodeID) const;
+	bool searchInOpcode(SearchType type, quint64 value, const JsmData &jsmData, int opcodeID) const;
 	QString _toString(int position, int nbOpcode, int indent = 0) const;
 	QString _toStringMore(int position, int nbOpcode, int indent = 0) const;
 
@@ -138,7 +144,6 @@ private:
 	JsmScripts scripts;
 	bool _hasSym;
 	bool needUpdate, needUpdateMore;
-	int _offsetScriptPositionsSectionPadding;
 	int _mapID;
 	QMultiMap<quint8, FF8Window> ff8Windows;
 	QMap<quint64, int> opcodeScroll, opcodeScrollMore;

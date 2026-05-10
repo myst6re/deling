@@ -198,7 +198,7 @@ void JsmWidget::compilePseudo()
 
 	if (compiler.compile(textEdit->toPlainText(), jsm->getScripts(), compiled, errorStr, errorLine)) {
 		// Replace the script data and invalidate caches
-		jsm->getScripts().replaceScript(groupID, methodID, compiled);
+		jsm->getScripts().group(groupID).method(methodID).setScriptData(compiled);
 		// Mark the JsmFile as modified so the save system knows to write it
 		jsm->setModified(true);
 		// Clear cached decompiled scripts so both views regenerate
@@ -611,26 +611,21 @@ QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
 {
 	QList<QTreeWidgetItem *> items;
 	QTreeWidgetItem *item;
-	int begin, count;
+	int count;
 	QString name;
 	const JsmScripts &scripts = data()->getJsmFile()->getScripts();
 
-	if (scripts.nbGroup() <= groupID) {
-		qWarning() << "JsmFile::methodList error 1" << groupID << scripts.nbGroup();
+	if (scripts.groups().size() <= groupID) {
+		qWarning() << "JsmFile::methodList error 1" << groupID << scripts.groups().size();
 		return items;
 	}
 
-	begin = scripts.firstMethodID(groupID);
-	count = scripts.nbScript(groupID);
-
-	if (scripts.nbScript() < begin + count) {
-		qWarning() << "JsmFile::methodList error 2" << scripts.nbScript() << (begin + count);
-		return items;
-	}
+	const JsmGroup &jsmGroup = scripts.group(groupID);
+	count = jsmGroup.methodCount();
 
 	for (int methodID = 0; methodID < count; ++methodID) {
-		const JsmScript &script = scripts.script(groupID, methodID);
-		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(methodID, 3) << script.name() << QString("%1").arg(begin + methodID, 3));
+		const JsmMethod &jsmMethod = jsmGroup.method(methodID);
+		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(methodID, 3) << jsmMethod.name() << QString("%1").arg(jsmGroup.absMethodId() + methodID, 3));
 		item->setData(0, Qt::UserRole, methodID);
 		items.append(item);
 	}

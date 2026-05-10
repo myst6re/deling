@@ -631,8 +631,8 @@ bool JsmPseudoCompiler::parseMethodCall(const QString &groupName, const QString 
 		return false;
 	}
 	// Resolve entity method ID
-	int methodId = scripts.findMethodIDByName(groupId, methodName);
-	if (methodId < 0) {
+	int absMethodId = scripts.group(groupId).findAbsoluteMethodIDByName(methodName);
+	if (absMethodId < 0) {
 		errorStr = QObject::tr("Cannot resolve method '%1' to a method ID (group ID = %2).")
 					.arg(methodName)
 					.arg(groupId);
@@ -642,10 +642,10 @@ bool JsmPseudoCompiler::parseMethodCall(const QString &groupName, const QString 
 	// Emit: push method label, push priority, REQ/REQSW/REQEW(groupID)
 	if (argDatas.isEmpty()) {
 		result.append(JsmOpcode(JsmOpcode::PSHN_L, 0));
-		result.append(JsmOpcode(JsmOpcode::PSHN_L, methodId));
+		result.append(JsmOpcode(JsmOpcode::PSHN_L, absMethodId));
 	} else {
 		result += argDatas[0];
-		result.append(JsmOpcode(JsmOpcode::PSHN_L, methodId));
+		result.append(JsmOpcode(JsmOpcode::PSHN_L, absMethodId));
 	}
 
 	result.append(JsmOpcode(reqOpcode, groupId));

@@ -33,7 +33,7 @@ bool PcbFile::open(const QByteArray &data)
 	for (int i = 0; i < count; ++i) {
 		QByteArray nameBA(constData + i * 8, 4);
 		QRgb lightColor = qRgb(constData[i * 8 + 4 + 1], constData[i * 8 + 4 + 2], constData[i * 8 + 4 + 3]);
-		QString modelName = QString::fromLatin1(nameBA, qstrnlen(nameBA, 4));
+		QString modelName = QString::fromLatin1(nameBA, -1);
 		_modelLightColors.insert(modelName, lightColor);
 		_order.append(modelName);
 	}

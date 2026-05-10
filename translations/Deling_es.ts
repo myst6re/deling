@@ -2232,6 +2232,38 @@ Dollet Harbor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Standard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished">Hondoa</translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Door</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name already exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This name already exist, please choose another</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2284,7 +2316,7 @@ Some scripts can refer to it!</source>
     </message>
     <message>
         <source>Script label</source>
-        <translation>Gidoi-labela</translation>
+        <translation type="vanished">Gidoi-labela</translation>
     </message>
     <message>
         <source>Instructions</source>

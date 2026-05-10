@@ -952,10 +952,10 @@ QString JsmApplicationExec::toString(const JsmFile *jsm, int highlightOpcodeID) 
 
 	if (ok && jsm != nullptr && groupId >= 0 && absMethodId >= 0) {
 		const JsmScripts &scripts = jsm->getScripts();
-		if (groupId < scripts.nbGroup()
-		        && absMethodId < scripts.nbScript()) {
-			groupName = scripts.group(groupId).name();
-			methodName = scripts.script(absMethodId).name();
+		if (groupId < scripts.groups().size()) {
+			const JsmGroup &jsmGroup = scripts.group(groupId);
+			groupName = jsmGroup.name();
+			methodName = jsmGroup.absoluteMethodName(absMethodId);
 		}
 	}
 

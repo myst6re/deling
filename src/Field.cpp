@@ -86,11 +86,41 @@ void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym, bool oldFo
 		return;
 	}
 
+	qDebug() << "Field::openJsmFile" << name();
+
 	if (!f->open(jsm, sym, oldFormat)) {
 		qWarning() << "Field::openJsmFile error" << _name;
 		f->setOpen(false);
 	} else {
 		f->setOpen(true);
+
+		/* QFile f0(QString("E:/Desktop/jsm-original/%1.jsm").arg(name()));
+		f0.open(QIODevice::WriteOnly | QIODevice::Truncate);
+		f0.write(jsm);
+		f0.close();
+		QFile f0sym(QString("E:/Desktop/jsm-original/%1.sym").arg(name()));
+		f0sym.open(QIODevice::WriteOnly | QIODevice::Truncate);
+		f0sym.write(sym);
+		f0sym.close();
+		QFile f0Pseudo(QString("E:/Desktop/jsm-original/%1.rb").arg(name()));
+		f0Pseudo.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+		f0Pseudo.write(f->toString(true, true).toLatin1());
+		f0Pseudo.close(); */
+
+		QFile f1(QString("E:/Desktop/jsm/%1.jsm").arg(name()));
+		f1.open(QIODevice::WriteOnly | QIODevice::Truncate);
+		QByteArray jsm2, sym2;
+		f->save(jsm2, sym2);
+		f1.write(jsm2);
+		f1.close();
+		QFile f1sym(QString("E:/Desktop/jsm/%1.sym").arg(name()));
+		f1sym.open(QIODevice::WriteOnly | QIODevice::Truncate);
+		f1sym.write(sym2);
+		f1sym.close();
+		/* QFile f1Pseudo(QString("E:/Desktop/jsm/%1.rb").arg(name()));
+		f1Pseudo.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+		f1Pseudo.write(f->toString(true, true).toLatin1());
+		f1Pseudo.close(); */
 	}
 }
 

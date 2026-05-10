@@ -57,16 +57,18 @@ bool ScriptExporter::toDir(const QDir &dir, ArchiveObserver *observer)
 			QString path = f->name().isEmpty() ? QObject::tr("Unamed") : f->name();
 			dir.mkpath(path);
 
-			for (int groupID = 0; groupID < scripts.nbGroup(); ++groupID) {
-				QString groupName = scripts.group(groupID).name();
+			for (int groupID = 0; groupID < scripts.groups().size(); ++groupID) {
+				const JsmGroup &jsmGroup = scripts.group(groupID);
+				QString groupName = jsmGroup.name();
 				if (groupName.isEmpty()) {
 					groupName = QObject::tr("Unamed");
 				}
 
 				QString script;
 
-				for (int methodID = 0; methodID < scripts.nbScript(groupID); ++methodID) {
-					QString scriptName = scripts.script(groupID, methodID).name();
+				for (int methodID = 0; methodID < jsmGroup.methodCount(); ++methodID) {
+					const JsmMethod &jsmMethod = jsmGroup.method(methodID);
+					QString scriptName = jsmMethod.name();
 					if (scriptName.isEmpty()) {
 						scriptName = QObject::tr("Unamed");
 					}

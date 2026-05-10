@@ -120,7 +120,7 @@ bool CharaOneFile::open(const QByteArray &one, const QByteArray &pcb, bool ps)
 
 		if (nextOffset != 0 && nextOffset != offset + size) { // Not testno format
 			QByteArray nameBA = one.mid(constData - startData, 4);
-			name = QString::fromLatin1(nameBA, qstrnlen(nameBA, 4));
+			name = QString::fromLatin1(nameBA, -1);
 //			qDebug() << name;
 			constData += 4;
 			lightColor = qRgb(constData[0], constData[1], constData[2]);

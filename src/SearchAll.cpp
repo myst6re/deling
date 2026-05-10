@@ -148,11 +148,13 @@ QTreeWidgetItem *SearchAll::createItemOpcode(int mapID, int groupID, int methodI
 		Field *f = _fieldArchive->getField(mapID);
 		if (f) {
 			const JsmScripts &s = f->getJsmFile()->getScripts();
-			const QString &groupName = s.group(groupID).name();
-			const QString &scriptName = s.script(groupID, methodID).name();
+			const JsmGroup &jsmGroup = s.group(groupID);
+			const JsmMethod &jsmMethod = jsmGroup.method(methodID);
+			const QString &groupName = jsmGroup.name();
+			const QString &scriptName = jsmMethod.name();
 			item->setText(0, groupName.isEmpty() ? QString("%1").arg(groupID, 3) : QString("%1 : %2").arg(groupID, 3).arg(groupName));
 			item->setText(1, scriptName.isEmpty() ? QString("%1").arg(methodID, 3) : QString("%1 : %2").arg(methodID, 3).arg(scriptName));
-			item->setText(3, s.opcode(groupID, methodID, opcodeID).toString());
+			item->setText(3, jsmMethod.scriptData().opcode(opcodeID).toString());
 		}
 	}
 

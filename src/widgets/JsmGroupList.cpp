@@ -128,15 +128,15 @@ void JsmGroupList::upDownEnabled()
 {
 	if (selectedItems().isEmpty()) {
 		_delGroupAction->setEnabled(false);
-		_cutGroupAction->setEnabled(false);
+		/* _cutGroupAction->setEnabled(false);
 		_copyGroupAction->setEnabled(false);
-		/* _upGroupAction->setEnabled(false);
+		_upGroupAction->setEnabled(false);
 		_downGroupAction->setEnabled(false); */
 	} else {
 		_delGroupAction->setEnabled(topLevelItemCount() > 0);
-		_cutGroupAction->setEnabled(true);
+		/* _cutGroupAction->setEnabled(true);
 		_copyGroupAction->setEnabled(true);
-		/* _upGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(0));
+		_upGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(0));
 		_downGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(topLevelItemCount()-1)); */
 	}
 }
@@ -157,7 +157,7 @@ QList<QTreeWidgetItem *> JsmGroupList::nameList() const
 	QList<QTreeWidgetItem *> items;
 	QTreeWidgetItem *item;
 	const JsmScripts &scripts = _field->getJsmFile()->getScripts();
-	int nbGroup = scripts.nbGroup();
+	int nbGroup = scripts.groups().size();
 
 	for (int groupID = 0; groupID < nbGroup; ++groupID) {
 		const JsmGroup &grp = scripts.group(groupID);
@@ -288,7 +288,7 @@ void JsmGroupList::updateHelpWidget()
 		                "the game may crash if all models are visible at the same time."));
 	} */
 
-	if (scripts.nbGroup() > 48) {
+	if (scripts.groups().size() > 48) {
 		_helpWidget->show();
 		texts.append(tr("You have more than 48 groups in this field, "
 		                                  "the game may crash."));
@@ -315,16 +315,17 @@ void JsmGroupList::renameOK(QTreeWidgetItem *item, int column)
 		return;
 	}
 	disconnect(this, &JsmGroupList::itemChanged, this, &JsmGroupList::renameOK);
-	QString newName = item->text(column).left(8);
+	QString newName = item->text(column).left(15);
 	if (newName != item->text(column)) {
 		item->setText(column, newName);
 	}
 
 	JsmScripts &scripts = _field->getJsmFile()->getScripts();
 	int groupID = item->text(0).toInt();
-	if (groupID >= 0 && scripts.group(groupID).name() != newName) {
-		scripts.setGroupName(groupID, newName);
+	if (groupID >= 0 && scripts.setGroupName(groupID, newName)) {
 		emit modified();
+	} else {
+		QMessageBox::warning(this, tr("Name already exist"), tr("This name already exist, please choose another"));
 	}
 }
 
@@ -334,14 +335,41 @@ void JsmGroupList::add()
 		return;
 	}
 
-	int grpScriptID = selectedID() + 1;
+	int groupID = selectedID() + 1;
+
+	QDialog dialog(this);
+	QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+	connect(buttons, SIGNAL(accepted()), &dialog, SLOT(accept()));
+	connect(buttons, SIGNAL(rejected()), &dialog, SLOT(reject()));
+	QLineEdit *nameLineEdit = new QLineEdit(QString("Module%1").arg(groupID), &dialog);
+	nameLineEdit->setMaxLength(15);
+	QComboBox *typeComboBox = new QComboBox(&dialog);
+	typeComboBox->addItem(tr("Standard"), QVariant(JsmGroup::No));
+	typeComboBox->addItem(tr("Background"), QVariant(JsmGroup::Background));
+	typeComboBox->addItem(tr("Location"), QVariant(JsmGroup::Location));
+	typeComboBox->addItem(tr("Door"), QVariant(JsmGroup::Door));
+	QFormLayout *formLayout = new QFormLayout();
+	formLayout->addRow(tr("&Name:"), nameLineEdit);
+	formLayout->addRow(tr("&Type:"), typeComboBox);
+	QVBoxLayout *layout = new QVBoxLayout(&dialog);
+	layout->addLayout(formLayout);
+	layout->addWidget(buttons);
+
+	if (dialog.exec() != QDialog::Accepted) {
+		return;
+	}
+
+	JsmGroup::Type type = JsmGroup::Type(typeComboBox->currentData().toInt());
 	JsmScripts &scripts = _field->getJsmFile()->getScripts();
 
-	scripts.insertGroup(grpScriptID, JsmGroup::No, QString("module%1").arg(grpScriptID));
-	fill();
-	scroll(grpScriptID);
-	emit modified();
-	rename();
+	if (scripts.insertGroup(groupID, type, nameLineEdit->text())) {
+		fill();
+		scroll(groupID);
+		emit modified();
+		rename();
+	} else {
+		QMessageBox::warning(this, tr("Name already exist"), tr("This name already exist, please choose another"));
+	}
 }
 
 void JsmGroupList::del(bool totalDel)

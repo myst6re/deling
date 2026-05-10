@@ -2243,6 +2243,38 @@ Dollet Harbor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Standard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished">Décors</translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Door</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name already exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This name already exist, please choose another</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2295,7 +2327,7 @@ Some scripts can refer to it!</source>
     </message>
     <message>
         <source>Script label</source>
-        <translation>Script label</translation>
+        <translation type="vanished">Script label</translation>
     </message>
     <message>
         <source>Instructions</source>
