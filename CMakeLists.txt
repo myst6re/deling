@@ -293,6 +293,8 @@ set(PROJECT_SOURCES
     "src/widgets/HelpWidget.h"
     "src/widgets/JsmGroupList.cpp"
     "src/widgets/JsmGroupList.h"
+    "src/widgets/JsmMethodList.cpp"
+    "src/widgets/JsmMethodList.h"
     "src/widgets/JsmWidget.cpp"
     "src/widgets/JsmWidget.h"
     "src/widgets/MiscWidget.cpp"

@@ -22,6 +22,7 @@
 #include "JsmHelpDialog.h"
 #include "JsmPseudoCompiler.h"
 #include "widgets/JsmGroupList.h"
+#include "widgets/JsmMethodList.h"
 #include "widgets/HelpWidget.h"
 
 JsmWidget::JsmWidget(QWidget *parent)
@@ -55,16 +56,12 @@ void JsmWidget::build()
 	list1Layout->addWidget(modelPreview, 0, Qt::AlignBottom);
 	list1Layout->setContentsMargins(QMargins());
 
-	list2 = new QTreeWidget(this);
-	list2->setHeaderLabels(QStringList() << tr("Id") << tr("Script") << tr("Script label"));
-	list2->setMaximumWidth(
-	    list2->fontMetrics().boundingRect(QString(16, 'M')).width());
-	list2->setMinimumWidth(
-	    list2->fontMetrics().boundingRect(QString(8, 'M')).width());
-	list2->setAutoScroll(false);
-	list2->setIndentation(0);
-	list2->setUniformRowHeights(true);
-	list2->setAlternatingRowColors(true);
+	list2 = new JsmMethodList(this);
+
+	QVBoxLayout *list2Layout = new QVBoxLayout();
+	list2Layout->addWidget(list2->toolBar(), 0, Qt::AlignTop);
+	list2Layout->addWidget(list2, 1);
+	list2Layout->setContentsMargins(QMargins());
 
 	tabBar = new QTabBar(this);
 	tabBar->setDrawBase(false);
@@ -141,7 +138,7 @@ void JsmWidget::build()
 	QGridLayout *mainLayout = new QGridLayout(this);
 	mainLayout->addWidget(warningWidget, 0, 0, 1, 4);
 	mainLayout->addLayout(list1Layout, 1, 0, 3, 1);
-	mainLayout->addWidget(list2, 1, 1, 3, 1);
+	mainLayout->addLayout(list2Layout, 1, 1, 3, 1);
 	mainLayout->addLayout(tabBarLayout, 1, 2, 1, 2);
 	mainLayout->addWidget(te, 2, 2);
 	mainLayout->addWidget(textEdit, 2, 3);
@@ -152,19 +149,29 @@ void JsmWidget::build()
 	tabBar->setCurrentIndex(Config::value("scriptType").toInt());
 
 	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillList2()));
-	connect(list1, SIGNAL(modified()), SIGNAL(modified()));
+	connect(list1, SIGNAL(modified()), SLOT(setJsmModified()));
 	connect(list2, SIGNAL(itemSelectionChanged()), SLOT(fillTextEdit()));
+	connect(list2, SIGNAL(modified()), SLOT(setJsmModified()));
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(onTabChanged(int)));
 	connect(textEdit, SIGNAL(lineHovered(QString,QPoint)), SLOT(showPreview(QString,QPoint)));
 
 	PageWidget::build();
 }
 
+void JsmWidget::setJsmModified()
+{
+	data()->getJsmFile()->setModified(true);
+
+	emit modified();
+}
+
 void JsmWidget::compile()
 {
 	groupID = list1->selectedID();
-	methodID = currentItem(list2);
-	if (groupID==-1 || methodID==-1)	return;
+	methodID = list2->selectedID();
+	if (groupID == -1 || methodID == -1) {
+		return;
+	}
 
 	QString errorStr;
 	QPalette pal = errorLabel->palette();
@@ -187,8 +194,10 @@ void JsmWidget::compile()
 void JsmWidget::compilePseudo()
 {
 	groupID = list1->selectedID();
-	methodID = currentItem(list2);
-	if (groupID == -1 || methodID == -1) return;
+	methodID = list2->selectedID();
+	if (groupID == -1 || methodID == -1) {
+		return;
+	}
 
 	JsmPseudoCompiler compiler;
 	JsmData compiled;
@@ -251,12 +260,14 @@ void JsmWidget::showHelp()
 
 void JsmWidget::clear()
 {
-	if (!isFilled())		return;
+	if (!isFilled()) {
+		return;
+	}
 
 	list1->blockSignals(true);
 	list2->blockSignals(true);
 
-	if (hasData() && data()->hasJsmFile())	saveSession();
+	saveSession();
 
 	list1->clear();
 	modelPreview->clear();
@@ -273,7 +284,9 @@ void JsmWidget::clear()
 
 void JsmWidget::saveSession()
 {
-	if (!hasData() || !data()->hasJsmFile() || !isBuilded())	return;
+	if (!hasData() || !data()->hasJsmFile() || !isBuilded()) {
+		return;
+	}
 
 	bool isPseudo = (tabBar->currentIndex() <= 0);
 	data()->getJsmFile()->setCurrentOpcodeScroll(this->groupID, this->methodID, isPseudo, textEdit->verticalScrollBar()->value(), textEdit->textCursor());
@@ -357,11 +370,8 @@ void JsmWidget::fillList2()
 	int methodID = data()->getJsmFile()->currentMethodItem(groupID);
 
 	list1->scrollToItem(list1->currentItem());
-
-	list2->addTopLevelItems(methodList(groupID));
-	list2->scrollToTop();
-	list2->resizeColumnToContents(0);
-	list2->resizeColumnToContents(1);
+	list2->setField(data());
+	list2->fill(groupID);
 
 	const JsmScripts &scripts = data()->getJsmFile()->getScripts();
 	const JsmGroup &group = scripts.group(groupID);
@@ -487,18 +497,20 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 				return;
 			}
 		} else if (constType == "map") {
-			Field *field = fieldArchive->getFieldFromMapId(constId);
+			if (fieldArchive != nullptr) {
+				Field *field = fieldArchive->getFieldFromMapId(constId);
 
-			if (field != nullptr) {
-				if (fieldArchive->openFull(field)) {
-					BackgroundFile *file = field->getBackgroundFile();
+				if (field != nullptr) {
+					if (fieldArchive->openFull(field)) {
+						BackgroundFile *file = field->getBackgroundFile();
 
-					if (file) {
-						preview->showBackground(QPixmap::fromImage(file->background()));
-						preview->move(cursorPos);
-						preview->show();
+						if (file) {
+							preview->showBackground(QPixmap::fromImage(file->background()));
+							preview->move(cursorPos);
+							preview->show();
 
-						return;
+							return;
+						}
 					}
 				}
 			}
@@ -605,32 +617,6 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 	}
 
 	textEdit->previewWidget()->hide();
-}
-
-QList<QTreeWidgetItem *> JsmWidget::methodList(int groupID) const
-{
-	QList<QTreeWidgetItem *> items;
-	QTreeWidgetItem *item;
-	int count;
-	QString name;
-	const JsmScripts &scripts = data()->getJsmFile()->getScripts();
-
-	if (scripts.groups().size() <= groupID) {
-		qWarning() << "JsmFile::methodList error 1" << groupID << scripts.groups().size();
-		return items;
-	}
-
-	const JsmGroup &jsmGroup = scripts.group(groupID);
-	count = jsmGroup.methodCount();
-
-	for (int methodID = 0; methodID < count; ++methodID) {
-		const JsmMethod &jsmMethod = jsmGroup.method(methodID);
-		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(methodID, 3) << jsmMethod.name() << QString("%1").arg(jsmGroup.absMethodId() + methodID, 3));
-		item->setData(0, Qt::UserRole, methodID);
-		items.append(item);
-	}
-
-	return items;
 }
 
 int JsmWidget::currentItem(QTreeWidget *list)

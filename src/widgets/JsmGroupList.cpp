@@ -45,7 +45,7 @@ JsmGroupList::JsmGroupList(QWidget *parent) :
 	_delGroupAction->setShortcut(QKeySequence(Qt::Key_Delete));
 	_delGroupAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 	_delGroupAction->setEnabled(false);
-	/* _cutGroupAction = new QAction(QIcon::fromTheme(QStringLiteral("edit-cut")), tr("Cut group"), this);
+	_cutGroupAction = new QAction(QIcon::fromTheme(QStringLiteral("edit-cut")), tr("Cut group"), this);
 	_cutGroupAction->setShortcut(QKeySequence("Ctrl+X"));
 	_cutGroupAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 	_cutGroupAction->setEnabled(false);
@@ -57,7 +57,7 @@ JsmGroupList::JsmGroupList(QWidget *parent) :
 	_pasteGroupAction->setShortcut(QKeySequence("Ctrl+V"));
 	_pasteGroupAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 	_pasteGroupAction->setEnabled(false);
-	_upGroupAction = new QAction(QIcon::fromTheme(QStringLiteral("go-up")), tr("Move up"), this);
+	/* _upGroupAction = new QAction(QIcon::fromTheme(QStringLiteral("go-up")), tr("Move up"), this);
 	_upGroupAction->setShortcut(QKeySequence("Shift+Up"));
 	_upGroupAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 	_upGroupAction->setEnabled(false);
@@ -72,22 +72,22 @@ JsmGroupList::JsmGroupList(QWidget *parent) :
 	connect(_renameGroupAction, &QAction::triggered, this, qOverload<>(&JsmGroupList::rename));
 	connect(_addGroupAction, &QAction::triggered, this, &JsmGroupList::add);
 	connect(_delGroupAction, &QAction::triggered, this, &JsmGroupList::del);
-	/* connect(_cutGroupAction, &QAction::triggered, this, &JsmGroupList::cut);
+	connect(_cutGroupAction, &QAction::triggered, this, &JsmGroupList::cut);
 	connect(_copyGroupAction, &QAction::triggered, this, &JsmGroupList::copy);
 	connect(_pasteGroupAction, &QAction::triggered, this, &JsmGroupList::paste);
-	connect(_upGroupAction, &QAction::triggered, this, &JsmGroupList::up);
+	/* connect(_upGroupAction, &QAction::triggered, this, &JsmGroupList::up);
 	connect(_downGroupAction, &QAction::triggered, this, &JsmGroupList::down); */
 
 	this->addAction(_renameGroupAction);
 	this->addAction(_addGroupAction);
 	this->addAction(_delGroupAction);
-	/* QAction *separator = new QAction(this);
+	QAction *separator = new QAction(this);
 	separator->setSeparator(true);
 	this->addAction(separator);
 	this->addAction(_cutGroupAction);
 	this->addAction(_copyGroupAction);
 	this->addAction(_pasteGroupAction);
-	QAction *separator2 = new QAction(this);
+	/* QAction *separator2 = new QAction(this);
 	separator2->setSeparator(true);
 	this->addAction(separator2);
 	this->addAction(_upGroupAction);
@@ -128,15 +128,15 @@ void JsmGroupList::upDownEnabled()
 {
 	if (selectedItems().isEmpty()) {
 		_delGroupAction->setEnabled(false);
-		/* _cutGroupAction->setEnabled(false);
+		_cutGroupAction->setEnabled(false);
 		_copyGroupAction->setEnabled(false);
-		_upGroupAction->setEnabled(false);
+		/* _upGroupAction->setEnabled(false);
 		_downGroupAction->setEnabled(false); */
 	} else {
 		_delGroupAction->setEnabled(topLevelItemCount() > 0);
-		/* _cutGroupAction->setEnabled(true);
+		_cutGroupAction->setEnabled(true);
 		_copyGroupAction->setEnabled(true);
-		_upGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(0));
+		/* _upGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(0));
 		_downGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(topLevelItemCount()-1)); */
 	}
 }
@@ -246,7 +246,6 @@ void JsmGroupList::fill()
 	scrollToTop();
 	resizeColumnToContents(0);
 	resizeColumnToContents(1);
-	resizeColumnToContents(2);
 
 	updateHelpWidget();
 
@@ -261,10 +260,10 @@ void JsmGroupList::fill()
 		return;
 	}
 
-	int grpScriptID = selectedID();
+	int groupID = selectedID();
 	QTreeWidgetItem *currentItem = this->currentItem();
-	if (grpScriptID >= 0 && grpScriptID < _scripts->grpScriptCount() && currentItem != nullptr) {
-		const GrpScript &currentGrpScript = _scripts->grpScript(grpScriptID);
+	if (groupID >= 0 && groupID < _scripts->grpScriptCount() && currentItem != nullptr) {
+		const GrpScript &currentGrpScript = _scripts->grpScript(groupID);
 		currentItem->setText(2, currentGrpScript.typeString());
 		currentItem->setForeground(2, currentGrpScript.typeColor());
 
@@ -321,7 +320,7 @@ void JsmGroupList::renameOK(QTreeWidgetItem *item, int column)
 	}
 
 	JsmScripts &scripts = _field->getJsmFile()->getScripts();
-	int groupID = item->text(0).toInt();
+	int groupID = selectedID();
 	if (groupID >= 0 && scripts.setGroupName(groupID, newName)) {
 		emit modified();
 	} else {
@@ -366,7 +365,6 @@ void JsmGroupList::add()
 		fill();
 		scroll(groupID);
 		emit modified();
-		rename();
 	} else {
 		QMessageBox::warning(this, tr("Name already exist"), tr("This name already exist, please choose another"));
 	}
@@ -384,7 +382,7 @@ void JsmGroupList::del(bool totalDel)
 
 	if (totalDel && QMessageBox::warning(this, tr("Delete"), tr("Are you sure you want to remove %1?\n"
 	                                                           "Some scripts can refer to it!")
-	                                    .arg(selectedIDs.size()==1 ?
+	                                    .arg(selectedIDs.size() == 1 ?
 	                                         tr("the group selected") :
 	                                         tr("the selected groups")),
 	                                    QMessageBox::Yes | QMessageBox::Cancel) == QMessageBox::Cancel) {
@@ -394,7 +392,7 @@ void JsmGroupList::del(bool totalDel)
 	JsmScripts &scripts = _field->getJsmFile()->getScripts();
 	std::sort(selectedIDs.begin(), selectedIDs.end());
 	for (int i = selectedIDs.size() - 1; i >= 0; --i) {
-		scripts.removeGroup(i);
+		scripts.removeGroup(selectedIDs.at(i));
 	}
 
 	blockSignals(true);
@@ -405,7 +403,7 @@ void JsmGroupList::del(bool totalDel)
 
 	if (topLevelItemCount() != 0) {
 		if (selectedIDs.at(0) >= topLevelItemCount() && selectedIDs.at(0) > 0) {
-			scroll(selectedIDs.at(0)-1);
+			scroll(selectedIDs.at(0) - 1);
 		} else if (selectedIDs.at(0) < topLevelItemCount()) {
 			scroll(selectedIDs.at(0));
 		}
@@ -423,44 +421,51 @@ void JsmGroupList::copy()
 	if (_field == nullptr) {
 		return;
 	}
-	QList<int> selectedIDs = this->selectedIDs();
-	if (selectedIDs.isEmpty()) {
+	QList<int> slctdIDs = selectedIDs();
+	if (slctdIDs.isEmpty()) {
 		return;
 	}
 
 	clearCopiedGroups();
-	/* const JsmScripts &scripts = _field->getJsmFile()->getScripts();
-	for (const int id: selectedIDs) {
-		_grpScriptCopied.append(scripts.group(id));
-	} */
+	const JsmScripts &scripts = _field->getJsmFile()->getScripts();
+	for (const int id: slctdIDs) {
+		_groupsCopied.append(scripts.group(id));
+	}
 
 	_pasteGroupAction->setEnabled(true);
 }
 
 void JsmGroupList::paste()
 {
-	if (_field == nullptr /* || _grpScriptCopied.isEmpty() */) {
+	if (_field == nullptr || _groupsCopied.isEmpty()) {
 		return;
 	}
-	int grpScriptID = selectedID() + 1;
-	if (grpScriptID == 0) {
-		grpScriptID = topLevelItemCount(); // Last position
+	int groupID = selectedID() + 1;
+	if (groupID == 0) {
+		groupID = topLevelItemCount(); // Last position
 	}
-	/* int i = grpScriptID;
+	int i = groupID, num = 1;
 	JsmScripts &scripts = _field->getJsmFile()->getScripts();
-	for (const JsmGroup &GScopied : std::as_const(_grpScriptCopied)) {
-		scripts.insertGroup(i++, GScopied);
-	} */
+	for (JsmGroup groupCopied: std::as_const(_groupsCopied)) {
+		QString groupName = groupCopied.name();
+		while (!scripts.canSetGroupName(groupName)) {
+			groupName = QString("%1%2").arg(groupCopied.name()).arg(num++);
+		}
+		groupCopied.setNameUnsafe(groupName);
+		scripts.insertGroup(i, groupCopied);
+
+		i += 1;
+	}
 
 	fill();
-	scroll(grpScriptID);
+	scroll(groupID);
 	emit modified();
 }
 
 void JsmGroupList::clearCopiedGroups()
 {
 	_pasteGroupAction->setEnabled(false);
-	//_grpScriptCopied.clear();
+	_groupsCopied.clear();
 }
 
 void JsmGroupList::move(bool direction)
@@ -468,13 +473,13 @@ void JsmGroupList::move(bool direction)
 	if (_field == nullptr) {
 		return;
 	}
-	int grpScriptID = selectedID();
-	if (grpScriptID == -1) {
+	int groupID = selectedID();
+	if (groupID == -1) {
 		return;
 	}
-	/* if (_scripts->moveGrpScript(grpScriptID, direction)) {
+	/* if (_scripts->moveGrpScript(groupID, direction)) {
 		fill();
-		scroll(direction ? grpScriptID + 1 : grpScriptID - 1);
+		scroll(direction ? groupID + 1 : groupID - 1);
 		emit modified();
 	} else {
 		setFocus();

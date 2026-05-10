@@ -157,6 +157,59 @@ int JsmScripts::calcGroupTypeRelativeId(int groupID) const
 	return relativeId;
 }
 
+bool JsmScripts::insertGroup(int groupID, JsmGroup::Type groupType, const QString &name)
+{
+	if (!canSetGroupName(name)) {
+		return false;
+	}
+
+	const JsmGroup &lastGroup = _groupListOrderedById.last();
+	int absMethodID = lastGroup.absMethodId() + lastGroup.methodCount();
+
+	qDebug() << "JsmScripts::insertGroup" << "groupID" << groupID << "absMethodID" << absMethodID;
+
+	propagateGroupCountChange(groupID, +1);
+	_groupListOrderedById.insert(groupID, JsmGroup(absMethodID, QList<JsmMethod>(), groupType, name));
+	insertMethod(groupID, 0, "init");
+
+	return true;
+}
+
+bool JsmScripts::insertGroup(int groupID, const JsmGroup &jsmGroup)
+{
+	if (!insertGroup(groupID, jsmGroup.type(), jsmGroup.name())) {
+		return false;
+	}
+
+	JsmGroup &newGroup = group(groupID);
+
+	newGroup.setCharacter(jsmGroup.character());
+	newGroup.setModelId(jsmGroup.modelId());
+
+	int methodCount = jsmGroup.methodCount();
+	if (methodCount > 0) {
+		newGroup.method(0).setScriptData(jsmGroup.method(0).scriptData());
+
+		for (int methodID = 1; methodID < methodCount; ++methodID) {
+			insertMethod(groupID, methodID, jsmGroup.method(methodID));
+		}
+	}
+
+	return true;
+}
+
+void JsmScripts::removeGroup(int groupID)
+{
+	const JsmGroup &grp = _groupListOrderedById.at(groupID);
+
+	for (int methodID = grp.methodCount() - 1; methodID >= 0; --methodID) {
+		removeMethod(groupID, methodID);
+	}
+
+	_groupListOrderedById.removeAt(groupID);
+	propagateGroupCountChange(groupID, -1);
+}
+
 bool JsmScripts::canSetGroupName(const QString &name) const
 {
 	if (name.isEmpty()) {
@@ -173,14 +226,14 @@ bool JsmScripts::canSetGroupName(const QString &name) const
 
 bool JsmScripts::setGroupName(int groupID, const QString &name)
 {
-	if (!canSetGroupName(name)) {
-		return false;
-	}
-
 	JsmGroup &jsmGroup = group(groupID);
 	QString oldGroupName = jsmGroup.name();
 
 	if (oldGroupName == name) {
+		return true;
+	}
+
+	if (!canSetGroupName(name)) {
 		return false;
 	}
 	
@@ -197,24 +250,26 @@ bool JsmScripts::setGroupName(int groupID, const QString &name)
 			JsmMethod &jsmMethod = jsmGroup.method(methodID);
 
 			QString decompiledScript = jsmMethod.decompiledScript(true);
-			QRegularExpressionMatchIterator match = search.globalMatch(decompiledScript);
-			QStringList methodNames;
-			while (match.hasNext()) {
-				match.next();
+			if (!decompiledScript.isEmpty()) {
+				QRegularExpressionMatchIterator match = search.globalMatch(decompiledScript);
+				QStringList methodNames;
+				while (match.hasNext()) {
+					match.next();
 
-				QString methodName = match.next().captured(1);
-				if (!methodNames.contains(methodName)) {
-					methodNames.append(methodName);
+					QString methodName = match.next().captured(1);
+					if (!methodNames.contains(methodName)) {
+						methodNames.append(methodName);
+					}
 				}
-			}
 
-			for (const QString &methodName: methodNames) {
-				QRegularExpression methodSearch(QString("\\b%1\\.%2\\b").arg(QRegularExpression::escape(oldGroupName), QRegularExpression::escape(methodName)));
-				decompiledScript.replace(methodSearch, QString("%1.%2").arg(name, methodName));
-			}
+				for (const QString &methodName: methodNames) {
+					QRegularExpression methodSearch(QString("\\b%1\\.%2\\b").arg(QRegularExpression::escape(oldGroupName), QRegularExpression::escape(methodName)));
+					decompiledScript.replace(methodSearch, QString("%1.%2").arg(name, methodName));
+				}
 
-			if (!methodNames.isEmpty()) {
-				jsmMethod.setDecompiledScript(decompiledScript, true);
+				if (!methodNames.isEmpty()) {
+					jsmMethod.setDecompiledScript(decompiledScript, true);
+				}
 			}
 		}
 	}
@@ -641,8 +696,12 @@ JsmProgram JsmScripts::program(int groupID, int methodID,
 	return program2ndPass(program2ndPass(p, collectPointers, usedLabels), collectPointers, usedLabels);
 }
 
-void JsmScripts::insertMethod(int groupID, int methodID, const QString &name)
+bool JsmScripts::insertMethod(int groupID, int methodID, const QString &name)
 {
+	if (!canSetMethodName(groupID, name)) {
+		return false;
+	}
+
 	JsmGroup &jsmGroup = group(groupID);
 	int absMethodID = jsmGroup.absMethodId() + methodID;
 	// Minimal script (RET) All groups have at last one script
@@ -652,22 +711,17 @@ void JsmScripts::insertMethod(int groupID, int methodID, const QString &name)
 	qDebug() << "JsmScripts::insertMethod" << "groupID" << groupID << "methodID" << methodID << "nbOpcode" << data.nbOpcode();
 
 	propagateMethodCountChange(groupID, absMethodID, +1);
+
+	return true;
 }
 
-bool JsmScripts::insertGroup(int groupID, JsmGroup::Type groupType, const QString &name)
+bool JsmScripts::insertMethod(int groupID, int methodID, const JsmMethod &jsmMethod)
 {
-	if (! canSetGroupName(name)) {
+	if (!insertMethod(groupID, methodID, jsmMethod.name())) {
 		return false;
 	}
 
-	const JsmGroup &lastGroup = _groupListOrderedById.last();
-	int absMethodID = lastGroup.absMethodId() + lastGroup.methodCount();
-
-	qDebug() << "JsmScripts::insertGroup" << "groupID" << groupID << "absMethodID" << absMethodID;
-
-	propagateGroupCountChange(groupID, +1);
-	_groupListOrderedById.insert(groupID, JsmGroup(absMethodID, QList<JsmMethod>(), groupType, name));
-	insertMethod(groupID, 0, "init");
+	group(groupID).method(methodID).setScriptData(jsmMethod.scriptData());
 
 	return true;
 }
@@ -681,16 +735,62 @@ void JsmScripts::removeMethod(int groupID, int methodID)
 	propagateMethodCountChange(groupID, absMethodID, -1);
 }
 
-void JsmScripts::removeGroup(int groupID)
+bool JsmScripts::canSetMethodName(int groupID, const QString &name)
 {
-	const JsmGroup &grp = _groupListOrderedById.at(groupID);
+	const JsmGroup &jsmGroup = group(groupID);
 
-	for (int methodID = grp.methodCount() - 1; methodID >= 0; --methodID) {
-		removeMethod(groupID, methodID);
+	// First method is immutable
+	for (int methodID = 1; methodID < jsmGroup.methodCount(); ++methodID) {
+		const JsmMethod &jsmMethod = jsmGroup.method(methodID);
+		if (jsmMethod.name() == name) {
+			return false;
+		}
 	}
 
-	_groupListOrderedById.removeAt(groupID);
-	propagateGroupCountChange(groupID, -1);
+	return true;
+}
+
+bool JsmScripts::setMethodName(int groupID, int methodID, const QString &name)
+{
+	// First method is immutable
+	if (methodID == 0) {
+		return false;
+	}
+
+	JsmGroup &jsmGroup = group(groupID);
+	JsmMethod &jsmMethod = jsmGroup.method(methodID);
+	const QString &oldMethodName = jsmMethod.name();
+
+	if (oldMethodName == name) {
+		return true;
+	}
+
+	if (!canSetMethodName(groupID, name)) {
+		return false;
+	}
+
+	jsmMethod.setName(name);
+
+	if (oldMethodName.isEmpty()) {
+		return true;
+	}
+
+	QRegularExpression search(QString("\\b%1\\.%2\\b")
+		.arg(QRegularExpression::escape(jsmGroup.name()), QRegularExpression::escape(oldMethodName)));
+
+	for (JsmGroup &jsmGroup: _groupListOrderedById) {
+		for (int methodID = 0; methodID < jsmGroup.methodCount(); ++methodID) {
+			JsmMethod &jsmMethod = jsmGroup.method(methodID);
+
+			QString decompiledScript = jsmMethod.decompiledScript(true);
+			if (!decompiledScript.isEmpty()) {
+				decompiledScript.replace(search, QString("%1.%2").arg(jsmGroup.name(), name));
+				jsmMethod.setDecompiledScript(decompiledScript, true);
+			}
+		}
+	}
+
+	return true;
 }
 
 void JsmScripts::propagateGroupCountChange(int groupID, int groupCountChange)

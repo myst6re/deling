@@ -29,6 +29,7 @@
 
 class JsmHelpDialog;
 class JsmGroupList;
+class JsmMethodList;
 
 class JsmWidget : public PageWidget
 {
@@ -47,12 +48,11 @@ public:
 	inline QString tabName() const { return tr("Scripts"); }
 private:
 	void saveSession();
-	QList<QTreeWidgetItem *> methodList(int groupID) const;
 	QHash<int, CharaModel> *mainModels;
 	FieldArchive *fieldArchive;
 	JsmGroupList *list1;
 	CharaPreview *modelPreview;
-	QTreeWidget *list2;
+	JsmMethodList *list2;
 	QTabBar *tabBar;
 	PlainTextEditPriv *textEdit;
 	JsmHighlighter *highlighter;
@@ -68,6 +68,7 @@ private:
 //	void gotoScriptLabel(int groupID, int labelID);
 	int groupID, methodID;
 private slots:
+	void setJsmModified();
 	void compile();
 	void compilePseudo();
 	void showHelp();

@@ -2250,6 +2250,18 @@ Dollet Harbor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Cut group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Group Editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2335,6 +2347,86 @@ Some scripts can refer to it!</source>
     </message>
 </context>
 <context>
+    <name>JsmMethodList</name>
+    <message>
+        <source>Id</source>
+        <translation type="unfinished">ID</translation>
+    </message>
+    <message>
+        <source>Script</source>
+        <translation type="unfinished">スクリプト</translation>
+    </message>
+    <message>
+        <source>Script label</source>
+        <translation type="unfinished">スクリプト ラベル</translation>
+    </message>
+    <message>
+        <source>Rename method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Method Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add a method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove a method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name already exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This name already exist, please choose another</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove %1?
+Some scripts can refer to it!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the method selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the selected methods</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>JsmWidget</name>
     <message>
         <source>Warning: On this field scripts are in an old poorly recognized format. What you will read here may did not make sense.</source>
@@ -2343,7 +2435,7 @@ Some scripts can refer to it!</source>
     <message>
         <source>Id</source>
         <translatorcomment>Id</translatorcomment>
-        <translation>ID</translation>
+        <translation type="vanished">ID</translation>
     </message>
     <message>
         <source>Entity</source>
@@ -2357,7 +2449,7 @@ Some scripts can refer to it!</source>
     <message>
         <source>Script</source>
         <translatorcomment>Script</translatorcomment>
-        <translation>スクリプト</translation>
+        <translation type="vanished">スクリプト</translation>
     </message>
     <message>
         <source>Script label</source>

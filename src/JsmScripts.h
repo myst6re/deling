@@ -44,6 +44,9 @@ public:
 		return _scriptData;
 	}
 	void setScriptData(const JsmData &scriptData);
+	void setNameUnsafe(const QString &name) {
+		setName(name);
+	}
 private:
 	inline void setName(const QString &name) {
 		_name = name;
@@ -100,6 +103,9 @@ public:
 	}
 	QString absoluteMethodName(int absMethodID) const;
 	int findAbsoluteMethodIDByName(const QString &methodName) const;
+	void setNameUnsafe(const QString &name) {
+		setName(name);
+	}
 private:
 	inline void setType(Type type) {
 		_type = type;
@@ -145,6 +151,9 @@ public:
 	int calcGroupTypeRelativeId(int groupID) const;
 	bool canSetGroupName(const QString &name) const;
 	bool setGroupName(int groupID, const QString &name);
+	bool insertGroup(int groupID, JsmGroup::Type groupType, const QString &name);
+	bool insertGroup(int groupID, const JsmGroup &jsmGroup);
+	void removeGroup(int groupID);
 	// Scripts
 	int countMethods() const;
 	QList<JsmMethod> methods() const;
@@ -153,10 +162,11 @@ public:
 	                            bool withLabels) const;
 	JsmProgram program(int groupID, int methodID,
 	                   QSet<void *> &collectPointers) const;
-	void insertMethod(int groupID, int methodID, const QString &name = QString());
+	bool insertMethod(int groupID, int methodID, const QString &name);
+	bool insertMethod(int groupID, int methodID, const JsmMethod &jsmMethod);
 	void removeMethod(int groupID, int methodID);
-	bool insertGroup(int groupID, JsmGroup::Type groupType, const QString &name);
-	void removeGroup(int groupID);
+	bool canSetMethodName(int groupID, const QString &name);
+	bool setMethodName(int groupID, int methodID, const QString &name);
 private:
 	/* methodID can not be valid */
 	void propagateGroupCountChange(int groupID, int groupCountChange);

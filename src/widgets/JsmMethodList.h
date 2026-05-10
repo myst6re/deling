@@ -18,32 +18,27 @@
 #pragma once
 
 #include <QtWidgets>
-#include "JsmData.h"
 #include "JsmScripts.h"
 
-class HelpWidget;
 class Field;
 
-class JsmGroupList : public QTreeWidget
+class JsmMethodList : public QTreeWidget
 {
     Q_OBJECT
 public:
-	explicit JsmGroupList(QWidget *parent = nullptr);
+	explicit JsmMethodList(QWidget *parent = nullptr);
 
 	int selectedID() const;
 
 	inline QToolBar *toolBar() const {
 		return _toolBar;
 	}
-	inline HelpWidget *helpWidget() const {
-		return _helpWidget;
-	}
-	void clearCopiedGroups();
+	void clearCopiedMethods();
 	void setEnabled(bool enabled);
 
 	void clear();
 	void setField(Field *field);
-	void fill();
+	void fill(int groupID);
 	//void localeRefresh();
 	void scroll(int, bool focus = true);
 	void enableActions(bool enabled);
@@ -59,28 +54,24 @@ private slots:
 	void cut();
 	void copy();
 	void paste();
-	inline void up() {
-		move(false);
-	}
-	inline void down() {
-		move(true);
-	}
 	void upDownEnabled();
 
 signals:
 	void modified();
 
 private:
-	QList<QTreeWidgetItem *> nameList() const;
-	void updateHelpWidget();
-	void move(bool direction);
+	inline void fill() {
+		fill(_groupID);
+	}
+	QList<QTreeWidgetItem *> nameList(int groupID) const;
 	QTreeWidgetItem *findItem(int id) const;
 	QList<int> selectedIDs() const;
 
 	QToolBar *_toolBar;
-	HelpWidget *_helpWidget;
-	QAction *_renameGroupAction, *_addGroupAction, *_delGroupAction, *_cutGroupAction, *_copyGroupAction, *_pasteGroupAction, *_upGroupAction, *_downGroupAction;
+	QAction *_renameMethodAction, *_addMethodAction, *_delMethodAction, *_cutMethodAction, *_copyMethodAction, *_pasteMethodAction;
 
 	Field *_field;
-	QList<JsmGroup> _groupsCopied;
+	int _groupID;
+
+	QList<JsmMethod> _methodCopied;
 };
