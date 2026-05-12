@@ -196,13 +196,14 @@ QByteArray FF8Text::toFF8() const
 	for(qsizetype c = 0; c < stringSize; ++c)
 	{
 		comp = string.at(c);
-		if(comp=='\n') {//\n{NewPage}\n,\n
-			if(string.mid(c+1, 10).compare("{NewPage}\n", Qt::CaseInsensitive) == 0) {
-				ff8str.append('\x01');
-				c += 10;
+		if(comp=='\n' || comp=='\r') {
+			if(comp=='\r' && c+1<stringSize && string.at(c+1)=='\n') {
+				c += 1;
 			}
-			else
-				ff8str.append('\x02');
+
+			if(string.mid(c+1, 9).compare("{NewPage}", Qt::CaseInsensitive) != 0) {
+				ff8str.append('\x02');//\n
+			}
 			continue;
 		}
 		else if(comp=='{') {
@@ -287,6 +288,18 @@ QByteArray FF8Text::toFF8() const
 					ff8str.append((char)(value+0x20));
 					c += 6;
 					continue;
+				}
+			}
+			if(rest.startsWith("{NewPage}", Qt::CaseInsensitive)) {
+				ff8str.append('\x01');
+				c += 9;
+
+				if(c + 1 < stringSize && (string.at(c + 1) == '\n' || string.at(c + 1) == '\r')) {
+					++c;
+
+					if(c + 1 < stringSize && string.at(c) == '\r' && string.at(c + 1) == '\n') {
+						++c;
+					}
 				}
 			}
 
