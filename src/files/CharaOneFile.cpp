@@ -30,7 +30,7 @@ CharaOneFile::~CharaOneFile()
 
 bool CharaOneFile::open(const QByteArray &one, const QByteArray &pcb, bool ps)
 {
-	models.clear();
+	_models.clear();
 
 	if (one.size() < 0x800) {
 		qWarning() << "CharaOneFile::open chara file too short" << one.size();
@@ -188,7 +188,7 @@ bool CharaOneFile::open(const QByteArray &one, const QByteArray &pcb, bool ps)
 			model.setSharedTextureModelId((modelID >> 20) & 0xFF);
 		}
 
-		models.append(model);
+		_models.append(model);
 	}
 
 	_ps = ps;
@@ -220,11 +220,11 @@ bool CharaOneFile::save(QByteArray &one, QByteArray &pcb) const
 	QList< QPair<QString, QRgb> > modelLightColors;
 
 	if (!_ps) {
-		quint32 count = quint32(models.size());
+		quint32 count = quint32(_models.size());
 		header.append((const char *)&count, 4);
 	}
 
-	for (const CharaModel &model: models) {
+	for (const CharaModel &model: _models) {
 		quint32 offset = one.size();
 		header.append((const char *)&offset, 4);
 
@@ -313,13 +313,25 @@ bool CharaOneFile::save(QByteArray &one, QByteArray &pcb) const
 
 void CharaOneFile::setModel(int id, const CharaModel &model)
 {
-	models.replace(id, model);
+	_models.replace(id, model);
+	modified = true;
+}
+
+void CharaOneFile::insertModel(int id, const CharaModel &model)
+{
+	_models.insert(id, model);
+	modified = true;
+}
+
+void CharaOneFile::removeModel(int id)
+{
+	_models.removeAt(id);
 	modified = true;
 }
 
 void CharaOneFile::setDefaultLightColor(QRgb defaultLightColor)
 {
-	for (int i = 0; i < models.size(); ++i) {
+	for (int i = 0; i < _models.size(); ++i) {
 		CharaModel &m = model(i);
 		if (m.lightColor() == _defaultLightColor) {
 			m.setLightColor(defaultLightColor);

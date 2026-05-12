@@ -316,6 +316,14 @@ List of available commands:
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Add model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Shared texture local model</source>
         <translation type="unfinished"></translation>
     </message>

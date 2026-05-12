@@ -76,7 +76,7 @@ public:
 protected:
 	QString errorMsg;
 	QList<Field *> fields;
-	QHash<int, CharaModel> models;
+	QHash<int, CharaModel> _mainModels;
 	QStringList _mapList;
 	QMultiMap<QString, int> fieldsSortByName;
 	QMultiMap<QString, int> fieldsSortByMapId;

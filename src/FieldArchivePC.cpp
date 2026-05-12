@@ -97,8 +97,6 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 
 	// Ouverture des écrans listés
 	for (const QString &entry: fsList) {
-		QCoreApplication::processEvents();
-
 		if (progress->observerWasCanceled()) {
 			clearFields();
 			errorMsg = QObject::tr("Opening canceled.");
@@ -106,6 +104,7 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 		}
 
 		if (currentMap % freq == 0) {
+			QCoreApplication::processEvents();
 			progress->setObserverValue(currentMap);
 		}
 		currentMap++;
@@ -200,13 +199,13 @@ bool FieldArchivePC::openModels()
 			if (ok) {
 				MchFile mch;
 				if (mch.open(mainModels.fileData(entry, fs), match.captured(0).left(4)) && mch.hasModel()) {
-					models.insert(id, mch.model());
+					_mainModels.insert(id, mch.model());
 				}
 			}
 		}
 	}
 
-	return !models.isEmpty();
+	return !_mainModels.isEmpty();
 }
 
 bool FieldArchivePC::openFull(Field *field) const

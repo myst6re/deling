@@ -171,12 +171,12 @@ bool FieldArchivePS::openModels()
 			MchFile mch;
 			if (mch.open(fieldData, QString("d%1").arg(i, 3, 10, QChar('0')))
 					&& mch.hasModel()) {
-				models.insert(i, mch.model());
+				_mainModels.insert(i, mch.model());
 			}
 		}
 	}
 
-	return !models.isEmpty();
+	return !_mainModels.isEmpty();
 }
 
 bool FieldArchivePS::openFull(Field *field) const

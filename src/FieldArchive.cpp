@@ -37,7 +37,7 @@ void FieldArchive::clearFields()
 {
 	for (Field *field: fields)	delete field;
 	fields.clear();
-	models.clear();
+	_mainModels.clear();
 	fieldsSortByName.clear();
 	fieldsSortByMapId.clear();
 	if (_worldMap != nullptr) {
@@ -82,7 +82,7 @@ int FieldArchive::nbFields() const
 
 QHash<int, CharaModel> *FieldArchive::getModels()
 {
-	return &models;
+	return &_mainModels;
 }
 
 bool FieldArchive::isReadOnly() const

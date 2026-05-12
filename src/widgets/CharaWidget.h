@@ -22,6 +22,8 @@
 #include "widgets/PageWidget.h"
 #include "CharaPreview.h"
 
+class ListWidget;
+
 class CharaWidget : public PageWidget
 {
 	Q_OBJECT
@@ -39,12 +41,15 @@ public slots:
 	void setScaleValue(int value);
 	void setExternalModelId(int value);
 	void setLocalTextureLoaderId(int value);
+	void addModel();
+	void removeModel();
 private:
 	void build();
 	QFormLayout *_formLayout;
 	QHash<int, CharaModel> *_mainModels;
 	CharaPreview *_modelPreview;
 	QListWidget *_modelList;
+	ListWidget *_listWidget;
 	QComboBox *_loadingTypeChoice;
 	ColorDisplay *_lightColorEdit;
 	ColorDisplay *_defaultLightColorEdit;

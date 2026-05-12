@@ -32,14 +32,16 @@ public:
 		return QString();
 	}
 	const CharaModel &model(int id) const {
-		return models.at(id);
+		return _models.at(id);
 	}
 	CharaModel &model(int id) {
-		return models[id];
+		return _models[id];
 	}
 	void setModel(int id, const CharaModel &model);
+	void insertModel(int id, const CharaModel &model);
+	void removeModel(int id);
 	inline int modelCount() const {
-		return models.size();
+		return _models.size();
 	}
 	inline QRgb defaultLightColor() const {
 		return _defaultLightColor;
@@ -48,7 +50,7 @@ public:
 private:
 	using File::open;
 	using File::save;
-	QList<CharaModel> models;
+	QList<CharaModel> _models;
 	QRgb _defaultLightColor;
 	bool _ps;
 };

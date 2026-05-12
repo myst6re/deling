@@ -17,6 +17,7 @@
  ****************************************************************************/
 #include "CharaWidget.h"
 #include "Field.h"
+#include "ListWidget.h"
 
 CharaWidget::CharaWidget(QWidget *parent)
 	: PageWidget(parent), _mainModels(nullptr)
@@ -27,7 +28,10 @@ void CharaWidget::build()
 {
 	if (isBuilded())	return;
 
-	_modelList = new QListWidget(this);
+	_listWidget = new ListWidget(this);
+	_listWidget->addAction(ListWidget::Add, tr("Add model"), this, SLOT(addModel()));
+	_listWidget->addAction(ListWidget::Rem, tr("Remove model"), this, SLOT(removeModel()));
+	_modelList = _listWidget->listWidget();
 	_modelList->setFixedWidth(200);
 	_modelPreview = new CharaPreview(this);
 	_loadingTypeChoice = new QComboBox(this);
@@ -47,6 +51,7 @@ void CharaWidget::build()
 	_modelId->setSuffix(QString(".mch"));
 
 	QVBoxLayout *listLayout = new QVBoxLayout;
+	listLayout->addWidget(_listWidget->toolBar());
 	listLayout->addWidget(_modelList, 1);
 	listLayout->addWidget(_modelPreview);
 	listLayout->setContentsMargins(QMargins());
@@ -104,14 +109,16 @@ void CharaWidget::fill()
 
 	if (!hasData() || !data()->hasCharaFile())		return;
 
+	CharaOneFile *charaOneFile = data()->getCharaFile();
+
 	_modelList->blockSignals(true);
-	for (int i = 0; i < data()->getCharaFile()->modelCount(); ++i) {
-		QString name = data()->getCharaFile()->model(i).name();
+	for (int i = 0; i < charaOneFile->modelCount(); ++i) {
+		QString name = charaOneFile->model(i).name();
 		_modelList->addItem(name.isEmpty() ? tr("(No Name)") : name);
 	}
 	_modelList->blockSignals(false);
 
-	_defaultLightColorEdit->setColors(QList<uint>() << data()->getCharaFile()->defaultLightColor());
+	_defaultLightColorEdit->setColors(QList<uint>() << charaOneFile->defaultLightColor());
 
 	_modelList->setCurrentRow(0);
 
@@ -276,4 +283,36 @@ void CharaWidget::setLocalTextureLoaderId(int value)
 
 		_modelPreview->setModel(modelID, data()->getCharaFile(), _mainModels);
 	}
+}
+
+void CharaWidget::addModel()
+{
+	if (!hasData() || !data()->hasCharaFile()) {
+		return;
+	}
+
+	int modelID = _modelList->currentRow();
+	QString name = "d000";
+	data()->getCharaFile()->insertModel(modelID, CharaModel(name, 16));
+
+	emit modified();
+
+	_modelList->insertItem(modelID, name);
+	_modelList->setCurrentRow(modelID);
+}
+
+void CharaWidget::removeModel()
+{
+	int modelID = _modelList->currentRow();
+
+	if (!hasData() || !data()->hasCharaFile()
+			|| modelID >= data()->getCharaFile()->modelCount()) {
+		return;
+	}
+
+	data()->getCharaFile()->removeModel(modelID);
+
+	emit modified();
+
+	_modelList->takeItem(modelID);
 }
