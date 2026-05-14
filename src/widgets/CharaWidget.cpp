@@ -17,10 +17,9 @@
  ****************************************************************************/
 #include "CharaWidget.h"
 #include "Field.h"
-#include "ListWidget.h"
 
 CharaWidget::CharaWidget(QWidget *parent)
-	: PageWidget(parent), _mainModels(nullptr)
+	: PageWidget(parent), _mainModels(nullptr), _modelCopy(nullptr)
 {
 }
 
@@ -28,11 +27,17 @@ void CharaWidget::build()
 {
 	if (isBuilded())	return;
 
-	_listWidget = new ListWidget(this);
+	_listWidget = new TreeWidget(this);
+	_modelList = _listWidget->treeWidget();
+	_modelList->setHeaderLabels(QStringList() << tr("ID") << tr("Model name"));
+	_modelList->setFixedWidth(200);
+	_modelList->setSortingEnabled(false);
 	_listWidget->addAction(ListWidget::Add, tr("Add model"), this, SLOT(addModel()));
 	_listWidget->addAction(ListWidget::Rem, tr("Remove model"), this, SLOT(removeModel()));
-	_modelList = _listWidget->listWidget();
-	_modelList->setFixedWidth(200);
+	_listWidget->addAction(ListWidget::Up, tr("Move up"), this, SLOT(upModel()));
+	_listWidget->addAction(ListWidget::Down, tr("Move down"), this, SLOT(downModel()));
+	_listWidget->addAction(ListWidget::Copy, tr("Copy model"), this, SLOT(copyModel()));
+	_listWidget->addAction(ListWidget::Paste, tr("Paste model"), this, SLOT(pasteModel()));
 	_modelPreview = new CharaPreview(this);
 	_loadingTypeChoice = new QComboBox(this);
 	_loadingTypeChoice->addItem(tr("Main Character model"), CharaModel::External);
@@ -76,7 +81,7 @@ void CharaWidget::build()
 	layout->addLayout(mainLayout, 1, 0, 1, 2);
 	layout->setContentsMargins(QMargins());
 
-	connect(_modelList, SIGNAL(currentRowChanged(int)), SLOT(setModel(int)));
+	connect(_modelList, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), SLOT(setModel(QTreeWidgetItem*)));
 	connect(_defaultLightColorEdit, SIGNAL(colorEdited(int,QRgb)), SLOT(setDefaultLightColor()));
 	connect(_lightColorEdit, SIGNAL(colorEdited(int,QRgb)), SLOT(setModelLightColor()));
 	connect(_loadingTypeChoice, SIGNAL(currentIndexChanged(int)), SLOT(setModelLoadingType(int)));
@@ -111,16 +116,22 @@ void CharaWidget::fill()
 
 	CharaOneFile *charaOneFile = data()->getCharaFile();
 
-	_modelList->blockSignals(true);
+	QList<QTreeWidgetItem *> items;
 	for (int i = 0; i < charaOneFile->modelCount(); ++i) {
 		QString name = charaOneFile->model(i).name();
-		_modelList->addItem(name.isEmpty() ? tr("(No Name)") : name);
+		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList() << QString::number(i) << (name.isEmpty() ? tr("(No Name)") : name));
+		item->setData(0, Qt::UserRole, i);
+		items.append(item);
 	}
-	_modelList->blockSignals(false);
+	_modelList->addTopLevelItems(items);
+	_modelList->resizeColumnToContents(0);
+	_modelList->resizeColumnToContents(1);
 
 	_defaultLightColorEdit->setColors(QList<uint>() << charaOneFile->defaultLightColor());
 
-	_modelList->setCurrentRow(0);
+	if (!items.isEmpty()) {
+		_modelList->setCurrentItem(items.first());
+	}
 
 	PageWidget::fill();
 }
@@ -155,13 +166,13 @@ void CharaWidget::setDefaultLightColor()
 
 		emit modified();
 
-		setModel(_modelList->currentRow());
+		setModel(_listWidget->selectedID());
 	}
 }
 
 void CharaWidget::setModelLightColor()
 {
-	int modelID = _modelList->currentRow();
+	int modelID = _listWidget->selectedID();
 
 	if (!hasData() || !data()->hasCharaFile()
 			|| modelID >= data()->getCharaFile()->modelCount()) {
@@ -183,7 +194,7 @@ void CharaWidget::setModelLightColor()
 
 void CharaWidget::setModelLoadingType(int index)
 {
-	int modelID = _modelList->currentRow();
+	int modelID = _listWidget->selectedID();
 
 	if (!hasData() || !data()->hasCharaFile()
 			|| modelID >= data()->getCharaFile()->modelCount()) {
@@ -216,7 +227,7 @@ void CharaWidget::setModelLoadingType(int index)
 
 void CharaWidget::setScaleValue(int value)
 {
-	int modelID = _modelList->currentRow();
+	int modelID = _listWidget->selectedID();
 
 	if (!hasData() || !data()->hasCharaFile()
 			|| modelID >= data()->getCharaFile()->modelCount()) {
@@ -237,7 +248,7 @@ void CharaWidget::setExternalModelId(int value)
 	QString t = QString("model\\main_chr\\d%1").arg(value, 3, 10, QChar('0'));
 	_modelId->setPrefix(t.left(t.size() - QString::number(value).size()));
 
-	int modelID = _modelList->currentRow();
+	int modelID = _listWidget->selectedID();
 
 	if (!hasData() || !data()->hasCharaFile()
 			|| modelID >= data()->getCharaFile()->modelCount()) {
@@ -253,7 +264,7 @@ void CharaWidget::setExternalModelId(int value)
 		emit modified();
 
 		if (_modelList->currentItem() != nullptr) {
-			_modelList->currentItem()->setText(model.name());
+			_modelList->currentItem()->setText(1, model.name());
 		}
 		_modelPreview->setModel(modelID, data()->getCharaFile(), _mainModels);
 	}
@@ -261,7 +272,7 @@ void CharaWidget::setExternalModelId(int value)
 
 void CharaWidget::setLocalTextureLoaderId(int value)
 {
-	int modelID = _modelList->currentRow();
+	int modelID = _listWidget->selectedID();
 
 	if (!hasData() || !data()->hasCharaFile()
 			|| modelID >= data()->getCharaFile()->modelCount()) {
@@ -291,19 +302,19 @@ void CharaWidget::addModel()
 		return;
 	}
 
-	int modelID = _modelList->currentRow();
+	int modelID = _listWidget->selectedID();
 	QString name = "d000";
 	data()->getCharaFile()->insertModel(modelID, CharaModel(name, 16));
 
 	emit modified();
 
-	_modelList->insertItem(modelID, name);
-	_modelList->setCurrentRow(modelID);
+	fill();
+	_modelList->setCurrentItem(_listWidget->findItem(modelID));
 }
 
 void CharaWidget::removeModel()
 {
-	int modelID = _modelList->currentRow();
+	int modelID = _listWidget->selectedID();
 
 	if (!hasData() || !data()->hasCharaFile()
 			|| modelID >= data()->getCharaFile()->modelCount()) {
@@ -314,5 +325,76 @@ void CharaWidget::removeModel()
 
 	emit modified();
 
-	_modelList->takeItem(modelID);
+	_modelList->takeTopLevelItem(modelID);
+}
+
+void CharaWidget::upModel()
+{
+	int modelID = _listWidget->selectedID();
+
+	if (!hasData() || !data()->hasCharaFile()
+			|| modelID >= data()->getCharaFile()->modelCount()) {
+		return;
+	}
+
+	if (data()->getCharaFile()->upModel(modelID)) {
+		emit modified();
+
+		fill();
+
+		_modelList->setCurrentItem(_listWidget->findItem(modelID - 1));
+	}
+}
+
+void CharaWidget::downModel()
+{
+	int modelID = _listWidget->selectedID();
+
+	if (!hasData() || !data()->hasCharaFile()
+			|| modelID >= data()->getCharaFile()->modelCount()) {
+		return;
+	}
+
+	if (data()->getCharaFile()->downModel(modelID)) {
+		emit modified();
+
+		fill();
+
+		_modelList->setCurrentItem(_listWidget->findItem(modelID + 1));
+	}
+}
+
+void CharaWidget::copyModel()
+{
+	int modelID = _listWidget->selectedID();
+
+	if (!hasData() || !data()->hasCharaFile()
+			|| modelID >= data()->getCharaFile()->modelCount()) {
+		return;
+	}
+
+	if (_modelCopy != nullptr) {
+		delete _modelCopy;
+	}
+
+	_modelCopy = new CharaModel(data()->getCharaFile()->model(modelID));
+}
+
+void CharaWidget::pasteModel()
+{
+	int modelID = _listWidget->selectedID();
+
+	if (!hasData() || !data()->hasCharaFile()
+			|| modelID >= data()->getCharaFile()->modelCount()) {
+		return;
+	}
+
+	if (_modelCopy != nullptr) {
+		data()->getCharaFile()->insertModel(modelID, *_modelCopy);
+
+		emit modified();
+
+		fill();
+		_modelList->setCurrentItem(_listWidget->findItem(modelID));
+	}
 }

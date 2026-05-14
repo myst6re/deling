@@ -15,10 +15,10 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-#include "Listwidget.h"
+#include "widgets/ListWidget.h"
 
-ListWidget::ListWidget(QWidget *parent) :
-	QWidget(parent)
+AbstractListWidget::AbstractListWidget(QWidget *widget, QWidget *parent) :
+	QWidget(parent), _widget(widget)
 {
 	setContextMenuPolicy(Qt::ActionsContextMenu);
 	setFixedWidth(120);
@@ -26,61 +26,107 @@ ListWidget::ListWidget(QWidget *parent) :
 	_toolBar = new QToolBar(this);
 	_toolBar->setIconSize(QSize(16, 16));
 
-	_listWidget = new QListWidget(this);
-	_listWidget->setUniformItemSizes(true);
+	_widget->setParent(this);
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->addWidget(_toolBar);
-	layout->addWidget(_listWidget);
+	layout->addWidget(_widget);
 	layout->setContentsMargins(QMargins());
 }
 
-QAction *ListWidget::addAction(ActionType type, const QString &text,
-							   const QObject *receiver, const char *member)
+QAction *AbstractListWidget::addAction(ActionType type, const QString &text,
+                                       const QObject *receiver, const char *member)
 {
 	QIcon icon;
 	QKeySequence shortcut;
 	QAction *action;
+	bool inToolbar = false;
 
 	switch (type) {
 	case Add:
 		icon = QIcon(":images/plus.png");
 		shortcut = QKeySequence("Ctrl++");
+		inToolbar = true;
 		break;
 	case Invisible:
 		action = new QAction(text, this);
 		action->setStatusTip(text);
-		insertAction(0, action);
+		QWidget::addAction(action);
 		connect(action, SIGNAL(triggered()), receiver, member);
 		return action;
 	case Rem:
 		icon = QIcon(":images/minus.png");
 		shortcut = QKeySequence::Delete;
+		inToolbar = true;
 		break;
 	case Up:
 		icon = QIcon(":images/up.png");
 		shortcut = QKeySequence("Shift+Up");
+		inToolbar = true;
 		break;
 	case Down:
 		icon = QIcon(":images/down.png");
 		shortcut = QKeySequence("Shift+Down");
+		inToolbar = true;
+		break;
+	case Copy:
+		icon = QIcon(":images/copy.png");
+		shortcut = QKeySequence::Copy;
+		break;
+	case Cut:
+		icon = QIcon(":images/cut.png");
+		shortcut = QKeySequence::Cut;
+		break;
+	case Paste:
+		icon = QIcon(":images/paste.png");
+		shortcut = QKeySequence::Paste;
 		break;
 	}
 
-	action = _toolBar->addAction(icon, text, receiver, member);
+	action = QWidget::addAction(icon, text, receiver, member);
 	action->setShortcut(shortcut);
 	action->setStatusTip(text);
-	insertAction(0, action);
+
+	if (inToolbar) {
+		_toolBar->addAction(action);
+	}
+
+	QWidget::addAction(action);
+	_widget->addAction(action);
 
 	return action;
 }
 
-QToolBar *ListWidget::toolBar() const
+QToolBar *AbstractListWidget::toolBar() const
 {
 	return _toolBar;
 }
 
-QListWidget *ListWidget::listWidget() const
+ListWidget::ListWidget(QWidget *parent) :
+	AbstractListWidget(new QListWidget, parent)
 {
-	return _listWidget;
+	listWidget()->setUniformItemSizes(true);
+}
+
+TreeWidget::TreeWidget(QWidget *parent) :
+	AbstractListWidget(new QTreeWidget, parent)
+{
+	treeWidget()->setAutoScroll(false);
+	treeWidget()->setIndentation(0);
+	treeWidget()->setUniformRowHeights(true);
+	treeWidget()->setAlternatingRowColors(true);
+	treeWidget()->setContextMenuPolicy(Qt::ActionsContextMenu);
+	treeWidget()->sortByColumn(0, Qt::AscendingOrder);
+}
+
+QTreeWidgetItem *TreeWidget::findItem(int id) const
+{
+	int count = treeWidget()->topLevelItemCount();
+	for (int i = 0; i < count; ++i) {
+		QTreeWidgetItem *item = treeWidget()->topLevelItem(i);
+		if (item->data(0, Qt::UserRole).toInt() == id) {
+			return item;
+		}
+	}
+	return nullptr;
 }

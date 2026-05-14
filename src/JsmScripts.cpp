@@ -97,8 +97,6 @@ void JsmScripts::countTypes(quint8 &doors, quint8 &lines, quint8 &backgrounds, q
 			break;
 		}
 	}
-
-	qDebug() << "JsmScripts::countTypes" << "doors" << doors << "lines" << lines << "backgrounds" << backgrounds << "others" << others;
 }
 
 int JsmScripts::countModels() const

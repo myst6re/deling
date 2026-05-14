@@ -20,9 +20,8 @@
 #include <QtWidgets>
 #include "widgets/ColorDisplay.h"
 #include "widgets/PageWidget.h"
-#include "CharaPreview.h"
-
-class ListWidget;
+#include "widgets/CharaPreview.h"
+#include "widgets/ListWidget.h"
 
 class CharaWidget : public PageWidget
 {
@@ -34,6 +33,9 @@ public:
 	inline QString tabName() const { return tr("3D Model"); }
 	void setMainModels(QHash<int, CharaModel> *mainModels);
 public slots:
+	inline void setModel(QTreeWidgetItem *item) {
+		setModel(item != nullptr ? item->data(0, Qt::UserRole).toInt() : -1);
+	}
 	void setModel(int modelID);
 	void setDefaultLightColor();
 	void setModelLightColor();
@@ -43,17 +45,22 @@ public slots:
 	void setLocalTextureLoaderId(int value);
 	void addModel();
 	void removeModel();
+	void upModel();
+	void downModel();
+	void copyModel();
+	void pasteModel();
 private:
 	void build();
 	QFormLayout *_formLayout;
 	QHash<int, CharaModel> *_mainModels;
 	CharaPreview *_modelPreview;
-	QListWidget *_modelList;
-	ListWidget *_listWidget;
+	QTreeWidget *_modelList;
+	TreeWidget *_listWidget;
 	QComboBox *_loadingTypeChoice;
 	ColorDisplay *_lightColorEdit;
 	ColorDisplay *_defaultLightColorEdit;
 	QSpinBox *_localTextureLoaderIdEdit;
 	QSpinBox *_modelScale;
 	QSpinBox *_modelId;
+	CharaModel *_modelCopy;
 };

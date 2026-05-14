@@ -287,6 +287,26 @@ List of available commands:
         <translation>Modelo 3D-a</translation>
     </message>
     <message>
+        <source>Move up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Main Character model</source>
         <translation type="unfinished"></translation>
     </message>
@@ -316,6 +336,10 @@ List of available commands:
     </message>
     <message>
         <source>Remove model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Model name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

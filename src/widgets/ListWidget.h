@@ -19,24 +19,54 @@
 
 #include <QtWidgets>
 
-class ListWidget : public QWidget
+class AbstractListWidget : public QWidget
 {
 	Q_OBJECT
 public:
 	enum ActionType {
-		Invisible, Add, Rem, Up, Down
+		Invisible, Add, Rem, Up, Down, Copy, Cut, Paste
 	};
 	
-	explicit ListWidget(QWidget *parent = nullptr);
+	explicit AbstractListWidget(QWidget *widget, QWidget *parent = nullptr);
 	QAction *addAction(ActionType type, const QString &text,
 	                   const QObject *receiver, const char *member);
 	
 	QToolBar *toolBar() const;
-	QListWidget *listWidget() const;
-signals:
-	
-public slots:
+protected:
+	inline QWidget *widget() const {
+		return _widget;
+	}
 private:
 	QToolBar *_toolBar;
-	QListWidget *_listWidget;
+	QWidget *_widget;
+};
+
+class ListWidget : public AbstractListWidget
+{
+	Q_OBJECT
+public:
+	explicit ListWidget(QWidget *parent = nullptr);
+	
+	inline QListWidget *listWidget() const {
+		return (QListWidget *)widget();
+	}
+	inline int selectedID() const {
+		return listWidget()->currentRow();
+	}
+};
+
+class TreeWidget : public AbstractListWidget
+{
+	Q_OBJECT
+public:
+	explicit TreeWidget(QWidget *parent = nullptr);
+	
+	inline QTreeWidget *treeWidget() const {
+		return (QTreeWidget *)widget();
+	}
+	inline int selectedID() const {
+		QTreeWidgetItem *item = treeWidget()->currentItem();
+		return item == nullptr ? -1 : item->data(0, Qt::UserRole).toInt();
+	}
+	QTreeWidgetItem *findItem(int id) const;
 };

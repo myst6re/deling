@@ -279,7 +279,10 @@ bool CharaOneFile::save(QByteArray &one, QByteArray &pcb) const
 		header.append(modelHeader);
 		header.append(model.name().toLatin1().leftJustified(4, '\0', true));
 		QRgb lightColor = model.lightColor();
-		header.append((const char *)&lightColor, 4);
+		header.append(char(qRed(lightColor)));
+		header.append(char(qGreen(lightColor)));
+		header.append(char(qBlue(lightColor)));
+		header.append('\0');
 		if (lightColor != _defaultLightColor) {
 			modelLightColors.append(qMakePair(model.name(), lightColor));
 		}
@@ -327,6 +330,30 @@ void CharaOneFile::removeModel(int id)
 {
 	_models.removeAt(id);
 	modified = true;
+}
+
+bool CharaOneFile::upModel(int id)
+{
+	if (id <= 0 || id >= _models.size()) {
+		return false;
+	}
+
+	_models.swapItemsAt(id, id - 1);
+	modified = true;
+
+	return true;
+}
+
+bool CharaOneFile::downModel(int id)
+{
+	if (id < 0 || id + 1 >= _models.size()) {
+		return false;
+	}
+
+	_models.swapItemsAt(id, id + 1);
+	modified = true;
+
+	return true;
 }
 
 void CharaOneFile::setDefaultLightColor(QRgb defaultLightColor)

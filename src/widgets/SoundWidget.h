@@ -19,7 +19,7 @@
 
 #include "widgets/PageWidget.h"
 #include "widgets/SoundPlayer.h"
-#include "Listwidget.h"
+#include "ListWidget.h"
 
 class SoundWidget : public PageWidget
 {

@@ -40,6 +40,8 @@ public:
 	void setModel(int id, const CharaModel &model);
 	void insertModel(int id, const CharaModel &model);
 	void removeModel(int id);
+	bool upModel(int id);
+	bool downModel(int id);
 	inline int modelCount() const {
 		return _models.size();
 	}

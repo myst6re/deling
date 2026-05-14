@@ -16,7 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "TextExporterWidget.h"
-#include "Listwidget.h"
+#include "widgets/ListWidget.h"
 #include "Config.h"
 
 TextExporterWidget::TextExporterWidget(const QStringList &langs, QWidget *parent) :
