@@ -47,7 +47,11 @@ void CharaWidget::build()
 	_localTextureLoaderIdEdit = new QSpinBox(this);
 	_localTextureLoaderIdEdit->setRange(0, 0xFF);
 	_defaultLightColorEdit = new ColorDisplay(this);
+	_autoLightColorEdit = new QCheckBox(tr("Use default"), this);
 	_lightColorEdit = new ColorDisplay(this);
+	QHBoxLayout *lightColorLayout = new QHBoxLayout;
+	lightColorLayout->addWidget(_autoLightColorEdit);
+	lightColorLayout->addWidget(_lightColorEdit);
 	_modelScale = new QSpinBox(this);
 	_modelScale->setRange(0, 0xFF);
 	_modelId = new QSpinBox(this);
@@ -62,7 +66,7 @@ void CharaWidget::build()
 	listLayout->setContentsMargins(QMargins());
 
 	_formLayout = new QFormLayout;
-	_formLayout->addRow(tr("Color modifier"), _lightColorEdit);
+	_formLayout->addRow(tr("Color modifier"), lightColorLayout);
 	_formLayout->addRow(tr("Type"), _loadingTypeChoice);
 	_formLayout->addRow(tr("Local ID pointer"), _localTextureLoaderIdEdit);
 	_formLayout->addRow(tr("Main Model ID"), _modelId);
@@ -83,6 +87,7 @@ void CharaWidget::build()
 
 	connect(_modelList, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), SLOT(setModel(QTreeWidgetItem*)));
 	connect(_defaultLightColorEdit, SIGNAL(colorEdited(int,QRgb)), SLOT(setDefaultLightColor()));
+	connect(_autoLightColorEdit, SIGNAL(toggled(bool)), SLOT(setAutoModelLightColor(bool)));
 	connect(_lightColorEdit, SIGNAL(colorEdited(int,QRgb)), SLOT(setModelLightColor()));
 	connect(_loadingTypeChoice, SIGNAL(currentIndexChanged(int)), SLOT(setModelLoadingType(int)));
 	connect(_modelScale, SIGNAL(valueChanged(int)), SLOT(setScaleValue(int)));
@@ -154,6 +159,7 @@ void CharaWidget::setModel(int modelID)
 	_loadingTypeChoice->setCurrentIndex(_loadingTypeChoice->findData(model.loadingType()));
 	setModelLoadingType(_loadingTypeChoice->currentIndex());
 	_lightColorEdit->setColors(QList<uint>() << (0xFF000000 | model.lightColor()));
+	_autoLightColorEdit->setChecked(model.lightColor() == data()->getCharaFile()->defaultLightColor());
 	_localTextureLoaderIdEdit->setValue(model.sharedTextureModelId());
 	_modelScale->setValue(model.scale());
 	_modelId->setValue(model.id());
@@ -167,6 +173,17 @@ void CharaWidget::setDefaultLightColor()
 		emit modified();
 
 		setModel(_listWidget->selectedID());
+	}
+}
+
+void CharaWidget::setAutoModelLightColor(bool checked)
+{
+	if (checked) {
+		_lightColorEdit->setColors(QList<uint>() << data()->getCharaFile()->defaultLightColor());
+		setModelLightColor();
+		_lightColorEdit->setReadOnly(true);
+	} else {
+		_lightColorEdit->setReadOnly(false);
 	}
 }
 

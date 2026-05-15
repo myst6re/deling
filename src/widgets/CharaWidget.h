@@ -38,6 +38,7 @@ public slots:
 	}
 	void setModel(int modelID);
 	void setDefaultLightColor();
+	void setAutoModelLightColor(bool checked);
 	void setModelLightColor();
 	void setModelLoadingType(int index);
 	void setScaleValue(int value);
@@ -57,6 +58,7 @@ private:
 	QTreeWidget *_modelList;
 	TreeWidget *_listWidget;
 	QComboBox *_loadingTypeChoice;
+	QCheckBox *_autoLightColorEdit;
 	ColorDisplay *_lightColorEdit;
 	ColorDisplay *_defaultLightColorEdit;
 	QSpinBox *_localTextureLoaderIdEdit;

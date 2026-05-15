@@ -323,6 +323,10 @@ List of available commands:
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Use default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Type</source>
         <translation type="unfinished">Тип</translation>
     </message>
