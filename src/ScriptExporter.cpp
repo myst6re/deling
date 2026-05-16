@@ -52,7 +52,7 @@ bool ScriptExporter::toDir(const QDir &dir, ArchiveObserver *observer)
 		}
 
 		if (f && f->isOpen() && f->hasJsmFile()) {
-			JsmFile *jsm = (JsmFile *)f->getFile(Field::Jsm);
+			JsmFile *jsm = f->getJsmFile();
 			const JsmScripts &scripts = jsm->getScripts();
 			QString path = f->name().isEmpty() ? QObject::tr("Unamed") : f->name();
 			dir.mkpath(path);

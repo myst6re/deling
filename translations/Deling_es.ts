@@ -2612,6 +2612,10 @@ Do you want to switch anyway?</source>
         <translation>Ha&amp;si FF8...</translation>
     </message>
     <message>
+        <source>Batch processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Op&amp;tions</source>
         <translation>A&amp;ukerak</translation>
     </message>
@@ -2642,6 +2646,22 @@ Do you want to switch anyway?</source>
     <message>
         <source>Script names field PC file (*.sym)</source>
         <translation>Gidoi-izenak gunea PC fitxa (*.sym)</translation>
+    </message>
+    <message>
+        <source>Batch processing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Edea where full party is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Seifer where full party is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply operation...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>English</source>

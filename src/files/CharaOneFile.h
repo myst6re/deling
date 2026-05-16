@@ -42,6 +42,7 @@ public:
 	void removeModel(int id);
 	bool upModel(int id);
 	bool downModel(int id);
+	bool searchModel(const QString &name, CharaModel &model, bool withStayWalkRunAnimations = false);
 	inline int modelCount() const {
 		return _models.size();
 	}

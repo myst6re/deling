@@ -323,13 +323,13 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 {
 	if (!header)	return;
 
-	if (hasMsdFile() && getMsdFile()->isModified()) {
+	if (isFileModified(Msd)) {
 		QByteArray msd;
 		if (getMsdFile()->save(msd)) {
 			header->setFileData(filePath(ExtMsd), fs_data, msd);
 		}
 	}
-	if (hasJsmFile() && getJsmFile()->isModified()) {
+	if (isFileModified(Jsm)) {
 		QByteArray jsm, sym;
 		if (getJsmFile()->save(jsm, sym)) {
 			header->setFileData(filePath(ExtJsm), fs_data, jsm);
@@ -338,73 +338,73 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 			}
 		}
 	}
-	if (hasRatFile() && getRatFile()->isModified()) {
+	if (isFileModified(Rat)) {
 		QByteArray rat;
 		if (getRatFile()->save(rat)) {
 			header->setFileData(filePath(ExtRat), fs_data, rat);
 		}
 	}
-	if (hasMrtFile() && getMrtFile()->isModified()) {
+	if (isFileModified(Mrt)) {
 		QByteArray mrt;
 		if (getMrtFile()->save(mrt)) {
 			header->setFileData(filePath(ExtMrt), fs_data, mrt);
 		}
 	}
-	if (hasInfFile() && getInfFile()->isModified()) {
+	if (isFileModified(Inf)) {
 		QByteArray inf;
 		if (getInfFile()->save(inf)) {
 			header->setFileData(filePath(ExtInf), fs_data, inf);
 		}
 	}
-	if (hasPmpFile() && getPmpFile()->isModified()) {
+	if (isFileModified(Pmp)) {
 		QByteArray pmp;
 		if (getPmpFile()->save(pmp)) {
 			header->setFileData(filePath(ExtPmp), fs_data, pmp);
 		}
 	}
-	if (hasPmdFile() && getPmdFile()->isModified()) {
+	if (isFileModified(Pmd)) {
 		QByteArray pmd;
 		if (getPmdFile()->save(pmd)) {
 			header->setFileData(filePath(ExtPmd), fs_data, pmd);
 		}
 	}
-	if (hasPvpFile() && getPvpFile()->isModified()) {
+	if (isFileModified(Pvp)) {
 		QByteArray pvp;
 		if (getPvpFile()->save(pvp)) {
 			header->setFileData(filePath(ExtPvp), fs_data, pvp);
 		}
 	}
-	if (hasIdFile() && getIdFile()->isModified()) {
+	if (isFileModified(Id)) {
 		QByteArray id;
 		if (getIdFile()->save(id)) {
 			header->setFileData(filePath(ExtId), fs_data, id);
 		}
 	}
-	if (hasCaFile() && getCaFile()->isModified()) {
+	if (isFileModified(Ca)) {
 		QByteArray ca;
 		if (getCaFile()->save(ca)) {
 			header->setFileData(filePath(ExtCa), fs_data, ca);
 		}
 	}
-	if (hasMskFile() && getMskFile()->isModified()) {
+	if (isFileModified(Msk)) {
 		QByteArray msk;
 		if (getMskFile()->save(msk)) {
 			header->setFileData(filePath(ExtMsk), fs_data, msk);
 		}
 	}
-	if (hasTdwFile() && getTdwFile()->isModified()) {
+	if (isFileModified(Tdw)) {
 		QByteArray tdw;
 		if (getTdwFile()->save(tdw)) {
 			header->setFileData(filePath(ExtTdw), fs_data, tdw);
 		}
 	}
-	if (hasSfxFile() && getSfxFile()->isModified()) {
+	if (isFileModified(Sfx)) {
 		QByteArray sfx;
 		if (getSfxFile()->save(sfx)) {
 			header->setFileData(filePath(ExtSfx), fs_data, sfx);
 		}
 	}
-	if (hasCharaFile() && getCharaFile()->isModified()) {
+	if (isFileModified(CharaOne)) {
 		QByteArray charaOne, pcb;
 		if (getCharaFile()->save(charaOne, pcb)) {
 			header->setFileData(filePath(ExtCharaOne), fs_data, charaOne);
@@ -413,7 +413,7 @@ void FieldPC::save(QByteArray &fs_data, QByteArray &fl_data, QByteArray &fi_data
 			}
 		}
 	}
-	if (hasBackgroundFile() && getBackgroundFile()->isModified()) {
+	if (isFileModified(Background)) {
 		QByteArray map;
 		if (getBackgroundFile()->save(map)) {
 			header->setFileData(filePath(ExtMap), fs_data, map);

@@ -2674,6 +2674,10 @@ Do you want to switch anyway?</source>
         <translation>FF8 の起動(&amp;L)...</translation>
     </message>
     <message>
+        <source>Batch processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Op&amp;tions</source>
         <translatorcomment>Op&amp;tions</translatorcomment>
         <translation>オプション(&amp;T)</translation>
@@ -2710,6 +2714,22 @@ Do you want to switch anyway?</source>
     <message>
         <source>Script names field PC file (*.sym)</source>
         <translation type="unfinished">Script names field PC file (*.sym)</translation>
+    </message>
+    <message>
+        <source>Batch processing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Edea where full party is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Seifer where full party is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply operation...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>English</source>

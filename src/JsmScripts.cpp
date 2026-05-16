@@ -164,8 +164,6 @@ bool JsmScripts::insertGroup(int groupID, JsmGroup::Type groupType, const QStrin
 	const JsmGroup &lastGroup = _groupListOrderedById.last();
 	int absMethodID = lastGroup.absMethodId() + lastGroup.methodCount();
 
-	qDebug() << "JsmScripts::insertGroup" << "groupID" << groupID << "absMethodID" << absMethodID;
-
 	propagateGroupCountChange(groupID, +1);
 	_groupListOrderedById.insert(groupID, JsmGroup(absMethodID, QList<JsmMethod>(), groupType, name));
 	insertMethod(groupID, 0, "init");
@@ -727,8 +725,7 @@ bool JsmScripts::insertMethod(int groupID, int methodID, const QString &name)
 	JsmData data = JsmData()
 	    .append(JsmOpcode(JsmOpcode::RET, 8));
 	jsmGroup.insertMethod(methodID, JsmMethod(data, name));
-	qDebug() << "JsmScripts::insertMethod" << "groupID" << groupID << "methodID" << methodID << "nbOpcode" << data.nbOpcode();
-
+	
 	propagateMethodCountChange(groupID, absMethodID, +1);
 
 	return true;
@@ -814,7 +811,6 @@ bool JsmScripts::setMethodName(int groupID, int methodID, const QString &name)
 
 void JsmScripts::propagateGroupCountChange(int groupID, int groupCountChange)
 {
-	qDebug() << "JsmScripts::propagateGroupCountChange" << "groupID" << groupID << "groupCountChange" << groupCountChange;
 	if (groupCountChange == 0) {
 		return;
 	}
@@ -849,7 +845,6 @@ void JsmScripts::propagateGroupCountChange(int groupID, int groupCountChange)
 
 void JsmScripts::propagateMethodCountChange(int groupID, int absMethodID, int methodCountChange)
 {
-	qDebug() << "JsmScripts::propagateMethodCountChange" << "groupID" << groupID << "absMethodID" << absMethodID << "methodCountChange" << methodCountChange;
 	if (methodCountChange == 0) {
 		return;
 	}

@@ -84,6 +84,7 @@ private slots:
 	void varManager();
 	void runFF8();
 	void miscSearch();
+	void batchProcessing();
 	void bgPage();
 	void setCurrentPage(int index);
 	void fullScreen();
@@ -123,6 +124,7 @@ private:
 	QAction *actionClose;
 	QAction *actionFind;
 	QAction *actionRun;
+	QAction *actionBatchProcessing;
 	QAction *actionGameLang;
 	QMenu *menuGameLang;
 	QAction *actionEncode;

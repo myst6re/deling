@@ -502,10 +502,10 @@ void JsmWidget::showPreview(const QString &line, QPoint cursorPos)
 				Field *field = fieldArchive->getFieldFromMapId(constId);
 
 				if (field != nullptr) {
-					if (fieldArchive->openFull(field)) {
+					if (field->hasBackgroundFile()) {
 						BackgroundFile *file = field->getBackgroundFile();
 
-						if (file) {
+						if (file && file->isOpen()) {
 							preview->showBackground(QPixmap::fromImage(file->background()));
 							preview->move(cursorPos);
 							preview->show();

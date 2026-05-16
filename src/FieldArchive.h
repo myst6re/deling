@@ -31,9 +31,15 @@ typedef QListIterator<Field *> FieldArchiveIterator;
 class FieldArchive
 {
 public:
-	enum Sorting{
+	enum Sorting {
 		SortByName, SortByMapId
 	};
+	enum BatchOperation {
+		BatchNone = 0x0,
+		BatchAddEdea = 0x1,
+		BatchAddSeifer = 0x2
+	};
+	Q_DECLARE_FLAGS(BatchOperations, BatchOperation)
 
 	FieldArchive();
 	virtual ~FieldArchive();
@@ -73,6 +79,8 @@ public:
 		return QListIterator<Field *>(fields);
 	}
 	QList<Field *> sortedByMapId() const;
+	bool batchProcessing(BatchOperations operations, ArchiveObserver *observer);
+	bool searchModel(const QString &name, CharaModel &model, ArchiveObserver *observer, bool withStayWalkRunAnimations = false);
 protected:
 	QString errorMsg;
 	QList<Field *> fields;
@@ -86,3 +94,5 @@ private:
 	bool searchIterators(QMultiMap<QString, int>::const_iterator &i, QMultiMap<QString, int>::const_iterator &end, int fieldID, Sorting sorting) const;
 	bool searchIteratorsP(QMultiMap<QString, int>::const_iterator &i, QMultiMap<QString, int>::const_iterator &begin, int fieldID, Sorting sorting) const;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(FieldArchive::BatchOperations)

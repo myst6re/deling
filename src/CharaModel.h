@@ -102,7 +102,6 @@ public:
 		const QByteArray &unknownData
 	);
 	bool open(const QList<quint32> &toc, const QByteArray &data);
-	bool isEmpty2() const;
 	inline ModelLoadingType loadingType() const {
 		return _loadingType;
 	}

@@ -49,11 +49,6 @@ CharaModel::CharaModel(
 {
 }
 
-bool CharaModel::isEmpty2() const
-{
-	return _textures.isEmpty();
-}
-
 QString CharaModel::name() const
 {
 	return _name.left(4);

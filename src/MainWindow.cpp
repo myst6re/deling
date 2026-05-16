@@ -101,6 +101,7 @@ MainWindow::MainWindow()
 	actionRun->setShortcutContext(Qt::ApplicationShortcut);
 	actionRun->setEnabled(Data::ff8Found());
 	addAction(actionRun);
+	actionBatchProcessing = menu->addAction(tr("Batch processing..."), this, SLOT(batchProcessing()));
 
 #ifndef Q_OS_MAC
 	menuBar->addAction(tr("Op&tions"), this, SLOT(configDialog()))->setMenuRole(QAction::PreferencesRole);
@@ -239,8 +240,10 @@ void MainWindow::fillRecentMenu()
 	_recentMenu->setDisabled(_recentMenu->actions().isEmpty());
 }
 
-void MainWindow::showEvent(QShowEvent *)
+void MainWindow::showEvent(QShowEvent *event)
 {
+	Q_UNUSED(event)
+
 	if (firstShow) {
 		if (!windowState().testFlag(Qt::WindowMaximized)) {
 			QPoint screenCenter = QGuiApplication::primaryScreen()->geometry().center();
@@ -253,7 +256,7 @@ void MainWindow::showEvent(QShowEvent *)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	if (closeFiles(true)==2)		event->ignore();
+	if (closeFiles(true) == 2)		event->ignore();
 	else {
 		Config::setValue("mainWindowMaximized", windowState().testFlag(Qt::WindowMaximized));
 		if (!windowState().testFlag(Qt::WindowMaximized))
@@ -406,6 +409,7 @@ bool MainWindow::openFsArchive(const QString &path)
 		actionImport->setEnabled(true);
 	} else if (fieldArchive->nbFields() > 0) {
 		actionOpti->setEnabled(true);
+		actionBatchProcessing->setEnabled(true);
 		buildGameLangMenu(fieldArchivePc->languages());
 		for (qsizetype i = pageWidgets.size(); i > 0; --i) {
 			Pages page = Pages(i - 1);
@@ -669,6 +673,7 @@ int MainWindow::closeFiles(bool quit)
 	actionImport->setEnabled(false);
 	menuImportAll->setEnabled(false);
 	actionOpti->setEnabled(false);
+	actionBatchProcessing->setEnabled(false);
 	tabBar->setTabEnabled(tabBar->count()-1, false);
 	actionClose->setEnabled(false);
 	bgPreview->clear();
@@ -1138,6 +1143,46 @@ void MainWindow::miscSearch()
 {
 	miscSearchD = new MiscSearch(fieldArchive, this);
 	miscSearchD->show();
+}
+
+void MainWindow::batchProcessing()
+{
+	if (fieldArchive == nullptr || fieldArchive->isReadOnly()) {
+		return;
+	}
+
+	QDialog dialog(this);
+	QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+	connect(buttons, SIGNAL(accepted()), &dialog, SLOT(accept()));
+	connect(buttons, SIGNAL(rejected()), &dialog, SLOT(reject()));
+	dialog.setWindowTitle(tr("Batch processing"));
+
+	QCheckBox *addEdea = new QCheckBox(tr("Add Edea where full party is available"), &dialog);
+	QCheckBox *addSeifer = new QCheckBox(tr("Add Seifer where full party is available"), &dialog);
+
+	QVBoxLayout *layout = new QVBoxLayout(&dialog);
+	layout->addWidget(addEdea);
+	layout->addWidget(addSeifer);
+	layout->addWidget(buttons);
+
+	if (dialog.exec() != QDialog::Accepted) {
+		return;
+	}
+
+	ProgressWidget progress(tr("Apply operation..."), ProgressWidget::Cancel, this);
+
+	FieldArchive::BatchOperations op = FieldArchive::BatchNone;
+
+	if (addEdea->isChecked()) {
+		op |= FieldArchive::BatchAddEdea;
+	}
+	if (addSeifer->isChecked()) {
+		op |= FieldArchive::BatchAddSeifer;
+	}
+
+	if (fieldArchive->batchProcessing(op, &progress)) {
+		setModified(true);
+	}
 }
 
 void MainWindow::bgPage()

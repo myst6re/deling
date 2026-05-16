@@ -2619,6 +2619,10 @@ Do you want to switch anyway?</source>
         <translation>&amp;Запустить FF8...</translation>
     </message>
     <message>
+        <source>Batch processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Op&amp;tions</source>
         <translation>Наст&amp;ройки</translation>
     </message>
@@ -2649,6 +2653,22 @@ Do you want to switch anyway?</source>
     <message>
         <source>Script names field PC file (*.sym)</source>
         <translation>Название скрипта field файла ПК (* .sym)</translation>
+    </message>
+    <message>
+        <source>Batch processing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Edea where full party is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Seifer where full party is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply operation...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>English</source>

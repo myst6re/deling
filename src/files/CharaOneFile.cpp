@@ -356,6 +356,18 @@ bool CharaOneFile::downModel(int id)
 	return true;
 }
 
+bool CharaOneFile::searchModel(const QString &name, CharaModel &modelOut, bool withStayWalkRunAnimations)
+{
+	for (const CharaModel &model: _models) {
+		if (model.name() == name && model.animations().size() >= 3) {
+			modelOut = model;
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void CharaOneFile::setDefaultLightColor(QRgb defaultLightColor)
 {
 	for (int i = 0; i < _models.size(); ++i) {

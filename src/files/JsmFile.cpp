@@ -224,8 +224,6 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &symData, bool oldFor
 		}
 	}
 
-	qDebug() << "JsmFile::open set scripts";
-
 	scripts = JsmScripts(groupListByGroupID);
 
 	_hasSym = openSym(symData);

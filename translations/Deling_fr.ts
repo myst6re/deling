@@ -2623,6 +2623,10 @@ Do you want to switch anyway?</source>
         <translation>&amp;Lancer FF8...</translation>
     </message>
     <message>
+        <source>Batch processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Op&amp;tions</source>
         <translation>Op&amp;tions</translation>
     </message>
@@ -2653,6 +2657,22 @@ Do you want to switch anyway?</source>
     <message>
         <source>Script names field PC file (*.sym)</source>
         <translation>Fichier nom des scripts écran PC (*.sym)</translation>
+    </message>
+    <message>
+        <source>Batch processing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Edea where full party is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Seifer where full party is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply operation...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>By myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;li&gt;MaKiPL&lt;/li&gt;&lt;/ul&gt;</source>

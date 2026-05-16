@@ -87,6 +87,8 @@ public:
 
 	bool hasFiles() const;
 
+	bool isFileModified(FileType fileType) const;
+
 	virtual File *getFile(FileType fileType);
 	void deleteFile(FileType fileType);
 	MsdFile *getMsdFile();

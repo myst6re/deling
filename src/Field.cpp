@@ -86,8 +86,6 @@ void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym, bool oldFo
 		return;
 	}
 
-	qDebug() << "Field::openJsmFile" << name();
-
 	if (!f->open(jsm, sym, oldFormat)) {
 		qWarning() << "Field::openJsmFile error" << _name;
 		f->setOpen(false);
@@ -107,7 +105,7 @@ void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym, bool oldFo
 		f0Pseudo.write(f->toString(true, true).toLatin1());
 		f0Pseudo.close(); */
 
-		QFile f1(QString("E:/Desktop/jsm/%1.jsm").arg(name()));
+		/* QFile f1(QString("E:/Desktop/jsm/%1.jsm").arg(name()));
 		f1.open(QIODevice::WriteOnly | QIODevice::Truncate);
 		QByteArray jsm2, sym2;
 		f->save(jsm2, sym2);
@@ -117,7 +115,7 @@ void Field::openJsmFile(const QByteArray &jsm, const QByteArray &sym, bool oldFo
 		f1sym.open(QIODevice::WriteOnly | QIODevice::Truncate);
 		f1sym.write(sym2);
 		f1sym.close();
-		/* QFile f1Pseudo(QString("E:/Desktop/jsm/%1.rb").arg(name()));
+		QFile f1Pseudo(QString("E:/Desktop/jsm/%1.rb").arg(name()));
 		f1Pseudo.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
 		f1Pseudo.write(f->toString(true, true).toLatin1());
 		f1Pseudo.close(); */
@@ -312,6 +310,17 @@ bool Field::hasFiles() const
 	}
 
 	return false;
+}
+
+bool Field::isFileModified(FileType fileType) const
+{
+	File *f = _getFile(fileType);
+
+	if (f == nullptr) {
+		return false;
+	}
+
+	return f->isModified();
 }
 
 File *Field::getFile(FileType fileType)

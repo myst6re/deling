@@ -18,6 +18,7 @@
 #include "FieldArchive.h"
 #include "Data.h"
 #include "Field.h"
+#include "ArchiveObserver.h"
 #include "game/worldmap/Map.h"
 
 FieldArchive::FieldArchive()
@@ -384,4 +385,173 @@ QList<Field *> FieldArchive::sortedByMapId() const
 	}
 	
 	return ret;
+}
+
+bool FieldArchive::batchProcessing(BatchOperations operations, ArchiveObserver *observer)
+{
+	if (operations.toInt() == 0) {
+		return false;
+	}
+
+	if (observer) {
+		observer->setObserverCanCancel(true);
+		observer->setObserverMaximum(quint32(nbFields()));
+	}
+
+	CharaModel modelSeifer, modelEdea;
+	if (operations.testFlag(FieldArchive::BatchAddSeifer)) {
+		if (!searchModel("d032", modelSeifer, observer, true)) {
+			qWarning() << "FieldArchive::batchProcessing cannot find Seifer model";
+			return false;
+		}
+	}
+	if (operations.testFlag(FieldArchive::BatchAddEdea)) {
+		if (!searchModel("d041", modelEdea, observer, true)) {
+			qWarning() << "FieldArchive::batchProcessing cannot find Edea model";
+			return false;
+		}
+	}
+
+	if (modelSeifer.animations().isEmpty() && modelEdea.animations().isEmpty()) {
+		return false;
+	}
+
+	if (observer) {
+		observer->setObserverCanCancel(false);
+	}
+
+	int i = 0;
+
+	for (Field *field: fields) {
+		if (observer) {
+			observer->setObserverValue(i++);
+		}
+		if (!field->hasJsmFile() || !field->hasCharaFile()) {
+			continue;
+		}
+		JsmFile *jsmFile = field->getJsmFile();
+		CharaOneFile *charaFile = field->getCharaFile();
+		if (!jsmFile->isOpen() || !charaFile->isOpen()) {
+			continue;
+		}
+		JsmScripts &scripts = jsmFile->getScripts();
+
+		QSet<int> characters;
+		for (const JsmGroup &group: scripts.groups()) {
+			if (group.character() >= 0) {
+				characters.insert(group.character());
+			}
+		}
+
+		int insertEdea = 0, insertSeifer = 0;
+
+		if (characters.contains(0) && characters.contains(1) && characters.contains(2) && characters.contains(3) && characters.contains(4) && characters.contains(5)) {
+			if (!modelSeifer.animations().isEmpty() && !characters.contains(6)) {
+				insertSeifer = 1;
+			}
+			if (!modelEdea.animations().isEmpty() && !characters.contains(7)) {
+				insertEdea = 1;
+			}
+		}
+
+		if (insertEdea || insertSeifer) {
+			int modelCount = charaFile->modelCount();
+			for (int id = 0; id < modelCount; ++id) {
+				const CharaModel &model = charaFile->model(id);
+
+				if (insertSeifer && model.name() == modelSeifer.name()) {
+					insertSeifer = 0;
+				}
+				if (insertEdea && model.name() == modelEdea.name()) {
+					insertEdea = 0;
+				}
+			}
+		}
+
+		if (insertSeifer) {
+			insertSeifer = charaFile->modelCount();
+			int groupID = 0;
+			if (scripts.insertGroup(groupID, JsmGroup::Model, "Seifer")) {
+				scripts.insertMethod(groupID, 1, "default");
+				scripts.insertMethod(groupID, 2, "talk");
+				scripts.insertMethod(groupID, 3, "push");
+
+				modelSeifer.setLightColor(charaFile->defaultLightColor());
+				charaFile->insertModel(insertSeifer, modelSeifer);
+
+				JsmGroup &jsmGroup = scripts.group(groupID);
+				jsmGroup.setCharacter(6); // Seifer
+				jsmGroup.setModelId(insertSeifer);
+				jsmGroup.method(0).setScriptData(JsmData()
+					.append(JsmOpcode(JsmOpcode::SETMODEL, insertSeifer))
+					.append(JsmOpcode(JsmOpcode::PSHN_L, 2))
+					.append(JsmOpcode(JsmOpcode::PSHN_L, 1))
+					.append(JsmOpcode(JsmOpcode::BASEANIME, 0))
+					.append(JsmOpcode(JsmOpcode::PSHN_L, 6)) // Seifer
+					.append(JsmOpcode(JsmOpcode::SETPC))
+					.append(JsmOpcode(JsmOpcode::RET, 8)));
+
+				jsmGroup.method(1).setScriptData(JsmData()
+					.append(JsmOpcode(JsmOpcode::HALT))
+					.append(JsmOpcode(JsmOpcode::RET, 8)));
+				jsmFile->setModified(true);
+			}
+		}
+		if (insertEdea) {
+			insertEdea = charaFile->modelCount();
+			int groupID = 0;
+			if (scripts.insertGroup(groupID, JsmGroup::Model, "Edea")) {
+				scripts.insertMethod(groupID, 1, "default");
+				scripts.insertMethod(groupID, 2, "talk");
+				scripts.insertMethod(groupID, 3, "push");
+
+				modelEdea.setLightColor(charaFile->defaultLightColor());
+				charaFile->insertModel(insertEdea, modelEdea);
+
+				JsmGroup &jsmGroup = scripts.group(groupID);
+				jsmGroup.setCharacter(7); // Edea
+				jsmGroup.setModelId(insertEdea);
+				jsmGroup.method(0).setScriptData(JsmData()
+					.append(JsmOpcode(JsmOpcode::SETMODEL, insertEdea))
+					.append(JsmOpcode(JsmOpcode::PSHN_L, 2))
+					.append(JsmOpcode(JsmOpcode::PSHN_L, 1))
+					.append(JsmOpcode(JsmOpcode::BASEANIME, 0))
+					.append(JsmOpcode(JsmOpcode::PSHN_L, 7)) // Edea
+					.append(JsmOpcode(JsmOpcode::SETPC))
+					.append(JsmOpcode(JsmOpcode::RET, 8)));
+
+				jsmGroup.method(1).setScriptData(JsmData()
+					.append(JsmOpcode(JsmOpcode::HALT))
+					.append(JsmOpcode(JsmOpcode::RET, 8)));
+				jsmFile->setModified(true);
+			}
+		}
+	}
+
+	return true;
+}
+
+bool FieldArchive::searchModel(const QString &name, CharaModel &model, ArchiveObserver *observer, bool withStayWalkRunAnimations)
+{
+	if (observer) {
+		observer->setObserverCanCancel(true);
+		observer->setObserverMaximum(quint32(nbFields()));
+	}
+
+	int i = 0;
+
+	for (Field *field: fields) {
+		if (observer) {
+			observer->setObserverValue(i++);
+		}
+
+		if (field->hasCharaFile()) {
+			CharaOneFile *charaFile = field->getCharaFile();
+			if (charaFile->searchModel(name, model, withStayWalkRunAnimations)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
