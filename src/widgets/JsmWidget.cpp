@@ -26,7 +26,8 @@
 #include "widgets/HelpWidget.h"
 
 JsmWidget::JsmWidget(QWidget *parent)
-    : PageWidget(parent), mainModels(nullptr), fieldArchive(nullptr), list1(nullptr),
+    : PageWidget(parent), mainModels(nullptr), fieldArchive(nullptr), _groupList(nullptr),
+      _methodList(nullptr),
       _regConst(QRegularExpression("\\b(text|map|item|magic)_(\\d+)\\b")),
       _regSetLine(QRegularExpression("setline\\(\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*\\)")),
       _regColor(QRegularExpression("(polycolor|polycolorall|dcoladd|dcolsub|tcoladd|tcolsub|fcoladd|fcolsub|bgshade)\\(\\s*([\\w-]+)\\s*,\\s*([\\w-]+)\\s*,\\s*([\\w-]+)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\s*,?\\s*([\\w-]*)\\)")),
@@ -44,23 +45,23 @@ void JsmWidget::build()
 	warningWidget->setWordWrap(true);
 	warningWidget->setTextFormat(Qt::PlainText);
 
-	list1 = new JsmGroupList(this);
-	list1->setField(data());
+	_groupList = new JsmGroupList(this);
+	_groupList->setField(data());
 
 	modelPreview = new CharaPreview(this);
 
 	QVBoxLayout *list1Layout = new QVBoxLayout();
-	list1Layout->addWidget(list1->toolBar(), 0, Qt::AlignTop);
-	list1Layout->addWidget(list1, 1);
-	list1Layout->addWidget(list1->helpWidget());
+	list1Layout->addWidget(_groupList->toolBar(), 0, Qt::AlignTop);
+	list1Layout->addWidget(_groupList, 1);
+	list1Layout->addWidget(_groupList->helpWidget());
 	list1Layout->addWidget(modelPreview, 0, Qt::AlignBottom);
 	list1Layout->setContentsMargins(QMargins());
 
-	list2 = new JsmMethodList(this);
+	_methodList = new JsmMethodList(this);
 
 	QVBoxLayout *list2Layout = new QVBoxLayout();
-	list2Layout->addWidget(list2->toolBar(), 0, Qt::AlignTop);
-	list2Layout->addWidget(list2, 1);
+	list2Layout->addWidget(_methodList->toolBar(), 0, Qt::AlignTop);
+	list2Layout->addWidget(_methodList, 1);
 	list2Layout->setContentsMargins(QMargins());
 
 	tabBar = new QTabBar(this);
@@ -148,10 +149,10 @@ void JsmWidget::build()
 
 	tabBar->setCurrentIndex(Config::value("scriptType").toInt());
 
-	connect(list1, SIGNAL(itemSelectionChanged()), SLOT(fillList2()));
-	connect(list1, SIGNAL(modified()), SLOT(setJsmModified()));
-	connect(list2, SIGNAL(itemSelectionChanged()), SLOT(fillTextEdit()));
-	connect(list2, SIGNAL(modified()), SLOT(setJsmModified()));
+	connect(_groupList, SIGNAL(itemSelectionChanged()), SLOT(fillList2()));
+	connect(_groupList, SIGNAL(modified()), SLOT(setJsmModified()));
+	connect(_methodList, SIGNAL(itemSelectionChanged()), SLOT(fillTextEdit()));
+	connect(_methodList, SIGNAL(modified()), SLOT(setJsmModified()));
 	connect(tabBar, SIGNAL(currentChanged(int)), SLOT(onTabChanged(int)));
 	connect(textEdit, SIGNAL(lineHovered(QString,QPoint)), SLOT(showPreview(QString,QPoint)));
 
@@ -167,8 +168,8 @@ void JsmWidget::setJsmModified()
 
 void JsmWidget::compile()
 {
-	groupID = list1->selectedID();
-	methodID = list2->selectedID();
+	groupID = _groupList->selectedID();
+	methodID = _methodList->selectedID();
 	if (groupID == -1 || methodID == -1) {
 		return;
 	}
@@ -193,8 +194,8 @@ void JsmWidget::compile()
 
 void JsmWidget::compilePseudo()
 {
-	groupID = list1->selectedID();
-	methodID = list2->selectedID();
+	groupID = _groupList->selectedID();
+	methodID = _methodList->selectedID();
 	if (groupID == -1 || methodID == -1) {
 		return;
 	}
@@ -264,20 +265,20 @@ void JsmWidget::clear()
 		return;
 	}
 
-	list1->blockSignals(true);
-	list2->blockSignals(true);
+	_groupList->blockSignals(true);
+	_methodList->blockSignals(true);
 
 	saveSession();
 
-	list1->clear();
+	_groupList->clear();
 	modelPreview->clear();
-	list2->clear();
+	_methodList->clear();
 	textEdit->clear();
 	errorLabel->clear();
 	warningWidget->hide();
 
-	list1->blockSignals(false);
-	list2->blockSignals(false);
+	_groupList->blockSignals(false);
+	_methodList->blockSignals(false);
 
 	PageWidget::clear();
 }
@@ -318,8 +319,8 @@ void JsmWidget::setData(Field *field)
 
 	PageWidget::setData(field);
 
-	if (list1 != nullptr) {
-		list1->setField(field);
+	if (_groupList != nullptr) {
+		_groupList->setField(field);
 	}
 }
 
@@ -347,31 +348,31 @@ void JsmWidget::fill()
 
 	int groupID = data()->getJsmFile()->currentGroupItem();
 
-	list1->setField(data());
-	list1->fill();
+	_groupList->setField(data());
+	_groupList->fill();
 
 	if (data()->getJsmFile()->oldFormat()) {
 		warningWidget->show();
 	}
 
-	QTreeWidgetItem *item = list1->topLevelItem(groupID);
-	if (item) 	list1->setCurrentItem(item);
+	QTreeWidgetItem *item = _groupList->topLevelItem(groupID);
+	if (item) 	_groupList->setCurrentItem(item);
 
 	PageWidget::fill();
 }
 
 void JsmWidget::fillList2()
 {
-//	qDebug() << QString("JsmWidget::fillList2(%1)").arg(currentItem(list1));
+//	qDebug() << QString("JsmWidget::fillList2(%1)").arg(currentItem(_groupList));
 
-	list2->clear();
-	int groupID = list1->selectedID();
+	_methodList->clear();
+	int groupID = _groupList->selectedID();
 	if (groupID == -1)	return;
 	int methodID = data()->getJsmFile()->currentMethodItem(groupID);
 
-	list1->scrollToItem(list1->currentItem());
-	list2->setField(data());
-	list2->fill(groupID);
+	_groupList->scrollToItem(_groupList->currentItem());
+	_methodList->setField(data());
+	_methodList->fill(groupID);
 
 	const JsmScripts &scripts = data()->getJsmFile()->getScripts();
 	const JsmGroup &group = scripts.group(groupID);
@@ -390,8 +391,8 @@ void JsmWidget::fillList2()
 		modelPreview->clear();
 	}
 
-	QTreeWidgetItem *item = list2->topLevelItem(methodID);
-	if (item) 	list2->setCurrentItem(item);
+	QTreeWidgetItem *item = _methodList->topLevelItem(methodID);
+	if (item) 	_methodList->setCurrentItem(item);
 }
 
 void JsmWidget::onTabChanged(int index)
@@ -424,13 +425,13 @@ void JsmWidget::onTabChanged(int index)
 
 void JsmWidget::fillTextEdit()
 {
-//	qDebug() << QString("JsmWidget::fillTextEdit(%1, %2)").arg(currentItem(list1)).arg(currentItem(list2));
+//	qDebug() << QString("JsmWidget::fillTextEdit(%1, %2)").arg(currentItem(_groupList)).arg(currentItem(_methodList));
 
 	saveSession();
 	textEdit->previewWidget()->hide();
 	Config::setValue("scriptType", tabBar->currentIndex());
-	groupID = list1->selectedID();
-	methodID = currentItem(list2);
+	groupID = _groupList->selectedID();
+	methodID = currentItem(_methodList);
 	if (groupID == -1 || methodID == -1) {
 		textEdit->clear();
 		toolBar->setEnabled(false);
@@ -438,7 +439,7 @@ void JsmWidget::fillTextEdit()
 		return;
 	}
 
-	list2->scrollToItem(list2->currentItem());
+	_methodList->scrollToItem(_methodList->currentItem());
 	textEdit->setReadOnly(isReadOnly());
 
 	bool more;
@@ -670,20 +671,20 @@ void JsmWidget::gotoScript(int groupID, int methodID, int opcodeID)
 {
 	if (!isBuilded())	build();
 
-	QList<QTreeWidgetItem *> items = list1->findItems(QString("%1").arg(groupID, 3), Qt::MatchExactly);
+	QList<QTreeWidgetItem *> items = _groupList->findItems(QString("%1").arg(groupID, 3), Qt::MatchExactly);
 	QTreeWidgetItem *item;
 	if (items.isEmpty())	return;
 
 	item = items.first();
-	list1->setCurrentItem(item);
-	list1->scrollToItem(item);
+	_groupList->setCurrentItem(item);
+	_groupList->scrollToItem(item);
 
-	items = list2->findItems(QString("%1").arg(methodID, 3), Qt::MatchExactly);
+	items = _methodList->findItems(QString("%1").arg(methodID, 3), Qt::MatchExactly);
 	if (items.isEmpty())	return;
 
 	item = items.first();
-	list2->setCurrentItem(item);
-	list2->scrollToItem(item);
+	_methodList->setCurrentItem(item);
+	_methodList->scrollToItem(item);
 
 	QTextCursor cursor = textEdit->textCursor();
 	cursor.setPosition(textEdit->document()->findBlockByLineNumber(data()->getJsmFile()->opcodePositionInText(groupID, methodID, opcodeID, tabBar->currentIndex() <= 0)).position());
@@ -695,20 +696,20 @@ void JsmWidget::gotoScript(int groupID, int methodID, int opcodeID)
 
 //void JsmWidget::gotoScriptLabel(int groupID, int labelID)
 //{
-//	QList<QTreeWidgetItem *> items = list1->findItems(QString("%1").arg(groupID, 3), Qt::MatchExactly);
+//	QList<QTreeWidgetItem *> items = _groupList->findItems(QString("%1").arg(groupID, 3), Qt::MatchExactly);
 //	QTreeWidgetItem *item;
 //	if (items.isEmpty())	return;
 
 //	item = items.first();
-//	list1->setCurrentItem(item);
-//	list1->scrollToItem(item);
+//	_groupList->setCurrentItem(item);
+//	_groupList->scrollToItem(item);
 
-//	items = list2->findItems(QString("%1").arg(labelID, 3), Qt::MatchExactly, 2);
+//	items = _methodList->findItems(QString("%1").arg(labelID, 3), Qt::MatchExactly, 2);
 //	if (items.isEmpty())	return;
 
 //	item = items.first();
-//	list2->setCurrentItem(item);
-//	list2->scrollToItem(item);
+//	_methodList->setCurrentItem(item);
+//	_methodList->scrollToItem(item);
 
 //	if (list3->topLevelItemCount()<1)	return;
 //	list3->scrollToItem(list3->topLevelItem(0));

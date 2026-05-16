@@ -44,7 +44,7 @@ QAction *AbstractListWidget::addAction(ActionType type, const QString &text,
 
 	switch (type) {
 	case Add:
-		icon = QIcon(":images/plus.png");
+		icon = QIcon::fromTheme(QStringLiteral("list-add"));
 		shortcut = QKeySequence("Ctrl++");
 		inToolbar = true;
 		break;
@@ -55,30 +55,30 @@ QAction *AbstractListWidget::addAction(ActionType type, const QString &text,
 		connect(action, SIGNAL(triggered()), receiver, member);
 		return action;
 	case Rem:
-		icon = QIcon(":images/minus.png");
+		icon = QIcon::fromTheme(QStringLiteral("list-remove"));
 		shortcut = QKeySequence::Delete;
 		inToolbar = true;
 		break;
 	case Up:
-		icon = QIcon(":images/up.png");
+		icon = QIcon::fromTheme(QStringLiteral("go-up"));
 		shortcut = QKeySequence("Shift+Up");
 		inToolbar = true;
 		break;
 	case Down:
-		icon = QIcon(":images/down.png");
+		icon = QIcon::fromTheme(QStringLiteral("go-down"));
 		shortcut = QKeySequence("Shift+Down");
 		inToolbar = true;
 		break;
 	case Copy:
-		icon = QIcon(":images/copy.png");
+		icon = QIcon::fromTheme(QStringLiteral("edit-copy"));
 		shortcut = QKeySequence::Copy;
 		break;
 	case Cut:
-		icon = QIcon(":images/cut.png");
+		icon = QIcon::fromTheme(QStringLiteral("edit-cut"));
 		shortcut = QKeySequence::Cut;
 		break;
 	case Paste:
-		icon = QIcon(":images/paste.png");
+		icon = QIcon::fromTheme(QStringLiteral("edit-paste"));
 		shortcut = QKeySequence::Paste;
 		break;
 	}

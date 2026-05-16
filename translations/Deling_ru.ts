@@ -2261,6 +2261,14 @@ Dollet Harbor</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Move up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&amp;Group Editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2274,11 +2282,11 @@ Dollet Harbor</translation>
     </message>
     <message>
         <source>Up</source>
-        <translation type="obsolete">Вверх</translation>
+        <translation type="unfinished">Вверх</translation>
     </message>
     <message>
         <source>Down</source>
-        <translation type="obsolete">Вниз</translation>
+        <translation type="unfinished">Вниз</translation>
     </message>
     <message>
         <source>You have more than 48 groups in this field, the game may crash.</source>

@@ -94,7 +94,7 @@ MainWindow::MainWindow()
 	menu->addAction(tr("&Quit"), this, SLOT(close()))->setMenuRole(QAction::QuitRole);
 
 	menu = menuBar->addMenu(tr("T&ools"));
-	actionFind = menu->addAction(QIcon(":/images/find.png"), tr("Fi&nd..."), QKeySequence::Find, this, SLOT(search()));
+	actionFind = menu->addAction(QIcon::fromTheme(QStringLiteral("edit-find")), tr("Fi&nd..."), QKeySequence::Find, this, SLOT(search()));
 	menu->addAction(tr("&Var manager..."), this, SLOT(varManager()));
 	//menu->addAction(tr("&Rechercher tout..."), this, SLOT(miscSearch()));
 	actionRun = menu->addAction(QIcon(":/images/ff8.png"), tr("&Launch FF8..."), Qt::Key_F8, this, SLOT(runFF8()));

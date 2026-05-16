@@ -50,9 +50,9 @@ private:
 	void saveSession();
 	QHash<int, CharaModel> *mainModels;
 	FieldArchive *fieldArchive;
-	JsmGroupList *list1;
+	JsmGroupList *_groupList;
 	CharaPreview *modelPreview;
-	JsmMethodList *list2;
+	JsmMethodList *_methodList;
 	QTabBar *tabBar;
 	PlainTextEditPriv *textEdit;
 	JsmHighlighter *highlighter;

@@ -208,6 +208,27 @@ void JsmScripts::removeGroup(int groupID)
 	propagateGroupCountChange(groupID, -1);
 }
 
+bool JsmScripts::moveGroup(int groupID, bool down)
+{
+	if (groupID < 0 || groupID >= _groupListOrderedById.size()) {
+		return false;
+	}
+
+	if (down) {
+		if (groupID + 1 >= _groupListOrderedById.size()) {
+			return false;
+		}
+		_groupListOrderedById.swapItemsAt(groupID, groupID + 1);
+	} else {
+		if (groupID - 1 < 0) {
+			return false;
+		}
+		_groupListOrderedById.swapItemsAt(groupID, groupID - 1);
+	}
+
+	return true;
+}
+
 bool JsmScripts::canSetGroupName(const QString &name) const
 {
 	if (name.isEmpty()) {

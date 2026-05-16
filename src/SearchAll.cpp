@@ -43,7 +43,7 @@ SearchAll::SearchAll(QWidget *parent) :
 
 	connect(_resultList, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(gotoResult(QTreeWidgetItem*)));
 
-	QAction *copy = new QAction(QIcon(":/images/copy.png"), tr("Copy"), this);
+	QAction *copy = new QAction(QIcon::fromTheme(QStringLiteral("edit-copy")), tr("Copy"), this);
 	copy->setShortcut(QKeySequence("Ctrl+C"));
 	copy->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 	connect(copy, SIGNAL(triggered()), SLOT(copySelected()));

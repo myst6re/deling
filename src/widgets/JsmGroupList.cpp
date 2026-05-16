@@ -57,14 +57,14 @@ JsmGroupList::JsmGroupList(QWidget *parent) :
 	_pasteGroupAction->setShortcut(QKeySequence("Ctrl+V"));
 	_pasteGroupAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 	_pasteGroupAction->setEnabled(false);
-	/* _upGroupAction = new QAction(QIcon::fromTheme(QStringLiteral("go-up")), tr("Move up"), this);
+	_upGroupAction = new QAction(QIcon::fromTheme(QStringLiteral("go-up")), tr("Move up"), this);
 	_upGroupAction->setShortcut(QKeySequence("Shift+Up"));
 	_upGroupAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 	_upGroupAction->setEnabled(false);
 	_downGroupAction = new QAction(QIcon::fromTheme(QStringLiteral("go-down")), tr("Move down"), this);
 	_downGroupAction->setShortcut(QKeySequence("Shift+Down"));
 	_downGroupAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-	_downGroupAction->setEnabled(false); */
+	_downGroupAction->setEnabled(false);
 
 	connect(this, &JsmGroupList::itemDoubleClicked, this, qOverload<QTreeWidgetItem *, int>(&JsmGroupList::rename));
 	connect(this, &JsmGroupList::itemSelectionChanged, this, &JsmGroupList::upDownEnabled);
@@ -75,8 +75,8 @@ JsmGroupList::JsmGroupList(QWidget *parent) :
 	connect(_cutGroupAction, &QAction::triggered, this, &JsmGroupList::cut);
 	connect(_copyGroupAction, &QAction::triggered, this, &JsmGroupList::copy);
 	connect(_pasteGroupAction, &QAction::triggered, this, &JsmGroupList::paste);
-	/* connect(_upGroupAction, &QAction::triggered, this, &JsmGroupList::up);
-	connect(_downGroupAction, &QAction::triggered, this, &JsmGroupList::down); */
+	connect(_upGroupAction, &QAction::triggered, this, &JsmGroupList::up);
+	connect(_downGroupAction, &QAction::triggered, this, &JsmGroupList::down);
 
 	this->addAction(_renameGroupAction);
 	this->addAction(_addGroupAction);
@@ -87,23 +87,23 @@ JsmGroupList::JsmGroupList(QWidget *parent) :
 	this->addAction(_cutGroupAction);
 	this->addAction(_copyGroupAction);
 	this->addAction(_pasteGroupAction);
-	/* QAction *separator2 = new QAction(this);
+	QAction *separator2 = new QAction(this);
 	separator2->setSeparator(true);
 	this->addAction(separator2);
 	this->addAction(_upGroupAction);
-	this->addAction(_downGroupAction); */
+	this->addAction(_downGroupAction);
 
 	_toolBar = new QToolBar(tr("&Group Editor"));
-	_toolBar->setIconSize(QSize(14, 14));
+	_toolBar->setIconSize(QSize(16, 16));
 	_toolBar->addAction(_addGroupAction);
 	_addGroupAction->setStatusTip(tr("Add a group"));
 	_toolBar->addAction(_delGroupAction);
 	_delGroupAction->setStatusTip(tr("Remove a group"));
-	/* _toolBar->addSeparator();
+	_toolBar->addSeparator();
 	_toolBar->addAction(_upGroupAction);
 	_upGroupAction->setStatusTip(tr("Up"));
 	_toolBar->addAction(_downGroupAction);
-	_downGroupAction->setStatusTip(tr("Down")); */
+	_downGroupAction->setStatusTip(tr("Down"));
 
 	_helpWidget = new HelpWidget(32, HelpWidget::IconWarning, this);
 	_helpWidget->hide();
@@ -130,14 +130,14 @@ void JsmGroupList::upDownEnabled()
 		_delGroupAction->setEnabled(false);
 		_cutGroupAction->setEnabled(false);
 		_copyGroupAction->setEnabled(false);
-		/* _upGroupAction->setEnabled(false);
-		_downGroupAction->setEnabled(false); */
+		_upGroupAction->setEnabled(false);
+		_downGroupAction->setEnabled(false);
 	} else {
 		_delGroupAction->setEnabled(topLevelItemCount() > 0);
 		_cutGroupAction->setEnabled(true);
 		_copyGroupAction->setEnabled(true);
-		/* _upGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(0));
-		_downGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(topLevelItemCount()-1)); */
+		_upGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(0));
+		_downGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(topLevelItemCount()-1));
 	}
 }
 
@@ -477,13 +477,14 @@ void JsmGroupList::move(bool direction)
 	if (groupID == -1) {
 		return;
 	}
-	/* if (_scripts->moveGrpScript(groupID, direction)) {
+	JsmScripts &scripts = _field->getJsmFile()->getScripts();
+	if (scripts.moveGroup(groupID, direction)) {
 		fill();
 		scroll(direction ? groupID + 1 : groupID - 1);
 		emit modified();
 	} else {
 		setFocus();
-	} */
+	}
 }
 
 void JsmGroupList::scroll(int id, bool focus)
@@ -494,7 +495,7 @@ void JsmGroupList::scroll(int id, bool focus)
 			return;
 		}
 		setCurrentItem(item);
-		scrollToItem(item, QAbstractItemView::PositionAtTop);
+		scrollToItem(item, QAbstractItemView::EnsureVisible);
 	}
 
 	if (focus) {

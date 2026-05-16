@@ -154,6 +154,7 @@ public:
 	bool insertGroup(int groupID, JsmGroup::Type groupType, const QString &name);
 	bool insertGroup(int groupID, const JsmGroup &jsmGroup);
 	void removeGroup(int groupID);
+	bool moveGroup(int groupID, bool down);
 	// Scripts
 	int countMethods() const;
 	QList<JsmMethod> methods() const;
