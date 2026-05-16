@@ -372,7 +372,7 @@ List of available commands:
     <name>ColorDisplay</name>
     <message>
         <source>Choose a new color</source>
-        <translation type="unfinished"></translation>
+        <translation>変更する色の選択</translation>
     </message>
 </context>
 <context>
@@ -2536,7 +2536,7 @@ Some scripts can refer to it!</source>
     </message>
     <message>
         <source>pt</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Code editor font size</source>

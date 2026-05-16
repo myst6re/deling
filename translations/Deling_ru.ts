@@ -2494,7 +2494,7 @@ Some scripts can refer to it!</source>
     </message>
     <message>
         <source>pt</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Code editor font size</source>

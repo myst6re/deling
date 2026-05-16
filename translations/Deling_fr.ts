@@ -288,75 +288,75 @@ List of available commands:
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer vers le haut</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer vers le bas</translation>
     </message>
     <message>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Copy model</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier modèle 3D</translation>
     </message>
     <message>
         <source>Paste model</source>
-        <translation type="unfinished"></translation>
+        <translation>Coller modèle 3D</translation>
     </message>
     <message>
         <source>Main Character model</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle de perso principal</translation>
     </message>
     <message>
         <source>Local model</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle local</translation>
     </message>
     <message>
         <source>Use default</source>
-        <translation type="unfinished"></translation>
+        <translation>Par défaut</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished">Type</translation>
+        <translation>Type</translation>
     </message>
     <message>
         <source>Local ID pointer</source>
-        <translation type="unfinished"></translation>
+        <translation>Pointeur vers l&apos;ID local</translation>
     </message>
     <message>
         <source>Main Model ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID du modèle principal</translation>
     </message>
     <message>
         <source>Color modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificateur de couleur</translation>
     </message>
     <message>
         <source>Add model</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter modèle 3D</translation>
     </message>
     <message>
         <source>Remove model</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer modèle 3D</translation>
     </message>
     <message>
         <source>Model name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du modèle 3D</translation>
     </message>
     <message>
         <source>Shared texture local model</source>
-        <translation type="unfinished"></translation>
+        <translation>Texture partagée de modèle local</translation>
     </message>
     <message>
         <source>Scale</source>
-        <translation type="unfinished"></translation>
+        <translation>Échelle</translation>
     </message>
     <message>
         <source>Default color modifier</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificateur de couleur par défaut</translation>
     </message>
     <message>
         <source>(No Name)</source>
@@ -367,7 +367,7 @@ List of available commands:
     <name>ColorDisplay</name>
     <message>
         <source>Choose a new color</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez une nouvelle couleur</translation>
     </message>
 </context>
 <context>
@@ -2068,7 +2068,7 @@ Dollet Harbor</source>
     </message>
     <message>
         <source>Extract As Chunks</source>
-        <translation type="unfinished"></translation>
+        <translation>Extraire en morceaux</translation>
     </message>
     <message>
         <source>Add File</source>
@@ -2232,11 +2232,11 @@ Dollet Harbor</source>
     <name>JsmGroupList</name>
     <message>
         <source>Id</source>
-        <translation type="unfinished">Id</translation>
+        <translation>Id</translation>
     </message>
     <message>
         <source>Entity</source>
-        <translation type="unfinished">Groupe</translation>
+        <translation>Entité</translation>
     </message>
     <message>
         <source>Exec</source>
@@ -2244,199 +2244,201 @@ Dollet Harbor</source>
     </message>
     <message>
         <source>Rename group</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommer groupe</translation>
     </message>
     <message>
         <source>Add group</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter groupe</translation>
     </message>
     <message>
         <source>Delete group</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer groupe</translation>
     </message>
     <message>
         <source>Cut group</source>
-        <translation type="unfinished"></translation>
+        <translation>Couper groupe</translation>
     </message>
     <message>
         <source>Copy group</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier groupe</translation>
     </message>
     <message>
         <source>Paste group</source>
-        <translation type="unfinished"></translation>
+        <translation>Coller groupe</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer vers le haut</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer vers le bas</translation>
     </message>
     <message>
         <source>&amp;Group Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Éditeur de &amp;groupe</translation>
     </message>
     <message>
         <source>Add a group</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un groupe</translation>
     </message>
     <message>
         <source>Remove a group</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer un groupe</translation>
     </message>
     <message>
         <source>Up</source>
-        <translation type="unfinished">Haut</translation>
+        <translation>Haut</translation>
     </message>
     <message>
         <source>Down</source>
-        <translation type="unfinished">Bas</translation>
+        <translation>Bas</translation>
     </message>
     <message>
         <source>You have more than 48 groups in this field, the game may crash.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez plus de 48 groupes dans cet écran, le jeu pourrait planter.</translation>
     </message>
     <message>
         <source>Standard</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished">Décors</translation>
+        <translation>Décors</translation>
     </message>
     <message>
         <source>Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Zone</translation>
     </message>
     <message>
         <source>Door</source>
-        <translation type="unfinished"></translation>
+        <translation>Porte</translation>
     </message>
     <message>
         <source>&amp;Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nom :</translation>
     </message>
     <message>
         <source>&amp;Type:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Type :</translation>
     </message>
     <message>
         <source>Name already exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nom existe déjà</translation>
     </message>
     <message>
         <source>This name already exist, please choose another</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce nom existe déjà, choisissez-en un autre</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <source>Are you sure you want to remove %1?
 Some scripts can refer to it!</source>
-        <translation type="unfinished"></translation>
+        <translation>Êtes-vous sûr de vouloir supprimer %1 ?
+Certains scripts peuvent s&apos;y référer !</translation>
     </message>
     <message>
         <source>the group selected</source>
-        <translation type="unfinished"></translation>
+        <translation>le groupe sélectionné</translation>
     </message>
     <message>
         <source>the selected groups</source>
-        <translation type="unfinished"></translation>
+        <translation>les groupes sélectionnés</translation>
     </message>
 </context>
 <context>
     <name>JsmHelpDialog</name>
     <message>
         <source>Script Reference</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Search opcodes...</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher des opcodes...</translation>
     </message>
 </context>
 <context>
     <name>JsmMethodList</name>
     <message>
         <source>Id</source>
-        <translation type="unfinished">Id</translation>
+        <translation>Id</translation>
     </message>
     <message>
         <source>Script</source>
-        <translation type="unfinished">Script</translation>
+        <translation>Script</translation>
     </message>
     <message>
         <source>Script label</source>
-        <translation type="unfinished">Script label</translation>
+        <translation>Script label</translation>
     </message>
     <message>
         <source>Rename method</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommer méthode</translation>
     </message>
     <message>
         <source>Add method</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter méthode</translation>
     </message>
     <message>
         <source>Delete method</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer méthode</translation>
     </message>
     <message>
         <source>Cut method</source>
-        <translation type="unfinished"></translation>
+        <translation>Couper méthode</translation>
     </message>
     <message>
         <source>Copy method</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier méthode</translation>
     </message>
     <message>
         <source>Paste method</source>
-        <translation type="unfinished"></translation>
+        <translation>Coller méthode</translation>
     </message>
     <message>
         <source>&amp;Method Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Éditeur de &amp;méthode</translation>
     </message>
     <message>
         <source>Add a method</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter une méthode</translation>
     </message>
     <message>
         <source>Remove a method</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer une méthode</translation>
     </message>
     <message>
         <source>Name already exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom existe déjà</translation>
     </message>
     <message>
         <source>This name already exist, please choose another</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce nom existe déjà, merci d&apos;en définir un autre</translation>
     </message>
     <message>
         <source>&amp;Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nom :</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <source>Are you sure you want to remove %1?
 Some scripts can refer to it!</source>
-        <translation type="unfinished"></translation>
+        <translation>Êtes-vous sûr de vouloir supprimer %1 ?
+Certains scripts peuvent s&apos;y référer !</translation>
     </message>
     <message>
         <source>the method selected</source>
-        <translation type="unfinished"></translation>
+        <translation>la méthode sélectionnée</translation>
     </message>
     <message>
         <source>the selected methods</source>
-        <translation type="unfinished"></translation>
+        <translation>les méthodes sélectionnées</translation>
     </message>
 </context>
 <context>
@@ -2483,27 +2485,27 @@ Some scripts can refer to it!</source>
     </message>
     <message>
         <source>Compile pseudo-code to opcodes (Ctrl+Shift+B)</source>
-        <translation type="unfinished"></translation>
+        <translation>Compiler le peudo-code vers le code opcode (Ctrl+Shift+B)</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Aide</translation>
     </message>
     <message>
         <source>Script reference (F1)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Font:</source>
-        <translation type="unfinished"></translation>
+        <translation>Police :</translation>
     </message>
     <message>
         <source>pt</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Code editor font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille de police de l&apos;éditeur</translation>
     </message>
     <message>
         <source>Line %1 -&gt; %2</source>
@@ -2515,7 +2517,7 @@ Some scripts can refer to it!</source>
     </message>
     <message>
         <source>Successfully compiled (%1 opcodes)</source>
-        <translation type="unfinished"></translation>
+        <translation>Compilé avec succès (%1 opcodes)</translation>
     </message>
     <message>
         <source>Scripts</source>
@@ -2523,25 +2525,27 @@ Some scripts can refer to it!</source>
     </message>
     <message>
         <source>Line %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligne %1 %2</translation>
     </message>
     <message>
         <source>Compile Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur de compilation</translation>
     </message>
     <message>
         <source>Unsaved Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Changements non sauvegardés</translation>
     </message>
     <message>
         <source>You have uncompiled changes. Switching tabs will discard them.
 
 Do you want to switch anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez des modifications non compilées. Changer d&apos;onglet vons les annuler.
+
+Voulez-vous changer d&apos;onglet quand même ?</translation>
     </message>
     <message>
         <source>Code</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2624,7 +2628,7 @@ Do you want to switch anyway?</source>
     </message>
     <message>
         <source>Batch processing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Traitement par lot...</translation>
     </message>
     <message>
         <source>Op&amp;tions</source>
@@ -2660,19 +2664,19 @@ Do you want to switch anyway?</source>
     </message>
     <message>
         <source>Batch processing</source>
-        <translation type="unfinished"></translation>
+        <translation>Traitement par lot</translation>
     </message>
     <message>
         <source>Add Edea where full party is available</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter Edea là où toute l&apos;équipe est visible</translation>
     </message>
     <message>
         <source>Add Seifer where full party is available</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter Seifer là où toute l&apos;équipe est visible</translation>
     </message>
     <message>
         <source>Apply operation...</source>
-        <translation type="unfinished"></translation>
+        <translation>Application de l&apos;opération...</translation>
     </message>
     <message>
         <source>By myst6re&lt;br/&gt;&lt;a href=&quot;https://sourceforge.net/projects/deling/&quot;&gt;sourceforge.net/projects/deling&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;Thanks to:&lt;ul style=&quot;margin:0&quot;&gt;&lt;li&gt;Aali&lt;/li&gt;&lt;li&gt;Aladore384&lt;/li&gt;&lt;li&gt;Asa&lt;/li&gt;&lt;li&gt;Shard&lt;/li&gt;&lt;li&gt;MaKiPL&lt;/li&gt;&lt;/ul&gt;</source>
@@ -3366,111 +3370,111 @@ Message d&apos;erreur :
     </message>
     <message>
         <source>Unexpected character: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Caractère inattendu : &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Expected &apos;%1&apos;, got &apos;%2&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; attendu, &apos;%2&apos; reçu</translation>
     </message>
     <message>
         <source>Cannot find label %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de trouver le label %1</translation>
     </message>
     <message>
         <source>Unexpected &apos;%1&apos; in this block</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;%1&apos; inattendu dans ce bloc</translation>
     </message>
     <message>
         <source>Expected statement, got &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Déclaration attendue, &apos;%1&apos; reçu</translation>
     </message>
     <message>
         <source>Expected method name after &apos;.&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de méthode attendu après un &apos;.&apos;</translation>
     </message>
     <message>
         <source>Unknown statement: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Déclaration inconnue : &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Invalid temp index: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Index temp invalide &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Invalid model index: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Index de modèle invalide : &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Cannot resolve variable: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de résoudre la variable : &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Cannot resolve variable for push: &apos;%1&apos;. Use temp_N, model_N, or N_ubyte/uword/ulong/sbyte/sword/slong format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de résoudre la variable pour le push : &apos;%1&apos;. Utilisez le format temp_N, model_N or N_ubyte/uword/ulong/sbyte/sword/slong.</translation>
     </message>
     <message>
         <source>Cannot resolve variable for assignment: &apos;%1&apos;. Use temp_N or N_ubyte/uword/ulong/sbyte/sword/slong format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de résoudre la variable pour l&apos;assignation : &apos;%1&apos;. Utilisez le format temp_N ou N_ubyte/uword/ulong/sbyte/sword/slong.</translation>
     </message>
     <message>
         <source>Unknown assignment operator</source>
-        <translation type="unfinished"></translation>
+        <translation>Opérateur d&apos;assignation inconnu</translation>
     </message>
     <message>
         <source>Unknown function: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Fonction inconnue : &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Cannot resolve entity &apos;%1&apos; to a group ID.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de tranformer l&apos;entité &apos;%1&apos; en un identifiant de groupe.</translation>
     </message>
     <message>
         <source>Cannot resolve method &apos;%1&apos; to a method ID (group ID = %2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de transformer la méthode &apos;%1&apos; en un identifiant de méthode (group ID = %2).</translation>
     </message>
     <message>
         <source>Expected &apos;begin&apos; after if condition</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;begin&apos; attendu après une condition &apos;if&apos;</translation>
     </message>
     <message>
         <source>Expected &apos;end&apos; to close if/else block</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;end&apos; attendu pour terminer un bloc &apos;if&apos;/&apos;else&apos;</translation>
     </message>
     <message>
         <source>Expected &apos;else&apos; or &apos;end&apos; after if block, got &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;else&apos; ou &apos;end&apos; attendu après un bloc &apos;if&apos;, &apos;%1&apos; reçu</translation>
     </message>
     <message>
         <source>Expected &apos;end&apos; to close while block</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;end&apos; attendu pour fermer un bloc &apos;while&apos;</translation>
     </message>
     <message>
         <source>Expected &apos;while&apos; or &apos;forever&apos; after &apos;wait&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;while&apos; ou &apos;forever&apos; attendu après &apos;wait&apos;</translation>
     </message>
     <message>
         <source>Expected &apos;end&apos; to close forever block</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;end&apos; attendu pour terminer un bloc &apos;forever&apos;</translation>
     </message>
     <message>
         <source>Expected &apos;until&apos; to close repeat block</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;until&apos; attendu pour terminer un bloc &apos;repeat&apos;</translation>
     </message>
     <message>
         <source>Expected an identifier after a goto instruction</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquette attendue après une instuction &apos;goto&apos;</translation>
     </message>
     <message>
         <source>Expected an identifier after a label instruction</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquette attendue après une instruction &apos;label&apos;</translation>
     </message>
     <message>
         <source>Unexpected token: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeton inattendu : &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Field model color alteration file (*.pcb)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier altération de couleur (*.pcb)</translation>
     </message>
 </context>
 <context>
@@ -3608,11 +3612,11 @@ poursuite de la recherche dans le dernier fichier.</translation>
     <name>SoundPlayer</name>
     <message>
         <source>Play</source>
-        <translation type="unfinished"></translation>
+        <translation>Lecture</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Arrêter</translation>
     </message>
 </context>
 <context>
@@ -3631,7 +3635,7 @@ poursuite de la recherche dans le dernier fichier.</translation>
     </message>
     <message>
         <source>Global ID:</source>
-        <translation type="unfinished"></translation>
+        <translation>ID global :</translation>
     </message>
     <message>
         <source>Export</source>
