@@ -105,10 +105,12 @@ void JsmMethodList::upDownEnabled()
 	QList<int> ids = selectedIDs();
 
 	if (ids.isEmpty() || (ids.size() == 1 && ids.first() == 0)) {
+		_renameMethodAction->setEnabled(false);
 		_delMethodAction->setEnabled(false);
 		_cutMethodAction->setEnabled(false);
 		_copyMethodAction->setEnabled(!ids.isEmpty());
 	} else {
+		_renameMethodAction->setEnabled(true);
 		_delMethodAction->setEnabled(topLevelItemCount() > 0);
 		_cutMethodAction->setEnabled(true);
 		_copyMethodAction->setEnabled(true);
@@ -120,6 +122,7 @@ void JsmMethodList::clear()
 	QTreeWidget::clear();
 	_field = nullptr;
 	_groupID = 0;
+	_addMethodAction->setEnabled(false);
 }
 
 void JsmMethodList::setField(Field *field)
@@ -170,7 +173,6 @@ void JsmMethodList::fill(int groupID)
 	resizeColumnToContents(2);
 	upDownEnabled();
 
-	_renameMethodAction->setEnabled(true);
 	_addMethodAction->setEnabled(topLevelItemCount() < 256);
 }
 

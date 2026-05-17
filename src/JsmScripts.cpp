@@ -178,16 +178,11 @@ int JsmScripts::calcGroupTypeRelativeId(int groupID) const
 	return relativeId;
 }
 
-int JsmScripts::insertGroup(int indicativeGroupID, JsmGroup::Type groupType, const QString &name)
+bool JsmScripts::groupBounds(JsmGroup::Type groupType, int &firstGroupID, int &lastGroupID) const
 {
-	if (!canSetGroupName(name)) {
-		return -1;
-	}
-
 	JsmGroup::Type nativeGroupType = JsmGroup::toNativeType(groupType);
-	const JsmGroup &lastGroup = _groupListOrderedById.last();
-	int absMethodID = lastGroup.absMethodId() + lastGroup.methodCount();
-	int firstGroupID = -1, lastGroupID = -1;
+	firstGroupID = -1;
+	lastGroupID = -1;
 
 	for (int groupID = 0; groupID < _groupListOrderedById.size(); ++groupID) {
 		const JsmGroup &jsmGroup = _groupListOrderedById.at(groupID);
@@ -202,13 +197,29 @@ int JsmScripts::insertGroup(int indicativeGroupID, JsmGroup::Type groupType, con
 		}
 	}
 
+	return firstGroupID != -1 && lastGroupID != -1;
+}
+
+int JsmScripts::insertGroup(int indicativeGroupID, JsmGroup::Type groupType, const QString &name)
+{
+	if (!canSetGroupName(name)) {
+		return -1;
+	}
+
+	const JsmGroup &lastGroup = _groupListOrderedById.last();
+	int absMethodID = lastGroup.absMethodId() + lastGroup.methodCount();
+	int firstGroupID = -1, lastGroupID = -1;
+	bool ok = groupBounds(groupType, firstGroupID, lastGroupID);
+
 	// Force groupID inside range
 	int groupID = indicativeGroupID;
 
-	if (indicativeGroupID < firstGroupID) {
-		groupID = firstGroupID;
-	} else if (indicativeGroupID > lastGroupID) {
-		groupID = lastGroupID + 1;
+	if (ok) {
+		if (indicativeGroupID < firstGroupID) {
+			groupID = firstGroupID;
+		} else if (indicativeGroupID > lastGroupID) {
+			groupID = lastGroupID + 1;
+		}
 	}
 
 	propagateGroupCountChange(groupID, +1);
@@ -260,13 +271,16 @@ bool JsmScripts::moveGroup(int groupID, bool down)
 		return false;
 	}
 
+	int firstGroupID = -1, lastGroupID = -1;
+	bool ok = groupBounds(_groupListOrderedById.at(groupID).type(), firstGroupID, lastGroupID);
+
 	if (down) {
-		if (groupID + 1 >= _groupListOrderedById.size()) {
+		if (groupID + 1 >= _groupListOrderedById.size() || (ok && groupID >= lastGroupID)) {
 			return false;
 		}
 		_groupListOrderedById.swapItemsAt(groupID, groupID + 1);
 	} else {
-		if (groupID - 1 < 0) {
+		if (groupID - 1 < 0 || (ok && groupID <= firstGroupID)) {
 			return false;
 		}
 		_groupListOrderedById.swapItemsAt(groupID, groupID - 1);

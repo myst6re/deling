@@ -34,6 +34,7 @@ JsmGroupList::JsmGroupList(QWidget *parent) :
 	setContextMenuPolicy(Qt::ActionsContextMenu);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
 	sortByColumn(0, Qt::AscendingOrder);
+	setColumnCount(2);
 
 	_renameGroupAction = new QAction(QIcon::fromTheme(QStringLiteral("document-edit")), tr("Rename group"), this);
 	_renameGroupAction->setShortcut(QKeySequence("F2"));
@@ -136,8 +137,16 @@ void JsmGroupList::upDownEnabled()
 		_delGroupAction->setEnabled(topLevelItemCount() > 0);
 		_cutGroupAction->setEnabled(true);
 		_copyGroupAction->setEnabled(true);
-		_upGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(0));
-		_downGroupAction->setEnabled(topLevelItemCount() > 1 && currentItem() != topLevelItem(topLevelItemCount()-1));
+		int min, max;
+		int currentGroupId = selectedBounds(min, max);
+
+		if (min != -1 && max != -1) {
+			_upGroupAction->setEnabled(currentGroupId > min);
+			_downGroupAction->setEnabled(currentGroupId < max);
+		} else {
+			_upGroupAction->setEnabled(false);
+			_downGroupAction->setEnabled(false);
+		}
 	}
 }
 
@@ -166,12 +175,13 @@ QIcon JsmGroupList::createSeparatorIcon()
 	return QIcon(pixmap);
 }
 
-QTreeWidgetItem *JsmGroupList::createSectionItem(const QString &sectionName, const QIcon &icon)
+QTreeWidgetItem *JsmGroupList::createSectionItem(const QString &sectionName, const QIcon &icon, JsmGroup::Type groupType)
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem(QStringList() << QString() << sectionName);
 	item->setFlags(Qt::ItemIsEnabled);
 	item->setIcon(0, icon);
 	item->setData(0, Qt::UserRole, -1);
+	item->setData(0, Qt::UserRole + 1, groupType);
 
 	return item;
 }
@@ -180,10 +190,10 @@ QList<QTreeWidgetItem *> JsmGroupList::nameList() const
 {
 	QIcon separatorIcon = createSeparatorIcon();
 	QList<QTreeWidgetItem *> items = QList<QTreeWidgetItem *>()
-		<< createSectionItem(tr("Default Scripts:"), separatorIcon)
-		<< createSectionItem(tr("Location Scripts:"), separatorIcon)
-		<< createSectionItem(tr("Background Scripts:"), separatorIcon)
-		<< createSectionItem(tr("Door Scripts:"), separatorIcon);
+		<< createSectionItem(tr("Default Scripts:"), separatorIcon, JsmGroup::No)
+		<< createSectionItem(tr("Location Scripts:"), separatorIcon, JsmGroup::Location)
+		<< createSectionItem(tr("Background Scripts:"), separatorIcon, JsmGroup::Background)
+		<< createSectionItem(tr("Door Scripts:"), separatorIcon, JsmGroup::Door);
 	QMap<JsmGroup::Type, QTreeWidgetItem *> typeToItem;
 	typeToItem[JsmGroup::No] = items.at(0);
 	typeToItem[JsmGroup::Location] = items.at(1);
@@ -529,7 +539,8 @@ void JsmGroupList::scroll(int id, bool focus)
 {
 	if (selectedID() != id) {
 		QTreeWidgetItem *item = findItem(id);
-		if (!item) {
+		qDebug() << "scroll" << id << focus << item;
+		if (item == nullptr) {
 			return;
 		}
 		setCurrentItem(item);
@@ -543,7 +554,7 @@ void JsmGroupList::scroll(int id, bool focus)
 
 QTreeWidgetItem *JsmGroupList::findItem(int id) const
 {
-	QList<QTreeWidgetItem *> items = findItems(QString("%1").arg(id, 3), Qt::MatchExactly);
+	QList<QTreeWidgetItem *> items = findItems(QString("%1").arg(id, 3), Qt::MatchExactly | Qt::MatchRecursive);
 	if (items.isEmpty()) {
 		return nullptr;
 	}
@@ -571,4 +582,34 @@ QList<int> JsmGroupList::selectedIDs() const
 	}
 
 	return list;
+}
+
+int JsmGroupList::selectedBounds(int &min, int &max) const
+{
+	min = -1;
+	max = -1;
+
+	QList<QTreeWidgetItem *> items = selectedItems();
+	if (items.isEmpty())	return -1;
+
+	QTreeWidgetItem *item = items.first();
+	int groupID = item->data(0, Qt::UserRole).toInt();
+
+	if (item->parent() != nullptr) {
+		JsmGroup::Type type = JsmGroup::Type(item->parent()->data(0, Qt::UserRole + 1).toInt());
+
+		for (int i = 0; i < item->parent()->childCount(); ++i) {
+			QTreeWidgetItem *child = item->parent()->child(i);
+			int childGroupID = child->data(0, Qt::UserRole).toInt();
+
+			if (min == -1 || min > childGroupID) {
+				min = childGroupID;
+			}
+			if (max == -1 || max < childGroupID) {
+				max = childGroupID;
+			}
+		}
+	}
+
+	return groupID;
 }

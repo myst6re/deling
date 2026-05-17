@@ -153,6 +153,7 @@ public:
 	int calcGroupTypeRelativeId(int groupID) const;
 	bool canSetGroupName(const QString &name) const;
 	bool setGroupName(int groupID, const QString &name);
+	bool groupBounds(JsmGroup::Type groupType, int &firstGroupID, int &lastGroupID) const;
 	int insertGroup(int indicativeGroupID, JsmGroup::Type groupType, const QString &name);
 	int insertGroup(int indicativeGroupID, const JsmGroup &jsmGroup);
 	void removeGroup(int groupID);

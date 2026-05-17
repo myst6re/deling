@@ -72,12 +72,13 @@ signals:
 
 private:
 	static QIcon createSeparatorIcon();
-	static QTreeWidgetItem *createSectionItem(const QString &sectionName, const QIcon &icon);
+	static QTreeWidgetItem *createSectionItem(const QString &sectionName, const QIcon &icon, JsmGroup::Type groupType);
 	QList<QTreeWidgetItem *> nameList() const;
 	void updateHelpWidget();
 	void move(bool direction);
 	QTreeWidgetItem *findItem(int id) const;
 	QList<int> selectedIDs() const;
+	int selectedBounds(int &min, int &max) const;
 
 	QToolBar *_toolBar;
 	HelpWidget *_helpWidget;
