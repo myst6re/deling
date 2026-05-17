@@ -470,8 +470,8 @@ bool FieldArchive::batchProcessing(BatchOperations operations, ArchiveObserver *
 
 		if (insertSeifer) {
 			insertSeifer = charaFile->modelCount();
-			int groupID = 0;
-			if (scripts.insertGroup(groupID, JsmGroup::Model, "Seifer")) {
+			int groupID = scripts.insertGroup(0, JsmGroup::Model, "Seifer");
+			if (groupID >= 0) {
 				scripts.insertMethod(groupID, 1, "default");
 				scripts.insertMethod(groupID, 2, "talk");
 				scripts.insertMethod(groupID, 3, "push");
@@ -499,8 +499,8 @@ bool FieldArchive::batchProcessing(BatchOperations operations, ArchiveObserver *
 		}
 		if (insertEdea) {
 			insertEdea = charaFile->modelCount();
-			int groupID = 0;
-			if (scripts.insertGroup(groupID, JsmGroup::Model, "Edea")) {
+			int groupID = scripts.insertGroup(0, JsmGroup::Model, "Edea");
+			if (groupID >= 0) {
 				scripts.insertMethod(groupID, 1, "default");
 				scripts.insertMethod(groupID, 2, "talk");
 				scripts.insertMethod(groupID, 3, "push");

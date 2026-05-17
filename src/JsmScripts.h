@@ -77,6 +77,8 @@ public:
 	inline Type type() const {
 		return _type;
 	}
+	static Type toNativeType(Type type);
+	Type nativeType() const;
 	inline int character() const {
 		return _character;
 	}
@@ -151,8 +153,8 @@ public:
 	int calcGroupTypeRelativeId(int groupID) const;
 	bool canSetGroupName(const QString &name) const;
 	bool setGroupName(int groupID, const QString &name);
-	bool insertGroup(int groupID, JsmGroup::Type groupType, const QString &name);
-	bool insertGroup(int groupID, const JsmGroup &jsmGroup);
+	int insertGroup(int indicativeGroupID, JsmGroup::Type groupType, const QString &name);
+	int insertGroup(int indicativeGroupID, const JsmGroup &jsmGroup);
 	void removeGroup(int groupID);
 	bool moveGroup(int groupID, bool down);
 	// Scripts

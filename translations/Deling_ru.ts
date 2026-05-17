@@ -2321,6 +2321,22 @@ Dollet Harbor</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Default Scripts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location Scripts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background Scripts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Door Scripts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>This name already exist, please choose another</source>
         <translation type="unfinished"></translation>
     </message>

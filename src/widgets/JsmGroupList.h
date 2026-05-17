@@ -71,6 +71,8 @@ signals:
 	void modified();
 
 private:
+	static QIcon createSeparatorIcon();
+	static QTreeWidgetItem *createSectionItem(const QString &sectionName, const QIcon &icon);
 	QList<QTreeWidgetItem *> nameList() const;
 	void updateHelpWidget();
 	void move(bool direction);

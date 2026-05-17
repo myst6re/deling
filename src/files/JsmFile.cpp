@@ -172,7 +172,7 @@ bool JsmFile::open(const QByteArray &jsm, const QByteArray &symData, bool oldFor
 	QList<JsmGroup> groupListByGroupID;
 	groupListByGroupID.reserve(groupCount);
 	for (const JsmGroup &group: groupList) {
-		if (group.type() != JsmGroup::Background && group.type() != JsmGroup::Location && group.type() != JsmGroup::Door) {
+		if (group.nativeType() == JsmGroup::No) {
 			groupListByGroupID.append(group);
 		}
 	}
@@ -467,7 +467,7 @@ QByteArray JsmFile::saveSym()
 			return QByteArray();
 		}
 
-		if (group.type() != JsmGroup::Door && group.type() != JsmGroup::Background && group.type() != JsmGroup::Location) {
+		if (group.nativeType() == JsmGroup::No) {
 			ret.append(group.name().leftJustified(31));
 			ret.append('\n');
 		}

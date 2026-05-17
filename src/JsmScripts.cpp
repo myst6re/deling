@@ -69,6 +69,29 @@ int JsmGroup::findAbsoluteMethodIDByName(const QString &methodName) const
 	return -1;
 }
 
+JsmGroup::Type JsmGroup::toNativeType(Type type)
+{
+	switch (type) {
+		case JsmGroup::No:
+		case JsmGroup::Main:
+		case JsmGroup::Model:
+			return JsmGroup::No;
+		case JsmGroup::Location:
+			return JsmGroup::Location;
+		case JsmGroup::Door:
+			return JsmGroup::Door;
+		case JsmGroup::Background:
+			return JsmGroup::Background;
+	}
+
+	return JsmGroup::No;
+}
+
+JsmGroup::Type JsmGroup::nativeType() const
+{
+	return toNativeType(_type);
+}
+
 JsmScripts::JsmScripts(const QList<JsmGroup> &groupListOrderedById) :
 	_groupListOrderedById(groupListOrderedById)
 {
@@ -155,26 +178,51 @@ int JsmScripts::calcGroupTypeRelativeId(int groupID) const
 	return relativeId;
 }
 
-bool JsmScripts::insertGroup(int groupID, JsmGroup::Type groupType, const QString &name)
+int JsmScripts::insertGroup(int indicativeGroupID, JsmGroup::Type groupType, const QString &name)
 {
 	if (!canSetGroupName(name)) {
-		return false;
+		return -1;
 	}
 
+	JsmGroup::Type nativeGroupType = JsmGroup::toNativeType(groupType);
 	const JsmGroup &lastGroup = _groupListOrderedById.last();
 	int absMethodID = lastGroup.absMethodId() + lastGroup.methodCount();
+	int firstGroupID = -1, lastGroupID = -1;
+
+	for (int groupID = 0; groupID < _groupListOrderedById.size(); ++groupID) {
+		const JsmGroup &jsmGroup = _groupListOrderedById.at(groupID);
+
+		if (jsmGroup.nativeType() == nativeGroupType) {
+			if (firstGroupID < 0) {
+				firstGroupID = groupID;
+			}
+			lastGroupID = groupID;
+		} else if (firstGroupID >= 0) {
+			break;
+		}
+	}
+
+	// Force groupID inside range
+	int groupID = indicativeGroupID;
+
+	if (indicativeGroupID < firstGroupID) {
+		groupID = firstGroupID;
+	} else if (indicativeGroupID > lastGroupID) {
+		groupID = lastGroupID + 1;
+	}
 
 	propagateGroupCountChange(groupID, +1);
 	_groupListOrderedById.insert(groupID, JsmGroup(absMethodID, QList<JsmMethod>(), groupType, name));
 	insertMethod(groupID, 0, "init");
 
-	return true;
+	return groupID;
 }
 
-bool JsmScripts::insertGroup(int groupID, const JsmGroup &jsmGroup)
+int JsmScripts::insertGroup(int indicativeGroupID, const JsmGroup &jsmGroup)
 {
-	if (!insertGroup(groupID, jsmGroup.type(), jsmGroup.name())) {
-		return false;
+	int groupID = insertGroup(indicativeGroupID, jsmGroup.type(), jsmGroup.name());
+	if (groupID < 0) {
+		return -1;
 	}
 
 	JsmGroup &newGroup = group(groupID);
@@ -191,7 +239,7 @@ bool JsmScripts::insertGroup(int groupID, const JsmGroup &jsmGroup)
 		}
 	}
 
-	return true;
+	return groupID;
 }
 
 void JsmScripts::removeGroup(int groupID)

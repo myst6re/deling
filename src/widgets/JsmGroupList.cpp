@@ -152,17 +152,51 @@ void JsmGroupList::setField(Field *field)
 	_field = field;
 }
 
+QIcon JsmGroupList::createSeparatorIcon()
+{
+	QPixmap pixmap(16, 16);
+	pixmap.fill(Qt::transparent);
+	QPainter painter(&pixmap);
+
+	painter.setBrush(Qt::black);
+	painter.drawLine(0, 7, 15, 7);
+	painter.drawLine(0, 8, 15, 8);
+	painter.end();
+
+	return QIcon(pixmap);
+}
+
+QTreeWidgetItem *JsmGroupList::createSectionItem(const QString &sectionName, const QIcon &icon)
+{
+	QTreeWidgetItem *item = new QTreeWidgetItem(QStringList() << QString() << sectionName);
+	item->setFlags(Qt::ItemIsEnabled);
+	item->setIcon(0, icon);
+	item->setData(0, Qt::UserRole, -1);
+
+	return item;
+}
+
 QList<QTreeWidgetItem *> JsmGroupList::nameList() const
 {
-	QList<QTreeWidgetItem *> items;
-	QTreeWidgetItem *item;
+	QIcon separatorIcon = createSeparatorIcon();
+	QList<QTreeWidgetItem *> items = QList<QTreeWidgetItem *>()
+		<< createSectionItem(tr("Default Scripts:"), separatorIcon)
+		<< createSectionItem(tr("Location Scripts:"), separatorIcon)
+		<< createSectionItem(tr("Background Scripts:"), separatorIcon)
+		<< createSectionItem(tr("Door Scripts:"), separatorIcon);
+	QMap<JsmGroup::Type, QTreeWidgetItem *> typeToItem;
+	typeToItem[JsmGroup::No] = items.at(0);
+	typeToItem[JsmGroup::Location] = items.at(1);
+	typeToItem[JsmGroup::Background] = items.at(2);
+	typeToItem[JsmGroup::Door] = items.at(3);
 	const JsmScripts &scripts = _field->getJsmFile()->getScripts();
 	int nbGroup = scripts.groups().size();
 
 	for (int groupID = 0; groupID < nbGroup; ++groupID) {
 		const JsmGroup &grp = scripts.group(groupID);
-		item = new QTreeWidgetItem(QStringList() << QString("%1").arg(groupID, 3) << grp.name());
+		QTreeWidgetItem *item = new QTreeWidgetItem(typeToItem[grp.nativeType()], QStringList() << QString("%1").arg(groupID, 3) << grp.name());
 		item->setData(0, Qt::UserRole, groupID);
+		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemNeverHasChildren);
 		switch (grp.type()) {
 		case JsmGroup::Main:
 			item->setIcon(0, QIcon(":/images/main.png"));
@@ -222,13 +256,12 @@ QList<QTreeWidgetItem *> JsmGroupList::nameList() const
 		case JsmGroup::Background:
 			item->setIcon(0, QIcon(":/images/background.png"));
 			break;
-		default:
+		case JsmGroup::No:
 			QPixmap pixnull(32, 32);
 			pixnull.fill(Qt::transparent);
 			item->setIcon(0, QIcon(pixnull));
 			break;
 		}
-		items.append(item);
 	}
 
 	return items;
@@ -242,7 +275,11 @@ void JsmGroupList::fill()
 		return;
 	}
 
-	addTopLevelItems(nameList());
+	QList<QTreeWidgetItem *> items = nameList();
+	addTopLevelItems(items);
+	for (QTreeWidgetItem *item: items) {
+		item->setExpanded(true);
+	}
 	scrollToTop();
 	resizeColumnToContents(0);
 	resizeColumnToContents(1);
@@ -360,8 +397,9 @@ void JsmGroupList::add()
 
 	JsmGroup::Type type = JsmGroup::Type(typeComboBox->currentData().toInt());
 	JsmScripts &scripts = _field->getJsmFile()->getScripts();
+	groupID = scripts.insertGroup(groupID, type, nameLineEdit->text());
 
-	if (scripts.insertGroup(groupID, type, nameLineEdit->text())) {
+	if (groupID >= 0) {
 		fill();
 		scroll(groupID);
 		emit modified();
@@ -526,7 +564,10 @@ QList<int> JsmGroupList::selectedIDs() const
 	QList<QTreeWidgetItem *> selItems = selectedItems();
 
 	for (const QTreeWidgetItem *item: selItems) {
-		list.append(item->data(0, Qt::UserRole).toInt());
+		int id = item->data(0, Qt::UserRole).toInt();
+		if (id >= 0) {
+			list.append(id);
+		}
 	}
 
 	return list;
