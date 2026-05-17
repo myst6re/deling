@@ -26,7 +26,7 @@
 #include "widgets/HelpWidget.h"
 
 JsmWidget::JsmWidget(QWidget *parent)
-    : PageWidget(parent), mainModels(nullptr), fieldArchive(nullptr), _groupList(nullptr),
+    : PageWidget(parent), fieldArchive(nullptr), _groupList(nullptr),
       _methodList(nullptr),
       _regConst(QRegularExpression("\\b(text|map|item|magic)_(\\d+)\\b")),
       _regSetLine(QRegularExpression("setline\\(\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*\\)")),
@@ -324,11 +324,6 @@ void JsmWidget::setData(Field *field)
 	}
 }
 
-void JsmWidget::setMainModels(QHash<int, CharaModel> *mainModels)
-{
-	this->mainModels = mainModels;
-}
-
 void JsmWidget::setFieldArchive(FieldArchive *fieldArchive)
 {
 	this->fieldArchive = fieldArchive;
@@ -381,7 +376,7 @@ void JsmWidget::fillList2()
 	if (modelID != -1 && data()->hasCharaFile()
 			&& modelID < data()->getCharaFile()->modelCount()) {
 		modelPreview->setEnabled(true);
-		modelPreview->setModel(modelID, data()->getCharaFile(), mainModels);
+		modelPreview->setModel(modelID, data()->getCharaFile(), fieldArchive->getModels());
 	} else if (bgParamID != -1 && group.type() == JsmGroup::Background && data()->hasBackgroundFile()
 			  && data()->getBackgroundFile()->allparams.contains(bgParamID)) {
 		modelPreview->setEnabled(true);

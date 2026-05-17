@@ -31,7 +31,7 @@ FieldArchivePS::FieldArchivePS()
 
 FieldArchivePS::~FieldArchivePS()
 {
-	if (iso) {
+	if (iso != nullptr) {
 		if (iso->isDemo()) {
 			FF8Font::deregisterFont("demo");
 			Config::setValue("encoding", "00");
@@ -43,7 +43,7 @@ FieldArchivePS::~FieldArchivePS()
 
 QString FieldArchivePS::archivePath() const
 {
-	return iso ? iso->fileName() : QString();
+	return iso != nullptr ? iso->fileName() : QString();
 }
 
 FieldPS *FieldArchivePS::getField(int id) const
@@ -51,18 +51,15 @@ FieldPS *FieldArchivePS::getField(int id) const
 	return (FieldPS *)FieldArchive::getField(id);
 }
 
-FF8DiscArchive *FieldArchivePS::getFF8DiscArchive() const
-{
-	return iso;
-}
-
 int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 {
 	FieldPS *field;
 	QString desc;
-	int i, currentMap=0, fieldID=0;
+	int i, currentMap = 0, fieldID = 0;
 
-	if (iso)		delete iso;
+	if (iso != nullptr) {
+		delete iso;
+	}
 	iso = new FF8DiscArchive(path);
 	if (!iso->open(QIODevice::ReadOnly)) {
 		errorMsg = QObject::tr("Can not open the disk image file. (%1)").arg(iso->errorString());
@@ -87,7 +84,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 	setMapList(QStringList());
 	int indexOf;
 
-	quint32 freq = ((tocSize - tocStart) / 3)/100;
+	quint32 freq = ((tocSize - tocStart) / 3) / 100;
 
 	if (freq == 0) {
 		freq = 1;
@@ -121,7 +118,7 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 					desc = QString();
 
 				indexOf = iso->isDemo() ? i : mapList().indexOf(field->name());
-				QString mapId = indexOf==-1 ? "9999" : QString("%1").arg(indexOf, 4, 10, QChar('0'));
+				QString mapId = indexOf == -1 ? "9999" : QString("%1").arg(indexOf, 4, 10, QChar('0'));
 
 				fields.append(field);
 				fieldsSortByName.insert(field->name(), fieldID);
@@ -138,8 +135,6 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 		errorMsg = QObject::tr("No field found.");
 		return 4;
 	}
-
-	openModels();
 
 	if (iso->isDemo()) {
 		QByteArray sysFntTdw = iso->file(iso->sysFntTdwFile());
@@ -160,11 +155,13 @@ int FieldArchivePS::open(const QString &path, ArchiveObserver *progress)
 
 bool FieldArchivePS::openModels()
 {
-	if (!iso)	return false;
+	if (iso == nullptr) {
+		return false;
+	}
 
 	const QList<FF8DiscFile> &fieldFiles = iso->fieldDirectory();
 
-	for (int i = 0; i<77 && i < fieldFiles.size(); ++i) {
+	for (int i = 0; i < 77 && i < fieldFiles.size(); ++i) {
 		QByteArray fieldData = iso->file(fieldFiles.at(i));
 
 		if (!fieldData.isEmpty()) {
@@ -181,30 +178,32 @@ bool FieldArchivePS::openModels()
 
 bool FieldArchivePS::openFull(Field *field) const
 {
-	if (!iso || !field->isPs())	return false;
+	if (iso == nullptr || !field->isPs()) {
+		return false;
+	}
 
 	FieldPS *fieldPS = (FieldPS *)field;
 	quint32 isoFieldID = fieldPS->isoFieldID();
 	QByteArray dat, mim, lzk;
 
 	if (iso->isDemo()) {
-		if ((int)isoFieldID+2 >= iso->fieldCount()) {
+		if (int(isoFieldID + 2) >= iso->fieldCount()) {
 			qWarning() << "FieldArchivePS::openFull field ID out of range" << isoFieldID << iso->fieldCount();
 			return false;
 		}
 
 		dat = iso->fileLZS(iso->fieldFile(isoFieldID));
-		mim = iso->fileLZS(iso->fieldFile(isoFieldID+1));
-		lzk = iso->fileLZS(iso->fieldFile(isoFieldID+2));
+		mim = iso->fileLZS(iso->fieldFile(isoFieldID + 1));
+		lzk = iso->fileLZS(iso->fieldFile(isoFieldID + 2));
 	} else {
-		if (isoFieldID < 1 || (int)isoFieldID+1 >= iso->fieldCount()) {
+		if (isoFieldID < 1 || int(isoFieldID + 1) >= iso->fieldCount()) {
 			qWarning() << "FieldArchivePS::openFull field ID out of range" << isoFieldID << iso->fieldCount();
 			return false;
 		}
 
-		mim = iso->fileLZS(iso->fieldFile(isoFieldID-1));
+		mim = iso->fileLZS(iso->fieldFile(isoFieldID - 1));
 		dat = iso->fileLZS(iso->fieldFile(isoFieldID));
-		lzk = iso->file(iso->fieldFile(isoFieldID+1));
+		lzk = iso->file(iso->fieldFile(isoFieldID + 1));
 	}
 
 	return fieldPS->openFull(dat, mim, lzk);

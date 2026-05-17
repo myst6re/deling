@@ -19,7 +19,7 @@
 #include "Field.h"
 
 CharaWidget::CharaWidget(QWidget *parent)
-	: PageWidget(parent), _mainModels(nullptr), _modelCopy(nullptr)
+	: PageWidget(parent), _fieldArchive(nullptr), _modelCopy(nullptr)
 {
 }
 
@@ -141,11 +141,6 @@ void CharaWidget::fill()
 	PageWidget::fill();
 }
 
-void CharaWidget::setMainModels(QHash<int, CharaModel> *mainModels)
-{
-	_mainModels = mainModels;
-}
-
 void CharaWidget::setModel(int modelID)
 {
 	if (!hasData() || !data()->hasCharaFile()
@@ -155,7 +150,7 @@ void CharaWidget::setModel(int modelID)
 	}
 
 	const CharaModel &model = data()->getCharaFile()->model(modelID);
-	_modelPreview->setModel(modelID, data()->getCharaFile(), _mainModels);
+	_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive->getModels());
 	_loadingTypeChoice->setCurrentIndex(_loadingTypeChoice->findData(model.loadingType()));
 	setModelLoadingType(_loadingTypeChoice->currentIndex());
 	_lightColorEdit->setColors(QList<uint>() << (0xFF000000 | model.lightColor()));
@@ -205,7 +200,7 @@ void CharaWidget::setModelLightColor()
 
 		emit modified();
 
-		_modelPreview->setModel(modelID, data()->getCharaFile(), _mainModels);
+		_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive->getModels());
 	}
 }
 
@@ -283,7 +278,7 @@ void CharaWidget::setExternalModelId(int value)
 		if (_modelList->currentItem() != nullptr) {
 			_modelList->currentItem()->setText(1, model.name());
 		}
-		_modelPreview->setModel(modelID, data()->getCharaFile(), _mainModels);
+		_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive->getModels());
 	}
 }
 
@@ -309,7 +304,7 @@ void CharaWidget::setLocalTextureLoaderId(int value)
 
 		emit modified();
 
-		_modelPreview->setModel(modelID, data()->getCharaFile(), _mainModels);
+		_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive->getModels());
 	}
 }
 

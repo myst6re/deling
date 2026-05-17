@@ -34,7 +34,7 @@ public:
 	FsArchive *getFsArchive() const;
 	int open(const QString &path, ArchiveObserver *progress);
 	bool save(ArchiveObserver *progress, QString save_path=QString());
-	bool openModels();
+	bool openModels() override;
 	bool openFull(Field *field) const;
 	void restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHeader> > &oldFields) const;
 	bool optimiseArchive(ArchiveObserver *progress);

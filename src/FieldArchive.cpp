@@ -83,6 +83,9 @@ int FieldArchive::nbFields() const
 
 QHash<int, CharaModel> *FieldArchive::getModels()
 {
+	if (_mainModels.isEmpty()) {
+		openModels();
+	}
 	return &_mainModels;
 }
 

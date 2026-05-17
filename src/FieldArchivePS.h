@@ -30,9 +30,11 @@ public:
 	virtual ~FieldArchivePS();
 	QString archivePath() const;
 	FieldPS *getField(int id) const;
-	FF8DiscArchive *getFF8DiscArchive() const;
+	inline FF8DiscArchive *getFF8DiscArchive() const {
+		return iso;
+	}
 	int open(const QString &, ArchiveObserver *progress);
-	bool openModels();
+	bool openModels() override;
 	bool openFull(Field *field) const;
 private:
 	FF8DiscArchive *iso;

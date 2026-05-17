@@ -22,6 +22,7 @@
 #include "widgets/PageWidget.h"
 #include "widgets/CharaPreview.h"
 #include "widgets/ListWidget.h"
+#include "FieldArchive.h"
 
 class CharaWidget : public PageWidget
 {
@@ -31,7 +32,9 @@ public:
 	void clear();
 	void fill();
 	inline QString tabName() const { return tr("3D Model"); }
-	void setMainModels(QHash<int, CharaModel> *mainModels);
+	void setFieldArchive(FieldArchive *fieldArchive) {
+		_fieldArchive = fieldArchive;
+	}
 public slots:
 	inline void setModel(QTreeWidgetItem *item) {
 		setModel(item != nullptr ? item->data(0, Qt::UserRole).toInt() : -1);
@@ -53,7 +56,7 @@ public slots:
 private:
 	void build();
 	QFormLayout *_formLayout;
-	QHash<int, CharaModel> *_mainModels;
+	FieldArchive *_fieldArchive;
 	CharaPreview *_modelPreview;
 	QTreeWidget *_modelList;
 	TreeWidget *_listWidget;

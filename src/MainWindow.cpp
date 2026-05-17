@@ -362,8 +362,7 @@ bool MainWindow::openArchive(const QString &path)
 			menuExportAll->setEnabled(true);
 		}
 
-		((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(fieldArchive->getModels());
-		((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(fieldArchive->getModels());
+		((CharaWidget *)pageWidgets.at(ModelPage))->setFieldArchive(fieldArchive);
 		((JsmWidget *)pageWidgets.at(ScriptPage))->setFieldArchive(fieldArchive);
 
 		QString previousSessionField = Config::value("currentField").toString();
@@ -424,8 +423,7 @@ bool MainWindow::openFsArchive(const QString &path)
 		if (field->hasFiles()) {
 			delete fieldArchive;
 			fieldArchive = nullptr;
-			((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(nullptr);
-			((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(nullptr);
+			((CharaWidget *)pageWidgets.at(ModelPage))->setFieldArchive(nullptr);
 			((JsmWidget *)pageWidgets.at(ScriptPage))->setFieldArchive(nullptr);
 			searchDialog->setFieldArchive(nullptr);
 			searchAllDialog->setFieldArchive(nullptr);
@@ -683,8 +681,7 @@ int MainWindow::closeFiles(bool quit)
 		pageWidget->clear();
 		pageWidget->cleanData();
 	}
-	((CharaWidget *)pageWidgets.at(ModelPage))->setMainModels(nullptr);
-	((JsmWidget *)pageWidgets.at(ScriptPage))->setMainModels(nullptr);
+	((CharaWidget *)pageWidgets.at(ModelPage))->setFieldArchive(nullptr);
 	((JsmWidget *)pageWidgets.at(ScriptPage))->setFieldArchive(fieldArchive);
 	currentPath->setText(QString());
 	setReadOnly(true);

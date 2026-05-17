@@ -40,7 +40,6 @@ public:
 	void clear();
 	void setReadOnly(bool readOnly);
 	void setData(Field *field);
-	void setMainModels(QHash<int, CharaModel> *mainModels);
 	void setFieldArchive(FieldArchive *fieldArchive);
 	void fill();
 	void gotoScript(int groupID, int methodID, int opcodeID);
@@ -48,7 +47,6 @@ public:
 	inline QString tabName() const { return tr("Scripts"); }
 private:
 	void saveSession();
-	QHash<int, CharaModel> *mainModels;
 	FieldArchive *fieldArchive;
 	JsmGroupList *_groupList;
 	CharaPreview *modelPreview;

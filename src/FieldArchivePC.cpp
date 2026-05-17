@@ -30,7 +30,9 @@ FieldArchivePC::FieldArchivePC()
 
 FieldArchivePC::~FieldArchivePC()
 {
-	if (archive)			delete archive;
+	if (archive != nullptr) {
+		delete archive;
+	}
 }
 
 QString FieldArchivePC::archivePath() const
@@ -50,14 +52,15 @@ FsArchive *FieldArchivePC::getFsArchive() const
 
 int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 {
-	//qDebug() << QString("open(%1)").arg(path);
 	QString archivePath = path;
 	archivePath.chop(1);
 	QStringList fsList;
 	QString map, desc;
 	int index, fieldID = 0;
 
-	if (archive)		delete archive;
+	if (archive != nullptr) {
+		delete archive;
+	}
 	archive = new FsArchive(archivePath);
 	if (!archive->isOpen()) {
 		errorMsg = QObject::tr("Unable to open the archive.");
@@ -130,15 +133,12 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 				qWarning() << "field not opened" << map;
 				delete field;
 			}
-//			break;
 		}
 	}
 	
 	if (fields.isEmpty()) {
 		return openWorld();
 	}
-
-	openModels();
 
 	if (Config::value("encoding", "00").toString() == "01") {
 		Config::setValue("encoding", "00");
@@ -226,29 +226,30 @@ void FieldArchivePC::restoreFieldHeaders(const QMap<Field *, QMap<QString, FsHea
 
 bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 {
-	if (!archive)	return false;
+	if (archive == nullptr) {
+		return false;
+	}
 
 	QElapsedTimer t;t.start();
 	QStringList toc = archive->toc();
-//	QByteArray fs_data;
 	int pos, archiveSize;
-//	quint32 freq;
-	QString file, temp_path, path=archive->path();
+	QString file, temp_path, path = archive->path();
 
-	if (!archive->isWritable())	return false;
-
-	save_path.chop(1);// remove s, i or l in extension
-	path.chop(1);// remove s, i or l in extension
-
-	if (save_path.isEmpty() || save_path.compare(path, Qt::CaseInsensitive)==0) {
-		save_path = path;
-		temp_path = save_path.left(save_path.lastIndexOf("/")+1) + "delingtemp.f";
+	if (!archive->isWritable()) {
+		return false;
 	}
-	else {
+
+	save_path.chop(1); // remove s, i or l in extension
+	path.chop(1); // remove s, i or l in extension
+
+	if (save_path.isEmpty() || save_path.compare(path, Qt::CaseInsensitive) == 0) {
+		save_path = path;
+		temp_path = save_path.left(save_path.lastIndexOf("/") + 1) + "delingtemp.f";
+	} else {
 		temp_path = save_path;
 	}
 
-    QFile temp(FsArchive::fsPath(temp_path));
+	QFile temp(FsArchive::fsPath(temp_path));
 	if (!temp.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
 		temp.remove();
 		return false;
@@ -257,10 +258,6 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 	archiveSize = archive->size();
 	progress->setObserverMaximum(archiveSize);
 
-	/*QDir dd("debug");
-	for (QString machin: dd.entryList(QStringList() << "*")) {
-		QFile::remove(dd.absoluteFilePath(machin));
-	}*/
 	QMap<QString, FsHeader> oldValues = archive->getHeader();
 	QMap<Field *, QMap<QString, FsHeader> > oldFields;
 
@@ -282,27 +279,13 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 
 			/* Save Field data */
 			file = ((FieldPC *)field)->path();
-			QByteArray /*fs_savCmp = */fs_data = archive->fileData(file);
-			QByteArray fl_data, fi_data/*, fl_savCmp, fi_savCmp*/;
+			QByteArray fs_data = archive->fileData(file);
+			QByteArray fl_data, fi_data;
 			((FieldPC *)field)->save(fs_data, fl_data, fi_data);
-//			fl_savCmp = fl_data;
-//			fi_savCmp = fi_data;
-
-//			if (fs_savCmp != fs_data) {
-//				QFile savfs("debug/" + field->name() + ".fs.out");
-//				savfs.open(QIODevice::WriteOnly);
-//				savfs.write(fs_data);
-//				savfs.close();
-//				QFile savfs2("debug/" + field->name() + ".fs.expected");
-//				savfs2.open(QIODevice::WriteOnly);
-//				savfs2.write(fs_savCmp);
-//				savfs2.close();
-//			}
 
 			/* FS */
 			pos = temp.pos();
 			archive->setFileData(file, fs_data);
-//			qDebug() << "save" << pos << file;
 			archive->setFilePosition(file, pos);
 			temp.write(fs_data);
 			toc.removeOne(file);
@@ -312,7 +295,6 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 			file = FsArchive::flPath(file);
 			pos = temp.pos();
 			archive->setFileData(file, fl_data);
-//			qDebug() << "save" << pos << file;
 			archive->setFilePosition(file, pos);
 			temp.write(fl_data);
 			toc.removeOne(file);
@@ -322,31 +304,9 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 			file = FsArchive::fiPath(file);
 			pos = temp.pos();
 			archive->setFileData(file, fi_data);
-//			qDebug() << "save" << pos << file;
 			archive->setFilePosition(file, pos);
 			temp.write(fi_data);
 			toc.removeOne(file);
-
-//			if (fl_savCmp != fl_data) {
-//				QFile savfl("debug/" + field->name() + ".fl.out");
-//				savfl.open(QIODevice::WriteOnly);
-//				savfl.write(fl_data);
-//				savfl.close();
-//				QFile savfl2("debug/" + field->name() + ".fl.expected");
-//				savfl2.open(QIODevice::WriteOnly);
-//				savfl2.write(fl_savCmp);
-//				savfl2.close();
-//			}
-//			if (fi_savCmp != fi_data) {
-//				QFile savfi("debug/" + field->name() + ".fi.out");
-//				savfi.open(QIODevice::WriteOnly);
-//				savfi.write(fi_data);
-//				savfi.close();
-//				QFile savfi2("debug/" + field->name() + ".fi.expected");
-//				savfi2.open(QIODevice::WriteOnly);
-//				savfi2.write(fi_savCmp);
-//				savfi2.close();
-//			}
 
 			progress->setObserverValue(pos);
 		} else if (field->isModified() && field->hasWorldmapFile()) {
@@ -380,9 +340,7 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 		}
 
 		pos = temp.pos();
-//		qDebug() << "laisse" << pos << entry;
 		temp.write(archive->fileData(entry, false));
-//		qDebug() << "laisse2";
 		archive->setFilePosition(entry, pos);
 
 		progress->setObserverValue(pos);
@@ -399,8 +357,8 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 
 	if (!archive->saveAs(temp_path)) {
 		qWarning() << "Error save header!!!";
-        QFile::remove(FsArchive::fiPath(temp_path));
-        QFile::remove(FsArchive::flPath(temp_path));
+		QFile::remove(FsArchive::fiPath(temp_path));
+		QFile::remove(FsArchive::flPath(temp_path));
 		temp.remove();
 		restoreFieldHeaders(oldFields);
 		archive->setHeader(oldValues);
@@ -437,7 +395,9 @@ bool FieldArchivePC::save(ArchiveObserver *progress, QString save_path)
 
 bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 {
-	if (!archive)	return false;
+	if (archive == nullptr) {
+		return false;
+	}
 
 	QElapsedTimer t;t.start();
 	QStringList toc = archive->toc();
@@ -445,7 +405,9 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 	int pos;
 	QString file, temp_path, save_path=archive->path();
 
-	if (!archive->isWritable())	return false;
+	if (!archive->isWritable()) {
+		return false;
+	}
 
 	save_path.chop(1);// remove s, i or l in extension
 	temp_path = save_path.left(save_path.lastIndexOf("/")+1) + "delingtemp.f";
@@ -471,10 +433,6 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 			return false;
 		}
 
-//		if (!field->isOpen()) {
-//			openField(field);
-//		}
-
 		FsArchive *fieldHeader = ((FieldPC *)field)->getArchiveHeader();
 		if (fieldHeader != nullptr) {
 			oldFields.insert(field, fieldHeader->getHeader());
@@ -489,27 +447,24 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 		/* FS */
 		pos = temp.pos();
 		archive->setFileData(file, fs_data);
-//		qDebug() << "save" << pos << file;
 		archive->setFilePosition(file, pos);
 		temp.write(fs_data);
 		toc.removeOne(file);
 
 		/* FL */
 		file.chop(1);
-        file = FsArchive::flPath(file);
+		file = FsArchive::flPath(file);
 		pos = temp.pos();
 		archive->setFileData(file, fl_data);
-//		qDebug() << "save" << pos << file;
 		archive->setFilePosition(file, pos);
 		temp.write(fl_data);
 		toc.removeOne(file);
 
 		/* FI */
 		file.chop(1);
-        file = FsArchive::fiPath(file);
+		file = FsArchive::fiPath(file);
 		pos = temp.pos();
 		archive->setFileData(file, fi_data);
-//		qDebug() << "save" << pos << file;
 		archive->setFilePosition(file, pos);
 		temp.write(fi_data);
 		toc.removeOne(file);
@@ -544,8 +499,8 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 
 	if (!archive->saveAs(temp_path)) {
 		qWarning() << "Error save header!!!";
-        QFile::remove(FsArchive::fiPath(temp_path));
-        QFile::remove(FsArchive::flPath(temp_path));
+		QFile::remove(FsArchive::fiPath(temp_path));
+		QFile::remove(FsArchive::flPath(temp_path));
 		temp.remove();
 		restoreFieldHeaders(oldFields);
 		archive->setHeader(oldValues);
@@ -553,9 +508,9 @@ bool FieldArchivePC::optimiseArchive(ArchiveObserver *progress)
 	}
 
 	int replaceError = archive->replaceArchive(&temp);
-	if (replaceError==1) {
-        QFile::remove(FsArchive::fiPath(temp_path));
-        QFile::remove(FsArchive::flPath(temp_path));
+	if (replaceError == 1) {
+		QFile::remove(FsArchive::fiPath(temp_path));
+		QFile::remove(FsArchive::flPath(temp_path));
 		temp.remove();
 		restoreFieldHeaders(oldFields);
 		archive->setHeader(oldValues);
