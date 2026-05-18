@@ -59,7 +59,9 @@ private:
 	FieldArchive *_fieldArchive;
 	CharaPreview *_modelPreview;
 	QTreeWidget *_modelList;
-	TreeWidget *_listWidget;
+	TreeWidget *_modelListWidget;
+	QTreeWidget *_animList;
+	TreeWidget *_animListWidget;
 	QComboBox *_loadingTypeChoice;
 	QCheckBox *_autoLightColorEdit;
 	ColorDisplay *_lightColorEdit;
