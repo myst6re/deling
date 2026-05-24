@@ -34,8 +34,6 @@ Renderer::Renderer(QOpenGLWidget *_widget) :
     , mLogger(_widget)
 #endif
 {
-	mWidget = _widget;
-
 	mGL.initializeOpenGLFunctions();
 
 #ifdef QT_DEBUG
@@ -113,11 +111,6 @@ void Renderer::clear()
 	mGL.glClearColor(0, 0, 0, 0);
 	mGL.glClearDepthf(1.0f);
 	mGL.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void Renderer::show()
-{
-	mWidget->update();
 }
 
 void Renderer::reset()

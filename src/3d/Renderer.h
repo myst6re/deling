@@ -58,8 +58,6 @@ private:
 		TEXCOORD
 	};
 
-	QOpenGLWidget *mWidget;
-
 	QOpenGLFunctions mGL;
 
 	QOpenGLShaderProgram mProgram;
@@ -90,7 +88,6 @@ public:
 		return _hasError;
 	}
 	void clear();
-	void show();
 	void reset();
 
 	void draw(RendererPrimitiveType _type, float _pointSize = 1.0f, bool clear = true);
@@ -112,7 +109,7 @@ public:
 protected slots:
 	void messageLogged(const QOpenGLDebugMessage &msg);
 #endif
-private:	
+private:
 	bool updateBuffers();
 	void drawStart(float _pointSize);
 	void drawEnd(bool clear);

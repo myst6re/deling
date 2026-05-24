@@ -964,7 +964,10 @@ bool JsmPseudoCompiler::parseLogicalOr(JsmData &result, QString &errorStr)
 {
 	if (!parseLogicalAnd(result, errorStr)) return false;
 	while (peek().type == Token::OpLogOr) {
-		advance();
+		// Transform logOr to OR does not seem to work well, disabled for now
+		errorStr = QObject::tr("\"Logical Or\" not supported");
+		return false;
+		/* advance();
 		JsmData right;
 		if (!parseLogicalAnd(right, errorStr)) return false;
 		// We can't directly emit LogOr as a CAL — it's a virtual op in the decompiler
@@ -973,7 +976,7 @@ bool JsmPseudoCompiler::parseLogicalOr(JsmData &result, QString &errorStr)
 		// we use the pattern: left != 0, right != 0, OR
 		result += right;
 		result.append(JsmOpcode(JsmOpcode::CAL, JsmOpcodeCal::OR));
-		return true;
+		return true; */
 	}
 	return true;
 }
