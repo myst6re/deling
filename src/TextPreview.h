@@ -19,7 +19,7 @@
 
 #include <QtWidgets>
 #include "files/JsmFile.h"
-#include "files/TdwFile.h"
+#include "files/TdwFile.h" // For FF8Window
 
 #define NOWIN	65535
 
@@ -30,18 +30,28 @@ public:
 	explicit TextPreview(QWidget *parent = nullptr);
 	void clear();
 	static void reloadFont();
-	void setWins(const QList<FF8Window> &windows, bool update=true);
-	void resetCurrentWin();
-	int getCurrentWin();
-	FF8Window getWindow();
-	void setReadOnly(bool);
-	int getNbWin();
+	void setWins(const QList<FF8Window> &windows, bool update = true);
+	inline void resetCurrentWin() {
+		currentWin = 0;
+	}
+	int getCurrentWin() const;
+	FF8Window getWindow() const;
+	inline void setReadOnly(bool readOnly) {
+		this->readOnly = readOnly;
+	}
+	inline int getNbWin() const {
+		return ff8Windows.size();
+	}
 	void nextWin();
 	void prevWin();
-	void clearWin();
-	void setText(const QByteArray &textData, bool reset=true);
-	int getCurrentPage();
-	int getNbPages();
+	inline void clearWin() {
+		ff8Windows.clear();
+	}
+	void setText(const QByteArray &textData, bool reset = true);
+	int getCurrentPage() const;
+	inline int getNbPages() const {
+		return pagesPos.size();
+	}
 	void nextPage();
 	void prevPage();
 	static void setFontImageAdd(TdwFile *tdwFile);
@@ -54,9 +64,9 @@ signals:
 	void positionChanged(const QPoint &);
 private:
 	void drawTextArea(QPainter *painter);
-	QPoint realPos(const FF8Window &ff8Window);
-	void letter(int *x, int *y, int charId, QPainter *painter, quint8 tableId=0);
-	void word(int *x, int *y, const QByteArray &charIds, QPainter *painter, quint8 tableId=0);
+	QPoint realPos(const FF8Window &ff8Window) const;
+	void letter(int *x, int *y, int charId, QPainter *painter, quint8 tableId = 0);
+	void word(int *x, int *y, const QByteArray &charIds, QPainter *painter, quint8 tableId = 0);
 
 	QList<FF8Window> ff8Windows;
 	QByteArray ff8Text;

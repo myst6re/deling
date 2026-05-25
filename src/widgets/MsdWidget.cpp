@@ -469,17 +469,16 @@ void MsdWidget::changeCoord(const QPoint &point)
 
 void MsdWidget::changeXCoord(int x)
 {
-	if (textPreview->getNbWin()<=0)	return;
+	if (textPreview->getNbWin() <= 0) {
+		return;
+	}
 
 	int textID = textList->currentItem()->data(Qt::UserRole).toInt();
-	int winID = textPreview->getCurrentWin()-1;
 	FF8Window ff8Window = textPreview->getWindow();
 	if (ff8Window.x >= 0 && ff8Window.x != x) {
 		ff8Window.x = x;
 
-		//		qDebug() << "changeXCoord()" << x << textID << winID;
-
-		data()->getJsmFile()->setWindow(textID, winID, ff8Window);
+		data()->getJsmFile()->setWindow(textID, ff8Window);
 		textPreview->setWins(data()->getJsmFile()->windows(textID));
 		emit modified();
 	}
@@ -487,17 +486,16 @@ void MsdWidget::changeXCoord(int x)
 
 void MsdWidget::changeYCoord(int y)
 {
-	if (textPreview->getNbWin()<=0)	return;
+	if (textPreview->getNbWin() <= 0) {
+		return;
+	}
 
 	int textID = textList->currentItem()->data(Qt::UserRole).toInt();
-	int winID = textPreview->getCurrentWin()-1;
 	FF8Window ff8Window = textPreview->getWindow();
 	if (ff8Window.y >= 0 && ff8Window.y != y) {
 		ff8Window.y = y;
 
-		//		qDebug() << "changeYCoord()" << y << textID << winID;
-
-		data()->getJsmFile()->setWindow(textID, winID, ff8Window);
+		data()->getJsmFile()->setWindow(textID, ff8Window);
 		textPreview->setWins(data()->getJsmFile()->windows(textID));
 		emit modified();
 	}

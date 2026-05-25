@@ -359,7 +359,7 @@ bool CharaOneFile::downModel(int id)
 bool CharaOneFile::searchModel(const QString &name, CharaModel &modelOut, bool withStayWalkRunAnimations)
 {
 	for (const CharaModel &model: _models) {
-		if (model.name() == name && model.animations().size() >= 3) {
+		if (model.name() == name && (!withStayWalkRunAnimations || model.animations().size() >= 3)) {
 			modelOut = model;
 			return true;
 		}

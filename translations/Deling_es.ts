@@ -362,6 +362,34 @@ List of available commands:
         <source>(No Name)</source>
         <translation type="unfinished">(No Name)</translation>
     </message>
+    <message>
+        <source>Cut model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bones</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Animations</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ColorDisplay</name>
@@ -3462,6 +3490,10 @@ Error message:
     </message>
     <message>
         <source>Field model color alteration file (*.pcb)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot;Logical Or&quot; not supported</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

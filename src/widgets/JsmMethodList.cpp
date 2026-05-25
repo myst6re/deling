@@ -221,7 +221,6 @@ void JsmMethodList::renameOK(QTreeWidgetItem *item, int column)
 		return;
 	}
 
-	JsmGroup &jsmGroup = scripts.group(_groupID);
 	int methodID = selectedID();
 	if (methodID >= 1 && scripts.setMethodName(_groupID, methodID, newName)) {
 		emit modified();

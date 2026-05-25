@@ -51,8 +51,15 @@ public slots:
 	void removeModel();
 	void upModel();
 	void downModel();
+	void cutModel();
 	void copyModel();
 	void pasteModel();
+	void removeAnimation();
+	void upAnimation();
+	void downAnimation();
+	void cutAnimation();
+	void copyAnimation();
+	void pasteAnimation();
 private:
 	void build();
 	QFormLayout *_formLayout;
@@ -70,4 +77,5 @@ private:
 	QSpinBox *_modelScale;
 	QSpinBox *_modelId;
 	CharaModel *_modelCopy;
+	Animation _animationCopy;
 };

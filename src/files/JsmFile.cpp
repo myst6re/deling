@@ -840,7 +840,7 @@ void JsmFile::searchGroupTypes()
 			continue;
 		}
 
-		int methodCount = int(jsmGroup.methodCount()), character = -1, modelId = -1;
+		int character = -1, modelId = -1;
 		bool mainType = false;
 
 		for (const JsmMethod &jsmMethod: jsmGroup.methods()) {
@@ -894,9 +894,8 @@ void JsmFile::searchGroupTypes()
 	}
 }
 
-bool JsmFile::setWindow(quint8 textID, int winID, const FF8Window &window)
+bool JsmFile::setWindow(quint8 textID, const FF8Window &window)
 {
-//	qDebug() << "JsmFile::setWindow" << window.x << window.y;
 	quint32 key;
 	if (window.groupID >= scripts.groups().size()) {
 		return false;
@@ -1029,7 +1028,6 @@ int JsmFile::opcodePositionInText(int groupID, int methodID, int opcodeID, bool 
 {
 	if (more) {
 		QSet<void *> collectPointers;
-		const JsmData &jsmData = scripts.group(groupID).method(methodID).scriptData();
 		JsmProgram program = scripts.program(groupID, methodID, collectPointers);
 		QString ret = program.toStringList(this, 0, opcodeID).join("\n");
 

@@ -117,7 +117,7 @@ public:
 	inline QList<FF8Window> windows(quint8 textID) const {
 		return ff8Windows.values(textID);
 	}
-	bool setWindow(quint8 textID, int winID, const FF8Window &value);
+	bool setWindow(quint8 textID, const FF8Window &value);
 
 	void setDecompiledScript(int groupID, int methodID, const QString &text, bool moreDecompiled);
 	void setCurrentOpcodeScroll(int groupID, int methodID, bool more, int scrollValue, const QTextCursor &textCursor);

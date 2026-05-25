@@ -19,7 +19,7 @@
 #include "Field.h"
 
 CharaWidget::CharaWidget(QWidget *parent)
-	: PageWidget(parent), _fieldArchive(nullptr), _modelCopy(nullptr)
+	: PageWidget(parent), _fieldArchive(nullptr), _modelCopy(nullptr), _animationCopy(Animation())
 {
 }
 
@@ -408,6 +408,12 @@ void CharaWidget::downModel()
 	}
 }
 
+void CharaWidget::cutModel()
+{
+	copyModel();
+	removeModel();
+}
+
 void CharaWidget::copyModel()
 {
 	int modelID = _modelListWidget->selectedID();
@@ -441,4 +447,138 @@ void CharaWidget::pasteModel()
 		fill();
 		_modelList->setCurrentItem(_modelListWidget->findItem(modelID));
 	}
+}
+
+void CharaWidget::removeAnimation()
+{
+	int modelID = _modelListWidget->selectedID();
+
+	if (!hasData() || !data()->hasCharaFile()
+			|| modelID >= data()->getCharaFile()->modelCount()) {
+		return;
+	}
+
+	CharaModel &model = data()->getCharaFile()->model(modelID);
+	int animID = _animListWidget->selectedID();
+	QList<Animation> animations = model.animations();
+
+	if (animID < 0 || animID >= animations.size()) {
+		return;
+	}
+
+	animations.removeAt(animID);
+
+	model.setAnimations(animations);
+	data()->getCharaFile()->setModified(true);
+
+	emit modified();
+
+	setModel(modelID);
+}
+
+void CharaWidget::upAnimation()
+{
+	int modelID = _modelListWidget->selectedID();
+
+	if (!hasData() || !data()->hasCharaFile()
+			|| modelID >= data()->getCharaFile()->modelCount()) {
+		return;
+	}
+
+	CharaModel &model = data()->getCharaFile()->model(modelID);
+	int animID = _animListWidget->selectedID();
+	QList<Animation> animations = model.animations();
+
+	if (animID < 1 || animID >= animations.size()) {
+		return;
+	}
+
+	animations.swapItemsAt(animID, animID - 1);
+
+	model.setAnimations(animations);
+	data()->getCharaFile()->setModified(true);
+
+	emit modified();
+
+	setModel(modelID);
+}
+
+void CharaWidget::downAnimation()
+{
+	int modelID = _modelListWidget->selectedID();
+
+	if (!hasData() || !data()->hasCharaFile()
+			|| modelID >= data()->getCharaFile()->modelCount()) {
+		return;
+	}
+
+	CharaModel &model = data()->getCharaFile()->model(modelID);
+	int animID = _animListWidget->selectedID();
+	QList<Animation> animations = model.animations();
+
+	if (animID < 0 || animID + 1 >= animations.size()) {
+		return;
+	}
+
+	animations.swapItemsAt(animID, animID + 1);
+
+	model.setAnimations(animations);
+	data()->getCharaFile()->setModified(true);
+
+	emit modified();
+
+	setModel(modelID);
+}
+
+void CharaWidget::cutAnimation()
+{
+	copyAnimation();
+	removeAnimation();
+}
+
+void CharaWidget::copyAnimation()
+{
+	int modelID = _modelListWidget->selectedID();
+
+	if (!hasData() || !data()->hasCharaFile()
+			|| modelID >= data()->getCharaFile()->modelCount()) {
+		return;
+	}
+
+	const CharaModel &model = data()->getCharaFile()->model(modelID);
+	int animID = _animListWidget->selectedID();
+	const QList<Animation> &animations = model.animations();
+
+	if (animID < 0 || animID >= animations.size()) {
+		return;
+	}
+
+	_animationCopy = animations.at(animID);
+}
+
+void CharaWidget::pasteAnimation()
+{
+	if (_animationCopy.bonesCount() == 0) {
+		return;
+	}
+
+	int modelID = _modelListWidget->selectedID();
+
+	if (!hasData() || !data()->hasCharaFile()
+			|| modelID >= data()->getCharaFile()->modelCount()) {
+		return;
+	}
+
+	CharaModel &model = data()->getCharaFile()->model(modelID);
+	int animID = _animListWidget->selectedID();
+	QList<Animation> animations = model.animations();
+
+	animations.insert(animID, _animationCopy);
+
+	model.setAnimations(animations);
+	data()->getCharaFile()->setModified(true);
+
+	emit modified();
+
+	setModel(modelID);
 }

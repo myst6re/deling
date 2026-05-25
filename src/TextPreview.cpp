@@ -81,7 +81,9 @@ TextPreview::TextPreview(QWidget *parent)
 
 void TextPreview::setFontImageAdd(TdwFile *tdwFile)
 {
-	if (tdwFile == nullptr || tdwFile->tableCount() < 1)	return;
+	if (tdwFile == nullptr || tdwFile->tableCount() < 1) {
+		return;
+	}
 
 	TextPreview::tdwFile = tdwFile;
 }
@@ -95,9 +97,10 @@ int TextPreview::calcFF8TextWidth(const QByteArray &ff8Text)
 {
 	int width = 0;
 
-    for (quint8 c: ff8Text) {
-		if (c>=32 && c<227)
-			width += font->charWidth(0, c-32);
+	for (quint8 c: ff8Text) {
+		if (c >= 32 && c < 227) {
+			width += font->charWidth(0, c - 32);
+		}
 	}
 
 	return width;
@@ -107,7 +110,8 @@ void TextPreview::clear()
 {
 	ff8Text.clear();
 	ff8Windows.clear();
-	maxW=maxH=0;
+	maxW = 0;
+	maxH = 0;
 }
 
 void TextPreview::reloadFont()
@@ -123,46 +127,30 @@ void TextPreview::reloadFont()
 void TextPreview::setWins(const QList<FF8Window> &windows, bool update)
 {
 	ff8Windows = windows;
-	if (update)
+	if (update) {
 		calcSize();
-	//qDebug() << "type" << window.type << "x" << window.x << "y" << window.y << "u1" << window.u1;
-}
-
-void TextPreview::resetCurrentWin()
-{
-	currentWin = 0;
-}
-
-int TextPreview::getCurrentWin()
-{
-	return ff8Windows.isEmpty() ? 0 : currentWin+1;
-}
-
-FF8Window TextPreview::getWindow()
-{
-	if (!ff8Windows.isEmpty())
-		return ff8Windows.at(currentWin);
-	else {
-		FF8Window ff8Window = FF8Window();
-		ff8Window.type = NOWIN;
-		return ff8Window;
 	}
 }
 
-void TextPreview::setReadOnly(bool readOnly)
+int TextPreview::getCurrentWin() const
 {
-	this->readOnly = readOnly;
+	return ff8Windows.isEmpty() ? 0 : currentWin + 1;
 }
 
-int TextPreview::getNbWin()
+FF8Window TextPreview::getWindow() const
 {
-	return ff8Windows.size();
+	if (!ff8Windows.isEmpty()) {
+		return ff8Windows.at(currentWin);
+	}
+
+	FF8Window ff8Window = FF8Window();
+	ff8Window.type = NOWIN;
+	return ff8Window;
 }
 
 void TextPreview::nextWin()
 {
-	if (currentWin+1 < ff8Windows.size()) {
-//		qDebug() << "TextPreview::nextWin()";
+	if (currentWin + 1 < ff8Windows.size()) {
 		++currentWin;
 		update();
 	}
@@ -171,38 +159,28 @@ void TextPreview::nextWin()
 void TextPreview::prevWin()
 {
 	if (currentWin > 0) {
-//		qDebug() << "TextPreview::prevWin()";
 		--currentWin;
 		update();
 	}
 }
 
-void TextPreview::clearWin()
-{
-	ff8Windows.clear();
-}
-
 void TextPreview::setText(const QByteArray &textData, bool reset)
 {
 	ff8Text = textData;
-	if (reset)
+	if (reset) {
 		currentPage = 0;
+	}
 	calcSize();
 }
 
-int TextPreview::getCurrentPage()
+int TextPreview::getCurrentPage() const
 {
-	return pagesPos.isEmpty() ? 0 : currentPage+1;
-}
-
-int TextPreview::getNbPages()
-{
-	return pagesPos.size();
+	return pagesPos.isEmpty() ? 0 : currentPage + 1;
 }
 
 void TextPreview::nextPage()
 {
-	if (currentPage+1 < pagesPos.size()) {
+	if (currentPage + 1 < pagesPos.size()) {
 		++currentPage;
 		update();
 	}
@@ -218,8 +196,9 @@ void TextPreview::prevPage()
 
 void TextPreview::calcSize()
 {
-	int line=0, ask_first=-1, ask_last=-1, width, height=28, size=this->ff8Text.size();
-	maxW=maxH=0;
+	int line = 0, ask_first = -1, ask_last = -1, width, height = 28, size = this->ff8Text.size();
+	maxW = 0;
+	maxH = 0;
 	pagesPos.clear();
 	pagesPos.append(0);
 	quint8 caract;
@@ -233,7 +212,7 @@ void TextPreview::calcSize()
 		}
 	}
 
-	width = ask_first==0 && ask_last>=0 ? 79 : 15;
+	width = ask_first == 0 && ask_last >= 0 ? 79 : 15;
 
 	for (int i = 0; i < size; ++i) {
 		caract = (quint8)ff8Text.at(i);
@@ -302,7 +281,7 @@ void TextPreview::calcSize()
 			}
 			break;
 		case 0x1c: // Jap 4
-			if (tdwFile) {
+			if (tdwFile != nullptr) {
 				caract = (quint8)ff8Text.at(++i);
 				if (caract>=0x20)
 					width += tdwFile->charWidth(0, caract-0x20);
@@ -323,17 +302,17 @@ void TextPreview::calcSize()
 		}
 	}
 
-	if (height>maxH)	maxH = height;
-	if (width>maxW)	maxW = width;
-	if (maxW>322)	maxW = 322;
-	if (maxH>226)	maxH = 226;
+	if (height > maxH)	maxH = height;
+	if (width > maxW)	maxW = width;
+	if (maxW > 322)	maxW = 322;
+	if (maxH > 226)	maxH = 226;
 
 	update();
 }
 
-QPoint TextPreview::realPos(const FF8Window &ff8Window)
+QPoint TextPreview::realPos(const FF8Window &ff8Window) const
 {
-	int windowX=ff8Window.x, windowY=ff8Window.y;
+	int windowX = ff8Window.x, windowY = ff8Window.y;
 	if (windowX < 0) {
 		windowX = 0;
 	}
@@ -341,15 +320,15 @@ QPoint TextPreview::realPos(const FF8Window &ff8Window)
 		windowY = 0;
 	}
 
-	if (windowX+maxW>312) {
-		windowX = 312-maxW;
+	if (windowX + maxW > 312) {
+		windowX = 312 - maxW;
 	}
-	if (windowY+maxH>223) {
-		windowY = 223-maxH;
+	if (windowY + maxH > 223) {
+		windowY = 223 - maxH;
 	}
 
-	if (windowX<8)	windowX = 8;
-	if (windowY<8)	windowY = 8;
+	if (windowX < 8)	windowX = 8;
+	if (windowY < 8)	windowY = 8;
 
 	return QPoint(windowX, windowY);
 }
@@ -538,8 +517,9 @@ void TextPreview::paintEvent(QPaintEvent *event)
 	painter2.end();
 }
 
-void TextPreview::timerEvent(QTimerEvent *)
+void TextPreview::timerEvent(QTimerEvent *event)
 {
+	Q_UNUSED(event)
 	if (useTimer) {
 		curFrame = !curFrame;
 		repaint();
@@ -625,7 +605,7 @@ void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 t
 		bool tagInJp = tr("false", "Use Japanese Encoding") == "true";
 		image = FF8Font::font(tagInJp ? "01" : "00")->tdw()->letter(charId, fontColor, curFrame);
 	} else if (tableId == 4) {
-		if (tdwFile) {
+		if (tdwFile != nullptr) {
 			image = tdwFile->letter(0, charId, fontColor, curFrame);
 		}
 	} else {
@@ -651,8 +631,10 @@ void TextPreview::letter(int *x, int *y, int charId, QPainter *painter, quint8 t
 void TextPreview::word(int *x, int *y, const QByteArray &charIds, QPainter *painter, quint8 tableId)
 {
 	for (char charId: charIds) {
-		if (charId<0x20)	return;
-		letter(x, y, charId-0x20, painter, tableId);
+		if (charId < 0x20) {
+			return;
+		}
+		letter(x, y, charId - 0x20, painter, tableId);
 	}
 }
 

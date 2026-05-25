@@ -85,6 +85,7 @@ QAction *AbstractListWidget::addAction(ActionType type, const QString &text,
 
 	action = QWidget::addAction(icon, text, receiver, member);
 	action->setShortcut(shortcut);
+	action->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 	action->setStatusTip(text);
 
 	if (inToolbar) {

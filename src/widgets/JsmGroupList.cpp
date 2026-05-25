@@ -539,7 +539,6 @@ void JsmGroupList::scroll(int id, bool focus)
 {
 	if (selectedID() != id) {
 		QTreeWidgetItem *item = findItem(id);
-		qDebug() << "scroll" << id << focus << item;
 		if (item == nullptr) {
 			return;
 		}
@@ -596,8 +595,6 @@ int JsmGroupList::selectedBounds(int &min, int &max) const
 	int groupID = item->data(0, Qt::UserRole).toInt();
 
 	if (item->parent() != nullptr) {
-		JsmGroup::Type type = JsmGroup::Type(item->parent()->data(0, Qt::UserRole + 1).toInt());
-
 		for (int i = 0; i < item->parent()->childCount(); ++i) {
 			QTreeWidgetItem *child = item->parent()->child(i);
 			int childGroupID = child->data(0, Qt::UserRole).toInt();
