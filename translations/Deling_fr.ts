@@ -299,12 +299,32 @@ List of available commands:
         <translation></translation>
     </message>
     <message>
+        <source>Cut model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Copy model</source>
         <translation>Copier modèle 3D</translation>
     </message>
     <message>
         <source>Paste model</source>
         <translation>Coller modèle 3D</translation>
+    </message>
+    <message>
+        <source>Remove animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste animation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Main Character model</source>
@@ -347,6 +367,10 @@ List of available commands:
         <translation>Nom du modèle 3D</translation>
     </message>
     <message>
+        <source>Bones</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Shared texture local model</source>
         <translation>Texture partagée de modèle local</translation>
     </message>
@@ -355,40 +379,16 @@ List of available commands:
         <translation>Échelle</translation>
     </message>
     <message>
+        <source>Animations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Default color modifier</source>
         <translation>Modificateur de couleur par défaut</translation>
     </message>
     <message>
         <source>(No Name)</source>
         <translation>(Sans nom)</translation>
-    </message>
-    <message>
-        <source>Cut model</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bones</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove animation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cut animation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy animation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Paste animation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3513,16 +3513,16 @@ Message d&apos;erreur :
         <translation>Étiquette attendue après une instruction &apos;label&apos;</translation>
     </message>
     <message>
+        <source>&quot;Logical Or&quot; not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Unexpected token: &apos;%1&apos;</source>
         <translation>Jeton inattendu : &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Field model color alteration file (*.pcb)</source>
         <translation>Fichier altération de couleur (*.pcb)</translation>
-    </message>
-    <message>
-        <source>&quot;Logical Or&quot; not supported</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

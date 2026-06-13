@@ -23,6 +23,15 @@
 #include "files/IdFile.h"
 #include "Vertex.h"
 
+#ifdef _MSC_VER
+#	define PACK(structure)			\
+		__pragma(pack(push, 1))		\
+		structure					\
+		__pragma(pack(pop))
+#else
+#	define PACK(structure) structure Q_PACKED
+#endif
+
 struct Bone // sizeof = 64
 {
 	quint16 parent;
@@ -32,10 +41,10 @@ struct Bone // sizeof = 64
 	quint8 uA[54];
 };
 
-struct TextureAnimation
+PACK(struct TextureAnimation // sizeof = 1 (without the actual padding)
 {
 	quint8 unknown;
-};
+});
 
 struct Face // sizeof = 64
 {
@@ -44,9 +53,9 @@ struct Face // sizeof = 64
 	quint16 unknown8;
 	quint16 paddingA;
 	quint16 vertexIndexes[4];
-	quint16 normalIndexes[4];
+	quint16 normalIndexes[4]; // Ignored by the game
 	quint32 color[4];
-	TexCoord texCoord[4];
+	TexCoord texCoord[4]; // For textured polys, the game force RGB to (128, 128, 128), and only keeps alpha
 	quint16 padding;
 	quint16 texIndex;
 	quint64 padding2;
@@ -54,10 +63,16 @@ struct Face // sizeof = 64
 
 struct ModelUnknown // sizeof = 32
 {
-	quint32 u0[8];
+	quint16 skinObjectIndex;
+	quint16 skinObjectCount;
+	quint16 u4[7];
+	quint16 u18; // Textured triangle count related
+	quint16 u20;
+	quint16 u22; // Textured quad count related
+	quint16 u24[4];
 };
 
-struct SkinObject
+struct SkinObject // sizeof = 8
 {
 	quint16 vertexIndex;
 	quint16 vertexCount;

@@ -19,15 +19,16 @@
 #include "files/TimFile.h"
 
 struct ModelHeader {
-	quint32 boneCount;
-	quint32 verticeCount;
-	quint32 textureAnimationCount;
-	quint32 faceCount;
-	quint32 unknown1Count;
-	quint32 skinObjectCount;
-	quint32 padding;
-	quint16 triangleCount;
-	quint16 quadCount;
+	quint32 boneCount; // scaled and copied
+	quint32 verticeCount; // scaled and copied (new size = 8)
+	quint32 textureAnimationCount; // copied as it
+	quint32 faceCount; // transformed as textured triangle or textured rect
+	quint32 unknown1Count; // copied as it
+	quint32 skinObjectCount; // copied as it
+	quint16 coloredTriangleCount;
+	quint16 coloredQuadCount;
+	quint16 texturedTriangleCount;
+	quint16 texturedQuadCount;
 	quint32 bonesOffset;
 	quint32 verticesOffset;
 	quint32 textureAnimationsOffset;
@@ -135,9 +136,10 @@ bool MchFile::readFullModel(const char *constData, int size, const QString &name
 		<< "unknown1" << QString::number(modelHeader.unknown1sOffset, 16) << modelHeader.unknown1Count
 		<< "skinObjects" << QString::number(modelHeader.skinObjectsOffset, 16) << modelHeader.skinObjectCount
 		<< "animations" << QString::number(modelHeader.animationsOffset, 16)
-		<< "padding" << modelHeader.padding
-		<< "triangleCount" << modelHeader.triangleCount
-		<< "quadCount" << modelHeader.quadCount
+		<< "coloredTriangleCount" << modelHeader.coloredTriangleCount
+		<< "coloredQuadCount" << modelHeader.coloredQuadCount
+		<< "triangleCount" << modelHeader.texturedTriangleCount
+		<< "quadCount" << modelHeader.texturedQuadCount
 		<< "unknown3" << QString::number(modelHeader.unknown3a, 16) << QString::number(modelHeader.unknown3b, 16); */
 
 	FILL_LIST(Bone, bone)
@@ -147,12 +149,26 @@ bool MchFile::readFullModel(const char *constData, int size, const QString &name
 	FILL_LIST(ModelUnknown, unknown1)
 	FILL_LIST(SkinObject, skinObject)
 
-	/* for (const Face &face: faces) {
-		qDebug() << "face" << "polyType" << QString::number(face.polyType, 16) << "unknown4" << QString::number(face.unknown4, 16)
+	/* int faceId = 0;
+	for (const Face &face: faces) {
+		qDebug() << "face" << faceId++ << "polyType" << QString::number(face.polyType, 16) << "unknown4" << QString::number(face.unknown4, 16)
 			<< "unknown8" << QString::number(face.unknown8, 16)
 			<< "vertexIndexes" << face.vertexIndexes[0] << face.vertexIndexes[1] << face.vertexIndexes[2] << face.vertexIndexes[3]
 			<< "normalIndexes" << face.normalIndexes[0] << face.normalIndexes[1] << face.normalIndexes[2] << face.normalIndexes[3]
 			<< "texIndex" << face.texIndex;
+	}
+
+	int unknown1Id = 0;
+	for (const ModelUnknown &unknown: unknown1s) {
+		qDebug() << "unknown1" << unknown1Id++ << "skinObjectIndex" << unknown.skinObjectIndex << "skinObjectCount" << unknown.skinObjectCount
+			<< unknown.u4[0] << unknown.u4[1]<< unknown.u4[2]<< unknown.u4[3]<< unknown.u4[4]<< unknown.u4[5]<< unknown.u4[6]
+			<< unknown.u4[7] << unknown.u4[8] << unknown.u4[9]<< unknown.u4[10]<< unknown.u4[11]<< unknown.u4[12]<< unknown.u4[13];
+	}
+
+	int slinObjectId = 0;
+	for (const SkinObject &skinObject: skinObjects) {
+		qDebug() << "SkinObject" << slinObjectId++ << "boneId" << skinObject.boneId << "vertexIndex" << skinObject.vertexIndex
+			<< "vertexCount" << skinObject.vertexCount << skinObject.u6;
 	} */
 
 	QByteArray unknownData;
@@ -287,10 +303,11 @@ QByteArray MchFile::writeFullModel(const CharaModel &model)
 
 	for (const Face &face: model.faces()) {
 		if (face.polyType == 0x2D010709) {
-			modelHeader.quadCount += 1;
+			modelHeader.texturedQuadCount += 1;
 		} else {
-			modelHeader.triangleCount += 1;
+			modelHeader.texturedTriangleCount += 1;
 		}
+		// TODO: colored quad cound and colored triangle count
 	}
 
 	modelHeader.unknown3a = model.unknown2();

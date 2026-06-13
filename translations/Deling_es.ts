@@ -299,11 +299,31 @@ List of available commands:
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Cut model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Copy model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Paste model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste animation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -347,11 +367,19 @@ List of available commands:
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Bones</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Shared texture local model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Animations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -361,34 +389,6 @@ List of available commands:
     <message>
         <source>(No Name)</source>
         <translation type="unfinished">(No Name)</translation>
-    </message>
-    <message>
-        <source>Cut model</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bones</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove animation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cut animation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy animation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Paste animation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3485,15 +3485,15 @@ Error message:
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>&quot;Logical Or&quot; not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Unexpected token: &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Field model color alteration file (*.pcb)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&quot;Logical Or&quot; not supported</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
