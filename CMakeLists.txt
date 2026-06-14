@@ -33,7 +33,7 @@ if(NOT PRERELEASE_STRING)
     set(PRERELEASE_STRING "")
 endif()
 
-project("Deling" VERSION 1.0.0 LANGUAGES CXX
+project("Deling" VERSION 1.1.0 LANGUAGES CXX
     DESCRIPTION "Final Fantasy VIII field archive editor"
     HOMEPAGE_URL "https://github.com/myst6re/deling"
 )
