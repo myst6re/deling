@@ -264,6 +264,8 @@ set(PROJECT_SOURCES
     "src/SpecialCharactersDialog.h"
     "src/TdwManagerDialog.cpp"
     "src/TdwManagerDialog.h"
+    "src/TdwExporter.cpp"
+    "src/TdwExporter.h"
     "src/TextExporter.cpp"
     "src/TextExporter.h"
     "src/TextExporterWidget.cpp"
