@@ -66,7 +66,7 @@ Field *FieldArchive::getField(int id) const
 
 Field *FieldArchive::getFieldFromMapId(int mapId) const
 {
-	int fieldId = fieldsSortByMapId.value(QString("%1").arg(mapId, 3, 10, QChar('0')), -1);
+	int fieldId = fieldsSortByMapId.value(QString("%1").arg(mapId, 4, 10, QChar('0')), -1);
 
 	return getField(fieldId);
 }
