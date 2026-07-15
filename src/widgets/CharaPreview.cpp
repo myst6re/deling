@@ -48,7 +48,7 @@ void CharaPreview::setModel(int modelID, CharaOneFile *charaOne, QHash<int, Char
 	const CharaModel &model = charaOne->model(modelID);
 	const CharaModel *m;
 
-	if (model.loadingType() == CharaModel::External && mainModels && mainModels->contains(model.id())) {
+	if (model.loadingType() == CharaModel::External && mainModels != nullptr && mainModels->contains(model.id())) {
 		m = &(*mainModels)[model.id()];
 	} else if (model.loadingType() == CharaModel::LocalSharedTexture && model.sharedTextureModelId() < charaOne->modelCount()) {
 		m = &charaOne->model(model.sharedTextureModelId());

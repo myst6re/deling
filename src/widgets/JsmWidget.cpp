@@ -376,7 +376,7 @@ void JsmWidget::fillList2()
 	if (modelID != -1 && data()->hasCharaFile()
 			&& modelID < data()->getCharaFile()->modelCount()) {
 		modelPreview->setEnabled(true);
-		modelPreview->setModel(modelID, data()->getCharaFile(), fieldArchive->getModels());
+		modelPreview->setModel(modelID, data()->getCharaFile(), fieldArchive != nullptr ? fieldArchive->getModels() : nullptr);
 	} else if (bgParamID != -1 && group.type() == JsmGroup::Background && data()->hasBackgroundFile()
 			  && data()->getBackgroundFile()->allparams.contains(bgParamID)) {
 		modelPreview->setEnabled(true);

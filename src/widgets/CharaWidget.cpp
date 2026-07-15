@@ -164,7 +164,7 @@ void CharaWidget::setModel(int modelID)
 	}
 
 	const CharaModel &model = data()->getCharaFile()->model(modelID);
-	_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive->getModels());
+	_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive != nullptr ? _fieldArchive->getModels() : nullptr);
 	_loadingTypeChoice->setCurrentIndex(_loadingTypeChoice->findData(model.loadingType()));
 	setModelLoadingType(_loadingTypeChoice->currentIndex());
 	_lightColorEdit->setColors(QList<uint>() << (0xFF000000 | model.lightColor()));
@@ -232,7 +232,7 @@ void CharaWidget::setModelLightColor()
 
 		emit modified();
 
-		_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive->getModels());
+		_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive != nullptr ? _fieldArchive->getModels() : nullptr);
 	}
 }
 
@@ -310,7 +310,7 @@ void CharaWidget::setExternalModelId(int value)
 		if (_modelList->currentItem() != nullptr) {
 			_modelList->currentItem()->setText(1, model.name());
 		}
-		_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive->getModels());
+		_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive != nullptr ? _fieldArchive->getModels() : nullptr);
 	}
 }
 
@@ -336,7 +336,7 @@ void CharaWidget::setLocalTextureLoaderId(int value)
 
 		emit modified();
 
-		_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive->getModels());
+		_modelPreview->setModel(modelID, data()->getCharaFile(), _fieldArchive != nullptr ? _fieldArchive->getModels() : nullptr);
 	}
 }
 
