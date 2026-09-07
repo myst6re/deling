@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         qt:
-          - 6.9.3
+          - 6.8.3
         os:
           - ubuntu-latest
           - ubuntu-24.04-arm
@@ -35,7 +35,7 @@ jobs:
           package_extension: 'tar.xz'
           package_suffix: 'linux_x64'
           qt_host: linux
-        - os: ubuntu-26.04-arm
+        - os: ubuntu-24.04-arm
           package_extension: 'tar.xz'
           package_suffix: 'linux_arm64'
           qt_host: linux_arm64
