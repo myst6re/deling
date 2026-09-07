@@ -9,8 +9,8 @@
   "overrides": [
     {
       "name": "lz4",
-      "version": "1.9.4",
-      "port-version": 2
+      "version": "1.10.0",
+      "port-version": 0
     },
     {
       "name": "zlib",
