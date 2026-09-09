@@ -16,6 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "MainWindow.h"
+#include "FieldLoose.h"
 #include "Config.h"
 #include "Data.h"
 #include "ProgressWidget.h"
@@ -53,7 +54,7 @@
 
 MainWindow::MainWindow()
     : fieldArchive(nullptr), field(nullptr), currentField(nullptr),
-      fieldThread(new FieldThread), msdFile(nullptr), jsmFile(nullptr), menuGameLang(nullptr),
+      fieldThread(new FieldThread), msdFile(nullptr), jsmFile(nullptr), looseField(nullptr), menuGameLang(nullptr),
       fsDialog(nullptr), _varManager(nullptr), firstShow(true)
 {
 	setMinimumSize(700, 600);
@@ -447,78 +448,6 @@ bool MainWindow::openFsArchive(const QString &path)
 	return true;
 }
 
-bool MainWindow::openMsdFile(const QString &path)
-{
-//	qDebug() << QString("MainWindow::openMsdFile(%1)").arg(path);
-	
-	QFile f(path);
-	if (!f.open(QIODevice::ReadOnly)) {
-		QMessageBox::warning(this, tr("Error"), tr("Unable to open the file\n'%1'\nError message:\n%2").arg(path, f.errorString()));
-		return false;
-	}
-	
-	field = new Field(QFileInfo(path).baseName());
-	field->addMsdFile();
-
-	msdFile = field->getMsdFile();
-	if (!msdFile->open(f.readAll())) {
-		QMessageBox::warning(this, tr("Error"), tr("Unable to open the file\n'%1'").arg(path));
-		delete field;
-		field = nullptr;
-
-		return false;
-	}
-	f.close();
-
-	field->setOpen(true);
-	filePath = path;
-	currentField = field;
-	list1->setEnabled(false);
-	actionSaveAs->setEnabled(true);
-	lineSearch->setEnabled(false);
-	pageWidgets.at(TextPage)->setData(field);
-	pageWidgets.at(TextPage)->setFocus();
-	setCurrentPage(TextPage);
-	setReadOnly(false);
-
-	return true;
-}
-
-bool MainWindow::openJsmFile(const QString &path)
-{
-	QFile f(path);
-	if (!f.open(QIODevice::ReadOnly)) {
-		QMessageBox::warning(this, tr("Error"), tr("Unable to open the file\n'%1'\nError message:\n%2").arg(path, f.errorString()));
-		return false;
-	}
-	
-	field = new Field(QFileInfo(path).baseName());
-	field->addJsmFile();
-
-	jsmFile = field->getJsmFile();
-	if (!jsmFile->open(f.readAll())) {
-		QMessageBox::warning(this, tr("Error"), tr("Unable to open the file\n'%1'").arg(path));
-		delete field;
-		field = nullptr;
-
-		return false;
-	}
-	f.close();
-
-	field->setOpen(true);
-	filePath = path;
-	currentField = field;
-	list1->setEnabled(false);
-	lineSearch->setEnabled(false);
-	actionSaveAs->setEnabled(true);
-	pageWidgets.at(ScriptPage)->setData(field);
-	pageWidgets.at(ScriptPage)->setFocus();
-	setCurrentPage(ScriptPage);
-	setReadOnly(false);
-
-	return false;
-}
-
 void MainWindow::setReadOnly(bool readOnly)
 {
 	for (PageWidget *pageWidget: pageWidgets)
@@ -564,8 +493,9 @@ void MainWindow::fillPage()
 
 	QElapsedTimer t;t.start();
 
-	// Unload background for memory saving
-	if (currentField != nullptr && !currentField->isModified()) {
+	// Unload background for memory saving. Only for an archive, which can read them back:
+	// loose files are held in memory and nothing would reopen them.
+	if (fieldArchive != nullptr && currentField != nullptr && !currentField->isModified()) {
 		currentField->deleteFile(Field::Background);
 		currentField->deleteFile(Field::Tdw);
 		currentField->deleteFile(Field::Pmp);
@@ -699,6 +629,12 @@ int MainWindow::closeFiles(bool quit)
 	}
 
 	currentField = nullptr;
+	// Stale msd/jsm pointers made saveAs() write the previous file after opening
+	// something else; the loose bytes and their paths go with the field too.
+	msdFile = nullptr;
+	jsmFile = nullptr;
+	looseField = nullptr; // owned through `field`, deleted below
+	filePath = QString();
 
 	if (fieldArchive != nullptr) {
 		delete fieldArchive;
@@ -717,6 +653,8 @@ int MainWindow::closeFiles(bool quit)
 
 void MainWindow::openFile(QString path)
 {
+	QStringList paths;
+
 	if (path.isEmpty())
 	{
 		path = Config::value("open_path").toString();
@@ -726,51 +664,147 @@ void MainWindow::openFile(QString path)
 				path.append("/Data");
 		}
 
-		path = QFileDialog::getOpenFileName(this, tr("Open a file"), path, tr("Compatible File (*.fs *.iso *.bin *.msd *.jsm);;FS Archive (*.fs);;Image Disk File (*.iso *.bin);;FF8 text files (*.msd);;FF8 field script files (*.jsm)"));
+		// Several field files can be picked at once, and they do not have to sit in the
+		// same directory: each one is added to the field currently open (see openLooseFiles).
+		QStringList looseGlobs;
+		for (const QString &ext: FieldLoose::looseExtensions()) {
+			looseGlobs << "*." % ext;
+		}
+		const QString looseFilter = looseGlobs.join(' ');
+
+		paths = QFileDialog::getOpenFileNames(this, tr("Open files"), path,
+		                                      tr("Compatible File (*.fs *.iso *.bin %1);;"
+		                                         "FS Archive (*.fs);;"
+		                                         "Image Disk File (*.iso *.bin);;"
+		                                         "Field files (%1)").arg(looseFilter));
+	} else {
+		paths << path;
 	}
 
-	if (!path.isEmpty())
-	{
-		int index;
-		if ((index = path.lastIndexOf('/')) == -1)
-			index = path.size();
-		Config::setValue("open_path", path.left(index));
-		
-		QStringList recentFiles = Config::value("recentFiles").toStringList();
-		if (!recentFiles.contains(path)) {
-			recentFiles.prepend(path);
-			if (recentFiles.size() > 20) {
-				recentFiles.removeLast();
-			}
-			Config::setValue("recentFiles", recentFiles);
-			fillRecentMenu();
-		}
+	if (paths.isEmpty()) {
+		return;
+	}
 
+	path = paths.first();
+
+	int index;
+	if ((index = path.lastIndexOf('/')) == -1)
+		index = path.size();
+	Config::setValue("open_path", path.left(index));
+
+	QStringList recentFiles = Config::value("recentFiles").toStringList();
+	if (!recentFiles.contains(path)) {
+		recentFiles.prepend(path);
+		if (recentFiles.size() > 20) {
+			recentFiles.removeLast();
+		}
+		Config::setValue("recentFiles", recentFiles);
+		fillRecentMenu();
+	}
+
+	QString ext = path.mid(path.lastIndexOf('.') + 1).toLower();
+	bool ok = false;
+
+	if (ext == "fs" || ext == "iso" || ext == "bin") {
+		// An archive replaces everything that is open
 		closeFiles();
+		ok = ext == "fs" ? openFsArchive(path) : openIsoArchive(path);
+	} else {
+		// Loose files ACCUMULATE into the field already open, so a walkmesh taken from one
+		// directory can be looked at with the camera and background of another. Only an
+		// archive being open (or nothing at all) starts a new field.
+		if (fieldArchive != nullptr) {
+			closeFiles();
+		}
+		ok = openLooseFiles(paths);
+	}
 
-		QString ext = path.mid(path.lastIndexOf('.')+1).toLower();
-		bool ok = false;
-		if (ext == "fs")
-			ok = openFsArchive(path);
-		else if (ext == "msd")
-			ok = openMsdFile(path);
-		else if (ext == "jsm")
-			ok = openJsmFile(path);
-		else if (ext == "iso" || ext == "bin")
-			ok = openIsoArchive(path);
+	if (ok) {
+		setWindowTitle(QString("[*]%1 - %2 %3").arg(path.mid(path.lastIndexOf('/') + 1), QLatin1String(DELING_NAME), QLatin1String(DELING_VERSION)));
+		currentPath->setText(looseField == nullptr ? path : looseField->paths().join(", "));
+		actionClose->setEnabled(true);
+	}
+}
 
-		if (ok) {
-			setWindowTitle(QString("[*]%1 - %2 %3").arg(path.mid(path.lastIndexOf('/')+1), QLatin1String(DELING_NAME), QLatin1String(DELING_VERSION)));
-			currentPath->setText(path);
-			actionClose->setEnabled(true);
+/**
+ * Open field files that are not inside an archive, adding them to the field already open.
+ *
+ * See FieldLoose: only what is given is loaded, files from different directories can be
+ * mixed, and a page whose file is missing greys itself out.
+ */
+bool MainWindow::openLooseFiles(const QStringList &paths)
+{
+	if (looseField == nullptr) {
+		looseField = new FieldLoose(QFileInfo(paths.first()).baseName());
+		looseField->setOpen(true);
+		field = looseField;
+		filePath = paths.first();
+	}
+
+	bool ok = false;
+
+	for (const QString &path: paths) {
+		if (looseField->addFile(path)) {
+			ok = true;
+		} else {
+			QMessageBox::warning(this, tr("Error"), tr("Unable to open the file\n'%1'\nError message:\n%2")
+			                     .arg(path, looseField->errorString()));
 		}
 	}
+
+	if (!ok) {
+		return false;
+	}
+
+	looseField->buildFiles();
+
+	// Kept for saveAs(), which still writes a lone text/script file to a chosen path
+	msdFile = looseField->hasMsdFile() ? looseField->getMsdFile() : nullptr;
+	jsmFile = looseField->hasJsmFile() ? looseField->getJsmFile() : nullptr;
+
+	currentField = looseField;
+	list1->setEnabled(false);
+	lineSearch->setEnabled(false);
+	actionSaveAs->setEnabled(true);
+	actionExport->setEnabled(true);
+	actionImport->setEnabled(true);
+	setReadOnly(false);
+
+	for (int i = 0; i < pageWidgets.size(); ++i) {
+		tabBar->setTabEnabled(i, i != WorldMapPage);
+	}
+
+	fillPage();
+
+	// Land on a page that actually has something to show
+	const int current = tabBar->currentIndex();
+	if (current >= pageWidgets.size() || !pageWidgets.at(current)->isFilled()) {
+		if (looseField->hasIdFile() || looseField->hasCaFile() || looseField->hasInfFile()) {
+			setCurrentPage(WalkmeshPage);
+		} else if (looseField->hasMsdFile()) {
+			setCurrentPage(TextPage);
+		} else if (looseField->hasJsmFile()) {
+			setCurrentPage(ScriptPage);
+		}
+	}
+
+	return true;
 }
 
 void MainWindow::save()
 {
+	// Loose files each go back to the path they came from, so there is nothing to ask
+	if (looseField != nullptr) {
+		if (looseField->saveFiles()) {
+			setModified(false);
+		} else {
+			QMessageBox::warning(this, tr("Error"), tr("An error occurred when saving."));
+		}
+		return;
+	}
+
 	QString path = savePath();
-	
+
 	if (!path.isEmpty()) {
 		saveAs(path);
 	}
