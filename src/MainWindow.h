@@ -23,6 +23,7 @@ class FieldArchive;
 class FieldThread;
 class FieldPC;
 class Field;
+class FieldLoose;
 class MsdFile;
 class JsmFile;
 class PageWidget;
@@ -96,9 +97,8 @@ signals:
 private:
 	bool openArchive(const QString &path);
 	bool openFsArchive(const QString &path);
-	bool openMsdFile(const QString &path);
-	bool openJsmFile(const QString &path);
 	bool openIsoArchive(const QString &path);
+	bool openLooseFiles(const QStringList &paths);
 	void setReadOnly(bool readOnly);
 	void buildGameLangMenu(const QStringList &langs);
 	QString savePath() const;
@@ -111,6 +111,8 @@ private:
 	MsdFile *msdFile;
 	JsmFile *jsmFile;
 	QString filePath;
+	// Same object as `field` when files were opened outside an archive, null otherwise
+	FieldLoose *looseField;
 
 	MiscSearch *miscSearchD;
 	QLabel *currentPath;

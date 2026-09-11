@@ -105,8 +105,10 @@ int main(int argc, char *argv[])
 
 	MainWindow *window = new MainWindow();
 	window->show();
-	if (argc > 1) {
-		window->openFile(argv[1]);
+	// Loose field files accumulate into one field, so several can be passed at once
+	// (an archive still replaces whatever is open)
+	for (int i = 1; i < argc; ++i) {
+		window->openFile(QString::fromLocal8Bit(argv[i]));
 	}
 #endif
 

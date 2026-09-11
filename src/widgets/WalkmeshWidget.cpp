@@ -507,6 +507,8 @@ void WalkmeshWidget::fill()
 			 && !data()->hasInfFile())) return;
 
 	walkmeshGL->fill(data());
+	// Nothing to show or hide when the field was opened without its map/mim
+	showBackground->setEnabled(data()->hasBackgroundFile());
 
 	int camCount = 0;
 
