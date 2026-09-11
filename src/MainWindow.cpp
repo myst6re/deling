@@ -776,16 +776,16 @@ bool MainWindow::openLooseFiles(const QStringList &paths)
 
 	fillPage();
 
-	// Land on a page that actually has something to show
-	const int current = tabBar->currentIndex();
-	if (current >= pageWidgets.size() || !pageWidgets.at(current)->isFilled()) {
-		if (looseField->hasIdFile() || looseField->hasCaFile() || looseField->hasInfFile()) {
-			setCurrentPage(WalkmeshPage);
-		} else if (looseField->hasMsdFile()) {
-			setCurrentPage(TextPage);
-		} else if (looseField->hasJsmFile()) {
-			setCurrentPage(ScriptPage);
-		}
+	// Land on a page that shows what was just opened, whatever page was current before:
+	// after picking a walkmesh you want to be looking at it, not at the page you left.
+	if (looseField->hasIdFile() || looseField->hasCaFile() || looseField->hasInfFile()) {
+		setCurrentPage(WalkmeshPage);
+	} else if (looseField->hasMsdFile()) {
+		setCurrentPage(TextPage);
+	} else if (looseField->hasJsmFile()) {
+		setCurrentPage(ScriptPage);
+	} else if (looseField->hasBackgroundFile()) {
+		setCurrentPage(BackgroundPage);
 	}
 
 	return true;
