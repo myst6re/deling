@@ -57,7 +57,8 @@ void WalkmeshGLWidget::clear()
 void WalkmeshGLWidget::fill(Field *data)
 {
 	this->data = data;
-	tex = data->getBackgroundFile()->background();
+	// A field opened from loose files may have a walkmesh and no background at all
+	tex = data->hasBackgroundFile() ? data->getBackgroundFile()->background() : QImage();
 	updatePerspective();
 	resetCamera();
 }
