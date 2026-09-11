@@ -259,7 +259,9 @@ void MainWindow::showEvent(QShowEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	if (closeFiles(true) == 2)		event->ignore();
+	// closeFiles() returns the button the user pressed; Cancel is 0x00400000, so the old
+	// comparison against 2 never matched and quitting went ahead despite the prompt.
+	if (closeFiles(true) == QMessageBox::Cancel)		event->ignore();
 	else {
 		Config::setValue("mainWindowMaximized", windowState().testFlag(Qt::WindowMaximized));
 		if (!windowState().testFlag(Qt::WindowMaximized))
@@ -293,7 +295,9 @@ void MainWindow::setGameLang(QAction *action)
 		path = ((FieldPC *)field)->path();
 	}
 
-	closeFiles();
+	if (closeFiles() == QMessageBox::Cancel) {
+		return;
+	}
 	openFsArchive(path);
 }
 
@@ -687,6 +691,18 @@ void MainWindow::openFile(QString path)
 
 	path = paths.first();
 
+	const QString ext = path.mid(path.lastIndexOf('.') + 1).toLower();
+	const bool isArchive = ext == "fs" || ext == "iso" || ext == "bin";
+
+	// An archive replaces everything that is open; loose files only replace an open archive,
+	// since otherwise they accumulate into the field already there. Either way the unsaved
+	// changes have to be settled first, and a cancelled prompt has to cancel the open as
+	// well: carrying on left the previous archive live behind the newly opened file, which
+	// then made Save write that archive out over the new file's path.
+	if ((isArchive || fieldArchive != nullptr) && closeFiles() == QMessageBox::Cancel) {
+		return;
+	}
+
 	int index;
 	if ((index = path.lastIndexOf('/')) == -1)
 		index = path.size();
@@ -702,20 +718,13 @@ void MainWindow::openFile(QString path)
 		fillRecentMenu();
 	}
 
-	QString ext = path.mid(path.lastIndexOf('.') + 1).toLower();
 	bool ok = false;
 
-	if (ext == "fs" || ext == "iso" || ext == "bin") {
-		// An archive replaces everything that is open
-		closeFiles();
+	if (isArchive) {
 		ok = ext == "fs" ? openFsArchive(path) : openIsoArchive(path);
 	} else {
 		// Loose files ACCUMULATE into the field already open, so a walkmesh taken from one
-		// directory can be looked at with the camera and background of another. Only an
-		// archive being open (or nothing at all) starts a new field.
-		if (fieldArchive != nullptr) {
-			closeFiles();
-		}
+		// directory can be looked at with the camera and background of another.
 		ok = openLooseFiles(paths);
 	}
 
