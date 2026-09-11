@@ -62,13 +62,32 @@ void WalkmeshGLWidget::fill(Field *data)
 	resetCamera();
 }
 
+/**
+ * How much of the widget the game screen occupies, keeping its aspect: the background and the
+ * walkmesh both have to be drawn inside this rectangle or they cannot line up.
+ */
+void WalkmeshGLWidget::screenLetterbox(float &sx, float &sy) const
+{
+	const float widgetAspect = float(width()) / float(height()),
+	            screenAspect = float(SCREEN_WIDTH) / float(SCREEN_HEIGHT);
+
+	if (widgetAspect > screenAspect) {
+		sx = screenAspect / widgetAspect;   // pillarbox
+		sy = 1.0f;
+	} else {
+		sx = 1.0f;
+		sy = widgetAspect / screenAspect;   // letterbox
+	}
+}
 void WalkmeshGLWidget::computeFov()
 {
 	if (data && data->hasCaFile()
 			&& data->getCaFile()->cameraCount() > 0
 			&& camID < data->getCaFile()->cameraCount()) {
 		const Camera &cam = data->getCaFile()->camera(camID);
-		fovy = (2 * atan(240.0/(2.0 * cam.camera_zoom))) * 57.29577951;
+		// The game projects onto the 320x224 screen with its centre at (160, 112), so the
+		// vertical half-extent is 112 - not the 240 projection-plane height of the PSX GTE.
+		fovy = (2 * atan(112.0/cam.camera_zoom)) * 57.29577951;
 	} else {
 		fovy = 70.0;
 	}
@@ -112,8 +131,14 @@ void WalkmeshGLWidget::paintGL()
 		drawBackground();
 	}
 
+	// The mesh must land in the same rectangle as the background, so project with the
+	// SCREEN aspect and letterbox that rectangle into the widget - using the widget's own
+	// aspect made the mesh drift sideways from the background on any non-4:3 window.
+	float sx = 1.0f, sy = 1.0f;
+	screenLetterbox(sx, sy);
 	mProjection.setToIdentity();
-	mProjection.perspective(fovy, (float)width() / (float)height(), 0.001f, 1000.0f);
+	mProjection.scale(sx, sy, 1.0f);
+	mProjection.perspective(fovy, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT), 0.001f, 1000.0f);
 	gpuRenderer->bindProjectionMatrix(mProjection);
 
 	QMatrix4x4 mModel;
@@ -281,24 +306,32 @@ void WalkmeshGLWidget::drawBackground()
 {
 	if (data->getBackgroundFile())
 	{
+		// Map the image so its central SCREEN_WIDTH x SCREEN_HEIGHT region covers exactly the
+		// same rectangle the walkmesh is projected into; a bigger (scrolling) background then
+		// simply extends past it instead of being squeezed to fit.
+		float sx = 1.0f, sy = 1.0f;
+		screenLetterbox(sx, sy);
+		const float bx = tex.isNull() ? sx : sx * float(tex.width()) / float(SCREEN_WIDTH),
+		            by = tex.isNull() ? sy : sy * float(tex.height()) / float(SCREEN_HEIGHT);
+
 		RendererVertex vertices[] = {
 		    {
-		        {-1.0f, -1.0f, 1.0f, 1.0f},
+		        {-bx, -by, 1.0f, 1.0f},
 		        {1.0f, 1.0f, 1.0f, 1.0f},
 		        {0.0f, 1.0f},
 		    },
 		    {
-		        {-1.0f, 1.0f, 1.0f, 1.0f},
+		        {-bx, by, 1.0f, 1.0f},
 		        {1.0f, 1.0f, 1.0f, 1.0f},
 		        {0.0f, 0.0f},
 		    },
 		    {
-		        {1.0f, -1.0f, 1.0f, 1.0f},
+		        {bx, -by, 1.0f, 1.0f},
 		        {1.0f, 1.0f, 1.0f, 1.0f},
 		        {1.0f, 1.0f},
 		    },
 		    {
-		        {1.0f, 1.0f, 1.0f, 1.0f},
+		        {bx, by, 1.0f, 1.0f},
 		        {1.0f, 1.0f, 1.0f, 1.0f},
 		        {1.0f, 0.0f},
 		    }
