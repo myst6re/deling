@@ -44,6 +44,9 @@ public slots:
 	void setLineToDraw(const Vertex vertex[2]);
 	void clearLineToDraw();
 private:
+	// The screen the game projects a field into; its centre (160, 112) is the projection centre
+	static const int SCREEN_WIDTH = 320, SCREEN_HEIGHT = 224;
+	void screenLetterbox(float &sx, float &sy) const;
 	void computeFov();
 	void drawBackground();
 	double distance;
