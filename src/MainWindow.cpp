@@ -40,6 +40,7 @@
 #include "widgets/WorldmapWidget.h"
 #include "FieldArchivePC.h"
 #include "FieldArchivePS.h"
+#include "FieldArchiveLoose.h"
 #include "FieldPC.h"
 #include "TextPreview.h"
 #include "ConfigDialog.h"
@@ -72,6 +73,7 @@ MainWindow::MainWindow()
 	QMenu *menu = menuBar->addMenu(tr("&File"));
 
 	QAction *actionOpen = menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DialogOpenButton), tr("&Open..."), QKeySequence::Open, this, SLOT(openFile()));
+	menu->addAction(QApplication::style()->standardIcon(QStyle::SP_DirOpenIcon), tr("Open &Folder..."), this, SLOT(openFolder()));
 	_recentMenu = new QMenu(tr("&Recent Files"), this);
 	fillRecentMenu();
 	connect(_recentMenu, SIGNAL(triggered(QAction*)), SLOT(openRecentFile(QAction*)));
@@ -371,6 +373,7 @@ bool MainWindow::openArchive(const QString &path)
 
 		((CharaWidget *)pageWidgets.at(ModelPage))->setFieldArchive(fieldArchive);
 		((JsmWidget *)pageWidgets.at(ScriptPage))->setFieldArchive(fieldArchive);
+		((WalkmeshWidget *)pageWidgets.at(WalkmeshPage))->setFieldArchive(fieldArchive);
 
 		QString previousSessionField = Config::value("currentField").toString();
 		if (!previousSessionField.isEmpty()) {
@@ -432,6 +435,7 @@ bool MainWindow::openFsArchive(const QString &path)
 			fieldArchive = nullptr;
 			((CharaWidget *)pageWidgets.at(ModelPage))->setFieldArchive(nullptr);
 			((JsmWidget *)pageWidgets.at(ScriptPage))->setFieldArchive(nullptr);
+			((WalkmeshWidget *)pageWidgets.at(WalkmeshPage))->setFieldArchive(nullptr);
 			searchDialog->setFieldArchive(nullptr);
 			searchAllDialog->setFieldArchive(nullptr);
 			if (_varManager != nullptr)		_varManager->setFieldArchive(nullptr);
@@ -478,6 +482,40 @@ void MainWindow::buildGameLangMenu(const QStringList &langs)
 		QAction *action = menuGameLang->addAction(lang);
 		action->setCheckable(true);
 		action->setChecked(lang == currentLang);
+	}
+}
+
+/**
+ * Every field in a folder and its subfolders, listed like the fields of field.fs: see
+ * FieldArchiveLoose. Each file is saved back where it was found.
+ */
+bool MainWindow::openFolderArchive(const QString &path)
+{
+	fieldArchive = new FieldArchiveLoose();
+
+	if (!openArchive(path)) {
+		return false;
+	}
+
+	actionBatchProcessing->setEnabled(true);
+	for (qsizetype i = pageWidgets.size(); i > 0; --i) {
+		Pages page = Pages(i - 1);
+		tabBar->setTabEnabled(page, page != WorldMapPage);
+	}
+
+	return true;
+}
+
+void MainWindow::openFolder()
+{
+	QString path = Config::value("open_path").toString();
+	if (path.isEmpty()) {
+		path = Data::AppPath();
+	}
+
+	path = QFileDialog::getExistingDirectory(this, tr("Open folder"), path);
+	if (!path.isEmpty()) {
+		openFile(path);
 	}
 }
 
@@ -619,6 +657,7 @@ int MainWindow::closeFiles(bool quit)
 	}
 	((CharaWidget *)pageWidgets.at(ModelPage))->setFieldArchive(nullptr);
 	((JsmWidget *)pageWidgets.at(ScriptPage))->setFieldArchive(fieldArchive);
+	((WalkmeshWidget *)pageWidgets.at(WalkmeshPage))->setFieldArchive(nullptr);
 	currentPath->setText(QString());
 	setReadOnly(true);
 
@@ -689,10 +728,11 @@ void MainWindow::openFile(QString path)
 		return;
 	}
 
-	path = paths.first();
+	path = QDir::fromNativeSeparators(paths.first());
 
-	const QString ext = path.mid(path.lastIndexOf('.') + 1).toLower();
-	const bool isArchive = ext == "fs" || ext == "iso" || ext == "bin";
+	const bool isFolder = QFileInfo(path).isDir();
+	const QString ext = isFolder ? QString() : path.mid(path.lastIndexOf('.') + 1).toLower();
+	const bool isArchive = isFolder || ext == "fs" || ext == "iso" || ext == "bin";
 
 	// An archive replaces everything that is open; loose files only replace an open archive,
 	// since otherwise they accumulate into the field already there. Either way the unsaved
@@ -704,7 +744,7 @@ void MainWindow::openFile(QString path)
 	}
 
 	int index;
-	if ((index = path.lastIndexOf('/')) == -1)
+	if (isFolder || (index = path.lastIndexOf('/')) == -1)
 		index = path.size();
 	Config::setValue("open_path", path.left(index));
 
@@ -720,7 +760,9 @@ void MainWindow::openFile(QString path)
 
 	bool ok = false;
 
-	if (isArchive) {
+	if (isFolder) {
+		ok = openFolderArchive(path);
+	} else if (isArchive) {
 		ok = ext == "fs" ? openFsArchive(path) : openIsoArchive(path);
 	} else {
 		// Loose files ACCUMULATE into the field already open, so a walkmesh taken from one
@@ -808,6 +850,19 @@ void MainWindow::save()
 			setModified(false);
 		} else {
 			QMessageBox::warning(this, tr("Error"), tr("An error occurred when saving."));
+		}
+		return;
+	}
+
+	// Same for a folder: each field writes its modified files back
+	FieldArchiveLoose *folder = dynamic_cast<FieldArchiveLoose *>(fieldArchive);
+	if (folder != nullptr) {
+		ProgressWidget progress(tr("Save..."), ProgressWidget::Cancel, this);
+
+		if (folder->save(&progress)) {
+			setModified(false);
+		} else {
+			QMessageBox::warning(this, tr("Error"), tr("An error occurred when saving.\n%1").arg(folder->errorMessage()));
 		}
 		return;
 	}

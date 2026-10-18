@@ -54,6 +54,30 @@ public:
 	qint16 unknown() const;
 	static Vertex_sr fromVertex_s(const Vertex &vertex_s);
 	static Vertex toVertex_s(const Vertex_sr &vertex_sr);
+
+	// The whole walkmesh at one moment, for undo: a few hundred triangles at most
+	struct Snapshot {
+		QList<Triangle> triangles;
+		QList<Access> access;
+		bool operator==(const Snapshot &other) const;
+	};
+	Snapshot snapshot() const;
+	void restore(const Snapshot &snapshot);
+
+	// Editing by point. Triangles sharing a point each store their own copy of it, so a point
+	// is identified by its coordinates and moving it moves every copy.
+	static bool samePoint(const Vertex_sr &a, const Vertex_sr &b);
+	QList<int> trianglesUsingPoint(const Vertex_sr &point) const;
+	void movePoint(Vertex_sr from, const Vertex_sr &to);
+	int addTriangleOnSide(int triangleID, int side, const Vertex_sr &point);
+	void removeTriangles(QList<int> triangleIDs);
+	void rebuildAccess();
+
+	// Triangles the game cannot use (see the field walkmesh page of the FF8 modding wiki)
+	static bool isFlipped(const Triangle &triangle);
+	static bool isFlat(const Triangle &triangle);
+	// FIELD_WALKMESH_BLOCKED_BITS is 64 bytes: IDLOCK/IDUNLOCK past this id corrupt memory
+	static const int MAX_TRIANGLES = 512;
 private:
 	QList<Triangle> triangles;
 	QList<Access> _access;

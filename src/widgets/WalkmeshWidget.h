@@ -18,11 +18,16 @@
 #pragma once
 
 #include <QtWidgets>
+#include <QUndoStack>
+#include <functional>
 #include "widgets/PageWidget.h"
 #include "3d/WalkmeshGLWidget.h"
 #include "VertexWidget.h"
 #include "OrientationWidget.h"
 #include "HexLineEdit.h"
+
+class FieldArchive;
+class FieldLoose;
 
 class WalkmeshWidget : public PageWidget
 {
@@ -34,9 +39,13 @@ public:
 	void fill();
 	inline QString tabName() const { return tr("Walkmesh"); }
 	int currentCamera() const;
+	void setFieldArchive(FieldArchive *fieldArchive);
+	void restoreWalkmesh(const IdFile::Snapshot &snapshot);
+	void restoreGateways(const QList<Gateway> &gateways);
 public slots:
 	void resetCamera();
 	void setCurrentCamera(int camID);
+	void changeViewMode();
 private slots:
 	void addCamera();
 	void removeCamera();
@@ -48,10 +57,29 @@ private slots:
 	void removeTriangle();
 	void editIdTriangle(const Vertex &values);
 	void editIdAccess(int value);
+	void selectTriangleOfPoint(const Vertex_sr &point);
+	void startPointDrag();
+	void dragPoint(const Vertex_sr &from, const Vertex_sr &to);
+	void finishPointDrag();
+	void addPoint(int triangleID, int side, const Vertex_sr &point);
+	void deletePoint(const Vertex_sr &point);
+	void undoWalkmeshEdit();
+	void redoWalkmeshEdit();
+	void updateEditable();
+	void selectExit(int gate);
+	void startExitDrag();
+	void dragExitEnd(int gate, int end, const Vertex &to);
+	void finishExitDrag();
+	void addExit(const Vertex &a, const Vertex &b);
+	void deleteExit(int gate);
+	void startArrivalPick();
+	void pickArrival(qint16 x, qint16 y, int triangle);
+	void finishArrivalPick();
+	void updateDestinationView();
     void setCurrentGateway(int id);
 	void setCurrentDoor(int id);
 	void editExitPoint(const Vertex &values);
-	void editEntryPoint(const Vertex &values);
+	void editArrival();
 	void editDoorPoint(const Vertex &values);
 	void editFieldId(int v);
 	void editDoorUsed(bool enable);
@@ -89,10 +117,31 @@ private:
 	void editRange1(int id, int v);
 	void editRange2(int id, int v);
 	void editUnknownGate(int id, int val);
+	void applyWalkmeshEdit(const QString &text, const std::function<bool(IdFile *)> &edit);
+	void pushWalkmeshEdit(const QString &text, const IdFile::Snapshot &before);
+	void fillTriangleList();
+	void applyGatewayEdit(const QString &text, const std::function<void(Gateway &)> &edit);
+	void pushGatewaysEdit(const QString &text, const QList<Gateway> &before);
+	void fillGatewayList();
+	QString fieldName(int fieldId) const;
+	int currentFieldId() const;
+	Field *destinationField(int fieldId);
+	void showInView(Field *field, bool isDestination);
 
 	WalkmeshGLWidget *walkmeshGL;
+	QWidget *walkmeshPage, *gatewaysPage;
+	QUndoStack *undoStack;
+	IdFile::Snapshot dragBefore;
+	QList<Gateway> gatewaysBefore;
+	FieldArchive *fieldArchive;
+	// The field in the view: this page's field, or the destination of the selected exit
+	Field *viewField;
+	bool viewingDestination;
+	// A destination opened from loose files, owned here
+	FieldLoose *looseDestination;
 	QCheckBox *showBackground;
-	QSlider *slider1, *slider2, *slider3;
+	QComboBox *viewMode;
+	QLabel *viewInfos;
 	QTabWidget *tabWidget;
 	//CamPage
 	QToolBar *caToolbar;
@@ -109,7 +158,10 @@ private:
 	QListWidget *gateList;
 	HexLineEdit *unknownGate2;
 	QSpinBox *unknownGate1[4], *fieldId;
-	VertexWidget *exitPoints[2], *entryPoint;
+	QSpinBox *destinationX, *destinationY, *destinationTriangle, *destinationFacing;
+	QLabel *destinationName, *destinationStatus;
+	QCheckBox *showDestination;
+	VertexWidget *exitPoints[2];
 	//DoorPage
 	QListWidget *doorList;
 	QCheckBox *doorUsed;

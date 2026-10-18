@@ -27,13 +27,24 @@ struct Range {
 	qint16 left;
 };
 
+/**
+ * A field exit. The game (Field_Collision_CheckGatewayCrossing) fires it when the player
+ * crosses the exit line, comparing X and Y only, and then loads the destination field with
+ * the player standing at (destinationX, destinationY) on destinationTriangle.
+ */
 struct Gateway {
 	Vertex exitLine[2];
-	Vertex destinationPoint;
-	quint16 fieldId;
-	quint16 unknown1[4];
-	quint32 unknown2;
+	qint16 destinationX, destinationY;   // destinationX = 0x7FFF: centre of the triangle
+	qint16 destinationTriangle;          // id in the DESTINATION field's walkmesh
+	quint16 fieldId;                     // maplist line, 0x7FFF = unused, below 0x48 = world map
+	quint16 unknown1[4];                 // not read when crossing
+	quint8 destinationFacing;
+	quint8 unknown2[3];                  // usually copies of destinationFacing, not read
 };
+Q_STATIC_ASSERT(sizeof(Gateway) == 32);
+
+static const quint16 GATEWAY_UNUSED = 0x7FFF;
+static const quint16 GATEWAY_FIRST_FIELD = 0x48; // lower field ids go to the world map
 
 struct Trigger {
 	Vertex trigger_line[2];
@@ -75,6 +86,8 @@ public:
     QList<Gateway> getGateways() const;
 	const Gateway &getGateway(int id) const;
 	void setGateway(int id, const Gateway &gateway);
+	void setGateways(const QList<Gateway> &gateways);
+	static bool sameGateway(const Gateway &a, const Gateway &b);
 	QList<Trigger> getTriggers(bool filter=true) const;
 	const Trigger &getTrigger(int id) const;
 	void setTrigger(int id, const Trigger &trigger);

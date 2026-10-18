@@ -29,6 +29,10 @@
  * Field::hasFile(). Files that only mean something together are held until their partner
  * is added - map + mim make the background, jsm + sym the script, one + pcb the models -
  * so the order they are picked in does not matter.
+ *
+ * Only where each file is is remembered: like FieldPC with its archive, a file is read and
+ * built the first time it is asked for (getFile), and again after it was unloaded or replaced.
+ * So a folder of hundreds of fields (FieldArchiveLoose) costs little until a field is used.
  */
 class FieldLoose : public Field
 {
@@ -36,21 +40,24 @@ public:
 	explicit FieldLoose(const QString &name);
 
 	/**
-	 * Read one file and remember where it came from. Adding a file whose type is already
-	 * loaded replaces it. Returns false if the extension is unknown or the read failed,
-	 * and fills errorString().
+	 * Remember a file of this field. Adding a file whose type is already there replaces it
+	 * at the next buildFiles(). Returns false if the extension is unknown or the file cannot
+	 * be read, and fills errorString().
 	 */
 	bool addFile(const QString &path);
 	/**
-	 * Build (or rebuild) every File the added bytes are enough for. Call once after a
-	 * batch of addFile().
+	 * Build now every File that is not built yet, or whose file was replaced since, instead of
+	 * when a page asks for it. Heavy files (background, models, font, particles) are left out
+	 * when withHeavyFiles is false. A file already built, and maybe edited, is kept.
 	 */
-	void buildFiles();
+	void buildFiles(bool withHeavyFiles = true);
 	/**
 	 * Write every modified file back to the path it was added from, leaving untouched
 	 * files alone. Returns false if any write failed.
 	 */
 	bool saveFiles();
+	bool hasFile(FileType fileType) const override;
+	File *getFile(FileType fileType) override;
 
 	inline const QStringList &paths() const {
 		return _paths;
@@ -66,10 +73,21 @@ public:
 	static bool looseExtension(const QString &path, QString &ext);
 	/** Every extension looseExtension() accepts, for the file dialog filter. */
 	static const QStringList &looseExtensions();
+	/**
+	 * Open another field whose files sit near knownPaths, in the folders the game uses
+	 * (mapdata/bc/bcgate1a/bcgate1a.id: a folder per field, grouped by its first two letters).
+	 * Returns nullptr when no walkmesh of that field is found. The caller owns the result.
+	 */
+	static FieldLoose *openNeighbour(const QStringList &knownPaths, const QString &name);
 
 private:
-	QMap<QString, QByteArray> _data;   // extension -> file content
-	QMap<QString, QString> _filePaths; // extension -> where it came from
+	QByteArray readFile(const QString &ext) const;
+	bool canBuild(FileType fileType) const;
+	bool mustBuild(FileType fileType) const;
+	void buildFile(FileType fileType);
+
+	QMap<QString, QString> _filePaths; // extension -> where it is
+	QSet<QString> _replaced;           // extensions added since they were last built
 	QStringList _paths;                // in the order they were added
 	QString _errorString;
 };

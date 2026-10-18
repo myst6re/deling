@@ -58,6 +58,7 @@ public:
 	MainWindow();
 public slots:
 	void openFile(QString path = QString());
+	void openFolder();
 private slots:
 	void disableList1DescSort(int logicalIndex);
 	void filterMap();
@@ -98,6 +99,7 @@ private:
 	bool openArchive(const QString &path);
 	bool openFsArchive(const QString &path);
 	bool openIsoArchive(const QString &path);
+	bool openFolderArchive(const QString &path);
 	bool openLooseFiles(const QStringList &paths);
 	void setReadOnly(bool readOnly);
 	void buildGameLangMenu(const QStringList &langs);

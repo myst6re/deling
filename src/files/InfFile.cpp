@@ -78,7 +78,7 @@ bool InfFile::open(const QByteArray &inf)
 			infStruct.gateways[i].unknown1[1] = val;
 			infStruct.gateways[i].unknown1[2] = val;
 			infStruct.gateways[i].unknown1[3] = val;
-			memcpy(&infStruct.gateways[i].unknown2, &constInf[116 + i*24], 4);
+			memcpy(&infStruct.gateways[i].destinationFacing, &constInf[116 + i*24], 4);
 		}
 
 		memcpy(infStruct.triggers, &constInf[384], 12 * sizeof(Trigger));
@@ -105,7 +105,7 @@ bool InfFile::open(const QByteArray &inf)
 			infStruct.gateways[i].unknown1[1] = val;
 			infStruct.gateways[i].unknown1[2] = val;
 			infStruct.gateways[i].unknown1[3] = val;
-			memcpy(&infStruct.gateways[i].unknown2, &constInf[44 + i*24], 4);
+			memcpy(&infStruct.gateways[i].destinationFacing, &constInf[44 + i*24], 4);
 		}
 
 		memcpy(infStruct.triggers, &constInf[312], 12 * sizeof(Trigger));
@@ -205,6 +205,20 @@ void InfFile::setGateway(int id, const Gateway &gateway)
 	infStruct.gateways[id] = gateway;
 
 	modified = true;
+}
+
+void InfFile::setGateways(const QList<Gateway> &gateways)
+{
+	for (int i = 0; i < 12 && i < gateways.size(); ++i) {
+		infStruct.gateways[i] = gateways.at(i);
+	}
+
+	modified = true;
+}
+
+bool InfFile::sameGateway(const Gateway &a, const Gateway &b)
+{
+	return memcmp(&a, &b, sizeof(Gateway)) == 0;
 }
 
 QList<Trigger> InfFile::getTriggers(bool filter) const

@@ -27,6 +27,13 @@ static const QMap<QString, Field::FileType> SINGLE_FILES{
     {"pvp", Field::Pvp}, {"tdw", Field::Tdw}, {"msk", Field::Msk}, {"sfx", Field::Sfx},
 };
 
+// The files MainWindow::fillPage unloads when another field is shown
+static bool isHeavy(Field::FileType fileType)
+{
+	return fileType == Field::Background || fileType == Field::CharaOne
+	       || fileType == Field::Tdw || fileType == Field::Pmp;
+}
+
 FieldLoose::FieldLoose(const QString &name) :
     Field(name)
 {
@@ -47,6 +54,45 @@ bool FieldLoose::looseExtension(const QString &path, QString &ext)
 	return looseExtensions().contains(ext);
 }
 
+FieldLoose *FieldLoose::openNeighbour(const QStringList &knownPaths, const QString &name)
+{
+	if (name.isEmpty()) {
+		return nullptr;
+	}
+
+	for (const QString &knownPath: knownPaths) {
+		const QDir dir = QFileInfo(knownPath).absoluteDir();
+		// mapdata/bc/bcgate1a/ -> mapdata/<prefix>/<name>/, then a sibling folder, then the same one
+		const QStringList candidates = {
+		    dir.absoluteFilePath(QString("../../%1/%2").arg(name.left(2), name)),
+		    dir.absoluteFilePath(QString("../%1").arg(name)),
+		    dir.absolutePath()
+		};
+
+		for (const QString &candidate: candidates) {
+			const QDir fieldDir(candidate);
+
+			if (!fieldDir.exists(name % ".id")) {
+				continue;
+			}
+
+			FieldLoose *field = new FieldLoose(name);
+			for (const QString &ext: looseExtensions()) {
+				const QString path = fieldDir.absoluteFilePath(name % "." % ext);
+				if (QFile::exists(path)) {
+					field->addFile(path);
+				}
+			}
+			field->buildFiles();
+			field->setOpen(true);
+
+			return field;
+		}
+	}
+
+	return nullptr;
+}
+
 bool FieldLoose::addFile(const QString &path)
 {
 	QString ext;
@@ -61,39 +107,133 @@ bool FieldLoose::addFile(const QString &path)
 		_errorString = f.errorString();
 		return false;
 	}
+	f.close();
 
-	_data.insert(ext, f.readAll());
 	_paths.removeAll(_filePaths.value(ext)); // a replaced file is no longer part of this field
 	_filePaths.insert(ext, path);
 	_paths.append(path);
-	f.close();
+	_replaced.insert(ext);
 
 	return true;
 }
 
-void FieldLoose::buildFiles()
+QByteArray FieldLoose::readFile(const QString &ext) const
 {
-	// Field::openFile keeps the File it already has, so a type being replaced is dropped first
-	for (auto it = SINGLE_FILES.constBegin(); it != SINGLE_FILES.constEnd(); ++it) {
-		if (_data.contains(it.key())) {
-			deleteFile(it.value());
-			openFile(it.value(), _data.value(it.key()));
+	if (!_filePaths.contains(ext)) {
+		return QByteArray();
+	}
+
+	QFile f(_filePaths.value(ext));
+	if (!f.open(QIODevice::ReadOnly)) {
+		qWarning() << "FieldLoose::readFile" << f.fileName() << f.errorString();
+		return QByteArray();
+	}
+
+	return f.readAll();
+}
+
+// The files a type is built from, the ones it cannot do without first
+static QStringList requiredExtensions(Field::FileType fileType)
+{
+	switch (fileType) {
+	case Field::Background:
+		return {"map", "mim"};
+	case Field::Jsm:
+		return {"jsm"};
+	case Field::CharaOne:
+		return {"one"};
+	default:
+		return SINGLE_FILES.values().contains(fileType) ? QStringList(SINGLE_FILES.key(fileType)) : QStringList();
+	}
+}
+
+static QStringList sourceExtensions(Field::FileType fileType)
+{
+	switch (fileType) {
+	case Field::Jsm:
+		return {"jsm", "sym"};
+	case Field::CharaOne:
+		return {"one", "pcb"};
+	default:
+		return requiredExtensions(fileType);
+	}
+}
+
+bool FieldLoose::canBuild(FileType fileType) const
+{
+	const QStringList required = requiredExtensions(fileType);
+
+	for (const QString &ext: required) {
+		if (!_filePaths.contains(ext)) {
+			return false;
 		}
 	}
 
-	if (_data.contains("map") && _data.contains("mim")) {
-		deleteFile(Background);
-		openBackgroundFile(_data.value("map"), _data.value("mim"));
+	return !required.isEmpty();
+}
+
+// Not built yet (or unloaded since), or one of its files was replaced
+bool FieldLoose::mustBuild(FileType fileType) const
+{
+	if (_getFile(fileType) == nullptr) {
+		return true;
 	}
 
-	if (_data.contains("jsm")) {
-		deleteFile(Jsm);
-		openJsmFile(_data.value("jsm"), _data.value("sym"));
+	for (const QString &ext: sourceExtensions(fileType)) {
+		if (_replaced.contains(ext)) {
+			return true;
+		}
 	}
 
-	if (_data.contains("one")) {
-		deleteFile(CharaOne);
-		openCharaFile(_data.value("one"), _data.value("pcb"));
+	return false;
+}
+
+void FieldLoose::buildFile(FileType fileType)
+{
+	// Field::openFile keeps the File it already has, so a file being rebuilt is dropped first
+	deleteFile(fileType);
+
+	switch (fileType) {
+	case Background:
+		openBackgroundFile(readFile("map"), readFile("mim"));
+		break;
+	case Jsm:
+		openJsmFile(readFile("jsm"), readFile("sym"));
+		break;
+	case CharaOne:
+		openCharaFile(readFile("one"), readFile("pcb"));
+		break;
+	default:
+		openFile(fileType, readFile(requiredExtensions(fileType).first()));
+		break;
+	}
+
+	for (const QString &ext: sourceExtensions(fileType)) {
+		_replaced.remove(ext);
+	}
+}
+
+// A file that can be built counts as there, like a file of FieldPC that is still in its archive
+bool FieldLoose::hasFile(FileType fileType) const
+{
+	return _getFile(fileType) != nullptr || canBuild(fileType);
+}
+
+File *FieldLoose::getFile(FileType fileType)
+{
+	if (canBuild(fileType) && mustBuild(fileType)) {
+		buildFile(fileType);
+	}
+
+	return _getFile(fileType);
+}
+
+void FieldLoose::buildFiles(bool withHeavyFiles)
+{
+	for (FileType fileType: fileTypes()) {
+		if (withHeavyFiles || !isHeavy(fileType)) {
+			getFile(fileType);
+		}
 	}
 }
 

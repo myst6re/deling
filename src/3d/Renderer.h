@@ -87,7 +87,8 @@ public:
 	inline bool hasError() const {
 		return _hasError;
 	}
-	void clear();
+	void clear(float red = 0.0f, float green = 0.0f, float blue = 0.0f, float alpha = 0.0f);
+	void clearDepth();
 	void reset();
 
 	void draw(RendererPrimitiveType _type, float _pointSize = 1.0f, bool clear = true);

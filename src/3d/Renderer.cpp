@@ -106,11 +106,17 @@ Renderer::Renderer(QOpenGLWidget *_widget) :
 	}
 }
 
-void Renderer::clear()
+void Renderer::clear(float red, float green, float blue, float alpha)
 {
-	mGL.glClearColor(0, 0, 0, 0);
+	mGL.glClearColor(red, green, blue, alpha);
 	mGL.glClearDepthf(1.0f);
 	mGL.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Renderer::clearDepth()
+{
+	mGL.glClearDepthf(1.0f);
+	mGL.glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::reset()
