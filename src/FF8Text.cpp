@@ -292,8 +292,9 @@ QByteArray FF8Text::toFF8() const
 			}
 			if(rest.startsWith("{NewPage}", Qt::CaseInsensitive)) {
 				ff8str.append('\x01');
-				c += 9;
+				c += 8; // Last character of "{NewPage}"
 
+				// Skip the line break written after "{NewPage}" by fromFF8()
 				if(c + 1 < stringSize && (string.at(c + 1) == '\n' || string.at(c + 1) == '\r')) {
 					++c;
 
@@ -301,6 +302,7 @@ QByteArray FF8Text::toFF8() const
 						++c;
 					}
 				}
+				continue;
 			}
 
 			rest.truncate(4);
