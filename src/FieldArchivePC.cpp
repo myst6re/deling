@@ -140,10 +140,6 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 		return openWorld();
 	}
 
-	if (Config::value("encoding", "00").toString() == "01") {
-		Config::setValue("encoding", "00");
-	}
-
 	return 0;
 }
 

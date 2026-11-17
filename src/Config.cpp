@@ -75,3 +75,8 @@ void Config::setValue(const QString &key, const QVariant &value)
 {
 	settings->setValue(key, value);
 }
+
+void Config::removeValue(const QString &key)
+{
+	settings->remove(key);
+}

@@ -124,7 +124,11 @@ bool TextExporter::toCsv(const QString &fileName, const QStringList &langs, QCha
 		}
 	}
 	
-	Config::setValue("encoding", oldEncoding);
+	if (oldEncoding.isValid()) {
+		Config::setValue("encoding", oldEncoding);
+	} else {
+		Config::removeValue("encoding");
+	}
 	
 	return true;
 }
