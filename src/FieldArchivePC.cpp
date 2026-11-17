@@ -170,7 +170,7 @@ int FieldArchivePC::openWorld()
 	fields.append(field);
 	_mapList = QStringList(field->name());
 	fieldsSortByName.insert(field->name(), 0);
-	fieldsSortByMapId.insert(QString("%1").arg(0, 3, 10, QChar('0')), 0);
+	fieldsSortByMapId.insert(QString("%1").arg(0, 4, 10, QChar('0')), 0);
 
 	return 0;
 }
