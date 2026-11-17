@@ -46,7 +46,8 @@ public:
 	bool searchTextReverse(const QRegularExpression &txt, int &textID, int &from, int &size) const;
 	bool isJp() const;
 private:
+	void appendText(const QByteArray &msd, int textPos, int nextTextPos);
 	QList<QByteArray> texts;
-	QList<bool> needEndOfString;
+	QList<bool> needEndOfString, endIsSharedWithNext;
 	bool _paddedFormat;
 };

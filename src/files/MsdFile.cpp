@@ -29,6 +29,7 @@ bool MsdFile::open(const QByteArray &msd)
 	int textPos, nextTextPos, nbText, dataSize=msd.size();
 	texts.clear();
 	needEndOfString.clear();
+	endIsSharedWithNext.clear();
 
 	modified = false;
 
@@ -45,39 +46,70 @@ bool MsdFile::open(const QByteArray &msd)
 
 	nbText = textPos/4;
 	needEndOfString.reserve(nbText);
+	endIsSharedWithNext.reserve(nbText);
 	texts.reserve(nbText);
 	for (int i = 1; i < nbText; ++i) {
 		memcpy(&nextTextPos, &msd_data[i * 4], 4);
 		if (_paddedFormat && nextTextPos == 0) {
 			continue;
 		}
-		if (nextTextPos >= dataSize || nextTextPos < textPos) {
+		// nextTextPos == dataSize: empty last text
+		if (nextTextPos > dataSize || nextTextPos < textPos) {
 			lastError = QObject::tr("Invalid file format");
 			return false;
 		}
-		bool needEOS = nextTextPos - textPos > 0 && msd_data[nextTextPos - 1] == '\x00';
-		texts.append(QByteArray(&msd_data[textPos], (nextTextPos - textPos) - (needEOS ? 1 : 0)));
-		needEndOfString.append(needEOS);
+		appendText(msd, textPos, nextTextPos);
 		textPos = nextTextPos;
 	}
-	bool needEOS = dataSize-textPos > 0 && msd_data[dataSize - 1] == '\x00';
-	texts.append(QByteArray(&msd_data[textPos], (dataSize - textPos) - (needEOS ? 1 : 0)));
-	needEndOfString.append(needEOS);
+	appendText(msd, textPos, dataSize);
 
 	return true;
+}
+
+void MsdFile::appendText(const QByteArray &msd, int textPos, int nextTextPos)
+{
+	int size = nextTextPos - textPos;
+	bool needEOS = size > 0 && msd.at(nextTextPos - 1) == '\x00',
+	        endIsShared = false;
+
+	if (!needEOS && nextTextPos < msd.size()) {
+		// The next text can start inside this one when both texts
+		// share the same ending: read this text until its end of string
+		qsizetype endOfString = msd.indexOf('\x00', textPos);
+		if (endOfString >= nextTextPos) {
+			size = int(endOfString) - textPos + 1;
+			needEOS = true;
+			endIsShared = true;
+		}
+	}
+
+	texts.append(msd.mid(textPos, size - (needEOS ? 1 : 0)));
+	needEndOfString.append(needEOS);
+	endIsSharedWithNext.append(endIsShared);
 }
 
 bool MsdFile::save(QByteArray &msd) const
 {
 	QByteArray msd_data;
-	int headerSize = nbText()*4, pos, i=0;
-	
+	int headerSize = nbText()*4, pos, previousPos = 0;
+
 	if (_paddedFormat) {
 		headerSize += 4;
 	}
 
-	for (const QByteArray &text: texts) {
+	for (int i = 0; i < texts.size(); ++i) {
+		const QByteArray &text = texts.at(i);
+		if (!_paddedFormat && i > 0 && endIsSharedWithNext.at(i - 1)
+		        && needEndOfString.at(i - 1) && needEndOfString.at(i)
+		        && texts.at(i - 1).endsWith(text)) {
+			// Keep the original layout: this text is the ending of the previous one
+			pos = previousPos + int(texts.at(i - 1).size() - text.size());
+			msd.append((char *)&pos, 4);
+			previousPos = pos;
+			continue;
+		}
 		pos = headerSize + msd_data.size();
+		previousPos = pos;
 		msd.append((char *)&pos, 4);
 		if (_paddedFormat) {
 			QByteArray trimmedText = FF8Text(text).toFF8();
@@ -91,7 +123,7 @@ bool MsdFile::save(QByteArray &msd) const
 			msd_data.append(text);
 		}
 		
-		if (!_paddedFormat && (!text.isEmpty() || needEndOfString.at(i++))) {
+		if (!_paddedFormat && (!text.isEmpty() || needEndOfString.at(i))) {
 			msd_data.append('\0');
 		}
 	}
@@ -138,8 +170,19 @@ void MsdFile::setText(int id, const FF8Text &text)
 
 void MsdFile::setTexts(const QList<QByteArray> &texts)
 {
+	QList<bool> needEOS(texts.size(), true), endIsShared(texts.size(), false);
+
+	// Keep the original layout of unchanged texts
+	for (int i = 0; i < texts.size() && i < this->texts.size(); ++i) {
+		if (texts.at(i) == this->texts.at(i)) {
+			needEOS[i] = needEndOfString.at(i);
+		}
+		endIsShared[i] = endIsSharedWithNext.at(i);
+	}
+
 	this->texts = texts;
-	needEndOfString = QList<bool>(texts.size(), true);
+	needEndOfString = needEOS;
+	endIsSharedWithNext = endIsShared;
 	modified = true;
 }
 
@@ -148,6 +191,7 @@ void MsdFile::insertText(int id)
 //	qDebug() << "MsdFile::insertText(int id)" << id;
 	texts.insert(id, QByteArray());
 	needEndOfString.insert(id, true);
+	endIsSharedWithNext.insert(id, false);
 	modified = true;
 }
 
@@ -157,6 +201,7 @@ void MsdFile::removeText(int id)
 //		qDebug() << "MsdFile::removeText(int id)" << id;
 		texts.removeAt(id);
 		needEndOfString.removeAt(id);
+		endIsSharedWithNext.removeAt(id);
 		modified = true;
 	}
 }
