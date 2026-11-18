@@ -140,10 +140,6 @@ int FieldArchivePC::open(const QString &path, ArchiveObserver *progress)
 		return openWorld();
 	}
 
-	if (Config::value("encoding", "00").toString() == "01") {
-		Config::setValue("encoding", "00");
-	}
-
 	return 0;
 }
 
@@ -170,7 +166,7 @@ int FieldArchivePC::openWorld()
 	fields.append(field);
 	_mapList = QStringList(field->name());
 	fieldsSortByName.insert(field->name(), 0);
-	fieldsSortByMapId.insert(QString("%1").arg(0, 3, 10, QChar('0')), 0);
+	fieldsSortByMapId.insert(QString("%1").arg(0, 4, 10, QChar('0')), 0);
 
 	return 0;
 }

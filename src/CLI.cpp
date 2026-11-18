@@ -26,6 +26,7 @@
 #include "LZS.h"
 #include "QLZ4.h"
 #include "FieldArchivePC.h"
+#include "Config.h"
 #include <iostream>
 #include <QCoreApplication>
 #include "QRegularExpressionWildcardCompat.h"
@@ -55,6 +56,35 @@ void CLIObserver::setObserverCanCancel(bool canCancel) const
 
 CLIObserver CLI::observer;
 
+// Changes a config value until the end of the scope, without saving it in Deling.ini
+class ScopedConfigValue
+{
+public:
+	ScopedConfigValue(const QString &key, const QString &value) :
+	      _key(key), _active(!value.isEmpty())
+	{
+		if (_active) {
+			_oldValue = Config::value(key);
+			Config::setValue(key, value);
+		}
+	}
+	~ScopedConfigValue()
+	{
+		if (!_active) {
+			return;
+		}
+		if (_oldValue.isValid()) {
+			Config::setValue(_key, _oldValue);
+		} else {
+			Config::removeValue(_key);
+		}
+	}
+private:
+	QString _key;
+	QVariant _oldValue;
+	bool _active;
+};
+
 void CLI::commandExport()
 {
 	ArgumentsExport args;
@@ -67,6 +97,7 @@ void CLI::commandExport()
 		return;
 	}
 	
+	ScopedConfigValue encoding("encoding", args.encoding());
 	FieldArchivePC fieldArchive;
 	if (fieldArchive.open(args.path(), &observer) != 0) {
 		qWarning() << fieldArchive.errorMessage();
@@ -88,6 +119,7 @@ void CLI::commandImport()
 		args.showHelp();
 	}
 
+	ScopedConfigValue encoding("encoding", args.encoding());
 	FieldArchivePC fieldArchive;
 	if (fieldArchive.open(args.path(), &observer) != 0) {
 		qWarning() << "Cannot open field archive" << fieldArchive.errorMessage();

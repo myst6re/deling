@@ -15,6 +15,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 #include "ArgumentsImportExport.h"
+#include "FF8Font.h"
 
 ArgumentsImportExport::ArgumentsImportExport() : CommonArguments()
 {
@@ -22,6 +23,8 @@ ArgumentsImportExport::ArgumentsImportExport() : CommonArguments()
 	          "CSV field separator.", "CHARACTER", ",");
 	_ADD_ARGUMENT(QStringList("quote"),
 	          "CSV quote character.", "CHARACTER", "\"");
+	_ADD_ARGUMENT(QStringList("encoding"),
+	          "Text encoding: 00 (latin) or 01 (japanese). Defaults to the encoding set in Deling.ini.", "ENCODING", "");
 }
 
 QChar ArgumentsImportExport::separator() const
@@ -75,6 +78,24 @@ QChar ArgumentsImportExport::quoteCharacter() const
 	}
 	
 	return quote.at(0);
+}
+
+QString ArgumentsImportExport::encoding() const
+{
+	if (!_parser.isSet("encoding")) {
+		return QString();
+	}
+	
+	QString encoding = _parser.value("encoding");
+	QStringList fontList = FF8Font::fontList();
+	
+	if (!fontList.contains(encoding)) {
+		qWarning() << qPrintable(
+		    QCoreApplication::translate("Arguments", "Error: unknown encoding, possible values: %1").arg(fontList.join(", ")));
+		exit(1);
+	}
+	
+	return encoding;
 }
 
 void ArgumentsImportExport::assertParameters() const

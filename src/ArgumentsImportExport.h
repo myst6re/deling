@@ -25,6 +25,7 @@ public:
 	ArgumentsImportExport();
 	QChar separator() const;
 	QChar quoteCharacter() const;
+	QString encoding() const;
 protected:
 	void assertParameters() const;
 };
