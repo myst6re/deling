@@ -303,47 +303,29 @@ void CLI::commandPack()
 	}
 }
 
-namespace {
-
-struct SilentObserver : public ArchiveObserver
-{
-	bool observerWasCanceled() const override {
-		return false;
-	}
-	void setObserverCanCancel(bool canCancel) const override {
-		Q_UNUSED(canCancel)
-	}
-	void setObserverMaximum(unsigned int max) override {
-		Q_UNUSED(max)
-	}
-	void setObserverValue(int value) override {
-		Q_UNUSED(value)
-	}
-};
-
-void printLine(const QString &line)
+void CLI::printLine(const QString &line)
 {
 	printf("%s\n", qUtf8Printable(line));
 	fflush(stdout);
 }
 
-bool isJsmPath(const QString &path)
+bool CLI::isJsmPath(const QString &path)
 {
 	return path.endsWith(".jsm", Qt::CaseInsensitive);
 }
 
-QString jsmName(const QString &jsmPath)
+QString CLI::jsmName(const QString &jsmPath)
 {
 	return QFileInfo(jsmPath).completeBaseName();
 }
 
-QString symPath(const QString &jsmPath)
+QString CLI::symPath(const QString &jsmPath)
 {
 	QFileInfo info(jsmPath);
 	return info.dir().filePath(info.completeBaseName() + ".sym");
 }
 
-bool openJsm(const QString &path, JsmFile &jsm)
+bool CLI::openJsm(const QString &path, JsmFile &jsm)
 {
 	QFile jsmFile(path);
 	if (!jsmFile.open(QIODevice::ReadOnly)) {
@@ -370,7 +352,7 @@ bool openJsm(const QString &path, JsmFile &jsm)
 	return true;
 }
 
-bool writeFile(const QString &path, const QByteArray &data)
+bool CLI::writeFile(const QString &path, const QByteArray &data)
 {
 	QSaveFile file(path);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate) || file.write(data) != data.size() || !file.commit()) {
@@ -381,7 +363,7 @@ bool writeFile(const QString &path, const QByteArray &data)
 	return true;
 }
 
-bool saveJsm(const QString &path, JsmFile &jsm)
+bool CLI::saveJsm(const QString &path, JsmFile &jsm)
 {
 	QByteArray jsmData, sym;
 	if (!jsm.save(jsmData, sym)) {
@@ -401,7 +383,7 @@ bool saveJsm(const QString &path, JsmFile &jsm)
 	return true;
 }
 
-QList<QRegularExpression> fieldFilters(const QStringList &patterns)
+QList<QRegularExpression> CLI::fieldFilters(const QStringList &patterns)
 {
 	QList<QRegularExpression> filters;
 
@@ -413,7 +395,7 @@ QList<QRegularExpression> fieldFilters(const QStringList &patterns)
 	return filters;
 }
 
-bool matchesField(const QString &name, const QList<QRegularExpression> &filters)
+bool CLI::matchesField(const QString &name, const QList<QRegularExpression> &filters)
 {
 	if (filters.isEmpty()) {
 		return true;
@@ -426,8 +408,6 @@ bool matchesField(const QString &name, const QList<QRegularExpression> &filters)
 	}
 
 	return false;
-}
-
 }
 
 void CLI::commandExportScripts()

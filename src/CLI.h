@@ -17,10 +17,13 @@
  ****************************************************************************/
 #pragma once
 
+#include <QList>
+#include <QRegularExpression>
 #include <QString>
 #include "ArchiveObserver.h"
 
 class FsArchive;
+class JsmFile;
 
 struct CLIObserver : public ArchiveObserver
 {
@@ -46,6 +49,23 @@ private:
 	QString _filename;
 };
 
+// Used instead of CLIObserver when --no-progress is passed
+struct SilentObserver : public ArchiveObserver
+{
+	inline bool observerWasCanceled() const override {
+		return false;
+	}
+	inline void setObserverCanCancel(bool canCancel) const override {
+		Q_UNUSED(canCancel)
+	}
+	inline void setObserverMaximum(unsigned int max) override {
+		Q_UNUSED(max)
+	}
+	inline void setObserverValue(int value) override {
+		Q_UNUSED(value)
+	}
+};
+
 class CLI
 {
 public:
@@ -59,5 +79,14 @@ private:
 	static void commandImportScripts();
 	static FsArchive *openArchive(const QString &ext, const QString &path);
 	static QStringList filteredFiles(const QStringList &fileList, const QStringList &includePatterns, const QStringList &excludePatterns);
+	static void printLine(const QString &line);
+	static bool isJsmPath(const QString &path);
+	static QString jsmName(const QString &jsmPath);
+	static QString symPath(const QString &jsmPath);
+	static bool openJsm(const QString &path, JsmFile &jsm);
+	static bool writeFile(const QString &path, const QByteArray &data);
+	static bool saveJsm(const QString &path, JsmFile &jsm);
+	static QList<QRegularExpression> fieldFilters(const QStringList &patterns);
+	static bool matchesField(const QString &name, const QList<QRegularExpression> &filters);
 	static CLIObserver observer;
 };
