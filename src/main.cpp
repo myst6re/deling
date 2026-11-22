@@ -49,6 +49,9 @@ int main(int argc, char *argv[])
 	}
 
 #ifdef DELING_CONSOLE
+	// On Windows, Qt sends messages to the debugger instead of stderr when there is
+	// no console window (output redirected to a file or a pipe, scripts, CI...)
+	qputenv("QT_FORCE_STDERR_LOGGING", "1");
 	QCoreApplication app(argc, argv);
 	QCoreApplication::setApplicationName(DELING_NAME);
 	QCoreApplication::setApplicationVersion(DELING_VERSION);
