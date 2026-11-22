@@ -55,6 +55,8 @@ private:
 	static void commandImport();
 	static void commandUnpack();
 	static void commandPack();
+	static void commandExportScripts();
+	static void commandImportScripts();
 	static FsArchive *openArchive(const QString &ext, const QString &path);
 	static QStringList filteredFiles(const QStringList &fileList, const QStringList &includePatterns, const QStringList &excludePatterns);
 	static CLIObserver observer;

@@ -21,6 +21,11 @@
 #include "ArgumentsImport.h"
 #include "ArgumentsUnpack.h"
 #include "ArgumentsPack.h"
+#include "ArgumentsExportScripts.h"
+#include "ArgumentsImportScripts.h"
+#include "ScriptFiles.h"
+#include "Field.h"
+#include "files/JsmFile.h"
 #include "FsArchive.h"
 #include "TextExporter.h"
 #include "LZS.h"
@@ -298,6 +303,319 @@ void CLI::commandPack()
 	}
 }
 
+namespace {
+
+struct SilentObserver : public ArchiveObserver
+{
+	bool observerWasCanceled() const override {
+		return false;
+	}
+	void setObserverCanCancel(bool canCancel) const override {
+		Q_UNUSED(canCancel)
+	}
+	void setObserverMaximum(unsigned int max) override {
+		Q_UNUSED(max)
+	}
+	void setObserverValue(int value) override {
+		Q_UNUSED(value)
+	}
+};
+
+void printLine(const QString &line)
+{
+	printf("%s\n", qUtf8Printable(line));
+	fflush(stdout);
+}
+
+bool isJsmPath(const QString &path)
+{
+	return path.endsWith(".jsm", Qt::CaseInsensitive);
+}
+
+QString jsmName(const QString &jsmPath)
+{
+	return QFileInfo(jsmPath).completeBaseName();
+}
+
+QString symPath(const QString &jsmPath)
+{
+	QFileInfo info(jsmPath);
+	return info.dir().filePath(info.completeBaseName() + ".sym");
+}
+
+bool openJsm(const QString &path, JsmFile &jsm)
+{
+	QFile jsmFile(path);
+	if (!jsmFile.open(QIODevice::ReadOnly)) {
+		qWarning() << "Error: cannot open" << qPrintable(path) << qPrintable(jsmFile.errorString());
+		return false;
+	}
+
+	QByteArray sym;
+	QFile symFile(symPath(path));
+	if (symFile.exists()) {
+		if (!symFile.open(QIODevice::ReadOnly)) {
+			qWarning() << "Error: cannot open" << qPrintable(symFile.fileName()) << qPrintable(symFile.errorString());
+			return false;
+		}
+		sym = symFile.readAll();
+	}
+
+	if (!jsm.open(jsmFile.readAll(), sym)) {
+		qWarning() << "Error: invalid JSM file" << qPrintable(path);
+		return false;
+	}
+	jsm.setOpen(true);
+
+	return true;
+}
+
+bool writeFile(const QString &path, const QByteArray &data)
+{
+	QSaveFile file(path);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate) || file.write(data) != data.size() || !file.commit()) {
+		qWarning() << "Error: cannot write" << qPrintable(path) << qPrintable(file.errorString());
+		return false;
+	}
+
+	return true;
+}
+
+bool saveJsm(const QString &path, JsmFile &jsm)
+{
+	QByteArray jsmData, sym;
+	if (!jsm.save(jsmData, sym)) {
+		qWarning() << "Error: cannot build JSM file" << qPrintable(path);
+		return false;
+	}
+
+	if (!writeFile(path, jsmData)) {
+		return false;
+	}
+
+	// Do not create a SYM file when there was none
+	if (jsm.hasSym() && !sym.isEmpty()) {
+		return writeFile(symPath(path), sym);
+	}
+
+	return true;
+}
+
+QList<QRegularExpression> fieldFilters(const QStringList &patterns)
+{
+	QList<QRegularExpression> filters;
+
+	for (const QString &pattern: patterns) {
+		filters.append(QRegularExpression(wildcardToRegularExpression(pattern, NonPathWildcardConversion),
+		                                  QRegularExpression::CaseInsensitiveOption));
+	}
+
+	return filters;
+}
+
+bool matchesField(const QString &name, const QList<QRegularExpression> &filters)
+{
+	if (filters.isEmpty()) {
+		return true;
+	}
+
+	for (const QRegularExpression &filter: filters) {
+		if (filter.match(name).hasMatch()) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+}
+
+void CLI::commandExportScripts()
+{
+	ArgumentsExportScripts args;
+	if (args.help() || args.directory().isEmpty()) {
+		args.showHelp();
+	}
+
+	QDir dir(args.directory());
+	if (!dir.mkpath(".")) {
+		qWarning() << "Error: cannot create directory" << qPrintable(args.directory());
+		exit(1);
+	}
+
+	ScriptFiles scriptFiles(args.opcodes() ? ScriptFiles::Opcodes : ScriptFiles::PseudoCode);
+
+	if (isJsmPath(args.path())) {
+		JsmFile jsm;
+		if (!openJsm(args.path(), jsm)) {
+			exit(1);
+		}
+
+		QString fieldDir = dir.filePath(jsmName(args.path()));
+		if (!scriptFiles.toDir(&jsm, QDir(fieldDir), args.force())) {
+			qWarning() << "Error:" << qPrintable(scriptFiles.errorString());
+			exit(1);
+		}
+
+		printLine(QString("Scripts exported to %1").arg(QDir::toNativeSeparators(fieldDir)));
+		return;
+	}
+
+	SilentObserver silentObserver;
+	ArchiveObserver *progress = args.noProgress() ? static_cast<ArchiveObserver *>(&silentObserver) : &observer;
+	FieldArchivePC fieldArchive;
+	if (fieldArchive.open(args.path(), progress) != 0) {
+		qWarning() << "Error: cannot open field archive" << qPrintable(fieldArchive.errorMessage());
+		exit(1);
+	}
+	if (!args.noProgress()) {
+		printf("\n");
+	}
+
+	QList<QRegularExpression> filters = fieldFilters(args.fields());
+	int fieldCount = 0;
+	FieldArchiveIterator it = fieldArchive.iterator();
+
+	while (it.hasNext()) {
+		Field *field = it.next();
+
+		if (field == nullptr || !field->isOpen() || !matchesField(field->name(), filters) || !field->hasJsmFile()) {
+			continue;
+		}
+
+		JsmFile *jsm = field->getJsmFile();
+		if (!jsm->isOpen()) {
+			qWarning() << "Warning: cannot open the scripts of" << qPrintable(field->name());
+			continue;
+		}
+
+		if (!scriptFiles.toDir(jsm, QDir(dir.filePath(field->name())), args.force())) {
+			qWarning() << "Error:" << qPrintable(scriptFiles.errorString());
+			exit(1);
+		}
+		++fieldCount;
+	}
+
+	if (fieldCount == 0) {
+		qWarning() << "Error: no field scripts found" << (filters.isEmpty() ? "" : "matching --field");
+		exit(1);
+	}
+
+	printLine(QString("Scripts of %1 field(s) exported to %2").arg(fieldCount).arg(QDir::toNativeSeparators(dir.absolutePath())));
+}
+
+void CLI::commandImportScripts()
+{
+	ArgumentsImportScripts args;
+	if (args.help() || args.directory().isEmpty()) {
+		args.showHelp();
+	}
+
+	QDir dir(args.directory());
+	ScriptFiles scriptFiles(args.opcodes() ? ScriptFiles::Opcodes : ScriptFiles::PseudoCode);
+	QString dryRunText = args.dryRun() ? QString(" (dry run, nothing saved)") : QString();
+
+	if (isJsmPath(args.path())) {
+		JsmFile jsm;
+		if (!openJsm(args.path(), jsm)) {
+			exit(1);
+		}
+
+		QString name = jsmName(args.path());
+		if (!dir.exists(name)) {
+			qWarning() << "Error: there is no" << qPrintable(name) << "directory in" << qPrintable(args.directory());
+			exit(1);
+		}
+
+		int compiledCount = scriptFiles.fromDir(&jsm, QDir(dir.filePath(name)));
+		for (const QString &message: scriptFiles.messages()) {
+			printLine(message);
+		}
+		if (compiledCount < 0) {
+			qWarning() << "Error:" << qPrintable(scriptFiles.errorString());
+			qWarning() << "Nothing was saved";
+			exit(1);
+		}
+		if (compiledCount == 0) {
+			printLine("No script changed, nothing to save");
+			return;
+		}
+		if (!args.dryRun() && !saveJsm(args.path(), jsm)) {
+			exit(1);
+		}
+
+		printLine(QString("%1 method(s) compiled%2").arg(compiledCount).arg(dryRunText));
+		return;
+	}
+
+	SilentObserver silentObserver;
+	ArchiveObserver *progress = args.noProgress() ? static_cast<ArchiveObserver *>(&silentObserver) : &observer;
+	FieldArchivePC fieldArchive;
+	if (fieldArchive.open(args.path(), progress) != 0) {
+		qWarning() << "Error: cannot open field archive" << qPrintable(fieldArchive.errorMessage());
+		exit(1);
+	}
+	if (!args.noProgress()) {
+		printf("\n");
+	}
+
+	QList<QRegularExpression> filters = fieldFilters(args.fields());
+	QStringList unusedDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	int compiledTotal = 0, fieldCount = 0;
+	FieldArchiveIterator it = fieldArchive.iterator();
+
+	while (it.hasNext()) {
+		Field *field = it.next();
+
+		if (field == nullptr || !field->isOpen() || !matchesField(field->name(), filters) || !dir.exists(field->name())) {
+			continue;
+		}
+		unusedDirs.removeAll(field->name());
+
+		if (!field->hasJsmFile() || !field->getJsmFile()->isOpen()) {
+			qWarning() << "Warning: cannot open the scripts of" << qPrintable(field->name());
+			continue;
+		}
+
+		int compiledCount = scriptFiles.fromDir(field->getJsmFile(), QDir(dir.filePath(field->name())));
+		for (const QString &message: scriptFiles.messages()) {
+			printLine(message);
+		}
+		if (compiledCount < 0) {
+			qWarning() << "Error:" << qPrintable(scriptFiles.errorString());
+			qWarning() << "Nothing was saved";
+			exit(1);
+		}
+		if (compiledCount > 0) {
+			compiledTotal += compiledCount;
+			++fieldCount;
+		}
+	}
+
+	if (filters.isEmpty()) {
+		for (const QString &unusedDir: unusedDirs) {
+			printLine(QString("Warning: no field named %1 in the archive, directory ignored").arg(unusedDir));
+		}
+	}
+
+	if (compiledTotal == 0) {
+		printLine("No script changed, nothing to save");
+		return;
+	}
+
+	if (!args.dryRun()) {
+		if (!fieldArchive.save(progress)) {
+			qWarning() << "Error: cannot save field archive" << qPrintable(fieldArchive.errorMessage());
+			exit(1);
+		}
+		if (!args.noProgress()) {
+			printf("\n");
+		}
+	}
+
+	printLine(QString("%1 method(s) compiled in %2 field(s)%3").arg(compiledTotal).arg(fieldCount).arg(dryRunText));
+}
+
 FsArchive *CLI::openArchive(const QString &ext, const QString &path)
 {
 	Q_UNUSED(ext)
@@ -367,6 +685,12 @@ void CLI::exec()
 		break;
 	case Arguments::Pack:
 		commandPack();
+		break;
+	case Arguments::ExportScripts:
+		commandExportScripts();
+		break;
+	case Arguments::ImportScripts:
+		commandImportScripts();
 		break;
 	}
 }

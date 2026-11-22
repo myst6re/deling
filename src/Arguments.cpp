@@ -113,6 +113,8 @@ Arguments::Arguments() :
 	        "  pack             Pack files from directory to FS archive\n"
 	        "  export-texts     Export texts to CSV from FIELD/WORLD FS archive\n"
 	        "  import-texts     Import texts from a CSV file to existing FIELD/WORLD FS archive\n"
+	        "  export-scripts   Decompile field scripts (JSM) to text files, one per method\n"
+	        "  import-scripts   Compile modified text files back into the field scripts (JSM)\n"
 	        "\n"
 	        "\"%1 unpack --help\" to see help of the specific subcommand"
 	    ).arg(QFileInfo(qApp->arguments().first()).fileName())
@@ -142,6 +144,10 @@ void Arguments::parse()
 		_command = Unpack;
 	} else if (command == "pack") {
 		_command = Pack;
+	} else if (command == "export-scripts") {
+		_command = ExportScripts;
+	} else if (command == "import-scripts") {
+		_command = ImportScripts;
 	} else {
 		qWarning() << qPrintable(QCoreApplication::translate("Arguments", "Unknown command type:")) << qPrintable(command);
 		return;
