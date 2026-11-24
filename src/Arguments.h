@@ -60,7 +60,9 @@ public:
 		Export,
 		Import,
 		Unpack,
-		Pack
+		Pack,
+		ExportScripts,
+		ImportScripts
 	};
 	Arguments();
 	inline Command command() const {
