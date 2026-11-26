@@ -715,7 +715,8 @@ bool JsmPseudoCompiler::parseIf(const JsmScripts &scripts, JsmData &result, QStr
 		ifData += ifBlock;
 
 		JsmData elsifBlock;
-		if (!parseIf(scripts, elsifBlock, errorStr, labels, gotos, opcodeID + ifData.nbOpcode() + 1)) return false;
+		// +1 for JPF and +1 for JMP
+		if (!parseIf(scripts, elsifBlock, errorStr, labels, gotos, opcodeID + ifData.nbOpcode() + 2)) return false;
 
 		ifData.append(JsmOpcode(JsmOpcode::JMP, elsifBlock.nbOpcode() + 1));
 		ifData += elsifBlock;
@@ -732,7 +733,8 @@ bool JsmPseudoCompiler::parseIf(const JsmScripts &scripts, JsmData &result, QStr
 
 			// Parse else-block
 			JsmData elseBlock;
-			if (!parseStatements(scripts, elseBlock, errorStr, dummy, opcodeID + ifData.nbOpcode() + 1, {"end"}, labels, gotos)) return false;
+			// +1 for JPF and +1 for JMP
+			if (!parseStatements(scripts, elseBlock, errorStr, dummy, opcodeID + ifData.nbOpcode() + 2, {"end"}, labels, gotos)) return false;
 
 			skipNewlines();
 			if (peek().text.toLower() != "end") {
@@ -791,7 +793,8 @@ bool JsmPseudoCompiler::parseWhile(const JsmScripts &scripts, JsmData &result, Q
 
 	JsmData bodyBlock;
 	int dummy;
-	if (!parseStatements(scripts, bodyBlock, errorStr, dummy, opcodeID + result.nbOpcode() + 1, {"end"}, labels, gotos)) return false;
+	// +1 for JPF
+	if (!parseStatements(scripts, bodyBlock, errorStr, dummy, opcodeID + result.nbOpcode() + condSize + 1, {"end"}, labels, gotos)) return false;
 
 	skipNewlines();
 	if (peek().text.toLower() != "end") {
